@@ -8,7 +8,7 @@ import {
   Box,
   Grid,
 } from '@mui/material';
-import { Star } from '@mui/icons-material';
+import { DiscountRounded, Star } from '@mui/icons-material';
 import missingImage from '../assets/missingImage.png';
 import { Link } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
@@ -131,6 +131,30 @@ const RestaurantList: React.FC<Props> = ({ restaurants }) => {
                       <Typography variant='subtitle2'></Typography>
                     )}
                   </Box>
+
+                  {restaurant.discount_title !== 'PROMO' ? (
+                    <Box
+                      display='flex'
+                      alignItems='center'
+                      justifyContent='flex-start'
+                      bgcolor='rgba(200, 0, 0, 0.8)'
+                      p='0.2rem 0.4rem'
+                      borderRadius='0 1rem 1rem 0'
+                      position='absolute'
+                      top='70%'
+                      left='0'
+                      zIndex={1}>
+                      <Typography variant='subtitle2' color={'white'}>
+                        <DiscountRounded
+                          sx={{ height: '1rem', marginBottom: '-0.2rem' }}
+                        />{' '}
+                        {`${restaurant.discount_title}`}
+                      </Typography>
+                    </Box>
+                  ) : (
+                    <></>
+                  )}
+
                   <Box
                     display='flex'
                     alignItems='center'

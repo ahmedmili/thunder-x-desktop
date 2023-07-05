@@ -17,7 +17,6 @@ const SwitchesContainer = styled.div`
   position: relative;
   display: flex;
   padding: 0;
-  position: relative;
   background: #edc72f;
   line-height: 3rem;
   border-radius: 3rem;

@@ -29,6 +29,7 @@
     "i18next-browser-languagedetector": "^7.0.1",
     "jwt-decode": "^3.1.2",
     "mdb-react-ui-kit": "^5.1.0",
+    "million": "^2.4.4",
     "pure-react-carousel": "^1.30.1",
     "react": "^18.2.0",
     "react-cookie": "^4.1.1",
@@ -56,6 +57,7 @@
     "laravel-echo": "^1.15.1",
     "pusher-js": "^8.0.2",
     "typescript": "^4.9.3",
-    "vite": "^4.1.0"
+    "vite": "^4.1.0",
+    "vite-plugin-million": "^0.0.2"
   }
 }

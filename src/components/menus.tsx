@@ -1,6 +1,6 @@
-import { Key, useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { FoodItem, MenuData } from '../services/types';
-import { useLocation, useNavigate, useParams } from 'react-router-dom';
+import { useLocation, useParams } from 'react-router-dom';
 import {
   Box,
   Button,
@@ -21,7 +21,7 @@ import {
   Tooltip,
   Typography,
 } from '@mui/material';
-import { Add as AddIcon } from '@mui/icons-material';
+import { Add as AddIcon, Star } from '@mui/icons-material';
 import missingImage from '../assets/missingImage.png';
 import { RootState, useAppDispatch } from '../Redux/store';
 import {
@@ -36,7 +36,6 @@ import { Option } from '../services/types';
 import { useSelector } from 'react-redux';
 import MismatchModal from './mismatchModal';
 import { useTranslation } from 'react-i18next';
-import { stringify } from 'querystring';
 
 interface MenuProps {}
 
@@ -60,7 +59,7 @@ const Menu: React.FC<MenuProps> = () => {
   const restaurant = location.state.restaurant;
   const [currentPage, setCurrentPage] = useState<{ [key: string]: number }>({});
   const productsPerPage = 3;
-
+  // console.log('restaurant  =>', restaurant);
   const handlePaginationClick = (pageNumber: number, menuItemId: number) => {
     setCurrentPage((prevPages) => ({
       ...prevPages,
@@ -149,7 +148,6 @@ const Menu: React.FC<MenuProps> = () => {
     }
 
     // Dispatch actions to update delivery price and supplier state here
-    // For example, let's say the new delivery price is 10 and new supplier state is 'New York'
     dispatch(setDeliveryPrice(restaurant.delivery_price));
     dispatch(setSupplier(restaurant));
     window.localStorage.setItem('supplier', JSON.stringify(restaurant));
@@ -218,280 +216,426 @@ const Menu: React.FC<MenuProps> = () => {
       : name;
   };
   return (
-    <Container maxWidth='lg'>
-      {showMismatchModal && (
-        <MismatchModal onClose={handleMismatchModalClose} />
-      )}
-      {showOptions && (
-        <div
-          style={{
-            display: 'flex',
-            flexDirection: 'column',
-            alignItems: 'center',
-            position: 'fixed',
-            top: 0,
-            left: 0,
-            width: '100vw',
-            height: '100vh',
-            backgroundColor: 'rgba(0, 0, 0, 0.5)',
-            zIndex: 999,
-          }}
-          onClick={() => {
-            setShowOptions(false);
-            setSelectedObligatoryOption(null);
-            setSelectedOptionalOption(null);
-          }}>
-          <div
-            style={{
-              backgroundColor: 'white',
-              padding: '2rem',
-              borderRadius: '0.5rem',
-              margin: '5rem',
-              boxShadow: '1px 2px 4px 2px rgba(0, 0, 0, 0.2)',
-              maxHeight: '95vh',
-              overflow: 'auto',
-            }}
-            onClick={(e) => e.stopPropagation()}>
-            <Typography variant='h4' sx={{ fontWeight: 'bold', mb: '1rem' }}>
-              {t('menu_options')} {selectedMenuItem?.name}
-            </Typography>
-            {options.length == 0 ? (
-              <>
-                <Typography variant='h6' sx={{ mb: '0.5rem' }}>
-                  {t('no_options_needed')}
-                </Typography>
-                <Button
-                  variant='contained'
-                  color='primary'
-                  startIcon={<AddIcon />}
-                  sx={{ marginTop: '1rem', marginBottom: '1rem' }}
-                  onClick={() => {
-                    if (selectedMenuItem !== null) {
-                      handleAddToCart(selectedMenuItem);
-                      setShowOptions(false);
-                      setSelectedObligatoryOption(null);
-                      setSelectedOptionalOption(null);
-                      setSelectedMenuItem(null);
-                    }
-                  }}>
-                  {t('add_to_cart')}
-                </Button>
-              </>
-            ) : (
-              <Box sx={{ display: 'flex', flexDirection: 'column' }}>
-                {obligatoryOptions.length > 0 && (
-                  <Box
-                    sx={{
-                      display: 'flex',
-                      flexDirection: 'column',
-                      mb: '1rem',
-                    }}>
-                    <Typography variant='h6' sx={{ mb: '0.5rem' }}>
-                      {t('sauce')}
-                    </Typography>
-                    <FormControl component='fieldset'>
-                      <FormLabel component='legend'>
-                        {t('select_one_option')}
-                      </FormLabel>
-                      <RadioGroup
-                        aria-label='obligatory-options'
-                        name='obligatory-options'
-                        value={selectedObligatoryOption?.id || ''} // value is the ID of the selected option
-                        onChange={handleObligatoryOptionChange}>
-                        {obligatoryOptions.map((option) => (
-                          <FormControlLabel
-                            key={option.id}
-                            value={option.id.toString()} // convert ID to string to avoid warning
-                            control={<Radio />}
-                            label={`${option.name} (${option.price} DT)`}
-                          />
-                        ))}
-                      </RadioGroup>
-                    </FormControl>
-                  </Box>
-                )}
-
-                {optionalOptions.length > 0 && (
-                  <Box
-                    sx={{
-                      display: 'flex',
-                      flexDirection: 'column',
-                      mb: '1rem',
-                    }}>
-                    <Typography variant='h6' sx={{ mb: '0.5rem' }}>
-                      {t('extras')}
-                    </Typography>
-                    <FormControl component='fieldset'>
-                      <FormLabel component='legend'>
-                        {t('select_one_or_multiple_extras')}
-                      </FormLabel>
-                      <FormGroup>
-                        {optionalOptions.map((option) => (
-                          <FormControlLabel
-                            key={option.id}
-                            control={
-                              <Checkbox
-                                checked={option.checked || false}
-                                onChange={handleOptionalOptionChange}
-                                value={option.id.toString()}
-                              />
-                            }
-                            label={`${option.name} (${option.price} DT)`}
-                          />
-                        ))}
-                      </FormGroup>
-                    </FormControl>
-                  </Box>
-                )}
-                <Button
-                  variant='contained'
-                  color='primary'
-                  startIcon={<AddIcon />}
-                  sx={{ marginTop: '1rem', marginBottom: '1rem' }}
-                  onClick={() => {
-                    if (selectedMenuItem !== null) {
-                      handleAddToCart(selectedMenuItem);
-                      setShowOptions(false);
-                      setSelectedObligatoryOption(null);
-                      setSelectedOptionalOption(null);
-                      setSelectedMenuItem(null);
-                    }
-                  }}
-                  disabled={!selectedObligatoryOption} // button is disabled if no obligatory option is selected
-                >
-                  {t('add_to_cart')}
-                </Button>
-              </Box>
-            )}
-          </div>
-        </div>
-      )}
+    <>
       <CardMedia
         component='img'
-        height='150'
-        image={menuData[0]?.image}
+        height='350px'
+        image={restaurant?.images[0].path}
         onError={(e: any) => {
           e.target.onerror = null;
           e.target.src = missingImage;
         }}
       />
-      <Typography variant='h3' sx={{ fontWeight: 'bold', mt: '1rem' }}>
-        Menu {restaurant.name}
-      </Typography>
-      <Typography variant='h5'>
-        {t('delivery_price')} {restaurant.delivery_price} DT
-      </Typography>
-
-      {loading ? (
-        <CircularProgress sx={{ alignSelf: 'center', my: '2rem' }} />
-      ) : (
-        menuData.map((menuItem) => {
-          const menuItemId = menuItem.id;
-          const menuItemProducts = menuItem.products;
-
-          const indexOfLastProduct = currentPage[menuItemId]
-            ? currentPage[menuItemId] * productsPerPage
-            : productsPerPage;
-          const indexOfFirstProduct = indexOfLastProduct - productsPerPage;
-          const displayedProducts = menuItemProducts.slice(
-            indexOfFirstProduct,
-            indexOfLastProduct
-          );
-
-          return (
-            <Box key={menuItemId} sx={{ marginTop: '2rem' }}>
-              <Typography variant='h4' sx={{ fontWeight: 'bold' }}>
-                {menuItem.name}
-              </Typography>
-              {menuItemProducts.length > productsPerPage && (
-                <Pagination
-                  count={Math.ceil(menuItemProducts.length / productsPerPage)}
-                  page={currentPage[menuItemId] || 1}
-                  onChange={(event, page) =>
-                    handlePaginationClick(page, menuItemId)
-                  }
-                />
-              )}
-              <Box
-                sx={{
+      <Container
+        maxWidth='lg'
+        style={{
+          backgroundColor: '#F5F5F5',
+          borderRadius: '2rem',
+          padding: '3rem',
+          position: 'relative',
+          top: '-150px',
+        }}>
+        {showMismatchModal && (
+          <MismatchModal onClose={handleMismatchModalClose} />
+        )}
+        {showOptions && (
+          <div
+            style={{
+              display: 'flex',
+              flexDirection: 'column',
+              alignItems: 'center',
+              position: 'fixed',
+              top: 0,
+              left: 0,
+              width: '100vw',
+              height: '100vh',
+              backgroundColor: 'rgba(0, 0, 0, 0.5)',
+              zIndex: 999,
+            }}
+            onClick={() => {
+              setShowOptions(false);
+              setSelectedObligatoryOption(null);
+              setSelectedOptionalOption(null);
+            }}>
+            <div
+              style={{
+                backgroundColor: 'white',
+                padding: '2rem',
+                borderRadius: '0.5rem',
+                margin: '5rem',
+                boxShadow: '1px 2px 4px 2px rgba(0, 0, 0, 0.2)',
+                maxHeight: '95vh',
+                display: 'flex', // Added to create a flex container
+              }}
+              onClick={(e) => e.stopPropagation()}>
+              <div
+                style={{
+                  flex: 1,
                   display: 'flex',
-                  flexDirection: 'row',
-                  flexWrap: 'wrap',
+                  justifyContent: 'center',
+                  alignItems: 'center',
+                  overflow: 'hidden',
+                  marginRight: '1.5rem',
                 }}>
-                <Grid container spacing={2} sx={{ marginTop: '1rem' }}>
-                  {displayedProducts.map((product) => (
-                    <Card
-                      key={product.id}
-                      sx={{
-                        height: '100%',
-                        maxHeight: '380px',
-                        width: '370px',
-                        display: 'flex',
-                        flexDirection: 'column',
-                        margin: '0.5rem',
-                        boxShadow: '1px 2px 4px 2px rgba(0,0,0,0.15)',
-                      }}>
-                      <CardMedia
-                        component='img'
-                        height='150'
-                        image={product.image[0]?.path}
-                        alt={product.name}
-                        loading='lazy'
-                      />
-                      <CardContent sx={{ flexGrow: 1 }}>
-                        <Tooltip title={product.name} arrow>
-                          <Typography variant='h5' sx={{ fontWeight: 'bold' }}>
-                            {getTruncatedName(product.name, 20)}
-                          </Typography>
-                        </Tooltip>
-
-                        <Tooltip
-                          title={
-                            <div
-                              dangerouslySetInnerHTML={{
-                                __html: product.description,
-                              }}
-                            />
+                <div
+                  style={{
+                    backgroundImage: `url(${selectedMenuItem?.image[0]?.path})`,
+                    backgroundSize: 'cover',
+                    backgroundPosition: 'center',
+                    width: '400px',
+                    height: '100%',
+                  }}></div>
+              </div>
+              <div style={{ flex: 1, overflow: 'auto' }}>
+                <Box>
+                  <Typography
+                    variant='h5'
+                    sx={{ fontWeight: 'bold', mb: '1rem' }}>
+                    {t('menu_options')} {selectedMenuItem?.name}
+                  </Typography>
+                  {options.length === 0 ? (
+                    <>
+                      <Typography variant='h6' sx={{ mb: '0.5rem' }}>
+                        {t('no_options_needed')}
+                      </Typography>
+                      <Button
+                        variant='contained'
+                        color='primary'
+                        startIcon={<AddIcon />}
+                        sx={{ marginTop: '1rem', marginBottom: '1rem' }}
+                        onClick={() => {
+                          if (selectedMenuItem !== null) {
+                            handleAddToCart(selectedMenuItem);
+                            setShowOptions(false);
+                            setSelectedObligatoryOption(null);
+                            setSelectedOptionalOption(null);
+                            setSelectedMenuItem(null);
                           }
-                          arrow>
-                          <Typography
-                            variant='body1'
-                            sx={{ marginTop: '0.5rem' }}>
-                            <div
-                              dangerouslySetInnerHTML={{
-                                __html: getTruncatedName(
-                                  product.description,
-                                  90
-                                ),
-                              }}
-                            />
-                          </Typography>
-                        </Tooltip>
-
-                        <Typography variant='h6' sx={{ marginTop: '0.5rem' }}>
-                          {`${t('price')}: ${Math.round(product.price)} DT`}
-                        </Typography>
-                        <Button
-                          variant='contained'
-                          color='primary'
-                          startIcon={<AddIcon />}
-                          sx={{ marginTop: '1rem', marginBottom: '1rem' }}
-                          onClick={() => {
-                            handleChooseOptions(product);
-                            // console.log('selectedMenuItem    :', product);
+                        }}>
+                        {t('add_to_cart')}
+                      </Button>
+                    </>
+                  ) : (
+                    <Box sx={{ display: 'flex', flexDirection: 'column' }}>
+                      {obligatoryOptions.length > 0 && (
+                        <Box
+                          sx={{
+                            display: 'flex',
+                            flexDirection: 'column',
+                            mb: '1rem',
                           }}>
-                          {t('choose_options')}
-                        </Button>
-                      </CardContent>
-                    </Card>
-                  ))}
-                </Grid>
+                          <Box
+                            sx={{
+                              backgroundColor: '#1F94A4',
+                              px: '2.5rem',
+                              py: '0.5rem',
+                              textTransform: 'lowercase',
+                            }}>
+                            <Typography
+                              variant='h6'
+                              sx={{
+                                color: 'white',
+                                textTransform: 'capitalize',
+                              }}>
+                              {t('sauce')}
+                            </Typography>
+                            <Typography
+                              variant='body2'
+                              sx={{
+                                color: 'whitesmoke',
+                                textTransform: 'capitalize',
+                              }}>
+                              {t('select_one_option')}
+                            </Typography>
+                          </Box>
+
+                          <FormControl component='fieldset'>
+                            <RadioGroup
+                              aria-label='obligatory-options'
+                              name='obligatory-options'
+                              value={selectedObligatoryOption?.id || ''}
+                              onChange={handleObligatoryOptionChange}>
+                              {obligatoryOptions.map((option) => (
+                                <FormControlLabel
+                                  key={option.id}
+                                  value={option.id.toString()}
+                                  control={<Radio />}
+                                  label={`${option.name} (${option.price} DT)`}
+                                />
+                              ))}
+                            </RadioGroup>
+                          </FormControl>
+                        </Box>
+                      )}
+
+                      {optionalOptions.length > 0 && (
+                        <Box
+                          sx={{
+                            display: 'flex',
+                            flexDirection: 'column',
+                            mb: '1rem',
+                          }}>
+                          <Box
+                            sx={{
+                              backgroundColor: '#1F94A4',
+                              px: '2.5rem',
+                              py: '0.5rem',
+                              textTransform: 'lowercase',
+                            }}>
+                            <Typography
+                              variant='h6'
+                              sx={{
+                                color: 'white',
+                                textTransform: 'capitalize',
+                              }}>
+                              {t('extras')}
+                            </Typography>
+                            <Typography
+                              variant='body2'
+                              sx={{
+                                color: 'whitesmoke',
+                                textTransform: 'capitalize',
+                              }}>
+                              {t('select_one_or_multiple_extras')}
+                            </Typography>
+                          </Box>
+
+                          <FormControl component='fieldset'>
+                            <FormGroup>
+                              {optionalOptions.map((option) => (
+                                <FormControlLabel
+                                  key={option.id}
+                                  control={
+                                    <Checkbox
+                                      checked={option.checked || false}
+                                      onChange={handleOptionalOptionChange}
+                                      value={option.id.toString()}
+                                    />
+                                  }
+                                  label={`${option.name} (${option.price} DT)`}
+                                />
+                              ))}
+                            </FormGroup>
+                          </FormControl>
+                        </Box>
+                      )}
+                      <Button
+                        variant='contained'
+                        color='primary'
+                        startIcon={<AddIcon />}
+                        sx={{ marginTop: '1rem', marginBottom: '1rem' }}
+                        onClick={() => {
+                          if (selectedMenuItem !== null) {
+                            handleAddToCart(selectedMenuItem);
+                            setShowOptions(false);
+                            setSelectedObligatoryOption(null);
+                            setSelectedOptionalOption(null);
+                            setSelectedMenuItem(null);
+                          }
+                        }}
+                        disabled={
+                          obligatoryOptions.length > 0 &&
+                          !selectedObligatoryOption
+                        }>
+                        {t('add_to_cart')}
+                      </Button>
+                    </Box>
+                  )}
+                </Box>
+              </div>
+            </div>
+          </div>
+        )}
+
+        <Typography
+          variant='h4'
+          sx={{ fontWeight: 'bold', mt: '1rem', textTransform: 'capitalize' }}>
+          Menu {restaurant.name}
+        </Typography>
+        <Box
+          display='flex'
+          alignItems='center'
+          justifyContent='flex-end'
+          p='0.2rem 0.4rem'
+          position='absolute'
+          top='4rem'
+          right='3rem'
+          zIndex={1}>
+          <Typography fontSize={20}>
+            {restaurant.star ? restaurant.star : t('noRating')}
+          </Typography>
+          <Star sx={{ ml: '0.3rem', color: '#FFD700' }} />
+        </Box>
+        <Box
+          display='flex'
+          alignItems='center'
+          justifyContent='flex-end'
+          bgcolor='rgba(237, 199, 47, 0.8)'
+          p='0.2rem 0.4rem'
+          borderRadius='1rem'
+          position='absolute'
+          top='6.5rem'
+          right='3.7rem'
+          zIndex={1}>
+          {restaurant.medium_time ? (
+            <Typography variant='subtitle2'>
+              {`${restaurant.medium_time - 10}mins - ${
+                restaurant.medium_time + 10
+              }mins`}
+            </Typography>
+          ) : (
+            <Typography variant='subtitle2'></Typography>
+          )}
+        </Box>
+        <Typography variant='h5'>
+          {t('delivery_price')} {restaurant.delivery_price} DT
+        </Typography>
+
+        {loading ? (
+          <CircularProgress sx={{ alignSelf: 'center', my: '2rem' }} />
+        ) : (
+          menuData.map((menuItem) => {
+            const menuItemId = menuItem.id;
+            const menuItemProducts = menuItem.products;
+
+            const indexOfLastProduct = currentPage[menuItemId]
+              ? currentPage[menuItemId] * productsPerPage
+              : productsPerPage;
+            const indexOfFirstProduct = indexOfLastProduct - productsPerPage;
+            const displayedProducts = menuItemProducts.slice(
+              indexOfFirstProduct,
+              indexOfLastProduct
+            );
+
+            return (
+              <Box
+                key={menuItemId}
+                sx={{ marginTop: '2rem', flexDirection: 'column' }}>
+                <Box
+                  sx={{
+                    backgroundColor: '#1F94A4',
+                    px: '2.5rem',
+                    py: '0.5rem',
+                    textTransform: 'lowercase',
+                  }}>
+                  <Typography
+                    variant='h5'
+                    sx={{
+                      fontWeight: 'bold',
+                      color: 'whitesmoke',
+                      textTransform: 'capitalize',
+                    }}>
+                    {menuItem.name}
+                  </Typography>
+                </Box>
+
+                {menuItemProducts.length > productsPerPage && (
+                  <Pagination
+                    style={{ marginTop: '1rem' }}
+                    count={Math.ceil(menuItemProducts.length / productsPerPage)}
+                    page={currentPage[menuItemId] || 1}
+                    onChange={(event, page) =>
+                      handlePaginationClick(page, menuItemId)
+                    }
+                  />
+                )}
+                <Box
+                  sx={{
+                    display: 'flex',
+                    flexDirection: 'row',
+                    flexWrap: 'wrap',
+                  }}>
+                  <Grid container spacing={2} sx={{ marginTop: '1rem' }}>
+                    {displayedProducts.map((product) => (
+                      <Card
+                        key={product.id}
+                        sx={{
+                          height: '100%',
+                          width: '355px',
+                          display: 'flex',
+                          flexDirection: 'column',
+                          margin: '0.5rem',
+                          boxShadow: '1px 2px 4px 2px rgba(0,0,0,0.15)',
+                        }}>
+                        <div
+                          style={{
+                            height: '150px',
+                            backgroundColor: '#F8F8F8',
+                          }}>
+                          <CardMedia
+                            component='img'
+                            height='150'
+                            image={product.image[0]?.path}
+                            loading='lazy'
+                          />
+                        </div>
+
+                        <CardContent sx={{ flexGrow: 1 }}>
+                          <Tooltip title={product.name} arrow>
+                            <Typography
+                              variant='h5'
+                              sx={{ fontWeight: 'bold' }}>
+                              {getTruncatedName(product.name, 20)}
+                            </Typography>
+                          </Tooltip>
+
+                          <Tooltip
+                            title={
+                              <div
+                                dangerouslySetInnerHTML={{
+                                  __html: product.description,
+                                }}
+                              />
+                            }
+                            arrow>
+                            <Typography
+                              variant='body1'
+                              sx={{ marginTop: '0.5rem' }}>
+                              <div
+                                dangerouslySetInnerHTML={{
+                                  __html: getTruncatedName(
+                                    product.description,
+                                    90
+                                  ),
+                                }}
+                              />
+                            </Typography>
+                          </Tooltip>
+
+                          <Typography variant='h6' sx={{ marginTop: '0.5rem' }}>
+                            {`${t('price')}: ${Math.round(product.price)} DT`}
+                          </Typography>
+
+                          <Button
+                            variant='contained'
+                            sx={{
+                              marginBottom: '-1rem',
+                              marginTop: '1rem',
+                              backgroundColor: '#1F94A4',
+                              borderRadius: '5rem',
+                              display: 'flex',
+                              alignItems: 'right',
+                              justifyConent: 'flex-end',
+                              boxShadow:
+                                '1px 2px 4px 2px rgba(255,255,255,0.2)',
+                            }}
+                            onClick={() => {
+                              handleChooseOptions(product);
+                            }}>
+                            <AddIcon sx={{ color: 'whitesmoke' }} />{' '}
+                            {t('choose_options')}
+                          </Button>
+                        </CardContent>
+                      </Card>
+                    ))}
+                  </Grid>
+                </Box>
               </Box>
-            </Box>
-          );
-        })
-      )}
-    </Container>
+            );
+          })
+        )}
+      </Container>
+    </>
   );
 };
 

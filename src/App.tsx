@@ -22,13 +22,13 @@ import jwt_decode from 'jwt-decode';
 import WebSocket from './services/websocket';
 import eventEmitter from './services/thunderEventsService';
 import './app.css';
+
 //lazy loading
 const HomePage = lazy(() => import('./views/home.page'));
 const LoginPage = lazy(() => import('./views/login.page'));
 const RegisterPage = lazy(() => import('./views/register.page'));
 const ProfilePage = lazy(() => import('./views/profile.page'));
 const UnauthorizePage = lazy(() => import('./views/unauthorize.page'));
-const EmailVerificationPage = lazy(() => import('./views/verifyemail.page'));
 const CartPage = lazy(() => import('./views/cart.page'));
 const OrderTrackingPage = lazy(() => import('./views/trackorder.page'));
 const ConfirmNumberPage = lazy(() => import('./views/confirmNumber.page'));
@@ -120,22 +120,20 @@ function App() {
           <Route path='/' element={<Layout />}>
             <Route index element={<HomePage />} />
             <Route path='/supplier-store/:id/*' element={<Menu />} />
-            <Route path='track-order' element={<OrderTrackingPage />} />
+            <Route path='cart' element={<CartPage />} />
 
             {/* Private Route */}
-            <Route element={<ProtectedRoute children={undefined} />}>
-              <Route path='profile' element={<ProfilePage />} />
-              <Route path='cart' element={<CartPage />} />
-            </Route>
-            <Route path='unauthorized' element={<UnauthorizePage />} />
-          </Route>
-          <Route path='verifyemail' element={<EmailVerificationPage />}>
+            <Route path='track-order' element={<OrderTrackingPage />} />
             <Route
-              path=':verificationCode'
-              element={<EmailVerificationPage />}
+              path='profile'
+              element={
+                <ProtectedRoute>
+                  <ProfilePage />
+                </ProtectedRoute>
+              }
             />
           </Route>
-
+          <Route path='unauthorized' element={<UnauthorizePage />} />
           <Route path='login' element={<LoginPage />} />
           <Route path='register' element={<RegisterPage />} />
           <Route path='confirm' element={<ConfirmNumberPage />} />
@@ -145,12 +143,12 @@ function App() {
   );
 }
 
-const ProtectedRoute = ({ children }: { children: React.ReactNode }) => {
+const ProtectedRoute = (children: any) => {
   const isAuthenticated = useAppSelector(
     (state) => state.userState.isAuthenticated
   );
   if (!isAuthenticated) {
-    return <Navigate to='/' replace />;
+    return <Navigate to='/unauthorized' replace />;
   }
 
   return children ? <>{children}</> : <Outlet />;

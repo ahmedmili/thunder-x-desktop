@@ -13,7 +13,8 @@ import {
   Avatar,
 } from '@mui/material';
 import { FoodItem } from '../services/types';
-import React, { useEffect } from 'react';
+import React from 'react';
+import { block } from 'million/react';
 
 interface CartProps {
   items: FoodItem[];
