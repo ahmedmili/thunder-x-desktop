@@ -1,0 +1,133 @@
+span[class^='dot-'] {
+  opacity: 0;
+}
+.dot-one {
+  animation: dot-one 2s infinite linear;
+}
+.dot-two {
+  animation: dot-two 2s infinite linear;
+}
+.dot-three {
+  animation: dot-three 2s infinite linear;
+}
+@keyframes dot-one {
+  0% {
+    opacity: 0;
+  }
+  15% {
+    opacity: 0;
+  }
+  25% {
+    opacity: 1;
+  }
+  100% {
+    opacity: 1;
+  }
+}
+
+@keyframes dot-two {
+  0% {
+    opacity: 0;
+  }
+  25% {
+    opacity: 0;
+  }
+  50% {
+    opacity: 1;
+  }
+  100% {
+    opacity: 1;
+  }
+}
+
+@keyframes dot-three {
+  0% {
+    opacity: 0;
+  }
+  50% {
+    opacity: 0;
+  }
+  75% {
+    opacity: 1;
+  }
+  100% {
+    opacity: 1;
+  }
+}
+
+.caller {
+  align-self: self-end;
+  width: 10rem;
+  height: 2rem;
+  padding: 0rem 0 0 0;
+  text-align: center;
+  position: relative;
+  display: flex;
+  justify-content: center;
+  align-items: flex-end;
+  border-radius: 2rem;
+  border: 2px solid green;
+  overflow: hidden;
+  margin-left: auto;
+  margin-right: 5%;
+  margin-top: 1%;
+  margin-bottom: 1%;
+}
+.text {
+  z-index: 0;
+  padding-right: 0.5rem;
+  padding-bottom: 0.1rem;
+}
+.icon {
+  position: absolute;
+  right: 0;
+  top: 0;
+  width: 2rem;
+  height: 2rem;
+  border-radius: 2rem;
+  background: green;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  color: white;
+  z-index: 2;
+  transition: right 1s 0.2s, transform 1s 0.2s;
+}
+.number {
+  width: 100%;
+  height: 100%;
+  border-radius: 2rem;
+  position: absolute;
+  right: calc(-100% + 2rem);
+  padding-left: 1rem;
+  box-sizing: border-box;
+  top: 0;
+  background: green;
+  color: white;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1;
+  transition: right 1s 0.2s;
+}
+
+a .text {
+  color: black !important;
+  text-decoration: none;
+}
+
+a {
+  color: white;
+  text-decoration: none;
+}
+
+.caller:hover .icon {
+  right: calc(100% - 2rem);
+  transform: rotatez(100deg);
+  transition: right 1s, transform 1s;
+}
+
+.caller:hover .number {
+  right: 0;
+  transition: right 1s;
+}
