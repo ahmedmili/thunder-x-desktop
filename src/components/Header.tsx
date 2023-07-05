@@ -103,7 +103,8 @@ const Header = () => {
             }}>
             <img
               src={icon}
-              style={{ height: '30px', marginRight: '1rem' }}></img>
+              style={{ height: '30px', marginRight: '1rem' }}
+              alt='icon'></img>
             <Typography variant='h6' sx={{ color: '#000000' }}>
               Thunder Express
             </Typography>
@@ -170,7 +171,7 @@ const Header = () => {
                   width: '100vw',
                   height: '100vh',
                   zIndex: 998,
-                  backgroundColor: 'rgba(0, 0, 0, 0.05)',
+                  backgroundColor: 'rgba(0, 0, 0, 0.5)',
                 }}
                 onClick={() => setShowCart(false)}>
                 <div

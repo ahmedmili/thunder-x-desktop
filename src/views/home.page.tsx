@@ -179,6 +179,7 @@ const HomePage = () => {
                     }}
                     src={ad.image}
                     alt={`Ad ${ad.id}`}
+                    loading='lazy'
                   />
                 </Slide>
               ))}
