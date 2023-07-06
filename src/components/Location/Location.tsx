@@ -4,7 +4,7 @@ import 'react-toastify/dist/ReactToastify.css';
 import { useAppDispatch, useAppSelector } from '../../Redux/store';
 import styled from 'styled-components';
 import { useTranslation } from 'react-i18next';
-
+import './Location.css'
 interface MapProps {
   apiKey: string | undefined;
   width?: number;
@@ -24,84 +24,7 @@ declare global {
   }
 }
 
-const MapContainer = styled.div`
-  height: 100%;
-  width: 100%;
-  min-width: 400px;
-  min-height: 400px;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
 
-  #map {
-    height: 100%;
-    width: 100%;
-    margin: 0 auto;
-  }
-
-  .form {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-
-    label {
-      margin-bottom: 10px;
-      font-size: 16px;
-      font-weight: bold;
-    }
-
-    input {
-      padding: 10px;
-      border-radius: 5px;
-      border: 1px solid #ccc;
-      margin-bottom: 10px;
-      width: 100%;
-      max-width: 500px;
-      font-size: 16px;
-
-      &:focus {
-        outline: none;
-        box-shadow: 0 0 0 2px #2db2b1;
-        border-color: #0077ff;
-      }
-    }
-
-    button {
-      padding: 10px;
-      border-radius: 5px;
-      border: none;
-      background-color: #2db2b1;
-      color: #fff;
-      font-size: 16px;
-      font-weight: bold;
-      cursor: pointer;
-      transition: background-color 0.3s;
-
-      &:hover {
-        background-color: #005ab5;
-      }
-    }
-  }
-
-  button {
-    padding: 10px;
-    border-radius: 5px;
-    border: none;
-    background-color: #2db2b1;
-    color: #fff;
-    font-size: 16px;
-    font-weight: bold;
-    cursor: pointer;
-    transition: background-color 0.3s;
-    margin-left: auto;
-    margin-right: 0;
-    margin-top: 20px;
-
-    &:hover {
-      background-color: #005ab5;
-    }
-  }
-`;
 const googleMapKey = import.meta.env.VITE_GOOGLE_MAPS_API_KEY;
 const Map: React.FC<MapProps> = (props) => {
   const { t } = useTranslation();
@@ -264,7 +187,7 @@ const Map: React.FC<MapProps> = (props) => {
   return (
     <div
       style={{ height: props.height ?? '400px', width: props.width ?? '100%' }}>
-      <MapContainer>
+      <div className='map-container'>
         <div className='form'>
           <table>
             <tr>
@@ -300,7 +223,7 @@ const Map: React.FC<MapProps> = (props) => {
           id='map'
           ref={mapContainerRef}
           style={{ height: '100%', width: '100%' }}></div>
-      </MapContainer>
+      </div>
     </div>
   );
 };

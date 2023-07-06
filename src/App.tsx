@@ -24,7 +24,7 @@ import eventEmitter from './services/thunderEventsService';
 import './app.css';
 
 //lazy loading
-const HomePage = lazy(() => import('./views/home.page'));
+const HomePage = lazy(() => import('./views/home.page/home.page'));
 const LoginPage = lazy(() => import('./views/login.page'));
 const RegisterPage = lazy(() => import('./views/register.page'));
 const ProfilePage = lazy(() => import('./views/profile.page'));
