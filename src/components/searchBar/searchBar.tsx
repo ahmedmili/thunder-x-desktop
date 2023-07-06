@@ -1,6 +1,7 @@
 import React, { useState, useCallback } from 'react';
 import { Menu, MenuItem, Select } from '@mui/material';
 import { SearchSharp } from '@mui/icons-material';
+import './SearchBar.css';
 
 interface Props {
   placeholder: string;
@@ -44,90 +45,30 @@ const SearchBar: React.FC<Props> = ({ placeholder }) => {
     <div>
       <form
         onSubmit={handleSearchSubmit}
-        style={{
-          display: 'flex',
-          flexDirection: 'column',
-          alignItems: 'center',
-          justifyContent: 'center',
-          margin: '20px',
-          fontSize: '1.2rem',
-          position: 'relative',
-        }}>
+        className="search-form">
         <div
           className='search-bar'
-          style={{
-            display: 'flex',
-            alignItems: 'center',
-            justifyContent: 'center',
-            flexDirection: 'row',
-            width: '100%',
-            maxWidth: '150rem',
-            marginBottom: '1rem',
-          }}>
+        >
           <SearchSharp
-            style={{
-              backgroundColor: '#2cb1b1',
-              color: '#fff',
-              border: 'none',
-              marginLeft: '0.5rem',
-              padding: '0.5rem',
-              borderRadius: '5px',
-              cursor: 'pointer',
-              maxWidth: '100px',
-              height: '40px',
-              width: '40px',
-              fontSize: '20px',
-              position: 'relative',
-            }}
+            className="search-icon"
           />
           <input
             type='text'
             placeholder={placeholder}
             value={searchTerm}
             onChange={(event) => setSearchTerm(event.target.value)}
-            style={{
-              border: 'none',
-              borderBottom: '2px solid #2cb1b1',
-              padding: '0.5rem',
-              width: '50%',
-              fontSize: '1.2rem',
-            }}
             aria-label='Enter search term'
           />
           <button
             type='submit'
             onClick={toggleFilters}
-            style={{
-              backgroundColor: '#2cb1b1',
-              color: '#fff',
-              border: 'none',
-              marginLeft: '0.5rem',
-              padding: '0.5rem',
-              borderRadius: '5px',
-              cursor: 'pointer',
-              maxWidth: '100px',
-              height: '40px',
-              width: '40px',
-              fontSize: '20px',
-              position: 'relative',
-            }}>
+          >
             ☰
           </button>
           {showFilters && (
             <div
               className='filters'
-              style={{
-                display: 'flex',
-                flexDirection: 'column',
-                alignItems: 'center',
-                position: 'absolute',
-                top: '70%',
-                left: '73%',
-                backgroundColor: 'white',
-                zIndex: '999',
-                padding: '2rem',
-                boxShadow: '1px 2px 4px 2px rgba(0,0,0,0.2)',
-              }}>
+            >
               <Select
                 value={priceFilter}
                 onChange={handlePriceFilterChange}
@@ -152,7 +93,8 @@ const SearchBar: React.FC<Props> = ({ placeholder }) => {
               <Select
                 value={ratingFilter}
                 onChange={handleRatingFilterChange}
-                style={{ marginBottom: '0.5rem', width: '10rem' }}>
+                style={{ marginBottom: '0.5rem', width: '10rem' }}
+              >
                 <MenuItem value='0'>Any Rating</MenuItem>
                 <MenuItem value='1'>1 star</MenuItem>
                 <MenuItem value='2'>2 stars</MenuItem>
@@ -162,14 +104,6 @@ const SearchBar: React.FC<Props> = ({ placeholder }) => {
               </Select>
               <button
                 type='submit'
-                style={{
-                  backgroundColor: '#2cb1b1',
-                  color: '#fff',
-                  border: 'none',
-                  padding: '0.5rem',
-                  borderRadius: '5px',
-                  cursor: 'pointer',
-                }}
                 onClick={handleFilterSubmit}>
                 Apply Filters
               </button>

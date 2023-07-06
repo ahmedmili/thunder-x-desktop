@@ -28,7 +28,7 @@ import {
   ShoppingCartRounded,
 } from '@mui/icons-material';
 import axios from 'axios';
-import MapComponent from '../components/mapComponent';
+import MapComponent from '../components/mapComponent/mapComponent';
 import { useAppDispatch, useAppSelector } from '../Redux/store';
 
 const ApiEndpoint = import.meta.env.VITE_SERVER_ENDPOINT;

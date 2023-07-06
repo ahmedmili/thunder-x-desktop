@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import { FoodItem, MenuData } from '../services/types';
+import { FoodItem, MenuData } from '../../services/types';
 import { useLocation, useParams } from 'react-router-dom';
 import {
   Box,
@@ -22,8 +22,8 @@ import {
   Typography,
 } from '@mui/material';
 import { Add as AddIcon, Star } from '@mui/icons-material';
-import missingImage from '../assets/missingImage.png';
-import { RootState, useAppDispatch } from '../Redux/store';
+import missingImage from '../../assets/missingImage.png';
+import { RootState, useAppDispatch } from '../../Redux/store';
 import {
   addItem,
   clearCart,
@@ -31,10 +31,10 @@ import {
   setSupplierMismatch,
   setSupplier,
   setDeliveryPrice,
-} from '../Redux/slices/cart/cartSlice';
-import { Option } from '../services/types';
+} from '../../Redux/slices/cart/cartSlice';
+import { Option } from '../../services/types';
 import { useSelector } from 'react-redux';
-import MismatchModal from './mismatchModal';
+import MismatchModal from '../mismatchModal/mismatchModal';
 import { useTranslation } from 'react-i18next';
 
 interface MenuProps {}

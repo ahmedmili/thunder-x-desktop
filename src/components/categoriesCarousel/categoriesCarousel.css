@@ -1,0 +1,55 @@
+.carousel-slider {
+  margin-right: 10rem;
+  margin-left: 10rem;
+}
+
+.category-box {
+  cursor: pointer;
+  text-align: center;
+  padding: 15px;
+  border-radius: 15px;
+  margin: 2rem;
+  box-shadow: 1px 2px 4px 2px rgba(0, 0, 0, 0.09);
+}
+
+.category-box.selected {
+  background-color: #2db2b1;
+}
+
+.category-box .category-image img{
+  width: 50px;
+  height: 50px;
+}
+
+.category-box .category-name {
+  font-family: 'Poppins';
+  font-style: normal;
+  font-weight: 400;
+  font-size: 14px;
+  line-height: 21px;
+}
+
+.category-box.selected .category-name {
+  color: #ffffff;
+}
+
+.category-box .category-name:not(.selected) {
+  color: #080808;
+}
+
+
+.category {
+  font-family: 'Poppins', sans-serif;
+  font-style: normal;
+  font-weight: 400;
+  font-size: 14px;
+  line-height: 21px;
+}
+
+.category.selected {
+  color: #ffffff;
+}
+
+.category:not(.selected) {
+  color: #080808;
+}

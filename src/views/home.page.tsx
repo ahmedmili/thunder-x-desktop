@@ -1,11 +1,11 @@
 import { Box, CircularProgress, Container } from '@mui/material';
 import { useAppDispatch, useAppSelector } from '../Redux/store';
-import Map from '../components/Location';
-import Switches from '../components/toggleSwitch';
+import Map from '../components/Location/Location';
+import Switches from '../components/toggleSwitch/toggleSwitch';
 import { useCallback, useEffect, useMemo, useState } from 'react';
 import PinDropIcon from '@mui/icons-material/PinDrop';
-import SearchBar from '../components/searchBar';
-import CategoryCarousel from '../components/categoriesCarousel';
+import SearchBar from '../components/searchBar/searchBar';
+import CategoryCarousel from '../components/categoriesCarousel/categoriesCarousel';
 import {
   selectHomeData,
   selectIsDelivery,
@@ -13,9 +13,9 @@ import {
 import React from 'react';
 import { Restaurant } from '../services/types';
 import { CarouselProvider, Slide, Slider } from 'pure-react-carousel';
-import RestaurantList from '../components/recommendedRestaurants';
+import RestaurantList from '../components/recommendedRestaurants/recommendedRestaurants';
 import { useTranslation } from 'react-i18next';
-import FAQList from '../components/faq';
+import FAQList from '../components/faq/faq';
 import 'laravel-echo/dist/echo';
 import eventEmitter from '../services/thunderEventsService';
 
@@ -136,7 +136,8 @@ const HomePage = () => {
       <div>
         <SearchBar placeholder={t('search_placeholder')} />
       </div>
-      {isLoading ? (
+      {
+      isLoading ? (
         <Box sx={{ display: 'flex', justifyContent: 'center' }}>
           <CircularProgress />
         </Box>

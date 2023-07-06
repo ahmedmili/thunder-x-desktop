@@ -1,5 +1,5 @@
 import React, { useEffect, useRef, useState } from 'react';
-import { useAppSelector } from '../Redux/store';
+import { useAppSelector } from '../../Redux/store';
 
 interface MapComponentProps {
   selectedLocation: any; // Adjust the type according to your data structure

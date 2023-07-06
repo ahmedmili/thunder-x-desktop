@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Restaurant } from '../services/types';
+import { Restaurant } from '../../services/types';
 import {
   Card,
   CardContent,
@@ -9,10 +9,11 @@ import {
   Grid,
 } from '@mui/material';
 import { DiscountRounded, Star } from '@mui/icons-material';
-import missingImage from '../assets/missingImage.png';
+import missingImage from '../../assets/missingImage.png';
 import { Link } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
-import { toast } from 'react-toastify';
+// import { toast } from 'react-toastify';
+import './recommendedRestaurants.css'
 
 interface Props {
   restaurants: Restaurant[];
@@ -78,32 +79,25 @@ const RestaurantList: React.FC<Props> = ({ restaurants }) => {
 
   return (
     <div
-      style={{
-        backgroundColor: '#fffff6',
-        justifyContent: 'center',
-      }}>
+      className='containerr'
+    >
       <h2>{t('recommendedForYou')}</h2>
       <Grid container spacing={2}>
         {restaurants.slice(0, displayCount).map((restaurant) => (
           <Grid item xs={12} sm={6} md={4} key={restaurant.id}>
             <Link
+              className="restaurant-link"
               to={{
                 pathname: `/supplier-store/${restaurant.id}`,
               }}
               state={{ restaurant: restaurant }}
-              style={{ textDecoration: 'none' }}>
-              <Card
-                elevation={1}
-                style={{
-                  height: '100%',
-                  maxHeight: '300px',
-                  boxShadow: '1px 2px 4px 2px rgba(0,0,0,0.15)',
-                }}>
-                <Box position='relative' sx={{ height: '60%' }}>
+              >
+              <Card className='card' elevation={1} >
+                <Box position='relative' className="image-container">
                   <CardMedia
+                      className="restaurant-image"
                     component='img'
                     src={getImageUrl(restaurant)}
-                    style={{ objectFit: 'cover', height: '100%' }}
                     onError={(e: any) => {
                       e.target.onerror = null;
                       e.target.src = missingImage;
@@ -111,21 +105,11 @@ const RestaurantList: React.FC<Props> = ({ restaurants }) => {
                     loading='lazy'
                   />
                   <Box
-                    display='flex'
-                    alignItems='center'
-                    justifyContent='flex-start'
-                    bgcolor='rgba(237, 199, 47, 0.8)'
-                    p='0.2rem 0.4rem'
-                    borderRadius='0 0 1rem 0'
-                    position='absolute'
-                    top='0'
-                    left='0'
-                    zIndex={1}>
+                    className='restaurant-time'>
                     {restaurant.medium_time ? (
                       <Typography variant='subtitle2'>
-                        {`${restaurant.medium_time - 10}mins - ${
-                          restaurant.medium_time + 10
-                        }mins`}
+                        {`${restaurant.medium_time - 10}mins - ${restaurant.medium_time + 10
+                          }mins`}
                       </Typography>
                     ) : (
                       <Typography variant='subtitle2'></Typography>
@@ -133,17 +117,7 @@ const RestaurantList: React.FC<Props> = ({ restaurants }) => {
                   </Box>
 
                   {restaurant.discount_title !== 'PROMO' ? (
-                    <Box
-                      display='flex'
-                      alignItems='center'
-                      justifyContent='flex-start'
-                      bgcolor='rgba(200, 0, 0, 0.8)'
-                      p='0.2rem 0.4rem'
-                      borderRadius='0 1rem 1rem 0'
-                      position='absolute'
-                      top='70%'
-                      left='0'
-                      zIndex={1}>
+                    <Box className="discount-box">
                       <Typography variant='subtitle2' color={'white'}>
                         <DiscountRounded
                           sx={{ height: '1rem', marginBottom: '-0.2rem' }}
@@ -155,17 +129,7 @@ const RestaurantList: React.FC<Props> = ({ restaurants }) => {
                     <></>
                   )}
 
-                  <Box
-                    display='flex'
-                    alignItems='center'
-                    justifyContent='flex-end'
-                    bgcolor='rgba(255, 255, 255, 0.8)'
-                    p='0.2rem 0.4rem'
-                    borderRadius='0 0 0 1rem'
-                    position='absolute'
-                    top='0'
-                    right='0'
-                    zIndex={1}>
+                  <Box className="rating-box">
                     <Star sx={{ mr: '0.3rem', color: '#FFD700' }} />
                     <Typography>
                       {restaurant.star ? restaurant.star : t('noRating')}
@@ -185,15 +149,7 @@ const RestaurantList: React.FC<Props> = ({ restaurants }) => {
                       JSON.parse(restaurant.delivery_price)
                     )} DT`}
                   </Typography>
-                  <Box
-                    bgcolor={
-                      isOpen(restaurant)
-                        ? 'rgba(0, 200, 0, 0.5)'
-                        : 'rgba(255, 0, 0, 0.5)'
-                    }
-                    p='0.2rem 0.4rem'
-                    borderRadius='1rem'
-                    display='inline-block'>
+                  <Box className={`status-box ${isOpen(restaurant) ? 'open' : 'closed'}`}>
                     <Typography variant='body2' color='white'>
                       {isOpen(restaurant) ? t('open') : t('closed')}
                     </Typography>
@@ -206,22 +162,10 @@ const RestaurantList: React.FC<Props> = ({ restaurants }) => {
       </Grid>
       {displayCount < restaurants.length && (
         <div
-          style={{
-            display: 'flex',
-            justifyContent: 'center',
-            marginTop: '1.5rem',
-          }}>
+        className="see-more">
           <button
             onClick={() => setDisplayCount(displayCount + increment)}
-            style={{
-              padding: '0.5rem 1rem',
-              fontSize: '1rem',
-              backgroundColor: '#2db2b1',
-              color: 'white',
-              border: 'none',
-              borderRadius: '15px',
-              cursor: 'pointer',
-            }}>
+            className="see-more-button" >
             See More
           </button>
         </div>

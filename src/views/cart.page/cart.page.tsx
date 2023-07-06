@@ -5,9 +5,9 @@ import {
   setDeliveryOption,
   setDeliveryPrice,
   setSupplier,
-} from '../Redux/slices/cart/cartSlice';
-import { Cart } from '../components/cart';
-import { RootState, useAppDispatch, useAppSelector } from '../Redux/store';
+} from '../../Redux/slices/cart/cartSlice';
+import { Cart } from '../../components/cart/cart';
+import { RootState, useAppDispatch, useAppSelector } from '../../Redux/store';
 import {
   Button,
   Box,
@@ -20,11 +20,12 @@ import {
 } from '@mui/material';
 import axios from 'axios';
 import * as z from 'zod';
-import { logout } from '../Redux/slices/user/userSlice';
-import { FoodItem } from '../services/types';
+import { logout } from '../../Redux/slices/user/userSlice';
+import { FoodItem } from '../../services/types';
 import { toast } from 'react-toastify';
 import { useTranslation } from 'react-i18next';
 import { useNavigate } from 'react-router-dom';
+import './cart.page.css'
 
 const ApiEndpoint = import.meta.env.VITE_SERVER_ENDPOINT;
 
@@ -167,14 +168,7 @@ const CartPage: React.FC = () => {
   return (
     <Container
       maxWidth={false}
-      sx={{
-        display: 'flex',
-        justifyContent: 'center',
-        alignItems: 'center',
-        backgroundColor: 'white',
-        minWidth: '600px',
-        scrollbarWidth: 'none',
-      }}>
+      className='container'>
       <Box
         width='100%'
         sx={{
@@ -182,34 +176,29 @@ const CartPage: React.FC = () => {
           alignSelf: 'center',
           display: 'flex',
           flexDirection: 'column',
-        }}>
+        }}
+      >
         <Typography style={{ color: '#000000', margin: '1rem' }} variant='h4'>
           {t('cartPage.yourCart')}
         </Typography>
+
+        {/* suppliers section */}
         <Typography
-          style={{
-            color: 'gray',
-            marginTop: '-1rem',
-            marginLeft: '1rem',
-            fontSize: '1rem',
-          }}
+          className='suppliers'
           variant='h6'>
           {t('cartPage.supplier')}:{' '}
           {supplier ? supplier.name : t('cartPage.noSupplierYet')}
         </Typography>
 
         <Cart items={cartItems} />
+
         <Typography
-          style={{
-            color: '#3B3B3B',
-            marginLeft: '1rem',
-            marginBottom: '-1rem',
-            fontSize: '1rem',
-          }}
+          className='delivery'
           variant='h6'>
           {t('cartPage.delivery')}:{' '}
           {deliveryPrice ? Math.round(deliveryPrice) : '0'} DT
         </Typography>
+
         <Typography style={{ color: '#000000', margin: '1rem' }} variant='h6'>
           {t('cartPage.total')}: {total} DT
         </Typography>
@@ -225,32 +214,28 @@ const CartPage: React.FC = () => {
           onChange={(event: any) =>
             dispatch(setDeliveryOption(event.target.value))
           }
-          sx={{
-            alignSelf: 'center',
-            display: 'flex',
-            flexDirection: 'row',
-          }}>
+          className="RadioGroup">
           <FormControlLabel
-            style={{ color: '#000000' }}
+          className='FormControlLabel'
             value='delivery'
             control={<Radio />}
             label={t('livraison')}
           />
           <FormControlLabel
-            style={{ color: '#000000' }}
+          className='FormControlLabel'
             value='pickup'
             control={<Radio />}
             label={t('emporter')}
           />
           <FormControlLabel
-            style={{ color: '#000000' }}
+          className='FormControlLabel'
             value='surplace'
             control={<Radio />}
             label='Sur place'
           />
         </RadioGroup>
         <Box>
-          <TextField
+          <TextField 
             label={t('cartPage.name')}
             value={name}
             onChange={(event) => setName(event.target.value)}

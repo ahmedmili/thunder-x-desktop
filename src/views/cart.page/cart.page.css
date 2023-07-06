@@ -1,0 +1,33 @@
+.container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: white;
+    min-width: 600px;
+    scrollbar-width: none;
+}
+
+.suppliers {
+    color: gray;
+    margin-top: -1rem;
+    margin-top: 1rem;
+    font-size: 1rem;
+}
+
+.container .delivery {
+    color: #3B3B3B;
+    margin-left: 1rem;
+    margin-bottom: -1rem;
+     font-size: 1rem;     
+}
+
+
+.container .RadioGroup {
+    align-self: center;
+    display: flex;
+    flex-direction: row;
+  }
+  
+  .container .RadioGroup .FormControlLabel {
+    color: #000000;
+  }

@@ -1,5 +1,5 @@
-import { useAppDispatch } from '../Redux/store';
-import { removeItem, changeItemQuantity } from '../Redux/slices/cart/cartSlice'; // Change import statement to changeItemQuantity
+import { useAppDispatch } from '../../Redux/store';
+import { removeItem, changeItemQuantity } from '../../Redux/slices/cart/cartSlice'; // Change import statement to changeItemQuantity
 
 import {
   Button,
@@ -12,9 +12,8 @@ import {
   ListItemAvatar,
   Avatar,
 } from '@mui/material';
-import { FoodItem } from '../services/types';
-import React from 'react';
-import { block } from 'million/react';
+import { FoodItem } from '../../services/types';
+import React, { useEffect } from 'react';
 
 interface CartProps {
   items: FoodItem[];

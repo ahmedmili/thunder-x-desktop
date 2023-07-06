@@ -1,34 +1,20 @@
 import { AppBar, Box, Container, Toolbar, Typography } from '@mui/material';
 import { styled } from '@mui/material/styles';
 import { useNavigate } from 'react-router-dom';
-import { useAppDispatch, useAppSelector } from '../Redux/store';
+import { useAppDispatch, useAppSelector } from '../../Redux/store';
 import { toast } from 'react-toastify';
 import { LoadingButton as _LoadingButton } from '@mui/lab';
-import { logout } from '../Redux/slices/user/userSlice';
+import { logout } from '../../Redux/slices/user/userSlice';
 import ShoppingCartIcon from '@mui/icons-material/ShoppingCart';
 import { useEffect, useState } from 'react';
-import CartPage from '../views/cart.page';
+import CartPage from '../../views/cart.page/cart.page';
 import LogoutIcon from '@mui/icons-material/Logout';
-import icon from '../assets/icon.png';
-import { LanguageSelector } from './languageSelector';
+import icon from '../../assets/icon.png';
+import { LanguageSelector } from '../languageSelector/languageSelector';
 import { useTranslation } from 'react-i18next';
 import { ViewList, ViewListRounded, WidgetsRounded } from '@mui/icons-material';
+import './header.css'
 
-const LoadingButton = styled(_LoadingButton)`
-  padding: 0.4rem;
-  background-color: #2db2b1;
-  border: 1px solid #fffefe;
-  border-radius: 20px;
-  color: #fffefe;
-  font-weight: 500;
-  width: 144px;
-  height: 40px;
-
-  &:hover {
-    background-color: #2db2b1;
-    transform: translateY(-2px);
-  }
-`;
 
 const Header = () => {
   const logged_in = localStorage.getItem('token') !== null;
@@ -93,42 +79,24 @@ const Header = () => {
         justifyContent: 'center',
       }}>
       <Container maxWidth='lg'>
-        <Toolbar sx={{ display: 'flex', justifyContent: 'space-between' }}>
-          <Box
-            onClick={() => navigate('/')}
-            style={{
-              display: 'flex',
-              flexDirection: 'row',
-              cursor: 'pointer',
-            }}>
+        <Toolbar className='Toolbar'>
+          {/*  Thunder logo section  */}
+          <Box className="logo-container" onClick={() => navigate('/')} >
             <img
               src={icon}
-              style={{ height: '30px', marginRight: '1rem' }}
               alt='icon'></img>
             <Typography variant='h6' sx={{ color: '#000000' }}>
               Thunder Express
             </Typography>
           </Box>
-
+          {/* shopping cart section */}
           <Box sx={{ flexGrow: 1, display: 'flex', justifyContent: 'center' }}>
+            {/* order button */}
             {isAuthenticated && (
-              <div
-                style={{
-                  display: 'flex',
-                  flexDirection: 'column',
-                  alignItems: 'center',
-                  cursor: 'pointer',
-                  marginRight: '8%',
-                }}
+              <div className='order-container'
                 onClick={handleCommand}>
-                <div
-                  style={{
-                    display: 'flex',
-                    flexDirection: 'row',
-                    alignItems: 'center',
-                    justifyContent: 'center',
-                    width: '100%',
-                  }}>
+                <div className='order-icon'
+                >
                   <WidgetsRounded style={{ color: '#000000' }} />
                 </div>
                 <div style={{ color: '#000000' }}>
@@ -136,22 +104,11 @@ const Header = () => {
                 </div>
               </div>
             )}
+
             <div
-              style={{
-                display: 'flex',
-                flexDirection: 'column',
-                alignItems: 'center',
-                cursor: 'pointer',
-              }}
+              className='cart-logo-container'
               onClick={handleCart}>
-              <div
-                style={{
-                  display: 'flex',
-                  flexDirection: 'row',
-                  alignItems: 'center',
-                  justifyContent: 'center',
-                  width: '100%',
-                }}>
+              <div className='cart-logo'>
                 <ShoppingCartIcon style={{ color: '#000000' }} />
                 {cartItems.length > 0 && (
                   <span style={{ color: '#000000' }}>({cartItems.length})</span>
@@ -159,64 +116,43 @@ const Header = () => {
               </div>
               <div style={{ color: '#000000' }}>{t('cartPage.yourCart')}</div>
             </div>
+
+            {/* cart button */}
             {showCart && (
-              <div
-                style={{
-                  display: 'flex',
-                  flexDirection: 'column',
-                  alignItems: 'center',
-                  position: 'fixed',
-                  top: 0,
-                  left: 0,
-                  width: '100vw',
-                  height: '100vh',
-                  zIndex: 998,
-                  backgroundColor: 'rgba(0, 0, 0, 0.5)',
-                }}
+              <div className='cart-container'
                 onClick={() => setShowCart(false)}>
                 <div
                   className='cart'
-                  style={{
-                    display: 'flex',
-                    flexDirection: 'column',
-                    alignItems: 'center',
-                    position: 'absolute',
-                    top: '8%',
-                    backgroundColor: 'white',
-                    zIndex: 999,
-                    boxShadow: '1px 2px 4px 2px rgba(0,0,0,0.1)',
-                    maxHeight: '85vh',
-                    overflow: 'auto',
-                  }}
                   onClick={(e) => e.stopPropagation()}>
                   <CartPage />
                 </div>
               </div>
             )}
           </Box>
-
-          <div
-            style={{
-              marginLeft: 'auto',
-              marginRight: '1.5rem',
-              paddingTop: '0.5rem',
-              paddingBottom: '0.5rem',
-            }}>
+          {/* Language Selector */}
+          <div className='LanguageSelector-container'>
             <LanguageSelector />
           </div>
+
           <Box display='flex'>
+            {/* login register buttons  */}
             {!logged_in && (
               <>
-                <LoadingButton
-                  sx={{ mr: 2 }}
-                  onClick={() => navigate('/register')}>
+                <div
+                  onClick={() => navigate('/register')}
+                  className='LoadingButton'
+                >
                   {t('signup')}
-                </LoadingButton>
-                <LoadingButton onClick={() => navigate('/login')}>
+                </div>
+                <div
+                  onClick={() => navigate('/login')}
+                  className='LoadingButton'
+                >
                   {t('login')}
-                </LoadingButton>
+                </div>
               </>
             )}
+            
             {logged_in && (
               <>
                 <div
@@ -229,26 +165,23 @@ const Header = () => {
                 </div>
 
                 <LogoutIcon
+                  className='logout-icon'
                   style={{
-                    color: '#fffffe',
-                    cursor: 'pointer',
-                    padding: '0.5rem',
-                    backgroundColor: '#2db2b1',
-                    border: '1px solid #fffefe',
-                    borderRadius: '10px',
                     height: '40px',
                     width: '40px',
                   }}
+
                   onClick={onLogoutHandler}
                 />
               </>
             )}
             {logged_in && user?.role === 'admin' && (
-              <LoadingButton
-                sx={{ backgroundColor: '#fffefe', ml: 2 }}
-                onClick={() => navigate('/admin')}>
+              <div
+                onClick={() => navigate('/admin')}
+                className='LoadingButton'
+              >
                 Admin
-              </LoadingButton>
+              </div>
             )}
           </Box>
         </Toolbar>

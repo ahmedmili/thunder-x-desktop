@@ -1,0 +1,107 @@
+.LoadingButton {
+    padding: 0.4rem;
+    background-color: #2db2b1;
+    border: 1px solid #fffefe;
+    border-radius: 20px;
+    color: #fffefe;
+    font-weight: 500;
+    width: 144px;
+    height: 40px;
+    text-align: center;
+}
+
+.LoadingButton:hover {
+    background-color: #30c5c5;
+    transform: translateY(-2px);
+}
+
+.Toolbar {
+    display: 'flex';
+    justify-content: 'space-between'
+}
+
+.logo-container {
+    display: flex;
+    flex-direction: row;
+    cursor: pointer
+}
+
+.logo-container img {
+    height: 30px;
+    margin-right: 1rem
+}
+
+.cart-logo-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    cursor: pointer
+}
+
+.cart-logo {
+
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+    width: 100%';
+
+}
+
+.cart-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    z-index: 998;
+    background-color: rgba(0, 0, 0, 0.5);
+}
+
+.cart {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    position: absolute;
+    top: 8%;
+    background-color: white;
+    z-index: 999;
+    box-shadow: 1px 2px 4px 2px rgba(0, 0, 0, 0.1);
+    max-height: 85vh;
+    overflow: auto;
+}
+
+.LanguageSelector-container {
+    margin-left: auto;
+    margin-right: 1.5rem;
+    padding-top: 0.5rem;
+    padding-bottom: 0.5rem;
+}
+
+.order-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    cursor: pointer;
+    margin-right: 8%;
+}
+
+.order-icon {
+    display: flex;
+        flex-direction: row;
+        align-items: center;
+        justify-content: center;
+        width: 100%;
+}
+
+.logout-icon {
+    color: #fffffe;
+    cursor: pointer;
+    padding: 0.5rem;
+    background-color: #2db2b1;
+    border: 1px solid #fffefe;
+    border-radius: 10px;
+}

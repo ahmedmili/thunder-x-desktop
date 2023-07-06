@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useCallback, useRef } from 'react';
 import { toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
-import { useAppDispatch, useAppSelector } from '../Redux/store';
+import { useAppDispatch, useAppSelector } from '../../Redux/store';
 import styled from 'styled-components';
 import { useTranslation } from 'react-i18next';
 
