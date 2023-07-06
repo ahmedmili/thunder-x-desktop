@@ -3,14 +3,14 @@ import { styled } from '@mui/material/styles';
 import { FormProvider, SubmitHandler, useForm } from 'react-hook-form';
 import { object, number, TypeOf } from 'zod';
 import { zodResolver } from '@hookform/resolvers/zod';
-import FormInput from '../components/FormInput/FormInput';
+import FormInput from '../../components/FormInput/FormInput';
 import { Link, useNavigate } from 'react-router-dom';
 import { LoadingButton as _LoadingButton } from '@mui/lab';
 import 'react-toastify/dist/ReactToastify.css';
-import { useAppDispatch } from '../Redux/store';
+import { useAppDispatch } from '../../Redux/store';
 import { HomeOutlined } from '@mui/icons-material';
 import { useTranslation } from 'react-i18next';
-import './confirmNumber.css';
+// import './confirmNumber.css';
 import { useState, useEffect } from 'react';
 import { ToastContainer, toast } from 'react-toastify';
 

@@ -7,7 +7,7 @@ import { LoadingButton as _LoadingButton } from '@mui/lab';
 import { logout } from '../../Redux/slices/user/userSlice';
 import ShoppingCartIcon from '@mui/icons-material/ShoppingCart';
 import { useEffect, useState } from 'react';
-import CartPage from '../../views/cart.page/cart.page';
+import CartPage from '../../views/cart/cart.page';
 import LogoutIcon from '@mui/icons-material/Logout';
 import icon from '../../assets/icon.png';
 import { LanguageSelector } from '../languageSelector/languageSelector';

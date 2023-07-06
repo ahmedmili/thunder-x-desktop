@@ -24,14 +24,14 @@ import eventEmitter from './services/thunderEventsService';
 import './app.css';
 
 //lazy loading
-const HomePage = lazy(() => import('./views/home.page/home.page'));
-const LoginPage = lazy(() => import('./views/login.page'));
+const HomePage = lazy(() => import('./views/home/home.page'));
+const LoginPage = lazy(() => import('./views/login/login.page'));
 const RegisterPage = lazy(() => import('./views/register.page'));
 const ProfilePage = lazy(() => import('./views/profile.page'));
 const UnauthorizePage = lazy(() => import('./views/unauthorize.page'));
-const CartPage = lazy(() => import('./views/cart.page/cart.page'));
+const CartPage = lazy(() => import('./views/cart/cart.page'));
 const OrderTrackingPage = lazy(() => import('./views/trackorder.page'));
-const ConfirmNumberPage = lazy(() => import('./views/confirmNumber.page'));
+const ConfirmNumberPage = lazy(() => import('./views/confirmNumber/confirmNumber.page'));
 
 function App() {
   const location = useAppSelector((state) => state.location.position);

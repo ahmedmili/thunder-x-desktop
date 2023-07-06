@@ -2,17 +2,13 @@ import {
   FormHelperText,
   Typography,
   FormControl,
-  Input as _Input,
+  Input ,
   InputProps,
 } from '@mui/material';
-import { styled } from '@mui/material/styles';
 import { FC } from 'react';
 import { Controller, useFormContext } from 'react-hook-form';
+import './FormInput.css'
 
-const Input = styled(_Input)`
-  background-color: white;
-  padding: 0.4rem 0.7rem;
-`;
 
 type IFormInputProps = {
   name: string;
@@ -44,6 +40,7 @@ const FormInput: FC<IFormInputProps> = ({
             {label}
           </Typography>
           <Input
+          className='inpute'
             {...field}
             fullWidth
             disableUnderline

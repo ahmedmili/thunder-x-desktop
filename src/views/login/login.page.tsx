@@ -10,56 +10,28 @@ import { styled } from '@mui/material/styles';
 import { FormProvider, SubmitHandler, useForm } from 'react-hook-form';
 import { object, string, TypeOf } from 'zod';
 import { zodResolver } from '@hookform/resolvers/zod';
-import FormInput from '../components/FormInput/FormInput';
+import FormInput from '../../components/FormInput/FormInput';
 import { useEffect, useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
-import { LoadingButton as _LoadingButton } from '@mui/lab';
+import { LoadingButton } from '@mui/lab';
 import { toast } from 'react-toastify';
-import backPic from '../assets/backPic.jpg';
 import { GoogleLogin } from '@react-oauth/google';
 import axios from 'axios';
-import { setUser } from '../Redux/slices/user/userSlice';
-import { useAppDispatch } from '../Redux/store';
+import { setUser } from '../../Redux/slices/user/userSlice';
+import { useAppDispatch } from '../../Redux/store';
 import { HomeOutlined, Visibility, VisibilityOff } from '@mui/icons-material';
 import { useTranslation } from 'react-i18next';
 
-const LoadingButton = styled(_LoadingButton)`
-  padding: 0.6rem 0;
-  background-color: #edc72f;
-  color: #ffffff;
-  font-weight: 500;
-  border-radius: 12px;
-
-  &:hover {
-    background-color: #ebc22c;
-    transform: translateY(-2px);
-  }
-`;
-
-const LinkItem = styled(Link)`
-  text-decoration: none;
-  color: #2363eb;
-  &:hover {
-    text-decoration: underline;
-  }
-`;
+import "./login.page.css"
 
 const HomePageLink = () => {
   const { t } = useTranslation();
   return (
-    <LinkItem
-      to='/'
-      sx={{
-        color: '#303030',
-        fontWeight: '500',
-        fontFamily: 'Poppins',
-        fontStyle: 'normal',
-        alignContent: 'center',
-      }}>
+    <Link to='/' className='link-item home'>
       <HomeOutlined sx={{ position: 'relative', top: '5px' }} />
       {'  '}
       {t('home')}
-    </LinkItem>
+    </Link>
   );
 };
 const ApiEndpoint = import.meta.env.VITE_SERVER_ENDPOINT;
@@ -146,69 +118,28 @@ const LoginPage = () => {
   }, []);
 
   return (
-    <Container
-      maxWidth={false}
-      sx={{
-        display: 'flex',
-        justifyContent: 'right',
-        alignItems: 'center',
-        height: '100vh',
-        backgroundColor: 'white',
-        backgroundImage: `url(${backPic})`,
-        backgroundRepeat: 'no-repeat',
-        backgroundSize: 'cover',
-        backgroundPosition: '50%',
-      }}>
-      <Box
-        width='505px'
-        sx={{
-          display: 'flex',
-          justifyContent: 'center',
-          alignItems: 'center',
-          flexDirection: 'column',
-          padding: '10%',
-        }}>
+    <Container className='containerr' maxWidth={false}>
+      <div className="box-container">
         <FormProvider {...methods}>
           <Box
+            className='form-container'
             component='form'
             onSubmit={handleSubmit(onSubmitHandler)}
             noValidate
-            autoComplete='off'
-            maxWidth='30rem'
-            width='100%'
-            sx={{
-              backgroundColor: '#ffffff',
-              p: { xs: '1rem', sm: '2rem' },
-              borderRadius: 3,
-              width: '505px',
-              height: '672px',
-            }}>
+            autoComplete='off'>
             <HomePageLink />
+
             <Typography
-              textAlign='left'
+              className='login-text'
               component='h1'
-              sx={{
-                color: '#000000',
-                fontFamily: 'Poppins',
-                fontStyle: 'normal',
-                fontWeight: 600,
-                fontSize: '25px',
-                lineHeight: '38px',
-              }}>
+            >
               {t('login')}
             </Typography>
             <Typography
+              className='submessage'
               variant='body1'
               component='h2'
-              sx={{
-                color: '#000000',
-                fontFamily: 'Poppins',
-                fontStyle: 'normal',
-                fontWeight: '300',
-                fontSize: '16px',
-                lineHeight: '24px',
-                paddingBottom: '15px',
-              }}>
+              >
               {t('ifYouHaveAnAccount')}
             </Typography>
             <FormInput
@@ -246,31 +177,18 @@ const LoginPage = () => {
               }}
             />
 
-            <Typography
-              sx={{
-                fontSize: '0.9rem',
-                mb: '1rem',
-                padding: '15px',
-                fontFamily: 'Poppins',
-                fontStyle: 'normal',
-              }}>
+            <Typography className='noAccount-text'>
               {t('noAccount')} &nbsp;&nbsp;
-              <LinkItem
-                to='/register'
-                sx={{
-                  color: '#EDC72F',
-                  fontWeight: '500',
-                  fontFamily: 'Poppins',
-                  fontStyle: 'normal',
-                }}>
+              <Link to='/register' className='link-item register'>
                 {t('createOne')}
-              </LinkItem>
+              </Link>
             </Typography>
             <LoadingButton
               variant='contained'
               sx={{ mt: 1 }}
               fullWidth
               disableElevation
+              className='loading-button'
               type='submit'>
               {t('login')}
             </LoadingButton>
@@ -284,30 +202,32 @@ const LoginPage = () => {
                 }}
               />
             </div>
-            <Divider sx={{ padding: '5px' }} />
+            {/* <Divider sx={{ padding: '5px' }} />
             <Typography
               sx={{
-                fontSize: '0.9rem',
-                mb: '1rem',
-                padding: '15px',
-                fontFamily: 'Poppins',
-                fontStyle: 'normal',
+                // fontSize: '0.9rem',
+                // mb: '1rem',
+                // padding: '15px',
+                // fontFamily: 'Poppins',
+                // fontStyle: 'normal',
               }}>
               {t('need_account')} {'  '}
-              <LinkItem
+              <Link
                 to='/register'
-                sx={{
-                  color: '#EDC72F',
-                  fontWeight: '500',
-                  fontFamily: 'Poppins',
-                  fontStyle: 'normal',
-                }}>
+                className='link-item'
+              // sx={{
+              //   color: '#EDC72F',
+              //   fontWeight: '500',
+              //   fontFamily: 'Poppins',
+              //   fontStyle: 'normal',
+              // }}
+              >
                 {t('signup_url_here')}
-              </LinkItem>
-            </Typography>
+              </Link>
+            </Typography> */}
           </Box>
         </FormProvider>
-      </Box>
+      </div>
     </Container>
   );
 };
