@@ -1,5 +1,6 @@
 import { createSlice, PayloadAction, createAsyncThunk } from '@reduxjs/toolkit';
 import { FoodItem } from '../../../services/types';
+import { localStorageService } from '../../../services/localStorageService';
 
 interface CartState {
   items: FoodItem[];
@@ -44,8 +45,8 @@ const cartSlice = createSlice({
       state.items = [];
       state.deliveryOption = 'delivery';
       state.comment = '';
-      localStorage.removeItem('comment');
-      localStorage.removeItem('cart_items');
+      localStorageService.unsetComment();
+      localStorageService.unsetCart();
     },
     setCartItems: (state, action: PayloadAction<FoodItem[]>) => {
       state.items = action.payload;

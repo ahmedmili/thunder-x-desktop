@@ -27,15 +27,14 @@ import {
   Phone,
   ShoppingCartRounded,
 } from '@mui/icons-material';
-import axios from 'axios';
 import MapComponent from '../components/mapComponent';
 import { useAppDispatch, useAppSelector } from '../Redux/store';
+import { commandService } from '../services/api/command.api';
+import { localStorageService } from '../services/localStorageService';
 
-const ApiEndpoint = import.meta.env.VITE_SERVER_ENDPOINT;
-const API_URL = `${ApiEndpoint}/mycommands`;
 
 const OrderTrackingPage: React.FC = () => {
-  const userToken = localStorage.getItem('token');
+  const userToken = localStorageService.getUserToken();
   const commands = useAppSelector((state) => state.commands.commands);
   const dispatch = useAppDispatch();
   const selectedCommand = useAppSelector(
@@ -46,7 +45,7 @@ const OrderTrackingPage: React.FC = () => {
   );
   const { t } = useTranslation();
   const handleCommandUpdated = useCallback(async () => {
-    await getCommands(userToken);
+    await getCommands();
   }, [userToken]);
 
   useEffect(() => {
@@ -67,24 +66,15 @@ const OrderTrackingPage: React.FC = () => {
     }
   }, [commands]);
 
-  const getCommands = async (token: string | null) => {
-    try {
-      const response = await axios.get(API_URL, {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      });
-      if (response.status === 200) {
-        dispatch(setCommands(response.data.data));
-      }
-    } catch (error: any) {
-      console.error('Error fetching commands:', error.message);
+  const getCommands = async () => {
+    const {status,data} = await commandService.myCommands();
+    if (status === 200) {
+      dispatch(setCommands(data.data));
     }
   };
 
   const handleCommandClick = (command: any) => {
     dispatch(setSelectedCommand(command));
-    console.log('selectedCommand', selectedCommand);
   };
   const getProgressDescription = (cycle: string) => {
     switch (cycle) {
@@ -106,7 +96,7 @@ const OrderTrackingPage: React.FC = () => {
   };
 
   useEffect(() => {
-    getCommands(userToken);
+    getCommands();
   }, []);
   return (
     <Container maxWidth='lg' sx={{ marginBottom: '1%' }}>
