@@ -15,6 +15,7 @@
   background-color: #e2e1e1;
   border-radius: 0.3rem;
 }
+
 .confirm-container {
   display: flex;
   justify-content: right;
@@ -41,6 +42,8 @@
   border-radius: 3px;
   width: 505px;
   height: 100%;
+  max-width:30rem;
+  /* width:100%; */
 }
 
 .confirm-title {
@@ -70,6 +73,32 @@
 
 .confirm-loading-button {
   margin-top: 1rem;
+
+  padding: 0.6rem 0;
+  background-color: #edc72f;
+  color: #ffffff;
+  font-weight: 500;
+  border-radius: 12px;
+}
+
+.confirm-loading-button:hover {
+  background-color: #ebc22c;
+  transform: translateY(-2px);
+}
+
+.Link {
+  /* color: #303030; */
+  font-weight: 500;
+  font-family: Poppins;
+  font-style: normal;
+  align-content: center;
+
+  text-decoration: none;
+  color: #2363eb;
+}
+
+Link:hover {
+  text-decoration: underline;
 }
 
 .confirm-divider {

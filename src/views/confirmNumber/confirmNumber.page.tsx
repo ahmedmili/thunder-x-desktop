@@ -5,35 +5,14 @@ import { object, number, TypeOf } from 'zod';
 import { zodResolver } from '@hookform/resolvers/zod';
 import FormInput from '../../components/FormInput/FormInput';
 import { Link, useNavigate } from 'react-router-dom';
-import { LoadingButton as _LoadingButton } from '@mui/lab';
+import { LoadingButton  } from '@mui/lab';
 import 'react-toastify/dist/ReactToastify.css';
 import { useAppDispatch } from '../../Redux/store';
 import { HomeOutlined } from '@mui/icons-material';
 import { useTranslation } from 'react-i18next';
-// import './confirmNumber.css';
+import './confirmNumber.css';
 import { useState, useEffect } from 'react';
 import { ToastContainer, toast } from 'react-toastify';
-
-const LoadingButton = styled(_LoadingButton)`
-  padding: 0.6rem 0;
-  background-color: #edc72f;
-  color: #ffffff;
-  font-weight: 500;
-  border-radius: 12px;
-
-  &:hover {
-    background-color: #ebc22c;
-    transform: translateY(-2px);
-  }
-`;
-
-const LinkItem = styled(Link)`
-  text-decoration: none;
-  color: #2363eb;
-  &:hover {
-    text-decoration: underline;
-  }
-`;
 
 const ApiEndpoint = import.meta.env.VITE_SERVER_ENDPOINT;
 const API_URL = `${ApiEndpoint}/signupclient`;
@@ -50,18 +29,10 @@ const confirmSchema = object({
 const HomePageLink = () => {
   const { t } = useTranslation();
   return (
-    <LinkItem
-      to='/'
-      sx={{
-        color: '#303030',
-        fontWeight: '500',
-        fontFamily: 'Poppins',
-        fontStyle: 'normal',
-        alignContent: 'center',
-      }}>
+    <Link className='Link' to='/'>
       <HomeOutlined sx={{ position: 'relative', top: '5px' }} />
       {t('home')}
-    </LinkItem>
+    </Link>
   );
 };
 
@@ -173,8 +144,6 @@ const confirmNumber = () => {
             onSubmit={handleSubmit(onSubmitConfirm)}
             noValidate
             autoComplete='off'
-            maxWidth='30rem'
-            width='100%'
             className='confirm-form'>
             <HomePageLink />
             <Typography
@@ -232,7 +201,8 @@ const confirmNumber = () => {
                 onInput={(event: any) => handleInput(event, 'btn')}
               />
             </div>
-            <LoadingButton
+            <LoadingButton 
+            // className='LoadingButton'
               name='btn'
               variant='contained'
               className='confirm-loading-button'
