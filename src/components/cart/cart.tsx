@@ -15,6 +15,7 @@ import {
 import { FoodItem } from '../../services/types';
 import React, { useEffect } from 'react';
 
+import './cart.css'
 interface CartProps {
   items: FoodItem[];
 }
@@ -66,18 +67,19 @@ export const Cart: React.FC<CartProps> = ({ items }) => {
         {items.map((item) => (
           <ListItem
             key={item.id}
-            sx={{ backgroundColor: '#f5f5f5', margin: '0.3rem' }}>
+            className="list-item"
+          >
             <ListItemAvatar>
               <Avatar
                 src={item.image[0]?.path}
                 alt={item.name}
                 variant='rounded'
-                sx={{ width: 56, height: 56, mr: '1rem' }}
+                className="list-item-avatar"
               />
             </ListItemAvatar>
             <li>
               <ListItemText
-                style={{ color: '#000000' }}
+                className="list-item-text-primary"
                 primary={`${item.quantity} ${item.name}`}
               />
               <div
@@ -89,54 +91,34 @@ export const Cart: React.FC<CartProps> = ({ items }) => {
                   item.obligatoryOptions.map((option, index) => (
                     <ListItemText
                       key={option.id}
-                      sx={{
-                        color: 'gray',
-                        background: 'none',
-                        borderRadius: '0.5rem',
-                        marginTop: '-0.5rem',
-                        fontSize: '0.8rem',
-                      }}>
+                      className="list-item-text-secondary">
                       {option.name}
                     </ListItemText>
                   ))}
 
                 {item.optionalOptions &&
                   item.optionalOptions.map((option, index) => (
-                    <ListItemText
-                      sx={{
-                        color: 'gray',
-                        background: 'none',
-                        borderRadius: '0.5rem',
-                        marginTop: '-0.5rem',
-                        fontSize: '0.8rem',
-                      }}>
+                    <ListItemText className="list-item-text-secondary">
                       {', '}
                       {option.name} ({option.price || 0} DT)
                     </ListItemText>
                   ))}
               </div>
               <ListItemText
-                style={{ color: '#000000' }}
-                primary={`${
-                  item.price && item.quantity
-                    ? (parseFloat(item.price.toString()) +
-                        calculateOptionalPrice(item)) *
-                      item.quantity
-                    : 0
-                } DT`}
+                className="list-item-text-primary"
+                primary={`${item.price && item.quantity
+                  ? (parseFloat(item.price.toString()) +
+                    calculateOptionalPrice(item)) *
+                  item.quantity
+                  : 0
+                  } DT`}
               />
             </li>
 
-            <ListItemSecondaryAction
-              sx={{
-                display: 'flex',
-                flexDirection: 'column',
-                alignItems: 'right',
-                width: 'fit-content',
-              }}>
+            <ListItemSecondaryAction className="list-item-secondary-action">
               <ListItemText
-                style={{ color: '#000000' }}
-                primary={
+                className="list-item-text-primary"
+                 primary={
                   <>
                     <Button
                       variant='outlined'
@@ -158,7 +140,8 @@ export const Cart: React.FC<CartProps> = ({ items }) => {
                 variant='outlined'
                 color='error'
                 onClick={() => handleRemoveItemFromCart(item)}
-                sx={{ display: 'flex', flexGrow: 1 }}>
+                className="remove-button"                
+                >
                 Remove
               </Button>
             </ListItemSecondaryAction>

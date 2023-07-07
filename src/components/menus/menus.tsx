@@ -37,7 +37,9 @@ import { useSelector } from 'react-redux';
 import MismatchModal from '../mismatchModal/mismatchModal';
 import { useTranslation } from 'react-i18next';
 
-interface MenuProps {}
+import './menus.css'
+
+interface MenuProps { }
 
 const ApiEndpoint = import.meta.env.VITE_SERVER_ENDPOINT;
 
@@ -226,83 +228,44 @@ const Menu: React.FC<MenuProps> = () => {
           e.target.src = missingImage;
         }}
       />
-      <Container
-        maxWidth='lg'
-        style={{
-          backgroundColor: '#F5F5F5',
-          borderRadius: '2rem',
-          padding: '3rem',
-          position: 'relative',
-          top: '-150px',
-        }}>
+      <Container maxWidth="lg" className="container">
+
         {showMismatchModal && (
           <MismatchModal onClose={handleMismatchModalClose} />
         )}
         {showOptions && (
           <div
-            style={{
-              display: 'flex',
-              flexDirection: 'column',
-              alignItems: 'center',
-              position: 'fixed',
-              top: 0,
-              left: 0,
-              width: '100vw',
-              height: '100vh',
-              backgroundColor: 'rgba(0, 0, 0, 0.5)',
-              zIndex: 999,
-            }}
+            className="modal"
             onClick={() => {
               setShowOptions(false);
               setSelectedObligatoryOption(null);
               setSelectedOptionalOption(null);
             }}>
             <div
-              style={{
-                backgroundColor: 'white',
-                padding: '2rem',
-                borderRadius: '0.5rem',
-                margin: '5rem',
-                boxShadow: '1px 2px 4px 2px rgba(0, 0, 0, 0.2)',
-                maxHeight: '95vh',
-                display: 'flex', // Added to create a flex container
-              }}
+              className="modal-content"
               onClick={(e) => e.stopPropagation()}>
-              <div
-                style={{
-                  flex: 1,
-                  display: 'flex',
-                  justifyContent: 'center',
-                  alignItems: 'center',
-                  overflow: 'hidden',
-                  marginRight: '1.5rem',
-                }}>
-                <div
-                  style={{
-                    backgroundImage: `url(${selectedMenuItem?.image[0]?.path})`,
-                    backgroundSize: 'cover',
-                    backgroundPosition: 'center',
-                    width: '400px',
-                    height: '100%',
-                  }}></div>
+              <div className="modal-content-image">
+                <div className="modal-content-image-inner"
+                  style={{ backgroundImage: `url(${selectedMenuItem?.image[0]?.path})`, }}>
+                </div>
               </div>
-              <div style={{ flex: 1, overflow: 'auto' }}>
+              <div className="modal-content-options">
                 <Box>
                   <Typography
                     variant='h5'
-                    sx={{ fontWeight: 'bold', mb: '1rem' }}>
+                    className="menu-title"                    >
                     {t('menu_options')} {selectedMenuItem?.name}
                   </Typography>
                   {options.length === 0 ? (
                     <>
-                      <Typography variant='h6' sx={{ mb: '0.5rem' }}>
+                      <Typography variant='h6' className="no-options-needed">
                         {t('no_options_needed')}
                       </Typography>
                       <Button
                         variant='contained'
                         color='primary'
                         startIcon={<AddIcon />}
-                        sx={{ marginTop: '1rem', marginBottom: '1rem' }}
+                        className="add-to-cart-button"
                         onClick={() => {
                           if (selectedMenuItem !== null) {
                             handleAddToCart(selectedMenuItem);
@@ -316,35 +279,15 @@ const Menu: React.FC<MenuProps> = () => {
                       </Button>
                     </>
                   ) : (
-                    <Box sx={{ display: 'flex', flexDirection: 'column' }}>
+                    <Box className="menu-options">
                       {obligatoryOptions.length > 0 && (
-                        <Box
-                          sx={{
-                            display: 'flex',
-                            flexDirection: 'column',
-                            mb: '1rem',
-                          }}>
-                          <Box
-                            sx={{
-                              backgroundColor: '#1F94A4',
-                              px: '2.5rem',
-                              py: '0.5rem',
-                              textTransform: 'lowercase',
-                            }}>
-                            <Typography
-                              variant='h6'
-                              sx={{
-                                color: 'white',
-                                textTransform: 'capitalize',
-                              }}>
+                        <Box className="obligatory-options">
+
+                          <Box>
+                            <Typography variant="h6" className="obligatory-options-title">
                               {t('sauce')}
                             </Typography>
-                            <Typography
-                              variant='body2'
-                              sx={{
-                                color: 'whitesmoke',
-                                textTransform: 'capitalize',
-                              }}>
+                            <Typography variant="body2" className="option-label">
                               {t('select_one_option')}
                             </Typography>
                           </Box>
@@ -369,37 +312,15 @@ const Menu: React.FC<MenuProps> = () => {
                       )}
 
                       {optionalOptions.length > 0 && (
-                        <Box
-                          sx={{
-                            display: 'flex',
-                            flexDirection: 'column',
-                            mb: '1rem',
-                          }}>
-                          <Box
-                            sx={{
-                              backgroundColor: '#1F94A4',
-                              px: '2.5rem',
-                              py: '0.5rem',
-                              textTransform: 'lowercase',
-                            }}>
-                            <Typography
-                              variant='h6'
-                              sx={{
-                                color: 'white',
-                                textTransform: 'capitalize',
-                              }}>
+                        <Box className='menu-extras'>
+                          <Box className="menu-extras-header">
+                            <Typography className="menu-extras-header-title" variant='h6'>
                               {t('extras')}
                             </Typography>
-                            <Typography
-                              variant='body2'
-                              sx={{
-                                color: 'whitesmoke',
-                                textTransform: 'capitalize',
-                              }}>
+                            <Typography className="menu-extras-header-subtitle" variant='body2'>
                               {t('select_one_or_multiple_extras')}
                             </Typography>
                           </Box>
-
                           <FormControl component='fieldset'>
                             <FormGroup>
                               {optionalOptions.map((option) => (
@@ -420,10 +341,11 @@ const Menu: React.FC<MenuProps> = () => {
                         </Box>
                       )}
                       <Button
+                        className="add-to-cart-button"
+
                         variant='contained'
                         color='primary'
                         startIcon={<AddIcon />}
-                        sx={{ marginTop: '1rem', marginBottom: '1rem' }}
                         onClick={() => {
                           if (selectedMenuItem !== null) {
                             handleAddToCart(selectedMenuItem);
@@ -449,39 +371,22 @@ const Menu: React.FC<MenuProps> = () => {
 
         <Typography
           variant='h4'
-          sx={{ fontWeight: 'bold', mt: '1rem', textTransform: 'capitalize' }}>
+          className='restaurant-name' >
           Menu {restaurant.name}
         </Typography>
         <Box
-          display='flex'
-          alignItems='center'
-          justifyContent='flex-end'
-          p='0.2rem 0.4rem'
-          position='absolute'
-          top='4rem'
-          right='3rem'
-          zIndex={1}>
-          <Typography fontSize={20}>
+          className='rating-container'
+        >
+          <Typography className="rating-text">
             {restaurant.star ? restaurant.star : t('noRating')}
           </Typography>
           <Star sx={{ ml: '0.3rem', color: '#FFD700' }} />
         </Box>
-        <Box
-          display='flex'
-          alignItems='center'
-          justifyContent='flex-end'
-          bgcolor='rgba(237, 199, 47, 0.8)'
-          p='0.2rem 0.4rem'
-          borderRadius='1rem'
-          position='absolute'
-          top='6.5rem'
-          right='3.7rem'
-          zIndex={1}>
+        <Box className="time-container">
           {restaurant.medium_time ? (
             <Typography variant='subtitle2'>
-              {`${restaurant.medium_time - 10}mins - ${
-                restaurant.medium_time + 10
-              }mins`}
+              {`${restaurant.medium_time - 10}mins - ${restaurant.medium_time + 10
+                }mins`}
             </Typography>
           ) : (
             <Typography variant='subtitle2'></Typography>
@@ -507,24 +412,11 @@ const Menu: React.FC<MenuProps> = () => {
               indexOfLastProduct
             );
 
+
             return (
-              <Box
-                key={menuItemId}
-                sx={{ marginTop: '2rem', flexDirection: 'column' }}>
-                <Box
-                  sx={{
-                    backgroundColor: '#1F94A4',
-                    px: '2.5rem',
-                    py: '0.5rem',
-                    textTransform: 'lowercase',
-                  }}>
-                  <Typography
-                    variant='h5'
-                    sx={{
-                      fontWeight: 'bold',
-                      color: 'whitesmoke',
-                      textTransform: 'capitalize',
-                    }}>
+              <Box key={menuItemId} className="menu-item-container">
+                <Box className="menu-item-header">
+                  <Typography variant='h5' className='menu-item-header-title'>
                     {menuItem.name}
                   </Typography>
                 </Box>
@@ -540,28 +432,14 @@ const Menu: React.FC<MenuProps> = () => {
                   />
                 )}
                 <Box
-                  sx={{
-                    display: 'flex',
-                    flexDirection: 'row',
-                    flexWrap: 'wrap',
-                  }}>
-                  <Grid container spacing={2} sx={{ marginTop: '1rem' }}>
+                  className='product-container'>
+                  <Grid container spacing={2} className="product-grid">
                     {displayedProducts.map((product) => (
                       <Card
                         key={product.id}
-                        sx={{
-                          height: '100%',
-                          width: '355px',
-                          display: 'flex',
-                          flexDirection: 'column',
-                          margin: '0.5rem',
-                          boxShadow: '1px 2px 4px 2px rgba(0,0,0,0.15)',
-                        }}>
+                        className="product-card">
                         <div
-                          style={{
-                            height: '150px',
-                            backgroundColor: '#F8F8F8',
-                          }}>
+                         className="product-image">
                           <CardMedia
                             component='img'
                             height='150'
@@ -574,7 +452,8 @@ const Menu: React.FC<MenuProps> = () => {
                           <Tooltip title={product.name} arrow>
                             <Typography
                               variant='h5'
-                              sx={{ fontWeight: 'bold' }}>
+                              className="product-title"
+                              >
                               {getTruncatedName(product.name, 20)}
                             </Typography>
                           </Tooltip>
@@ -590,7 +469,7 @@ const Menu: React.FC<MenuProps> = () => {
                             arrow>
                             <Typography
                               variant='body1'
-                              sx={{ marginTop: '0.5rem' }}>
+                              className="product-description">
                               <div
                                 dangerouslySetInnerHTML={{
                                   __html: getTruncatedName(
@@ -602,27 +481,17 @@ const Menu: React.FC<MenuProps> = () => {
                             </Typography>
                           </Tooltip>
 
-                          <Typography variant='h6' sx={{ marginTop: '0.5rem' }}>
+                          <Typography variant='h6'  className="product-price">
                             {`${t('price')}: ${Math.round(product.price)} DT`}
                           </Typography>
 
                           <Button
                             variant='contained'
-                            sx={{
-                              marginBottom: '-1rem',
-                              marginTop: '1rem',
-                              backgroundColor: '#1F94A4',
-                              borderRadius: '5rem',
-                              display: 'flex',
-                              alignItems: 'right',
-                              justifyConent: 'flex-end',
-                              boxShadow:
-                                '1px 2px 4px 2px rgba(255,255,255,0.2)',
-                            }}
+                            className="product-button"
                             onClick={() => {
                               handleChooseOptions(product);
                             }}>
-                            <AddIcon sx={{ color: 'whitesmoke' }} />{' '}
+                            <AddIcon className="product-button-icon"/>{' '}
                             {t('choose_options')}
                           </Button>
                         </CardContent>
