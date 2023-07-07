@@ -76,10 +76,8 @@ const HomePage = () => {
   }, [showMap]);
 
   return (
-    <Container maxWidth='lg' className="container">
-      <Box
-        className="box"
-      >
+    <Container maxWidth='lg' className="containerr">
+      <Box className="box">
         <Box
           className="box-inner"
           onClick={() => setShowMap(true)}>
