@@ -26,8 +26,8 @@ import './app.css';
 //lazy loading
 const HomePage = lazy(() => import('./views/home/home.page'));
 const LoginPage = lazy(() => import('./views/login/login.page'));
-const RegisterPage = lazy(() => import('./views/register.page'));
-const ProfilePage = lazy(() => import('./views/profile.page'));
+const RegisterPage = lazy(() => import('./views/register/register.page'));
+const ProfilePage = lazy(() => import('./views/profile/profile.page'));
 const UnauthorizePage = lazy(() => import('./views/unauthorize.page'));
 const CartPage = lazy(() => import('./views/cart/cart.page'));
 const OrderTrackingPage = lazy(() => import('./views/trackorder.page'));

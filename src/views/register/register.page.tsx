@@ -10,39 +10,20 @@ import { styled } from '@mui/material/styles';
 import { FormProvider, SubmitHandler, useForm } from 'react-hook-form';
 import { object, string, TypeOf } from 'zod';
 import { zodResolver } from '@hookform/resolvers/zod';
-import FormInput from '../components/FormInput/FormInput';
+import FormInput from '../../components/FormInput/FormInput';
 import { Link, useNavigate } from 'react-router-dom';
-import { LoadingButton as _LoadingButton } from '@mui/lab';
+import { LoadingButton } from '@mui/lab';
 import { toast } from 'react-toastify';
-import backPic from '../assets/backPic.jpg';
+import backPic from '../../assets/backPic.jpg';
 import axios from 'axios';
 import 'react-toastify/dist/ReactToastify.css';
-import { useAppDispatch } from '../Redux/store';
-import { registerUser, setUser } from '../Redux/slices/user/userSlice';
+import { useAppDispatch } from '../../Redux/store';
+import { registerUser, setUser } from '../../Redux/slices/user/userSlice';
 import { HomeOutlined, Visibility, VisibilityOff } from '@mui/icons-material';
 import { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
+import './register.page.css'
 
-const LoadingButton = styled(_LoadingButton)`
-  padding: 0.6rem 0;
-  background-color: #edc72f;
-  color: #ffffff;
-  font-weight: 500;
-  border-radius: 12px;
-
-  &:hover {
-    background-color: #ebc22c;
-    transform: translateY(-2px);
-  }
-`;
-
-const LinkItem = styled(Link)`
-  text-decoration: none;
-  color: #2363eb;
-  &:hover {
-    text-decoration: underline;
-  }
-`;
 const ApiEndpoint = import.meta.env.VITE_SERVER_ENDPOINT;
 const API_URL = `${ApiEndpoint}/signupclient`;
 
@@ -66,18 +47,11 @@ const registerSchema = object({
 const HomePageLink = () => {
   const { t } = useTranslation();
   return (
-    <LinkItem
-      to='/'
-      sx={{
-        color: '#303030',
-        fontWeight: '500',
-        fontFamily: 'Poppins',
-        fontStyle: 'normal',
-        alignContent: 'center',
-      }}>
+    <Link
+      className='Link home' to='/' >
       <HomeOutlined sx={{ position: 'relative', top: '5px' }} />
       {t('home')}
-    </LinkItem>
+    </Link>
   );
 };
 
@@ -150,108 +124,56 @@ const RegisterPage = () => {
   return (
     <Container
       maxWidth={false}
-      sx={{
-        display: 'flex',
-        justifyContent: 'right',
-        alignItems: 'center',
-        height: '100vh',
-        backgroundColor: 'white',
-        backgroundImage: `url(${backPic})`,
-        backgroundRepeat: 'no-repeat',
-        backgroundSize: 'cover',
-        backgroundPosition: '50%',
-      }}>
+      className='container' >
       <Box
-        width='505px'
-        sx={{
-          display: 'flex',
-          justifyContent: 'center',
-          alignItems: 'center',
-          flexDirection: 'column',
-          padding: '10%',
-        }}>
+        className='form-container'>
         <FormProvider {...methods}>
           <Box
+            className='form'
             component='form'
             onSubmit={handleSubmit(handleRegister)}
             noValidate
             autoComplete='off'
-            maxWidth='30rem'
-            width='100%'
-            sx={{
-              backgroundColor: '#ffffff',
-              p: { xs: '1rem', sm: '2rem' },
-              borderRadius: 3,
-              width: '505px',
-              height: '100%',
-            }}>
+          >
             <HomePageLink />
             <Typography
+              className='createAcc-text'
               textAlign='center'
               component='h1'
-              sx={{
-                mb: 2,
-                letterSpacing: 1,
-                color: '#000000',
-                fontFamily: 'Poppins',
-                fontStyle: 'normal',
-                fontWeight: 600,
-                fontSize: '25px',
-                lineHeight: '38px',
-                textTransform: 'uppercase',
-                textAlign: 'left',
-              }}>
+            >
               {t('createAcc')}
             </Typography>
             <Typography
+              className='submessage'
               component='h2'
-              sx={{
-                fontFamily: 'Poppins',
-                fontStyle: 'normal',
-                fontWeight: '300',
-                fontSize: '16px',
-                lineHeight: '24px',
-                textAlign: 'left',
-              }}>
+            >
               {t('createAccSubtitle')}
             </Typography>
             <FormInput
               name='firstname'
               placeholder={t('firstName') || 'First Name'}
               label={''}
-              sx={{
-                backgroundColor: '#E2E1E1',
-                borderRadius: '5px',
-              }}
+              className='input-form'
             />
             <FormInput
+              className='input-form'
               name='lastname'
               placeholder={t('Last Name') || 'Last Name'}
               label={''}
-              sx={{
-                backgroundColor: '#E2E1E1',
-                borderRadius: '5px',
-              }}
             />
             <FormInput
+              className='input-form'
               name='email'
               placeholder={t('emailAddress') || 'Email Adress'}
               type='email'
               label={''}
-              sx={{
-                backgroundColor: '#E2E1E1',
-                borderRadius: '5px',
-              }}
             />
             <FormInput
+              className='input-form'
               name='password'
               placeholder={t('password') || 'Password'}
               type={showPassword ? 'text' : 'password'}
               label={''}
-              sx={{
-                backgroundColor: '#E2E1E1',
-                borderRadius: '5px',
-              }}
               inputProps={{
                 endAdornment: (
                   <InputAdornment position='end'>
@@ -268,27 +190,22 @@ const RegisterPage = () => {
               }}
             />
             <FormInput
+              className='input-form'
               name='passwordConfirm'
               placeholder={t('confirmPassword') || undefined}
               type={showPassword ? 'text' : 'password'}
               label={''}
-              sx={{
-                backgroundColor: '#E2E1E1',
-                borderRadius: '5px',
-              }}
             />
 
             <FormInput
+              className='input-form'
               name='phone'
               placeholder={t('cartPage.phoneNumber') || undefined}
               type='text'
               label={''}
-              sx={{
-                backgroundColor: '#E2E1E1',
-                borderRadius: '5px',
-              }}
             />
             <LoadingButton
+              className='LoadingButton'
               variant='contained'
               sx={{ mt: 1 }}
               fullWidth
@@ -300,16 +217,12 @@ const RegisterPage = () => {
             <Divider sx={{ padding: '5px' }} />
             <Typography sx={{ fontSize: '0.9rem', mb: '1rem' }}>
               {t('haveAcc')}
-              <LinkItem
+              <Link
+                className='Link'
                 to='/login'
-                sx={{
-                  color: '#EDC72F',
-                  fontWeight: '500',
-                  fontFamily: 'Poppins',
-                  fontStyle: 'normal',
-                }}>
+              >
                 {t('connectHere')}
-              </LinkItem>
+              </Link>
             </Typography>
           </Box>
         </FormProvider>
