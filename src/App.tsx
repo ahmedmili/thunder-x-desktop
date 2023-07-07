@@ -28,9 +28,9 @@ const HomePage = lazy(() => import('./views/home/home.page'));
 const LoginPage = lazy(() => import('./views/login/login.page'));
 const RegisterPage = lazy(() => import('./views/register/register.page'));
 const ProfilePage = lazy(() => import('./views/profile/profile.page'));
-const UnauthorizePage = lazy(() => import('./views/unauthorize.page'));
+const UnauthorizePage = lazy(() => import('./views/unauthorize/unauthorize.page'));
 const CartPage = lazy(() => import('./views/cart/cart.page'));
-const OrderTrackingPage = lazy(() => import('./views/trackorder.page'));
+const OrderTrackingPage = lazy(() => import('./views/track/trackorder.page'));
 const ConfirmNumberPage = lazy(() => import('./views/confirmNumber/confirmNumber.page'));
 
 function App() {
@@ -150,7 +150,6 @@ const ProtectedRoute = (children: any) => {
   if (!isAuthenticated) {
     return <Navigate to='/unauthorized' replace />;
   }
-
   return children ? <>{children}</> : <Outlet />;
 };
 
