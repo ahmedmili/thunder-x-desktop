@@ -5,7 +5,6 @@ import Layout from './components/layout/layout';
 import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import { useAppDispatch, useAppSelector } from './Redux/store';
-import { fetchHomeData } from './services/api/homeData.api';
 import {
   selectIsDelivery,
   setData as setHomeData,
@@ -22,6 +21,8 @@ import jwt_decode from 'jwt-decode';
 import WebSocket from './services/websocket';
 import eventEmitter from './services/thunderEventsService';
 import './app.css';
+import { localStorageService } from './services/localStorageService';
+import { homedataService } from './services/api/homedata.api';
 
 //lazy loading
 const HomePage = lazy(() => import('./views/home/home.page'));
@@ -50,23 +51,22 @@ function App() {
     };
   }, [updateHomeData]);
   useEffect(() => {
-    fetchData();
+    getHomeData();
   }, [updateTrigger]);
-  const fetchData = () => {
-    fetchHomeData(
-      isDelivery,
-      location?.coords.longitude,
-      location?.coords.latitude
-    )
-      .then((response) => response.json())
-      .then((data) => {
-        dispatch(setHomeDataLoading(false));
-        dispatch(setHomeData(data.data));
-      });
+  const getHomeData = async () => {
+      const {status,data}= await homedataService.getHomeData(
+          isDelivery,
+          location?.coords.longitude,
+          location?.coords.latitude
+        )
+        if(status === 200){
+          dispatch(setHomeDataLoading(false));
+          dispatch(setHomeData(data.data));
+        }
   };
 
   useEffect(() => {
-    const current_location = localStorage.getItem('current_location');
+    const current_location = localStorageService.getCurrentLocation();
     if (current_location) {
       dispatch({
         type: 'SET_LOCATION',
@@ -74,18 +74,18 @@ function App() {
       });
     }
     if (location?.coords) {
-      fetchData();
+      getHomeData();
     }
   }, [location?.coords?.latitude]);
 
   useEffect(() => {
-    let tmp_cart = window.localStorage.getItem('cart_items');
+    let tmp_cart = localStorageService.getCart();
     if (tmp_cart !== null) {
       const cartItems = JSON.parse(
-        window.localStorage.getItem('cart_items') || '[]'
+        localStorageService.getCart() || '[]'
       );
       const supplier = JSON.parse(
-        window.localStorage.getItem('supplier') || '[]'
+        localStorageService.getSupplier() || '[]'
       );
       dispatch(setCartItems(cartItems));
       dispatch(setSupplier(supplier));
@@ -94,7 +94,7 @@ function App() {
   }, []);
 
   useEffect(() => {
-    const token = localStorage.getItem('token');
+    const token = localStorageService.getUserToken();
     const _isAuthenticated = verifyToken(JSON.stringify(token));
 
     if (token) {

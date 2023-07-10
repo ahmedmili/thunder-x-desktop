@@ -10,6 +10,7 @@ import restaurantSlice from './slices/restaurantSlice';
 import homeDataSlice from './slices/homeDataSlice';
 import cartSlice from './slices/cart/cartSlice';
 import commandsSlice from './slices/commandsSlice';
+import { localStorageService } from '../services/localStorageService';
 
 // Define initial state of the app
 interface AppState {
@@ -30,7 +31,7 @@ export const locationReducer = (
 ): LocationState => {
   switch (action.type) {
     case 'SET_LOCATION':
-      localStorage.setItem('current_location', JSON.stringify(action.payload));
+      localStorageService.setCurrentLocation(action.payload);
       return {
         ...state,
         position: action.payload,

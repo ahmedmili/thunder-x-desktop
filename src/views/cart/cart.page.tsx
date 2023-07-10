@@ -18,7 +18,6 @@ import {
   TextField,
   Container,
 } from '@mui/material';
-import axios from 'axios';
 import * as z from 'zod';
 import { logout } from '../../Redux/slices/user/userSlice';
 import { FoodItem } from '../../services/types';
@@ -26,8 +25,9 @@ import { toast } from 'react-toastify';
 import { useTranslation } from 'react-i18next';
 import { useNavigate } from 'react-router-dom';
 import './cart.page.css'
+import { cartService } from '../../services/api/cart.api';
+import { localStorageService } from '../../services/localStorageService';
 
-const ApiEndpoint = import.meta.env.VITE_SERVER_ENDPOINT;
 
 const CartPage: React.FC = () => {
   const { t } = useTranslation();
@@ -41,7 +41,7 @@ const CartPage: React.FC = () => {
   const deliveryOption = useAppSelector(
     (state: RootState) => state.cart.deliveryOption
   );
-  const userItem = localStorage.getItem('user');
+  const userItem = localStorageService.getUser();
   const user = userItem ? JSON.parse(userItem) : null;
   const [name, setName] = React.useState(user?.firstname || '');
   const [phoneNumber, setPhoneNumber] = React.useState(user?.tel || '');
@@ -77,13 +77,12 @@ const CartPage: React.FC = () => {
 
   const handleCommentChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     setAComment(event.target.value);
-    localStorage.setItem('comment', event.target.value);
+    localStorageService.setComment(event.target.value);
     dispatch(setComment(event.target.value));
   };
 
   useEffect(() => {
-    window.localStorage.setItem('cart_items', JSON.stringify(cartItems));
-    // console.log('item being passed to the cart -->', cartItems);
+    localStorageService.setCart(cartItems);
     if (cartItems.length == 0) {
       dispatch(setSupplier(null));
       dispatch(setDeliveryPrice(null));
@@ -129,27 +128,15 @@ const CartPage: React.FC = () => {
       if (isAuthenticated) {
         // validate the order object against the schema
         orderSchema.parse(order);
-        const userToken = localStorage.getItem('token');
+        const userToken = localStorageService.getUserToken();
         if (!userToken) {
           dispatch(logout());
           return;
         }
-
-        // make the HTTP request using Axios
-        const response = await axios.post(
-          `${ApiEndpoint}/createcommand`,
-          order,
-          {
-            headers: {
-              Authorization: `Bearer ${userToken}`,
-              Accept: 'application/json',
-            },
-          }
-        );
-
-        if (response.status === 200) {
+        const {status,data}=await cartService.createOrder(order);
+        if (status === 200) {
           dispatch(clearCart());
-          toast.success('Order submitted successfully', response.data);
+          toast.success('Order submitted successfully', data);
           dispatch(setDeliveryPrice(0));
           dispatch(setComment(''));
           dispatch(setSupplier(null));

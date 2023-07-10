@@ -26,6 +26,8 @@ import './register.page.css'
 
 const ApiEndpoint = import.meta.env.VITE_SERVER_ENDPOINT;
 const API_URL = `${ApiEndpoint}/signupclient`;
+import { userService } from '../../services/api/user.api';
+import { localStorageService } from '../../services/localStorageService';
 
 const registerSchema = object({
   firstname: string().min(1, 'Full name is required').max(100),
@@ -71,21 +73,8 @@ const RegisterPage = () => {
   const handleRegister: SubmitHandler<RegisterInput> = async (values) => {
     console.log('Form submitted');
     try {
-      const response = await axios.post(API_URL, {
-        firstname: values.firstname,
-        lastname: values.lastname,
-        email: values.email,
-        password: values.password,
-        confirm_password: values.passwordConfirm,
-        phone: values.phone,
-      });
-      const token = response.data.data.token;
-      const user = response.data.data.client;
-      console.log(response.data.data);
-      localStorage.setItem('token', token);
-      console.log(user.firstname.toString());
-      localStorage.setItem('userId', user.id.toString());
-      localStorage.setItem('user', JSON.stringify(user));
+      const {token,user} = await userService.registerUser(values);
+      localStorageService.setUserCredentials(user,token);
       dispatch(registerUser(user)); // dispatch the registerUser action with the user object
       // dispatch(setUser(user));
       toast.success('You successfully registered');

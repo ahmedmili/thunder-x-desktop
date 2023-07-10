@@ -16,13 +16,15 @@ import { Link, useNavigate } from 'react-router-dom';
 import { LoadingButton } from '@mui/lab';
 import { toast } from 'react-toastify';
 import { GoogleLogin } from '@react-oauth/google';
-import axios from 'axios';
+
+import "./login.page.css"
 import { setUser } from '../../Redux/slices/user/userSlice';
 import { useAppDispatch } from '../../Redux/store';
 import { HomeOutlined, Visibility, VisibilityOff } from '@mui/icons-material';
 import { useTranslation } from 'react-i18next';
+import { userService } from '../../services/api/user.api';
+import { localStorageService } from '../../services/localStorageService';
 
-import "./login.page.css"
 
 const HomePageLink = () => {
   const { t } = useTranslation();
@@ -34,8 +36,7 @@ const HomePageLink = () => {
     </Link>
   );
 };
-const ApiEndpoint = import.meta.env.VITE_SERVER_ENDPOINT;
-const API_URL = `${ApiEndpoint}/loginClient`;
+
 
 const loginSchema = object({
   email: string()
@@ -73,16 +74,9 @@ const LoginPage = () => {
   }, [isSubmitSuccessful]);
 
   const onSubmitHandler: SubmitHandler<LoginInput> = async (values) => {
-    console.log('Form submitted');
     try {
-      const response = await axios.post(API_URL, {
-        email: values.email,
-        password: values.password,
-      });
-      const { token, user } = response.data.data;
-      localStorage.setItem('token', token);
-      localStorage.setItem('userId', user.id.toString());
-      localStorage.setItem('user', JSON.stringify(user));
+      const { token, user } = await userService.loginUser(values);
+      localStorageService.setUserCredentials(user,token);
       dispatch(setUser(user));
       toast.success('You successfully logged in');
       navigate('/'); // Redirect to the home page

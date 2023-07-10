@@ -14,11 +14,12 @@ import { LanguageSelector } from '../languageSelector/languageSelector';
 import { useTranslation } from 'react-i18next';
 import { ViewList, ViewListRounded, WidgetsRounded } from '@mui/icons-material';
 import './header.css'
+import { localStorageService } from '../../services/localStorageService';
 
 
 const Header = () => {
-  const logged_in = localStorage.getItem('token') !== null;
-  const userItem = localStorage.getItem('user');
+  const logged_in = localStorageService.getUserToken() !== null;
+  const userItem = localStorageService.getUser();
   const user = userItem ? JSON.parse(userItem) : null;
   const firstname = user ? user.firstname : null;
   const [showCart, setShowCart] = useState(false); // Add state variable for showing/hiding the cart

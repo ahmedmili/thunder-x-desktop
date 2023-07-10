@@ -1,6 +1,7 @@
 import Echo from 'laravel-echo';
 import Pusher from 'pusher-js';
 import eventEmitter from './thunderEventsService';
+import { localStorageService } from './localStorageService';
 
 class WebSocket {
   private static instance: WebSocket;
@@ -18,7 +19,7 @@ class WebSocket {
       authEndpoint: 'https://api.thunder.webify.pro/api' + '/broadcasting/auth',
       auth: {
         headers: {
-          Authorization: 'Bearer ' + localStorage.getItem('token'),
+          Authorization: 'Bearer ' + localStorageService.getUserToken(),
           Accept: 'application/json',
         },
       },
@@ -27,7 +28,7 @@ class WebSocket {
     this.pusher = new Pusher(import.meta.env.VITE_ECHO_KEY, options);
     this.echo = new Echo(options);
     this.clientChannel = this.echo.private(
-      '.client.' + localStorage.getItem('userId')
+      '.client.' + localStorageService.getUserId()
     );
     this.publicChannel = this.echo.channel('public');
 

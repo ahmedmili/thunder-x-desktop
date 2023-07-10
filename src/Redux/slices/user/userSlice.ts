@@ -1,5 +1,6 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { IUser } from '../../../services/types';
+import { localStorageService } from '../../../services/localStorageService';
 
 interface IUserState {
   user: IUser | null;
@@ -15,9 +16,7 @@ export const userSlice = createSlice({
   initialState,
   reducers: {
     logout: (state) => {
-      localStorage.removeItem('token');
-      localStorage.removeItem('userId');
-      localStorage.removeItem('user');
+      localStorageService.unsetUserCredentials();
       return initialState;
     },
     setUser: (state, action: PayloadAction<IUser>) => {
@@ -28,7 +27,7 @@ export const userSlice = createSlice({
       state.user = action.payload;
     },
     login: (state, action: PayloadAction<string>) => {
-      localStorage.setItem('token', action.payload);
+      localStorageService.setUserToken(action.payload);
       state.isAuthenticated = true;
     },
   },
