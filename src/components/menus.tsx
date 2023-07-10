@@ -36,6 +36,8 @@ import { Option } from '../services/types';
 import { useSelector } from 'react-redux';
 import MismatchModal from './mismatchModal';
 import { useTranslation } from 'react-i18next';
+import { localStorageService } from '../services/localStorageService';
+import { productService } from '../services/api/product.api';
 
 interface MenuProps {}
 
@@ -59,7 +61,6 @@ const Menu: React.FC<MenuProps> = () => {
   const restaurant = location.state.restaurant;
   const [currentPage, setCurrentPage] = useState<{ [key: string]: number }>({});
   const productsPerPage = 3;
-  // console.log('restaurant  =>', restaurant);
   const handlePaginationClick = (pageNumber: number, menuItemId: number) => {
     setCurrentPage((prevPages) => ({
       ...prevPages,
@@ -109,21 +110,14 @@ const Menu: React.FC<MenuProps> = () => {
   };
 
   useEffect(() => {
-    const fetchMenuData = async () => {
-      const response = await fetch(`${ApiEndpoint}/getmenu`, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/x-www-form-urlencoded',
-        },
-        body: `supplier_id=${id}`,
-      });
-      const responseData = await response.json();
-      if (responseData.success) {
-        setMenuData(responseData.data);
+    const getMenu = async () => {
+      const {status,data} = await productService.getMenu(id);
+      if (status === 200) {
+        setMenuData(data.data);
       }
       setLoading(false);
     };
-    fetchMenuData();
+    getMenu();
   }, [id]);
 
   const handleAddToCart = (selectedMenuItem: FoodItem) => {
@@ -150,7 +144,7 @@ const Menu: React.FC<MenuProps> = () => {
     // Dispatch actions to update delivery price and supplier state here
     dispatch(setDeliveryPrice(restaurant.delivery_price));
     dispatch(setSupplier(restaurant));
-    window.localStorage.setItem('supplier', JSON.stringify(restaurant));
+    localStorageService.setSupplier(restaurant);
     dispatch(addItem(selectedItem));
   };
 
@@ -180,26 +174,19 @@ const Menu: React.FC<MenuProps> = () => {
   };
 
   useEffect(() => {
-    const fetchOptions = async () => {
+    const getOptions = async () => {
       try {
-        const response = await fetch(
-          `${ApiEndpoint}/getProduct/${selectedMenuItem?.id}`
-        );
-        if (!response.ok) {
-          throw new Error(
-            `Failed to fetch options for product ${selectedMenuItem}`
-          );
+        const {status,data} = await productService.getProduct(selectedMenuItem?.id);
+        if(status === 200){
+          setOptions(data.data.product.options);
         }
-        const data = await response.json();
-        setOptions(data.data.product.options);
-        console.log('options API response', options);
       } catch (error: any) {
         setError(error.message);
       } finally {
         setLoading(false);
       }
     };
-    fetchOptions();
+    getOptions();
   }, [selectedMenuItem]);
 
   useEffect(() => {
