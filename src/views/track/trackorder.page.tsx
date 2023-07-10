@@ -110,7 +110,7 @@ const OrderTrackingPage: React.FC = () => {
   }, []);
   return (
     <Container maxWidth='lg'
-      className='container'
+      className='containerr'
     >
       {commands && commands.length > 0 ? (
         <Box
@@ -143,7 +143,7 @@ const OrderTrackingPage: React.FC = () => {
           >
             {commands ? (
               <Card
-                className='card'
+                className='cardd'
               >
                 <Box className='card-header'>
                   <Box className='header-left'>
@@ -229,40 +229,31 @@ const OrderTrackingPage: React.FC = () => {
                       ))}
                   </Grid>
                 </Box>
+                <div>
+                  {selectedCommand.cycle}
+                </div>
                 <Box className='card-footer'>
                   <Box
                     className='custom-box-inner'
                   >
+
                     {selectedCommand.cycle ? (
+
                       <Box className='custom-box-inner-selected'>
-                        {/* 1 */}
+                        
+                        {/* PENDING  waitingForDriver*/}
                         <Box className='custom-box-inner-selected-cart'>
-                          <Box
-                            className={`custom-box-inner-selected-cart-box ${selectedCommand.cycle !== 'PENDING' ? '' : 'pending'
-                              }`}
-                          >
-                            <ShoppingCartRounded
-                              className={`custom-box-inner-selected-cart-icon ${selectedCommand.cycle !== 'PENDING' ? '' : 'selected'
-                                }`}
-                            />
+                          <Box className={`custom-box-inner-selected-cart-box ${selectedCommand.cycle ? '' : 'pending'}`}>
+                            <ShoppingCartRounded className={`custom-box-inner-selected-cart-icon ${selectedCommand.cycle ? 'selected' : ''}`} />
                           </Box>
-                          <Typography
-                            noWrap
-                            className={`custom-box-inner-selected-cart-text ${selectedCommand.cycle !== 'PENDING' ? '' : 'selected'
-                              }`} >
+                          <Typography noWrap className={`custom-box-inner-selected-cart-text ${selectedCommand.cycle == 'PENDING' ? 'selected' : ''}`} >
                             {t('orderTrackingPage.waitingForDriver')}
                           </Typography>
                         </Box>
-                        {/* 2 */}
+                        {/* VERIFY verifiedBySupplier */}
                         <Box className='custom-box-inner-selected-cart'>
-                          <Box
-                            className={`custom-box-inner-selected-verified-box ${selectedCommand.cycle !== 'VERIFY' ? '' : 'pending'
-                              }`}
-                              >
-                            <BuildRounded
-                              className={`custom-box-inner-selected-cart-icon ${selectedCommand.cycle !== 'VERIFY' ? '' : 'selected'
-                                }`}
-                            />
+                          <Box className={`custom-box-inner-selected-cart-box ${selectedCommand.cycle !== 'PENDING' ? '' : 'pending'}`}>
+                            <BuildRounded className={`custom-box-inner-selected-cart-icon ${selectedCommand.cycle !== 'PENDING' ? 'selected' : ''}`} />
                           </Box>
                           <Typography
                             noWrap
@@ -271,30 +262,22 @@ const OrderTrackingPage: React.FC = () => {
                             {t('orderTrackingPage.verifiedBySupplier')}
                           </Typography>
                         </Box>
-                        {/* 3 */}
-                        <Box className='custom-box-inner-selected-cart'>
-                          <Box
-                           className={`custom-box-inner-selected-verified-box ${selectedCommand.cycle !== 'AUTHORIZED' ? '' : 'pending'
-                          }`}>
-                            <EmojiEvents
-                            className={`custom-box-inner-selected-cart-icon ${selectedCommand.cycle !== 'AUTHORIZED' ? '' : 'selected'
-                          }`}/>
+                        {/* AUTHORIZED assignedToDriver */}
+                        <Box className={`custom-box-inner-selected-cart`}>
+                          <Box className={`custom-box-inner-selected-cart-box ${selectedCommand.cycle !== ('PENDING' || 'VERIFY') ? '' : 'pending'}`}>
+                            <EmojiEvents className={`custom-box-inner-selected-cart-icon ${selectedCommand.cycle !== ('PENDING' || 'VERIFY') ? 'selected' : ''}`} />
                           </Box>
                           <Typography
                             noWrap
-                            className={`custom-box-inner-selected-cart-text ${selectedCommand.cycle !== 'AUTHORIZED' ? '' : 'selected'
+                            className={`custom-box-inner-selected-cart-text ${selectedCommand.cycle !== 'AUTHORIZED' ? '' : 'selected' //AUTHORIZED
                               }`}>
                             {t('orderTrackingPage.assignedToDriver')}
                           </Typography>
                         </Box>
-                        {/* 4 */}
-                        <Box className='custom-box-inner-selected-cart'>
-                          <Box
-                            className={`custom-box-inner-selected-verified-box ${selectedCommand.cycle !== 'ASSIGNED' ? '' : 'pending'
-                          }`}>
-                            <DriveEtaRounded
-                               className={`custom-box-inner-selected-cart-icon ${selectedCommand.cycle !== 'ASSIGNED' ? '' : 'selected'
-                              }`}/>
+                        {/* ASSIGNED driverOnTheWay */}
+                        <Box className={`custom-box-inner-selected-cart`}>
+                          <Box className={`custom-box-inner-selected-cart-box ${selectedCommand.cycle !== ('PENDING' || 'VERIFY' || 'AUTHORIZED') ? '' : 'pending'}`}>
+                            <DriveEtaRounded className={`custom-box-inner-selected-cart-icon ${selectedCommand.cycle === ('ASSIGNED' || 'INPROGRESS') ? 'selected' : ''}`} />
                           </Box>
                           <Typography
                             noWrap
@@ -303,14 +286,10 @@ const OrderTrackingPage: React.FC = () => {
                             {t('orderTrackingPage.driverOnTheWay')}
                           </Typography>
                         </Box>
-                        {/* 5 */}
-                        <Box className='custom-box-inner-selected-cart'>
-                          <Box
-                          className={`custom-box-inner-selected-verified-box ${selectedCommand.cycle !== 'INPROGRESS' ? '' : 'pending'
-                        }`}>
-                            <HomeRounded
-                              className={`custom-box-inner-selected-cart-icon ${selectedCommand.cycle !== 'INPROGRESS' ? '' : 'selected'
-                            }`}/>
+                        {/* INPROGRESS */}
+                        <Box className={`custom-box-inner-selected-cart`}>
+                          <Box className={`custom-box-inner-selected-cart-box ${selectedCommand.cycle == 'INPROGRESS' ? '' : 'pending'}`}>
+                            <HomeRounded className={`custom-box-inner-selected-cart-icon ${selectedCommand.cycle == 'INPROGRESS' ? 'selected' : ''}`} />
                           </Box>
                           <Typography
                             noWrap
