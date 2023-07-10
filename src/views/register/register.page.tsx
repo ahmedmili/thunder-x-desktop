@@ -122,9 +122,7 @@ const RegisterPage = () => {
   }, []);
 
   return (
-    <Container
-      maxWidth={false}
-      className='container' >
+    <Container maxWidth={false}className='containerr' >
       <Box
         className='form-container'>
         <FormProvider {...methods}>
