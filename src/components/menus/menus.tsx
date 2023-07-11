@@ -36,8 +36,8 @@ import { Option } from '../../services/types';
 import { useSelector } from 'react-redux';
 import MismatchModal from '../mismatchModal/mismatchModal';
 import { useTranslation } from 'react-i18next';
-import { localStorageService } from '../services/localStorageService';
-import { productService } from '../services/api/product.api';
+import { localStorageService } from '../../services/localStorageService';
+import { productService } from '../../services/api/product.api';
 
 import './menus.css'
 
