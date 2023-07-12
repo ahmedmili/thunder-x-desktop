@@ -1,7 +1,7 @@
 import { CircularProgress, CssBaseline } from '@mui/material';
 import { Navigate, Outlet, Route, Routes } from 'react-router-dom';
 import { lazy, Suspense, useCallback, useEffect, useState } from 'react';
-import Layout from './components/layout';
+import Layout from './components/layout/layout';
 import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import { useAppDispatch, useAppSelector } from './Redux/store';
@@ -15,7 +15,7 @@ import {
   setDeliveryPrice,
   setSupplier,
 } from './Redux/slices/cart/cartSlice';
-import Menu from './components/menus';
+import Menu from './components/menus/menus';
 import { setUser, login, logout } from './Redux/slices/user/userSlice';
 import jwt_decode from 'jwt-decode';
 import WebSocket from './services/websocket';
@@ -25,14 +25,14 @@ import { localStorageService } from './services/localStorageService';
 import { homedataService } from './services/api/homedata.api';
 
 //lazy loading
-const HomePage = lazy(() => import('./views/home.page'));
-const LoginPage = lazy(() => import('./views/login.page'));
-const RegisterPage = lazy(() => import('./views/register.page'));
-const ProfilePage = lazy(() => import('./views/profile.page'));
-const UnauthorizePage = lazy(() => import('./views/unauthorize.page'));
-const CartPage = lazy(() => import('./views/cart.page'));
-const OrderTrackingPage = lazy(() => import('./views/trackorder.page'));
-const ConfirmNumberPage = lazy(() => import('./views/confirmNumber.page'));
+const HomePage = lazy(() => import('./views/home/home.page'));
+const LoginPage = lazy(() => import('./views/login/login.page'));
+const RegisterPage = lazy(() => import('./views/register/register.page'));
+const ProfilePage = lazy(() => import('./views/profile/profile.page'));
+const UnauthorizePage = lazy(() => import('./views/unauthorize/unauthorize.page'));
+const CartPage = lazy(() => import('./views/cart/cart.page'));
+const OrderTrackingPage = lazy(() => import('./views/track/trackorder.page'));
+const ConfirmNumberPage = lazy(() => import('./views/confirmNumber/confirmNumber.page'));
 
 function App() {
   const location = useAppSelector((state) => state.location.position);
@@ -150,7 +150,6 @@ const ProtectedRoute = (children: any) => {
   if (!isAuthenticated) {
     return <Navigate to='/unauthorized' replace />;
   }
-
   return children ? <>{children}</> : <Outlet />;
 };
 

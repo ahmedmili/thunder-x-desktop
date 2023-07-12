@@ -1,0 +1,66 @@
+.containerr {
+    max-width: 100%;
+  }
+  
+  .box {
+    display: flex;
+    justify-content: center;
+    padding: 1rem;
+    background-color: #f0f0f0;
+    border-radius: 0 0 1rem 1rem;
+  }
+  
+  .box-inner {
+    height: 2rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    color: #0f0f0f;
+  }
+  
+  .box-inner h3 {
+    margin-left: 0.5rem;
+  }
+  
+  .map-overlay {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    background-color: rgba(0, 0, 0, 0.5);
+    z-index: 999;
+  }
+  
+  .map-overlay > div {
+    background-color: white;
+    padding: 2rem;
+    border-radius: 0.5rem;
+    margin: 5rem;
+    box-shadow: 1px 2px 4px 2px rgba(0, 0, 0, 0.2);
+  }
+  
+  .content {
+    padding: 4px;
+  }
+  
+  .ad-carousel {
+    max-width: 1000px;
+    margin: 5rem;
+  }
+  
+  .ad-carousel img {
+    object-fit: contain;
+    width: 100%;
+    height: 100%;
+  }
+  
+  .faq-list {
+    position: relative;
+    z-index: 1;
+  }
+  

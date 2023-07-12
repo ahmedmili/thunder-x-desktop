@@ -3,7 +3,7 @@ import { styled } from '@mui/material/styles';
 import { FormProvider, SubmitHandler, useForm } from 'react-hook-form';
 import { object, string, TypeOf } from 'zod';
 import { zodResolver } from '@hookform/resolvers/zod';
-import FormInput from '../components/FormInput';
+import FormInput from '../components/FormInput/FormInput';
 import { useEffect } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import { LoadingButton as _LoadingButton } from '@mui/lab';

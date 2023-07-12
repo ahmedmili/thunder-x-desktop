@@ -1,0 +1,126 @@
+.number-input {
+  display: flex;
+  flex-wrap: nowrap;
+  gap: 2px;
+  margin-top: 1rem;
+  margin-bottom: 1rem;
+}
+
+.number-input .MuiInputBase-input {
+  width: 100%;
+  height: 100%;
+  padding: 1rem;
+  box-sizing: border-box;
+  text-align: center;
+  background-color: #e2e1e1;
+  border-radius: 0.3rem;
+}
+
+.confirm-container {
+  display: flex;
+  justify-content: right;
+  align-items: center;
+  height: 100vh;
+  background-color: white;
+  background-image: url('../assets/backPic.jpg');
+  background-repeat: no-repeat;
+  background-size: cover;
+  background-position: 50%;
+}
+
+.confirm-box {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  padding: 10%;
+}
+
+.confirm-form {
+  background-color: #ffffff;
+  padding: 2rem;
+  border-radius: 3px;
+  width: 505px;
+  height: 100%;
+  max-width:30rem;
+  /* width:100%; */
+}
+
+.confirm-title {
+  color: #000000;
+  font-family: 'Poppins', sans-serif;
+  font-weight: 600;
+  font-size: 25px;
+  line-height: 38px;
+  text-align: left;
+  margin-top: 2rem;
+}
+
+.confirm-description {
+  color: #000000;
+  font-family: 'Poppins', sans-serif;
+  font-weight: 300;
+  font-size: 16px;
+  line-height: 24px;
+  padding-bottom: 15px;
+}
+
+.confirm-number-input {
+  display: flex;
+  flex-wrap: wrap;
+  margin-bottom: 1rem;
+}
+
+.confirm-loading-button {
+  margin-top: 1rem;
+
+  padding: 0.6rem 0;
+  background-color: #edc72f;
+  color: #ffffff;
+  font-weight: 500;
+  border-radius: 12px;
+}
+
+.confirm-loading-button:hover {
+  background-color: #ebc22c;
+  transform: translateY(-2px);
+}
+
+.Link {
+  /* color: #303030; */
+  font-weight: 500;
+  font-family: Poppins;
+  font-style: normal;
+  align-content: center;
+
+  text-decoration: none;
+  color: #2363eb;
+}
+
+Link:hover {
+  text-decoration: underline;
+}
+
+.confirm-divider {
+  padding: 5px;
+  margin-top: 3rem;
+  margin-bottom: 1rem;
+}
+
+.confirm-resend-code {
+  font-size: 0.9rem;
+  margin-bottom: 1rem;
+  font-family: 'Poppins', sans-serif;
+  font-style: normal;
+  color: darkslategrey;
+}
+
+.resend-code-link {
+  font-size: 0.9rem;
+  margin-bottom: 1rem;
+  font-family: 'Poppins', sans-serif;
+  font-style: normal;
+  cursor: pointer;
+  border-radius: 1rem;
+  text-decoration: underline;
+}

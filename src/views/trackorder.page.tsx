@@ -27,7 +27,7 @@ import {
   Phone,
   ShoppingCartRounded,
 } from '@mui/icons-material';
-import MapComponent from '../components/mapComponent';
+import MapComponent from '../components/mapComponent/mapComponent';
 import { useAppDispatch, useAppSelector } from '../Redux/store';
 import { commandService } from '../services/api/command.api';
 import { localStorageService } from '../services/localStorageService';
