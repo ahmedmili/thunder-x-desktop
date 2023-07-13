@@ -34,6 +34,7 @@ const HomePage = () => {
   // const filtredDistanceResto = useAppSelector((state) => state.restaurant.restaurants);
   const isLoading = useAppSelector((state) => state.homeData.loading);
   const distanceFilter = useAppSelector((state) => state.restaurant.distanceFilter)
+  const textFilter = useAppSelector((state) => state.restaurant.searchQuery)
   const isDelivery = useAppSelector(selectIsDelivery);
   const [selectedCategory, setSelectedCategory] = useState<string>('');
   const [showMap, setShowMap] = useState(false);
@@ -53,7 +54,10 @@ const HomePage = () => {
           let dis = distance(restoLat, restoLong)
           const hasDelivery = isDelivery && restaurant.delivery === 1;
           const hasTakeAway = !isDelivery && restaurant.take_away === 1;
-          return (hasDelivery || hasTakeAway) && (dis <= distanceFilter);
+          const searchText = restaurant.name.toLowerCase().match(textFilter.toLowerCase())
+          console.log(searchText)
+          console.log(textFilter)
+          return (hasDelivery || hasTakeAway) && ((dis <= distanceFilter) && searchText);
         }
         );
         setFilteredRestaurants(filteredRestaurants ? filteredRestaurants : []);
@@ -83,7 +87,7 @@ const HomePage = () => {
   useEffect(() => {
     handleCategorySelect('');
 
-  }, [homeData?.recommended, isDelivery,distanceFilter]);
+  }, [homeData?.recommended, isDelivery,distanceFilter,textFilter]);
 
 
   useEffect(() => {

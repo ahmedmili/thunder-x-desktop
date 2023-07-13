@@ -3,7 +3,7 @@ import { MenuItem, Select } from '@mui/material';
 import { SearchSharp } from '@mui/icons-material';
 import './SearchBar.css';
 
-import {  setDistanceFilter} from '../../Redux/slices/restaurantSlice';
+import { setDistanceFilter,setSearchQuery } from '../../Redux/slices/restaurantSlice';
 import { useDispatch } from 'react-redux';
 
 
@@ -33,7 +33,7 @@ const SearchBar: React.FC<Props> = ({ placeholder }) => {
     // TODO Call API to get matching restaurants based on the search query and filters
     toggleFilters();
   }, []);
-  
+
   const handleRatingFilterChange = (event: any) => {
     setRatingFilter(event.target.value as number);
   };
@@ -42,6 +42,12 @@ const SearchBar: React.FC<Props> = ({ placeholder }) => {
     setDefaultDistanceFilter(event.target.value as number);
     dispatch(setDistanceFilter(event.target.value as number))
   };
+
+  function handleTextSearch(value: string): void {
+    // throw new Error('Function not implemented.');
+    setSearchTerm(value)
+    dispatch(setSearchQuery(value))
+  }
 
   return (
     <div>
@@ -58,7 +64,9 @@ const SearchBar: React.FC<Props> = ({ placeholder }) => {
             type='text'
             placeholder={placeholder}
             value={searchTerm}
-            onChange={(event) => setSearchTerm(event.target.value)}
+            onChange={(event) =>
+              handleTextSearch(event.target.value)
+            }
             aria-label='Enter search term'
           />
           <button
