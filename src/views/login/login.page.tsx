@@ -112,7 +112,7 @@ const LoginPage = () => {
   }, []);
 
   return (
-    <Container className='containerr' maxWidth={false}>
+    <Container className='login-container ' maxWidth={false}>
       <div className="box-container">
         <FormProvider {...methods}>
           <Box

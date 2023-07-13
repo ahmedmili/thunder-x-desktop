@@ -10,6 +10,7 @@ import {
   selectHomeData,
   selectIsDelivery,
 } from '../../Redux/slices/homeDataSlice';
+import { setRestaurants, } from '../../Redux/slices/restaurantSlice'
 import React from 'react';
 import { Restaurant } from '../../services/types';
 import { CarouselProvider, Slide, Slider } from 'pure-react-carousel';
@@ -17,16 +18,22 @@ import RestaurantList from '../../components/recommendedRestaurants/recommendedR
 import { useTranslation } from 'react-i18next';
 import FAQList from '../../components/faq/faq';
 import 'laravel-echo/dist/echo';
-import eventEmitter from '../../services/thunderEventsService';
-
+import { distance } from '../../services/distance'
 import './home.page.css'
+import { useDispatch } from 'react-redux';
 const googleMapKey = import.meta.env.VITE_GOOGLE_MAPS_API_KEY;
 
 const HomePage = () => {
+  const dispatch = useDispatch();
+
+
+
   const { t } = useTranslation();
   const location = useAppSelector((state) => state.location.position);
   const homeData = useAppSelector(selectHomeData);
+  // const filtredDistanceResto = useAppSelector((state) => state.restaurant.restaurants);
   const isLoading = useAppSelector((state) => state.homeData.loading);
+  const distanceFilter = useAppSelector((state) => state.restaurant.distanceFilter)
   const isDelivery = useAppSelector(selectIsDelivery);
   const [selectedCategory, setSelectedCategory] = useState<string>('');
   const [showMap, setShowMap] = useState(false);
@@ -35,18 +42,24 @@ const HomePage = () => {
   );
 
   const handleCategorySelect = (category: string) => {
+    
     if (selectedCategory === category) {
       // User clicked on the same category again, so show the restaurants that correspond to the state of isDelivery
       setSelectedCategory('');
       const filteredRestaurants = homeData?.recommended.filter(
         (restaurant: Restaurant) => {
+          let restoLat = restaurant.lat
+          let restoLong = restaurant.lat
+          let dis = distance(restoLat, restoLong)
           const hasDelivery = isDelivery && restaurant.delivery === 1;
           const hasTakeAway = !isDelivery && restaurant.take_away === 1;
-          return hasDelivery || hasTakeAway;
+          return (hasDelivery || hasTakeAway) && (dis <= distanceFilter);
         }
-      );
-      setFilteredRestaurants(filteredRestaurants ? filteredRestaurants : []);
-    } else {
+        );
+        setFilteredRestaurants(filteredRestaurants ? filteredRestaurants : []);
+        console.log(filteredRestaurants)
+        
+      } else {
       setSelectedCategory(category);
       const filteredRestaurants = homeData?.recommended.filter(
         (restaurant: Restaurant) => {
@@ -56,16 +69,22 @@ const HomePage = () => {
               .includes(category.toLowerCase()) || category === '';
           const hasDelivery = isDelivery && restaurant.delivery === 1;
           const hasTakeAway = !isDelivery && restaurant.take_away === 1;
-          return isInCategory && (hasDelivery || hasTakeAway);
+          let restoLat = restaurant.lat
+          let restoLong = restaurant.lat
+          let dis = distance(restoLat, restoLong)
+          return isInCategory && (hasDelivery || hasTakeAway) && (dis <= distanceFilter);
         }
       );
       setFilteredRestaurants(filteredRestaurants ? filteredRestaurants : []);
+
     }
   };
 
   useEffect(() => {
     handleCategorySelect('');
-  }, [homeData?.recommended, isDelivery]);
+
+  }, [homeData?.recommended, isDelivery,distanceFilter]);
+
 
   useEffect(() => {
     if (showMap) {

@@ -1,18 +1,27 @@
 import React, { useState, useCallback } from 'react';
-import { Menu, MenuItem, Select } from '@mui/material';
+import { MenuItem, Select } from '@mui/material';
 import { SearchSharp } from '@mui/icons-material';
 import './SearchBar.css';
+
+import {  setDistanceFilter} from '../../Redux/slices/restaurantSlice';
+import { useDispatch } from 'react-redux';
+
 
 interface Props {
   placeholder: string;
 }
 
 const SearchBar: React.FC<Props> = ({ placeholder }) => {
+  const dispatch = useDispatch();
+
   const [searchTerm, setSearchTerm] = useState('');
-  const [priceFilter, setPriceFilter] = useState<number[]>([0, 4]);
-  const [distanceFilter, setDistanceFilter] = useState<number>(10);
+  const [dfaultDistanceFilter, setDefaultDistanceFilter] = useState<number>(10);
   const [ratingFilter, setRatingFilter] = useState<number>(0);
   const [showFilters, setShowFilters] = useState(false); // Add state variable for showing/hiding filters
+
+  const toggleFilters = () => {
+    setShowFilters(!showFilters); // Toggle the state of showFilters
+  };
 
   const handleSearchSubmit = useCallback((event: any) => {
     event.preventDefault();
@@ -24,21 +33,14 @@ const SearchBar: React.FC<Props> = ({ placeholder }) => {
     // TODO Call API to get matching restaurants based on the search query and filters
     toggleFilters();
   }, []);
-
-  const handlePriceFilterChange = (event: any) => {
-    setPriceFilter(event.target.value);
-  };
-
-  const handleDistanceFilterChange = (event: any) => {
-    setDistanceFilter(event.target.value as number);
-  };
-
+  
   const handleRatingFilterChange = (event: any) => {
     setRatingFilter(event.target.value as number);
   };
 
-  const toggleFilters = () => {
-    setShowFilters(!showFilters); // Toggle the state of showFilters
+  const handleDistanceFilterChange = (event: any) => {
+    setDefaultDistanceFilter(event.target.value as number);
+    dispatch(setDistanceFilter(event.target.value as number))
   };
 
   return (
@@ -70,21 +72,13 @@ const SearchBar: React.FC<Props> = ({ placeholder }) => {
               className='filters'
             >
               <Select
-                value={priceFilter}
-                onChange={handlePriceFilterChange}
-                style={{ marginBottom: '0.5rem', width: '10rem' }}>
-                <MenuItem value='0'>Any Price</MenuItem>
-                <MenuItem value='1'>$$</MenuItem>
-                <MenuItem value='2'>$$$</MenuItem>
-                <MenuItem value='3'>$$$$</MenuItem>
-                <MenuItem value='4'>$$$$$</MenuItem>
-              </Select>
-              <Select
-                value={distanceFilter}
+                value={dfaultDistanceFilter}
                 onChange={handleDistanceFilterChange}
                 style={{ marginBottom: '0.5rem', width: '10rem' }}>
-                <MenuItem value='10'>Any Distance</MenuItem>
-                <MenuItem value='0.5'>0.5 Km</MenuItem>
+                <MenuItem value='10000'>Any Distance</MenuItem>
+                <MenuItem value='0.1'>0.1 Km</MenuItem>
+                <MenuItem value='0.2'>0.2 Km</MenuItem>
+                <MenuItem value='0.3'>0.3 Km</MenuItem>
                 <MenuItem value='1'>1 Km</MenuItem>
                 <MenuItem value='2'>2 Km</MenuItem>
                 <MenuItem value='5'>5 Km</MenuItem>
