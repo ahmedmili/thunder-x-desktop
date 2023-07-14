@@ -1,4 +1,7 @@
 import { Box, CircularProgress, Container } from '@mui/material';
+import Skeleton from 'react-loading-skeleton'
+import 'react-loading-skeleton/dist/skeleton.css'
+
 import { useAppDispatch, useAppSelector } from '../../Redux/store';
 import Map from '../../components/Location/Location';
 import Switches from '../../components/toggleSwitch/toggleSwitch';
@@ -20,6 +23,7 @@ import 'laravel-echo/dist/echo';
 import eventEmitter from '../../services/thunderEventsService';
 
 import './home.page.css'
+import { Height } from '@mui/icons-material';
 const googleMapKey = import.meta.env.VITE_GOOGLE_MAPS_API_KEY;
 
 const HomePage = () => {
@@ -106,9 +110,14 @@ const HomePage = () => {
       </div>
       {
         isLoading ? (
-          <Box sx={{ display: 'flex', justifyContent: 'center' }}>
-            <CircularProgress />
-          </Box>
+          // <Box sx={{ display: 'flex', justifyContent: 'center' }}>
+          //   <CircularProgress />
+          // </Box>
+          <div className='skeleton-container'>
+            <Skeleton count={12}  className='loading-skeleton'  />
+            <Skeleton count={12} className='loading-skeleton' />
+            <Skeleton count={12} className='loading-skeleton' />
+          </div>
         ) : (
           <>
             <div style={{ padding: '4px' }}>

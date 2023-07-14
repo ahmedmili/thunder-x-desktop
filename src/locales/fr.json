@@ -72,6 +72,9 @@
   "delivery_price": "Prix de livraison: ",
   "choose_options": "Choisir les options",
   "price": "Prix",
+  "adress.message1": "Mes Adresses de livraison",
+  "adress.cartSelect": "sélectionner sur la carte",
+  "adress.searchWithAdress": "Chercher par rue, quartier, ville ",
   "faq.title": "Foire Aux Questions",
   "faq.questions": [
     {
