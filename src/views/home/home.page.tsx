@@ -1,16 +1,12 @@
 import { Box, CircularProgress, Container } from '@mui/material';
-import { useAppDispatch, useAppSelector } from '../../Redux/store';
-import Map from '../../components/Location/Location';
-import Switches from '../../components/toggleSwitch/toggleSwitch';
-import { useCallback, useEffect, useMemo, useState } from 'react';
-import PinDropIcon from '@mui/icons-material/PinDrop';
-import SearchBar from '../../components/searchBar/searchBar';
+import { useAppSelector } from '../../Redux/store';
+
+import {  useEffect, useState } from 'react';
 import CategoryCarousel from '../../components/categoriesCarousel/categoriesCarousel';
 import {
   selectHomeData,
   selectIsDelivery,
 } from '../../Redux/slices/homeDataSlice';
-import { setRestaurants, } from '../../Redux/slices/restaurantSlice'
 import React from 'react';
 import { Restaurant } from '../../services/types';
 import { CarouselProvider, Slide, Slider } from 'pure-react-carousel';
@@ -20,24 +16,16 @@ import FAQList from '../../components/faq/faq';
 import 'laravel-echo/dist/echo';
 import { distance } from '../../services/distance'
 import './home.page.css'
-import { useDispatch } from 'react-redux';
-const googleMapKey = import.meta.env.VITE_GOOGLE_MAPS_API_KEY;
 
 const HomePage = () => {
-  const dispatch = useDispatch();
-
-
 
   const { t } = useTranslation();
-  const location = useAppSelector((state) => state.location.position);
   const homeData = useAppSelector(selectHomeData);
-  // const filtredDistanceResto = useAppSelector((state) => state.restaurant.restaurants);
   const isLoading = useAppSelector((state) => state.homeData.loading);
   const distanceFilter = useAppSelector((state) => state.restaurant.distanceFilter)
   const textFilter = useAppSelector((state) => state.restaurant.searchQuery)
   const isDelivery = useAppSelector(selectIsDelivery);
   const [selectedCategory, setSelectedCategory] = useState<string>('');
-  const [showMap, setShowMap] = useState(false);
   const [filteredRestaurants, setFilteredRestaurants] = useState<Restaurant[]>(
     []
   );
@@ -54,7 +42,8 @@ const HomePage = () => {
           let dis = distance(restoLat, restoLong)
           const hasDelivery = isDelivery && restaurant.delivery === 1;
           const hasTakeAway = !isDelivery && restaurant.take_away === 1;
-          const searchText = restaurant.name.toLowerCase().match(textFilter.toLowerCase())
+          const searchText = restaurant.name.toLowerCase().includes(textFilter.toLowerCase())
+
           console.log(searchText)
           console.log(textFilter)
           return (hasDelivery || hasTakeAway) && ((dis <= distanceFilter) && searchText);
@@ -76,57 +65,24 @@ const HomePage = () => {
           let restoLat = restaurant.lat
           let restoLong = restaurant.lat
           let dis = distance(restoLat, restoLong)
-          return isInCategory && (hasDelivery || hasTakeAway) && (dis <= distanceFilter);
+          const searchText = restaurant.name.toLowerCase().includes(textFilter.toLowerCase())
+          console.log(searchText)
+          console.log(textFilter)
+          return isInCategory && (hasDelivery || hasTakeAway) && (dis <= distanceFilter) && searchText;
         }
       );
       setFilteredRestaurants(filteredRestaurants ? filteredRestaurants : []);
+      console.log(filteredRestaurants)
 
     }
   };
 
   useEffect(() => {
     handleCategorySelect('');
-
   }, [homeData?.recommended, isDelivery,distanceFilter,textFilter]);
-
-
-  useEffect(() => {
-    if (showMap) {
-      document.body.style.overflow = 'hidden';
-    } else {
-      document.body.style.overflow = 'auto';
-    }
-  }, [showMap]);
 
   return (
     <Container maxWidth='lg' className="containerr">
-      <Box className="box">
-        <Box
-          className="box-inner"
-          onClick={() => setShowMap(true)}>
-          <PinDropIcon /> <div>&nbsp;&nbsp;</div>
-          <h3>
-            {location
-              ? `${location?.coords.label} ! ${t('clickToChange')}`
-              : t('no_location_detected')}
-          </h3>
-        </Box>
-      </Box>
-
-      {showMap && (
-        <div
-          className="map-overlay"
-          onClick={() => setShowMap(false)}>
-          <div
-            onClick={(e) => e.stopPropagation()}>
-            <Map apiKey={googleMapKey} />
-          </div>
-        </div>
-      )}
-      <Switches />
-      <div>
-        <SearchBar placeholder={t('search_placeholder')} />
-      </div>
       {
         isLoading ? (
           <Box sx={{ display: 'flex', justifyContent: 'center' }}>
@@ -145,7 +101,7 @@ const HomePage = () => {
             </div>
           </>
         )}
-      {!isLoading && homeData && homeData.ads && (
+      {/* {!isLoading && homeData && homeData.ads && (
         <div style={{ maxWidth: '1000px', margin: '5rem' }}>
           <CarouselProvider
             naturalSlideWidth={850}
@@ -207,7 +163,7 @@ const HomePage = () => {
       )}
       <div style={{ position: 'relative', zIndex: 1 }}>
         <FAQList />
-      </div>
+      </div> */}
     </Container>
   );
 };

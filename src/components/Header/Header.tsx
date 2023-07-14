@@ -1,35 +1,52 @@
-import { AppBar, Box, Container, Toolbar, Typography } from '@mui/material';
-import { styled } from '@mui/material/styles';
 import { useNavigate } from 'react-router-dom';
 import { useAppDispatch, useAppSelector } from '../../Redux/store';
 import { toast } from 'react-toastify';
+
+
+import { AppBar, Box, Container, Toolbar, Typography } from '@mui/material';
 import { LoadingButton as _LoadingButton } from '@mui/lab';
-import { logout } from '../../Redux/slices/user/userSlice';
+
+import PinDropIcon from '@mui/icons-material/PinDrop';
 import ShoppingCartIcon from '@mui/icons-material/ShoppingCart';
-import { useEffect, useState } from 'react';
-import CartPage from '../../views/cart/cart.page';
 import LogoutIcon from '@mui/icons-material/Logout';
+import { ViewList, ViewListRounded, WidgetsRounded } from '@mui/icons-material';
+
 import icon from '../../assets/icon.png';
+import pub from '../../assets/home/images.jpg';
+
+import { logout } from '../../Redux/slices/user/userSlice';
+import { useEffect, useState } from 'react';
+// import CartPage from '../../views/cart/cart.page';
 import { LanguageSelector } from '../languageSelector/languageSelector';
 import { useTranslation } from 'react-i18next';
-import { ViewList, ViewListRounded, WidgetsRounded } from '@mui/icons-material';
 import './header.css'
 import { localStorageService } from '../../services/localStorageService';
+import Switches from '../toggleSwitch/toggleSwitch';
+import SearchBar from '../searchBar/searchBar';
+import Map from '../Location/Location';
+
+
+const googleMapKey = import.meta.env.VITE_GOOGLE_MAPS_API_KEY;
 
 
 const Header = () => {
   const logged_in = localStorageService.getUserToken() !== null;
   const userItem = localStorageService.getUser();
+
   const user = userItem ? JSON.parse(userItem) : null;
   const firstname = user ? user.firstname : null;
-  const [showCart, setShowCart] = useState(false); // Add state variable for showing/hiding the cart
+
   const cartItems = useAppSelector((state) => state.cart.items);
-  const isAuthenticated = useAppSelector(
-    (state) => state.userState.isAuthenticated
-  );
+  const location = useAppSelector((state) => state.location.position);
+  const isAuthenticated = useAppSelector((state) => state.userState.isAuthenticated);
+
+  const [showCart, setShowCart] = useState(false); // Add state variable for showing/hiding the cart
+  const [showMap, setShowMap] = useState(false);
+
 
   const dispatch = useAppDispatch();
   const navigate = useNavigate();
+
   const { t } = useTranslation();
   const onLogoutHandler = async () => {
     try {
@@ -71,29 +88,60 @@ const Header = () => {
   }, [showCart]);
 
   return (
-    <AppBar
-      position='static'
-      sx={{
-        backgroundColor: '#ffffff',
-        boxShadow: 1,
-        display: 'flex',
-        justifyContent: 'center',
-      }}>
-      <Container maxWidth='lg'>
-        <Toolbar className='Toolbar'>
-          {/*  Thunder logo section  */}
-          <Box className="logo-container" onClick={() => navigate('/')} >
-            <img
-              src={icon}
-              alt='icon'></img>
-            <Typography variant='h6' sx={{ color: '#000000' }}>
-              Thunder Express
-            </Typography>
-          </Box>
-          {/* shopping cart section */}
-          <Box sx={{ flexGrow: 1, display: 'flex', justifyContent: 'center' }}>
-            {/* order button */}
-            {isAuthenticated && (
+    <div className="header-container">
+      <div className="head1">
+        <div className='demi-cercle'>
+
+        </div>
+      </div>
+      <div id='header-app-bar1'>
+        {/*  Thunder logo section  */}
+
+
+        <Box className="head2" >
+          <div className="logo-container" onClick={() => navigate('/')} >
+            <img src={icon} alt='icon' ></img >
+          </div>
+
+          <div className="header-app-bar2">
+            <div className="header-message">
+              <p className='header-message-syle1' > Nous &nbsp;
+                <span className='header-message-syle2'>
+                  livrons
+                </span>
+              </p>
+              <p className='header-message-syle1'> plus que de la &nbsp;
+                <span className='header-message-syle2'>
+                  nourriture
+                </span> .
+              </p>
+            </div>
+            <div className="Switches">
+              <Switches />
+            </div>
+
+            <Box className="header-localisation-message-container" onClick={() => setShowMap(true)} >
+              <h3>
+                <span className='localisation-icon' >
+
+                  <PinDropIcon />
+                </span>
+                {location
+                  ? `${location?.coords.label} ! ${t('clickToChange')}`
+                  : t('no_location_detected')}
+              </h3>
+            </Box>
+
+            <SearchBar placeholder={t('search_placeholder')} />
+
+          </div>
+        </Box>
+
+
+        {/* shopping cart section */}
+        {/* <Box sx={{ flexGrow: 1, display: 'flex', justifyContent: 'center' }}> */}
+        {/* order button */}
+        {/* {isAuthenticated && (
               <div className='order-container'
                 onClick={handleCommand}>
                 <div className='order-icon'
@@ -104,9 +152,9 @@ const Header = () => {
                   {t('cartPage.yourCommands')}
                 </div>
               </div>
-            )}
+            )} */}
 
-            <div
+        {/* <div
               className='cart-logo-container'
               onClick={handleCart}>
               <div className='cart-logo'>
@@ -116,10 +164,10 @@ const Header = () => {
                 )}
               </div>
               <div style={{ color: '#000000' }}>{t('cartPage.yourCart')}</div>
-            </div>
+            </div> */}
 
-            {/* cart button */}
-            {showCart && (
+        {/* cart button */}
+        {/* {showCart && (
               <div className='cart-container'
                 onClick={() => setShowCart(false)}>
                 <div
@@ -128,15 +176,18 @@ const Header = () => {
                   <CartPage />
                 </div>
               </div>
-            )}
-          </Box>
-          {/* Language Selector */}
-          <div className='LanguageSelector-container'>
-            <LanguageSelector />
-          </div>
+            )} */}
 
-          <Box display='flex'>
-            {/* login register buttons  */}
+        {/* </Box> */}
+
+        {/* Language Selector */}
+        {/* <div className='LanguageSelector-container'>
+            <LanguageSelector />
+          </div> */}
+
+        <Box className="head3">
+          {/* login register buttons  */}
+          <div className="app-bar">
             {!logged_in && (
               <>
                 <div
@@ -153,8 +204,15 @@ const Header = () => {
                 </div>
               </>
             )}
-            
-            {logged_in && (
+
+          </div>
+
+          <div className="image-builder">
+          </div>
+
+
+          {/* welcome message */}
+          {/* {logged_in && (
               <>
                 <div
                   style={{
@@ -176,18 +234,25 @@ const Header = () => {
                 />
               </>
             )}
-            {logged_in && user?.role === 'admin' && (
-              <div
-                onClick={() => navigate('/admin')}
-                className='LoadingButton'
-              >
-                Admin
-              </div>
-            )}
-          </Box>
-        </Toolbar>
-      </Container>
-    </AppBar>
+           </div>
+            )} */}
+        </Box>
+        {showMap && (
+        <div
+          className="map-overlay"
+          onClick={() => setShowMap(false)}>
+          <div
+            onClick={(e) => e.stopPropagation()}>
+            <Map apiKey={googleMapKey} />
+          </div>
+        </div>
+      )}
+      </div>
+          
+
+
+    </div>
+
   );
 };
 

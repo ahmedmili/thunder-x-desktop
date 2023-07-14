@@ -1,9 +1,15 @@
 import React, { useState } from 'react';
 import { Box, Typography } from '@mui/material';
+
+import KeyboardDoubleArrowLeftIcon from '@mui/icons-material/KeyboardDoubleArrowLeft';
+import KeyboardDoubleArrowRightIcon from '@mui/icons-material/KeyboardDoubleArrowRight';
+
 import { CarouselProvider, Slider, Slide } from 'pure-react-carousel';
 import { array, string } from 'zod';
 import 'pure-react-carousel/dist/react-carousel.es.css';
 import './categoriesCarousel.css';
+
+
 
 interface Category {
   id: number;
@@ -22,9 +28,12 @@ interface CategoryCarouselProps {
 }
 
 const CategoryCarousel: React.FC<CategoryCarouselProps> = ({
+
   onCategorySelect,
   categories: initialCategories,
 }) => {
+  const [currentSlide, setCurrentSlide] = useState(0);
+
   const [categories, setCategories] = useState(initialCategories);
 
   const handleCategoryClick = (categoryName: string) => {
@@ -37,49 +46,82 @@ const CategoryCarousel: React.FC<CategoryCarouselProps> = ({
     setCategories(updatedCategories);
     onCategorySelect(categoryName);
   };
+  const handlePrevious = () => {
+    setCurrentSlide((prevSlide) => prevSlide - 1);
+  };
+
+  const handleNext = () => {
+    setCurrentSlide((prevSlide) => prevSlide + 1);
+  };
+
+
 
   return (
-    <CarouselProvider
-      naturalSlideWidth={200}
-      naturalSlideHeight={150}
-      totalSlides={categories.length}
-      visibleSlides={4}
-      step={1}
-      infinite={false}>
-      <Slider
-        className="carousel-slider"
-      >
-        {categories.map((category, index) => (
-          <Slide key={category.id} index={category.id - 1}>
-            <Box
-              className={`category-box ${category.selected ? 'selected' : ''}`}
-              onClick={() => handleCategoryClick(category.name)}
-            >
+    <div className='carousal-provider' >
+
+
+      <CarouselProvider
+        naturalSlideWidth={200}
+        naturalSlideHeight={150}
+        totalSlides={categories.length}
+        visibleSlides={4}
+        step={1}
+        infinite={true}>
+        <Slider className="carousel-slider">
+          {categories.map((category, index) => (
+            <>
+            
+            <Slide key={category.id} index={category.id - 1}>
               <Box
-                className="category-image"
+                className={`category-box ${category.selected ? 'selected' : ''}`}
+                onClick={() => handleCategoryClick(category.name)}
               >
-                <img
-                  src={
-                    typeof category.image === 'string'
-                      ? category.image
-                      : undefined
-                  }
-                  loading='lazy'
-                  alt={category.name}
-                />
+                <Box
+                  className="category-image"
+                >
+                  <img
+                    src={
+                      typeof category.image === 'string'
+                        ? category.image
+                        : undefined
+                    }
+                    loading='lazy'
+                    alt={category.name}
+                  />
+                </Box>
+                <Typography
+                  variant="h6"
+                  align="center"
+                  className={'category'}
+                >
+                  {category.name}
+                </Typography>
               </Box>
-              <Typography
-                variant="h6"
-                align="center"
-                className={category.selected ? 'category selected' : 'category'}
-              >
-                {category.name}
-              </Typography>
-            </Box>
-          </Slide>
-        ))}
-      </Slider>
-    </CarouselProvider>
+            </Slide>
+            </>
+            
+          ))}
+
+        </Slider>
+                      {/* <KeyboardDoubleArrowLeftIcon/> */}
+
+                      <button
+          className="prev-button"
+          disabled={currentSlide === 0}
+          onClick={handlePrevious}
+        >
+<KeyboardDoubleArrowLeftIcon/>        </button>
+
+        <button
+          className="next-button"
+          disabled={currentSlide === 2}
+          onClick={handleNext}
+        >
+        <KeyboardDoubleArrowRightIcon/>
+        </button>
+      </CarouselProvider>
+
+    </div>
   );
 };
 

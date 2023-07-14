@@ -22,7 +22,7 @@ import WebSocket from './services/websocket';
 import eventEmitter from './services/thunderEventsService';
 import './app.css';
 import { localStorageService } from './services/localStorageService';
-import { homedataService } from './services/api/homedata.api';
+import { homedataService } from './services/api/homeData.api';
 
 //lazy loading
 const HomePage = lazy(() => import('./views/home/home.page'));

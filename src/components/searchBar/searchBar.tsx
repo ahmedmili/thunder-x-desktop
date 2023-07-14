@@ -1,8 +1,7 @@
 import React, { useState, useCallback } from 'react';
 import { MenuItem, Select } from '@mui/material';
 import { SearchSharp } from '@mui/icons-material';
-import './SearchBar.css';
-
+import './searchBar.css'
 import { setDistanceFilter,setSearchQuery } from '../../Redux/slices/restaurantSlice';
 import { useDispatch } from 'react-redux';
 
@@ -50,12 +49,12 @@ const SearchBar: React.FC<Props> = ({ placeholder }) => {
   }
 
   return (
-    <div>
+    <div className='search-container'>
       <form
         onSubmit={handleSearchSubmit}
         className="search-form">
         <div
-          className='search-bar'
+          className='header-search-bar'
         >
           <SearchSharp
             className="search-icon"

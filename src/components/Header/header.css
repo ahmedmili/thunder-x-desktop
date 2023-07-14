@@ -1,3 +1,38 @@
+#header-app-bar1 {
+    padding: 5px 50px;
+    position: static;
+    background-color: #ffffff;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+}
+
+.head1 {
+    position: relative;
+
+}
+
+.demi-cercle {
+    position: absolute;
+    top: 115px;
+    left: -252px;
+    z-index: 20;
+    height: 300px;
+    width: 300px;
+    border-radius: 500px;
+    background: linear-gradient(180deg, #FBC000 0%, #FBC000 100%);
+}
+.head2{
+    flex: 1;
+}
+.head3 {
+    display: flex;
+    flex-direction: column;
+    justify-content: end;
+    align-items: end;
+    flex: 1;
+}
+
 .LoadingButton {
     padding: 0.4rem;
     background-color: #2db2b1;
@@ -21,14 +56,12 @@
 }
 
 .logo-container {
-    display: flex;
-    flex-direction: row;
     cursor: pointer
 }
 
 .logo-container img {
-    height: 30px;
-    margin-right: 1rem
+    width: 77px;
+    height: 119.64px;
 }
 
 .cart-logo-container {
@@ -44,7 +77,7 @@
     flex-direction: row;
     align-items: center;
     justify-content: center;
-    width: 100%';
+    width: 100%;
 
 }
 
@@ -91,10 +124,10 @@
 
 .order-icon {
     display: flex;
-        flex-direction: row;
-        align-items: center;
-        justify-content: center;
-        width: 100%;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
 }
 
 .logout-icon {
@@ -104,4 +137,78 @@
     background-color: #2db2b1;
     border: 1px solid #fffefe;
     border-radius: 10px;
+}
+
+
+.header-message {
+    display: flex;
+    flex-direction: column;
+}
+
+.header-message-syle1 {
+    margin: 0;
+    display: inline;
+    color: #484848;
+    font-family: Poppins;
+    font-size: 32px;
+    font-style: normal;
+    font-weight: 700;
+    line-height: normal;
+}
+
+.header-message-syle2 {
+    display: inline;
+
+    color: #24A6A4;
+    font-family: Poppins;
+    font-size: 32px;
+    font-style: normal;
+    font-weight: 700;
+    line-height: normal;
+}
+
+.Switches {
+    margin-top: 15px;
+}
+
+.header-localisation-message-container {
+    margin-top: 5px;
+    display: flex;
+    flex-direction: column;
+    cursor: pointer;
+}
+
+.header-localisation-message-container h3 {
+    color: #484848;
+    font-family: Poppins;
+    font-size: 18px;
+    font-style: normal;
+    font-weight: 700;
+    line-height: normal;
+    transition: color 1s;
+}
+
+.header-localisation-message-container h3:hover {
+    color: #000000;
+}
+
+.localisation-icon {
+    position: relative;
+    top: 5px;
+    color: #2EB5B2;
+}
+
+.app-bar {
+    display: flex;
+}
+
+.image-builder {
+    margin: 7px 10px 0 7px;
+    width: 80%;
+    height: 100%;
+    border-radius: 10%;
+    background-image: url("../../assets/home/images.jpg");
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
 }
