@@ -1,5 +1,4 @@
 import { AppBar, Box, Container, Toolbar, Typography } from '@mui/material';
-import { styled } from '@mui/material/styles';
 import { useNavigate } from 'react-router-dom';
 import { useAppDispatch, useAppSelector } from '../../Redux/store';
 import { toast } from 'react-toastify';

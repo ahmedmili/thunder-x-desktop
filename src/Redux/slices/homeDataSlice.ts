@@ -25,11 +25,7 @@ const homeDataSlice = createSlice({
   },
 });
 
-export const { setData, setLoading, setError, setIsDelivery } =
-  homeDataSlice.actions;
-export const selectHomeData = (state: { homeData: { data: any } }) =>
-  state.homeData.data;
-export const selectIsDelivery = (state: {
-  homeData: { isDelivery: boolean };
-}) => state.homeData.isDelivery;
+export const { setData, setLoading, setError, setIsDelivery } = homeDataSlice.actions;
+export const selectHomeData = (state: { homeData: { data: any } }) => state.homeData.data;
+export const selectIsDelivery = (state: { homeData: { isDelivery: boolean };}) => state.homeData.isDelivery;
 export default homeDataSlice.reducer;
