@@ -1,106 +1,114 @@
-import { Box, CircularProgress, Container } from '@mui/material';
-import { useAppSelector } from '../../Redux/store';
+import { Box, CircularProgress, Container } from "@mui/material";
+import { useAppSelector } from "../../Redux/store";
 
-import {  useEffect, useState } from 'react';
-import CategoryCarousel from '../../components/categoriesCarousel/categoriesCarousel';
+import { useEffect, useState } from "react";
+import CategoryCarousel from "../../components/categoriesCarousel/categoriesCarousel";
 import {
   selectHomeData,
   selectIsDelivery,
-} from '../../Redux/slices/homeDataSlice';
-import React from 'react';
-import { Restaurant } from '../../services/types';
-import { CarouselProvider, Slide, Slider } from 'pure-react-carousel';
-import RestaurantList from '../../components/recommendedRestaurants/recommendedRestaurants';
-import { useTranslation } from 'react-i18next';
-import FAQList from '../../components/faq/faq';
-import 'laravel-echo/dist/echo';
-import { distance } from '../../services/distance'
-import './home.page.css'
+} from "../../Redux/slices/homeDataSlice";
+import React from "react";
+import { Restaurant } from "../../services/types";
+import { CarouselProvider, Slide, Slider } from "pure-react-carousel";
+import RestaurantList from "../../components/recommendedRestaurants/recommendedRestaurants";
+import { useTranslation } from "react-i18next";
+import FAQList from "../../components/faq/faq";
+import "laravel-echo/dist/echo";
+import { distance } from "../../services/distance";
+import "./home.page.css";
 
 const HomePage = () => {
-
   const { t } = useTranslation();
   const homeData = useAppSelector(selectHomeData);
   const isLoading = useAppSelector((state) => state.homeData.loading);
-  const distanceFilter = useAppSelector((state) => state.restaurant.distanceFilter)
-  const textFilter = useAppSelector((state) => state.restaurant.searchQuery)
+  const distanceFilter = useAppSelector(
+    (state) => state.restaurant.distanceFilter
+  );
+  const textFilter = useAppSelector((state) => state.restaurant.searchQuery);
   const isDelivery = useAppSelector(selectIsDelivery);
-  const [selectedCategory, setSelectedCategory] = useState<string>('');
+  const [selectedCategory, setSelectedCategory] = useState<string>("");
   const [filteredRestaurants, setFilteredRestaurants] = useState<Restaurant[]>(
     []
   );
 
   const handleCategorySelect = (category: string) => {
-    
     if (selectedCategory === category) {
       // User clicked on the same category again, so show the restaurants that correspond to the state of isDelivery
-      setSelectedCategory('');
+      setSelectedCategory("");
       const filteredRestaurants = homeData?.recommended.filter(
         (restaurant: Restaurant) => {
-          let restoLat = restaurant.lat
-          let restoLong = restaurant.lat
-          let dis = distance(restoLat, restoLong)
+          let restoLat = restaurant.lat;
+          let restoLong = restaurant.lat;
+          let dis = distance(restoLat, restoLong);
           const hasDelivery = isDelivery && restaurant.delivery === 1;
           const hasTakeAway = !isDelivery && restaurant.take_away === 1;
-          const searchText = restaurant.name.toLowerCase().includes(textFilter.toLowerCase())
+          const searchText = restaurant.name
+            .toLowerCase()
+            .includes(textFilter.toLowerCase());
 
-          console.log(searchText)
-          console.log(textFilter)
-          return (hasDelivery || hasTakeAway) && ((dis <= distanceFilter) && searchText);
+          console.log(searchText);
+          console.log(textFilter);
+          return (
+            (hasDelivery || hasTakeAway) && dis <= distanceFilter && searchText
+          );
         }
-        );
-        setFilteredRestaurants(filteredRestaurants ? filteredRestaurants : []);
-        console.log(filteredRestaurants)
-        
-      } else {
+      );
+      setFilteredRestaurants(filteredRestaurants ? filteredRestaurants : []);
+      console.log(filteredRestaurants);
+    } else {
       setSelectedCategory(category);
       const filteredRestaurants = homeData?.recommended.filter(
         (restaurant: Restaurant) => {
           const isInCategory =
             restaurant.parents_cat
               .map((cat: any) => cat.name.toLowerCase())
-              .includes(category.toLowerCase()) || category === '';
+              .includes(category.toLowerCase()) || category === "";
           const hasDelivery = isDelivery && restaurant.delivery === 1;
           const hasTakeAway = !isDelivery && restaurant.take_away === 1;
-          let restoLat = restaurant.lat
-          let restoLong = restaurant.lat
-          let dis = distance(restoLat, restoLong)
-          const searchText = restaurant.name.toLowerCase().includes(textFilter.toLowerCase())
-          console.log(searchText)
-          console.log(textFilter)
-          return isInCategory && (hasDelivery || hasTakeAway) && (dis <= distanceFilter) && searchText;
+          let restoLat = restaurant.lat;
+          let restoLong = restaurant.lat;
+          let dis = distance(restoLat, restoLong);
+          const searchText = restaurant.name
+            .toLowerCase()
+            .includes(textFilter.toLowerCase());
+          console.log(searchText);
+          console.log(textFilter);
+          return (
+            isInCategory &&
+            (hasDelivery || hasTakeAway) &&
+            dis <= distanceFilter &&
+            searchText
+          );
         }
       );
       setFilteredRestaurants(filteredRestaurants ? filteredRestaurants : []);
-      console.log(filteredRestaurants)
-
+      console.log(filteredRestaurants);
     }
   };
 
   useEffect(() => {
-    handleCategorySelect('');
-  }, [homeData?.recommended, isDelivery,distanceFilter,textFilter]);
+    handleCategorySelect("");
+  }, [homeData?.recommended, isDelivery, distanceFilter, textFilter]);
 
   return (
-    <Container maxWidth='lg' className="containerr">
-      {
-        isLoading ? (
-          <Box sx={{ display: 'flex', justifyContent: 'center' }}>
-            <CircularProgress />
-          </Box>
-        ) : (
-          <>
-            <div style={{ padding: '4px' }}>
-              <CategoryCarousel
-                onCategorySelect={handleCategorySelect}
-                categories={homeData?.categories}
-              />
-            </div>
-            <div style={{ padding: '4px' }}>
-              <RestaurantList restaurants={filteredRestaurants} />
-            </div>
-          </>
-        )}
+    <Container maxWidth="lg" className="containerr">
+      {isLoading ? (
+        <Box sx={{ display: "flex", justifyContent: "center" }}>
+          <CircularProgress />
+        </Box>
+      ) : (
+        <>
+          <div style={{ padding: "4px" }}>
+            <CategoryCarousel
+              onCategorySelect={handleCategorySelect}
+              categories={homeData?.categories}
+            />
+          </div>
+          <div style={{ padding: "4px" }}>
+            <RestaurantList restaurants={filteredRestaurants} />
+          </div>
+        </>
+      )}
       {/* {!isLoading && homeData && homeData.ads && (
         <div style={{ maxWidth: '1000px', margin: '5rem' }}>
           <CarouselProvider

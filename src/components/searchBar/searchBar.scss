@@ -1,5 +1,4 @@
 .search-container {
-
   background-color: #2cb1b1;
   border-radius: 25px;
   max-width: 70%;
@@ -16,9 +15,7 @@
   max-width: 150rem;
   margin-bottom: 1rem;
   border-radius: 25px;
-
 }
-
 
 .header-search-bar input {
   border-radius: 25px;
@@ -31,7 +28,8 @@
 }
 
 .header-search-bar input:focus {
-  outline: none; /* Remove the outline when focused */}
+  outline: none; /* Remove the outline when focused */
+}
 .header-search-bar input::placeholder {
   color: white;
 }
@@ -67,7 +65,6 @@
   padding: 2rem;
   box-shadow: 1px 2px 4px 2px rgba(0, 0, 0, 0.2);
 }
-
 
 .map-overlay {
   display: flex;

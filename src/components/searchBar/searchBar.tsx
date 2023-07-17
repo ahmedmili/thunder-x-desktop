@@ -1,10 +1,12 @@
-import React, { useState, useCallback } from 'react';
-import { MenuItem, Select } from '@mui/material';
-import { SearchSharp } from '@mui/icons-material';
-import './searchBar.css'
-import { setDistanceFilter,setSearchQuery } from '../../Redux/slices/restaurantSlice';
-import { useDispatch } from 'react-redux';
-
+import React, { useState, useCallback } from "react";
+import { MenuItem, Select } from "@mui/material";
+import { SearchSharp } from "@mui/icons-material";
+import "./searchBar.scss";
+import {
+  setDistanceFilter,
+  setSearchQuery,
+} from "../../Redux/slices/restaurantSlice";
+import { useDispatch } from "react-redux";
 
 interface Props {
   placeholder: string;
@@ -13,7 +15,7 @@ interface Props {
 const SearchBar: React.FC<Props> = ({ placeholder }) => {
   const dispatch = useDispatch();
 
-  const [searchTerm, setSearchTerm] = useState('');
+  const [searchTerm, setSearchTerm] = useState("");
   const [dfaultDistanceFilter, setDefaultDistanceFilter] = useState<number>(10);
   const [ratingFilter, setRatingFilter] = useState<number>(0);
   const [showFilters, setShowFilters] = useState(false); // Add state variable for showing/hiding filters
@@ -39,73 +41,59 @@ const SearchBar: React.FC<Props> = ({ placeholder }) => {
 
   const handleDistanceFilterChange = (event: any) => {
     setDefaultDistanceFilter(event.target.value as number);
-    dispatch(setDistanceFilter(event.target.value as number))
+    dispatch(setDistanceFilter(event.target.value as number));
   };
 
   function handleTextSearch(value: string): void {
     // throw new Error('Function not implemented.');
-    setSearchTerm(value)
-    dispatch(setSearchQuery(value))
+    setSearchTerm(value);
+    dispatch(setSearchQuery(value));
   }
 
   return (
-    <div className='search-container'>
-      <form
-        onSubmit={handleSearchSubmit}
-        className="search-form">
-        <div
-          className='header-search-bar'
-        >
-          <SearchSharp
-            className="search-icon"
-          />
+    <div className="search-container">
+      <form onSubmit={handleSearchSubmit} className="search-form">
+        <div className="header-search-bar">
+          <SearchSharp className="search-icon" />
           <input
-            type='text'
+            type="text"
             placeholder={placeholder}
             value={searchTerm}
-            onChange={(event) =>
-              handleTextSearch(event.target.value)
-            }
-            aria-label='Enter search term'
+            onChange={(event) => handleTextSearch(event.target.value)}
+            aria-label="Enter search term"
           />
-          <button
-            type='submit'
-            onClick={toggleFilters}
-          >
+          <button type="submit" onClick={toggleFilters}>
             ☰
           </button>
           {showFilters && (
-            <div
-              className='filters'
-            >
+            <div className="filters">
               <Select
                 value={dfaultDistanceFilter}
                 onChange={handleDistanceFilterChange}
-                style={{ marginBottom: '0.5rem', width: '10rem' }}>
-                <MenuItem value='10000'>Any Distance</MenuItem>
-                <MenuItem value='0.1'>0.1 Km</MenuItem>
-                <MenuItem value='0.2'>0.2 Km</MenuItem>
-                <MenuItem value='0.3'>0.3 Km</MenuItem>
-                <MenuItem value='1'>1 Km</MenuItem>
-                <MenuItem value='2'>2 Km</MenuItem>
-                <MenuItem value='5'>5 Km</MenuItem>
-                <MenuItem value='10'>10 Km</MenuItem>
+                style={{ marginBottom: "0.5rem", width: "10rem" }}
+              >
+                <MenuItem value="10000">Any Distance</MenuItem>
+                <MenuItem value="0.1">0.1 Km</MenuItem>
+                <MenuItem value="0.2">0.2 Km</MenuItem>
+                <MenuItem value="0.3">0.3 Km</MenuItem>
+                <MenuItem value="1">1 Km</MenuItem>
+                <MenuItem value="2">2 Km</MenuItem>
+                <MenuItem value="5">5 Km</MenuItem>
+                <MenuItem value="10">10 Km</MenuItem>
               </Select>
               <Select
                 value={ratingFilter}
                 onChange={handleRatingFilterChange}
-                style={{ marginBottom: '0.5rem', width: '10rem' }}
+                style={{ marginBottom: "0.5rem", width: "10rem" }}
               >
-                <MenuItem value='0'>Any Rating</MenuItem>
-                <MenuItem value='1'>1 star</MenuItem>
-                <MenuItem value='2'>2 stars</MenuItem>
-                <MenuItem value='3'>3 stars</MenuItem>
-                <MenuItem value='4'>4 stars</MenuItem>
-                <MenuItem value='5'>5 stars</MenuItem>
+                <MenuItem value="0">Any Rating</MenuItem>
+                <MenuItem value="1">1 star</MenuItem>
+                <MenuItem value="2">2 stars</MenuItem>
+                <MenuItem value="3">3 stars</MenuItem>
+                <MenuItem value="4">4 stars</MenuItem>
+                <MenuItem value="5">5 stars</MenuItem>
               </Select>
-              <button
-                type='submit'
-                onClick={handleFilterSubmit}>
+              <button type="submit" onClick={handleFilterSubmit}>
                 Apply Filters
               </button>
             </div>
