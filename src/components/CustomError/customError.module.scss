@@ -1,0 +1,13 @@
+.error {
+  padding: 1rem;
+  color: var(--errorColor);
+  font-size: 1rem;
+  display: grid;
+  grid-template-columns: 16px 1fr;
+  gap: 0.2rem;
+  padding: 0;
+}
+@media (min-width: 768px) {
+}
+@media (min-width: 993px) {
+}

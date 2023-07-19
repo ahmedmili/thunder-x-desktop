@@ -1,0 +1,52 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+:root {
+  --errorColor: rgba(168, 50, 50, 0.87);
+  --secondaryColor: #484848;
+  --primaryColor: #fbc000;
+  --tertiaryColor: #958e8e;
+  --green: #24a6a4;
+  --white: #ffffff;
+  --yellow: #ffedb0;
+  --fontPrimary: "Poppins", sans-serif;
+}
+html {
+  font-size: 62.5%;
+}
+body {
+  line-height: 1.2;
+  font-family: "Poppins", sans-serif;
+}
+a {
+  text-decoration: none;
+}
+.App {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+/* Set the width and height of the scroll bar */
+::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+
+/* Track style */
+::-webkit-scrollbar-track {
+  background: #f1f1f1;
+}
+
+/* Handle style */
+::-webkit-scrollbar-thumb {
+  background: #9f9f9f;
+  border-radius: 6px;
+}
+
+/* Handle on hover */
+::-webkit-scrollbar-thumb:hover {
+  background: #15808a;
+}
