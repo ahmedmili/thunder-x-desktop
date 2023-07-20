@@ -3,24 +3,18 @@ import { Field, Form, Formik } from "formik";
 import styles from "./register.module.scss";
 import InputForm from "../../components/Input-form/InputForm";
 import ButtonPrimary from "../../components/button-primary/ButtonPrimary";
-import TitleForm from "../../components/title-form/TitleForm";
-import FormContent from "../../components/form-content/FormContent";
 import Or from "../../components/or/Or";
 import ButtonConnect from "../../components/button-connect/ButtonConnect";
 import Apple from "../../assets/icons/Apple";
 import Google from "../../assets/icons/Google";
 import Facebook from "../../assets/icons/Facebook";
-import { Link } from "react-router-dom";
 import LinkConnect from "../../components/link-connect/LinkConnect";
+import authImage from "../../assets/auth.png";
+import CardPage from "../../components/card-page/CardPage";
+import CardPageText from "../../components/card-page-text/CardPageText";
+import CardPageImage from "../../components/card-page-image/CardPageImage";
+import CardPageTitle from "../../components/card-page-title/CardPageTitle";
 
-interface FormValues {
-  firstName: string;
-  lastName: string;
-  email: string;
-  password: string;
-  confirmPassword: string;
-  phone: string;
-}
 const registerSchema = Yup.object().shape({
   firstName: Yup.string()
     .min(3, "firstname must be more than 3")
@@ -50,9 +44,9 @@ const registerSchema = Yup.object().shape({
 });
 const RegisterPage = () => {
   return (
-    <div className={styles.pageContent}>
-      <FormContent>
-        <TitleForm>S'inscrire</TitleForm>
+    <CardPage>
+      <CardPageText>
+        <CardPageTitle>S'inscrire</CardPageTitle>
         <Formik
           initialValues={{
             firstName: "",
@@ -89,7 +83,7 @@ const RegisterPage = () => {
                 component={InputForm}
               />
               <Field
-                type="text"
+                type="email"
                 name="email"
                 label="Email"
                 placeholder="Enter ici"
@@ -134,15 +128,23 @@ const RegisterPage = () => {
         <ButtonConnect icon={<Apple />} text="Continue avec Apple" />
         <ButtonConnect icon={<Google />} text="Continue avec Google" />
         <ButtonConnect icon={<Facebook />} text="Continue avec Facebook" />
-
         <LinkConnect />
-      </FormContent>
-      <div>Image</div>
-    </div>
+      </CardPageText>
+      <CardPageImage src={authImage} alt="inscription" />
+    </CardPage>
   );
 };
 export default RegisterPage;
-/* const RegisterPage = () => {
+/* 
+interface FormValues {
+  firstName: string;
+  lastName: string;
+  email: string;
+  password: string;
+  confirmPassword: string;
+  phone: string;
+}
+const RegisterPage = () => {
   const formik = useFormik<FormValues>({
     initialValues: {
       firstname: "",
