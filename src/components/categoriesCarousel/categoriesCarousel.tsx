@@ -1,9 +1,13 @@
-import React, { useState } from 'react';
-import { Box, Typography } from '@mui/material';
-import { CarouselProvider, Slider, Slide } from 'pure-react-carousel';
-import { array, string } from 'zod';
-import 'pure-react-carousel/dist/react-carousel.es.css';
-import './categoriesCarousel.css';
+import React, { useState } from "react";
+import { Box, Typography } from "@mui/material";
+
+import KeyboardDoubleArrowLeftIcon from "@mui/icons-material/KeyboardDoubleArrowLeft";
+import KeyboardDoubleArrowRightIcon from "@mui/icons-material/KeyboardDoubleArrowRight";
+
+import { CarouselProvider, Slider, Slide } from "pure-react-carousel";
+import { array, string } from "zod";
+import "pure-react-carousel/dist/react-carousel.es.css";
+import "./categoriesCarousel.css";
 
 interface Category {
   id: number;
@@ -25,6 +29,8 @@ const CategoryCarousel: React.FC<CategoryCarouselProps> = ({
   onCategorySelect,
   categories: initialCategories,
 }) => {
+  const [currentSlide, setCurrentSlide] = useState(0);
+
   const [categories, setCategories] = useState(initialCategories);
 
   const handleCategoryClick = (categoryName: string) => {
@@ -32,56 +38,53 @@ const CategoryCarousel: React.FC<CategoryCarouselProps> = ({
       ...category,
       image: category.image,
       selected: category.name === categoryName ? !category.selected : false,
-    })
-    );
+    }));
 
     setCategories(updatedCategories);
     onCategorySelect(categoryName);
   };
-  return categories != null ?
-    (
+  return categories != null ? (
     <CarouselProvider
       naturalSlideWidth={200}
       naturalSlideHeight={150}
       totalSlides={categories.length}
       visibleSlides={4}
       step={1}
-      infinite={false}>
+      infinite={false}
+    >
       <Slider className="carousel-slider">
-        {
-
-          categories.map((category, index) => (
-            <Slide key={category.id} index={category.id - 1}>
-              <Box
-                className={`category-box ${category.selected ? 'selected' : ''}`}
-                onClick={() => handleCategoryClick(category.name)}
-              >
-                <Box className="category-image">
-                  <img
-                    src={
-                      typeof category.image === 'string'
-                        ? category.image
-                        : undefined
-                    }
-                    loading='lazy'
-                    alt={category.name}
-                  />
-                </Box>
-                <Typography
-                  variant="h6"
-                  align="center"
-                  className={category.selected ? 'category selected' : 'category'}
-                >
-                  {category.name}
-                </Typography>
+        {categories.map((category, index) => (
+          <Slide key={category.id} index={category.id - 1}>
+            <Box
+              className={`category-box ${category.selected ? "selected" : ""}`}
+              onClick={() => handleCategoryClick(category.name)}
+            >
+              <Box className="category-image">
+                <img
+                  src={
+                    typeof category.image === "string"
+                      ? category.image
+                      : undefined
+                  }
+                  loading="lazy"
+                  alt={category.name}
+                />
               </Box>
-            </Slide>
-          ))
-          }
+              <Typography
+                variant="h6"
+                align="center"
+                className={category.selected ? "category selected" : "category"}
+              >
+                {category.name}
+              </Typography>
+            </Box>
+          </Slide>
+        ))}
       </Slider>
     </CarouselProvider>
-  ) : ( <div></div>)
-        
-}
+  ) : (
+    <div></div>
+  );
+};
 
 export default React.memo(CategoryCarousel);

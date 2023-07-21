@@ -63,7 +63,7 @@
   height: 21px;
   left: 440px;
   top: 383px;
-  font-family: 'Poppins';
+  font-family: "Poppins";
   font-style: normal;
   font-weight: 400;
   font-size: 14px;
@@ -75,7 +75,7 @@
   width: 20vw;
   line-height: 4;
 
-  height: 20px
+  height: 20px;
 }
 
 .skeleton-container {

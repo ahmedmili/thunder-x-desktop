@@ -3,6 +3,8 @@ import { useAppDispatch, useAppSelector } from '../../Redux/store';
 import { useTranslation } from 'react-i18next';
 import './toggleSwitch.css';
 
+import DeliveryDiningIcon from '@mui/icons-material/DeliveryDining';
+import DeckIcon from '@mui/icons-material/Deck';
 const Switches = () => {
   const dispatch = useAppDispatch();
   const isDelivery = useAppSelector(selectIsDelivery);
@@ -16,7 +18,7 @@ const Switches = () => {
     <div className='Container'>
       <div className='SwitchesContainer'>
         <input
-        className="SwitchInput"
+          className="SwitchInput"
           type='radio'
           id='switchLivraison'
           name='switchPlan'
@@ -25,7 +27,7 @@ const Switches = () => {
           onChange={handleSwitchToggle}
         />
         <input
-        className="SwitchInput"
+          className="SwitchInput"
           type='radio'
           id='switchEmporter'
           name='switchPlan'
@@ -34,19 +36,29 @@ const Switches = () => {
           onChange={handleSwitchToggle}
         />
 
-        <label className="SwitchLabel" htmlFor='switchLivraison'>{t('livraison')}</label>
-        <label className="SwitchLabel" htmlFor='switchEmporter'>{t('emporter')}</label>
+        <label className="SwitchLabel" htmlFor='switchLivraison'>
+          <DeliveryDiningIcon className='SwitchText-icon' />
+          {t('livraison')}
+        </label>
+        <label className="SwitchLabel" htmlFor='switchEmporter'>
+          <DeckIcon className='SwitchText-icon' />
+          {t('emporter')}</label>
         <div className='SwitchWrapper'
           style={{
             transform: isDelivery ? 'translateX(0%)' : 'translateX(100%)',
           }}>
           <div className='Switch'>
             <div className='SwitchText' style={{ opacity: isDelivery ? 1 : 0 }}>
+              <DeliveryDiningIcon className='SwitchText-icon' />
               {t('livraison')}
             </div>
-            <div className='SwitchText'  style={{ opacity: isDelivery ? 0 : 1 }}>
+            <div className='SwitchText' style={{ opacity: isDelivery ? 0 : 1 }}>
+
+              <DeckIcon className='SwitchText-icon' />
               {t('emporter')}
             </div>
+
+            
           </div>
         </div>
       </div>

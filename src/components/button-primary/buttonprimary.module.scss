@@ -1,0 +1,15 @@
+.btn {
+  grid-column: span 2;
+  outline: 0;
+  background: var(--primaryColor);
+  color: var(--white);
+  font-family: var(--fontPrimary);
+  border-radius: 50px;
+  border: 0;
+  font-size: 1.8rem;
+  font-style: normal;
+  font-weight: 600;
+  line-height: normal;
+  padding: 1rem;
+  cursor: pointer;
+}

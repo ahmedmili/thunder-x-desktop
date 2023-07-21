@@ -1,0 +1,12 @@
+.linkconnect {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 1rem;
+}
+.text {
+  color: var(--secondaryColor);
+}
+.link {
+  color: var(--primaryColor);
+}
