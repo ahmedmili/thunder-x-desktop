@@ -1,20 +1,16 @@
 .cardpage {
   background: var(--yellow);
-  display: flex;
-  flex-direction: column-reverse;
+  display: grid;
+  grid-template-columns: 1fr;
   font-size: 1.6rem;
   font-style: normal;
   font-weight: 500;
   line-height: normal;
-  min-height: 100vh;
 }
 @media (min-width: 768px) {
-  .cardpage {
-    font-size: 1.6rem;
-  }
 }
 @media (min-width: 992px) {
   .cardpage {
-    flex-direction: row;
+    grid-template-columns: 1fr 1fr;
   }
 }
