@@ -14,7 +14,6 @@ import CardPage from "../../components/card-page/CardPage";
 import CardPageText from "../../components/card-page-text/CardPageText";
 import CardPageImage from "../../components/card-page-image/CardPageImage";
 import CardPageTitle from "../../components/card-page-title/CardPageTitle";
-import CardPageTextContent from "../../components/card-page-text-content/CardPageTextContent";
 
 const registerSchema = Yup.object().shape({
   firstName: Yup.string()
@@ -47,91 +46,89 @@ const RegisterPage = () => {
   return (
     <CardPage>
       <CardPageText>
-        <CardPageTextContent>
-          <CardPageTitle>S'inscrire</CardPageTitle>
-          <Formik
-            initialValues={{
-              firstName: "",
-              lastName: "",
-              email: "",
-              password: "",
-              confirmPassword: "",
-              phone: "",
-            }}
-            validationSchema={registerSchema}
-            onSubmit={(values, { setSubmitting }) => {
-              setTimeout(() => {
-                alert(JSON.stringify(values, null, 2));
-                setSubmitting(false);
-              }, 400);
-            }}
-          >
-            {({ isSubmitting }) => (
-              <Form className={styles.formWrapper}>
-                <Field
-                  type="text"
-                  name="firstName"
-                  label="Nom"
-                  placeholder="Enter ici"
-                  id="firstName"
-                  component={InputForm}
-                />
-                <Field
-                  type="text"
-                  name="lastName"
-                  label="Prénom"
-                  placeholder="Enter ici"
-                  id="lastName"
-                  component={InputForm}
-                />
-                <Field
-                  type="email"
-                  name="email"
-                  label="Email"
-                  placeholder="Enter ici"
-                  id="email"
-                  column="fill"
-                  component={InputForm}
-                />
-                <Field
-                  type="password"
-                  name="password"
-                  label="Mot de passe"
-                  placeholder="Enter ici"
-                  id="password"
-                  column="fill"
-                  component={InputForm}
-                />
-                <Field
-                  type="password"
-                  name="confirmPassword"
-                  label="Confirmer le mot de passe"
-                  placeholder="Enter ici"
-                  id="confirmPassword"
-                  column="fill"
-                  component={InputForm}
-                />
-                <Field
-                  type="tel"
-                  name="phone"
-                  label="Numéro de téléphone"
-                  placeholder=""
-                  id="confirmPassword"
-                  column="fill"
-                  component={InputForm}
-                />
-                <ButtonPrimary type="submit" disabled={isSubmitting}>
-                  S'inscrire
-                </ButtonPrimary>
-              </Form>
-            )}
-          </Formik>
-          <Or>Or</Or>
-          <ButtonConnect icon={<Apple />} text="Continue avec Apple" />
-          <ButtonConnect icon={<Google />} text="Continue avec Google" />
-          <ButtonConnect icon={<Facebook />} text="Continue avec Facebook" />
-          <LinkConnect />
-        </CardPageTextContent>
+        <CardPageTitle>S'inscrire</CardPageTitle>
+        <Formik
+          initialValues={{
+            firstName: "",
+            lastName: "",
+            email: "",
+            password: "",
+            confirmPassword: "",
+            phone: "",
+          }}
+          validationSchema={registerSchema}
+          onSubmit={(values, { setSubmitting }) => {
+            setTimeout(() => {
+              alert(JSON.stringify(values, null, 2));
+              setSubmitting(false);
+            }, 400);
+          }}
+        >
+          {({ isSubmitting }) => (
+            <Form className={styles.formWrapper}>
+              <Field
+                type="text"
+                name="firstName"
+                label="Nom"
+                placeholder="Enter ici"
+                id="firstName"
+                component={InputForm}
+              />
+              <Field
+                type="text"
+                name="lastName"
+                label="Prénom"
+                placeholder="Enter ici"
+                id="lastName"
+                component={InputForm}
+              />
+              <Field
+                type="email"
+                name="email"
+                label="Email"
+                placeholder="Enter ici"
+                id="email"
+                column="fill"
+                component={InputForm}
+              />
+              <Field
+                type="password"
+                name="password"
+                label="Mot de passe"
+                placeholder="Enter ici"
+                id="password"
+                column="fill"
+                component={InputForm}
+              />
+              <Field
+                type="password"
+                name="confirmPassword"
+                label="Confirmer le mot de passe"
+                placeholder="Enter ici"
+                id="confirmPassword"
+                column="fill"
+                component={InputForm}
+              />
+              <Field
+                type="tel"
+                name="phone"
+                label="Numéro de téléphone"
+                placeholder=""
+                id="confirmPassword"
+                column="fill"
+                component={InputForm}
+              />
+              <ButtonPrimary type="submit" disabled={isSubmitting}>
+                S'inscrire
+              </ButtonPrimary>
+            </Form>
+          )}
+        </Formik>
+        <Or>Or</Or>
+        <ButtonConnect icon={<Apple />} text="Continue avec Apple" />
+        <ButtonConnect icon={<Google />} text="Continue avec Google" />
+        <ButtonConnect icon={<Facebook />} text="Continue avec Facebook" />
+        <LinkConnect />
       </CardPageText>
       <CardPageImage src={authImage} alt="inscription" />
     </CardPage>

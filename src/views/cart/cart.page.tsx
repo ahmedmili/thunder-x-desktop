@@ -1,13 +1,13 @@
-import React, { useEffect } from 'react';
+import React, { useEffect } from "react";
 import {
   clearCart,
   setComment,
   setDeliveryOption,
   setDeliveryPrice,
   setSupplier,
-} from '../../Redux/slices/cart/cartSlice';
-import { Cart } from '../../components/cart/cart';
-import { RootState, useAppDispatch, useAppSelector } from '../../Redux/store';
+} from "../../Redux/slices/cart/cartSlice";
+import { Cart } from "../../components/cart/cart";
+import { RootState, useAppDispatch, useAppSelector } from "../../Redux/store";
 import {
   Button,
   Box,
@@ -17,17 +17,16 @@ import {
   Typography,
   TextField,
   Container,
-} from '@mui/material';
-import * as z from 'zod';
-import { logout } from '../../Redux/slices/user/userSlice';
-import { FoodItem } from '../../services/types';
-import { toast } from 'react-toastify';
-import { useTranslation } from 'react-i18next';
-import { useNavigate } from 'react-router-dom';
-import './cart.page.css'
-import { cartService } from '../../services/api/cart.api';
-import { localStorageService } from '../../services/localStorageService';
-
+} from "@mui/material";
+import * as z from "zod";
+import { logout } from "../../Redux/slices/userSlice";
+import { FoodItem } from "../../services/types";
+import { toast } from "react-toastify";
+import { useTranslation } from "react-i18next";
+import { useNavigate } from "react-router-dom";
+import "./cart.page.css";
+import { cartService } from "../../services/api/cart.api";
+import { localStorageService } from "../../services/localStorageService";
 
 const CartPage: React.FC = () => {
   const { t } = useTranslation();
@@ -35,7 +34,7 @@ const CartPage: React.FC = () => {
   const deliveryPrice = useAppSelector(
     (state: RootState) => state.cart.deliveryPrice
   );
-  const [aComment, setAComment] = React.useState<string>('');
+  const [aComment, setAComment] = React.useState<string>("");
   const cartItems = useAppSelector((state: RootState) => state.cart.items);
   const userPosition = useAppSelector((state) => state.location.position);
   const deliveryOption = useAppSelector(
@@ -43,11 +42,9 @@ const CartPage: React.FC = () => {
   );
   const userItem = localStorageService.getUser();
   const user = userItem ? JSON.parse(userItem) : null;
-  const [name, setName] = React.useState(user?.firstname || '');
-  const [phoneNumber, setPhoneNumber] = React.useState(user?.tel || '');
-  const isAuthenticated = useAppSelector(
-    (state) => state.userState.isAuthenticated
-  );
+  const [name, setName] = React.useState(user?.firstname || "");
+  const [phoneNumber, setPhoneNumber] = React.useState(user?.tel || "");
+  const isAuthenticated = useAppSelector((state) => state.user.isAuthenticated);
   const dispatch = useAppDispatch();
   const navigate = useNavigate();
 
@@ -91,7 +88,7 @@ const CartPage: React.FC = () => {
 
   const submitOrder = async (
     cartItems: FoodItem[],
-    deliveryOption: 'delivery' | 'pickup' | 'surplace',
+    deliveryOption: "delivery" | "pickup" | "surplace",
     name: string,
     phoneNumber: string,
     aComment: string,
@@ -120,7 +117,7 @@ const CartPage: React.FC = () => {
         lng: userPosition?.coords.longitude,
         total_price_coupon: 14,
         tip: 14,
-        is_delivery: deliveryOption === 'delivery' ? 1 : 0,
+        is_delivery: deliveryOption === "delivery" ? 1 : 0,
         phone: phoneNumber,
         name: name,
         comment: aComment,
@@ -133,114 +130,109 @@ const CartPage: React.FC = () => {
           dispatch(logout());
           return;
         }
-        const {status,data}=await cartService.createOrder(order);
+        const { status, data } = await cartService.createOrder(order);
         if (status === 200) {
           dispatch(clearCart());
-          toast.success('Order submitted successfully', data);
+          toast.success("Order submitted successfully", data);
           dispatch(setDeliveryPrice(0));
-          dispatch(setComment(''));
+          dispatch(setComment(""));
           dispatch(setSupplier(null));
-          navigate('/track-order');
+          navigate("/track-order");
         }
       } else {
-        navigate('/login');
-        toast.warn('You need to be logged in to make an order!');
+        navigate("/login");
+        toast.warn("You need to be logged in to make an order!");
       }
     } catch (error: any) {
-      console.error('Error submitting order:', error.message);
-      toast.error('Failed to submit order. Please try again.', error.message);
+      console.error("Error submitting order:", error.message);
+      toast.error("Failed to submit order. Please try again.", error.message);
     }
   };
 
   return (
-    <Container
-      maxWidth={false}
-      className='container'>
+    <Container maxWidth={false} className="container">
       <Box
-        width='100%'
+        width="100%"
         sx={{
-          backgroundColor: '#fcfcfc',
-          alignSelf: 'center',
-          display: 'flex',
-          flexDirection: 'column',
+          backgroundColor: "#fcfcfc",
+          alignSelf: "center",
+          display: "flex",
+          flexDirection: "column",
         }}
       >
-        <Typography style={{ color: '#000000', margin: '1rem' }} variant='h4'>
-          {t('cartPage.yourCart')}
+        <Typography style={{ color: "#000000", margin: "1rem" }} variant="h4">
+          {t("cartPage.yourCart")}
         </Typography>
 
         {/* suppliers section */}
-        <Typography
-          className='suppliers'
-          variant='h6'>
-          {t('cartPage.supplier')}:{' '}
-          {supplier ? supplier.name : t('cartPage.noSupplierYet')}
+        <Typography className="suppliers" variant="h6">
+          {t("cartPage.supplier")}:{" "}
+          {supplier ? supplier.name : t("cartPage.noSupplierYet")}
         </Typography>
 
         <Cart items={cartItems} />
 
-        <Typography
-          className='delivery'
-          variant='h6'>
-          {t('cartPage.delivery')}:{' '}
-          {deliveryPrice ? Math.round(deliveryPrice) : '0'} DT
+        <Typography className="delivery" variant="h6">
+          {t("cartPage.delivery")}:{" "}
+          {deliveryPrice ? Math.round(deliveryPrice) : "0"} DT
         </Typography>
 
-        <Typography style={{ color: '#000000', margin: '1rem' }} variant='h6'>
-          {t('cartPage.total')}: {total} DT
+        <Typography style={{ color: "#000000", margin: "1rem" }} variant="h6">
+          {t("cartPage.total")}: {total} DT
         </Typography>
         <TextField
-          label={t('cartPage.addComment')}
+          label={t("cartPage.addComment")}
           value={aComment}
           onChange={handleCommentChange}
           fullWidth
-          margin='normal'
+          margin="normal"
         />
         <RadioGroup
           value={deliveryOption}
           onChange={(event: any) =>
             dispatch(setDeliveryOption(event.target.value))
           }
-          className="RadioGroup">
+          className="RadioGroup"
+        >
           <FormControlLabel
-          className='FormControlLabel'
-            value='delivery'
+            className="FormControlLabel"
+            value="delivery"
             control={<Radio />}
-            label={t('livraison')}
+            label={t("livraison")}
           />
           <FormControlLabel
-          className='FormControlLabel'
-            value='pickup'
+            className="FormControlLabel"
+            value="pickup"
             control={<Radio />}
-            label={t('emporter')}
+            label={t("emporter")}
           />
           <FormControlLabel
-          className='FormControlLabel'
-            value='surplace'
+            className="FormControlLabel"
+            value="surplace"
             control={<Radio />}
-            label='Sur place'
+            label="Sur place"
           />
         </RadioGroup>
         <Box>
-          <TextField 
-            label={t('cartPage.name')}
+          <TextField
+            label={t("cartPage.name")}
             value={name}
             onChange={(event) => setName(event.target.value)}
             fullWidth
-            margin='normal'
+            margin="normal"
           />
           <TextField
-            label={t('cartPage.phoneNumber')}
+            label={t("cartPage.phoneNumber")}
             value={phoneNumber}
             onChange={(event) => setPhoneNumber(event.target.value)}
             fullWidth
-            margin='normal'
+            margin="normal"
           />
         </Box>
         <Button
-          variant='contained'
-          color='primary'
-          style={{ margin: '2rem' }}
+          variant="contained"
+          color="primary"
+          style={{ margin: "2rem" }}
           onClick={() =>
             submitOrder(
               cartItems,
@@ -254,8 +246,9 @@ const CartPage: React.FC = () => {
               supplier.id,
               deliveryPrice
             )
-          }>
-          {t('submitOrder')}
+          }
+        >
+          {t("submitOrder")}
         </Button>
       </Box>
     </Container>
@@ -266,13 +259,13 @@ export default CartPage;
 
 const nameSchema = z
   .string()
-  .regex(/^[A-Za-z\s]+$/, 'Name must contain only letters and spaces')
-  .min(1, 'Name is required');
+  .regex(/^[A-Za-z\s]+$/, "Name must contain only letters and spaces")
+  .min(1, "Name is required");
 
 const phoneSchema = z
   .string()
-  .min(8, 'Phone number must be 8 digits long')
-  .max(13, 'Phone number must be 8 digits long')
+  .min(8, "Phone number must be 8 digits long")
+  .max(13, "Phone number must be 8 digits long")
   .optional();
 
 const orderSchema = z.object({

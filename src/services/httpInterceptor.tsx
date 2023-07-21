@@ -1,5 +1,5 @@
 import React, { useEffect } from "react";
-import { logout } from "../Redux/slices/user/userSlice";
+import { logout } from "../Redux/slices/userSlice";
 import { toast, ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { useAppDispatch } from "../Redux/store";

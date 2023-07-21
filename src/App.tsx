@@ -16,7 +16,7 @@ import {
   setSupplier,
 } from "./Redux/slices/cart/cartSlice";
 import Menu from "./components/menus/menus";
-import { setUser, login, logout } from "./Redux/slices/user/userSlice";
+import { setUser, login, logout } from "./Redux/slices/userSlice";
 import jwt_decode from "jwt-decode";
 import WebSocket from "./services/websocket";
 import eventEmitter from "./services/thunderEventsService";
@@ -144,9 +144,7 @@ function App() {
 }
 
 const ProtectedRoute = (children: any) => {
-  const isAuthenticated = useAppSelector(
-    (state) => state.userState.isAuthenticated
-  );
+  const isAuthenticated = useAppSelector((state) => state.user.isAuthenticated);
   if (!isAuthenticated) {
     return <Navigate to="/unauthorized" replace />;
   }

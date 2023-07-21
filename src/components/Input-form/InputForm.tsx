@@ -1,5 +1,4 @@
-import { Email } from "@mui/icons-material";
-import { borderColor } from "@mui/system";
+import Email from "../../assets/icons/Email";
 import { ErrorMessage } from "formik";
 import Eye from "../../assets/icons/Eye";
 import CustomError from "../CustomError/CustomError";

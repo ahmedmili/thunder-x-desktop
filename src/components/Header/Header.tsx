@@ -13,7 +13,7 @@ import { ViewList, ViewListRounded, WidgetsRounded } from "@mui/icons-material";
 import icon from "../../assets/icon.png";
 import pub from "../../assets/home/images.jpg";
 
-import { logout } from "../../Redux/slices/user/userSlice";
+import { logout } from "../../Redux/slices/userSlice";
 import { useEffect, useState } from "react";
 // import CartPage from '../../views/cart/cart.page';
 import { LanguageSelector } from "../languageSelector/languageSelector";
@@ -35,9 +35,7 @@ const Header = () => {
 
   const cartItems = useAppSelector((state) => state.cart.items);
   const location = useAppSelector((state) => state.location.position);
-  const isAuthenticated = useAppSelector(
-    (state) => state.userState.isAuthenticated
-  );
+  const isAuthenticated = useAppSelector((state) => state.user.isAuthenticated);
 
   const [showCart, setShowCart] = useState(false); // Add state variable for showing/hiding the cart
   const [showMap, setShowMap] = useState(false);
