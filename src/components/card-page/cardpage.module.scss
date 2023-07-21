@@ -1,0 +1,16 @@
+.cardpage {
+  background: var(--yellow);
+  display: grid;
+  grid-template-columns: 1fr;
+  font-size: 1.6rem;
+  font-style: normal;
+  font-weight: 500;
+  line-height: normal;
+}
+@media (min-width: 768px) {
+}
+@media (min-width: 992px) {
+  .cardpage {
+    grid-template-columns: 1fr 1fr;
+  }
+}

@@ -1,39 +1,42 @@
-import { Box, CircularProgress, Container } from '@mui/material';
-import Skeleton from 'react-loading-skeleton'
-import 'react-loading-skeleton/dist/skeleton.css'
+import { Box, CircularProgress, Container } from "@mui/material";
+import Skeleton from "react-loading-skeleton";
+import "react-loading-skeleton/dist/skeleton.css";
 
-import { useAppDispatch, useAppSelector } from '../../Redux/store';
-import Map from '../../components/Location/Location';
-import Switches from '../../components/toggleSwitch/toggleSwitch';
-import { useCallback, useEffect, useMemo, useState } from 'react';
-import PinDropIcon from '@mui/icons-material/PinDrop';
-import SearchBar from '../../components/searchBar/searchBar';
-import CategoryCarousel from '../../components/categoriesCarousel/categoriesCarousel';
+import { useAppDispatch, useAppSelector } from "../../Redux/store";
+import Map from "../../components/Location/Location";
+import Switches from "../../components/toggleSwitch/toggleSwitch";
+import { useCallback, useEffect, useMemo, useState } from "react";
+import PinDropIcon from "@mui/icons-material/PinDrop";
+import SearchBar from "../../components/searchBar/searchBar";
+import CategoryCarousel from "../../components/categoriesCarousel/categoriesCarousel";
 import {
   selectHomeData,
   selectIsDelivery,
-} from '../../Redux/slices/homeDataSlice';
-import React from 'react';
-import { Restaurant } from '../../services/types';
-import { CarouselProvider, Slide, Slider } from 'pure-react-carousel';
-import RestaurantList from '../../components/recommendedRestaurants/recommendedRestaurants';
-import { useTranslation } from 'react-i18next';
-import FAQList from '../../components/faq/faq';
-import 'laravel-echo/dist/echo';
-import eventEmitter from '../../services/thunderEventsService';
+} from "../../Redux/slices/homeDataSlice";
+import React from "react";
+import { Restaurant } from "../../services/types";
+import { CarouselProvider, Slide, Slider } from "pure-react-carousel";
+import RestaurantList from "../../components/recommendedRestaurants/recommendedRestaurants";
+import { useTranslation } from "react-i18next";
+import FAQList from "../../components/faq/faq";
+import "laravel-echo/dist/echo";
+import eventEmitter from "../../services/thunderEventsService";
 
-import './home.page.css'
-import { Height } from '@mui/icons-material';
+import "./home.page.css";
+import { Height } from "@mui/icons-material";
+import { distance } from "../../services/distance";
 const googleMapKey = import.meta.env.VITE_GOOGLE_MAPS_API_KEY;
 
 const HomePage = () => {
   const { t } = useTranslation();
-  const location = useAppSelector((state) => state.location.position);
   const homeData = useAppSelector(selectHomeData);
   const isLoading = useAppSelector((state) => state.homeData.loading);
+  const distanceFilter = useAppSelector(
+    (state) => state.restaurant.distanceFilter
+  );
+  const textFilter = useAppSelector((state) => state.restaurant.searchQuery);
   const isDelivery = useAppSelector(selectIsDelivery);
-  const [selectedCategory, setSelectedCategory] = useState<string>('');
-  const [showMap, setShowMap] = useState(false);
+  const [selectedCategory, setSelectedCategory] = useState<string>("");
   const [filteredRestaurants, setFilteredRestaurants] = useState<Restaurant[]>(
     []
   );
@@ -41,15 +44,27 @@ const HomePage = () => {
   const handleCategorySelect = (category: string) => {
     if (selectedCategory === category) {
       // User clicked on the same category again, so show the restaurants that correspond to the state of isDelivery
-      setSelectedCategory('');
+      setSelectedCategory("");
       const filteredRestaurants = homeData?.recommended.filter(
         (restaurant: Restaurant) => {
+          let restoLat = restaurant.lat;
+          let restoLong = restaurant.lat;
+          let dis = distance(restoLat, restoLong);
           const hasDelivery = isDelivery && restaurant.delivery === 1;
           const hasTakeAway = !isDelivery && restaurant.take_away === 1;
-          return hasDelivery || hasTakeAway;
+          const searchText = restaurant.name
+            .toLowerCase()
+            .includes(textFilter.toLowerCase());
+
+          console.log(searchText);
+          console.log(textFilter);
+          return (
+            (hasDelivery || hasTakeAway) && dis <= distanceFilter && searchText
+          );
         }
       );
       setFilteredRestaurants(filteredRestaurants ? filteredRestaurants : []);
+      console.log(filteredRestaurants);
     } else {
       setSelectedCategory(category);
       const filteredRestaurants = homeData?.recommended.filter(
@@ -57,82 +72,81 @@ const HomePage = () => {
           const isInCategory =
             restaurant.parents_cat
               .map((cat: any) => cat.name.toLowerCase())
-              .includes(category.toLowerCase()) || category === '';
+              .includes(category.toLowerCase()) || category === "";
           const hasDelivery = isDelivery && restaurant.delivery === 1;
           const hasTakeAway = !isDelivery && restaurant.take_away === 1;
-          return isInCategory && (hasDelivery || hasTakeAway);
+          let restoLat = restaurant.lat;
+          let restoLong = restaurant.lat;
+          let dis = distance(restoLat, restoLong);
+          const searchText = restaurant.name
+            .toLowerCase()
+            .includes(textFilter.toLowerCase());
+          console.log(searchText);
+          console.log(textFilter);
+          return (
+            isInCategory &&
+            (hasDelivery || hasTakeAway) &&
+            dis <= distanceFilter &&
+            searchText
+          );
         }
       );
       setFilteredRestaurants(filteredRestaurants ? filteredRestaurants : []);
+      console.log(filteredRestaurants);
     }
   };
 
   useEffect(() => {
-    handleCategorySelect('');
-  }, [homeData?.recommended, isDelivery]);
-
-  useEffect(() => {
-    if (showMap) {
-      document.body.style.overflow = 'hidden';
-    } else {
-      document.body.style.overflow = 'auto';
-    }
-  }, [showMap]);
+    handleCategorySelect("");
+  }, [homeData?.recommended, isDelivery, distanceFilter, textFilter]);
 
   return (
-    <Container maxWidth='lg' className="containerr">
-      <Box className="box">
-        <Box
-          className="box-inner"
-          onClick={() => setShowMap(true)}>
-          <PinDropIcon /> <div>&nbsp;&nbsp;</div>
-          <h3>
-            {location
-              ? `${location?.coords.label} ! ${t('clickToChange')}`
-              : t('no_location_detected')}
-          </h3>
+    <Container maxWidth="lg" className="containerr">
+      {isLoading ? (
+        <Box sx={{ display: "flex", justifyContent: "center" }}>
+          <CircularProgress />
         </Box>
-      </Box>
-
-      {showMap && (
-        <div
-          className="map-overlay"
-          onClick={() => setShowMap(false)}>
-          <div
-            onClick={(e) => e.stopPropagation()}>
-            <Map apiKey={googleMapKey} />
+      ) : (
+        <>
+          <div style={{ padding: "4px" }}>
+            <CategoryCarousel
+              onCategorySelect={handleCategorySelect}
+              categories={homeData?.categories}
+            />
           </div>
-        </div>
+          <div style={{ padding: "4px" }}>
+            <RestaurantList restaurants={filteredRestaurants} />
+          </div>
+        </>
       )}
       <Switches />
       <div>
-        <SearchBar placeholder={t('search_placeholder')} />
+        <SearchBar placeholder={t("search_placeholder")} />
       </div>
-      {
-        isLoading ? (
-          // <Box sx={{ display: 'flex', justifyContent: 'center' }}>
-          //   <CircularProgress />
-          // </Box>
-          <div className='skeleton-container'>
-            <Skeleton count={12}  className='loading-skeleton'  />
-            <Skeleton count={12} className='loading-skeleton' />
-            <Skeleton count={12} className='loading-skeleton' />
+      {isLoading ? (
+        // <Box sx={{ display: 'flex', justifyContent: 'center' }}>
+        //   <CircularProgress />
+        // </Box>
+        <div className="skeleton-container">
+          <Skeleton count={12} className="loading-skeleton" />
+          <Skeleton count={12} className="loading-skeleton" />
+          <Skeleton count={12} className="loading-skeleton" />
+        </div>
+      ) : (
+        <>
+          <div style={{ padding: "4px" }}>
+            <CategoryCarousel
+              onCategorySelect={handleCategorySelect}
+              categories={homeData?.categories}
+            />
           </div>
-        ) : (
-          <>
-            <div style={{ padding: '4px' }}>
-              <CategoryCarousel
-                onCategorySelect={handleCategorySelect}
-                categories={homeData?.categories}
-              />
-            </div>
-            <div style={{ padding: '4px' }}>
-              <RestaurantList restaurants={filteredRestaurants} />
-            </div>
-          </>
-        )}
+          <div style={{ padding: "4px" }}>
+            <RestaurantList restaurants={filteredRestaurants} />
+          </div>
+        </>
+      )}
       {!isLoading && homeData && homeData.ads && (
-        <div style={{ maxWidth: '1000px', margin: '5rem' }}>
+        <div style={{ maxWidth: "1000px", margin: "5rem" }}>
           <CarouselProvider
             naturalSlideWidth={850}
             naturalSlideHeight={300}
@@ -145,19 +159,20 @@ const HomePage = () => {
             step={1}
             infinite={true}
             isPlaying={true}
-            lockOnWindowScroll={true}>
+            lockOnWindowScroll={true}
+          >
             <Slider>
               {homeData.ads.HOME_1.map((ad: any) => (
                 <Slide key={ad.id} index={ad.id - 1}>
                   <img
                     style={{
-                      objectFit: 'contain',
-                      width: '100%',
-                      height: '100%',
+                      objectFit: "contain",
+                      width: "100%",
+                      height: "100%",
                     }}
                     src={ad.image}
                     alt={`Ad ${ad.id}`}
-                    loading='lazy'
+                    loading="lazy"
                   />
                 </Slide>
               ))}
@@ -165,9 +180,9 @@ const HomePage = () => {
                 <Slide key={ad.id} index={ad.id - 1}>
                   <img
                     style={{
-                      objectFit: 'contain',
-                      width: '100%',
-                      height: '100%',
+                      objectFit: "contain",
+                      width: "100%",
+                      height: "100%",
                     }}
                     src={ad.image}
                     alt={`Ad ${ad.id}`}
@@ -178,9 +193,9 @@ const HomePage = () => {
                 <Slide key={ad.id} index={ad.id - 1}>
                   <img
                     style={{
-                      objectFit: 'contain',
-                      width: '100%',
-                      height: '100%',
+                      objectFit: "contain",
+                      width: "100%",
+                      height: "100%",
                     }}
                     src={ad.image}
                     alt={`Ad ${ad.id}`}
@@ -191,7 +206,7 @@ const HomePage = () => {
           </CarouselProvider>
         </div>
       )}
-      <div style={{ position: 'relative', zIndex: 1 }}>
+      <div style={{ position: "relative", zIndex: 1 }}>
         <FAQList />
       </div>
     </Container>

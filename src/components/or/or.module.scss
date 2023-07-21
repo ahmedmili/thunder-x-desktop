@@ -1,0 +1,16 @@
+.or {
+  color: var(----secondaryColor);
+  font-family: var(--fontPrimary);
+  font-size: 1.6rem;
+  font-style: normal;
+  font-weight: 500;
+  line-height: normal;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  .bar {
+    background: var(--primaryColor);
+    width: 90%;
+    height: 1px;
+  }
+}

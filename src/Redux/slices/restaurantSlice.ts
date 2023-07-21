@@ -16,7 +16,7 @@ const initialState: RestaurantState = {
   restaurants: [],
   searchQuery: '',
   priceFilter: [],
-  distanceFilter: 0,
+  distanceFilter: 1000,
   ratingFilter: 0,
   plateFilter: [],
   list: [],
@@ -42,7 +42,7 @@ const restaurantsSlice = createSlice({
       state.plateFilter = action.payload;
     },
     setRestaurants: (state, action) => {
-      state.list = action.payload;
+      state.restaurants = action.payload;
     },
   },
 });
@@ -53,6 +53,7 @@ export const {
   setDistanceFilter,
   setRatingFilter,
   setPlateFilter,
+  setRestaurants
 } = restaurantsSlice.actions;
 
 export default restaurantsSlice.reducer;
