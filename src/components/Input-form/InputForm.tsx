@@ -10,15 +10,17 @@ interface InputFormProps {
   error?: string;
   touched?: string;
   column?: string;
+  errorsServer?: any;
 }
 
 const InputForm = ({
   field,
   form: { touched, errors },
   column,
+  errorsServer,
   ...props
 }: InputFormProps & { field: any; form: any }) => {
-  const hasError = touched[field.name] && errors[field.name];
+  const hasError = touched[field.name] && errors[field.name] && errorsServer;
   return (
     <div className={`${styles.formControl} ${column ? styles.fill : null}`}>
       <label htmlFor={field.name} className={styles.label}>

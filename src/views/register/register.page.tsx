@@ -1,5 +1,5 @@
 import * as Yup from "yup";
-import { Field, Form, Formik } from "formik";
+import { ErrorMessage, Field, Form, Formik } from "formik";
 import styles from "./register.module.scss";
 import InputForm from "../../components/Input-form/InputForm";
 import ButtonPrimary from "../../components/button-primary/ButtonPrimary";
@@ -14,83 +14,111 @@ import CardPage from "../../components/card-page/CardPage";
 import CardPageText from "../../components/card-page-text/CardPageText";
 import CardPageImage from "../../components/card-page-image/CardPageImage";
 import CardPageTitle from "../../components/card-page-title/CardPageTitle";
+import {
+  createUser,
+  usersErrors,
+  usersSelector,
+} from "../../Redux/slices/users";
+import { useAppDispatch } from "../../Redux/store";
+import { useSelector } from "react-redux";
+import CustomError from "../../components/CustomError/CustomError";
+import CustomErrorServer from "../../components/custom-error-server/CustomErrorServer";
+import Dash from "../../assets/icons/Dash";
 
-const registerSchema = Yup.object().shape({
-  firstName: Yup.string()
-    .min(3, "firstname must be more than 3")
-    .max(20, "firstname must be less than 20 characters")
-    .required("firstname is required")
-    .label("Firstname"),
-  lastName: Yup.string()
-    .min(3, "lastname must be more than 3")
-    .max(20, "lastname must be less than 20 characters")
-    .required("lastname is required")
-    .label("Lastname"),
-  email: Yup.string().required().email().label("Email"),
-  password: Yup.string()
-    .min(6, "password must be more than 6")
-    .max(20, "password must be less than 20 characters")
-    .required("password is required")
-    .label("Password"),
-  confirmPassword: Yup.string()
-    .max(20, "password must be less than 20 characters")
-    .required("password is required")
-    .label("Confirm password")
-    .oneOf([Yup.ref("password"), null], "Passwords must match"),
-  phone: Yup.string()
-    .min(10, "phone must be more than 10")
-    .max(10, "phone must be less than 10 numbers")
-    .label("Phone"),
-});
-const RegisterPage = () => {
+export type FormValues = {
+  firstname: string;
+  lastname: string;
+  email: string;
+  password: string;
+  confirm_password: string;
+  phone: string;
+};
+const RegisterPage: React.FC = () => {
+  const dispatch = useAppDispatch();
+  const errorsServer = useSelector(usersErrors);
+  const initialValues = {
+    firstname: "",
+    lastname: "",
+    email: "",
+    password: "",
+    confirm_password: "",
+    phone: "",
+  };
+  const registerSchema = Yup.object().shape({
+    firstname: Yup.string()
+      .min(3, "firstname must be more than 3")
+      .max(20, "firstname must be less than 20 characters")
+      .required("firstname is required")
+      .label("firstname"),
+    lastname: Yup.string()
+      .min(3, "lastname must be more than 3")
+      .max(20, "lastname must be less than 20 characters")
+      .required("lastname is required")
+      .label("lastname"),
+    email: Yup.string().required().email().label("Email"),
+    password: Yup.string()
+      .min(6, "password must be more than 6")
+      .max(20, "password must be less than 20 characters")
+      .required("password is required")
+      .label("Password"),
+    confirm_password: Yup.string()
+      .max(20, "password must be less than 20 characters")
+      .required("password is required")
+      .label("Confirm password")
+      .oneOf([Yup.ref("password"), null], "Passwords must match"),
+    phone: Yup.string()
+      .min(10, "phone must be more than 10")
+      .max(10, "phone must be less than 10 numbers")
+      .required("phone is required")
+      .label("phone"),
+  });
+  const onSubmit = (values: FormValues) => {
+    dispatch(createUser(values));
+  };
+
   return (
     <CardPage>
       <CardPageText>
         <CardPageTitle>S'inscrire</CardPageTitle>
         <Formik
-          initialValues={{
-            firstName: "",
-            lastName: "",
-            email: "",
-            password: "",
-            confirmPassword: "",
-            phone: "",
-          }}
+          initialValues={initialValues}
           validationSchema={registerSchema}
-          onSubmit={(values, { setSubmitting }) => {
-            setTimeout(() => {
-              alert(JSON.stringify(values, null, 2));
-              setSubmitting(false);
-            }, 400);
-          }}
+          onSubmit={onSubmit}
         >
           {({ isSubmitting }) => (
             <Form className={styles.formWrapper}>
               <Field
                 type="text"
-                name="firstName"
+                name="firstname"
                 label="Nom"
-                placeholder="Enter ici"
-                id="firstName"
+                placeholder={"Enter ici"}
+                id="firstname"
+                errorsServer={errorsServer}
                 component={InputForm}
               />
               <Field
                 type="text"
-                name="lastName"
+                name="lastname"
                 label="Prénom"
                 placeholder="Enter ici"
-                id="lastName"
+                id="lastname"
                 component={InputForm}
               />
               <Field
                 type="email"
                 name="email"
                 label="Email"
-                placeholder="Enter ici"
+                placeholder={"Enter ici"}
                 id="email"
                 column="fill"
                 component={InputForm}
               />
+              {errorsServer && errorsServer["email"] ? (
+                <CustomErrorServer
+                  icon={<Dash />}
+                  message={errorsServer["email"]}
+                />
+              ) : null}
               <Field
                 type="password"
                 name="password"
@@ -102,10 +130,10 @@ const RegisterPage = () => {
               />
               <Field
                 type="password"
-                name="confirmPassword"
+                name="confirm_password"
                 label="Confirmer le mot de passe"
                 placeholder="Enter ici"
-                id="confirmPassword"
+                id="confirm_password"
                 column="fill"
                 component={InputForm}
               />
@@ -113,11 +141,18 @@ const RegisterPage = () => {
                 type="tel"
                 name="phone"
                 label="Numéro de téléphone"
-                placeholder=""
-                id="confirmPassword"
+                placeholder={"Enter ici"}
+                id="phone"
                 column="fill"
                 component={InputForm}
               />
+              {errorsServer && errorsServer.message ? (
+                <CustomErrorServer
+                  icon={<Dash />}
+                  message={errorsServer.message}
+                />
+              ) : null}
+
               <ButtonPrimary type="submit" disabled={isSubmitting}>
                 S'inscrire
               </ButtonPrimary>
@@ -137,11 +172,11 @@ const RegisterPage = () => {
 export default RegisterPage;
 /* 
 interface FormValues {
-  firstName: string;
-  lastName: string;
+  firstname: string;
+  lastname: string;
   email: string;
   password: string;
-  confirmPassword: string;
+  confirm_password: string;
   phone: string;
 }
 const RegisterPage = () => {
@@ -151,7 +186,7 @@ const RegisterPage = () => {
       lastname: "",
       email: "",
       password: "",
-      confirmPassword: "",
+      confirm_password: "",
       phone: "",
     },
     validationSchema: registerSchema,
@@ -162,7 +197,7 @@ const RegisterPage = () => {
 
   return (
     <form className="form-wrapper" onSubmit={formik.handleSubmit}>
-      <label htmlFor="firstname">Firstname</label>
+      <label htmlFor="firstname">firstname</label>
       <input
         id="firstname"
         type="text"
@@ -174,7 +209,7 @@ const RegisterPage = () => {
         <span className="error"> {formik.errors.firstname} </span>
       )}
 
-      <label htmlFor="lastname"> LastName </label>
+      <label htmlFor="lastname"> lastname </label>
       <input
         id="lastname"
         type="text"
@@ -207,18 +242,18 @@ const RegisterPage = () => {
       {formik.touched.password && (
         <span className="error"> {formik.errors.password} </span>
       )}
-      <label htmlFor="confirmPassword">Confirm password</label>
+      <label htmlFor="confirm_password">Confirm password</label>
       <input
-        id="confirmPassword"
+        id="confirm_password"
         type="password"
-        value={formik.values.confirmPassword}
-        onChange={formik.handleChange("confirmPassword")}
-        onBlur={formik.handleBlur("confirmPassword")}
+        value={formik.values.confirm_password}
+        onChange={formik.handleChange("confirm_password")}
+        onBlur={formik.handleBlur("confirm_password")}
       />
-      {formik.touched.confirmPassword && (
-        <span className="error">{formik.errors.confirmPassword}</span>
+      {formik.touched.confirm_password && (
+        <span className="error">{formik.errors.confirm_password}</span>
       )}
-      <label htmlFor="phone">Phone</label>
+      <label htmlFor="phone">phone</label>
       <input
         id="phone"
         type="text"
@@ -308,7 +343,7 @@ const RegisterPage = () => {
       firstname: "",
       lastname: "",
       password: "",
-      confirmPassword: "",
+      confirm_password: "",
     },
     validationSchema: registerSchema,
     onSubmit: (values) => {
@@ -389,7 +424,7 @@ const RegisterPage = () => {
             </Typography>
             <FormInput
               name="firstname"
-              placeholder={t("firstName") || "First Name"}
+              placeholder={t("firstname") || "First Name"}
               label={""}
               className="input-form"
             />
@@ -431,7 +466,7 @@ const RegisterPage = () => {
             <FormInput
               className="input-form"
               name="passwordConfirm"
-              placeholder={t("confirmPassword") || undefined}
+              placeholder={t("confirm_password") || undefined}
               type={showPassword ? "text" : "password"}
               label={""}
             />
