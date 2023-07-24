@@ -8,11 +8,10 @@ import Apple from "../../assets/icons/Apple";
 import Google from "../../assets/icons/Google";
 import Facebook from "../../assets/icons/Facebook";
 import LinkConnect from "../../components/link-connect/LinkConnect";
-import authImage from "../../assets/auth.png";
+import authImage from "../../assets/authS.png";
+import authImageM from "../../assets/authM.png";
+import authImageL from "../../assets/auth.png";
 import CardPage from "../../components/card-page/CardPage";
-import CardPageText from "../../components/card-page-text/CardPageText";
-import CardPageImage from "../../components/card-page-image/CardPageImage";
-import CardPageTitle from "../../components/card-page-title/CardPageTitle";
 import { createUser, usersErrors, usersLoding } from "../../Redux/slices/users";
 import { useAppDispatch } from "../../Redux/store";
 import { useSelector } from "react-redux";
@@ -149,28 +148,30 @@ const RegisterPage: React.FC = () => {
     }
   };
   return (
-    <CardPage>
-      <CardPageText>
-        <CardPageTitle>S'inscrire</CardPageTitle>
-        {generateForm({
-          initialValues,
-          validationSchema: registerSchema,
-          fields,
-          loading: loading,
-          button: "S'inscrire",
-          showPassword,
-          showConfirmPassword,
-          ontoggleShowPassword,
-          ontoggleShowConfirmPassword,
-          onSubmit,
-        })}
-        <Or>Or</Or>
-        <ButtonConnect icon={<Apple />} text="Continue avec Apple" />
-        <ButtonConnect icon={<Google />} text="Continue avec Google" />
-        <ButtonConnect icon={<Facebook />} text="Continue avec Facebook" />
-        <LinkConnect />
-      </CardPageText>
-      <CardPageImage src={authImage} alt="inscription" />
+    <CardPage
+      title="S'inscrire"
+      src={authImage}
+      srcL={authImageL}
+      srcM={authImageM}
+      alt="inscription"
+    >
+      {generateForm({
+        initialValues,
+        validationSchema: registerSchema,
+        fields,
+        loading: loading,
+        button: "S'inscrire",
+        showPassword,
+        showConfirmPassword,
+        ontoggleShowPassword,
+        ontoggleShowConfirmPassword,
+        onSubmit,
+      })}
+      <Or>Or</Or>
+      <ButtonConnect icon={<Apple />} text="Continue avec Apple" />
+      <ButtonConnect icon={<Google />} text="Continue avec Google" />
+      <ButtonConnect icon={<Facebook />} text="Continue avec Facebook" />
+      <LinkConnect />
     </CardPage>
   );
 };
