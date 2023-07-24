@@ -4,7 +4,7 @@ import { stat } from "fs";
 import { RootState } from ".";
 import { api } from "../../services/axiosApi";
 import { User } from "../../services/types";
-import { FormValues } from "../../views/register/register.page";
+import { FormValues } from "../../utils/formUtils";
 import { AppDispatch, AppThunk } from "../store";
 
 export type UsersState = {
@@ -59,6 +59,7 @@ export const {
 
 export const usersSelector = (state: RootState) => state.users;
 export const usersErrors = (state: RootState) => state.users.error;
+export const usersLoding = (state: RootState) => state.users.loading;
 const usersReducer = usersSlice.reducer;
 export default usersReducer;
 
@@ -83,6 +84,7 @@ export const createUser =
       if (success) {
         const { token } = data;
         dispatch(addUserSuccess(data.client));
+        return response;
       } else {
         dispatch(addUserError(response.data));
       }

@@ -1,12 +1,11 @@
 .error {
-  padding: 1rem;
+  padding: 1rem 0;
   color: var(--errorColor);
   font-size: 1rem;
   display: grid;
   grid-template-columns: 16px 1fr;
   align-items: center;
   gap: 0.2rem;
-  padding: 0;
 }
 @media (min-width: 768px) {
 }

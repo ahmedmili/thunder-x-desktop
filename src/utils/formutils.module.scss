@@ -1,0 +1,30 @@
+.formWrapper {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1rem;
+}
+.formContent {
+  background: var(--white);
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  border-radius: 25px;
+  margin: 1rem;
+  padding: 2rem;
+}
+
+@media (min-width: 768px) {
+  .formContent {
+    gap: 1rem;
+    border-radius: 25px;
+    margin: 2rem 4rem;
+  }
+}
+@media (min-width: 992px) {
+  .formContent {
+    gap: 1rem;
+    border-radius: 25px;
+    margin: 4rem 6rem;
+  }
+}

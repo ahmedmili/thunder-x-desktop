@@ -1,8 +1,7 @@
 import * as Yup from "yup";
-import { ErrorMessage, Field, Form, Formik } from "formik";
-import styles from "./register.module.scss";
+import { FormikHelpers } from "formik";
+import { useNavigate } from "react-router-dom";
 import InputForm from "../../components/Input-form/InputForm";
-import ButtonPrimary from "../../components/button-primary/ButtonPrimary";
 import Or from "../../components/or/Or";
 import ButtonConnect from "../../components/button-connect/ButtonConnect";
 import Apple from "../../assets/icons/Apple";
@@ -14,37 +13,87 @@ import CardPage from "../../components/card-page/CardPage";
 import CardPageText from "../../components/card-page-text/CardPageText";
 import CardPageImage from "../../components/card-page-image/CardPageImage";
 import CardPageTitle from "../../components/card-page-title/CardPageTitle";
-import {
-  createUser,
-  usersErrors,
-  usersSelector,
-} from "../../Redux/slices/users";
+import { createUser, usersErrors, usersLoding } from "../../Redux/slices/users";
 import { useAppDispatch } from "../../Redux/store";
 import { useSelector } from "react-redux";
-import CustomError from "../../components/CustomError/CustomError";
-import CustomErrorServer from "../../components/custom-error-server/CustomErrorServer";
-import Dash from "../../assets/icons/Dash";
+import { FormValues, generateForm } from "../../utils/formUtils";
+import { useState } from "react";
 
-export type FormValues = {
-  firstname: string;
-  lastname: string;
-  email: string;
-  password: string;
-  confirm_password: string;
-  phone: string;
-};
 const RegisterPage: React.FC = () => {
-  const dispatch = useAppDispatch();
-  const errorsServer = useSelector(usersErrors);
-  const initialValues = {
-    firstname: "",
-    lastname: "",
-    email: "",
-    password: "",
-    confirm_password: "",
-    phone: "",
+  const [showPassword, setShowPassword] = useState(false);
+  const [showConfirmPassword, setShowConfirmPassword] = useState(false);
+  const ontoggleShowPassword = () => {
+    setShowPassword((prevShowPassword) => !prevShowPassword);
   };
-  const registerSchema = Yup.object().shape({
+  const ontoggleShowConfirmPassword = () => {
+    setShowConfirmPassword((prevShowPassword) => !prevShowPassword);
+  };
+  const dispatch = useAppDispatch();
+  const navigate = useNavigate();
+
+  const errorsServer = useSelector(usersErrors);
+  const loading = useSelector(usersLoding);
+
+  const fields = [
+    {
+      type: "text",
+      name: "firstname",
+      label: "Nom",
+      placeholder: "Enter ici",
+      id: "firstname",
+      component: InputForm,
+    },
+    {
+      type: "text",
+      name: "lastname",
+      label: "Prénom",
+      placeholder: "Enter ici",
+      id: "lastname",
+      component: InputForm,
+    },
+    {
+      type: "email",
+      name: "email",
+      label: "Email",
+      placeholder: "Enter ici",
+      id: "email",
+      column: "fill",
+      errorsServer:
+        errorsServer && errorsServer.email ? errorsServer.email : "",
+      component: InputForm,
+    },
+    {
+      type: !showPassword ? "password" : "text",
+      name: "password",
+      label: "Mot de passe",
+      placeholder: "Enter ici",
+      id: "password",
+      column: "fill",
+      component: InputForm,
+    },
+    {
+      type: !showConfirmPassword ? "password" : "text",
+      name: "confirm_password",
+      label: "Confirmer le mot de passe",
+      placeholder: "Enter ici",
+      id: "confirm_password",
+      column: "fill",
+      component: InputForm,
+    },
+    {
+      type: "tel",
+      name: "phone",
+      label: "Numéro de téléphone",
+      placeholder: "Enter ici",
+      id: "phone",
+      column: "fill",
+      errorsServer:
+        errorsServer && errorsServer.message ? errorsServer.message : "",
+      component: InputForm,
+    },
+  ];
+
+  const registerSchema: Yup.SchemaOf<FormValues> = Yup.object().shape({
     firstname: Yup.string()
       .min(3, "firstname must be more than 3")
       .max(20, "firstname must be less than 20 characters")
@@ -57,7 +106,7 @@ const RegisterPage: React.FC = () => {
       .label("lastname"),
     email: Yup.string().required().email().label("Email"),
     password: Yup.string()
-      .min(6, "password must be more than 6")
+      .min(8, "password must be more than 8")
       .max(20, "password must be less than 20 characters")
       .required("password is required")
       .label("Password"),
@@ -72,93 +121,49 @@ const RegisterPage: React.FC = () => {
       .required("phone is required")
       .label("phone"),
   });
-  const onSubmit = (values: FormValues) => {
-    dispatch(createUser(values));
+
+  const initialValues = {
+    firstname: "",
+    lastname: "",
+    email: "",
+    password: "",
+    confirm_password: "",
+    phone: "",
   };
 
+  const onSubmit = async (
+    values: FormValues,
+    { setSubmitting, resetForm }: FormikHelpers<FormValues>
+  ) => {
+    try {
+      const response = await dispatch(createUser(values));
+      const { success } = response?.data;
+      if (success) {
+        setSubmitting(false);
+        resetForm();
+        navigate("/login");
+      }
+      setSubmitting(false);
+    } catch (error) {
+      setSubmitting(false);
+    }
+  };
   return (
     <CardPage>
       <CardPageText>
         <CardPageTitle>S'inscrire</CardPageTitle>
-        <Formik
-          initialValues={initialValues}
-          validationSchema={registerSchema}
-          onSubmit={onSubmit}
-        >
-          {({ isSubmitting }) => (
-            <Form className={styles.formWrapper}>
-              <Field
-                type="text"
-                name="firstname"
-                label="Nom"
-                placeholder={"Enter ici"}
-                id="firstname"
-                errorsServer={errorsServer}
-                component={InputForm}
-              />
-              <Field
-                type="text"
-                name="lastname"
-                label="Prénom"
-                placeholder="Enter ici"
-                id="lastname"
-                component={InputForm}
-              />
-              <Field
-                type="email"
-                name="email"
-                label="Email"
-                placeholder={"Enter ici"}
-                id="email"
-                column="fill"
-                component={InputForm}
-              />
-              {errorsServer && errorsServer["email"] ? (
-                <CustomErrorServer
-                  icon={<Dash />}
-                  message={errorsServer["email"]}
-                />
-              ) : null}
-              <Field
-                type="password"
-                name="password"
-                label="Mot de passe"
-                placeholder="Enter ici"
-                id="password"
-                column="fill"
-                component={InputForm}
-              />
-              <Field
-                type="password"
-                name="confirm_password"
-                label="Confirmer le mot de passe"
-                placeholder="Enter ici"
-                id="confirm_password"
-                column="fill"
-                component={InputForm}
-              />
-              <Field
-                type="tel"
-                name="phone"
-                label="Numéro de téléphone"
-                placeholder={"Enter ici"}
-                id="phone"
-                column="fill"
-                component={InputForm}
-              />
-              {errorsServer && errorsServer.message ? (
-                <CustomErrorServer
-                  icon={<Dash />}
-                  message={errorsServer.message}
-                />
-              ) : null}
-
-              <ButtonPrimary type="submit" disabled={isSubmitting}>
-                S'inscrire
-              </ButtonPrimary>
-            </Form>
-          )}
-        </Formik>
+        {generateForm({
+          initialValues,
+          validationSchema: registerSchema,
+          fields,
+          loading: loading,
+          button: "S'inscrire",
+          showPassword,
+          showConfirmPassword,
+          ontoggleShowPassword,
+          ontoggleShowConfirmPassword,
+          onSubmit,
+        })}
         <Or>Or</Or>
         <ButtonConnect icon={<Apple />} text="Continue avec Apple" />
         <ButtonConnect icon={<Google />} text="Continue avec Google" />
