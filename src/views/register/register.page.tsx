@@ -32,7 +32,6 @@ const RegisterPage: React.FC = () => {
 
   const errorsServer = useSelector(usersErrors);
   const loading = useSelector(usersLoding);
-
   const fields = [
     {
       type: "text",
@@ -147,14 +146,9 @@ const RegisterPage: React.FC = () => {
       setSubmitting(false);
     }
   };
+
   return (
-    <CardPage
-      title="S'inscrire"
-      src={authImage}
-      srcL={authImageL}
-      srcM={authImageM}
-      alt="inscription"
-    >
+    <CardPage title="S'inscrire">
       {generateForm({
         initialValues,
         validationSchema: registerSchema,
@@ -175,6 +169,7 @@ const RegisterPage: React.FC = () => {
     </CardPage>
   );
 };
+
 export default RegisterPage;
 /* 
 interface FormValues {
