@@ -1,8 +1,6 @@
-import { Email } from "@mui/icons-material";
-import { borderColor } from "@mui/system";
-import { ErrorMessage } from "formik";
+import { useState } from "react";
+import Email from "../../assets/icons/Email";
 import Eye from "../../assets/icons/Eye";
-import CustomError from "../CustomError/CustomError";
 import styles from "./inputform.module.scss";
 
 interface InputFormProps {
@@ -11,15 +9,25 @@ interface InputFormProps {
   error?: string;
   touched?: string;
   column?: string;
+  errorsServer?: any;
+  showPassword: boolean;
+  showConfirmPassword: boolean;
+  ontoggleShowPassword: () => void;
+  ontoggleShowConfirmPassword: () => void;
 }
 
 const InputForm = ({
   field,
   form: { touched, errors },
   column,
+  errorsServer,
+  showPassword,
+  showConfirmPassword,
+  ontoggleShowPassword,
+  ontoggleShowConfirmPassword,
   ...props
 }: InputFormProps & { field: any; form: any }) => {
-  const hasError = touched[field.name] && errors[field.name];
+  const hasError = touched[field.name] && errors[field.name] && errorsServer;
   return (
     <div className={`${styles.formControl} ${column ? styles.fill : null}`}>
       <label htmlFor={field.name} className={styles.label}>
@@ -39,19 +47,28 @@ const InputForm = ({
         <input
           className={`${styles.formInput} ${hasError ? styles.errorStyle : ""}`}
           style={
-            props.type === "tel"
+            field.name === "phone"
               ? {
                   borderTopLeftRadius: 0,
                   borderBottomLeftRadius: 0,
                   borderLeft: 0,
                 }
-              : props.type === "email" || props.type === "password"
+              : field.name === "email" || props.type === "password"
               ? {
                   borderTopRightRadius: 0,
                   borderBottomRightRadius: 0,
                   borderRight: 0,
                 }
-              : { borderRadius: "7px" }
+              : (field.name === "password" && showPassword) ||
+                (field.name === "confirm_password" && showConfirmPassword)
+              ? {
+                  borderRight: 0,
+                  borderTopRightRadius: 0,
+                  borderBottomRightRadius: 0,
+                }
+              : {
+                  borderRadius: "7px",
+                }
           }
           type={props.type}
           error={errors[field.name]}
@@ -59,7 +76,7 @@ const InputForm = ({
           {...field}
           {...props}
         />
-        {props.type === "email" ? (
+        {field.name === "email" ? (
           <span
             className={`${styles.rightIcon} ${
               hasError ? styles.errorColor : styles.defaultColor
@@ -67,18 +84,26 @@ const InputForm = ({
           >
             <Email />
           </span>
-        ) : props.type === "password" ? (
+        ) : field.name === "password" ? (
           <span
             className={`${styles.rightIcon} ${
               hasError ? styles.errorColor : styles.defaultColor
             }`}
+            onClick={ontoggleShowPassword}
+          >
+            <Eye />
+          </span>
+        ) : field.name == "confirm_password" ? (
+          <span
+            className={`${styles.rightIcon} ${
+              hasError ? styles.errorColor : styles.defaultColor
+            }`}
+            onClick={ontoggleShowConfirmPassword}
           >
             <Eye />
           </span>
         ) : null}
       </div>
-
-      <ErrorMessage name={field.name} component={CustomError} />
     </div>
   );
 };

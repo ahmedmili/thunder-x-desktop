@@ -1,3 +1,11 @@
+export interface User {
+  firstname: string;
+  lastname: string;
+  email: string;
+  password: string;
+  confirm_password: string;
+  phone: string;
+}
 export interface IUser {
   token: any;
   name: string;

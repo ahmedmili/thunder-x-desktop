@@ -18,7 +18,7 @@ import { toast } from "react-toastify";
 import { GoogleLogin } from "@react-oauth/google";
 
 import "./login.page.css";
-import { setUser } from "../../Redux/slices/user/userSlice";
+import { setUser } from "../../Redux/slices/userSlice";
 import { useAppDispatch } from "../../Redux/store";
 import { HomeOutlined, Visibility, VisibilityOff } from "@mui/icons-material";
 import { useTranslation } from "react-i18next";

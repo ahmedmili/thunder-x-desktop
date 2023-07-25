@@ -1,150 +1,188 @@
 import * as Yup from "yup";
-import { Field, Form, Formik } from "formik";
-import styles from "./register.module.scss";
+import { FormikHelpers } from "formik";
+import { useNavigate } from "react-router-dom";
 import InputForm from "../../components/Input-form/InputForm";
-import ButtonPrimary from "../../components/button-primary/ButtonPrimary";
 import Or from "../../components/or/Or";
 import ButtonConnect from "../../components/button-connect/ButtonConnect";
 import Apple from "../../assets/icons/Apple";
 import Google from "../../assets/icons/Google";
 import Facebook from "../../assets/icons/Facebook";
 import LinkConnect from "../../components/link-connect/LinkConnect";
-import authImage from "../../assets/auth.png";
+import authImage from "../../assets/authS.png";
+import authImageM from "../../assets/authM.png";
+import authImageL from "../../assets/auth.png";
 import CardPage from "../../components/card-page/CardPage";
-import CardPageText from "../../components/card-page-text/CardPageText";
-import CardPageImage from "../../components/card-page-image/CardPageImage";
-import CardPageTitle from "../../components/card-page-title/CardPageTitle";
-import CardPageTextContent from "../../components/card-page-text-content/CardPageTextContent";
+import { createUser, usersErrors, usersLoding } from "../../Redux/slices/users";
+import { useAppDispatch } from "../../Redux/store";
+import { useSelector } from "react-redux";
+import { FormValues, generateForm } from "../../utils/formUtils";
+import { useState } from "react";
 
-const registerSchema = Yup.object().shape({
-  firstName: Yup.string()
-    .min(3, "firstname must be more than 3")
-    .max(20, "firstname must be less than 20 characters")
-    .required("firstname is required")
-    .label("Firstname"),
-  lastName: Yup.string()
-    .min(3, "lastname must be more than 3")
-    .max(20, "lastname must be less than 20 characters")
-    .required("lastname is required")
-    .label("Lastname"),
-  email: Yup.string().required().email().label("Email"),
-  password: Yup.string()
-    .min(6, "password must be more than 6")
-    .max(20, "password must be less than 20 characters")
-    .required("password is required")
-    .label("Password"),
-  confirmPassword: Yup.string()
-    .max(20, "password must be less than 20 characters")
-    .required("password is required")
-    .label("Confirm password")
-    .oneOf([Yup.ref("password"), null], "Passwords must match"),
-  phone: Yup.string()
-    .min(10, "phone must be more than 10")
-    .max(10, "phone must be less than 10 numbers")
-    .label("Phone"),
-});
-const RegisterPage = () => {
+const RegisterPage: React.FC = () => {
+  const [showPassword, setShowPassword] = useState(false);
+  const [showConfirmPassword, setShowConfirmPassword] = useState(false);
+  const ontoggleShowPassword = () => {
+    setShowPassword((prevShowPassword) => !prevShowPassword);
+  };
+  const ontoggleShowConfirmPassword = () => {
+    setShowConfirmPassword((prevShowPassword) => !prevShowPassword);
+  };
+  const dispatch = useAppDispatch();
+  const navigate = useNavigate();
+
+  const errorsServer = useSelector(usersErrors);
+  const loading = useSelector(usersLoding);
+
+  const fields = [
+    {
+      type: "text",
+      name: "firstname",
+      label: "Nom",
+      placeholder: "Enter ici",
+      id: "firstname",
+      component: InputForm,
+    },
+    {
+      type: "text",
+      name: "lastname",
+      label: "Prénom",
+      placeholder: "Enter ici",
+      id: "lastname",
+      component: InputForm,
+    },
+    {
+      type: "email",
+      name: "email",
+      label: "Email",
+      placeholder: "Enter ici",
+      id: "email",
+      column: "fill",
+      errorsServer:
+        errorsServer && errorsServer.email ? errorsServer.email : "",
+      component: InputForm,
+    },
+    {
+      type: !showPassword ? "password" : "text",
+      name: "password",
+      label: "Mot de passe",
+      placeholder: "Enter ici",
+      id: "password",
+      column: "fill",
+      component: InputForm,
+    },
+    {
+      type: !showConfirmPassword ? "password" : "text",
+      name: "confirm_password",
+      label: "Confirmer le mot de passe",
+      placeholder: "Enter ici",
+      id: "confirm_password",
+      column: "fill",
+      component: InputForm,
+    },
+    {
+      type: "tel",
+      name: "phone",
+      label: "Numéro de téléphone",
+      placeholder: "Enter ici",
+      id: "phone",
+      column: "fill",
+      errorsServer:
+        errorsServer && errorsServer.message ? errorsServer.message : "",
+      component: InputForm,
+    },
+  ];
+
+  const registerSchema: Yup.SchemaOf<FormValues> = Yup.object().shape({
+    firstname: Yup.string()
+      .min(3, "firstname must be more than 3")
+      .max(20, "firstname must be less than 20 characters")
+      .required("firstname is required")
+      .label("firstname"),
+    lastname: Yup.string()
+      .min(3, "lastname must be more than 3")
+      .max(20, "lastname must be less than 20 characters")
+      .required("lastname is required")
+      .label("lastname"),
+    email: Yup.string().required().email().label("Email"),
+    password: Yup.string()
+      .min(8, "password must be more than 8")
+      .max(20, "password must be less than 20 characters")
+      .required("password is required")
+      .label("Password"),
+    confirm_password: Yup.string()
+      .max(20, "password must be less than 20 characters")
+      .required("password is required")
+      .label("Confirm password")
+      .oneOf([Yup.ref("password"), null], "Passwords must match"),
+    phone: Yup.string()
+      .min(10, "phone must be more than 10")
+      .max(10, "phone must be less than 10 numbers")
+      .required("phone is required")
+      .label("phone"),
+  });
+
+  const initialValues = {
+    firstname: "",
+    lastname: "",
+    email: "",
+    password: "",
+    confirm_password: "",
+    phone: "",
+  };
+
+  const onSubmit = async (
+    values: FormValues,
+    { setSubmitting, resetForm }: FormikHelpers<FormValues>
+  ) => {
+    try {
+      const response = await dispatch(createUser(values));
+      const { success } = response?.data;
+      if (success) {
+        setSubmitting(false);
+        resetForm();
+        navigate("/login");
+      }
+      setSubmitting(false);
+    } catch (error) {
+      setSubmitting(false);
+    }
+  };
   return (
-    <CardPage>
-      <CardPageText>
-        <CardPageTextContent>
-          <CardPageTitle>S'inscrire</CardPageTitle>
-          <Formik
-            initialValues={{
-              firstName: "",
-              lastName: "",
-              email: "",
-              password: "",
-              confirmPassword: "",
-              phone: "",
-            }}
-            validationSchema={registerSchema}
-            onSubmit={(values, { setSubmitting }) => {
-              setTimeout(() => {
-                alert(JSON.stringify(values, null, 2));
-                setSubmitting(false);
-              }, 400);
-            }}
-          >
-            {({ isSubmitting }) => (
-              <Form className={styles.formWrapper}>
-                <Field
-                  type="text"
-                  name="firstName"
-                  label="Nom"
-                  placeholder="Enter ici"
-                  id="firstName"
-                  component={InputForm}
-                />
-                <Field
-                  type="text"
-                  name="lastName"
-                  label="Prénom"
-                  placeholder="Enter ici"
-                  id="lastName"
-                  component={InputForm}
-                />
-                <Field
-                  type="email"
-                  name="email"
-                  label="Email"
-                  placeholder="Enter ici"
-                  id="email"
-                  column="fill"
-                  component={InputForm}
-                />
-                <Field
-                  type="password"
-                  name="password"
-                  label="Mot de passe"
-                  placeholder="Enter ici"
-                  id="password"
-                  column="fill"
-                  component={InputForm}
-                />
-                <Field
-                  type="password"
-                  name="confirmPassword"
-                  label="Confirmer le mot de passe"
-                  placeholder="Enter ici"
-                  id="confirmPassword"
-                  column="fill"
-                  component={InputForm}
-                />
-                <Field
-                  type="tel"
-                  name="phone"
-                  label="Numéro de téléphone"
-                  placeholder=""
-                  id="confirmPassword"
-                  column="fill"
-                  component={InputForm}
-                />
-                <ButtonPrimary type="submit" disabled={isSubmitting}>
-                  S'inscrire
-                </ButtonPrimary>
-              </Form>
-            )}
-          </Formik>
-          <Or>Or</Or>
-          <ButtonConnect icon={<Apple />} text="Continue avec Apple" />
-          <ButtonConnect icon={<Google />} text="Continue avec Google" />
-          <ButtonConnect icon={<Facebook />} text="Continue avec Facebook" />
-          <LinkConnect />
-        </CardPageTextContent>
-      </CardPageText>
-      <CardPageImage src={authImage} alt="inscription" />
+    <CardPage
+      title="S'inscrire"
+      src={authImage}
+      srcL={authImageL}
+      srcM={authImageM}
+      alt="inscription"
+    >
+      {generateForm({
+        initialValues,
+        validationSchema: registerSchema,
+        fields,
+        loading: loading,
+        button: "S'inscrire",
+        showPassword,
+        showConfirmPassword,
+        ontoggleShowPassword,
+        ontoggleShowConfirmPassword,
+        onSubmit,
+      })}
+      <Or>Or</Or>
+      <ButtonConnect icon={<Apple />} text="Continue avec Apple" />
+      <ButtonConnect icon={<Google />} text="Continue avec Google" />
+      <ButtonConnect icon={<Facebook />} text="Continue avec Facebook" />
+      <LinkConnect />
     </CardPage>
   );
 };
 export default RegisterPage;
 /* 
 interface FormValues {
-  firstName: string;
-  lastName: string;
+  firstname: string;
+  lastname: string;
   email: string;
   password: string;
-  confirmPassword: string;
+  confirm_password: string;
   phone: string;
 }
 const RegisterPage = () => {
@@ -154,7 +192,7 @@ const RegisterPage = () => {
       lastname: "",
       email: "",
       password: "",
-      confirmPassword: "",
+      confirm_password: "",
       phone: "",
     },
     validationSchema: registerSchema,
@@ -165,7 +203,7 @@ const RegisterPage = () => {
 
   return (
     <form className="form-wrapper" onSubmit={formik.handleSubmit}>
-      <label htmlFor="firstname">Firstname</label>
+      <label htmlFor="firstname">firstname</label>
       <input
         id="firstname"
         type="text"
@@ -177,7 +215,7 @@ const RegisterPage = () => {
         <span className="error"> {formik.errors.firstname} </span>
       )}
 
-      <label htmlFor="lastname"> LastName </label>
+      <label htmlFor="lastname"> lastname </label>
       <input
         id="lastname"
         type="text"
@@ -210,18 +248,18 @@ const RegisterPage = () => {
       {formik.touched.password && (
         <span className="error"> {formik.errors.password} </span>
       )}
-      <label htmlFor="confirmPassword">Confirm password</label>
+      <label htmlFor="confirm_password">Confirm password</label>
       <input
-        id="confirmPassword"
+        id="confirm_password"
         type="password"
-        value={formik.values.confirmPassword}
-        onChange={formik.handleChange("confirmPassword")}
-        onBlur={formik.handleBlur("confirmPassword")}
+        value={formik.values.confirm_password}
+        onChange={formik.handleChange("confirm_password")}
+        onBlur={formik.handleBlur("confirm_password")}
       />
-      {formik.touched.confirmPassword && (
-        <span className="error">{formik.errors.confirmPassword}</span>
+      {formik.touched.confirm_password && (
+        <span className="error">{formik.errors.confirm_password}</span>
       )}
-      <label htmlFor="phone">Phone</label>
+      <label htmlFor="phone">phone</label>
       <input
         id="phone"
         type="text"
@@ -311,7 +349,7 @@ const RegisterPage = () => {
       firstname: "",
       lastname: "",
       password: "",
-      confirmPassword: "",
+      confirm_password: "",
     },
     validationSchema: registerSchema,
     onSubmit: (values) => {
@@ -392,7 +430,7 @@ const RegisterPage = () => {
             </Typography>
             <FormInput
               name="firstname"
-              placeholder={t("firstName") || "First Name"}
+              placeholder={t("firstname") || "First Name"}
               label={""}
               className="input-form"
             />
@@ -434,7 +472,7 @@ const RegisterPage = () => {
             <FormInput
               className="input-form"
               name="passwordConfirm"
-              placeholder={t("confirmPassword") || undefined}
+              placeholder={t("confirm_password") || undefined}
               type={showPassword ? "text" : "password"}
               label={""}
             />

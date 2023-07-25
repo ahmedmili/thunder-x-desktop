@@ -1,6 +1,7 @@
-import { createSlice, PayloadAction } from '@reduxjs/toolkit';
-import { IUser } from '../../../services/types';
-import { localStorageService } from '../../../services/localStorageService';
+import { createSlice, PayloadAction } from "@reduxjs/toolkit";
+import { IUser } from "../../services/types";
+import { localStorageService } from "../../services/localStorageService";
+import { boolean } from "zod";
 
 interface IUserState {
   user: IUser | null;
@@ -12,7 +13,7 @@ const initialState: IUserState = {
 };
 
 export const userSlice = createSlice({
-  name: 'userSlice',
+  name: "userSlice",
   initialState,
   reducers: {
     logout: (state) => {
