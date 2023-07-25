@@ -1,6 +1,6 @@
 import { ReactNode } from "react";
 import styles from "./cardpage.module.scss";
-import AuthPicture from "../../assets/icons/pictures/AuthPicture";
+import InscriptionPicture from "../../assets/icons/pictures/inscription/InscriptionPicture";
 const CardPage = ({
   title,
   children,
@@ -18,7 +18,7 @@ const CardPage = ({
       </div>
       <div className={styles.cardpageimage}>
         <div className={styles.cardpageimageContent}>
-          <AuthPicture />
+          <InscriptionPicture />
         </div>
       </div>
     </div>

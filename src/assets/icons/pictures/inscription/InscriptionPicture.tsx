@@ -1,11 +1,11 @@
-import styles from "./authpicture.module.scss";
-import cake from "../../cake.png";
-import burger from "../../burger.png";
-import glass from "../../glass.png";
-import steck from "../../steck.png";
-import assiette from "../../inscription.png";
+import styles from "./inscriptionpicture.module.scss";
+import cake from "./cake.png";
+import burger from "./burger.png";
+import glass from "./glass.png";
+import steck from "./steck.png";
+import assiette from "./inscription.png";
 
-const AuthPicture = () => {
+const InscriptionPicture = () => {
   return (
     <div className={styles.picture}>
       <img src={cake} alt="cake" loading="lazy" />
@@ -16,4 +16,4 @@ const AuthPicture = () => {
     </div>
   );
 };
-export default AuthPicture;
+export default InscriptionPicture;
