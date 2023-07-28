@@ -8,17 +8,15 @@ import Apple from "../../assets/icons/Apple";
 import Google from "../../assets/icons/Google";
 import Facebook from "../../assets/icons/Facebook";
 import LinkConnect from "../../components/link-connect/LinkConnect";
-import authImage from "../../assets/authS.png";
-import authImageM from "../../assets/authM.png";
-import authImageL from "../../assets/auth.png";
 import CardPage from "../../components/card-page/CardPage";
 import { createUser, usersErrors, usersLoding } from "../../Redux/slices/users";
 import { useAppDispatch } from "../../Redux/store";
 import { useSelector } from "react-redux";
 import { FormValues, generateForm } from "../../utils/formUtils";
 import { useState } from "react";
+import PicturesList from "../../components/picture-list/PicturesList";
 
-const RegisterPage: React.FC = () => {
+const RegisterPage = () => {
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
   const ontoggleShowPassword = () => {
@@ -148,7 +146,7 @@ const RegisterPage: React.FC = () => {
   };
 
   return (
-    <CardPage title="S'inscrire">
+    <CardPage title="S'inscrire" image={<PicturesList />}>
       {generateForm({
         initialValues,
         validationSchema: registerSchema,

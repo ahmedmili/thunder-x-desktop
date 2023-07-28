@@ -1,11 +1,12 @@
 import { ReactNode } from "react";
 import styles from "./cardpage.module.scss";
-import InscriptionPicture from "../../assets/icons/pictures/inscription/InscriptionPicture";
 const CardPage = ({
   title,
+  image,
   children,
 }: {
   title: string;
+  image: ReactNode;
   children: ReactNode;
 }) => {
   return (
@@ -17,9 +18,7 @@ const CardPage = ({
         </div>
       </div>
       <div className={styles.cardpageimage}>
-        <div className={styles.cardpageimageContent}>
-          <InscriptionPicture />
-        </div>
+        <div className={styles.cardpageimageContent}>{image}</div>
       </div>
     </div>
   );
