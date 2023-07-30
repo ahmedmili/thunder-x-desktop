@@ -1,22 +1,22 @@
 import * as Yup from "yup";
 import { FormikHelpers } from "formik";
 import { useNavigate } from "react-router-dom";
-import InputForm from "../../components/Input-form/InputForm";
-import Or from "../../components/or/Or";
-import ButtonConnect from "../../components/button-connect/ButtonConnect";
-import Apple from "../../assets/icons/Apple";
-import Google from "../../assets/icons/Google";
-import Facebook from "../../assets/icons/Facebook";
-import LinkConnect from "../../components/link-connect/LinkConnect";
-import CardPage from "../../components/card-page/CardPage";
-import { createUser, usersErrors, usersLoding } from "../../Redux/slices/users";
-import { useAppDispatch } from "../../Redux/store";
+import InputForm from "../components/Input-form/InputForm";
+import Or from "../components/or/Or";
+import ButtonConnect from "../components/button-connect/ButtonConnect";
+import Apple from "../assets/icons/Apple";
+import Google from "../assets/icons/Google";
+import Facebook from "../assets/icons/Facebook";
+import LinkConnect from "../components/link-connect/LinkConnect";
+import CardPage from "../components/card-page/CardPage";
+import { createUser, usersErrors, usersLoding } from "../Redux/slices/users";
+import { useAppDispatch } from "../Redux/store";
 import { useSelector } from "react-redux";
-import { FormValues, generateForm } from "../../utils/formUtils";
+import { FormValues, generateForm } from "../utils/formUtils";
 import { useState } from "react";
-import PicturesList from "../../components/picture-list/PicturesList";
+import PicturesList from "../components/picture-list/PicturesList";
 
-const RegisterPage = () => {
+const Register = () => {
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
   const ontoggleShowPassword = () => {
@@ -55,7 +55,7 @@ const RegisterPage = () => {
       id: "email",
       column: "fill",
       errorsServer:
-        errorsServer && errorsServer.email ? errorsServer.email : "",
+        errorsServer && errorsServer.email ? errorsServer.email[0] : "",
       component: InputForm,
     },
     {
@@ -89,7 +89,7 @@ const RegisterPage = () => {
     },
   ];
 
-  const registerSchema: Yup.SchemaOf<FormValues> = Yup.object().shape({
+  const registerSchema = Yup.object().shape({
     firstname: Yup.string()
       .min(3, "firstname must be more than 3")
       .max(20, "firstname must be less than 20 characters")
@@ -137,7 +137,7 @@ const RegisterPage = () => {
       if (success) {
         setSubmitting(false);
         resetForm();
-        navigate("/login");
+        navigate("/confirm");
       }
       setSubmitting(false);
     } catch (error) {
@@ -146,7 +146,7 @@ const RegisterPage = () => {
   };
 
   return (
-    <CardPage title="S'inscrire" image={<PicturesList />}>
+    <CardPage icon="" text="" title="S'inscrire" image={<PicturesList />}>
       {generateForm({
         initialValues,
         validationSchema: registerSchema,
@@ -159,16 +159,18 @@ const RegisterPage = () => {
         ontoggleShowConfirmPassword,
         onSubmit,
       })}
-      <Or>Or</Or>
-      <ButtonConnect icon={<Apple />} text="Continue avec Apple" />
-      <ButtonConnect icon={<Google />} text="Continue avec Google" />
-      <ButtonConnect icon={<Facebook />} text="Continue avec Facebook" />
-      <LinkConnect />
+      <div style={{ display: "flex", flexDirection: "column", gap: "1rem" }}>
+        <Or>Or</Or>
+        <ButtonConnect icon={<Apple />} text="Continue avec Apple" />
+        <ButtonConnect icon={<Google />} text="Continue avec Google" />
+        <ButtonConnect icon={<Facebook />} text="Continue avec Facebook" />
+        <LinkConnect />
+      </div>
     </CardPage>
   );
 };
 
-export default RegisterPage;
+export default Register;
 /* 
 interface FormValues {
   firstname: string;

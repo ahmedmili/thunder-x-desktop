@@ -27,7 +27,7 @@ const InputForm = ({
   ontoggleShowConfirmPassword,
   ...props
 }: InputFormProps & { field: any; form: any }) => {
-  const hasError = touched[field.name] && errors[field.name] && errorsServer;
+  const hasError = (touched[field.name] && errors[field.name]) || errorsServer;
   return (
     <div className={`${styles.formControl} ${column ? styles.fill : null}`}>
       <label htmlFor={field.name} className={styles.label}>

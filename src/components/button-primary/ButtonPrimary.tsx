@@ -3,6 +3,7 @@ import styles from "./buttonprimary.module.scss";
 type ButtonPrimaryProps = {
   children: ReactNode;
   type?: ButtonHTMLAttributes<HTMLButtonElement>["type"];
+  name: string;
   disabled?: boolean;
 };
 const ButtonPrimary = ({ children, ...props }: ButtonPrimaryProps) => {
