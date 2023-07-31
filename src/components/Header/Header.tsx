@@ -1,14 +1,13 @@
-import { useNavigate } from "react-router-dom";
-import { useAppDispatch, useAppSelector } from "../../Redux/store";
-import { toast } from "react-toastify";
+import { useNavigate } from 'react-router-dom';
+import { useAppDispatch, useAppSelector } from '../../Redux/store';
+import { toast } from 'react-toastify';
+import headerStyles from './header.module.scss'
+import { Container, Row, Col } from "react-bootstrap"
 
-import { AppBar, Box, Container, Toolbar, Typography } from "@mui/material";
 import { LoadingButton as _LoadingButton } from "@mui/lab";
 
 import PinDropIcon from "@mui/icons-material/PinDrop";
-import ShoppingCartIcon from "@mui/icons-material/ShoppingCart";
-import LogoutIcon from "@mui/icons-material/Logout";
-import { ViewList, ViewListRounded, WidgetsRounded } from "@mui/icons-material";
+
 
 import icon from "../../assets/icon.png";
 import pub from "../../assets/home/images.jpg";
@@ -16,13 +15,12 @@ import pub from "../../assets/home/images.jpg";
 import { logout } from "../../Redux/slices/userSlice";
 import { useEffect, useState } from "react";
 // import CartPage from '../../views/cart/cart.page';
-import { LanguageSelector } from "../languageSelector/languageSelector";
 import { useTranslation } from "react-i18next";
-import "./header.css";
 import { localStorageService } from "../../services/localStorageService";
 import Switches from "../toggleSwitch/toggleSwitch";
 import SearchBar from "../searchBar/searchBar";
 import Map from "../Location/Location";
+import { Box } from '@mui/material';
 
 const googleMapKey = import.meta.env.VITE_GOOGLE_MAPS_API_KEY;
 
@@ -35,10 +33,10 @@ const Header = () => {
 
   const cartItems = useAppSelector((state) => state.cart.items);
   const location = useAppSelector((state) => state.location.position);
-  const isAuthenticated = useAppSelector((state) => state.user.isAuthenticated);
-
+  
   const [showCart, setShowCart] = useState(false); // Add state variable for showing/hiding the cart
   const [showMap, setShowMap] = useState(false);
+
 
   const dispatch = useAppDispatch();
   const navigate = useNavigate();
@@ -84,159 +82,109 @@ const Header = () => {
   }, [showCart]);
 
   return (
-    <div className="header-container">
-      <div className="head1">
-        <div className="demi-cercle"></div>
+    <>
+     <div className={headerStyles.head1}>
+        <div className={headerStyles.demiCercle}>
+
+        </div>
       </div>
-      <div id="header-app-bar1">
-        {/*  Thunder logo section  */}
+    <Container className=' container-lg  container-xxl container-xl' fluid  >
+      <Row className={headerStyles.headerContainer}>
+        <Col >
+          <Row>
+            <Col className='col-8 col-sm-6' >
+              <Box className={headerStyles.head2} >
+                <div className={headerStyles.logoContainer} onClick={() => navigate('/')} >
+                  <img src={icon} alt='icon' ></img >
+                </div>
+                <div className={headerStyles.headerAppBar2}>
+                  <div className={headerStyles.headerMessage}>
+                    <p className={headerStyles.headerMessageSyle1} > Nous &nbsp;
+                      <span className={headerStyles.headerMessageSyle2}>
+                        livrons
+                      </span>
+                    </p>
+                    <p className={headerStyles.headerMessageSyle1}> plus que de la &nbsp;
+                      <span className={headerStyles.headerMessageSyle2}>
+                        nourriture
+                      </span> .
+                    </p>
+                  </div>
+                  <div className={headerStyles.Switches}>
+                    <Switches />
+                  </div>
+                  <Box className={headerStyles.headerLocalisationMessageContainer} onClick={() => setShowMap(true)} >
+                    <h3>
+                      <span className={headerStyles.localisationIcon} >
+                        <PinDropIcon />
+                      </span>
+                      {location
+                        ? `${location?.coords.label} ! ${t('clickToChange')}`
+                        : t('no_location_detected')}
+                    </h3>
+                  </Box>
+                  <SearchBar placeholder={t('search_placeholder')} />
 
-        <Box className="head2">
-          <div className="logo-container" onClick={() => navigate("/")}>
-            <img src={icon} alt="icon"></img>
+                </div>
+              </Box>
+            </Col>
+
+            <Col className='col-4 col-sm-6'>
+              <Box className={headerStyles.head3}>
+                {/* login register buttons  */}
+                  {!logged_in  ?  (
+                    <>
+                <div className={headerStyles.appBar}>
+                      <div
+                        onClick={() => navigate('/register')}
+                        className={headerStyles.LoadingButton}
+                      >
+                        {t('signup')}
+                      </div>
+                      <div
+                        onClick={() => navigate('/login')}
+                        className={headerStyles.LoadingButton}
+                      >
+                        {t('login')}
+                      </div>
+                </div>
+                    </>
+                  ) : <>
+                    <div className="app-bar">
+                      <div
+                        onClick={onLogoutHandler}
+                        className={headerStyles.LoadingButton}
+                      >
+                        {t('signout')}
+                      </div>
+                </div>
+                  </>
+                }
+                <div className={headerStyles.imageBuilder}>
+                    <img src={pub} alt="header photo" />
+                </div>
+              </Box>
+            </Col>
+          </Row>
+        </Col>
+      </Row>
+      {/*  Thunder logo section  */}
+      {showMap && (
+        <div
+          className="map-overlay"
+          onClick={() => setShowMap(false)}>
+          <div
+            onClick={(e) => e.stopPropagation()}>
+            <Map apiKey={googleMapKey} />
           </div>
-
-          <div className="header-app-bar2">
-            <div className="header-message">
-              <p className="header-message-syle1">
-                {" "}
-                Nous &nbsp;
-                <span className="header-message-syle2">livrons</span>
-              </p>
-              <p className="header-message-syle1">
-                {" "}
-                plus que de la &nbsp;
-                <span className="header-message-syle2">nourriture</span> .
-              </p>
-            </div>
-            <div className="Switches">
-              <Switches />
-            </div>
-
-            <Box
-              className="header-localisation-message-container"
-              onClick={() => setShowMap(true)}
-            >
-              <h3>
-                <span className="localisation-icon">
-                  <PinDropIcon />
-                </span>
-                {location
-                  ? `${location?.coords.label} ! ${t("clickToChange")}`
-                  : t("no_location_detected")}
-              </h3>
-            </Box>
-
-            <SearchBar placeholder={t("search_placeholder")} />
-          </div>
-        </Box>
-
-        {/* shopping cart section */}
-        {/* <Box sx={{ flexGrow: 1, display: 'flex', justifyContent: 'center' }}> */}
-        {/* order button */}
-        {/* {isAuthenticated && (
-              <div className='order-container'
-                onClick={handleCommand}>
-                <div className='order-icon'
-                >
-                  <WidgetsRounded style={{ color: '#000000' }} />
-                </div>
-                <div style={{ color: '#000000' }}>
-                  {t('cartPage.yourCommands')}
-                </div>
-              </div>
-            )} */}
-
-        {/* <div
-              className='cart-logo-container'
-              onClick={handleCart}>
-              <div className='cart-logo'>
-                <ShoppingCartIcon style={{ color: '#000000' }} />
-                {cartItems.length > 0 && (
-                  <span style={{ color: '#000000' }}>({cartItems.length})</span>
-                )}
-              </div>
-              <div style={{ color: '#000000' }}>{t('cartPage.yourCart')}</div>
-            </div> */}
-
-        {/* cart button */}
-        {/* {showCart && (
-              <div className='cart-container'
-                onClick={() => setShowCart(false)}>
-                <div
-                  className='cart'
-                  onClick={(e) => e.stopPropagation()}>
-                  <CartPage />
-                </div>
-              </div>
-            )} */}
-
-        {/* </Box> */}
-
-        {/* Language Selector */}
-        {/* <div className='LanguageSelector-container'>
-            <LanguageSelector />
-          </div> */}
-
-        <Box className="head3">
-          {/* login register buttons  */}
-          <div className="app-bar">
-            {!logged_in && (
-              <>
-                <div
-                  onClick={() => navigate("/register")}
-                  className="LoadingButton"
-                >
-                  {t("signup")}
-                </div>
-                <div
-                  onClick={() => navigate("/login")}
-                  className="LoadingButton"
-                >
-                  {t("login")}
-                </div>
-              </>
-            )}
-          </div>
-
-          <div className="image-builder"></div>
-
-          {/* welcome message */}
-          {/* {logged_in && (
-              <>
-                <div
-                  style={{
-                    color: '#00000e',
-                    padding: '0.5rem',
-                  }}>
-                  {t('welcome')}
-                  {firstname}
-                </div>
-
-                <LogoutIcon
-                  className='logout-icon'
-                  style={{
-                    height: '40px',
-                    width: '40px',
-                  }}
-
-                  onClick={onLogoutHandler}
-                />
-              </>
-            )}
-           </div>
-            )} */}
-        </Box>
-        {showMap && (
-          <div className="map-overlay" onClick={() => setShowMap(false)}>
-            <div onClick={(e) => e.stopPropagation()}>
-              <Map apiKey={googleMapKey} />
-            </div>
-          </div>
-        )}
-      </div>
-    </div>
+        </div>
+      )}
+    </Container>
+     
+    </>
   );
 };
 
 export default Header;
+
+      

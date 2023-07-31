@@ -1,0 +1,78 @@
+@import '../../colors';
+
+.footerContainer {
+    height: 100%;
+    width: 100%;
+
+    .footer-logo-col {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+
+        .webifyIcon {
+            height: 60%;
+            width: 60%;
+        }
+    }
+
+    .footerLogoCol {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+    }
+
+
+    .footerContacteEmailCol , .footerContacteTelCol {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+    }
+
+    .footerPubsCol {
+        overflow-y: scroll;
+        .footerPubsContainer {
+            margin: 5px;
+            display: flex;
+
+            .pubsImage {
+                height: 100px;
+                width: 100px;
+            }
+        }
+
+    }
+
+    .footerRightReserverCol {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        background-color: $primary_color_001;
+        color: white;
+    }
+
+
+    .footerTitle {
+        color: $dark_Gray;
+        font-family: Poppins;
+        font-size: 18px;
+        font-style: normal;
+        font-weight: 700;
+        line-height: 33px;
+    }
+
+    .FooterText {
+        color: $light_Gray;
+        font-family: Poppins;
+        font-size: 18px;
+        font-style: normal;
+        font-weight: 600;
+        line-height: 33px;
+
+        span {
+            color: $orange_color;
+        }
+
+
+    }
+
+}

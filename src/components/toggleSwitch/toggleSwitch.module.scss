@@ -1,0 +1,71 @@
+  .SwitchesContainer {
+    width: 16rem;
+    position: relative;
+    display: flex;
+    padding: 0;
+    background: #24A6A4;
+    line-height: 3rem;
+    border-radius: 3rem;
+
+    .SwitchInput {
+      visibility: hidden;
+      position: absolute;
+      top: 0;
+    }
+
+    .SwitchLabel {
+      width: 50%;
+      padding: 0;
+      margin: 0;
+      text-align: center;
+      cursor: pointer;
+      color: white;
+    }
+
+    .SwitchTextIcon {
+      margin-right: 2px;
+    }
+
+    .SwitchWrapper {
+      position: absolute;
+      top: 0px;
+      bottom: 0px;
+      width: 50%;
+      z-index: 3;
+      transition: transform 0.5s cubic-bezier(0.77, 0, 0.175, 1);
+    }
+
+    .Switch {
+      border-radius: 3rem;
+      background: #FBC000;
+      height: 100%;
+    }
+
+    .SwitchText {
+      width: 100%;
+      text-align: center;
+      opacity: 0;
+      display: block;
+      color: white;
+      transition: opacity 0.2s cubic-bezier(0.77, 0, 0.175, 1) 0.125s;
+      will-change: opacity;
+      position: absolute;
+      top: 0;
+      left: 0;
+    }
+
+  }
+  
+  @media only screen and (min-width: 300px) and (max-width:600px) {
+    .SwitchesContainer {
+      width: 12rem;
+      line-height: 2rem;
+    }
+  }
+
+  @media only screen and (min-width: 601px) and (max-width:1000px) {
+    .SwitchesContainer {
+      width: 18rem;
+      line-height: 2rem;
+    }
+  }

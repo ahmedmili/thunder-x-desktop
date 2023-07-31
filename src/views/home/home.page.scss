@@ -1,5 +1,13 @@
+@use '../../colors';
+
 .containerr {
   max-width: 100%;
+}
+
+.carousel-home-container{
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
 
 .box {
@@ -81,7 +89,6 @@
 .skeleton-container {
   width: 80vw;
   margin: 10px auto;
-  /* height: 500px; */
   display: flex;
   flex-direction: row;
   justify-content: space-around;

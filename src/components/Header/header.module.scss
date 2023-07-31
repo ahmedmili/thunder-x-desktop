@@ -1,0 +1,280 @@
+@import '../../colors';
+
+.headerContainer {
+    margin-left: 1%;
+    margin-top: 5px;
+    margin-bottom: 15px;
+}
+
+.head1 {
+    position: relative;
+
+    .demiCercle {
+        position: absolute;
+        top: 48px;
+        left: -252px;
+        z-index: 20;
+        height: 300px;
+        width: 300px;
+        border-radius: 500px;
+        background: linear-gradient(180deg, $orange_color 0%, $orange_color 100%);
+    }
+}
+
+.logoContainer {
+    cursor: pointer;
+
+    img {
+        width: 77px;
+        height: 119.64px;
+    }
+}
+
+.headerMessage {
+    display: flex;
+    flex-direction: column;
+
+    .headerMessageSyle1 {
+        margin: 0;
+        display: inline;
+        color: $dark_Gray;
+        font-family: Poppins;
+        font-size: 32px;
+        font-style: normal;
+        font-weight: 700;
+        line-height: normal;
+    }
+
+    .headerMessageSyle2 {
+        display: inline;
+        color: $primary_color;
+        font-family: Poppins;
+        font-size: 32px;
+        font-style: normal;
+        font-weight: 700;
+        line-height: normal;
+    }
+}
+
+.Switches {
+    margin-top: 15px;
+}
+
+.headerLocalisationMessageContainer {
+    margin-top: 5px;
+    display: flex;
+    flex-direction: column;
+    cursor: pointer;
+
+    h3 {
+        color: $dark_Gray;
+        font-family: Poppins;
+        font-size: 18px;
+        font-style: normal;
+        font-weight: 700;
+        line-height: normal;
+        transition: color 1s;
+
+        &:hover {
+            color: black;
+        }
+
+        .localisationIcon {
+            position: relative;
+            top: 5px;
+            color: $primary_color;
+        }
+    }
+}
+
+.head3 {
+    display: flex;
+    flex-direction: column;
+    justify-content: end;
+    align-items: end;
+    flex: 1;
+
+    .LoadingButton {
+        padding: 0.4rem;
+        background-color: $primary_color;
+        border: 1px solid $white_001;
+        border-radius: 20px;
+        color: $white_001;
+        font-weight: 500;
+        width: 144px;
+        height: 40px;
+        text-align: center;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+
+        &:hover {
+            background-color: $primary_color_001;
+            transform: translateY(-2px);
+        }
+    }
+
+    .appBar {
+        display: flex;
+    }
+
+    .imageBuilder{
+        position: relative;
+        margin: 7px 10px 0 7px;
+        width: 546px;
+        height: 305px;
+        border-radius: 10%;
+
+        img {
+            position: absolute;
+            top: 0;
+            left: 0;
+            object-fit: cover;
+            width: 95%;
+            height: 100%;
+        }
+    }
+
+}
+
+
+@media only screen and (min-width: 300px) and (max-width:600px) {
+    .head1 {
+        .demiCercle {
+            top: 30px;
+            left: -187px;
+            z-index: 20;
+            height: 200px;
+            width: 200px;
+        }
+    }
+
+    .headerContainer {
+
+        .head2 {
+            // margin-left: 9%;
+
+            .logoContainer {
+                img {
+                    width: 77px;
+                    height: 67.64px;
+                }
+            }
+
+            .headerAppBar2 {
+                .headerMessage {
+
+                    .headerMessageSyle1,
+                    .headerMessageSyle2 {
+                        font-size: 16px;
+                    }
+                }
+
+                .headerLocalisationMessageContainer {
+                    h3 {
+                        font-size: 11px;
+                        font-weight: bolder;
+
+                        .localisationIcon {
+                            top: -2px;
+                        }
+                    }
+                }
+            }
+        }
+
+        .head3 {
+            .appBar {
+                .LoadingButton {
+                    padding: 0;
+                    width: 90px;
+                    height: 24px;
+                }
+            }
+
+            .imageBuilder{
+                width: 159px;
+                height: 93px;
+            }
+        }
+
+    }
+}
+
+
+@media only screen and (min-width: 601px) and (max-width:1000px) {
+    .head1 {
+        .demiCercle {
+            top: 30px;
+            left: -212px;
+            z-index: 20;
+            height: 250px;
+            width: 250px;
+        }
+    }
+
+    .headerContainer {
+
+        .head2 {
+            margin-left: 9%;
+
+            .logoContainer {
+                img {
+                    width: 77px;
+                    height: 94px;
+                }
+            }
+
+            .headerAppBar2 {
+                .headerMessage {
+
+                    .headerMessageSyle1,
+                    .headerMessageSyle2 {
+                        font-size: 25px;
+                    }
+                }
+
+                .headerLocalisationMessageContainer {
+                    h3 {
+                        font-size: 13px;
+
+                        .localisationIcon {
+                            top: -2px;
+                        }
+                    }
+                }
+            }
+
+
+        }
+
+        .head3 {
+            .appBar {
+                .LoadingButton {
+                    display: flex;
+                    align-items: center;
+                    justify-content: center;
+                    padding: 0;
+                    width: 90px;
+                    height: 34px;
+                }
+            }
+
+            .imageBuilder{
+                margin-top: 44px;
+                width: 235px;
+                height: 166px;
+            }
+        }
+    }
+}
+
+@media only screen and (min-width: 801px) {
+
+    .head3 {
+        .imageBuilder{
+            width: 308px;
+            height: 302px;
+        }
+    }
+}

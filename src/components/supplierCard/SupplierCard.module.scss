@@ -1,0 +1,105 @@
+@import '../../colors';
+
+.supplierCard {
+  height: 315px;
+  width: 332px;
+}
+
+.restaurantLink {
+  text-decoration: none;
+}
+
+.card {
+  position: relative;
+  height: 100%;
+  width: 100%;
+}
+
+.imageContainer {
+  position: relative;
+  height: 60%;
+}
+
+.restaurantImage {
+  object-fit: cover;
+  height: 100%;
+}
+
+.restaurantTime {
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  background-color: $orange_color;
+  padding: 0.2rem 0.4rem;
+  border-radius: 0 0 1rem 0;
+  // position: absolute;
+  // top: 0;
+  // left: 0;
+  z-index: 1;
+}
+
+.discountBox {
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  background-color: $primary_color;
+  padding: 0.2rem 0.4rem;
+  border-radius: 0 1rem 1rem 0;
+  position: absolute;
+  top: 5%;
+  left: 0;
+  z-index: 1;
+}
+
+.discountIcon {
+  height: 1rem;
+  margin-bottom: -0.2rem;
+  margin-right: 0.3rem;
+}
+
+.ratingBox {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  background-color: rgba(255, 255, 255, 0.8);
+  padding: 0.2rem 0.4rem;
+  border-radius: 0 0 0 1rem;
+  position: absolute;
+  top: 0;
+  right: 0;
+  z-index: 1;
+}
+
+.starIcon {
+  margin-right: 0.3rem;
+  color: #FFD700;
+}
+
+.status-box {
+  background-color: rgba(0, 200, 0, 0.5);
+  padding: 0.2rem 0.4rem;
+  border-radius: 1rem;
+  display: inline-block;
+  margin-top: 1rem;
+}
+
+.status-box.closed {
+  background-color: rgba(255, 0, 0, 0.5);
+}
+
+
+@media only screen and (min-width: 500px) and (max-width:767px) {
+  .supplierCard {
+    height: 50%;
+    width: 94%;
+  }
+  .card {
+    height: 77%;
+    width: 102%;
+  }
+.image-container {
+  position: relative;
+  height: 42%;
+}
+
+}
