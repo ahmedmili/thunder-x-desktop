@@ -1,13 +1,16 @@
-import React, { useState } from "react";
-import { Box, Typography } from "@mui/material";
+import React, { useEffect, useState } from 'react';
+import { Box, Typography } from '@mui/material';
 
-import KeyboardDoubleArrowLeftIcon from "@mui/icons-material/KeyboardDoubleArrowLeft";
-import KeyboardDoubleArrowRightIcon from "@mui/icons-material/KeyboardDoubleArrowRight";
+import KeyboardDoubleArrowLeftIcon from '@mui/icons-material/KeyboardDoubleArrowLeft';
+import KeyboardDoubleArrowRightIcon from '@mui/icons-material/KeyboardDoubleArrowRight';
 
-import { CarouselProvider, Slider, Slide } from "pure-react-carousel";
-import { array, string } from "zod";
-import "pure-react-carousel/dist/react-carousel.es.css";
-import "./categoriesCarousel.css";
+import { CarouselProvider, Slider, Slide, ButtonBack, ButtonNext } from 'pure-react-carousel';
+import { array, string } from 'zod';
+import 'pure-react-carousel/dist/react-carousel.es.css';
+import './categoriesCarousel.scss';
+import { Container, Row, Col } from 'react-bootstrap';
+
+
 
 interface Category {
   id: number;
@@ -26,6 +29,7 @@ interface CategoryCarouselProps {
 }
 
 const CategoryCarousel: React.FC<CategoryCarouselProps> = ({
+
   onCategorySelect,
   categories: initialCategories,
 }) => {
@@ -43,47 +47,106 @@ const CategoryCarousel: React.FC<CategoryCarouselProps> = ({
     setCategories(updatedCategories);
     onCategorySelect(categoryName);
   };
-  return categories != null ? (
-    <CarouselProvider
-      naturalSlideWidth={200}
-      naturalSlideHeight={150}
-      totalSlides={categories.length}
-      visibleSlides={4}
-      step={1}
-      infinite={false}
-    >
-      <Slider className="carousel-slider">
-        {categories.map((category, index) => (
-          <Slide key={category.id} index={category.id - 1}>
-            <Box
-              className={`category-box ${category.selected ? "selected" : ""}`}
-              onClick={() => handleCategoryClick(category.name)}
+
+  const handlePrevious = () => {
+    setCurrentSlide((prevSlide) => prevSlide - 1);
+  };
+
+  const handleNext = () => {
+    setCurrentSlide((prevSlide) => prevSlide + 1);
+  };
+
+
+  // Helper function to calculate the number of visible slides based on screen width
+  const calculateVisibleSlides = () => {
+    return window.innerWidth >= 700 ? 3 : 2;
+  };
+
+  return (
+    <Container >
+
+      <Row>
+        <Col className='col-md-12 col-lg-12'>
+          <div className='carousal-provider' >
+
+            <CarouselProvider
+              naturalSlideWidth={200}
+              naturalSlideHeight={150}
+              totalSlides={categories.length}
+              visibleSlides={calculateVisibleSlides()}
+              // visibleSlides={3}
+              step={1}
+              infinite={true}
+              className='categorie-carousel'
             >
-              <Box className="category-image">
-                <img
-                  src={
-                    typeof category.image === "string"
-                      ? category.image
-                      : undefined
-                  }
-                  loading="lazy"
-                  alt={category.name}
-                />
-              </Box>
-              <Typography
-                variant="h6"
-                align="center"
-                className={category.selected ? "category selected" : "category"}
-              >
-                {category.name}
-              </Typography>
-            </Box>
-          </Slide>
-        ))}
-      </Slider>
-    </CarouselProvider>
-  ) : (
-    <div></div>
+              <Row>
+                <Col >
+                  <Slider>
+                    {categories.map((category, index) => (
+
+
+                      <Slide className='carousel-slide' key={category.id} index={category.id - 1}>
+                        <Box
+                          className={`category-box ${category.selected ? 'selected' : ''}`}
+                          onClick={() => handleCategoryClick(category.name)}
+                        >
+
+                          <Box>
+                            <img
+                              src={
+                                typeof category.image === 'string'
+                                  ? category.image
+                                  : undefined
+                              }
+                              loading='lazy'
+                              alt={category.name}
+                            />
+                          </Box>
+                          <Typography
+                            variant="h6"
+                            align="center"
+
+                            className={'category-name'}>
+                            {category.name}
+                          </Typography>
+                        </Box>
+                      </Slide>
+
+
+
+                    ))}
+
+                  </Slider>
+                </Col>
+              </Row>
+
+              <Row>
+                <Col>
+                  <div className='categories-list-buttons-container'>
+                    <ButtonBack className='btn'>
+                      <KeyboardDoubleArrowLeftIcon className=' slider-button-icon' />
+                    </ButtonBack>
+                    <ButtonNext className='btn btn-default'>
+                      <KeyboardDoubleArrowRightIcon className=' slider-button-icon' />
+                    </ButtonNext>
+
+                  </div>
+                </Col>
+
+              </Row>
+
+            </CarouselProvider>
+
+
+          </div>
+
+        </Col>
+      </Row>
+
+    </Container>
+
+
+
   );
 };
 

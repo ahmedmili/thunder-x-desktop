@@ -1,7 +1,7 @@
 import { selectIsDelivery, setIsDelivery } from '../../Redux/slices/homeDataSlice';
 import { useAppDispatch, useAppSelector } from '../../Redux/store';
 import { useTranslation } from 'react-i18next';
-import './toggleSwitch.css';
+import toggleStyle from './toggleSwitch.module.scss';
 
 import DeliveryDiningIcon from '@mui/icons-material/DeliveryDining';
 import DeckIcon from '@mui/icons-material/Deck';
@@ -15,10 +15,9 @@ const Switches = () => {
   };
 
   return (
-    <div className='Container'>
-      <div className='SwitchesContainer'>
+      <div className={toggleStyle.SwitchesContainer}>
         <input
-          className="SwitchInput"
+          className={toggleStyle.SwitchInput}
           type='radio'
           id='switchLivraison'
           name='switchPlan'
@@ -27,7 +26,7 @@ const Switches = () => {
           onChange={handleSwitchToggle}
         />
         <input
-          className="SwitchInput"
+          className={toggleStyle.SwitchInput}
           type='radio'
           id='switchEmporter'
           name='switchPlan'
@@ -36,33 +35,32 @@ const Switches = () => {
           onChange={handleSwitchToggle}
         />
 
-        <label className="SwitchLabel" htmlFor='switchLivraison'>
-          <DeliveryDiningIcon className='SwitchText-icon' />
+        <label className={toggleStyle.SwitchLabel} htmlFor='switchLivraison'>
+          <DeliveryDiningIcon className={toggleStyle.SwitchTextIcon} />
           {t('livraison')}
         </label>
-        <label className="SwitchLabel" htmlFor='switchEmporter'>
-          <DeckIcon className='SwitchText-icon' />
+        <label className={toggleStyle.SwitchLabel} htmlFor='switchEmporter'>
+          <DeckIcon className={toggleStyle.SwitchTextIcon} />
           {t('emporter')}</label>
-        <div className='SwitchWrapper'
+        <div className={toggleStyle.SwitchWrapper}
           style={{
             transform: isDelivery ? 'translateX(0%)' : 'translateX(100%)',
           }}>
-          <div className='Switch'>
-            <div className='SwitchText' style={{ opacity: isDelivery ? 1 : 0 }}>
-              <DeliveryDiningIcon className='SwitchText-icon' />
+          <div className={toggleStyle.Switch}>
+            <div className={toggleStyle.SwitchText} style={{ opacity: isDelivery ? 1 : 0 }}>
+              <DeliveryDiningIcon className={toggleStyle.SwitchTextIcon} />
               {t('livraison')}
             </div>
-            <div className='SwitchText' style={{ opacity: isDelivery ? 0 : 1 }}>
+            <div className={toggleStyle.SwitchText}style={{ opacity: isDelivery ? 0 : 1 }}>
 
-              <DeckIcon className='SwitchText-icon' />
+              <DeckIcon className={toggleStyle.SwitchTextIcon} />
               {t('emporter')}
             </div>
 
-            
+
           </div>
         </div>
       </div>
-    </div>
   );
 };
 

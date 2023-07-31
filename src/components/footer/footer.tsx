@@ -1,44 +1,76 @@
-import React from 'react';
-import logo from '../../assets/icon.png';
-import { Facebook, Instagram } from '@mui/icons-material';
-// import Container from '@mui/material/Container';
-import './footer.css'
+import React, { useEffect, useState } from 'react';
+import LocalPhoneIcon from '@mui/icons-material/LocalPhone';
+import EmailIcon from '@mui/icons-material/Email';
+// import { Facebook, Instagram } from '@mui/icons-material';
+import footerStyles from'./footer.module.scss'
+import { Container, Row, Col } from "react-bootstrap"
 interface FooterProps { }
+import icon from '../../assets/icon.png';
+import { useAppDispatch, useAppSelector } from '../../Redux/store';
+import { selectHomeData } from '../../Redux/slices/homeDataSlice';
+
 
 const Footer: React.FC<FooterProps> = () => {
+  const data = useAppSelector((state) => state.homeData.data);
+  const ads = data?.ads.HOME_1;
+  // console.log(data?.ads.HOME_1[0].menu.description);
 
   return (
-    <footer
-      className='footerStyle'
-    >
-      <div >
-        <img src={logo} alt='Logo' />
-        <p>
-          Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed gravida
-          ante vitae sapien fringilla, et interdum sapien bibendum. Curabitur
-          euismod ultricies nulla vitae euismod.
-        </p>
-      </div>
-      <div >
-        <h3>Contact Us</h3>
-        <ul>
-          <li>Phone: 555-555-5555</li>
-          <li>Email: info@fooddelivery.com</li>
-          <li>Address: 123 Main St, Anytown USA</li>
-        </ul>
-      </div>
-      <div >
-        <h3>Follow Us</h3>
-        <ul>
-          <li>
-            <Facebook />
-          </li>
-          <li>
-            <Instagram />
-          </li>
-        </ul>
-      </div>
-    </footer>
+    <Container fluid className={footerStyles.footerContainer}>
+      <Row>
+        {/* logo section */}
+        <Col className={footerStyles.footerLogoCol} >
+          <img className={footerStyles.webifyIcon} src={icon} alt="webify-icon" />
+        </Col>
+        {/* contact numbers sections */}
+        <Col className={footerStyles.footerContacteTelCol }>
+          <div className="number-container">
+            <p className={footerStyles.footerTitle }>Contactez-Nous</p>
+            <p className={footerStyles.FooterText} ><span> <LocalPhoneIcon /></span>  +216 22 543 123 </p>
+            <p className={footerStyles.FooterText} > <span><LocalPhoneIcon /></span> +216 22 543 123 </p>
+          </div>
+        </Col>
+        {/* email section */}
+        <Col className={footerStyles.footerContacteEmailCol}>
+          <div>
+            <p className={footerStyles.footerTitle }>  <span> <EmailIcon /> contacte </span> </p>
+            <p className={footerStyles.FooterText}> thunder-express.com</p>
+
+          </div>
+        </Col>
+        {/* pubs section */}
+        <Col className={footerStyles.footerPubsCol}>
+          <p className={footerStyles.footerTitle }> Derniere publication</p>
+
+          {
+            ads ? (
+
+              ads.map((pub: any, index: number) => {
+                // console.log(pub)
+
+                return <div key={pub.id} className={footerStyles.footerPubsContainer}>
+                  <img src={pub.image} alt="" className={footerStyles.pubsImage} />
+                  <p className={footerStyles.FooterText}>{pub.menu?.description}</p>
+                </div>
+              })
+
+              ) : 
+              (
+              <>
+              </>
+              )
+          }
+        </Col>
+      </Row>
+
+      {/* all right reserved section */}
+      <Row >
+        <Col className={footerStyles.footerRightReserverCol}>
+          <p >Tous droits réservés © 2023</p>
+        </Col>
+      </Row>
+
+    </Container>
   );
 };
 

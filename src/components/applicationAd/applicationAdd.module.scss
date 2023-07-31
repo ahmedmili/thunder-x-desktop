@@ -1,0 +1,336 @@
+@import '../../colors';
+
+.applicationAdsMainContainer {
+    width: 100%;
+    height: 362px;
+
+    .applicationAdsImg {
+        width: 350px;
+        height: 350px;
+        position: absolute;
+        top: 0;
+        left: 0;
+        z-index: 10;
+    }
+
+    .applicationAdsDesignContainer {
+        position: relative;
+
+
+        .applicationAdsInfo {
+            width: 862px;
+            height: 276px;
+            background-image: url("data:image/svg+xml;charset=utf-8,<svg xmlns='http://www.w3.org/2000/svg' width='1241' height='356' viewBox='0 0 1241 356' fill='none'><path d='M1241 171.855C1241 141.02 1217.63 115.205 1186.94 112.15L65.9431 0.56409C30.6312 -2.95092 0 24.7826 0 60.269V296C0 329.137 26.8629 356 60 356H1181C1214.14 356 1241 329.137 1241 296V171.855Z' fill='%2324A6A4'/></svg>");
+            background-repeat: no-repeat;
+            background-size: 98% 297px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+
+            .infoContainer {
+                display: flex;
+                justify-content: center;
+                align-items: center;
+                margin-left: 46%;
+                margin-top: 8%;
+
+                .info1P1 {
+                    width: 210px;
+                    height: 55px;
+                    color: white;
+                    font-family: Poppins;
+                    font-size: 22px;
+                    font-style: normal;
+                    font-weight: 700;
+                    line-height: normal;
+                }
+
+                .info1P2 {
+                    width: 187px;
+                    height: 68px;
+                    color: white;
+                    font-family: Poppins;
+                    font-size: 17px;
+                    font-style: normal;
+                    font-weight: 500;
+                    line-height: normal;
+                }
+
+                .info1Button {
+                    all: unset;
+                    width: 179px;
+                    height: 50px;
+                    margin-bottom: 16px;
+                    border-radius: 25px;
+                    background: $orange_color;
+                    display: flex;
+                    justify-content: center;
+                    align-items: center;
+                    color: white;
+                    font-family: Poppins;
+                    font-size: 24px;
+                    font-style: normal;
+                    font-weight: 700;
+                    line-height: 18px;
+                }
+
+                .info2P1 {
+                    width: 96px;
+                    height: 78px;
+                    color: $orange_color;
+                    font-family: Poppins;
+                    font-size: 48px;
+                    font-style: normal;
+                    font-weight: 300;
+                    line-height: normal;
+                }
+
+                .info3 {
+                    .info3P1 {
+                        width: 396px;
+                        height: 108px;
+                        color: $orange_color;
+                        font-family: Poppins;
+                        font-size: 32px;
+                        font-style: normal;
+                        font-weight: 700;
+
+                        line-height: normal;
+
+                        span {
+                            color: white;
+                            font-family: Poppins;
+                            font-size: 20px;
+                            font-style: normal;
+                            font-weight: 700;
+                            line-height: normal;
+                        }
+                    }
+
+                }
+            }
+        }
+    }
+}
+
+@media only screen and (min-width: 575px) and (max-width:767px) {
+    .applicationAdsMainContainer {
+        padding-top: 36px;
+        height: 216px;
+
+        .applicationAdsImg {
+            width: 27%;
+            height: 118%;
+            top: 13%;
+            left: 4%;
+        }
+
+        .applicationAdsDesignContainer {
+
+            .applicationAdsInfo {
+                width: 98%;
+                height: 165px;
+                background-size: 94% 100%;
+
+                .infoContainer {
+                    margin-left: 22%;
+                    margin-top: 8%;
+
+                    .info1P1 {
+                        width: 130px;
+                        height: 32px;
+                        font-size: 11px;
+                    }
+
+                    .info1P2 {
+                        width: 156px;
+                        height: 29px;
+                        font-size: 11px;
+                    }
+
+
+                    .info1Button {
+                        width: 113px;
+                        height: 29px;
+                        margin-bottom: 18px;
+                        font-size: 16px;
+                    }
+
+                    .info2 {
+                        display: flex;
+                        align-items: center;
+
+                        .info2P1 {
+                            width: 55px;
+                            height: 22px;
+                            font-size: 29px;
+                            margin-bottom: 41px;
+                        }
+                    }
+
+                    .info3 {
+                        .info3P1 {
+                            width: 143px;
+                            height: 65px;
+                            font-size: 17px;
+
+                            span {
+                                font-size: 10px;
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+}
+
+@media only screen and (max-width:574px) {
+    .applicationAdsMainContainer {
+        padding-top: 36px;
+        height: 216px;
+
+        .applicationAdsImg {
+            width: 25%;
+            height: 77%;
+            top: 23%;
+            left: 1%;
+        }
+
+        .applicationAdsDesignContainer {
+
+            .applicationAdsInfo {
+                width: 98%;
+                height: 165px;
+                background-size: 94% 100%;
+
+                .infoContainer {
+                    margin-left: 29%;
+                    margin-top: 8%;
+
+                    .info1P1 {
+                        width: 130px;
+                        height: 17px;
+                        font-size: 9px;
+                    }
+
+                    .info1P2 {
+                        width: 156px;
+                        height: 19px;
+                        font-size: 9px;
+                    }
+
+
+                    .info1Button {
+                        width: 76%;
+                        height: 100%;
+                        margin-bottom: 18px;
+                        font-size: 10px;
+                    }
+
+                    .info2 {
+                        display: flex;
+                        align-items: center;
+
+                        .info2P1 {
+                            width: 32px;
+                            height: 13px;
+                            font-size: 18px;
+                            margin-bottom: 39px;
+                        }
+                    }
+
+                    .info3 {
+                        .info3P1{
+                            width: 143px;
+                            height: 57px;
+                            font-size: 12px;
+
+                            span {
+                                font-size: 7px;
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+}
+
+@media only screen and (min-width: 768px) and (max-width:991px) {
+
+    .applicationAdsMainContainer {
+        padding-top: 36px;
+        height: 220px;
+
+        .applicationAdsImg {
+
+            width: 159px;
+            height: 223px;
+            top: 26px;
+            left: 8%;
+
+        }
+
+        .applicationAdsDesignContainer {
+
+            .applicationAdsInfo {
+                width: 98%;
+                height: 165px;
+                background-size: 94% 100%;
+
+                .infoContainer {
+                    margin-left: 13%;
+                    margin-top: 5%;
+
+                    .info1 {
+                        .info1P1 {
+                            width: 130px;
+                            height: 36px;
+                            font-size: 13px;
+                        }
+
+                        .info1P2 {
+                            width: 156px;
+                            height: 38px;
+                            font-size: 13px;
+                        }
+
+                        .info1Button {
+                            width: 113px;
+                            height: 29px;
+                            margin-bottom: 18px;
+                            font-size: 16px;
+                        }
+                    }
+
+                    .info2 {
+                        display: flex;
+                        align-items: center;
+
+                        .info2P1 {
+                            width: 55px;
+                            height: 21px;
+                            font-size: 29px;
+                            margin-bottom: 41px;
+                            margin-right: 7px;
+                            margin-left: 5px;
+                        }
+                    }
+
+                    .info3 {
+                        .info3P1 {
+                            width: 143px;
+                            height: 41px;
+                            font-size: 17px;
+
+                            span {
+                                font-size: 10px;
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+}

@@ -1,7 +1,8 @@
+
 import React, { useState, useCallback } from "react";
 import { MenuItem, Select } from "@mui/material";
 import { SearchSharp } from "@mui/icons-material";
-import "./searchBar.scss";
+import searchStyle from "./searchBar.module.scss";
 import {
   setDistanceFilter,
   setSearchQuery,
@@ -14,6 +15,7 @@ interface Props {
 
 const SearchBar: React.FC<Props> = ({ placeholder }) => {
   const dispatch = useDispatch();
+
 
   const [searchTerm, setSearchTerm] = useState("");
   const [dfaultDistanceFilter, setDefaultDistanceFilter] = useState<number>(10);
@@ -41,20 +43,22 @@ const SearchBar: React.FC<Props> = ({ placeholder }) => {
 
   const handleDistanceFilterChange = (event: any) => {
     setDefaultDistanceFilter(event.target.value as number);
-    dispatch(setDistanceFilter(event.target.value as number));
+    dispatch(setDistanceFilter(event.target.value as number))
+
   };
 
   function handleTextSearch(value: string): void {
     // throw new Error('Function not implemented.');
+
     setSearchTerm(value);
     dispatch(setSearchQuery(value));
   }
 
   return (
-    <div className="search-container">
-      <form onSubmit={handleSearchSubmit} className="search-form">
-        <div className="header-search-bar">
-          <SearchSharp className="search-icon" />
+    <div className={searchStyle.searchContainer}>
+      <form onSubmit={handleSearchSubmit}>
+        <div className={searchStyle.headerSearchBar}>
+          <SearchSharp  />
           <input
             type="text"
             placeholder={placeholder}
@@ -66,7 +70,8 @@ const SearchBar: React.FC<Props> = ({ placeholder }) => {
             ☰
           </button>
           {showFilters && (
-            <div className="filters">
+            <div className={searchStyle.filters}>
+
               <Select
                 value={dfaultDistanceFilter}
                 onChange={handleDistanceFilterChange}
