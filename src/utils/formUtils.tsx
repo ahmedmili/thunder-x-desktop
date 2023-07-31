@@ -148,6 +148,16 @@ export const generateForm = (props: GenerateFormProps) => {
                   </a>
                 </div>
               </div>
+            ) : field.type === "checkbox" ? (
+              <div key={field.name} style={{ gridColumn: "span 2" }}>
+                <Field
+                  type={field.type}
+                  name={field.name}
+                  label={field.label}
+                  id={field.name}
+                  component={field.component}
+                />
+              </div>
             ) : (
               <div
                 key={field.name}
@@ -157,12 +167,12 @@ export const generateForm = (props: GenerateFormProps) => {
                     : { gridColumn: "span 1" }
                 }
               >
-                <label htmlFor={field.name}>{field.label}</label>
                 <Field
                   type={field.type}
                   name={field.name}
                   id={field.name}
                   placeholder={field.placeholder}
+                  label={field.label}
                   errorsServer={field.errorsServer}
                   component={field.component}
                   showPassword={showPassword}

@@ -1,4 +1,84 @@
-import {
+import * as Yup from "yup";
+import { useNavigate } from "react-router-dom";
+import InputForm from "../../components/Input-form/InputForm";
+import { useAppDispatch } from "../../Redux/store";
+import { useState } from "react";
+import { FormikHelpers } from "formik";
+import CardPage from "../../components/card-page/CardPage";
+import PicturesList from "../../components/picture-list/PicturesList";
+import { FormValues, generateForm } from "../../utils/formUtils";
+import CheckboxForm from "../../components/checkbox-form/CheckboxForm";
+
+const LoginPage = () => {
+  const [showPassword, setShowPassword] = useState(false);
+
+  const dispatch = useAppDispatch();
+  const navigate = useNavigate();
+
+  const fields = [
+    {
+      type: "email",
+      name: "email",
+      label: "Email",
+      placeholder: "Enter ici",
+      id: "email",
+      column: "fill",
+      component: InputForm,
+    },
+    {
+      type: !showPassword ? "password" : "text",
+      name: "password",
+      label: "Mot de passe",
+      placeholder: "Enter ici",
+      id: "password",
+      column: "fill",
+      component: InputForm,
+    },
+    {
+      type: "checkbox",
+      name: "remember",
+      label: "Remember me",
+      id: "remember",
+      component: CheckboxForm,
+    },
+  ];
+
+  const loginSchema = Yup.object().shape({
+    email: Yup.string().required().email().label("Email"),
+    password: Yup.string()
+      .min(8, "password must be more than 8")
+      .max(20, "password must be less than 20 characters")
+      .required("password is required")
+      .label("Password"),
+  });
+
+  const initialValues = {
+    email: "",
+    password: "",
+  };
+  const onSubmit = async (
+    values: FormValues,
+    { setSubmitting, resetForm }: FormikHelpers<FormValues>
+  ) => {
+    console.log(values);
+  };
+  return (
+    <CardPage icon="" text="" title="Se connecter" image={<PicturesList />}>
+      {generateForm({
+        initialValues,
+        validationSchema: loginSchema,
+        fields,
+        loading: false,
+        button: "Se connecter",
+        onSubmit,
+      })}
+    </CardPage>
+  );
+};
+
+export default LoginPage;
+
+/* import {
   Box,
   IconButton,
   InputAdornment,
@@ -198,3 +278,4 @@ const LoginPage = () => {
 };
 
 export default LoginPage;
+ */

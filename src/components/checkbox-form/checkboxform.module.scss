@@ -1,0 +1,19 @@
+.formControl {
+  font-family: var(--fontPrimary);
+  display: flex;
+  gap: 1rem;
+  input {
+    cursor: pointer;
+  }
+}
+.label {
+  color: var(--secondaryColor);
+  font-size: 14px;
+  font-style: normal;
+  font-weight: 500;
+  line-height: normal;
+  display: inline-block;
+  &::first-letter {
+    text-transform: uppercase;
+  }
+}
