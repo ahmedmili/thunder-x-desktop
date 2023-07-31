@@ -1,17 +1,17 @@
 import React, { ButtonHTMLAttributes, ReactNode } from "react";
-import styles from "./buttonprimary.module.scss";
-type ButtonPrimaryProps = {
+import styles from "./buttontertiary.module.scss";
+type ButtonTertiaryProps = {
   children: ReactNode;
   type?: ButtonHTMLAttributes<HTMLButtonElement>["type"];
   name: string;
   disabled?: boolean;
   style?: any;
 };
-const ButtonPrimary = ({ children, ...props }: ButtonPrimaryProps) => {
+const ButtonTertiary = ({ children, ...props }: ButtonTertiaryProps) => {
   return (
     <button className={styles.btn} type={props.type} {...props}>
       {children}
     </button>
   );
 };
-export default ButtonPrimary;
+export default ButtonTertiary;

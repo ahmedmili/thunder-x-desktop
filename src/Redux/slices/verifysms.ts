@@ -53,7 +53,7 @@ export const verifysmsLoadingSelector = (state: RootState) =>
 export const verifysmsAction = (code: any) => async (dispatch: AppDispatch) => {
   try {
     dispatch(startLoading());
-    const response = await api.get("verify/1", code);
+    const response = await api.get("verify/13", code);
     const { success, data } = response.data;
     if (success) {
       dispatch(verifysmsSuccess(data.code));

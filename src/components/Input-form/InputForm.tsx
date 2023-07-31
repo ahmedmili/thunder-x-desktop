@@ -29,7 +29,7 @@ const InputForm = ({
 }: InputFormProps & { field: any; form: any }) => {
   const hasError = (touched[field.name] && errors[field.name]) || errorsServer;
   return (
-    <div className={`${styles.formControl} ${column ? styles.fill : null}`}>
+    <div className={`${styles.formControl} ${column ? styles.fill : ""}`}>
       <label htmlFor={field.name} className={styles.label}>
         {props.label}
       </label>

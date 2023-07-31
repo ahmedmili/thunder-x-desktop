@@ -8,7 +8,7 @@ const CustomError = ({ children }: CustomErrorProps) => {
   return (
     <div className={Style.error}>
       <Dash />
-      <p> {children} </p>
+      <span> {children} </span>
     </div>
   );
 };

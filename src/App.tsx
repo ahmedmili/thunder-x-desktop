@@ -1,19 +1,19 @@
-import { CircularProgress, CssBaseline } from '@mui/material';
-import 'bootstrap/dist/css/bootstrap.min.css';
-import { Navigate, Outlet, Route, Routes } from 'react-router-dom';
-import { lazy, Suspense, useCallback, useEffect, useState } from 'react';
-import Layout from './components/layout/layout';
-import { ToastContainer } from 'react-toastify';
-import 'react-toastify/dist/ReactToastify.css';
-import { useAppDispatch, useAppSelector } from './Redux/store';
+import { CircularProgress, CssBaseline } from "@mui/material";
+import "bootstrap/dist/css/bootstrap.min.css";
+import { Navigate, Outlet, Route, Routes } from "react-router-dom";
+import { lazy, Suspense, useCallback, useEffect, useState } from "react";
+import Layout from "./components/layout/layout";
+import { ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
+import { useAppDispatch, useAppSelector } from "./Redux/store";
 
 import {
   selectIsDelivery,
   setData as setHomeData,
   setLoading as setHomeDataLoading,
-} from './Redux/slices/homeDataSlice';
+} from "./Redux/slices/homeDataSlice";
 
-import { setRestaurants } from './Redux/slices/restaurantSlice'
+import { setRestaurants } from "./Redux/slices/restaurantSlice";
 
 import {
   setCartItems,
@@ -28,8 +28,8 @@ import eventEmitter from "./services/thunderEventsService";
 import "./app.scss";
 import { localStorageService } from "./services/localStorageService";
 import { homedataService } from "./services/api/homeData.api";
-import { supplierServices } from './services/api/suppliers.api';
-import { Restaurant } from './services/types';
+import { supplierServices } from "./services/api/suppliers.api";
+import { Restaurant } from "./services/types";
 //lazy loading
 const HomePage = lazy(() => import("./views/home/home.page"));
 const LoginPage = lazy(() => import("./views/login/login.page"));
@@ -42,6 +42,7 @@ const CartPage = lazy(() => import("./views/cart/cart.page"));
 const OrderTrackingPage = lazy(() => import("./views/track/trackorder.page"));
 const ConfirmNumberPage = lazy(() => import("./views/ConfirmNumberPage"));
 const WelcomePage = lazy(() => import("./views/WelcomePage"));
+const ForgotPasswordPage = lazy(() => import("./views/ForgotPasswordPage"));
 function App() {
   const location = useAppSelector((state) => state.location.position);
   const dispatch = useAppDispatch();
@@ -59,7 +60,6 @@ function App() {
     };
   }, [updateHomeData]);
 
-
   const getHomeData = async () => {
     const { status, data } = await homedataService.getHomeData(
       isDelivery,
@@ -70,16 +70,15 @@ function App() {
       dispatch(setHomeDataLoading(false));
       dispatch(setHomeData(data.data));
     }
-  }
+  };
   const getSupplierData = async () => {
-    const { status, data } = await supplierServices.all_annonces()
+    const { status, data } = await supplierServices.all_annonces();
     if (status === 200) {
       var suppliersList: Restaurant[] = [];
       let dataList = data.data;
       dataList.map((resto: any, index: number) => {
-        if (resto.supplier)
-        suppliersList.push(resto.supplier)
-      })
+        if (resto.supplier) suppliersList.push(resto.supplier);
+      });
       dispatch(setRestaurants(suppliersList));
     }
   };
@@ -161,6 +160,7 @@ function App() {
           <Route path="register" element={<RegisterPage />} />
           <Route path="confirm" element={<ConfirmNumberPage />} />
           <Route path="welcome" element={<WelcomePage />} />
+          <Route path="forgotpassword" element={<ForgotPasswordPage />} />
         </Routes>
       </Suspense>
     </>
