@@ -57,11 +57,12 @@ export const {
   getUsersError,
 } = usersSlice.actions;
 
+const usersReducer = usersSlice.reducer;
+export default usersReducer;
+
 export const usersSelector = (state: RootState) => state.users;
 export const usersErrors = (state: RootState) => state.users.error;
 export const usersLoding = (state: RootState) => state.users.loading;
-const usersReducer = usersSlice.reducer;
-export default usersReducer;
 
 // Action
 

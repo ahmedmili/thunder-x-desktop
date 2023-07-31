@@ -33,17 +33,15 @@ import { Restaurant } from './services/types';
 //lazy loading
 const HomePage = lazy(() => import("./views/home/home.page"));
 const LoginPage = lazy(() => import("./views/login/login.page"));
-const RegisterPage = lazy(() => import("./views/register/register.page"));
+const RegisterPage = lazy(() => import("./views/RegisterPage"));
 const ProfilePage = lazy(() => import("./views/profile/profile.page"));
 const UnauthorizePage = lazy(
   () => import("./views/unauthorize/unauthorize.page")
 );
 const CartPage = lazy(() => import("./views/cart/cart.page"));
 const OrderTrackingPage = lazy(() => import("./views/track/trackorder.page"));
-const ConfirmNumberPage = lazy(
-  () => import("./views/confirmNumber/confirmNumber.page")
-);
-
+const ConfirmNumberPage = lazy(() => import("./views/ConfirmNumberPage"));
+const WelcomePage = lazy(() => import("./views/WelcomePage"));
 function App() {
   const location = useAppSelector((state) => state.location.position);
   const dispatch = useAppDispatch();
@@ -162,6 +160,7 @@ function App() {
           <Route path="login" element={<LoginPage />} />
           <Route path="register" element={<RegisterPage />} />
           <Route path="confirm" element={<ConfirmNumberPage />} />
+          <Route path="welcome" element={<WelcomePage />} />
         </Routes>
       </Suspense>
     </>
