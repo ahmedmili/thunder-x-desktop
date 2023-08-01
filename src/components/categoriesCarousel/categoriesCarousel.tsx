@@ -63,15 +63,15 @@ const CategoryCarousel: React.FC<CategoryCarouselProps> = ({
   };
 
   return (
-    <Container >
+    <Container className='container' >
 
       <Row>
-        <Col className='col-md-12 col-lg-12'>
+        <Col >
           <div className='carousal-provider' >
 
             <CarouselProvider
-              naturalSlideWidth={200}
-              naturalSlideHeight={150}
+              naturalSlideWidth={250}
+              naturalSlideHeight={200}
               totalSlides={categories.length}
               visibleSlides={calculateVisibleSlides()}
               // visibleSlides={3}

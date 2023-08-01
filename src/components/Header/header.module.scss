@@ -118,7 +118,7 @@
         display: flex;
     }
 
-    .imageBuilder{
+    .imageBuilder {
         position: relative;
         margin: 7px 10px 0 7px;
         width: 546px;
@@ -138,71 +138,71 @@
 }
 
 
-@media only screen and (min-width: 300px) and (max-width:600px) {
-    .head1 {
-        .demiCercle {
-            top: 30px;
-            left: -187px;
-            z-index: 20;
-            height: 200px;
-            width: 200px;
-        }
-    }
+// @media only screen and (min-width: 300px) and (max-width:600px) {
+//     .head1 {
+//         .demiCercle {
+//             top: 30px;
+//             left: -187px;
+//             z-index: 20;
+//             height: 200px;
+//             width: 200px;
+//         }
+//     }
 
-    .headerContainer {
+//     .headerContainer {
 
-        .head2 {
-            // margin-left: 9%;
+//         .head2 {
+//             // margin-left: 9%;
 
-            .logoContainer {
-                img {
-                    width: 77px;
-                    height: 67.64px;
-                }
-            }
+//             .logoContainer {
+//                 img {
+//                     width: 77px;
+//                     height: 67.64px;
+//                 }
+//             }
 
-            .headerAppBar2 {
-                .headerMessage {
+//             .headerAppBar2 {
+//                 .headerMessage {
 
-                    .headerMessageSyle1,
-                    .headerMessageSyle2 {
-                        font-size: 16px;
-                    }
-                }
+//                     .headerMessageSyle1,
+//                     .headerMessageSyle2 {
+//                         font-size: 16px;
+//                     }
+//                 }
 
-                .headerLocalisationMessageContainer {
-                    h3 {
-                        font-size: 11px;
-                        font-weight: bolder;
+//                 .headerLocalisationMessageContainer {
+//                     h3 {
+//                         font-size: 11px;
+//                         font-weight: bolder;
 
-                        .localisationIcon {
-                            top: -2px;
-                        }
-                    }
-                }
-            }
-        }
+//                         .localisationIcon {
+//                             top: -2px;
+//                         }
+//                     }
+//                 }
+//             }
+//         }
 
-        .head3 {
-            .appBar {
-                .LoadingButton {
-                    padding: 0;
-                    width: 90px;
-                    height: 24px;
-                }
-            }
+//         .head3 {
+//             .appBar {
+//                 .LoadingButton {
+//                     padding: 0;
+//                     width: 90px;
+//                     height: 24px;
+//                 }
+//             }
 
-            .imageBuilder{
-                width: 159px;
-                height: 93px;
-            }
-        }
+//             .imageBuilder {
+//                 width: 159px;
+//                 height: 93px;
+//             }
+//         }
 
-    }
-}
+//     }
+// }
 
 
-@media only screen and (min-width: 601px) and (max-width:1000px) {
+@media only screen and (max-width:1200px) {
     .head1 {
         .demiCercle {
             top: 30px;
@@ -260,21 +260,114 @@
                 }
             }
 
-            .imageBuilder{
+            .imageBuilder {
                 margin-top: 44px;
-                width: 235px;
-                height: 166px;
+                width: 311px;
+                height: 209px;
             }
         }
     }
 }
 
-@media only screen and (min-width: 801px) {
+@media only screen and (max-width: 992px) {
 
-    .head3 {
-        .imageBuilder{
-            width: 308px;
-            height: 302px;
+    
+    .headerContainer {
+        .head3 {
+            .imageBuilder {
+                width: 308px;
+                height: 163px;
+            }
+        }
+        .head2 {
+            .headerAppBar2 {
+                .headerMessage {
+
+                    .headerMessageSyle1,
+                    .headerMessageSyle2 {
+                        font-size: 1.5rem;
+                    }
+                }
+
+                .headerLocalisationMessageContainer {
+                    h3 {
+                        font-size: 1.5rem;
+
+                        .localisationIcon {
+                            top: -2px;
+                        }
+                    }
+                }
+            }
+        }
+    }
+
+}
+
+@media only screen and (max-width: 768px) {
+
+    
+    .headerContainer {
+        .head3 {
+            .imageBuilder {
+                width: 308px;
+                height: 166px;
+            }
+        }
+        .head2 {
+            .headerAppBar2 {
+                .headerMessage {
+
+                    .headerMessageSyle1,
+                    .headerMessageSyle2 {
+                        font-size: 1rem;
+                    }
+                }
+
+                .headerLocalisationMessageContainer {
+                    h3 {
+                        font-size: 1rem;
+
+                        .localisationIcon {
+                            top: -2px;
+                        }
+                    }
+                }
+            }
+        }
+    }
+}
+
+@media only screen and (max-width: 576px) {
+    
+    .headerContainer {
+        
+            .head3 {
+                .imageBuilder {
+                    width: 157px;
+                    height: 132px;    
+                }
+            }
+        .head2 {
+            .headerAppBar2 {
+                .headerMessage {
+
+                    .headerMessageSyle1,
+                    .headerMessageSyle2 {
+                        font-size: 1rem;
+                    }
+                }
+
+                .headerLocalisationMessageContainer {
+                    h3 {
+                        font-size: 0.7rem;
+
+                        .localisationIcon {
+                            top: -2px;
+                        }
+                    }
+                }
+            }
         }
     }
 }
