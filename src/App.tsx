@@ -30,6 +30,7 @@ import { localStorageService } from "./services/localStorageService";
 import { homedataService } from "./services/api/homeData.api";
 import { supplierServices } from "./services/api/suppliers.api";
 import { Restaurant } from "./services/types";
+import { fetchHomeData } from "./Redux/slices/home";
 //lazy loading
 const HomePage = lazy(() => import("./views/home/home.page"));
 const LoginPage = lazy(() => import("./views/login/login.page"));
@@ -54,7 +55,6 @@ function App() {
 
   useEffect(() => {
     eventEmitter.on("homeDataChanged", updateHomeData);
-
     return () => {
       eventEmitter.off("homeDataChanged", updateHomeData);
     };
@@ -84,7 +84,7 @@ function App() {
   };
 
   useEffect(() => {
-    getHomeData();
+    //getHomeData();
     let isLoggedIn = localStorageService.getUserToken();
     isLoggedIn?.length! > 0 && getSupplierData();
   }, [updateTrigger]);
@@ -98,7 +98,9 @@ function App() {
       });
     }
     if (location?.coords) {
-      getHomeData();
+      dispatch(
+        fetchHomeData(1, location?.coords.longitude, location?.coords.latitude)
+      );
       let isLoggedIn = localStorageService.getUserToken();
       isLoggedIn?.length! > 0 && getSupplierData();
     }

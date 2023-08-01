@@ -6,7 +6,7 @@ import { api } from "../../services/axiosApi";
 import { User } from "../../services/types";
 import { FormValues } from "../../utils/formUtils";
 import { AppDispatch, AppThunk } from "../store";
-import {localStorageService} from "../../services/localStorageService"
+import { localStorageService } from "../../services/localStorageService";
 
 export type UsersState = {
   loading: boolean;
@@ -67,7 +67,7 @@ export const usersLoding = (state: RootState) => state.users.loading;
 
 // Action
 
-export const fetchUsers = (): AppThunk => async (dispatch: AppDispatch) => {
+export const fetchUsers = () => async (dispatch: AppDispatch) => {
   try {
     dispatch(startLoading());
     const response = await api.get("getlistclients");
@@ -84,9 +84,9 @@ export const createUser =
       const response = await api.post("signupclient", user);
       const { success, data } = response.data;
       if (success) {
-        const { token ,client} = data;
+        const { token, client } = data;
         dispatch(addUserSuccess(data.client));
-        localStorageService.setUserCredentials( client ,token,);
+        localStorageService.setUserCredentials(client, token);
         return response;
       } else {
         dispatch(addUserError(response.data));

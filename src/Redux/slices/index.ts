@@ -7,6 +7,7 @@ import userSlice from "./userSlice";
 import usersReducer from "./users";
 import { locationReducer } from "./location";
 import verifysmsReducer from "./verifysms";
+import homeReducer from "./home";
 
 const rootReducer = combineReducers({
   user: userSlice,
@@ -15,6 +16,7 @@ const rootReducer = combineReducers({
   location: locationReducer,
   restaurant: restaurantSlice,
   homeData: homeDataSlice,
+  home: homeReducer,
   cart: cartSlice,
   commands: commandsSlice,
 });

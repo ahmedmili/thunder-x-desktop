@@ -1,17 +1,18 @@
-import { Box, Container, Typography } from '@mui/material';
-import { useAppSelector } from '../../Redux/store';
-import './profile.page.css'
+import { Box, Container, Typography } from "@mui/material";
+import { useAppSelector } from "../../Redux/store";
+import "./profile.page.css";
 
 const ProfilePage = () => {
-  const user = useAppSelector((state) => state.userState.user);
+  const user = useAppSelector((state) => state.user.user);
 
   return (
-    <Container maxWidth='lg'>
-      <div className='div-container'>
+    <Container maxWidth="lg">
+      <div className="div-container">
         <Typography
-          variant='h2'
-          component='h1'
-          sx={{ color: '#1f1e1e', fontWeight: 500 }}>
+          variant="h2"
+          component="h1"
+          sx={{ color: "#1f1e1e", fontWeight: 500 }}
+        >
           Profile Page
         </Typography>
       </div>

@@ -8,7 +8,7 @@ import { useEffect } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import { LoadingButton as _LoadingButton } from "@mui/lab";
 import { toast } from "react-toastify";
-import { useVerifyEmailMutation } from "../services/authApi";
+//import { useVerifyEmailMutation } from "../services/authApi";
 
 const LoadingButton = styled(_LoadingButton)`
   padding: 0.6rem 0;
@@ -29,7 +29,7 @@ const verificationCodeSchema = object({
 export type VerificationCodeInput = TypeOf<typeof verificationCodeSchema>;
 
 const EmailVerificationPage = () => {
-  const { verificationCode } = useParams();
+  /*   const { verificationCode } = useParams();
 
   const methods = useForm<VerificationCodeInput>({
     resolver: zodResolver(verificationCodeSchema),
@@ -87,10 +87,11 @@ const EmailVerificationPage = () => {
   }) => {
     // 👇 Executing the verifyEmail Mutation
     verifyEmail({ verificationCode });
-  };
+  }; */
 
   return (
-    <Container
+    <div>Verify email</div>
+    /*     <Container
       maxWidth={false}
       sx={{
         display: "flex",
@@ -151,7 +152,7 @@ const EmailVerificationPage = () => {
           </Box>
         </FormProvider>
       </Box>
-    </Container>
+    </Container> */
   );
 };
 
