@@ -5,7 +5,7 @@ import {
   Box,
 } from '@mui/material';
 import { useTranslation } from 'react-i18next';
-import './recommendedRestaurants.scss'
+import recommandedStyle from './recommendedRestaurants.module.scss'
 import SupplierCard from '../supplierCard/SupplierCard';
 import { ButtonBack, ButtonNext, CarouselProvider, Slide, Slider } from 'pure-react-carousel';
 import { Container, Row, Col } from 'react-bootstrap';
@@ -58,15 +58,15 @@ const RestaurantList: React.FC<Props> = ({ restaurants, listType }) => {
   }
 
   return (
-    <div className='recommanded-container' >
+    <div className={recommandedStyle.recommandedContainer} >
 
       {
-        <Container  >
+        <Container className={recommandedStyle.container} >
           <Row>
-            {listType == "recommanded" && <h2 className='recaommanded-title'>  {t('recommendedForYou')}</h2>}
+            {listType == "recommanded" && <h2 className={recommandedStyle.recaommandedTitle}>  {t('recommendedForYou')}</h2>}
             {
               listType == "discount" && (
-                <Box className="discount-title-container">
+                <Box className={recommandedStyle.discountTitleContainer}>
                   <h2>Jusqu'à 25 % de réduction - Offres de repas</h2>
                   <p>Besoin d'une pause de cuisine ou simplement envie de votre <br />restaurant préféré ?</p>
                 </Box>
@@ -75,20 +75,22 @@ const RestaurantList: React.FC<Props> = ({ restaurants, listType }) => {
             }
           </Row>
 
-          <div className={`supplier-list-background ${displayNormal ? "unique" : "bouble"}`}></div>
+          <div className={displayNormal ? recommandedStyle.bouble :  recommandedStyle.unique }>
+
+          </div>
           <CarouselProvider
-            naturalSlideWidth={150}
-            naturalSlideHeight={displayNormal ? 310 : 200}
-            totalSlides={displayNormal ? restaurantsList.length / 2 : restaurantsList.length}
+            naturalSlideWidth={100}
+            naturalSlideHeight={displayNormal ? 200 : 350}
+            totalSlides={displayNormal ?( restaurantsList.length / 2 ) +1 : restaurantsList.length}
             visibleSlides={3}
             step={3}
             infinite={true}
-            className='carousel-provider'
+            className={recommandedStyle.carouselProvider}
           >
 
             <Row>
-              <Col className='col-12 col-lg-12 align-items-center '>
-                <Slider >
+              <Col>
+                <Slider  >
                   {(() => {
                     const cart = [];
                     for (let i = 0; i < (displayNormal ? restaurantsList.length / 2 : restaurantsList.length); i++) {
@@ -98,18 +100,18 @@ const RestaurantList: React.FC<Props> = ({ restaurants, listType }) => {
                             displayNormal ? (
                               <Slide index={i}>
                                 {
-                                  firstMiddle![i] && <SupplierCard className='col-12 col-md-6 col-lg-12' data={firstMiddle![i]} />
+                                  firstMiddle![i] && <SupplierCard  data={firstMiddle![i]} />
                                 }
 
                                 <br />
                                 {
-                                  lastMiddle![i] && <SupplierCard className='col-12 col-md-6 col-lg-12' data={lastMiddle![i]} />
+                                  lastMiddle![i] && <SupplierCard  data={lastMiddle![i]} />
                                 }
 
                               </Slide>
                             ) :
                               (
-                                <SupplierCard className='col-12 col-md-6 col-lg-12' data={restaurantsList[i]} />
+                                <SupplierCard  data={restaurantsList[i]} />
                               )
                           }
 
@@ -121,16 +123,15 @@ const RestaurantList: React.FC<Props> = ({ restaurants, listType }) => {
                 </Slider>
               </Col>
             </Row>
-            <Row className='recommanded-list-buttons-container' >
+            <Row className={recommandedStyle.recommandedListButtonsContainer}>
               <Col >
-                <ButtonBack className='btn'>
-                  <KeyboardDoubleArrowLeftIcon className=' slider-button-icon' />
+                <ButtonBack className={recommandedStyle.btn}>
+                  <KeyboardDoubleArrowLeftIcon className={recommandedStyle.sliderButtonIcon} />
                 </ButtonBack>
               </Col>
-
-              <Col className='right-btn'>
-                <ButtonNext className='btn'>
-                  <KeyboardDoubleArrowRightIcon className=' slider-button-icon' />
+              <Col className={recommandedStyle.rightBtn}>
+                <ButtonNext className={recommandedStyle.btn}>
+                  <KeyboardDoubleArrowRightIcon className={recommandedStyle.sliderButtonIcon} />
                 </ButtonNext>
               </Col>
             </Row>

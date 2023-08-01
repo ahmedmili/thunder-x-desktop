@@ -1,0 +1,24 @@
+@use '../../colors';
+
+.container {
+  max-width: 100%;
+}
+
+.loadingSkeleton {
+  width: 20vw;
+  line-height: 4;
+
+  height: 20px;
+}
+
+.skeletonContainer {
+  width: 80vw;
+  margin: 10px auto;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-around;
+}
+
+.homePromoContainer{
+  margin-bottom: 2vw;
+}

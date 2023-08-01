@@ -6,11 +6,11 @@ export const ApplicationAd = () => {
         <Container className={addsStyles.applicationAdsMainContainer}>
             <Row>
                 <Col>
-                <img className={addsStyles.applicationAdsImg }src="src\assets\home\phone-icn 3.png" alt="phone app" />
+                    <img className={addsStyles.applicationAdsImg} src="src\assets\home\phone-icn 3.png" alt="phone app" />
                 </Col>
             </Row>
             <Row className={addsStyles.applicationAdsDesignContainer} >
-                <Col className='col-lg-8' >
+                <Col className='d-flex justify-content-center'>
                     <div className={addsStyles.applicationAdsInfo}>
                         <div className={addsStyles.infoContainer}>
 

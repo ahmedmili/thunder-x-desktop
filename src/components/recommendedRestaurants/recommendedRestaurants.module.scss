@@ -1,0 +1,247 @@
+@import '../../colors';
+
+
+
+.recommandedContainer {
+  margin-bottom: 5px;
+  .container {
+    background-color: white;
+    position: relative;
+    padding: 0;
+    top: 0;
+    justify-content: center;
+    // padding-bottom: 5px;
+    margin-bottom: 10px;
+
+    .recaommandedTitle {
+      text-align: center;
+      color: $primary_color;
+      font-family: Poppins;
+      font-size: 3rem;
+      font-style: normal;
+      font-weight: 700;
+      line-height: normal;
+    }
+
+
+    .discountTitleContainer {
+      text-align: left;
+
+      h2 {
+        color: $primary_color;
+        font-family: Poppins;
+        font-size: 1.5rem;
+        font-style: normal;
+        font-weight: 700;
+        line-height: normal;
+      }
+
+      p {
+        color: $dark_Gray;
+        font-family: Poppins;
+        font-size: 1rem;
+        font-style: normal;
+        font-weight: 700;
+        line-height: normal;
+      }
+
+    }
+
+    .unique {
+      width: 100%;
+      height: 223px;
+      border-radius: 60px;
+      background: $Light_yellow;
+      position: absolute;
+      top: 28%;
+    }
+
+    .bouble {
+      width: 100%;
+
+      height: 337px;
+      top: 175px;
+      border-radius: 60px;
+      background: $Light_Blue;
+      position: absolute;
+
+    }
+
+    .carouselProvider {
+      margin: 0 5%;
+
+      .recommandedListButtonsContainer {
+        width: 110%;
+        height: 50px;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        position: absolute;
+        top: 35%;
+        left: -4%;
+
+        .rightBtn {
+          text-align: end;
+          display: flex;
+          justify-content: end;
+        }
+
+        .btn {
+          all: unset;
+          display: flex;
+          background-color: white;
+          text-align: center;
+          border-radius: 50%;
+          justify-content: center;
+
+          &:hover {
+
+            background-color: $orange_color;
+          }
+
+          .sliderButtonIcon {
+            color: $orange_color;
+            font-weight: 400;
+
+            &:hover {
+              color: white;
+            }
+          }
+        }
+      }
+    }
+
+  }
+}
+
+
+@media only screen and (max-width: 1200px) {
+
+  .recommandedContainer {
+    .container {
+      .unique {
+        height: 120px;
+        top: 88px;
+      }
+
+      .bouble {
+        height: 20vw;
+        top: 10vw;
+      }
+
+      .carouselProvider {
+        .recommandedListButtonsContainer {
+          top: 25%;
+          left: -5%;
+        }
+      }
+    }
+  }
+}
+
+@media only screen and (max-width: 991px) {
+
+  .recommandedContainer {
+    .container {
+      .unique {
+        height: 112px;
+        top: 101px;
+      }
+
+      .bouble {
+        height: 159px;
+        top: 138px;
+      }
+
+      .carouselProvider {
+        .recommandedListButtonsContainer {
+          top: 36%;
+          left: -5%;
+        }
+      }
+    }
+  }
+}
+
+
+@media only screen and (max-width: 767px) {
+
+  .recommandedContainer {
+    .container {
+      .unique {
+        // height: 90px;
+        top: 104px;
+      }
+
+      .bouble {
+        height: 159px;
+        top: 105px; 
+      }
+
+      .carouselProvider {
+        .recommandedListButtonsContainer {
+          top: 36%;
+          left: -5%;
+        }
+      }
+    }
+  }
+}
+
+@media only screen and (max-width: 575px) {
+
+  .recommandedContainer {
+    .container {
+      .unique {
+        height: 90px;
+        top: 85px;
+      }
+
+      .bouble {
+        height: 159px;
+        top: 105px; 
+      }
+
+      .carouselProvider {
+        .recommandedListButtonsContainer {
+          top: 36%;
+          left: -5%;
+        }
+      }
+    }
+  }
+}
+
+// @media only screen and (max-width: 368) {
+
+//   .recommandedContainer {
+//     .container {
+//       .unique {
+//         height: 90px;
+//         top: 79px;
+//       }
+
+//       .bouble {
+//         height: 168px;
+//         top: 109px;
+//       }
+
+//       .discountTitleContainer {
+//         text-align: left;
+//         h2 {
+//           font-size: 1.4rem;
+//         }
+
+//         p {
+//           font-size: 0.9rem;
+//         }
+//       }
+//       // .carouselProvider {
+//       //   .recommandedListButtonsContainer {
+//       //     top: 36%;
+//       //     left: -5%;
+//       //   }
+//       // }
+//     }
+//   }
+// }

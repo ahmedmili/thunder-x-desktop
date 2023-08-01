@@ -1,105 +1,208 @@
 @import '../../colors';
 
 .supplierCard {
-  height: 315px;
-  width: 332px;
+  width: 300px;
+  background-color: transparent;
+  max-height: 50%;
+  border-radius: 15px;
+  .restaurantLink {
+    margin-bottom: 4px;
+    text-decoration: none;
+    padding-bottom: 3px;    
+    .card {
+      position: relative;
+      .imageContainer {
+        position: relative;
+        height: 150px;
+
+        .discountBox {
+          display: flex;
+          align-items: center;
+          justify-content: flex-start;
+          background-color: $primary_color;
+          padding: 0.2rem 0.4rem;
+          border-radius: 0 1rem 1rem 0;
+          position: absolute;
+          top: 5%;
+          left: 0;
+          z-index: 1;
+
+          p {
+            font-size: 1vw;
+            color: white;
+            margin: 0;
+          }
+
+          .discountIcon {
+            height: 1rem;
+            margin-bottom: -0.2rem;
+            margin-right: 0.3rem;
+          }
+        }
+
+        .restaurantImage {
+          object-fit: cover;
+          height: 100%;
+        }
+
+
+      }
+
+      .contentContainer {
+        display: flex;
+        padding: 1.2rem 1rem;
+
+        .leftSide {
+          display: flex;
+          flex-direction: column;
+          justify-content: space-between;
+          font-family: Poppins;
+          font-style: normal;
+          font-weight: 700;
+          flex: 2;
+
+
+          .name {
+            color: $dark_Gray;
+            font-size: 0.8vw;
+            max-height: 200px;
+            max-width: 100px;
+            abbr{
+              text-decoration: none;
+              &:hover{
+                cursor: pointer;
+              }
+            }
+          }
+
+          .price {
+            color: $light_Gray;
+            font-size: 1vw;
+            font-weight: 600;
+
+            span {
+              color: $orange_color;
+              font-size: 0.7vw;
+            }
+          }
+
+          .option {
+            color: $primary_color;
+            font-size: 1vw;
+          }
+
+        }
+
+        .rightSide {
+          display: flex;
+          flex-direction: column;
+          align-items: stretch;
+          justify-content: space-between;
+
+          .restaurantTime {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+
+            background-color: $orange_color;
+            border-radius: 25px;
+            padding: 0.2rem 0.4rem;
+            z-index: 1;
+
+            p {
+              margin: 0;
+              color: white;
+              text-align: center;
+              font-family: Poppins;
+              font-size: 0.6vw;
+              font-style: normal;
+              font-weight: 600;
+            }
+          }
+
+          .ratingBox {
+            display: flex;
+            align-items: center;
+            justify-content: flex-end;
+            background-color: rgba(255, 255, 255, 0.8);
+            padding: 0.2rem 0.4rem;
+            border-radius: 0 0 0 1rem;
+
+            .starIcon {
+              color: $orange_color;
+              font-size: 2.2rem;
+            }
+          }
+        }
+
+      }
+    }
+
+  }
+
 }
 
-.restaurantLink {
-  text-decoration: none;
-}
-
-.card {
-  position: relative;
-  height: 100%;
-  width: 100%;
-}
-
-.imageContainer {
-  position: relative;
-  height: 60%;
-}
-
-.restaurantImage {
-  object-fit: cover;
-  height: 100%;
-}
-
-.restaurantTime {
-  display: flex;
-  align-items: center;
-  justify-content: flex-start;
-  background-color: $orange_color;
-  padding: 0.2rem 0.4rem;
-  border-radius: 0 0 1rem 0;
-  // position: absolute;
-  // top: 0;
-  // left: 0;
-  z-index: 1;
-}
-
-.discountBox {
-  display: flex;
-  align-items: center;
-  justify-content: flex-start;
-  background-color: $primary_color;
-  padding: 0.2rem 0.4rem;
-  border-radius: 0 1rem 1rem 0;
-  position: absolute;
-  top: 5%;
-  left: 0;
-  z-index: 1;
-}
-
-.discountIcon {
-  height: 1rem;
-  margin-bottom: -0.2rem;
-  margin-right: 0.3rem;
-}
-
-.ratingBox {
-  display: flex;
-  align-items: center;
-  justify-content: flex-end;
-  background-color: rgba(255, 255, 255, 0.8);
-  padding: 0.2rem 0.4rem;
-  border-radius: 0 0 0 1rem;
-  position: absolute;
-  top: 0;
-  right: 0;
-  z-index: 1;
-}
-
-.starIcon {
-  margin-right: 0.3rem;
-  color: #FFD700;
-}
-
-.status-box {
-  background-color: rgba(0, 200, 0, 0.5);
-  padding: 0.2rem 0.4rem;
-  border-radius: 1rem;
-  display: inline-block;
-  margin-top: 1rem;
-}
-
-.status-box.closed {
-  background-color: rgba(255, 0, 0, 0.5);
-}
 
 
-@media only screen and (min-width: 500px) and (max-width:767px) {
+@media only screen and (max-width: 1200px) {
   .supplierCard {
-    height: 50%;
     width: 94%;
+    .restaurantLink {
+      .card {
+        height: 77%;
+
+        .imageContainer {
+          position: relative;
+          height: 81px;
+        }
+
+        .contentContainer {
+          p {
+            margin: 0;
+          }
+
+          .leftSide {
+            justify-content: space-around;
+          }
+
+          .rightSide {
+            justify-content: space-around;
+          }
+        }
+
+      }
+    }
   }
-  .card {
-    height: 77%;
-    width: 102%;
-  }
-.image-container {
-  position: relative;
-  height: 42%;
 }
 
+@media only screen and (max-width: 767px) {
+  .supplierCard {
+    .restaurantLink {
+      .card {
+        height: 50%;
+
+        .imageContainer {
+          position: relative;
+          height: 81px;
+
+          .discountBox {
+            font-size: 6px;
+          }
+        }
+      }
+    }
+  }
+}
+
+@media only screen and (max-width: 575px) {
+  .supplierCard {
+    .restaurantLink {
+      .card {
+        .imageContainer {
+          position: relative;
+          height: 59px;
+        }
+      }
+    }
+  }
 }

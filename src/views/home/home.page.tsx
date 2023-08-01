@@ -9,18 +9,18 @@ import { Restaurant } from '../../services/types';
 import RestaurantList from '../../components/recommendedRestaurants/recommendedRestaurants';
 import 'laravel-echo/dist/echo';
 import { distance } from '../../services/distance'
-import './home.page.scss'
+import homeStyle from './home.page.module.scss'
 import { useDispatch } from 'react-redux';
 import { AdsCarousel } from '../../components/adsCarousel/adsCarousel';
 import { ApplicationAd } from '../../components/applicationAd/ApplicationAd';
 import { FooterNewsLeter } from '../../components/footerNewsLeter/FooterNewsLetter';
 
 // const googleMapKey = import.meta.env.VITE_GOOGLE_MAPS_API_KEY;
-import {Container } from "@mui/material";
+import { Container } from "@mui/material";
 
 
-import {  useAppSelector } from "../../Redux/store";
-import {useEffect, useState } from "react";
+import { useAppSelector } from "../../Redux/store";
+import { useEffect, useState } from "react";
 import CategoryCarousel from "../../components/categoriesCarousel/categoriesCarousel";
 import { useTranslation } from "react-i18next";
 import "laravel-echo/dist/echo";
@@ -99,33 +99,25 @@ const HomePage = () => {
   return (
     <>
 
-      <Container maxWidth='lg' className="containerr">
+      <Container maxWidth='lg' className={homeStyle.containerr}>
         {
           isLoading ? (
-            <div className='skeleton-container'>
-              <Skeleton count={12} className='loading-skeleton' />
-              <Skeleton count={12} className='loading-skeleton' />
-              <Skeleton count={12} className='loading-skeleton' />
+            <div className={homeStyle.skeletonContainer}>
+              <Skeleton count={12} className={homeStyle.loadingSkeleton} />
+              <Skeleton count={12} className={homeStyle.loadingSkeleton} />
+              <Skeleton count={12} className={homeStyle.loadingSkeleton} />
             </div>
           ) : (
             <>
 
               {/* categories list */}
               {
-                homeData?.categories ? (
-
+                homeData?.categories && (
                   <CategoryCarousel
                     onCategorySelect={handleCategorySelect}
                     categories={homeData?.categories} />
-                ) : (
-                  <div className='skeleton-container'>
-                    <Skeleton count={12} className='loading-skeleton' />
-                    <Skeleton count={12} className='loading-skeleton' />
-                    <Skeleton count={12} className='loading-skeleton' />
-                  </div>
-                )
+                    ) 
               }
-
 
               {!isLoading && homeData && homeData.ads.HOME_1 && (
                 <AdsCarousel data={homeData.ads.HOME_1} />
@@ -135,7 +127,7 @@ const HomePage = () => {
 
               {
                 restaurantsList.length > 0 ? (
-                  <div className='home-resto-container' >
+                  <div className={homeStyle.homePromoContainer} >
                     <RestaurantList listType='discount' restaurants={restaurantsList} />
                   </div>
                 ) : (<></>)
@@ -151,7 +143,7 @@ const HomePage = () => {
               {/* recommanded list */}
               {
                 homeData?.recommended ? (
-                  <div className='home-resto-container' >
+                  <div className={homeStyle.homeRestoContainer} >
                     <RestaurantList listType='recommanded' restaurants={homeData?.recommended} />
                   </div>
                 ) : (<></>
@@ -164,10 +156,10 @@ const HomePage = () => {
               }
             </>
           )}
-        </Container>
-        <FooterNewsLeter />
-      </>
-      );
+      </Container>
+      <FooterNewsLeter />
+    </>
+  );
 };
 
       export default React.memo(HomePage);
