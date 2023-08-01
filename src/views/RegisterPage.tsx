@@ -113,7 +113,7 @@ const Register = () => {
       .oneOf([Yup.ref("password"), null], "Passwords must match"),
     phone: Yup.string()
       .min(8, "phone must be more than 10")
-      .max(10, "phone must be less than 10 numbers")
+      .max(8, "phone must be less than 10 numbers")
       .required("phone is required")
       .label("phone"),
   });

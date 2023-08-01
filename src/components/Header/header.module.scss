@@ -81,7 +81,7 @@
 
         .localisationIcon {
             position: relative;
-            top: 5px;
+            top: -2px;
             color: $primary_color;
         }
     }
@@ -136,71 +136,6 @@
     }
 
 }
-
-
-// @media only screen and (min-width: 300px) and (max-width:600px) {
-//     .head1 {
-//         .demiCercle {
-//             top: 30px;
-//             left: -187px;
-//             z-index: 20;
-//             height: 200px;
-//             width: 200px;
-//         }
-//     }
-
-//     .headerContainer {
-
-//         .head2 {
-//             // margin-left: 9%;
-
-//             .logoContainer {
-//                 img {
-//                     width: 77px;
-//                     height: 67.64px;
-//                 }
-//             }
-
-//             .headerAppBar2 {
-//                 .headerMessage {
-
-//                     .headerMessageSyle1,
-//                     .headerMessageSyle2 {
-//                         font-size: 16px;
-//                     }
-//                 }
-
-//                 .headerLocalisationMessageContainer {
-//                     h3 {
-//                         font-size: 11px;
-//                         font-weight: bolder;
-
-//                         .localisationIcon {
-//                             top: -2px;
-//                         }
-//                     }
-//                 }
-//             }
-//         }
-
-//         .head3 {
-//             .appBar {
-//                 .LoadingButton {
-//                     padding: 0;
-//                     width: 90px;
-//                     height: 24px;
-//                 }
-//             }
-
-//             .imageBuilder {
-//                 width: 159px;
-//                 height: 93px;
-//             }
-//         }
-
-//     }
-// }
-
 
 @media only screen and (max-width:1200px) {
     .head1 {
