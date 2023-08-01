@@ -18,5 +18,6 @@ deploy-staging:
     - yarn
     - export CI=false
     - npm run build
+    - cp -r -f $CI_PROJECT_DIR/.htaccess /var/www/html/thunder-website2/build/.htaccess
 
 
