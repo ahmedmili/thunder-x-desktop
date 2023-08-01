@@ -2,6 +2,7 @@ import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 import { RootState } from ".";
 import { api } from "../../services/axiosApi";
 import { AppDispatch } from "../store";
+import { localStorageService } from "../../services/localStorageService"
 
 export type VerifysmsState = {
   loading: boolean;
@@ -53,7 +54,9 @@ export const verifysmsLoadingSelector = (state: RootState) =>
 export const verifysmsAction = (code: any) => async (dispatch: AppDispatch) => {
   try {
     dispatch(startLoading());
-    const response = await api.get("verify/13", code);
+    const idUser = localStorageService.getUserId()
+    const response = await api.get("verify/" + idUser + "?code="+code);
+    console.log(response.data)
     const { success, data } = response.data;
     if (success) {
       dispatch(verifysmsSuccess(data.code));
