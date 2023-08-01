@@ -5,7 +5,7 @@ const Or = ({ children }: { children: ReactNode }) => {
   return (
     <div className={styles.or}>
       <span className={styles.bar}></span>
-      <p>{children}</p>
+      <span>{children}</span>
       <span className={styles.bar}></span>
     </div>
   );

@@ -1,7 +1,7 @@
 .or {
   color: var(----secondaryColor);
   font-family: var(--fontPrimary);
-  font-size: 1.6rem;
+  font-size: 1.28rem;
   font-style: normal;
   font-weight: 500;
   line-height: normal;
@@ -12,5 +12,10 @@
     background: var(--primaryColor);
     width: 90%;
     height: 1px;
+  }
+}
+@media (min-width: 992px) {
+  .or {
+    font-size: 1.6rem;
   }
 }

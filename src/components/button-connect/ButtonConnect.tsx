@@ -9,7 +9,7 @@ const ButtonConnect = ({ icon, text }: ButtonConnectProps) => {
     <button className={styles.btn}>
       <div className={styles.btnContent}>
         <div className={styles.icon}>{icon}</div>
-        <p className={styles.text}> {text} </p>
+        <span className={styles.text}> {text} </span>
       </div>
     </button>
   );

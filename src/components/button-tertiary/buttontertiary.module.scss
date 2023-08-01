@@ -1,9 +1,9 @@
 .btn {
   outline: 0;
-  background: var(--primaryColor);
+  background: var(--green);
   color: var(--white);
   font-family: var(--fontPrimary);
-  border-radius: 50px;
+  border-radius: 10px;
   border: 1px solid transparent;
   font-size: 1.44rem;
   font-style: normal;
@@ -19,8 +19,8 @@
   &:hover {
     transition: all ease 0.2s;
     background: var(--white);
-    border-color: var(--primaryColor);
-    color: var(--primaryColor);
+    border-color: var(--green);
+    color: var(--green);
   }
 }
 @media (min-width: 992px) {

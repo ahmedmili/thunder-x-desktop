@@ -22,7 +22,7 @@ const CheckboxForm = ({
         {props.label}
       </label>
       <NavLink
-        to="/confirm"
+        to="/forgotpassword"
         style={{
           color: "var(--primaryColor)",
           marginLeft: "auto",

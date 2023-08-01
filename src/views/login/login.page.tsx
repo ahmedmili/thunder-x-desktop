@@ -8,6 +8,12 @@ import CardPage from "../../components/card-page/CardPage";
 import PicturesList from "../../components/picture-list/PicturesList";
 import { FormValues, generateForm } from "../../utils/formUtils";
 import CheckboxForm from "../../components/checkbox-form/CheckboxForm";
+import Or from "../../components/or/Or";
+import ButtonConnect from "../../components/button-connect/ButtonConnect";
+import Facebook from "../../assets/icons/Facebook";
+import Apple from "../../assets/icons/Apple";
+import Google from "../../assets/icons/Google";
+import LinkConnect from "../../components/link-connect/LinkConnect";
 
 const LoginPage = () => {
   const [showPassword, setShowPassword] = useState(false);
@@ -72,6 +78,13 @@ const LoginPage = () => {
         button: "Se connecter",
         onSubmit,
       })}
+      <div style={{ display: "flex", flexDirection: "column", gap: "1rem" }}>
+        <Or>Or</Or>
+        <ButtonConnect icon={<Apple />} text="Continue avec Apple" />
+        <ButtonConnect icon={<Google />} text="Continue avec Google" />
+        <ButtonConnect icon={<Facebook />} text="Continue avec Facebook" />
+        <LinkConnect />
+      </div>
     </CardPage>
   );
 };

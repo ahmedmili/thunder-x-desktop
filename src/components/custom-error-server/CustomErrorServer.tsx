@@ -8,7 +8,7 @@ const CustomErrorServer = ({ icon, message }: CustomErrorServerProps) => {
   return (
     <div className={styles.error}>
       {icon}
-      <p> {message} </p>
+      <span> {message} </span>
     </div>
   );
 };

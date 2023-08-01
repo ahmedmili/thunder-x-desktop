@@ -29,14 +29,14 @@
         .cardtitle {
           color: var(--green);
           font-family: var(--fontPrimary);
-          font-size: 3.2rem;
+          font-size: 2.56rem;
           font-style: normal;
           font-weight: 500;
           line-height: normal;
           text-align: center;
         }
         .cardText {
-          font-size: 1.2rem;
+          font-size: 1.12rem;
           color: var(--secondaryColor);
         }
       }
@@ -61,12 +61,6 @@
           max-width: 53px;
           margin: 0 auto 5rem auto;
         }
-        .cardtitle {
-        }
-      }
-    }
-    .cardpageimage {
-      .cardpageimageContent {
       }
     }
   }
@@ -80,12 +74,18 @@
           max-width: 66px;
           margin: 0 auto 6rem auto;
         }
+        .cardHeader {
+          .cardtitle {
+            font-size: 3.2rem;
+          }
+          .cardText {
+            font-size: 1.4rem;
+          }
+        }
       }
     }
     .cardpageimage {
       order: 1;
-      .cardpageimageContent {
-      }
     }
   }
 }

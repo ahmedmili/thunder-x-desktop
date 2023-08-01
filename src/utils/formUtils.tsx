@@ -4,6 +4,8 @@ import CustomError from "../components/CustomError/CustomError";
 import Dash from "../assets/icons/Dash";
 import CustomErrorServer from "../components/custom-error-server/CustomErrorServer";
 import ButtonPrimary from "../components/button-primary/ButtonPrimary";
+import ButtonSecondary from "../components/button-secondary/ButtonSecondary";
+
 import styles from "./formutils.module.scss";
 import Spinner from "../components/spinner/Spinner";
 export interface FormValues {
@@ -37,6 +39,7 @@ interface GenerateFormProps {
   validationSchema: Yup.SchemaOf<any>;
   fields: FieldConfig[];
   button: string;
+  buttonAnnuler?: string;
   loading: boolean;
   showPassword?: boolean;
   showConfirmPassword?: boolean;
@@ -54,6 +57,7 @@ export const generateForm = (props: GenerateFormProps) => {
     validationSchema,
     fields,
     button,
+    buttonAnnuler,
     loading,
     showPassword,
     showConfirmPassword,
@@ -190,7 +194,17 @@ export const generateForm = (props: GenerateFormProps) => {
               </div>
             );
           })}
-          <ButtonPrimary name="btn" type="submit" disabled={isSubmitting}>
+          {buttonAnnuler && (
+            <ButtonSecondary name="annuler">Annuler</ButtonSecondary>
+          )}
+          <ButtonPrimary
+            name="btn"
+            type="submit"
+            disabled={isSubmitting}
+            style={
+              buttonAnnuler ? { gidColumn: "span 1" } : { gridColumn: "span 2" }
+            }
+          >
             {!loading ? button : <Spinner name={button} />}
           </ButtonPrimary>
         </Form>
