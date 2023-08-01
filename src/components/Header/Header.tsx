@@ -10,7 +10,7 @@ import PinDropIcon from "@mui/icons-material/PinDrop";
 
 
 import icon from "../../assets/icon.png";
-import pub from "../../assets/home/images.jpg";
+import pub from "../../assets/home/images.png";
 
 import { logout } from "../../Redux/slices/userSlice";
 import { useEffect, useState } from "react";
