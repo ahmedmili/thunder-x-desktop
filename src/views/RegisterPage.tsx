@@ -10,11 +10,12 @@ import Facebook from "../assets/icons/Facebook";
 import LinkConnect from "../components/link-connect/LinkConnect";
 import CardPage from "../components/card-page/CardPage";
 import { createUser, usersErrors, usersLoding } from "../Redux/slices/users";
-import { useAppDispatch } from "../Redux/store";
+import { useAppDispatch, useAppSelector } from "../Redux/store";
 import { useSelector } from "react-redux";
 import { FormValues, generateForm } from "../utils/formUtils";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import PicturesList from "../components/picture-list/PicturesList";
+import { fetchHomeData, isDeliveryHomeSelector } from "../Redux/slices/home";
 
 const Register = () => {
   const [showPassword, setShowPassword] = useState(false);
@@ -30,6 +31,15 @@ const Register = () => {
 
   const errorsServer = useSelector(usersErrors);
   const loading = useSelector(usersLoding);
+
+  const location = useAppSelector((state) => state.location.position);
+  const isDelivery = useSelector(isDeliveryHomeSelector);
+  useEffect(() => {
+    dispatch(
+      fetchHomeData(1, location?.coords.longitude, location?.coords.latitude)
+    );
+  }, []);
+
   const fields = [
     {
       type: "text",
