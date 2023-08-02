@@ -13,7 +13,6 @@ deploy-staging:
     - pwd
     - cp -r ./* /var/www/html/thunder-website2
     - cp -r -f ./src/environment/environment.staging.tsx /var/www/html/webifyWebsite/src/environment/environment.tsx
-    - cp -r -f ./.htaccess /var/www/html/thunder-website2/build/.htaccess
     - cd /var/www/html/thunder-website2
     - yarn
     - export CI=false
