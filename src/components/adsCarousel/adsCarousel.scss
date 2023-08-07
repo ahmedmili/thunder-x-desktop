@@ -7,8 +7,10 @@
     margin-left: 20%;
 
     img {
-      object-fit: contain;
-      width: 100%;
+      border-radius: 20px;
+      margin: 0 3px;
+      // object-fit: contain;
+      width: 95%;
       height: 100%;
     }
   }

@@ -4,13 +4,16 @@
   width: 300px;
   background-color: transparent;
   max-height: 50%;
-  border-radius: 15px;
+  border-radius: 25px;
+
   .restaurantLink {
     margin-bottom: 4px;
     text-decoration: none;
-    padding-bottom: 3px;    
+    padding-bottom: 3px;
+
     .card {
       position: relative;
+      border-radius: 18px;
       .imageContainer {
         position: relative;
         height: 150px;
@@ -64,31 +67,37 @@
 
           .name {
             color: $dark_Gray;
-            font-size: 0.8vw;
+            font-size: 13px;
             max-height: 200px;
             max-width: 100px;
-            abbr{
+            margin-bottom: 0;
+            
+            abbr {
               text-decoration: none;
-              &:hover{
+              
+              &:hover {
                 cursor: pointer;
               }
             }
           }
-
+          
           .price {
+            margin-bottom: 0;
             color: $light_Gray;
-            font-size: 1vw;
+            font-size: 13px;
             font-weight: 600;
-
+            
             span {
+              margin-bottom: 0;
               color: $orange_color;
-              font-size: 0.7vw;
+              font-size: 10px;
             }
           }
-
+          
           .option {
+            margin-bottom: 0;
             color: $primary_color;
-            font-size: 1vw;
+            font-size: 10px;
           }
 
         }
@@ -114,7 +123,7 @@
               color: white;
               text-align: center;
               font-family: Poppins;
-              font-size: 0.6vw;
+              font-size: 12px;;
               font-style: normal;
               font-weight: 600;
             }
@@ -147,6 +156,7 @@
 @media only screen and (max-width: 1200px) {
   .supplierCard {
     width: 94%;
+
     .restaurantLink {
       .card {
         height: 77%;
@@ -167,6 +177,16 @@
 
           .rightSide {
             justify-content: space-around;
+            .restaurantTime {
+              p {
+                font-size: 7px;;
+              }
+            }
+            .ratingBox {
+              .starIcon {
+                font-size: 2.2rem;
+              }
+            }
           }
         }
 
@@ -189,6 +209,46 @@
             font-size: 6px;
           }
         }
+
+        .contentContainer {
+
+
+          .leftSide {
+            .name {
+              font-size: 10px;
+              max-height: 200px;
+              max-width: 100px;
+            }
+            .price {
+              font-size: 6px;
+              ;
+
+              span {
+                font-size: 6px;
+              }
+            }
+
+            .option {
+              font-size: 9px;
+            }
+
+          }
+
+          .rightSide {
+            .restaurantTime {
+              p {
+                font-size: 5px;
+              }
+            }
+
+            .ratingBox {
+              .starIcon {
+                font-size: 2.2rem;
+              }
+            }
+          }
+
+        }
       }
     }
   }
@@ -199,8 +259,121 @@
     .restaurantLink {
       .card {
         .imageContainer {
+          height: 47px;
+        }
+
+        .contentContainer {
           position: relative;
           height: 59px;
+
+          .leftSide {
+            .name {
+              font-size: 9px;
+              max-height: 200px;
+              max-width: 100px;
+            }
+
+            .price {
+              font-size: 6px;
+              ;
+
+              span {
+                font-size: 6px;
+              }
+            }
+
+            .option {
+              font-size: 7px;
+            }
+
+          }
+
+          .rightSide {
+            .restaurantTime {
+              border-radius: 25px;
+              padding: 0.2rem 0.4rem;
+
+              p {
+                margin: 0;
+                font-size: 0.6vw;
+
+              }
+            }
+
+            .ratingBox {
+              padding: 0.2rem 0.4rem;
+
+              .starIcon {
+                font-size: 2.2rem;
+              }
+            }
+          }
+
+        }
+      }
+    }
+  }
+}
+
+@media only screen and (max-width: 375px) {
+
+  .supplierCard {
+    .restaurantLink {
+      .card {
+        .imageContainer {
+          height: 30px;
+        }
+
+        .contentContainer {
+          position: relative;
+          height: 45px;
+
+          .leftSide {
+            .name {
+              margin: 0;
+              font-size: 4px;
+              max-height: 200px;
+              max-width: 100px;
+            }
+
+            .price {
+              margin: 0;
+              font-size: 4px;
+
+              span {
+                margin: 0;
+                font-size: 4px;
+              }
+            }
+
+            .option {
+              margin: 0;
+              font-size: 4px;
+            }
+
+          }
+
+          .rightSide {
+            .restaurantTime {
+              border-radius: 25px;
+              padding: 0.2rem 0.4rem;
+
+              p {
+                margin: 0;
+                font-size: 0.6vw;
+
+              }
+            }
+
+            .ratingBox {
+              padding: 0.2rem 0.4rem;
+
+              .starIcon {
+                font-size: 2.2rem;
+              }
+            }
+          }
+
         }
       }
     }

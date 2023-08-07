@@ -3,10 +3,10 @@
 .footerContainer {
     height: 100%;
     width: 100%;
-
+    background-color: $Off-White;
     .bodyRow {
         padding-bottom: 5px;
-        min-height: 300px;
+        // min-height: 300px;
 
         .footerLogoCol {
             display: flex;
@@ -169,7 +169,20 @@
 @media only screen and (max-width:576px) {
     .footerContainer {
         .bodyRow {
+            .footerLogoCol {
+                padding-top: 57px;
+
+                .webifyIcon {
+                    height: 23%;
+                    width: 48%;
+                }
+            }
+
             .footerPubsCol {
+                .pubsContainer {
+                    padding-top: 39px;
+                }
+
                 .slideInner {
                     .pubsImage {
                         height: 35px;
@@ -197,6 +210,12 @@
                 .icon {
                     font-size: 1rem;
                 }
+            }
+
+            .footerContacteEmailCol,
+            .footerContacteTelCol {
+                font-size: 14px;
+                padding-top: 39px;
             }
         }
     }

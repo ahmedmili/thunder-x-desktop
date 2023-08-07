@@ -1,11 +1,11 @@
 @import '../../colors';
 
 .newsLetterContainer {
-    background-image: url('../../assets/news_letter_bg.jpg');
+    background-image: url(/src/assets/news_letter_bg.jpg);
     background-repeat: no-repeat;
     background-size: 100% 100%;
-    background-color: $primary_color_001;
-    height: 167px;
+    background-color: #30c5c5;
+    height: 95px;
     display: flex;
     padding: 0;
 
@@ -25,25 +25,25 @@
             flex-direction: column;
 
             .firstPara {
-                width: 319px;
-                height: 23px;
+                width: 169px;
+                height: 13px;
                 margin: 0 0 2px 0;
                 color: #FFF;
                 font-family: Poppins;
-                font-size: 13px;
+                font-size: 9px;
                 font-style: normal;
                 font-weight: 700;
                 line-height: normal;
             }
 
             .secondPara {
-                width: 222px;
+                width: 187px;
                 height: 29px;
                 margin: 2px 0 0 0;
                 color: white;
                 text-shadow: 0px 4px 4px 0px rgba(0, 0, 0, 0.25);
                 font-family: Poppins;
-                font-size: 10px;
+                font-size: 5px;
                 font-style: normal;
                 font-weight: 700;
             }
@@ -52,20 +52,19 @@
 
         .emailInputContainer {
             position: absolute;
-            width: 287px;
-
-            height: 15%;
-            top: 50%;
+            width: 113px;
+            height: 13%;
+            top: 39%;
             right: 4%;
             display: flex;
             align-items: center;
-            justify-content: center;
+            justify-content: space-between;
             background-color: white;
             border-radius: 50px;
 
             input {
                 all: unset;
-                // border-radius: 50px 0px 0px 50px;
+                font-size: 6px;
                 padding-left: 12%;
                 background: transparent;
             }
@@ -73,72 +72,179 @@
             button {
                 all: unset;
                 height: 100%;
-                width: 100%;       
-
+                font-size: 4px;
+                width: 100%;
                 border-radius: 50px;
-                background-color: $orange_color;
+                background-color: #FBC000;
                 text-align: center;
+                display: flex;
+                justify-content: center;
+                align-items: center;
+                padding: 0px 3px;
+
+                .iconContainer {
+                    // height: 10px;
+                    // width: 10px;
+                    background-color: white;
+                    color: $orange_color;
+                    border-radius: 50%;
+                    padding: 2px;
+                    margin-left: 6px;
+                    display: flex;
+                    flex-direction: row;
+                    justify-content: center;
+                    align-items: center;
+
+                    .icon {
+                        font-size: 5px;
+
+                    }
+                }
             }
         }
     }
 }
+
+
+@media only screen and (min-width: 576px) {
+
+    .newsLetterContainer {
+        height: 300px;
+
+        .newsLetterRow {
+
+            .textContainer {
+                padding-left: 8%;
+
+                .firstPara {
+                    width: 233px;
+                    height: 56px;
+                    font-size: 18px;
+                }
+
+
+                .secondPara {
+                    font-size: 8px;
+                    height: 33px;
+                    width: 228px;
+                }
+            }
+
+            .emailInputContainer {
+                width: 228px;
+                top: 43%;
+                right: 5%;
+                height: 12%;
+
+                input {
+
+                    font-size: 10px;
+                }
+
+                button {
+                    padding: 0 8px;
+                    width: 36%;
+                    font-size: 10px;
+
+                    .iconContainer {
+                        .icon {
+                            font-size: 8px;
+                        }
+                    }
+                }
+            }
+        }
+    }
+}
+
 
 @media only screen and (min-width: 768px) {
 
     .newsLetterContainer {
         height: 300px;
+
         .newsLetterRow {
-            
+
             .textContainer {
                 padding-left: 12%;
+
                 .firstPara {
-                    
+                    width: 293px;
+                    height: 75px;
                     font-size: 22px;
                 }
-                
+
                 .secondPara {
+                    font-size: 10px;
+                    height: 33px;
                     width: 317px;
                 }
             }
-            
+
             .emailInputContainer {
                 width: 287px;
                 top: 38%;
-                right: 10%;
+                right: 5%;
                 height: 15%;
-                
+
+                input {
+
+                    font-size: 14px;
+                }
+
+                button {
+                    padding: 0 8px;
+                    width: 36%;
+                    font-size: 14px;
+
+                    .iconContainer {
+                        .icon {
+                            font-size: 11px;
+                        }
+                    }
+                }
             }
         }
     }
 }
 
+
 @media only screen and (min-width: 992px) {
-    
+
     .newsLetterContainer {
         height: 300px;
-        
+
         .newsLetterRow {
-            
+
             .textContainer {
                 .firstPara {
+                    height: 49px;
                     width: 442px;
-                    font-size: 22px;
+                    font-size: 25px;
                 }
-                
+
                 .secondPara {
+                    height: 20px;
                     width: 541px;
                     font-size: 14px;
                 }
             }
-            
+
             .emailInputContainer {
-                width: 326px;
+                justify-content: space-between;
+                width: 382px;
                 top: 39%;
-                height: 20%;
-                right: 10%;
-                
+                height: 18%;
+                right: 2%;
+
+                input {
+
+                    font-size: 14px;
+                }
+
                 button {
-                    width: 100%;       
+                    width: 36%;
+                    font-size: 14px;
                 }
             }
         }

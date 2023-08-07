@@ -1,9 +1,21 @@
 @import '../../colors';
 
+.mapOverPlay{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    background-color: rgba(0, 0, 0, 0.5);
+    z-index: 999;
+
+}
+
 .headerContainer {
-    margin-left: 1%;
-    margin-top: 5px;
-    margin-bottom: 15px;
+    margin-top: 136px;
 }
 
 .head1 {
@@ -11,35 +23,82 @@
 
     .demiCercle {
         position: absolute;
-        top: 48px;
-        left: -252px;
+        top: 80px;
+        left: -491px;
         z-index: 20;
-        height: 300px;
-        width: 300px;
+        width: 532px;
+        height: 432px;
         border-radius: 500px;
         background: linear-gradient(180deg, $orange_color 0%, $orange_color 100%);
     }
 }
 
-.logoContainer {
-    cursor: pointer;
 
-    img {
-        width: 77px;
-        height: 119.64px;
+.fixedHeaderContainer {
+
+    background-color: $white_001;
+    height: 137px;
+    position: fixed;
+    top: 0;
+    left: 10%;
+    right: 10%;
+    bottom: 0;
+    padding: 9px 11px 0px 13px;
+    border-radius: 0 0 10px 10px;
+    
+    z-index: 999;
+
+    .logoContainer {
+        cursor: pointer;
+
+        .logoMain {
+            background-repeat: no-repeat;
+            display: inline-block;
+            background-image: url("/src/assets/icon.png");
+            width: 77px;
+            height: 119.64px;
+        }
+    }
+
+
+    .appBar {
+        display: flex;
+        justify-content: end;
+        gap: 2px;
+        position: relative;
+
+        .LoadingButton {
+            padding: 0.4rem;
+            background-color: $primary_color;
+            border-radius: 20px;
+            border-width: 0;
+            color: $white_001;
+            font-weight: 500;
+            width: 141px;
+            height: 40px;
+            text-align: center;
+            font-size: 18px;
+
+            &:hover {
+                background-color: $primary_color_001;
+                transform: translateY(-2px);
+            }
+        }
     }
 }
 
 .headerMessage {
+    margin-top: 2px;
     display: flex;
     flex-direction: column;
 
     .headerMessageSyle1 {
-        margin: 0;
+        margin: 3px 0 0 0;
         display: inline;
         color: $dark_Gray;
         font-family: Poppins;
-        font-size: 32px;
+        font-size: 40px;
+        ;
         font-style: normal;
         font-weight: 700;
         line-height: normal;
@@ -49,7 +108,7 @@
         display: inline;
         color: $primary_color;
         font-family: Poppins;
-        font-size: 32px;
+        font-size: 40px;
         font-style: normal;
         font-weight: 700;
         line-height: normal;
@@ -57,16 +116,17 @@
 }
 
 .Switches {
-    margin-top: 15px;
+    margin: 15px 0;
 }
 
 .headerLocalisationMessageContainer {
-    margin-top: 5px;
+    margin: 5px 0;
     display: flex;
+    padding: 22px 0;
     flex-direction: column;
     cursor: pointer;
 
-    h3 {
+    a {
         color: $dark_Gray;
         font-family: Poppins;
         font-size: 18px;
@@ -87,153 +147,113 @@
     }
 }
 
-.head3 {
-    display: flex;
-    flex-direction: column;
-    justify-content: end;
-    align-items: end;
-    flex: 1;
-
-    .LoadingButton {
-        padding: 0.4rem;
-        background-color: $primary_color;
-        border: 1px solid $white_001;
-        border-radius: 20px;
-        color: $white_001;
-        font-weight: 500;
-        width: 144px;
-        height: 40px;
-        text-align: center;
-        display: flex;
-        justify-content: center;
-        align-items: center;
-
-        &:hover {
-            background-color: $primary_color_001;
-            transform: translateY(-2px);
-        }
-    }
-
-    .appBar {
-        display: flex;
-    }
-
-    .imageBuilder {
-        position: relative;
-        margin: 7px 10px 0 7px;
-        width: 546px;
-        height: 305px;
-        border-radius: 10%;
-
-        img {
-            position: absolute;
-            top: 0;
-            left: 0;
-            // object-fit: cover;
-            width: 95%;
-            height: 100%;
-        }
-    }
-
+.imageBuilder {
+    background-image: url(/src/assets/home/images.png);
+    background-size: 100% 100%;
+    background-position: right;
+    background-repeat: no-repeat;
+    width: 438px;
+    height: 310px;
 }
+
+
 
 @media only screen and (max-width:1200px) {
     .head1 {
         .demiCercle {
-            top: 30px;
-            left: -212px;
-            z-index: 20;
-            height: 250px;
-            width: 250px;
+            top: 73px;
+            left: -469px;
+        }
+    }
+
+    .fixedHeaderContainer {
+        height: 82px;
+        .logoContainer {
+            .logoMain {
+                background-size: 50%;
+                width: 77px;
+                height: 94px;
+            }
         }
     }
 
     .headerContainer {
+        margin-top: 70px;
 
-        .head2 {
-            margin-left: 9%;
+        .headerAppBar2 {
+            .headerMessage {
 
-            .logoContainer {
-                img {
-                    width: 77px;
-                    height: 94px;
+                .headerMessageSyle1,
+                .headerMessageSyle2 {
+                    font-size: 31px;
                 }
             }
 
-            .headerAppBar2 {
-                .headerMessage {
+            .headerLocalisationMessageContainer {
+                a {
+                    font-size: 15px;
 
-                    .headerMessageSyle1,
-                    .headerMessageSyle2 {
-                        font-size: 25px;
-                    }
-                }
-
-                .headerLocalisationMessageContainer {
-                    h3 {
-                        font-size: 13px;
-
-                        .localisationIcon {
-                            top: -2px;
-                        }
+                    .localisationIcon {
+                        top: -2px;
                     }
                 }
             }
-
-
         }
 
-        .head3 {
-            .appBar {
-                .LoadingButton {
-                    display: flex;
-                    align-items: center;
-                    justify-content: center;
-                    padding: 0;
-                    width: 90px;
-                    height: 34px;
-                }
-            }
+        .LoadingButton {
+            width: 82px;
+            height: 34px;
+        }
 
-            .imageBuilder {
-                margin-top: 44px;
-                width: 311px;
-                height: 209px;
-            }
+        .imageBuilder {
+            width: 354px;
+            height: 281px;
         }
     }
+
 }
+
 
 @media only screen and (max-width: 992px) {
 
-    
-    .headerContainer {
-        .head3 {
-            .imageBuilder {
-                width: 308px;
-                height: 163px;
-            }
+    .head1 {
+        .demiCercle {
+            width: 200px;
+            height: 200px;
+            top: 114px;
+            left: -167px;
         }
-        .head2 {
-            .headerAppBar2 {
-                .headerMessage {
+    }
 
-                    .headerMessageSyle1,
-                    .headerMessageSyle2 {
-                        font-size: 1.5rem;
-                    }
+    .headerContainer {
+
+        .imageBuilder {
+            width: 255px;
+            height: 208px;
+        }
+
+
+        .headerAppBar2 {
+            .headerMessage {
+
+                .headerMessageSyle1,
+                .headerMessageSyle2 {
+                    font-size: 24.54px;
                 }
+            }
 
-                .headerLocalisationMessageContainer {
-                    h3 {
-                        font-size: 1.5rem;
+            .headerLocalisationMessageContainer {
+                padding: 0 8px;
 
-                        .localisationIcon {
-                            top: -2px;
-                        }
+                a {
+                    font-size: 8.5px;
+
+                    .localisationIcon {
+                        top: -2px;
                     }
                 }
             }
+
         }
     }
 
@@ -241,68 +261,108 @@
 
 @media only screen and (max-width: 768px) {
 
-    
-    .headerContainer {
-        .head3 {
-            .imageBuilder {
-                width: 308px;
-                height: 166px;
-            }
-        }
-        .head2 {
-            .headerAppBar2 {
-                .headerMessage {
 
-                    .headerMessageSyle1,
-                    .headerMessageSyle2 {
-                        font-size: 1rem;
+    .headerContainer {
+        .imageBuilder {
+            width: 191px;
+            height: 186px;
+        }
+
+        .headerAppBar2 {
+            .headerMessage {
+
+                .headerMessageSyle1,
+                .headerMessageSyle2 {
+                    font-size: 18px;
+                }
+            }
+
+            .headerLocalisationMessageContainer {
+                a {
+                    font-size: 7px;
+
+                    .localisationIcon {
+                        top: -2px;
+                        font-size: 4.88px;
                     }
                 }
+            }
+        }
 
-                .headerLocalisationMessageContainer {
-                    h3 {
-                        font-size: 1rem;
+    }
+}
 
-                        .localisationIcon {
-                            top: -2px;
-                        }
+@media only screen and (max-width: 576px) {
+
+    .head1 {
+        .demiCercle {
+            top: 106px;
+            left: -169px;
+            height: 200px;
+            width: 200px;
+        }
+    }
+
+    .fixedHeaderContainer {
+        .appBar {
+            .LoadingButton {
+                width: 60px;
+                height: 25px;
+                font-size: 6.33px;
+                padding: 1px;
+            }
+        }
+    }
+
+    .headerContainer {
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        flex-wrap: wrap-reverse;
+.imageBuilderContainer{
+    display: flex;
+    justify-content: center;
+
+    align-items: center;
+    .imageBuilder {
+        background-position: center center;
+        background-size: contain;
+        width: 177px;
+        height: 125px;
+    }
+}
+
+        .headerAppBar2 {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+
+            .headerMessage {
+
+                .headerMessageSyle1,
+                .headerMessageSyle2 {
+                    font-size: 11px;
+                }
+            }
+
+            .headerLocalisationMessageContainer {
+                padding: 0;
+                margin: 0px;
+
+                a {
+                    font-size: 6.33px;
+
+                    .localisationIcon {
+                        top: -2px;
                     }
                 }
             }
         }
     }
-}
 
-@media only screen and (max-width: 576px) {
-    
-    .headerContainer {
-        
-            .head3 {
-                .imageBuilder {
-                    width: 157px;
-                    height: 132px;    
-                }
-            }
-        .head2 {
-            .headerAppBar2 {
-                .headerMessage {
-
-                    .headerMessageSyle1,
-                    .headerMessageSyle2 {
-                        font-size: 1rem;
-                    }
-                }
-
-                .headerLocalisationMessageContainer {
-                    h3 {
-                        font-size: 0.7rem;
-
-                        .localisationIcon {
-                            top: -2px;
-                        }
-                    }
-                }
-            }
-        }
+    .Switches {
+        margin: 4px 0;
     }
 }

@@ -1,73 +1,151 @@
 @import '../../colors';
 
 .searchContainer {
+
   background-color: $primary_color;
   border-radius: 25px;
-  max-width: 70%;
-
-  .headerSearchBar {
+  width: 342.96px;
+  padding: 0 19px;
+  .icons{
+    font-size: 10px;
     color: white;
+  }
+  .iconBackgorund{
+    background-color: white;
+    border-radius: 50%;
+    color: $primary_color;
+    padding: 2px;
+  }
+  form {
     display: flex;
-    justify-content: space-around;
-    display: flex;
+    justify-content: space-between;
     align-items: center;
-    flex-direction: row;
-    width: 100%;
-    max-width: 150rem;
-    margin-bottom: 1rem;
-    border-radius: 25px;
-
-    input {
-      border-radius: 25px;
-
-      padding: 5px;
-      background-color: $primary_color;
+    .headerSearchBar {
       color: white;
-      border: none;
-      font-size: 1.2rem;
-
-      &:focus {
-        outline: none;
-        /* Remove the outline when focused */
-      }
-
-      &::placeholder {
+      border-radius: 25px;
+      
+      input {
+        width: 254px;
+        border-radius: 25px;
+        padding: 5px;
+        background-color: transparent;
         color: white;
+        border: none;
+        font-size: 18px;
+
+        &:focus {
+          outline: none;
+          /* Remove the outline when focused */
+        }
+
+        &::placeholder {
+          color: white;
+        }
       }
-    }
 
-    button {
-      border-radius: 25px;
-    
-      background-color: transparent;
-      color: white;
-      border: none;
-      margin-left: 0.5rem;
-      padding: 0.5rem;
-      border-radius: 5px;
-      cursor: pointer;
-      max-width: 100px;
-      height: 40px;
-      width: 40px;
-      font-size: 20px;
-      position: relative;
-    }
-    
+      button {
+        border-radius: 25px;
 
-    .filters {
-      border-radius: 25px;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      position: absolute;
-      top: 70%;
-      left: 73%;
-      background-color: white;
-      z-index: 999;
-      padding: 2rem;
-      box-shadow: 1px 2px 4px 2px rgba(0, 0, 0, 0.2);
+        background-color: transparent;
+        color: white;
+        border: none;
+        margin-left: 0.5rem;
+        padding: 0.5rem;
+        border-radius: 5px;
+        cursor: pointer;
+        max-width: 100px;
+        height: 40px;
+        width: 40px;
+        font-size: 20px;
+        position: relative;
+      }
+
+
+      .filters {
+        border-radius: 25px;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        position: absolute;
+        top: 70%;
+        left: 73%;
+        background-color: white;
+        z-index: 999;
+        padding: 2rem;
+        box-shadow: 1px 2px 4px 2px rgba(0, 0, 0, 0.2);
+      }
     }
   }
 
+}
 
+@media only screen and (max-width: 992px) {
+  .searchContainer {
+    width: 201px;
+    padding: 5px 10px;
+    form {
+      .headerSearchBar {
+        width: 100px;
+        margin: 0;
+        input {
+          padding: 0px;
+          font-size: 8.5px;
+        }
+      }
+    }
+    .icons .bi-search{
+      font-size: 10px;
+    }
+  }
+}
+
+@media only screen and (max-width: 768px) {
+  .searchContainer {
+    width: 177px;;
+
+    form {
+      .headerSearchBar {
+        width: 94px;
+        margin: 0;
+        input  {
+          padding: 0px;
+          font-size: 7px;
+        }
+      }
+    }
+  }
+}
+
+@media only screen and (max-width: 576px) {
+  .searchContainer {
+    padding :0 5px;
+    width: 120px;
+    .icon{
+      font-size: 8px;
+    }
+    .icons{
+      color: white;
+    }
+    .iconBackgorund{
+      background-color: white;
+      border-radius: 50%;
+      color: $primary_color;
+      // padding: 0;
+      height: 10px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+    
+    form {
+      .headerSearchBar {
+        width: 79px;
+        margin: 0 0 3px 0;
+        input {
+          padding: 0px;
+          font-size: 6px;
+        }
+      }
+    }
+  }
 }

@@ -33,7 +33,7 @@ const Header = () => {
 
   const cartItems = useAppSelector((state) => state.cart.items);
   const location = useAppSelector((state) => state.location.position);
-  
+
   const [showCart, setShowCart] = useState(false); // Add state variable for showing/hiding the cart
   const [showMap, setShowMap] = useState(false);
 
@@ -83,108 +83,107 @@ const Header = () => {
 
   return (
     <>
-     <div className={headerStyles.head1}>
+      <div className={headerStyles.head1}>
         <div className={headerStyles.demiCercle}>
 
         </div>
       </div>
-    <Container className=' container-lg  container-xxl container-xl' fluid  >
-      <Row className={headerStyles.headerContainer}>
-        <Col >
-          <Row>
-            <Col className='col-8 col-sm-6' >
-              <Box className={headerStyles.head2} >
-                <div className={headerStyles.logoContainer} onClick={() => navigate('/')} >
-                  <img src={icon} alt='icon' ></img >
-                </div>
-                <div className={headerStyles.headerAppBar2}>
-                  <div className={headerStyles.headerMessage}>
-                    <p className={headerStyles.headerMessageSyle1} > Nous &nbsp;
-                      <span className={headerStyles.headerMessageSyle2}>
-                        livrons
-                      </span>
-                    </p>
-                    <p className={headerStyles.headerMessageSyle1}> plus que de la &nbsp;
-                      <span className={headerStyles.headerMessageSyle2}>
-                        nourriture
-                      </span> .
-                    </p>
-                  </div>
-                  <div className={headerStyles.Switches}>
-                    <Switches />
-                  </div>
-                  <Box className={headerStyles.headerLocalisationMessageContainer} onClick={() => setShowMap(true)} >
-                    <h3>
-                      <span className={headerStyles.localisationIcon} >
-                        <PinDropIcon />
-                      </span>
-                      {location
-                        ? `${location?.coords.label} ! ${t('clickToChange')}`
-                        : t('no_location_detected')}
-                    </h3>
-                  </Box>
-                  <SearchBar placeholder={t('search_placeholder')} />
+      <Container  >
+        <Row className={headerStyles.fixedHeaderContainer}>
+          <Col>
+            <div className={headerStyles.logoContainer} onClick={() => navigate('/')} >
+              <a href="#" className={headerStyles.logoMain}></a>
+            </div>
+          </Col>
 
-                </div>
-              </Box>
-            </Col>
-
-            <Col className='col-4 col-sm-6'>
-              <Box className={headerStyles.head3}>
-                {/* login register buttons  */}
-                  {!logged_in  ?  (
-                    <>
+          <Col>
+            {/* login register buttons  */}
+            {!logged_in ? (
+              <>
                 <div className={headerStyles.appBar}>
-                      <div
-                        onClick={() => navigate('/register')}
-                        className={headerStyles.LoadingButton}
-                      >
-                        {t('signup')}
-                      </div>
-                      <div
-                        onClick={() => navigate('/login')}
-                        className={headerStyles.LoadingButton}
-                      >
-                        {t('login')}
-                      </div>
+                  <button
+                    onClick={() => navigate('/register')}
+                    className={headerStyles.LoadingButton}
+                  >
+                    {t('signup')}
+                  </button>
+                  <button
+                    onClick={() => navigate('/login')}
+                    className={headerStyles.LoadingButton}
+                  >
+                    {t('login')}
+                  </button>
                 </div>
-                    </>
-                  ) : <>
-                    <div className="app-bar">
-                      <div
-                        onClick={onLogoutHandler}
-                        className={headerStyles.LoadingButton}
-                      >
-                        {t('signout')}
-                      </div>
+              </>
+            ) : <>
+              <div className={headerStyles.appBar}>
+                <button
+                  onClick={onLogoutHandler}
+                  className={headerStyles.LoadingButton}
+                >
+                  {t('signout')}
+                </button>
+              </div>
+            </>
+            }
+          </Col>
+
+        </Row>
+
+        <Row className={headerStyles.headerContainer}>
+          <Col className='col-12 col-sm-7'>
+              <div className={headerStyles.headerAppBar2}>
+                <div className={headerStyles.headerMessage}>
+                  <p className={headerStyles.headerMessageSyle1} > Nous &nbsp;
+                    <span className={headerStyles.headerMessageSyle2}>
+                      livrons
+                    </span>
+                  </p>
+                  <p className={headerStyles.headerMessageSyle1}> plus que de la &nbsp;
+                    <span className={headerStyles.headerMessageSyle2}>
+                      nourriture
+                    </span> .
+                  </p>
                 </div>
-                  </>
-                }
-                <div className={headerStyles.imageBuilder}>
-                    <img src={pub} alt="header photo" />
+                <div className={headerStyles.Switches}>
+                  <Switches />
                 </div>
-              </Box>
-            </Col>
-          </Row>
-        </Col>
-      </Row>
-      {/*  Thunder logo section  */}
-      {showMap && (
-        <div
-          className="map-overlay"
-          onClick={() => setShowMap(false)}>
+                <Box className={headerStyles.headerLocalisationMessageContainer} onClick={() => setShowMap(true)} >
+                  <a href="#" >
+                    <span className={headerStyles.localisationIcon} >
+                      <PinDropIcon />
+                    </span>
+                    {location
+                      ? `${location?.coords.label} ! ${t('clickToChange')}`
+                      : t('no_location_detected')}
+                  </a>
+                </Box>
+                <SearchBar placeholder={t('search_placeholder')} />
+
+              </div>
+          </Col>
+
+          <Col className={headerStyles.imageBuilderContainer}>
+            <div className={headerStyles.imageBuilder}></div>
+          </Col>
+        </Row>
+
+        {/*  Thunder logo section  */}
+        {showMap && (
           <div
-            onClick={(e) => e.stopPropagation()}>
-            <Map apiKey={googleMapKey} />
+            className={headerStyles.mapOverPlay}
+            onClick={() => setShowMap(false)}>
+            <div
+              onClick={(e) => e.stopPropagation()}>
+              <Map apiKey={googleMapKey} />
+            </div>
           </div>
-        </div>
-      )}
-    </Container>
-     
+        )}
+      </Container>
+
     </>
   );
 };
 
 export default Header;
 
-      
