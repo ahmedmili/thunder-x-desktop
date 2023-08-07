@@ -1,7 +1,9 @@
 import { api } from './../axiosApi';
 interface loginValues {
   email: string,
-  password: string
+  password: string,
+  remember? : boolean,
+  fcm:string
 }
 interface registerValues {
   firstname: string,
@@ -13,11 +15,14 @@ interface registerValues {
 }
 
 async function loginUser(values: loginValues) {
+  // console.log(values)
+  const data = values;
   try {
     const response = await api.post("loginClient", {
-      email: values.email,
-      password: values.password,
-    }, { authorization: false });
+      email: data.email,
+      password: data.password,
+      fcm:"",
+    });
     const { token, user } = response.data.data;
     return { token, user };
   } catch (error) {
@@ -25,6 +30,7 @@ async function loginUser(values: loginValues) {
     throw error;
   }
 }
+
 async function registerUser(values: registerValues) {
   try {
     const response = await api.post("signupclient", {
