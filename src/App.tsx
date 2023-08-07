@@ -23,7 +23,7 @@ import {
 import Menu from "./components/menus/menus";
 import { setUser, login, logout } from "./Redux/slices/userSlice";
 import jwt_decode from "jwt-decode";
-import WebSocket from "./services/websocket";
+// import WebSocket from "./services/websocket";
 import eventEmitter from "./services/thunderEventsService";
 import "./app.scss";
 import { localStorageService } from "./services/localStorageService";
@@ -131,9 +131,9 @@ function App() {
     }
   }, []);
 
-  useEffect(() => {
-    const socket = WebSocket.getInstance();
-  }, []);
+  // useEffect(() => {
+  //   const socket = WebSocket.getInstance();
+  // }, []);
 
   return (
     <>
