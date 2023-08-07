@@ -1,5 +1,4 @@
 import * as Yup from "yup";
-import { useNavigate } from "react-router-dom";
 import InputForm from "../../components/Input-form/InputForm";
 import { useAppDispatch } from "../../Redux/store";
 import { useState } from "react";
@@ -14,6 +13,13 @@ import Facebook from "../../assets/icons/Facebook";
 import Apple from "../../assets/icons/Apple";
 import Google from "../../assets/icons/Google";
 import LinkConnect from "../../components/link-connect/LinkConnect";
+
+import { Link, useNavigate } from "react-router-dom";
+
+import { userService } from "../../services/api/user.api";
+import { localStorageService } from "../../services/localStorageService";
+import { setUser } from "../../Redux/slices/userSlice";
+import { toast } from "react-toastify";
 
 const LoginPage = () => {
   const [showPassword, setShowPassword] = useState(false);
@@ -58,6 +64,35 @@ const LoginPage = () => {
       .label("Password"),
   });
 
+  
+  const onSubmitHandler = async (values:any) => {
+    try {
+      const { token, user } = await userService.loginUser(values);
+      localStorageService.setUserCredentials(user, token);
+      dispatch(setUser(user));
+      toast.success("You successfully logged in");
+      navigate("/"); // Redirect to the home page
+    } catch (error: any) {
+      if (error.response) {
+        if (Array.isArray(error.response.data.error)) {
+          error.response.data.error.forEach((el: any) =>
+            toast.error(el.message, {
+              position: "top-right",
+            })
+          );
+        } else {
+          toast.error(error.response.data.message, {
+            position: "top-right",
+          });
+        }
+      } else {
+        toast.error("Something went wrong. Please try again.", {
+          position: "top-right",
+        });
+      }
+    }
+  };
+
   const initialValues = {
     email: "",
     password: "",
@@ -66,7 +101,8 @@ const LoginPage = () => {
     values: FormValues,
     { setSubmitting, resetForm }: FormikHelpers<FormValues>
   ) => {
-    console.log(values);
+    onSubmitHandler(values);
+    // console.log(values);
   };
   return (
     <CardPage icon="" text="" title="Se connecter" image={<PicturesList />}>
