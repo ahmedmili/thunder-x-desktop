@@ -9,7 +9,7 @@ export default defineConfig({
   base: './',
   build: {
     chunkSizeWarningLimit: 1000, // Adjust chunk size warning limit
-    outDir: 'build',
+    // outDir: 'build',
   },
   assetsInclude: ['**/*.png', '**/*.jpg', '**/*.jpeg', '**/*.gif', '**/*.svg'],
 
