@@ -3,7 +3,7 @@ import "bootstrap/dist/css/bootstrap.min.css";
 import { Navigate, Outlet, Route, Routes } from "react-router-dom";
 import { lazy, Suspense, useCallback, useEffect, useState } from "react";
 import Layout from "./components/layout/layout";
-import { ToastContainer } from "react-toastify";
+import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { useAppDispatch, useAppSelector } from "./Redux/store";
 
@@ -14,7 +14,7 @@ import {
 } from "./Redux/slices/homeDataSlice";
 
 import { setRestaurants } from "./Redux/slices/restaurantSlice";
-
+import { LocationService } from "./services/api/Location.api"
 import {
   setCartItems,
   setDeliveryPrice,
@@ -23,7 +23,7 @@ import {
 import Menu from "./components/menus/menus";
 import { setUser, login, logout } from "./Redux/slices/userSlice";
 import jwt_decode from "jwt-decode";
-// import WebSocket from "./services/websocket";
+import WebSocket from "./services/websocket";
 import eventEmitter from "./services/thunderEventsService";
 import "./app.scss";
 import { localStorageService } from "./services/localStorageService";
@@ -44,6 +44,13 @@ const OrderTrackingPage = lazy(() => import("./views/track/trackorder.page"));
 const ConfirmNumberPage = lazy(() => import("./views/ConfirmNumberPage"));
 const WelcomePage = lazy(() => import("./views/WelcomePage"));
 const ForgotPasswordPage = lazy(() => import("./views/ForgotPasswordPage"));
+
+type Position = {
+  coords: {
+    latitude: number;
+    longitude: number;
+  };
+};
 function App() {
   const location = useAppSelector((state) => state.location.position);
   const dispatch = useAppDispatch();
@@ -120,6 +127,25 @@ function App() {
   useEffect(() => {
     const token = localStorageService.getUserToken();
     const _isAuthenticated = verifyToken(JSON.stringify(token));
+    const location = localStorageService.getCurrentLocation();
+    if (!location) {
+      navigator.geolocation.getCurrentPosition(
+        (position: Position) => {
+          const { latitude, longitude } = position.coords;
+          LocationService.geoCode(latitude, longitude).then(data => {
+            dispatch({
+              type: "SET_LOCATION",
+              payload: {
+                ...data
+              },
+            });
+          });
+        },
+        (error: GeolocationPositionError) => {
+          toast.error(error.message)
+        }
+      );
+    }
 
     if (token) {
       const decodedToken: any = jwt_decode(token);
@@ -131,9 +157,9 @@ function App() {
     }
   }, []);
 
-  // useEffect(() => {
-  //   const socket = WebSocket.getInstance();
-  // }, []);
+  useEffect(() => {
+    const socket = WebSocket.getInstance();
+  }, []);
 
   return (
     <>
