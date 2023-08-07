@@ -1,13 +1,8 @@
-import React, { useEffect, useState } from "react";
 import LocalPhoneIcon from "@mui/icons-material/LocalPhone";
-import EmailIcon from "@mui/icons-material/Email";
-// import { Facebook, Instagram } from '@mui/icons-material';
 import footerStyles from "./footer.module.scss";
 import { Container, Row, Col } from "react-bootstrap";
 interface FooterProps {}
 import icon from "../../assets/icon.png";
-import { useAppDispatch, useAppSelector } from "../../Redux/store";
-import { selectHomeData } from "../../Redux/slices/homeDataSlice";
 import { useSelector } from "react-redux";
 import { adsHomeSelector } from "../../Redux/slices/home";
 import { CarouselProvider, Slide, Slider } from "pure-react-carousel";
@@ -17,11 +12,9 @@ import InstaIcon from "../../assets/icons/InstaIcon";
 import FacebookIcon from "../../assets/icons/FacebookIcon";
 
 const Footer: React.FC<FooterProps> = () => {
-  //const data = useAppSelector((state) => state.homeData.data);
 
   const adsSelector = useSelector(adsHomeSelector);
   const ads = adsSelector.HOME_1;
-  console.log(ads)
 
   return (
     <Container fluid className={footerStyles.footerContainer}>

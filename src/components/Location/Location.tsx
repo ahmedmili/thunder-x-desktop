@@ -27,6 +27,7 @@ import {
 } from "@mui/material";
 import { localStorageService } from "../../services/localStorageService";
 import { stringify } from "querystring";
+import { LocationService } from "../../services/api/Location.api";
 
 type Position = {
   coords: {
@@ -116,8 +117,6 @@ const Map = (props: any) => {
   // read client adresses
   useEffect(() => {
     const userItem = localStorageService.getUser();
-    // console.log(userItem)
-
     const fetchData = async () => {
       let res = await adressService.getAdressByid(JSON.parse(userItem!).id);
       setClientAdressTable(res.data.data);
@@ -184,7 +183,14 @@ const Map = (props: any) => {
     navigator.geolocation.getCurrentPosition(
       (position: Position) => {
         const { latitude, longitude } = position.coords;
-        geoCode(latitude, longitude);
+        LocationService.geoCode(latitude, longitude).then(data => {
+          dispatch({
+            type: "SET_LOCATION",
+            payload: {
+              ... data
+            },
+          });
+        });
         if (mapRef.current) {
           const currentPosition = { lat: latitude, lng: longitude };
           setPreviousMarker(marker);
@@ -217,37 +223,20 @@ const Map = (props: any) => {
       .then(async (data) => {
         if (data.status === "OK") {
           const { lat, lng } = data.results[0].geometry.location;
-          await geoCode(lat, lng);
+          LocationService.geoCode(lat, lng).then(data => {
+            dispatch({
+              type: "SET_LOCATION",
+              payload: {
+                ... data
+              },
+            });
+          });
+
         }
       })
       .catch((err) => {
         toast.error(err.message);
       });
-  };
-
-  const geoCode = (latitude: any, longitude: any) => {
-    if (latitude && longitude) {
-      const url = `https://maps.googleapis.com/maps/api/geocode/json?latlng=${latitude},${longitude}&key=${googleMapKey}`;
-      fetch(url)
-        .then((response) => response.json())
-        .then((data) => {
-          dispatch({
-            type: "SET_LOCATION",
-            payload: {
-              coords: {
-                latitude: latitude,
-                longitude: longitude,
-                label: data?.results.length
-                  ? data.results[1].formatted_address
-                  : null,
-              },
-            },
-          });
-        })
-        .catch((err) => {
-          toast.error(err.message);
-        });
-    }
   };
 
   const handleKeyDown = (event: React.KeyboardEvent<HTMLInputElement>) => {
@@ -272,7 +261,14 @@ const Map = (props: any) => {
     setMarker(newMarker);
 
     // Geocode the new location
-    geoCode(latLng?.lat(), latLng?.lng());
+    LocationService.geoCode(latLng?.lat(), latLng?.lng()).then(data => {
+      dispatch({
+        type: "SET_LOCATION",
+        payload: {
+          ... data
+        },
+      });
+    });
   };
   const userItem = localStorageService.getUser();
 
