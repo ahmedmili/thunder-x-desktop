@@ -4,6 +4,7 @@
 
 .recommandedContainer {
   margin-bottom: 5px;
+
   .container {
     background-color: white;
     position: relative;
@@ -59,8 +60,8 @@
     .bouble {
       width: 100%;
 
-      height: 337px;
-      top: 175px;
+      height: 317px;
+      top: 160px;
       border-radius: 60px;
       background: $Light_Blue;
       position: absolute;
@@ -70,7 +71,9 @@
     .carouselProvider {
       margin: 0 5%;
 
+
       .recommandedListButtonsContainer {
+
         width: 110%;
         height: 50px;
         display: flex;
@@ -100,6 +103,7 @@
           }
 
           .sliderButtonIcon {
+            font-size: 25px;
             color: $orange_color;
             font-weight: 400;
 
@@ -108,6 +112,13 @@
             }
           }
         }
+      }
+
+      .uniqueButtons {
+        width: 110%;
+        height: 50px;
+        top: 41%;
+        left: -4%;
       }
     }
 
@@ -134,6 +145,11 @@
           top: 25%;
           left: -5%;
         }
+
+        .uniqueButtons {
+          top: 33%;
+          left: -4%;
+        }
       }
     }
   }
@@ -149,13 +165,15 @@
       }
 
       .bouble {
-        height: 159px;
+        height: 228px;
         top: 138px;
       }
 
       .carouselProvider {
         .recommandedListButtonsContainer {
-          top: 36%;
+          width: 112%;
+          height: 23px;
+          top: 43%;
           left: -5%;
         }
       }
@@ -169,19 +187,33 @@
   .recommandedContainer {
     .container {
       .unique {
-        // height: 90px;
         top: 104px;
       }
 
       .bouble {
-        height: 159px;
-        top: 105px; 
+        height: 166px;
+        top: 116px;
       }
 
       .carouselProvider {
         .recommandedListButtonsContainer {
-          top: 36%;
+          width: 113%;
+          height: 23px;
+          top: 44%;
           left: -5%;
+
+          .btn {
+            .sliderButtonIcon {
+              font-size: 14px;
+            }
+          }
+
+        }
+
+        .uniqueButtons {
+           width: 111%; 
+          top: 56%;
+          left: -4%;
         }
       }
     }
@@ -191,7 +223,15 @@
 @media only screen and (max-width: 575px) {
 
   .recommandedContainer {
+    font-size: 1rem;
+
     .container {
+
+      .recaommandedTitle {
+
+        font-size: 2rem;
+      }
+
       .unique {
         height: 90px;
         top: 85px;
@@ -199,49 +239,74 @@
 
       .bouble {
         height: 159px;
-        top: 105px; 
+        top: 73px;
       }
+
 
       .carouselProvider {
         .recommandedListButtonsContainer {
-          top: 36%;
+          width: 113%;
+          height: 23px;
+          top: 33%;
           left: -5%;
+
+          .btn {
+
+            .sliderButtonIcon {
+              font-size: 14px;
+            }
+          }
+        }
+        .uniqueButtons {
+          width: 111%;
+          top: 44%;
+          left: -4%;
+       }
+      }
+
+    }
+  }
+}
+
+
+@media only screen and (max-width: 375px) {
+
+  .recommandedContainer {
+    .container {
+      .unique {
+        height: 90px;
+        top: 79px;
+      }
+
+      .bouble {
+        height: 135px;
+        top: 45px;
+      }
+
+      .discountTitleContainer {
+        text-align: left;
+        h2 {
+          font-size: 1rem;
+        }
+
+        p {
+          font-size: 0.5rem;
+        }
+      }
+      .carouselProvider {
+        .recommandedListButtonsContainer {
+          top: 39%;
+          left: -5%;
+          height: 23px;
+          width: 116%;
+          .btn {
+
+            .sliderButtonIcon {
+              font-size: 11px;
+            }
+          }
         }
       }
     }
   }
 }
-
-// @media only screen and (max-width: 368) {
-
-//   .recommandedContainer {
-//     .container {
-//       .unique {
-//         height: 90px;
-//         top: 79px;
-//       }
-
-//       .bouble {
-//         height: 168px;
-//         top: 109px;
-//       }
-
-//       .discountTitleContainer {
-//         text-align: left;
-//         h2 {
-//           font-size: 1.4rem;
-//         }
-
-//         p {
-//           font-size: 0.9rem;
-//         }
-//       }
-//       // .carouselProvider {
-//       //   .recommandedListButtonsContainer {
-//       //     top: 36%;
-//       //     left: -5%;
-//       //   }
-//       // }
-//     }
-//   }
-// }

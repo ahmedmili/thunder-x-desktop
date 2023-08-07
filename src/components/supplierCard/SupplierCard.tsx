@@ -20,7 +20,7 @@ const SupplierCard = (props: any) => {
     };
 
 
-    const MAX_NAME_LENGTH = 12;
+    const MAX_NAME_LENGTH = 10;
 
     const getTruncatedName = (name: string) => {
         return name.length > MAX_NAME_LENGTH
@@ -110,7 +110,6 @@ const SupplierCard = (props: any) => {
                                     {props.data.star && props.data.star}
                                 </Typography>
                             </Box>
-
                             {/* time lable */}
                             {props.data.medium_time && (
                                 <Box

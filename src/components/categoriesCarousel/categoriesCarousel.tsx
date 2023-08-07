@@ -64,7 +64,9 @@ const CategoryCarousel: React.FC<CategoryCarouselProps> = ({
 
   return (
     <Container className='container' >
-
+      <Row>
+        <p className='carousal-cat-title'>Qu’est ce qu’on vous apporte ?</p>
+      </Row>
       <Row>
         <Col >
           <div className='carousal-provider' >

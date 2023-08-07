@@ -1,13 +1,16 @@
 
 import React, { useState, useCallback } from "react";
 import { MenuItem, Select } from "@mui/material";
-import { SearchSharp } from "@mui/icons-material";
+import SearchIcon from '@mui/icons-material/Search';
+import ArrowForwardIcon from '@mui/icons-material/ArrowForward';
 import searchStyle from "./searchBar.module.scss";
 import {
   setDistanceFilter,
   setSearchQuery,
 } from "../../Redux/slices/restaurantSlice";
 import { useDispatch } from "react-redux";
+// import SearchIcon from "../../assets/icons/SearchIcon";
+// import ArrowRight from "../../assets/icons/ArrowRight";
 
 interface Props {
   placeholder: string;
@@ -57,8 +60,11 @@ const SearchBar: React.FC<Props> = ({ placeholder }) => {
   return (
     <div className={searchStyle.searchContainer}>
       <form onSubmit={handleSearchSubmit}>
+        <span className={searchStyle.icons}>
+          <SearchIcon className={searchStyle.icon} />
+          <i className="bi bi-search"></i>
+        </span>
         <div className={searchStyle.headerSearchBar}>
-          <SearchSharp  />
           <input
             type="text"
             placeholder={placeholder}
@@ -66,18 +72,17 @@ const SearchBar: React.FC<Props> = ({ placeholder }) => {
             onChange={(event) => handleTextSearch(event.target.value)}
             aria-label="Enter search term"
           />
-          <button type="submit" onClick={toggleFilters}>
-            ☰
-          </button>
-          {showFilters && (
+          {/* <button type="submit" onClick={toggleFilters}> */}
+          {/* </button> */}
+          {/* {showFilters && (
             <div className={searchStyle.filters}>
-
-              <Select
-                value={dfaultDistanceFilter}
-                onChange={handleDistanceFilterChange}
-                style={{ marginBottom: "0.5rem", width: "10rem" }}
+            
+            <Select
+            value={dfaultDistanceFilter}
+            onChange={handleDistanceFilterChange}
+            style={{ marginBottom: "0.5rem", width: "10rem" }}
               >
-                <MenuItem value="10000">Any Distance</MenuItem>
+              <MenuItem value="10000">Any Distance</MenuItem>
                 <MenuItem value="0.1">0.1 Km</MenuItem>
                 <MenuItem value="0.2">0.2 Km</MenuItem>
                 <MenuItem value="0.3">0.3 Km</MenuItem>
@@ -85,25 +90,29 @@ const SearchBar: React.FC<Props> = ({ placeholder }) => {
                 <MenuItem value="2">2 Km</MenuItem>
                 <MenuItem value="5">5 Km</MenuItem>
                 <MenuItem value="10">10 Km</MenuItem>
-              </Select>
-              <Select
+                </Select>
+                <Select
                 value={ratingFilter}
                 onChange={handleRatingFilterChange}
                 style={{ marginBottom: "0.5rem", width: "10rem" }}
               >
-                <MenuItem value="0">Any Rating</MenuItem>
-                <MenuItem value="1">1 star</MenuItem>
-                <MenuItem value="2">2 stars</MenuItem>
-                <MenuItem value="3">3 stars</MenuItem>
-                <MenuItem value="4">4 stars</MenuItem>
-                <MenuItem value="5">5 stars</MenuItem>
+              <MenuItem value="0">Any Rating</MenuItem>
+              <MenuItem value="1">1 star</MenuItem>
+              <MenuItem value="2">2 stars</MenuItem>
+              <MenuItem value="3">3 stars</MenuItem>
+              <MenuItem value="4">4 stars</MenuItem>
+              <MenuItem value="5">5 stars</MenuItem>
               </Select>
               <button type="submit" onClick={handleFilterSubmit}>
-                Apply Filters
+              Apply Filters
               </button>
-            </div>
-          )}
+              </div>
+            )} */}
         </div>
+        <span className={`${searchStyle.icons} ${searchStyle.iconBackgorund}  `}>
+          {/* <ArrowRight /> */}
+          <ArrowForwardIcon className={searchStyle.icon}/>
+        </span>
       </form>
     </div>
   );

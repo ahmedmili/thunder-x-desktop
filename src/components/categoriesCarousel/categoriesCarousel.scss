@@ -2,7 +2,18 @@
 
 .container {
   top: 0;
+
+  .carousal-cat-title {
+    text-align: center;
+    color: $primary_color;
+    font-family: Poppins;
+    font-size: 32px;
+    font-style: normal;
+    font-weight: 700;
+    line-height: normal;
+  }
 }
+
 
 .carousal-provider {
   padding-top: 16px;
@@ -62,7 +73,7 @@
       position: absolute;
       top: 45%;
       left: -4%;
-      
+
 
 
       .btn {
@@ -71,7 +82,7 @@
         text-align: center;
         border-radius: 50%;
         justify-content: center;
-        
+
         &:hover {
           background-color: $light_beige;
         }
@@ -81,6 +92,7 @@
         color: white;
         font-weight: 400;
         font-size: 2.2rem;
+
         &:hover {
           color: $light_Gray;
         }
@@ -92,6 +104,11 @@
 
 
 @media only screen and (min-width: 575px) and (max-width:767px) {
+  .container {
+    .carousal-cat-title {
+      font-size: 22px;
+    }
+  }
 
   .carousal-provider {
     padding-top: 0;
@@ -104,7 +121,8 @@
       .carousel-slide {
         width: calc(100% / 4);
         height: 110px;
-        .category-box{
+
+        .category-box {
           .category-name {
             font-size: 10px;
           }
@@ -120,38 +138,6 @@
   }
 }
 
-@media only screen and (max-width: 575px) {
-
-  .carousal-provider {
-    padding-top: 0;
-    padding-bottom: 208px;
-    background-size: 98% 62%;
-
-    .categorie-carousel {
-      margin-left: 11%;
-
-      .carousel-slide {
-        width: calc(100% / 4);
-        height: 90px;
-        .category-box{
-          img {
-            width: 25px;
-            height: 25px;
-          }
-          .category-name {
-            font-size: 0.7rem;
-          }
-        }
-      }
-
-      .categories-list-buttons-container {
-        width: 113%;
-        top: 44%;
-        left: -7%;
-      }
-    }
-  }
-}
 
 
 @media only screen and (min-width: 768px) and (max-width:991px) {
@@ -177,25 +163,86 @@
   }
 }
 
-@media only screen and (min-width: 992px) and (max-width:1199px) {
+// @media only screen and (min-width: 992px) and (max-width:1199px) {
+//   .carousal-provider {
+//     padding-top: 0;
+//     padding-bottom: 208px;
+//     background-size: 102% 83%;
+
+//     .categorie-carousel {
+//       margin-left: 11%;
+//       // max-width: 39%;
+
+//       .carousel-slide {
+//         width: calc(100% / 4);
+//         height: 150px;
+//       }
+
+//       .categories-list-buttons-container {
+//         width: 106%;
+//         top: 45%;
+//         left: -3%;
+//       }
+//     }
+//   }
+// }
+
+@media only screen and (max-width: 575px) {
+
+  .container {
+    .carousal-cat-title {
+      font-size: 12px;
+    }
+  }
+
   .carousal-provider {
     padding-top: 0;
     padding-bottom: 208px;
-    background-size:102% 83%;
+    background-size: 98% 62%;
 
     .categorie-carousel {
       margin-left: 11%;
-      // max-width: 39%;
 
       .carousel-slide {
         width: calc(100% / 4);
-        height: 150px;
+        height: 90px;
+
+        .category-box {
+          img {
+            width: 25px;
+            height: 35px;
+          }
+
+          .category-name {
+            font-size: 0.5rem;
+          }
+        }
       }
 
       .categories-list-buttons-container {
-        width: 106%;
-        top: 45%;
-        left: -3%;
+        width: 116%;
+        height: 21px;
+        top: 66%;
+        left: -9%;
+
+        .slider-button-icon {
+          font-size: 1.5rem;
+        }
+      }
+    }
+  }
+}
+
+@media only screen and (max-width: 320px) {
+  .carousal-provider {
+    .categorie-carousel {
+      .carousel-slide {
+        .category-box {
+          img {
+            width: 25px;
+            height: 23px;
+          }
+        }
       }
     }
   }

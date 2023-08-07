@@ -1,8 +1,8 @@
   .SwitchesContainer {
-    width: 16rem;
+    padding: 5px;
+    width: 23rem;
     position: relative;
     display: flex;
-    padding: 0;
     background: #24A6A4;
     line-height: 3rem;
     border-radius: 3rem;
@@ -20,52 +20,102 @@
       text-align: center;
       cursor: pointer;
       color: white;
+      font-size: 14px;
     }
 
-    .SwitchTextIcon {
-      margin-right: 2px;
-    }
+
 
     .SwitchWrapper {
       position: absolute;
       top: 0px;
+      left: 0px;
       bottom: 0px;
-      width: 50%;
+      padding: 0;
+      width: 116px;
       z-index: 3;
       transition: transform 0.5s cubic-bezier(0.77, 0, 0.175, 1);
+
+      .Switch {
+        padding: 5px;
+        border-radius: 3rem;
+        background: #FBC000;
+        height: 100%;
+
+        .SwitchText {
+          width: 100%;
+          text-align: center;
+          opacity: 0;
+          display: block;
+          color: white;
+          transition: opacity 0.2s cubic-bezier(0.77, 0, 0.175, 1) 0.125s;
+          will-change: opacity;
+          padding: 5px;
+
+          position: absolute;
+          top: 0;
+          left: 0;
+          font-size: 18px;
+        }
+      }
     }
 
-    .Switch {
-      border-radius: 3rem;
-      background: #FBC000;
-      height: 100%;
+    .SwitchTextIcon {
+      font-size: 16px;
+      margin-right: 15px;
     }
-
-    .SwitchText {
-      width: 100%;
-      text-align: center;
-      opacity: 0;
-      display: block;
-      color: white;
-      transition: opacity 0.2s cubic-bezier(0.77, 0, 0.175, 1) 0.125s;
-      will-change: opacity;
-      position: absolute;
-      top: 0;
-      left: 0;
-    }
-
   }
-  
-  @media only screen and (min-width: 300px) and (max-width:600px) {
+
+
+
+  @media only screen and (max-width:1200px) {
     .SwitchesContainer {
-      width: 12rem;
-      line-height: 2rem;
+      padding: 3px;
+      width: 21rem;
+
+      .SwitchWrapper {
+
+        width: 107.361px;
+      }
+
+      .SwitchLabel {
+        padding: 3px;
+        font-size: 15px;
+      }
+
+      .SwitchWrapper {
+        .Switch {
+
+          .SwitchText {
+            padding: 5px;
+            font-size: 15px;
+          }
+        }
+      }
     }
   }
-
-  @media only screen and (min-width: 601px) and (max-width:1000px) {
+  @media only screen and (max-width: 576px) {
     .SwitchesContainer {
-      width: 18rem;
-      line-height: 2rem;
+      width: 10rem;
+      line-height: 1rem;
+      .SwitchWrapper {
+        width: 50px;
+        .Switch {
+
+          .SwitchText {
+            padding: 3px;
+            font-size: 6px;
+          }
+        }
+      }
+
+      .SwitchLabel {
+        padding: 0;
+        font-size: 6px;
+      }
+
+      .SwitchTextIcon {
+        margin-right: 2px;
+        font-size: 8px;
+      }
     }
   }

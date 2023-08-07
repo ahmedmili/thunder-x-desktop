@@ -5,8 +5,8 @@ export const AdsCarousel = (props: any) => {
     return (
 
         <CarouselProvider className='carousel-ads'
-            naturalSlideWidth={250}
-            naturalSlideHeight={150}
+            naturalSlideWidth={350}
+            naturalSlideHeight={250}
             totalSlides={
                 props.data.length
             }

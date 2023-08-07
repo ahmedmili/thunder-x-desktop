@@ -5,12 +5,12 @@
     height: 362px;
 
     .applicationAdsImg {
-        width: 350px;
-        height: 350px;
+        width: 281px;
+        height: 559px;
         position: absolute;
-        top: 0;
-        left: 0;
         z-index: 10;
+        top: 25px;
+        left: 177px;
     }
 
     .applicationAdsDesignContainer {
@@ -46,14 +46,16 @@
                 }
 
                 .info1P2 {
+
                     width: 187px;
                     height: 68px;
                     color: white;
                     font-family: Poppins;
-                    font-size: 17px;
+                    font-size: 15px;
                     font-style: normal;
                     font-weight: 500;
                     line-height: normal;
+                    margin: 0;
                 }
 
                 .info1Button {
@@ -86,25 +88,38 @@
                 }
 
                 .info3 {
+                    p {
+                        margin: 0;
+                    }
+
                     .info3P1 {
                         width: 396px;
-                        height: 108px;
+                        height: 38px;
                         color: $orange_color;
                         font-family: Poppins;
-                        font-size: 32px;
+                        font-size: 28px;
                         font-style: normal;
                         font-weight: 700;
 
                         line-height: normal;
 
-                        span {
-                            color: white;
-                            font-family: Poppins;
-                            font-size: 20px;
-                            font-style: normal;
-                            font-weight: 700;
-                            line-height: normal;
-                        }
+                    }
+
+                    .info3P2 {
+                        color: white;
+                        font-family: Poppins;
+                        font-size: 18px;
+                        font-style: normal;
+                        font-weight: 700;
+                        line-height: normal;
+                    }
+
+                    .socialBoxs {
+                        margin: 7px 3px;
+                        height: 36px;
+                        display: inline-block;
+                        border: 1px white solid;
+                        border-radius: 5px;
                     }
 
                 }
@@ -113,167 +128,23 @@
     }
 }
 
-@media only screen and (min-width: 575px) and (max-width:767px) {
-    .applicationAdsMainContainer {
-        padding-top: 36px;
-        height: 216px;
-
-        .applicationAdsImg {
-            width: 27%;
-            height: 118%;
-            top: 13%;
-            left: 5%;
-        }
-
-        .applicationAdsDesignContainer {
-
-            .applicationAdsInfo {
-                width: 98%;
-                height: 165px;
-                background-size: 94% 100%;
-
-                .infoContainer {
-                    margin-left: 22%;
-                    margin-top: 8%;
-
-                    .info1P1 {
-                        width: 130px;
-                        height: 32px;
-                        font-size: 11px;
-                    }
-
-                    .info1P2 {
-                        width: 156px;
-                        height: 29px;
-                        font-size: 11px;
-                    }
-
-
-                    .info1Button {
-                        width: 113px;
-                        height: 29px;
-                        margin-bottom: 18px;
-                        font-size: 16px;
-                    }
-
-                    .info2 {
-                        display: flex;
-                        align-items: center;
-
-                        .info2P1 {
-                            width: 55px;
-                            height: 22px;
-                            font-size: 29px;
-                            margin-bottom: 41px;
-                        }
-                    }
-
-                    .info3 {
-                        .info3P1 {
-                            width: 143px;
-                            height: 65px;
-                            font-size: 17px;
-
-                            span {
-                                font-size: 10px;
-                            }
-                        }
-                    }
-                }
-            }
-        }
-    }
-}
-
-@media only screen and (max-width:574px) {
-    .applicationAdsMainContainer {
-        padding-top: 36px;
-        height: 216px;
-
-        .applicationAdsImg {
-            width: 25%;
-            height: 77%;
-            top: 23%;
-            left: 8%;
-        }
-
-        .applicationAdsDesignContainer {
-
-            .applicationAdsInfo {
-                width: 98%;
-                height: 165px;
-                background-size: 94% 100%;
-
-                .infoContainer {
-                    margin-left: 29%;
-                    margin-top: 8%;
-
-                    .info1P1 {
-                        width: 130px;
-                        height: 17px;
-                        font-size: 9px;
-                    }
-
-                    .info1P2 {
-                        width: 156px;
-                        height: 19px;
-                        font-size: 9px;
-                    }
-
-
-                    .info1Button {
-                        width: 76%;
-                        height: 100%;
-                        margin-bottom: 18px;
-                        font-size: 10px;
-                    }
-
-                    .info2 {
-                        display: flex;
-                        align-items: center;
-
-                        .info2P1 {
-                            width: 32px;
-                            height: 13px;
-                            font-size: 18px;
-                            margin-bottom: 39px;
-                        }
-                    }
-
-                    .info3 {
-                        .info3P1 {
-                            width: 143px;
-                            height: 57px;
-                            font-size: 12px;
-
-                            span {
-                                font-size: 7px;
-                            }
-                        }
-                    }
-                }
-            }
-        }
-    }
-}
-
-@media only screen and (min-width: 992px) and (max-width:1200px) {
+@media only screen and (max-width:1200px) {
     .applicationAdsMainContainer {
         .applicationAdsImg {
+            width: 265.96px;
             top: 25px;
-            left: 27px;
-
+            left: 72px;
         }
-    }
-}
 
-@media only screen and (min-width: 1200px) {
-    .applicationAdsMainContainer {
-        .applicationAdsImg {
-            top: 25px;
-            left: 127px;
+        .applicationAdsInfo {
+            .infoContainer {
 
+                margin-left: 36%;
+                margin-top: 9%;
+            }
         }
+
+
     }
 }
 
@@ -319,7 +190,7 @@
                         .info1Button {
                             width: 113px;
                             height: 29px;
-                            margin-bottom: 18px;
+                            margin: 5px 0;
                             font-size: 16px;
                         }
                     }
@@ -333,7 +204,7 @@
                             height: 21px;
                             font-size: 29px;
                             margin-bottom: 41px;
-                            margin-right: 7px;
+                            margin-right: -7px;
                             margin-left: 5px;
                         }
                     }
@@ -341,12 +212,326 @@
                     .info3 {
                         .info3P1 {
                             width: 143px;
-                            height: 41px;
+                            height: 28px;
                             font-size: 17px;
 
-                            span {
-                                font-size: 10px;
-                            }
+                        }
+
+                        .info3P2 {
+                            font-size: 10px;
+                        }
+                    }
+                }
+            }
+        }
+    }
+}
+
+@media only screen and (min-width: 575px) and (max-width:767px) {
+    .applicationAdsMainContainer {
+
+        padding-top: 36px;
+        height: 216px;
+
+        .applicationAdsImg {
+            width: 27%;
+            height: 118%;
+            top: 13%;
+            left: 5%;
+        }
+
+        .applicationAdsDesignContainer {
+
+            .applicationAdsInfo {
+                width: 98%;
+                height: 165px;
+                background-size: 94% 100%;
+
+                .infoContainer {
+                    width: 135px;
+                    margin-left: 22%;
+                    margin-top: 6%;
+
+                    .info1P1 {
+                        margin: 0 0 3px 0;
+                        width: 130px;
+                        height: 32px;
+                        font-size: 11px;
+                    }
+
+                    .info1P2 {
+                        width: 156px;
+                        height: 29px;
+                        font-size: 11px;
+                    }
+
+
+                    .info1Button {
+                        width: 93px;
+                        height: 21px;
+                        margin: 5px 0;
+                        font-size: 11px;
+                    }
+
+                    .info2 {
+                        display: flex;
+                        align-items: center;
+
+                        .info2P1 {
+                            width: 41px;
+                            height: 22px;
+                            font-size: 24px;
+                            margin-bottom: 29px;
+                        }
+                    }
+
+                    .info3 {
+                        .info3P1 {
+                            width: 143px;
+                            height: 21px;
+                            font-size: 11px;
+                        }
+
+                        .info3P2 {
+                            font-size: 8px;
+                        }
+
+                        .socialBoxs {
+                            margin: 7px 3px;
+                            width: 30px;
+                            height: 20px;
+                        }
+                    }
+                }
+            }
+        }
+    }
+}
+
+
+@media only screen and (max-width:574px) {
+    .applicationAdsMainContainer {
+        padding-top: 36px;
+        height: 216px;
+
+
+        .applicationAdsImg {
+            width: 27%;
+            height: 81%;
+            top: 18%;
+            left: 6%;
+        }
+
+        .applicationAdsDesignContainer {
+
+            .applicationAdsInfo {
+                width: 103%;
+                height: 165px;
+                background-size: 100% 100%;
+
+                .infoContainer {
+                    width: 239px;
+                    margin-left: 27%;
+                    margin-top: 7%;
+
+                    .info1P1 {
+                        margin: 0 0 3px 0;
+                        width: 113px;
+                        height: 21px;
+                        font-size: 8px;
+                    }
+
+                    .info1P2 {
+                        font-size: 6px;
+                        width: 95px;
+                        height: 22px;
+                    }
+
+
+                    .info1Button {
+                        width: 93px;
+                        height: 21px;
+                        margin: 5px 0;
+                        font-size: 11px;
+                    }
+
+                    .info2 {
+                        display: flex;
+                        align-items: center;
+
+                        .info2P1 {
+                            width: 36px;
+                            height: 23px;
+                            font-size: 22px;
+                            margin-bottom: 29px;
+                        }
+                    }
+
+                    .info3 {
+                        .info3P1 {
+                            width: 143px;
+                            height: 21px;
+                            font-size: 11px;
+                        }
+
+                        .info3P2 {
+                            font-size: 8px;
+                        }
+
+                        .socialBoxs {
+                            margin: 7px 3px;
+                            width: 30px;
+                            height: 20px;
+                        }
+                    }
+                }
+            }
+        }
+    }
+}
+
+@media only screen and (max-width:460px) {
+    .applicationAdsMainContainer {
+
+        .applicationAdsImg {
+            width: 26%;
+            height: 64%;
+            top: 24%;
+            left: 6%;
+        }
+
+        .applicationAdsDesignContainer {
+
+            .applicationAdsInfo {
+
+                .infoContainer {
+                    margin-left: 42%;
+                    margin-top: 4%;
+
+                    .info1P1 {
+                        margin: 0 0 3px 0;
+                        width: 80px;
+                        height: 17px;
+                        font-size: 6px;
+                    }
+
+                    .info1P2 {
+                        font-size: 5px;
+                        width: 80px;
+                        height: 22px;
+                    }
+
+
+                    .info1Button {
+                        width: 63px;
+                        height: 21px;
+                        margin: -2px 0;
+                        font-size: 7px;
+
+                    }
+
+                    .info2 {
+                        display: flex;
+                        align-items: center;
+
+                        .info2P1 {
+                            width: 36px;
+                            height: 23px;
+                            font-size: 18px;
+                            margin-bottom: 16px;
+                        }
+                    }
+
+                    .info3 {
+                        .info3P1 {
+                            width: 143px;
+                            height: 12px;
+                            font-size: 8px;
+                        }
+
+                        .info3P2 {
+                            font-size: 5px;
+                        }
+
+                        .socialBoxs {
+                            margin: 2px 2px;
+                            width: 30px;
+                            height: 18px;
+
+                        }
+                    }
+                }
+            }
+        }
+    }
+}
+
+@media only screen and (max-width:375px) {
+    .applicationAdsMainContainer {
+
+        .applicationAdsImg {
+            width: 30%;
+            height: 45%;
+            top: 38%;
+            left: 10%;
+        }
+
+        .applicationAdsDesignContainer {
+            .applicationAdsInfo {
+                .infoContainer {
+                    margin-left: 28%;
+                    margin-top: 3%;
+
+                    .info1P1 {
+                        margin: 0 0 3px 0;
+                        width: 64px;
+                        height: 12px;
+                        font-size: 5px;
+                    }
+
+                    .info1P2 {
+                        font-size: 4px;
+                        width: 69px;
+                        height: 19px;
+                    }
+
+
+                    .info1Button {
+                        width: 40px;
+                        height: 14px;
+                        margin: -6px 0;
+                        font-size: 4px;
+
+                    }
+
+                    .info2 {
+                        display: flex;
+                        align-items: center;
+
+                        .info2P1 {
+                            width: 21px;
+                            height: 23px;
+                            font-size: 12px;
+                            margin-bottom: 2px;
+                        }
+                    }
+
+                    .info3 {
+                        .info3P1 {
+                            width: 61px;
+                            height: 9px;
+                            font-size: 6px;
+                            margin-bottom: 0px;
+                        }
+
+                        .info3P2 {
+                            font-size: 4px;
+                        }
+
+                        .socialBoxs {
+                            margin: 2px 0px;
+                            width: 23px;
+                            height: 17px
                         }
                     }
                 }

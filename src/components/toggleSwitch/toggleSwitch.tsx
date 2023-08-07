@@ -39,13 +39,17 @@ const Switches = () => {
           <DeliveryDiningIcon className={toggleStyle.SwitchTextIcon} />
           {t('livraison')}
         </label>
+
         <label className={toggleStyle.SwitchLabel} htmlFor='switchEmporter'>
           <DeckIcon className={toggleStyle.SwitchTextIcon} />
-          {t('emporter')}</label>
+          {t('emporter')}
+        </label>
+
         <div className={toggleStyle.SwitchWrapper}
           style={{
             transform: isDelivery ? 'translateX(0%)' : 'translateX(100%)',
           }}>
+
           <div className={toggleStyle.Switch}>
             <div className={toggleStyle.SwitchText} style={{ opacity: isDelivery ? 1 : 0 }}>
               <DeliveryDiningIcon className={toggleStyle.SwitchTextIcon} />

@@ -1,7 +1,7 @@
 import React from 'react'
 import style from './footerNewsLetter.module.scss'
 import { Container, Row, Col } from 'react-bootstrap'
-
+import KeyboardArrowRightIcon from '@mui/icons-material/KeyboardArrowRight';
 // import background from '../../assets/news_letter_bg.jpg';
 export const FooterNewsLeter = () => {
     return (
@@ -14,7 +14,7 @@ export const FooterNewsLeter = () => {
                 <Col className={"col-6 " + style.inputContainer}>
                     <div className={style.emailInputContainer}>
                         <input type="email" name="email" id="email" placeholder='Votre adresse e-mail' />
-                        <button>s'abonner</button>
+                        <button> s'abonner <span className={style.iconContainer}><KeyboardArrowRightIcon className={style.icon}/></span></button>
                     </div>
                 </Col>
             </Row>

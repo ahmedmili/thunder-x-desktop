@@ -132,8 +132,8 @@ const RestaurantList: React.FC<Props> = ({ restaurants, listType }) => {
                 </Slider>
               </Col>
             </Row>
-            <Row className={recommandedStyle.recommandedListButtonsContainer}>
-              <Col>
+            <Row className={ ` ${recommandedStyle.recommandedListButtonsContainer} ${!displayNormal ? recommandedStyle.uniqueButtons +"": " test" }`}>
+              <Col >
                 <ButtonBack className={recommandedStyle.btn}>
                   <KeyboardDoubleArrowLeftIcon
                     className={recommandedStyle.sliderButtonIcon}
