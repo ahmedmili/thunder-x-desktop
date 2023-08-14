@@ -4,6 +4,7 @@ import { ReactNode } from 'react';
 
 interface RestaurantState {
   restaurants: Restaurant[];
+  filterRestaurants: Restaurant[];
   searchQuery: string;
   priceFilter: number[];
   distanceFilter: number;
@@ -14,6 +15,7 @@ interface RestaurantState {
 
 const initialState: RestaurantState = {
   restaurants: [],
+  filterRestaurants: [],
   searchQuery: '',
   priceFilter: [],
   distanceFilter: 1000,
@@ -44,6 +46,9 @@ const restaurantsSlice = createSlice({
     setRestaurants: (state, action) => {
       state.restaurants = action.payload;
     },
+    setfilterRestaurants: (state, action) => {
+      state.filterRestaurants = action.payload;
+    },
   },
 });
 
@@ -53,7 +58,8 @@ export const {
   setDistanceFilter,
   setRatingFilter,
   setPlateFilter,
-  setRestaurants
+  setRestaurants,
+  setfilterRestaurants,
 } = restaurantsSlice.actions;
 
 export default restaurantsSlice.reducer;

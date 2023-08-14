@@ -1,16 +1,12 @@
 import { useNavigate } from 'react-router-dom';
 import { useAppDispatch, useAppSelector } from '../../Redux/store';
 import { toast } from 'react-toastify';
-import headerStyles from './header.module.scss'
+import './header.scss'
 import { Container, Row, Col } from "react-bootstrap"
 
 import { LoadingButton as _LoadingButton } from "@mui/lab";
 
 import PinDropIcon from "@mui/icons-material/PinDrop";
-
-
-import icon from "../../assets/icon.png";
-import pub from "../../assets/home/images.png";
 
 import { logout } from "../../Redux/slices/userSlice";
 import { useEffect, useState } from "react";
@@ -36,12 +32,33 @@ const Header = () => {
 
   const [showCart, setShowCart] = useState(false); // Add state variable for showing/hiding the cart
   const [showMap, setShowMap] = useState(false);
-
+  const [scrolling, setScrolling] = useState(false);
 
   const dispatch = useAppDispatch();
   const navigate = useNavigate();
 
   const { t } = useTranslation();
+
+
+  const handleScroll = () => {
+    // Check if the user has scrolled down more than a certain threshold
+    if (window.pageYOffset > 100) {
+      setScrolling(true);
+    } else {
+      setScrolling(false);
+    }
+  };
+
+  useEffect(() => {
+    // Attach the scroll event listener when the component mounts
+    window.addEventListener('scroll', handleScroll);
+
+    // Clean up the event listener when the component unmounts
+    return () => {
+      window.removeEventListener('scroll', handleScroll);
+    };
+  }, []);
+
   const onLogoutHandler = async () => {
     try {
       // Clear the user data from the state and the localStorage items associated with the user
@@ -83,16 +100,18 @@ const Header = () => {
 
   return (
     <>
-      <div className={headerStyles.head1}>
-        <div className={headerStyles.demiCercle}>
+      <div className="head1">
+        <div className="demiCercle">
 
         </div>
       </div>
       <Container  >
-        <Row className={headerStyles.fixedHeaderContainer}>
+        <Row className={`fixedHeaderContainer ${scrolling ? 'minimizedFixedHeaderContainer' : ''}`} >
           <Col>
-            <div className={headerStyles.logoContainer} onClick={() => navigate('/')} >
-              <a href="#" className={headerStyles.logoMain}></a>
+            <div className= "logoContainer" 
+
+              onClick={() => navigate('/')} >
+              <a href="#" className={`logoMain ${scrolling ? 'minimizedlogoMain' : ''}`}></a>
             </div>
           </Col>
 
@@ -100,26 +119,26 @@ const Header = () => {
             {/* login register buttons  */}
             {!logged_in ? (
               <>
-                <div className={headerStyles.appBar}>
+                <div className="appBar">
                   <button
                     onClick={() => navigate('/register')}
-                    className={headerStyles.LoadingButton}
+                    className={`LoadingButton ${scrolling ? 'minimizedLoadingButton' : ''}`}
                   >
                     {t('signup')}
                   </button>
                   <button
                     onClick={() => navigate('/login')}
-                    className={headerStyles.LoadingButton}
+                    className={`LoadingButton ${scrolling ? 'minimizedLoadingButton' : ''}`}
                   >
                     {t('login')}
                   </button>
                 </div>
               </>
             ) : <>
-              <div className={headerStyles.appBar}>
+              <div className="appBar">
                 <button
                   onClick={onLogoutHandler}
-                  className={headerStyles.LoadingButton}
+                  className={`LoadingButton ${scrolling ? 'minimizedLoadingButton' : ''}`}
                 >
                   {t('signout')}
                 </button>
@@ -130,48 +149,48 @@ const Header = () => {
 
         </Row>
 
-        <Row className={headerStyles.headerContainer}>
+        <Row className="headerContainer">
           <Col className='col-12 col-sm-7'>
-              <div className={headerStyles.headerAppBar2}>
-                <div className={headerStyles.headerMessage}>
-                  <p className={headerStyles.headerMessageSyle1} > Nous &nbsp;
-                    <span className={headerStyles.headerMessageSyle2}>
-                      livrons
-                    </span>
-                  </p>
-                  <p className={headerStyles.headerMessageSyle1}> plus que de la &nbsp;
-                    <span className={headerStyles.headerMessageSyle2}>
-                      nourriture
-                    </span> .
-                  </p>
-                </div>
-                <div className={headerStyles.Switches}>
-                  <Switches />
-                </div>
-                <Box className={headerStyles.headerLocalisationMessageContainer} onClick={() => setShowMap(true)} >
-                  <a href="#" >
-                    <span className={headerStyles.localisationIcon} >
-                      <PinDropIcon />
-                    </span>
-                    {location
-                      ? `${location?.coords.label} ! ${t('clickToChange')}`
-                      : t('no_location_detected')}
-                  </a>
-                </Box>
-                <SearchBar placeholder={t('search_placeholder')} />
-
+            <div className="headerAppBar2">
+              <div className="headerMessage">
+                <p className="headerMessageSyle1" > Nous &nbsp;
+                  <span className="headerMessageSyle2">
+                    livrons
+                  </span>
+                </p>
+                <p className="headerMessageSyle1"> plus que de la &nbsp;
+                  <span className="headerMessageSyle2">
+                    nourriture
+                  </span> .
+                </p>
               </div>
+              <div className="Switches">
+                <Switches />
+              </div>
+              <Box className="headerLocalisationMessageContainer" onClick={() => setShowMap(true)} >
+                <a href="#" >
+                  <span className="localisationIcon" >
+                    <PinDropIcon />
+                  </span>
+                  {location
+                    ? location?.coords.label + "!" + t('clickToChange')
+                    : t('no_location_detected')}
+                </a>
+              </Box>
+              <SearchBar placeholder={t('search_placeholder')} />
+
+            </div>
           </Col>
 
-          <Col className={headerStyles.imageBuilderContainer}>
-            <div className={headerStyles.imageBuilder}></div>
+          <Col className="imageBuilderContainer">
+            <div className="imageBuilder"></div>
           </Col>
         </Row>
 
         {/*  Thunder logo section  */}
         {showMap && (
           <div
-            className={headerStyles.mapOverPlay}
+            className="mapOverPlay"
             onClick={() => setShowMap(false)}>
             <div
               onClick={(e) => e.stopPropagation()}>

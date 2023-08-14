@@ -1,9 +1,10 @@
 @import '../../colors';
 
-.mapOverPlay{
+.mapOverPlay {
     display: flex;
     flex-direction: column;
     align-items: center;
+    justify-content: center;
     position: fixed;
     top: 0;
     left: 0;
@@ -45,7 +46,7 @@
     bottom: 0;
     padding: 9px 11px 0px 13px;
     border-radius: 0 0 10px 10px;
-    
+
     z-index: 999;
 
     .logoContainer {
@@ -86,6 +87,7 @@
         }
     }
 }
+
 
 .headerMessage {
     margin-top: 2px;
@@ -157,6 +159,15 @@
 }
 
 
+.minimizedFixedHeaderContainer {
+    height: 62px;
+    .minimizedlogoMain {
+        height: 32.64px !important ;
+        background-size: 32%;
+    }
+}
+
+
 
 @media only screen and (max-width:1200px) {
     .head1 {
@@ -168,6 +179,7 @@
 
     .fixedHeaderContainer {
         height: 82px;
+
         .logoContainer {
             .logoMain {
                 background-size: 50%;
@@ -303,6 +315,7 @@
         }
     }
 
+
     .fixedHeaderContainer {
         .appBar {
             .LoadingButton {
@@ -320,18 +333,20 @@
         justify-content: center;
         align-items: center;
         flex-wrap: wrap-reverse;
-.imageBuilderContainer{
-    display: flex;
-    justify-content: center;
 
-    align-items: center;
-    .imageBuilder {
-        background-position: center center;
-        background-size: contain;
-        width: 177px;
-        height: 125px;
-    }
-}
+        .imageBuilderContainer {
+            display: flex;
+            justify-content: center;
+
+            align-items: center;
+
+            .imageBuilder {
+                background-position: center center;
+                background-size: contain;
+                width: 177px;
+                height: 125px;
+            }
+        }
 
         .headerAppBar2 {
             display: flex;

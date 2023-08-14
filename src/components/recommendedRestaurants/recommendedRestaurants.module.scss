@@ -71,6 +71,11 @@
     .carouselProvider {
       margin: 0 5%;
 
+      .uniqueDivCard {
+
+        display: inline-block;
+        margin-left: 6px;
+      }
 
       .recommandedListButtonsContainer {
 
@@ -211,7 +216,7 @@
         }
 
         .uniqueButtons {
-           width: 111%; 
+          width: 111%;
           top: 56%;
           left: -4%;
         }
@@ -257,11 +262,12 @@
             }
           }
         }
+
         .uniqueButtons {
           width: 111%;
           top: 44%;
           left: -4%;
-       }
+        }
       }
 
     }
@@ -285,6 +291,7 @@
 
       .discountTitleContainer {
         text-align: left;
+
         h2 {
           font-size: 1rem;
         }
@@ -293,12 +300,14 @@
           font-size: 0.5rem;
         }
       }
+
       .carouselProvider {
         .recommandedListButtonsContainer {
           top: 39%;
           left: -5%;
           height: 23px;
           width: 116%;
+
           .btn {
 
             .sliderButtonIcon {

@@ -48,6 +48,14 @@ function getSupplier(){
     return localStorage.getItem('supplier');
 }
 
+function setDelivery(delivery:number){
+    localStorage.setItem('delivery',delivery.toString());
+}
+
+function getDelivery(){
+    return localStorage.getItem('delivery');
+}
+
 export const localStorageService = {
     setUserCredentials,
     unsetUserCredentials,
@@ -63,5 +71,7 @@ export const localStorageService = {
     setComment,
     unsetComment,
     setSupplier,
-    getSupplier
+    getSupplier,
+    setDelivery,
+    getDelivery
 };

@@ -1,0 +1,44 @@
+@import "../../../../colors";
+
+
+
+.search-filter-container {
+    border-radius: 8px;
+    border: 1px solid $orange_color;
+    padding: 18px;
+
+    .searchFilter {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+
+        .search-input {
+            width: 90%;
+            border: none;
+
+            &:focus {
+                border: none;
+                outline: none;
+            }
+        }
+
+        .text-search-icon {
+            color: $orange_color;
+
+        }
+    }
+}
+
+
+@media screen and (max-width : 776px) {}
+
+@media screen and (max-width : 576px) {}
+
+@media screen and (max-width : 450px) {
+    .search-filter-container {
+        padding: 2px;
+        .text-search-icon {
+            font-size: 10px;
+        }
+    }
+    }

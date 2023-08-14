@@ -44,7 +44,7 @@ const SupplierCard = (props: any) => {
 
                     <Box className={supplierStyle.imageContainer}>
                         {/* promo lable */}
-                        {(props.data.discount_title !== 'PROMO') && (props.data.discount_title !== "undefined") ? (
+                        {(props.data.discount_title !== 'PROMO') && (props.data.discount_title !== undefined) && (props.data.discount_title !== null) ? (
                             <Box className={supplierStyle.discountBox}>
                                 <p>
                                     <DiscountRounded

@@ -1,26 +1,28 @@
 
 import React, { useState, useCallback } from "react";
-import { MenuItem, Select } from "@mui/material";
 import SearchIcon from '@mui/icons-material/Search';
 import ArrowForwardIcon from '@mui/icons-material/ArrowForward';
 import searchStyle from "./searchBar.module.scss";
+import { localStorageService } from "../../services/localStorageService"
+import { supplierServices } from "../../services/api/suppliers.api"
 import {
   setDistanceFilter,
   setSearchQuery,
+  setfilterRestaurants,
 } from "../../Redux/slices/restaurantSlice";
 import { useDispatch } from "react-redux";
-// import SearchIcon from "../../assets/icons/SearchIcon";
-// import ArrowRight from "../../assets/icons/ArrowRight";
-
+import { useNavigate, useLocation } from "react-router-dom"
 interface Props {
   placeholder: string;
 }
 
 const SearchBar: React.FC<Props> = ({ placeholder }) => {
   const dispatch = useDispatch();
-
-
+  const navigate = useNavigate();
+  const navLocation = useLocation();
+  // const deliv = useAppSelector((state)=> state.homeData.isDelivery)
   const [searchTerm, setSearchTerm] = useState("");
+  const [errorMessage, setErrorMessage] = useState("");
   const [dfaultDistanceFilter, setDefaultDistanceFilter] = useState<number>(10);
   const [ratingFilter, setRatingFilter] = useState<number>(0);
   const [showFilters, setShowFilters] = useState(false); // Add state variable for showing/hiding filters
@@ -49,72 +51,72 @@ const SearchBar: React.FC<Props> = ({ placeholder }) => {
     dispatch(setDistanceFilter(event.target.value as number))
 
   };
+  function onSubmit(value: any): void {
+    if (value.key == "Enter") {
+      handleTextSearch();
+    }
+  }
+  function handleTextSearch(): void {
+    const location = localStorageService.getCurrentLocation();
+    if (location) {
+      if (searchTerm.length > 0) {
+        const LongLat = JSON.parse(location!).coords;
+        const data = {
+          "search": searchTerm,
+          "lat": LongLat.latitude,
+          "long": LongLat.longitude
+        }
+        try {
+          supplierServices.searchSupplierByArticle(data).then((resp) => {
+            dispatch(setfilterRestaurants(resp.data.data.suppliers))
+            setSearchTerm("")
+            navLocation.pathname != "/search" && navigate(`/search`);
+          })
+        } catch (e) {
+          console.log(e);
+        }
+      } else {
+        setErrorMessage("Veuillez compléter la recherche.");
+      }
+    } else {
+      setErrorMessage("choisissez l\'emplacement s\'il vous plaît");
+      console.log(errorMessage)
+    }
 
-  function handleTextSearch(value: string): void {
-    // throw new Error('Function not implemented.');
-
-    setSearchTerm(value);
-    dispatch(setSearchQuery(value));
+    dispatch(setSearchQuery(searchTerm));
   }
 
+  function onChangerText(value: string): void {
+    setSearchTerm(value);
+  }
   return (
-    <div className={searchStyle.searchContainer}>
-      <form onSubmit={handleSearchSubmit}>
-        <span className={searchStyle.icons}>
-          <SearchIcon className={searchStyle.icon} />
-          <i className="bi bi-search"></i>
-        </span>
-        <div className={searchStyle.headerSearchBar}>
-          <input
-            type="text"
-            placeholder={placeholder}
-            value={searchTerm}
-            onChange={(event) => handleTextSearch(event.target.value)}
-            aria-label="Enter search term"
-          />
-          {/* <button type="submit" onClick={toggleFilters}> */}
-          {/* </button> */}
-          {/* {showFilters && (
-            <div className={searchStyle.filters}>
-            
-            <Select
-            value={dfaultDistanceFilter}
-            onChange={handleDistanceFilterChange}
-            style={{ marginBottom: "0.5rem", width: "10rem" }}
-              >
-              <MenuItem value="10000">Any Distance</MenuItem>
-                <MenuItem value="0.1">0.1 Km</MenuItem>
-                <MenuItem value="0.2">0.2 Km</MenuItem>
-                <MenuItem value="0.3">0.3 Km</MenuItem>
-                <MenuItem value="1">1 Km</MenuItem>
-                <MenuItem value="2">2 Km</MenuItem>
-                <MenuItem value="5">5 Km</MenuItem>
-                <MenuItem value="10">10 Km</MenuItem>
-                </Select>
-                <Select
-                value={ratingFilter}
-                onChange={handleRatingFilterChange}
-                style={{ marginBottom: "0.5rem", width: "10rem" }}
-              >
-              <MenuItem value="0">Any Rating</MenuItem>
-              <MenuItem value="1">1 star</MenuItem>
-              <MenuItem value="2">2 stars</MenuItem>
-              <MenuItem value="3">3 stars</MenuItem>
-              <MenuItem value="4">4 stars</MenuItem>
-              <MenuItem value="5">5 stars</MenuItem>
-              </Select>
-              <button type="submit" onClick={handleFilterSubmit}>
-              Apply Filters
-              </button>
-              </div>
-            )} */}
-        </div>
-        <span className={`${searchStyle.icons} ${searchStyle.iconBackgorund}  `}>
-          {/* <ArrowRight /> */}
-          <ArrowForwardIcon className={searchStyle.icon}/>
-        </span>
-      </form>
-    </div>
+    <>
+      <div className={searchStyle.searchContainer}>
+        <form onSubmit={handleSearchSubmit}>
+          <span className={searchStyle.icons}>
+            <SearchIcon className={searchStyle.icon} />
+            <i className="bi bi-search"></i>
+          </span>
+          <div className={searchStyle.headerSearchBar}>
+            <input
+              type="text"
+              placeholder={placeholder}
+              value={searchTerm}
+              // (keydown)="onKeyPress($event)
+              onKeyDown={(event) => onSubmit(event)}
+              onChange={(event) => onChangerText(event.target.value)}
+              aria-label="Enter recherche term"
+            />
+          </div>
+          <span className={`${searchStyle.icons} ${searchStyle.iconBackgorund}  `}>
+            <ArrowForwardIcon className={searchStyle.icon} />
+          </span>
+        </form>
+      </div>
+      {
+        errorMessage.length > 0 && (<p className={searchStyle.ErrorMessage}>{errorMessage}</p>)
+      }
+    </>
   );
 };
 
