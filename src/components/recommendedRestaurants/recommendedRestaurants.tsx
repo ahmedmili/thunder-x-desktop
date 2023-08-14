@@ -109,22 +109,27 @@ const RestaurantList: React.FC<Props> = ({ restaurants, listType }) => {
                       i++
                     ) {
                       cart.push(
-                        <div key={i}>
-                          {displayNormal ? (
-                            <Slide index={i}>
-                              {firstMiddle![i] && (
-                                <SupplierCard data={firstMiddle![i]} />
-                              )}
+                        <>
 
-                              <br />
-                              {lastMiddle![i] && (
-                                <SupplierCard data={lastMiddle![i]} />
-                              )}
-                            </Slide>
+                          {displayNormal ? (
+                            <div key={i}>
+                              <Slide index={i}>
+                                {firstMiddle![i] && (
+                                  <SupplierCard data={firstMiddle![i]} />
+                                )}
+
+                                <br />
+                                {lastMiddle![i] && (
+                                  <SupplierCard data={lastMiddle![i]} />
+                                )}
+                              </Slide>
+                            </div>
                           ) : (
-                            <SupplierCard data={restaurantsList[i]} />
+                            <div key={i} className={recommandedStyle.uniqueDivCard}>
+                              <SupplierCard data={restaurantsList[i]} />
+                            </div>
                           )}
-                        </div>
+                        </>
                       );
                     }
                     return cart;
@@ -132,7 +137,7 @@ const RestaurantList: React.FC<Props> = ({ restaurants, listType }) => {
                 </Slider>
               </Col>
             </Row>
-            <Row className={ ` ${recommandedStyle.recommandedListButtonsContainer} ${!displayNormal ? recommandedStyle.uniqueButtons +"": " test" }`}>
+            <Row className={` ${recommandedStyle.recommandedListButtonsContainer} ${!displayNormal ? recommandedStyle.uniqueButtons + "" : " test"}`}>
               <Col >
                 <ButtonBack className={recommandedStyle.btn}>
                   <KeyboardDoubleArrowLeftIcon

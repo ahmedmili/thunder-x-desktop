@@ -1,7 +1,7 @@
 import LocalPhoneIcon from "@mui/icons-material/LocalPhone";
-import footerStyles from "./footer.module.scss";
+import "./footer.scss";
 import { Container, Row, Col } from "react-bootstrap";
-interface FooterProps {}
+interface FooterProps { }
 import icon from "../../assets/icon.png";
 import { useSelector } from "react-redux";
 import { adsHomeSelector } from "../../Redux/slices/home";
@@ -15,32 +15,31 @@ const Footer: React.FC<FooterProps> = () => {
 
   const adsSelector = useSelector(adsHomeSelector);
   const ads = adsSelector.HOME_1;
-
   return (
-    <Container fluid className={footerStyles.footerContainer}>
-      <Row className={footerStyles.bodyRow}>
+    <Container fluid className="footerContainer">
+      <Row className="bodyRow">
         {/* logo section */}
-        <Col className={footerStyles.footerLogoCol} >
-          <img className={footerStyles.webifyIcon} src={icon} alt="webify-icon" />
+        <Col className="footerLogoCol" >
+          <img className="webifyIcon" src={icon} alt="webify-icon" />
         </Col>
         {/* contact numbers sections */}
-        <Col className={footerStyles.footerContacteTelCol}>
+        <Col className={"footerContacteTelCol"}>
           <div>
-            <p className={footerStyles.footerTitle}>Contactez-Nous</p>
-            <p className={footerStyles.FooterText} ><span> <LocalPhoneIcon /></span>  +216 22 543 123 </p>
-            <p className={footerStyles.FooterText} > <span><LocalPhoneIcon /></span> +216 22 543 123 </p>
+            <p className={"footerTitle"}>Contactez-Nous</p>
+            <p className={"FooterText"} ><span> <LocalPhoneIcon /></span>  +216 22 543 123 </p>
+            <p className={"FooterText"} > <span><LocalPhoneIcon /></span> +216 22 543 123 </p>
 
-            <div className={footerStyles.socialMedia}>
-              <div className={footerStyles.icon}>
+            <div className={"socialMedia"}>
+              <div className={"icon"}>
                 <FacebookIcon ></FacebookIcon>
 
               </div>
-              <div className={footerStyles.icon}>
+              <div className={"icon"}>
                 <InstaIcon ></InstaIcon>
 
               </div>
-              
-              <div className={footerStyles.icon}>
+
+              <div className={"icon"}>
                 <TikTokIcon></TikTokIcon>
 
               </div>
@@ -48,23 +47,23 @@ const Footer: React.FC<FooterProps> = () => {
           </div>
         </Col>
         {/* email section */}
-        <Col className={footerStyles.footerContacteEmailCol}>
-          <div className={footerStyles.footerContacteEmailContainer}>
-            <p className={footerStyles.footerTitle}>
+        <Col className={"footerContacteEmailCol"}>
+          <div className={"footerContacteEmailContainer"}>
+            <p className={"footerTitle"}>
               <span>
                 <Email></Email>
               </span>
               contacte
             </p>
-            <p className={footerStyles.FooterText}> thunder-express.com</p>
+            <p className={"FooterText"}> thunder-express.com</p>
 
           </div>
         </Col>
         {/* pubs section */}
-        <Col className={footerStyles.footerPubsCol}>
-          <div className={footerStyles.pubsContainer}>
+        <Col className={"footerPubsCol"}>
+          <div className={"pubsContainer"}>
 
-            <p className={footerStyles.footerTitle}> Derniere publication</p>
+            <p className={"footerTitle"}> Derniere publication</p>
 
             {
               ads ? (
@@ -85,9 +84,9 @@ const Footer: React.FC<FooterProps> = () => {
                   <Slider >
                     {ads.map((ad: any) => (
                       <Slide key={ad.id} index={ad.id}>
-                        <div className={footerStyles.slideInner}>
-                          <img src={ad.image} alt="ads images" className={footerStyles.pubsImage} />
-                          <p className={footerStyles.FooterText}>{ad.menu?.description}</p>
+                        <div className={"slideInner"}>
+                          <img src={ad.image} alt="ads images" className={"pubsImage"} />
+                          <p className={"FooterText"}>{ad.menu?.description}</p>
                         </div>
                       </Slide>
                     ))}
@@ -106,7 +105,7 @@ const Footer: React.FC<FooterProps> = () => {
 
       {/* all right reserved section */}
       <Row >
-        <Col className={footerStyles.footerRightReserverCol}>
+        <Col className={"footerRightReserverCol"}>
           <p >Tous droits réservés © 2023</p>
         </Col>
       </Row>

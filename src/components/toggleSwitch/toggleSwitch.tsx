@@ -5,6 +5,7 @@ import toggleStyle from './toggleSwitch.module.scss';
 
 import DeliveryDiningIcon from '@mui/icons-material/DeliveryDining';
 import DeckIcon from '@mui/icons-material/Deck';
+import { localStorageService } from '../../services/localStorageService';
 const Switches = () => {
   const dispatch = useAppDispatch();
   const isDelivery = useAppSelector(selectIsDelivery);
@@ -12,8 +13,10 @@ const Switches = () => {
 
   const handleSwitchToggle = (event: { target: { value: string } }) => {
     dispatch(setIsDelivery(event.target.value === 'Livraison'));
+    localStorageService.setDelivery( event.target.value === 'Livraison' ? 0 : 1 )
   };
 
+  
   return (
       <div className={toggleStyle.SwitchesContainer}>
         <input

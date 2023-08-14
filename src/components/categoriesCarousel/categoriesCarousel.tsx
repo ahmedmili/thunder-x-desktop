@@ -5,12 +5,15 @@ import KeyboardDoubleArrowLeftIcon from '@mui/icons-material/KeyboardDoubleArrow
 import KeyboardDoubleArrowRightIcon from '@mui/icons-material/KeyboardDoubleArrowRight';
 
 import { CarouselProvider, Slider, Slide, ButtonBack, ButtonNext } from 'pure-react-carousel';
-import { array, string } from 'zod';
 import 'pure-react-carousel/dist/react-carousel.es.css';
 import './categoriesCarousel.scss';
 import { Container, Row, Col } from 'react-bootstrap';
-
-
+import { useAppSelector } from '../../Redux/store';
+import { useNavigate, useLocation } from 'react-router-dom';
+import { localStorageService } from '../../services/localStorageService';
+import { supplierServices } from '../../services/api/suppliers.api';
+import { useDispatch } from 'react-redux';
+import { setfilterRestaurants } from '../../Redux/slices/restaurantSlice';
 
 interface Category {
   id: number;
@@ -18,24 +21,51 @@ interface Category {
   order_id: number;
   parent_id: number;
   description: string;
-  children: typeof array;
+  children: [];
   image?: React.ReactElement;
   selected: boolean;
 }
-
 interface CategoryCarouselProps {
   onCategorySelect: (category: string) => void;
-  categories: Category[];
 }
 
 const CategoryCarousel: React.FC<CategoryCarouselProps> = ({
-
   onCategorySelect,
-  categories: initialCategories,
 }) => {
-  const [currentSlide, setCurrentSlide] = useState(0);
 
-  const [categories, setCategories] = useState(initialCategories);
+  const navigate = useNavigate();
+  const dispatch = useDispatch();
+  const cats = useAppSelector((state) => state.home.data.categories)
+  const navLocation = useLocation();
+  const [categories, setCategories] = useState(cats.filter(category => category.description !== "Promo"));
+
+  const [selectedCategories, setSelectedCategories] = useState("");
+
+  const [subCat, setSubCat] = useState(false);
+
+  useEffect(() => {
+    setCategories(cats.filter(category => category.description !== "Promo"))
+  }, [cats])
+
+  useEffect(() => {
+    onCategorySelect(selectedCategories);
+
+  }, [selectedCategories])
+
+  function findProductIdByName(productName: string) {
+    for (const category of categories) {
+      if (category.name === productName) {
+        return category.id;
+      }
+
+      for (const product of category.children) {
+        if (product.name === productName) {
+          return product.id;
+        }
+      }
+    }
+    return null; // Product not found
+  }
 
   const handleCategoryClick = (categoryName: string) => {
     const updatedCategories = categories.map((category, index) => ({
@@ -44,18 +74,47 @@ const CategoryCarousel: React.FC<CategoryCarouselProps> = ({
       selected: category.name === categoryName ? !category.selected : false,
     }));
 
-    setCategories(updatedCategories);
-    onCategorySelect(categoryName);
+    const subCategories = categories.filter((cat) => {
+      if (cat.children) {
+        return cat.name == categoryName && cat.children.length > 0
+      }
+    })
+    if (categoryName == selectedCategories) {
+      setCategories(cats.filter(category => category.description !== "Promo"));
+      setSelectedCategories("");
+      setSubCat(false)
+    } else {
+      if (subCategories.length > 0) {
+        if (subCat == false) {
+          setSelectedCategories(categoryName);
+          const newCategories = [subCategories[0], ...subCategories[0]["children"]]
+          setSubCat(true)
+          setCategories(newCategories);
+        } else if (subCat == true) {
+          setSelectedCategories("");
+          setCategories(updatedCategories);
+          setSubCat(false)
+        }
+      } else {
+
+        const location = JSON.parse(localStorageService.getCurrentLocation()!).coords
+        const cat_id = findProductIdByName(categoryName)
+        const requestData = {
+          category_id: cat_id,
+          lat: location!.latitude,
+          long: location!.longitude
+        }
+         supplierServices.searchSupplierBySubArticle(requestData).then((res:any)=>{
+          dispatch(setfilterRestaurants(res.data.data.suppliers)) //
+          navLocation.pathname != "/search" && navigate(`/search` );
+         })
+      }
+    }
   };
 
-  const handlePrevious = () => {
-    setCurrentSlide((prevSlide) => prevSlide - 1);
-  };
-
-  const handleNext = () => {
-    setCurrentSlide((prevSlide) => prevSlide + 1);
-  };
-
+  useEffect(() => {
+    handleCategoryClick("")
+  }, [])
 
   // Helper function to calculate the number of visible slides based on screen width
   const calculateVisibleSlides = () => {
@@ -65,7 +124,7 @@ const CategoryCarousel: React.FC<CategoryCarouselProps> = ({
   return (
     <Container className='container' >
       <Row>
-        <p className='carousal-cat-title'>Qu’est ce qu’on vous apporte ?</p>
+        <p className='carousal-cat-title'>Qu’est ce qu’on vous apporte ? {selectedCategories}</p>
       </Row>
       <Row>
         <Col >
@@ -86,13 +145,11 @@ const CategoryCarousel: React.FC<CategoryCarouselProps> = ({
                   <Slider>
                     {categories.map((category, index) => (
 
-
                       <Slide className='carousel-slide' key={category.id} index={category.id - 1}>
                         <Box
                           className={`category-box ${category.selected ? 'selected' : ''}`}
                           onClick={() => handleCategoryClick(category.name)}
                         >
-
                           <Box>
                             <img
                               src={
@@ -113,9 +170,6 @@ const CategoryCarousel: React.FC<CategoryCarouselProps> = ({
                           </Typography>
                         </Box>
                       </Slide>
-
-
-
                     ))}
 
                   </Slider>
@@ -139,15 +193,12 @@ const CategoryCarousel: React.FC<CategoryCarouselProps> = ({
 
             </CarouselProvider>
 
-
           </div>
 
         </Col>
       </Row>
 
     </Container>
-
-
 
   );
 };

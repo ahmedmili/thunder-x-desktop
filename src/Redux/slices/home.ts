@@ -95,7 +95,6 @@ export const homeErrorsSelector = (state: RootState) => state.home.error;
 export const homeLoadingSelector = (state: RootState) => state.home.loading;
 
 // Action
-
 export const fetchHomeData =
   (isDelivery: number, long: any, lat: any) =>
   async (dispatch: AppDispatch) => {
@@ -107,6 +106,7 @@ export const fetchHomeData =
         long: long,
       });
       const { success, data } = response.data;
+      // console.log(data)
       if (success) {
         dispatch(getHomeDataSuccess(data));
       } else {
