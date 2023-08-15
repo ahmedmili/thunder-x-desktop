@@ -1,0 +1,274 @@
+@import "../../../colors";
+$Ash_Gray : #D9D9D9;
+.SupplierCardSkeleton-container-main {
+    background-color: white;
+    width: 320px;
+    height: 200px;
+    border-radius: 15px;
+    margin-bottom: 10px;
+    box-shadow: 0px 4px 4px 0px rgba(0, 0, 0, 0.25);
+
+    .header {
+        background-color: $Off-White;
+        display: flex;
+        gap: 10px;
+        flex-direction: column;
+        padding: 5px 0;
+        border-radius: 15px 15px 0 0;
+
+        .promotion {
+            background-color: $primary_color_001;
+            margin-top: 5px;
+            border-radius: 0px 6px 6px 0px;
+            width: 130px;
+            height: 50px;
+            display: inline-block;
+        }
+
+        .image {
+            background-color: $Ash_Gray;
+            border-radius: 50%;
+            width: 50px;
+            height: 50px;
+        }
+    }
+
+    .body {
+        display: flex;
+        gap: 10px;
+
+        .leftSide {
+            height: 74px;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-around;
+            margin-left: 5px;
+
+            .title {
+                width: 101px;
+                height: 14px;
+                border-radius: 25px;
+                background: $Ash_Gray;
+            }
+
+            .options {
+                width: 68px;
+                height: 10px;
+                border-radius: 25px;
+                background: #8AC8C7;
+            }
+
+            .price {
+                width: 187px;
+                height: 10px;
+                border-radius: 25px;
+                background: rgba(184, 179, 179, 0.74);
+            }
+        }
+
+        .rightSide {
+            display: flex;
+            flex-direction: column;
+            justify-content: space-around;
+            align-items: end;
+
+            .stars {
+                width: 19px;
+                height: 19px;
+                background-color: $Ash_Gray;
+                border-radius: 50%;
+                margin-right: 8px;
+            }
+
+            .time {
+                width: 113px;
+                height: 31px;
+                border-radius: 25px;
+                background: rgba(251, 192, 0, 0.58);
+            }
+
+        }
+    }
+}
+
+
+@media only screen and (max-width: 1200px) {
+
+    .SupplierCardSkeleton-container-main {
+        width: 247px;
+
+        .header {
+            gap: 10px;
+            padding: 5px 0;
+
+            .promotion {
+                width: 130px;
+            }
+        }
+
+        .body {
+            .leftSide {
+                height: 74px;
+
+                .title {
+                    width: 86px;
+                }
+
+                .options {
+                    width: 58px;
+                }
+
+                .price {
+                    width: 118px;
+                }
+            }
+
+            .rightSide {
+                .stars {
+                    width: 19px;
+                }
+
+                .time {
+                    width: 101px;
+                    height: 20px;
+                }
+
+            }
+        }
+    }
+
+}
+
+@media only screen and (max-width: 992px) {
+
+    .SupplierCardSkeleton-container-main {
+        width: 200px;
+        height: 176px;
+
+        .header {
+            gap: 10px;
+            padding: 5px 0;
+
+            .promotion {
+                width: 92px;
+                height: 32px;
+            }
+
+            .image {
+                width: 40px;
+                height: 40px;
+            }
+        }
+
+        .body {
+            .leftSide {
+                height: 74px;
+
+                .title {
+                    width: 86px;
+                }
+
+                .options {
+                    width: 58px;
+                }
+
+                .price {
+                    width: 100px;
+                }
+            }
+
+            .rightSide {
+                .stars {
+                    width: 19px;
+                }
+
+                .time {
+                    width: 80px;
+                    height: 20px;
+                }
+
+            }
+        }
+    }
+
+}
+
+@media only screen and (max-width: 768px) {
+
+    .SupplierCardSkeleton-container-main {
+        width: 119px;
+        height: 140px;
+
+        .header {
+            gap: 5px;
+            padding: 5px 0;
+
+            .promotion {
+                width: 56px;
+                height: 17px;
+            }
+
+            .image {
+                width: 20px;
+                height: 20px;
+                margin-left: 3px;
+            }
+        }
+
+        .body {
+            gap: 5px;
+            .leftSide {
+                height: 74px;
+
+                .title {
+                    width: 60px;
+                    height: 9px;
+                }
+
+                .options {
+                    width: 35px;
+                }
+
+                .price {
+                    width: 63px;
+                    height: 9px;
+                }
+            }
+
+            .rightSide {
+                .stars {
+                    width: 19px;
+                    margin-top: -12px;
+
+                }
+
+                .time {
+                    width: 41px;
+                    height: 10px;
+                    margin-bottom: -10px;
+                }
+
+            }
+        }
+    }
+
+}
+
+
+
+
+@keyframes skeletonPulse {
+
+    0%,
+    100% {
+        opacity: 1;
+    }
+
+    50% {
+        opacity: 0.7;
+    }
+}
+
+.SupplierCardSkeleton-container-main .skeleton {
+    animation: skeletonPulse 1.5s infinite;
+}
