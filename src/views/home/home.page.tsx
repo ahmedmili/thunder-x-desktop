@@ -24,6 +24,9 @@ import {
   recommendedHomeSelector,
 } from "../../Redux/slices/home";
 import { useSelector } from "react-redux";
+import { useSelect } from "@mui/base";
+import HomeSkeleton from "./skeleton/HomeSkeleton";
+
 const HomePage = () => {
 
   const { t } = useTranslation();
@@ -73,15 +76,22 @@ const HomePage = () => {
     handleCategorySelect("");
   }, []);
 
+  // return (
+  //   <>
+  //   <HomeSkeleton/>
+  //   </>
+  // )
   return (
     <>
       <Container maxWidth="lg" className="containerr">
         {isLoading ? (
-          <div className="skeleton-container">
-            <Skeleton count={12} className="loading-skeleton" />
-            <Skeleton count={12} className="loading-skeleton" />
-            <Skeleton count={12} className="loading-skeleton" />
-          </div>
+
+          // <div className="skeleton-container">
+          //   <Skeleton count={12} className="loading-skeleton" />
+          //   <Skeleton count={12} className="loading-skeleton" />
+          //   <Skeleton count={12} className="loading-skeleton" />
+          // </div>
+          <HomeSkeleton/>
         ) : (
           <>
             {/* categories list */}
@@ -101,6 +111,7 @@ const HomePage = () => {
               <AdsCarousel data={ads.HOME_1} />
             )}
             {/* promo list */}
+
             {restaurantsList.length > 0 ? (
               <div className="home-resto-container">
                 <RestaurantList
@@ -111,7 +122,9 @@ const HomePage = () => {
             ) : (
               <></>
             )}
+
             <ApplicationAd />
+
             {!isLoading && ads && ads.HOME_2 && (
               <AdsCarousel data={ads.HOME_2} />
             )}
@@ -121,8 +134,7 @@ const HomePage = () => {
               <div className="home-resto-container">
                 <RestaurantList
                   listType="recommanded"
-                  // restaurants={recommanded}
-                  restaurants={filteredRestaurants}
+                  restaurants={recommanded}
                 />
               </div>
             ) : (
