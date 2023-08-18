@@ -162,19 +162,8 @@ const Map = () => {
             <NearMeOutlinedIcon></NearMeOutlinedIcon>
           </button>
 
-          {/*  search location button */}
+          {/*  search location input */}
           <AutocompleteInput />
-          {/*           
-          <button
-            type="button"
-            onClick={() => {
-              setSearchType("search");
-              setOpen(true);
-            }}
-          >
-            {t("adress.searchWithAdress")}{" "}
-            <NearMeOutlinedIcon></NearMeOutlinedIcon>
-          </button> */}
         </div>
 
         <div style={{ display: userItem ? "inline" : "none" }} className="Text-container">
