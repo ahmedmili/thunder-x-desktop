@@ -22,6 +22,15 @@ export interface FormValues {
   num5?: string;
   num6?: string;
 }
+export interface LocationFormValues {
+
+  appEnt: number,
+  codePost: number,
+  appNum: number,
+  selectedOption: number,
+  intitule: string,
+  
+}
 
 interface FieldConfig {
   type: string;
