@@ -160,6 +160,7 @@
       background-color: white;
       border: 1px solid $Ocean_Teal;
       border-radius: 50px;
+      max-width: 100px;
       height: 30px;
       display: flex;
       justify-content: center;
@@ -303,6 +304,7 @@
 
       .select {
         height: 19px;
+        width: 100%;
         gap: 10px;
         padding: 0 8px;
 

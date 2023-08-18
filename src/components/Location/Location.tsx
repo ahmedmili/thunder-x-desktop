@@ -185,15 +185,15 @@ const Map = () => {
         <div className="location-filtre">
           <div className={`select ${selectedOption == 1 ? "selected" : ""}`}  >
             <input type="radio" value="1" id='domicile' name='type' checked={selectedOption === 1} onChange={handleOptionChange} />
-            <label htmlFor="domicile"> Domicile</label>
+            <label htmlFor="domicile">{t("domicile")}</label>
           </div>
           <div className={`select ${selectedOption == 2 ? "selected" : ""}`}  >
             <input type="radio" value="2" id='travail' name='type' checked={selectedOption === 2} onChange={handleOptionChange} />
-            <label htmlFor="travail"> Travail</label>
+            <label htmlFor="travail"> {t("tavail")}</label>
           </div>
           <div className={`select ${selectedOption == 3 ? "selected" : ""}`}  >
             <input type="radio" value="3" id='autre' name='type' checked={selectedOption === 3} onChange={handleOptionChange} />
-            <label htmlFor="autre"> Autre</label>
+            <label htmlFor="autre">{t("autre")}</label>
           </div>
 
         </div>
@@ -290,7 +290,7 @@ const Map = () => {
             type="text"
             value={inputValue}
             onChange={handleInputChange}
-            placeholder="Search..."
+            placeholder={`${t("searchButton")} ...`}
           />
           <span className="icon">
             <SearchIcon className='icon'/>
