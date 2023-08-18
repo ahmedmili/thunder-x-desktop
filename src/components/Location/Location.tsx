@@ -11,16 +11,10 @@ import ClearRoundedIcon from "@mui/icons-material/ClearRounded";
 import HomeRoundedIcon from "@mui/icons-material/HomeRounded";
 import MenuIcon from "@mui/icons-material/Menu";
 import NearMeOutlinedIcon from "@mui/icons-material/NearMeOutlined";
-import {
-  Button,
-  Dialog,
-  DialogActions,
-  DialogContent,
-  DialogContentText,
-} from "@mui/material";
 import { localStorageService } from "../../services/localStorageService";
 import { LocationService } from "../../services/api/Location.api";
 import MapCard from "./mapCard/MapCard";
+import SearchIcon from "../../assets/icons/SearchIcon";
 
 declare global {
   interface Window {
@@ -298,6 +292,9 @@ const Map = () => {
             onChange={handleInputChange}
             placeholder="Search..."
           />
+          <span className="icon">
+            <SearchIcon className='icon'/>
+          </span>
         </div>
         {loading && <div>Loading...</div>}
         {

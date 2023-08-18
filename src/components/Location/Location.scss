@@ -91,17 +91,24 @@
   }
 
   .location-search-input-container {
-position: relative;
+    position: relative;
     width: 80%;
+
     .location-search-inpute {
       background-color: $Ocean_Teal ;
       height: 50px;
       padding: 10px;
       border-radius: 5px;
       display: flex;
-      justify-content: center;
-      align-items: start;
-      flex-direction: column;
+      justify-content: space-between;
+      align-items: center;
+
+      .icon {
+        color: white;
+        font-size: 16px;
+        font-weight: 700;
+
+      }
 
       input[type="text"] {
         color: white;
@@ -119,21 +126,23 @@ position: relative;
       }
     }
 
-    ul{
+    ul {
       // margin-top: 3px;
       width: 100%;
       position: absolute;
       top: 50px;
       left: 0;
       z-index: 999;
-      
+
       background-color: $Off-White;
       padding: 0;
-      margin:0;
-      li{
+      margin: 0;
+
+      li {
         list-style: none;
-        padding:5px 15px;
-        &:hover{
+        padding: 5px 15px;
+
+        &:hover {
           background-color: $primary_color;
         }
       }
@@ -142,17 +151,15 @@ position: relative;
 
   .location-filtre {
     padding: 0 25px;
-    width: 80%;
+    width: 100%;
     display: flex;
     justify-content: space-around;
 
-    // gap: 10px;
     .select {
       cursor: pointer;
       background-color: white;
       border: 1px solid $Ocean_Teal;
       border-radius: 50px;
-      width: 120px;
       height: 30px;
       display: flex;
       justify-content: center;
@@ -183,6 +190,7 @@ position: relative;
 
     .selected {
       background-color: $orange_color ;
+      border: none;
 
       label {
         color: white;
@@ -197,7 +205,7 @@ position: relative;
     align-items: center;
 
     p {
-      margin: 0;
+      margin: 20px 0;
       color: $dark_Gray;
       font-family: Poppins;
       font-size: 16px;
@@ -234,6 +242,27 @@ position: relative;
       }
 
     }
+    .location-search-input-container {
+      .location-search-inpute {
+        height: 20px;
+        padding: 10px;
+
+
+        input[type="text"] {
+          height: 10px;
+          font-size: 10px;
+
+          &::placeholder {
+            font-size: 10px;
+          }
+        }
+      }
+
+      ul {
+        top: 20px;
+        left: 0;
+      }
+    }
 
     .Text-container {
       p {
@@ -265,9 +294,23 @@ position: relative;
 
     .Text-container {
       p {
-
         font-size: 9px;
         margin-left: 10%;
+      }
+    }
+    .location-filtre {
+      padding: 0 25px;
+
+      .select {
+        height: 19px;
+        gap: 10px;
+        padding: 0 8px;
+
+        label {
+          cursor: pointer;
+          font-size: 9px;
+        }
+
       }
     }
   }
