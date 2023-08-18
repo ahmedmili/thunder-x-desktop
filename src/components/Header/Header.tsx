@@ -18,8 +18,6 @@ import SearchBar from "../searchBar/searchBar";
 import Map from "../Location/Location";
 import { Box } from '@mui/material';
 
-const googleMapKey = import.meta.env.VITE_GOOGLE_MAPS_API_KEY;
-
 const Header = () => {
   const logged_in = localStorageService.getUserToken() !== null;
   const userItem = localStorageService.getUser();
@@ -194,7 +192,7 @@ const Header = () => {
             onClick={() => setShowMap(false)}>
             <div
               onClick={(e) => e.stopPropagation()}>
-              <Map apiKey={googleMapKey} />
+              <Map />
             </div>
           </div>
         )}

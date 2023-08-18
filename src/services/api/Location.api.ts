@@ -1,5 +1,5 @@
 import { toast } from "react-toastify";
-import { useAppDispatch } from "../../Redux/store";
+import { api } from "../axiosApi";
 
 const googleMapKey = import.meta.env.VITE_GOOGLE_MAPS_API_KEY;
 const geoCode = async (latitude: any, longitude: any) => {
@@ -30,8 +30,40 @@ const geoCode = async (latitude: any, longitude: any) => {
     return null; // Return null if latitude or longitude is missing
 };
 
+async function addaddresse(data: any) {
+    const formData = new FormData();
+    formData.append("long", data.long);
+    formData.append("lat", data.lat);
+    formData.append("appartement", data.appartement);
+    formData.append("door", data.door);
+    formData.append("flat", data.flat);
+    formData.append("label", data.label);
+    formData.append("type", data.type);
+    formData.append("primary", data.primary);
+    try {
+      const response = await api.post("addaddresse", formData);
+      const { status, data } = response;
+      return { status, data };
+    } catch (error) {
+      throw error;
+    }
+  }
 
+async function autocomplete(data: string) {
+    const term = {
+        term : data
+    }
+    try {
+      const response = await api.post("autocomplete", term);
+      const { status, data } = response;
+      return { status, data };
+    } catch (error) {
+      throw error;
+    }
+  }
 
 export const LocationService = {
-    geoCode
+    geoCode,
+    addaddresse,
+    autocomplete,
 };
