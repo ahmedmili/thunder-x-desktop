@@ -24,9 +24,9 @@ export interface FormValues {
 }
 export interface LocationFormValues {
 
-  appEnt: number,
-  codePost: number,
-  appNum: number,
+  appEnt: string,
+  codePost: string,
+  appNum: number ,
   selectedOption: number,
   intitule: string,
   

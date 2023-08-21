@@ -12,7 +12,7 @@ import { useTranslation } from 'react-i18next';
 import { LocationFormValues, generateForm } from "../../../utils/formUtils";
 
 
-import { Formik, Form, Field, ErrorMessage,FormikHelpers } from 'formik';
+import { Formik, Form, Field, ErrorMessage, FormikHelpers } from 'formik';
 import * as Yup from 'yup';
 
 type Position = {
@@ -24,7 +24,7 @@ type Position = {
 
 function MapCard() {
     const [primary, setPrimary] = useState<boolean>(false);
-    const [selectedOption, setSelectedOption] = useState<number>();
+    const [selectedOption, setSelectedOption] = useState<number>(1);
 
 
     const [showForm, setShowForm] = useState<boolean>(false);
@@ -43,28 +43,21 @@ function MapCard() {
 
     const validationSchema = Yup.object().shape({
         appNum: Yup.number()
-            .typeError("Ce champ doit être un nombre")
-            .required("Numéro d'appartement est requis."),
-        appEnt: Yup.number()
-            .typeError("Ce champ doit être un nombre")
-            .required("Nom de l'entreprise ou l'immeuble est requis."),
-        codePost: Yup.number()
-            .typeError("Ce champ doit être un nombre")
-            .required("Code de porte et nom de famille est requis."),
-        intitule: Yup.string()
-            .required("Intitulé de l'adresse est requis."),
-        selectedOption: Yup.number()
-            .typeError("Ce champ doit être un nombre")
-            .required("Veuillez sélectionner une option."),
+            .typeError("Ce champ doit être un nombre"),
+        appEnt: Yup.string()
+            .typeError("Ce champ doit être un nombre"),
+        codePost: Yup.string()
+            .typeError("Ce champ doit être un nombre"),
+        intitule: Yup.string(),
     });
 
 
 
-    const handleSubmit = async (values: LocationFormValues,{setSubmitting}:FormikHelpers<LocationFormValues> ) => {
+    const handleSubmit = async (values: LocationFormValues, { setSubmitting }: FormikHelpers<LocationFormValues>) => {
         setSubmitting(false);
         try {
             await validationSchema.validate(values).then(
-                 async ()=>{
+                async () => {
 
                     const data = {
                         long: userPosition?.coords.longitude,
@@ -73,12 +66,12 @@ function MapCard() {
                         door: values.codePost,
                         flat: values.appNum,
                         label: values.intitule,
-                        type: values.selectedOption,
+                        type: selectedOption,
                         primary: primary ? 1 : 0,
                     };
                     const resp = await LocationService.addaddresse(data);
                     toast.success(resp.data.data.message);
-                    resp.data.code === 200 && navigate('/') 
+                    resp.data.code === 200 && navigate('/')
                 }
             )
         } catch (error) {
@@ -159,7 +152,6 @@ function MapCard() {
     const handleOptionChange = (event: any) => {
         setSelectedOption(parseInt(event.target.value));
     };
-
     const handleDefaultChange = () => {
         // setSelectedOption(parseInt(event.target.value));
         setPrimary(!primary)
@@ -181,11 +173,12 @@ function MapCard() {
                                     </div>
                                     <div className='buttons'>
                                         <button type="button" onClick={getPosition}>
-                                        </button>
-                                        <div className="position-button-label">
                                             <div className="icon"></div>
                                             <p>Position actuelle</p>
-                                        </div>
+                                        </button>
+                                        {/* <div className="position-button-label">
+                                           
+                                        </div> */}
                                     </div>
                                 </div>
                             </>
@@ -202,23 +195,19 @@ function MapCard() {
                                 initialValues={{
                                     appNum: 0,
                                     appEnt: 0,
-                                    codePost:0,
+                                    codePost: 0,
                                     intitule: "",
-                                    selectedOption: 0,
+                                    selectedOption: 1,
                                 }}
                                 validationSchema={validationSchema}
                                 onSubmit={handleSubmit}
-                                // onSubmit={values => {
-                                //     // same shape as initial values
-                                //     console.log(values);
-                                //   }}
                             >
                                 {({ values, setFieldValue }) => (
 
                                     <Form >
                                         <div className="input">
                                             <Field type="text" id="app_num" name="appNum" placeholder="Numéro d’appartement, porte, étage..." />
-                                           
+
                                         </div>
                                         <ErrorMessage name="appNum" component="div" className="error-message" />
                                         <div className="input">
@@ -253,9 +242,9 @@ function MapCard() {
                                             <input type="checkbox" value="3" id='default' name='type' checked={primary} onChange={handleDefaultChange} />
                                             <label htmlFor="default"> Adresse par défaut</label>
                                         </div>
-                                        <button type="submit"  className="submit-cart" >
+                                        <button type="submit" className="submit-cart" >
                                             Sélectionner
-                                        </button>                                       
+                                        </button>
                                     </Form>
                                 )}
                             </Formik>
