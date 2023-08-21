@@ -22,7 +22,6 @@ declare global {
   }
 }
 
-const googleMapKey = import.meta.env.VITE_GOOGLE_MAPS_API_KEY;
 
 interface AdressComponentProps {
   type: string;
@@ -33,52 +32,12 @@ interface AdressComponentProps {
   children?: React.ReactNode;
 }
 
-const AdressComponent: React.FC<AdressComponentProps> = ({ type, street, region, lat, long, }) => {
-
-  const dispatch = useAppDispatch();
-
-  const changeAdress = () => {
-    dispatch({
-      type: "SET_LOCATION",
-      payload: {
-        coords: {
-          latitude: lat,
-          longitude: long,
-          label: street + region,
-        },
-      },
-    });
-  };
-  return (
-    <div onClick={() => changeAdress()} className="adressCompContainer">
-      <header>
-        <div className="type">
-          <HomeRoundedIcon className="home-icon"></HomeRoundedIcon>
-          {type}
-        </div>
-        <MenuIcon></MenuIcon>
-      </header>
-      <div className="labels">
-        <p>
-          {street}, <br /> {region}
-        </p>
-      </div>
-    </div>
-  );
-};
-
 const Map = () => {
   const { t } = useTranslation();
-  const [userInput, setUserInput] = useState<string>("");
   const [clientAdressTable, setClientAdressTable] = useState([]);
   const dispatch = useAppDispatch();
   const [searchType, setSearchType] = useState("");
 
-  const [open, setOpen] = useState(false);
-
-  const handleClose = () => {
-    setOpen(false);
-  };
 
   // read client adresses
   useEffect(() => {
@@ -89,44 +48,7 @@ const Map = () => {
     };
     userItem != null ? fetchData() : console.log("no user connected");
   }, []);
-
-  const handleUserInput = useCallback(
-    (event: React.ChangeEvent<HTMLInputElement>) => {
-      setUserInput(event.target.value);
-    },
-    []
-  );
-
-  const handleSubmit = () => {
-    fetch(
-      `https://maps.googleapis.com/maps/api/geocode/json?address=${userInput}&key=${googleMapKey}`
-    )
-      .then((response) => response.json())
-      .then(async (data) => {
-        if (data.status === "OK") {
-          const { lat, lng } = data.results[0].geometry.location;
-          LocationService.geoCode(lat, lng).then(data => {
-            dispatch({
-              type: "SET_LOCATION",
-              payload: {
-                ...data
-              },
-            });
-          });
-
-        }
-      })
-      .catch((err) => {
-        toast.error(err.message);
-      });
-  };
-
-  const handleKeyDown = (event: React.KeyboardEvent<HTMLInputElement>) => {
-    if (event.keyCode === 13) {
-      handleSubmit();
-    }
-  };
-
+ 
   const userItem = localStorageService.getUser();
   return (
     <>
@@ -152,6 +74,9 @@ const Map = () => {
     const filtredPositions = clientAdressTable.filter((pos: any) => {
       return pos.type == selectedOption;
     })
+    useEffect(() => {
+      console.log("filtredPositions", filtredPositions)
+    }, [filtredPositions])
     return (
       <>
         <div className="form">
@@ -190,7 +115,7 @@ const Map = () => {
 
         {filtredPositions.length > 0 ? (
           <div className="adresses-container">
-            {clientAdressTable.map((element) => (
+            {filtredPositions.map((element) => (
               <AdressComponent
                 type={element["label"]}
                 street={element["street"]}
@@ -250,9 +175,7 @@ const Map = () => {
           setSuggestions([]);
           return;
         }
-
         setLoading(true);
-
         // Replace this with your actual API endpoint for suggestions
         const response = await LocationService.autocomplete(inputValue);
         const { status, data } = response;
@@ -300,5 +223,45 @@ const Map = () => {
       </div>
     );
   };
+
+  
+function AdressComponent({
+  type,
+  street,
+  region,
+  lat,
+  long,
+}: AdressComponentProps) {
+  // const dispatch = useDispatch();
+
+  const changeAdress = () => {
+    dispatch(
+      setSelectedLocation({
+        coords: {
+          latitude: lat,
+          longitude: long,
+          label: type,
+        },
+      })
+    );
+  };
+
+  return (
+    <div onClick={changeAdress} className="adressCompContainer">
+      <header>
+        <div className="type">
+          <HomeRoundedIcon className="home-icon" />
+          {type}
+        </div>
+        <MenuIcon />
+      </header>
+      <div className="labels">
+        <p>
+          {street}, <br /> {region}
+        </p>
+      </div>
+    </div>
+  );
+}
 };
 export default Map;

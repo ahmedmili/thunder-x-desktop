@@ -24,7 +24,7 @@ type Position = {
 
 function MapCard() {
     const [primary, setPrimary] = useState<boolean>(false);
-    const [selectedOption, setSelectedOption] = useState<number>();
+    const [selectedOption, setSelectedOption] = useState<number>(1);
 
 
     const [showForm, setShowForm] = useState<boolean>(false);
@@ -43,19 +43,12 @@ function MapCard() {
 
     const validationSchema = Yup.object().shape({
         appNum: Yup.number()
-            .typeError("Ce champ doit être un nombre")
-            .required("Numéro d'appartement est requis."),
-        appEnt: Yup.number()
-            .typeError("Ce champ doit être un nombre")
-            .required("Nom de l'entreprise ou l'immeuble est requis."),
-        codePost: Yup.number()
-            .typeError("Ce champ doit être un nombre")
-            .required("Code de porte et nom de famille est requis."),
-        intitule: Yup.string()
-            .required("Intitulé de l'adresse est requis."),
-        selectedOption: Yup.number()
-            .typeError("Ce champ doit être un nombre")
-            .required("Veuillez sélectionner une option."),
+            .typeError("Ce champ doit être un nombre"),
+        appEnt: Yup.string()
+            .typeError("Ce champ doit être un nombre"),
+        codePost: Yup.string()
+            .typeError("Ce champ doit être un nombre"),
+        intitule: Yup.string(),
     });
 
 
@@ -73,7 +66,7 @@ function MapCard() {
                         door: values.codePost,
                         flat: values.appNum,
                         label: values.intitule,
-                        type: values.selectedOption,
+                        type: selectedOption,
                         primary: primary ? 1 : 0,
                     };
                     const resp = await LocationService.addaddresse(data);
@@ -159,7 +152,6 @@ function MapCard() {
     const handleOptionChange = (event: any) => {
         setSelectedOption(parseInt(event.target.value));
     };
-
     const handleDefaultChange = () => {
         // setSelectedOption(parseInt(event.target.value));
         setPrimary(!primary)
@@ -205,7 +197,7 @@ function MapCard() {
                                     appEnt: 0,
                                     codePost: 0,
                                     intitule: "",
-                                    selectedOption: 0,
+                                    selectedOption: 1,
                                 }}
                                 validationSchema={validationSchema}
                                 onSubmit={handleSubmit}
