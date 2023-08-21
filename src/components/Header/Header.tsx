@@ -171,7 +171,7 @@ const Header = () => {
                     <PinDropIcon />
                   </span>
                   {location
-                    ? location?.coords.label + "!" + t('clickToChange')
+                    ? location?.coords.label + " ! " + t('clickToChange')
                     : t('no_location_detected')}
                 </a>
               </Box>

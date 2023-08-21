@@ -261,5 +261,21 @@
         gap: 6px;
       }
     }
+    .location-filtre {
+      padding: 0 25px;
+
+      .select {
+        height: 19px;
+        width: 100%;
+        gap: 10px;
+        padding: 0 8px;
+
+        label {
+          cursor: pointer;
+          font-size: 9px;
+        }
+
+      }
+    }
   }
 }
