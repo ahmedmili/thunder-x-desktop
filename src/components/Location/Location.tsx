@@ -11,16 +11,10 @@ import ClearRoundedIcon from "@mui/icons-material/ClearRounded";
 import HomeRoundedIcon from "@mui/icons-material/HomeRounded";
 import MenuIcon from "@mui/icons-material/Menu";
 import NearMeOutlinedIcon from "@mui/icons-material/NearMeOutlined";
-import {
-  Button,
-  Dialog,
-  DialogActions,
-  DialogContent,
-  DialogContentText,
-} from "@mui/material";
 import { localStorageService } from "../../services/localStorageService";
 import { LocationService } from "../../services/api/Location.api";
 import MapCard from "./mapCard/MapCard";
+import SearchIcon from "../../assets/icons/SearchIcon";
 
 declare global {
   interface Window {
@@ -168,19 +162,8 @@ const Map = () => {
             <NearMeOutlinedIcon></NearMeOutlinedIcon>
           </button>
 
-          {/*  search location button */}
+          {/*  search location input */}
           <AutocompleteInput />
-          {/*           
-          <button
-            type="button"
-            onClick={() => {
-              setSearchType("search");
-              setOpen(true);
-            }}
-          >
-            {t("adress.searchWithAdress")}{" "}
-            <NearMeOutlinedIcon></NearMeOutlinedIcon>
-          </button> */}
         </div>
 
         <div style={{ display: userItem ? "inline" : "none" }} className="Text-container">
@@ -191,15 +174,15 @@ const Map = () => {
         <div className="location-filtre">
           <div className={`select ${selectedOption == 1 ? "selected" : ""}`}  >
             <input type="radio" value="1" id='domicile' name='type' checked={selectedOption === 1} onChange={handleOptionChange} />
-            <label htmlFor="domicile"> Domicile</label>
+            <label htmlFor="domicile">{t("domicile")}</label>
           </div>
           <div className={`select ${selectedOption == 2 ? "selected" : ""}`}  >
             <input type="radio" value="2" id='travail' name='type' checked={selectedOption === 2} onChange={handleOptionChange} />
-            <label htmlFor="travail"> Travail</label>
+            <label htmlFor="travail"> {t("tavail")}</label>
           </div>
           <div className={`select ${selectedOption == 3 ? "selected" : ""}`}  >
             <input type="radio" value="3" id='autre' name='type' checked={selectedOption === 3} onChange={handleOptionChange} />
-            <label htmlFor="autre"> Autre</label>
+            <label htmlFor="autre">{t("autre")}</label>
           </div>
 
         </div>
@@ -296,8 +279,11 @@ const Map = () => {
             type="text"
             value={inputValue}
             onChange={handleInputChange}
-            placeholder="Search..."
+            placeholder={`${t("searchButton")} ...`}
           />
+          <span className="icon">
+            <SearchIcon className='icon'/>
+          </span>
         </div>
         {loading && <div>Loading...</div>}
         {

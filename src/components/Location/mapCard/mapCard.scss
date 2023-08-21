@@ -8,9 +8,8 @@ $svg_location_icon : url('../../../assets/location.svg');
     height: 500px;
     overflow-y: scroll;
     scrollbar-width: thin;
-    scrollbar-color: transparent transparent;
+    scrollbar-color: transparent;
     width: 70vw;
-    background-color: white;
     border-radius: 0.5rem;
 
     .map-container {
