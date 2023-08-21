@@ -67,7 +67,7 @@ $svg_location_icon : url('../../../assets/location.svg');
                 button {
                     position: absolute;
                     z-index: 99;
-                 
+
                     background-color: $orange_color;
                     display: flex;
                     justify-content: center;
@@ -102,7 +102,7 @@ $svg_location_icon : url('../../../assets/location.svg');
                         color: white;
                         overflow: hidden;
                         white-space: nowrap;
-                        text-overflow: ellipsis; 
+                        text-overflow: ellipsis;
                         font-family: Poppins;
                         font-size: 16px;
                         font-style: normal;
@@ -114,6 +114,7 @@ $svg_location_icon : url('../../../assets/location.svg');
 
                     &:hover {
                         width: 200px;
+
                         .icon {
                             width: 50px;
                             height: 50px;
@@ -153,7 +154,7 @@ $svg_location_icon : url('../../../assets/location.svg');
 
         form {
             padding: 0 25px;
-            width: 80%;
+            width: 100%;
             display: flex;
             flex-direction: column;
             align-items: center;
@@ -204,6 +205,7 @@ $svg_location_icon : url('../../../assets/location.svg');
                 width: 80%;
                 display: flex;
                 justify-content: space-around;
+
                 .select {
                     cursor: pointer;
                     background-color: white;
@@ -217,6 +219,7 @@ $svg_location_icon : url('../../../assets/location.svg');
                     gap: 10px;
                     padding: 0 15px;
                     transition: all ease-in-out 0.5s;
+
                     label {
                         cursor: pointer;
                         color: $dark_Gray;
@@ -347,7 +350,7 @@ $svg_location_icon : url('../../../assets/location.svg');
 
             .location-form-title {
                 h1 {
-                    font-size: 0.7rem;
+                    font-size: 16px;
                     margin: 0;
                     color: white;
                     // text-align: center;
@@ -356,7 +359,7 @@ $svg_location_icon : url('../../../assets/location.svg');
             }
 
             h2 {
-                font-size: 1.4rem;
+                font-size: 16px;
             }
 
             p {
@@ -377,7 +380,7 @@ $svg_location_icon : url('../../../assets/location.svg');
 
 
                         &::placeholder {
-                            font-size: 4px;
+                            font-size: 10px;
                         }
                     }
                 }
