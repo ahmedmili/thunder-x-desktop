@@ -251,7 +251,7 @@ function MapCard() {
                                             <label htmlFor="default"> Adresse par défaut</label>
                                         </div>
                                         <button type="submit" className="submit-cart" >
-                                            Sélectionner
+                                        {t("select")}
                                         </button>
                                     </Form>
                                 )}
@@ -260,7 +260,7 @@ function MapCard() {
                     )}
                     {logged_in && showForm === false && (
                         <button type="button" className="submit-cart" onClick={() => setShowForm(true)} >
-                            Sélectionner
+                            {t("continuer")}
                         </button>
                     )}
                 </div>
