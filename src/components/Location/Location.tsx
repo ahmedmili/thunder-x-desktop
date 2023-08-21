@@ -48,14 +48,14 @@ const Map = () => {
     };
     userItem != null ? fetchData() : console.log("no user connected");
   }, []);
- 
+
   const userItem = localStorageService.getUser();
   return (
     <>
       <div className="location-container">
         <div className="cancel-icon-container">
           <ClearRoundedIcon
-            onClick={() => setSearchType("")}
+            onClick={() => searchType === "" ? dispatch({ type: "SET_SHOW", payload: false }) : setSearchType("")}
             className="cancel-icon"
           ></ClearRoundedIcon>
         </div>
@@ -88,7 +88,10 @@ const Map = () => {
           </button>
 
           {/*  search location input */}
-          <AutocompleteInput />
+          <div className="adresses_container">
+            <AutocompleteInput />
+
+          </div>
         </div>
 
         <div style={{ display: userItem ? "inline" : "none" }} className="Text-container">
@@ -205,7 +208,7 @@ const Map = () => {
             placeholder={`${t("searchButton")} ...`}
           />
           <span className="icon">
-            <SearchIcon className='icon'/>
+            <SearchIcon className='icon' />
           </span>
         </div>
         {loading && <div>Loading...</div>}
@@ -224,44 +227,43 @@ const Map = () => {
     );
   };
 
-  
-function AdressComponent({
-  type,
-  street,
-  region,
-  lat,
-  long,
-}: AdressComponentProps) {
-  // const dispatch = useDispatch();
 
-  const changeAdress = () => {
-    dispatch(
-      setSelectedLocation({
-        coords: {
-          latitude: lat,
-          longitude: long,
-          label: type,
-        },
-      })
-    );
-  };
+  function AdressComponent({
+    type,
+    street,
+    region,
+    lat,
+    long,
+  }: AdressComponentProps) {
 
-  return (
-    <div onClick={changeAdress} className="adressCompContainer">
-      <header>
-        <div className="type">
-          <HomeRoundedIcon className="home-icon" />
-          {type}
+    const changeAdress = () => {
+      dispatch(
+        setSelectedLocation({
+          coords: {
+            latitude: lat,
+            longitude: long,
+            label: type,
+          },
+        })
+      );
+    };
+
+    return (
+      <div onClick={changeAdress} className="adressCompContainer">
+        <header>
+          <div className="type">
+            <HomeRoundedIcon className="home-icon" />
+            {type}
+          </div>
+          <MenuIcon />
+        </header>
+        <div className="labels">
+          <p>
+            {street}, <br /> {region}
+          </p>
         </div>
-        <MenuIcon />
-      </header>
-      <div className="labels">
-        <p>
-          {street}, <br /> {region}
-        </p>
       </div>
-    </div>
-  );
-}
+    );
+  }
 };
 export default Map;

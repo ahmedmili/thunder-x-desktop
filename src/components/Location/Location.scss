@@ -88,6 +88,13 @@
         background-color: #005ab5;
       }
     }
+
+    .adresses_container {
+      display: flex;
+      justify-content: center;
+      // align-items: center;
+
+    }
   }
 
   .location-search-input-container {
@@ -261,6 +268,7 @@
         gap: 6px;
       }
     }
+
     .location-filtre {
       padding: 0 25px;
 

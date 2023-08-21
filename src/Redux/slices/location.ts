@@ -4,10 +4,12 @@ import { Position } from "../../services/types";
 
 export interface LocationState {
   position: Position | null;
+  showMap: boolean;
 }
 
 export const initialLocationState: LocationState = {
   position: null,
+  showMap :false,
 };
 
 export const locationReducer = (
@@ -20,6 +22,11 @@ export const locationReducer = (
       return {
         ...state,
         position: action.payload,
+      };
+    case "SET_SHOW":
+      return {
+        ...state,
+        showMap: action.payload,
       };
     default:
       return state;

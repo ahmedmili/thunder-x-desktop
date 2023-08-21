@@ -88,6 +88,7 @@
   "adress.message1": "My Delivery Addresses",
   "adress.message2": "Filter address by:",
   "adress.searchWithAdress": "Search by street, neighborhood, city ",
+  "adress.intitule_message": "The address title is required",
   "faq.header": "Frequently Asked Questions",
   "faq.questions": [
     {
