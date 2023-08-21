@@ -220,18 +220,18 @@ function AdressComponent({
   lat,
   long,
 }: AdressComponentProps) {
-  // const dispatch = useDispatch();
 
   const changeAdress = () => {
-    dispatch(
-      setSelectedLocation({
+    dispatch({
+      type: "SET_LOCATION",
+      payload: {
         coords: {
           latitude: lat,
           longitude: long,
           label: type,
         },
-      })
-    );
+      },
+    });
   };
 
   return (
