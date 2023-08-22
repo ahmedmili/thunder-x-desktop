@@ -5,9 +5,10 @@ import './header.scss'
 import { Container, Row, Col } from "react-bootstrap"
 
 import { LoadingButton as _LoadingButton } from "@mui/lab";
-
+import PermIdentityOutlinedIcon from '@mui/icons-material/PermIdentityOutlined';
+import ShoppingCartOutlinedIcon from '@mui/icons-material/ShoppingCartOutlined';
 import PinDropIcon from "@mui/icons-material/PinDrop";
-
+import LocationOnIcon from '@mui/icons-material/LocationOn';
 import { logout } from "../../Redux/slices/userSlice";
 import { useEffect, useState } from "react";
 // import CartPage from '../../views/cart/cart.page';
@@ -17,6 +18,9 @@ import Switches from "../toggleSwitch/toggleSwitch";
 import SearchBar from "../searchBar/searchBar";
 import Map from "../Location/Location";
 import { Box } from '@mui/material';
+
+import { useLocation } from 'react-router-dom';
+import { Search } from '@mui/icons-material';
 
 const Header = () => {
   const logged_in = localStorageService.getUserToken() !== null;
@@ -34,7 +38,7 @@ const Header = () => {
 
   const dispatch = useAppDispatch();
   const navigate = useNavigate();
-
+  const routerLocation = useLocation();
   const { t } = useTranslation();
 
 
@@ -95,111 +99,148 @@ const Header = () => {
       document.body.style.overflow = "auto";
     }
   }, [showCart]);
-
   return (
     <>
-      <div className="head1">
-        <div className="demiCercle">
 
-        </div>
-      </div>
-      <Container  >
-        <Row className={`fixedHeaderContainer ${scrolling ? 'minimizedFixedHeaderContainer' : ''}`} >
-          <Col>
-            <div className= "logoContainer" 
+      {
+        routerLocation.pathname == "/" ? (
+          <>
+            <div className="head1">
+              <div className="demiCercle">
 
-              onClick={() => navigate('/')} >
-              <a href="#" className={`logoMain ${scrolling ? 'minimizedlogoMain' : ''}`}></a>
+              </div>
             </div>
-          </Col>
+            <Container  >
+              <Row className={`fixedHeaderContainer ${scrolling ? 'minimizedFixedHeaderContainer' : ''}`} >
+                <Col>
+                  <div className="logoContainer"
 
-          <Col>
-            {/* login register buttons  */}
-            {!logged_in ? (
-              <>
-                <div className="appBar">
-                  <button
-                    onClick={() => navigate('/register')}
-                    className={`LoadingButton ${scrolling ? 'minimizedLoadingButton' : ''}`}
-                  >
-                    {t('signup')}
-                  </button>
-                  <button
-                    onClick={() => navigate('/login')}
-                    className={`LoadingButton ${scrolling ? 'minimizedLoadingButton' : ''}`}
-                  >
-                    {t('login')}
-                  </button>
+                    onClick={() => navigate('/')} >
+                    <a href="#" className={`logoMain ${scrolling ? 'minimizedlogoMain' : ''}`}></a>
+                  </div>
+                </Col>
+
+                <Col>
+                  {/* login register buttons  */}
+                  {!logged_in ? (
+                    <>
+                      <div className="appBar">
+                        <button
+                          onClick={() => navigate('/register')}
+                          className={`LoadingButton ${scrolling ? 'minimizedLoadingButton' : ''}`}
+                        >
+                          {t('signup')}
+                        </button>
+                        <button
+                          onClick={() => navigate('/login')}
+                          className={`LoadingButton ${scrolling ? 'minimizedLoadingButton' : ''}`}
+                        >
+                          {t('login')}
+                        </button>
+                      </div>
+                    </>
+                  ) : <>
+                    <div className="appBar">
+                      <button
+                        onClick={onLogoutHandler}
+                        className={`LoadingButton ${scrolling ? 'minimizedLoadingButton' : ''}`}
+                      >
+                        {t('signout')}
+                      </button>
+                    </div>
+                  </>
+                  }
+                </Col>
+
+              </Row>
+
+              <Row className="headerContainer">
+                <Col className='col-12 col-sm-7'>
+                  <div className="headerAppBar2">
+                    <div className="headerMessage">
+                      <p className="headerMessageSyle1" > Nous &nbsp;
+                        <span className="headerMessageSyle2">
+                          livrons
+                        </span>
+                      </p>
+                      <p className="headerMessageSyle1"> plus que de la &nbsp;
+                        <span className="headerMessageSyle2">
+                          nourriture
+                        </span> .
+                      </p>
+                    </div>
+                    <div className="Switches">
+                      <Switches />
+                    </div>
+                    <Box className="headerLocalisationMessageContainer" onClick={() => setShowMap(true)} >
+                      <a href="#" >
+                        <span className="localisationIcon" >
+                          <PinDropIcon />
+                        </span>
+                        {location
+                          ? location?.coords.label + " ! " + t('clickToChange')
+                          : t('no_location_detected')}
+                      </a>
+                    </Box>
+                    <SearchBar placeholder={t('search_placeholder')} />
+
+                  </div>
+                </Col>
+
+                <Col className="imageBuilderContainer">
+                  <div className="imageBuilder"></div>
+                </Col>
+              </Row>
+
+              {/*  Thunder logo section  */}
+              {showMap && (
+                <div
+                  className="mapOverPlay"
+                  onClick={() => setShowMap(false)}>
+                  <div
+                    onClick={(e) => e.stopPropagation()}>
+                    <Map />
+                  </div>
                 </div>
-              </>
-            ) : <>
-              <div className="appBar">
-                <button
-                  onClick={onLogoutHandler}
-                  className={`LoadingButton ${scrolling ? 'minimizedLoadingButton' : ''}`}
-                >
-                  {t('signout')}
-                </button>
-              </div>
-            </>
-            }
-          </Col>
+              )}
+            </Container>
 
-        </Row>
+          </>
+        ) : (
+          <>
+            <div className={`fixedHeaderContainer2`} >
+              <div className="logoContainer"
+                onClick={() => navigate('/')} >
+                <a href="#" className={`logoMain minimizedlogoMain`}></a>
+              </div>
 
-        <Row className="headerContainer">
-          <Col className='col-12 col-sm-7'>
-            <div className="headerAppBar2">
-              <div className="headerMessage">
-                <p className="headerMessageSyle1" > Nous &nbsp;
-                  <span className="headerMessageSyle2">
-                    livrons
-                  </span>
-                </p>
-                <p className="headerMessageSyle1"> plus que de la &nbsp;
-                  <span className="headerMessageSyle2">
-                    nourriture
-                  </span> .
-                </p>
-              </div>
-              <div className="Switches">
-                <Switches />
-              </div>
-              <Box className="headerLocalisationMessageContainer" onClick={() => setShowMap(true)} >
-                <a href="#" >
-                  <span className="localisationIcon" >
-                    <PinDropIcon />
-                  </span>
+              <div className='info'>
+                <div className="position">
+                  
+                  <LocationOnIcon className='icon'/>
                   {location
-                    ? location?.coords.label + " ! " + t('clickToChange')
+                    ? location?.coords.label
                     : t('no_location_detected')}
-                </a>
-              </Box>
-              <SearchBar placeholder={t('search_placeholder')} />
 
+                </div>
+                <div className="account">
+
+                  <PermIdentityOutlinedIcon />
+                </div>
+                <div className="search"> <Search /></div>
+                <div className="cart-item">
+                  <ShoppingCartOutlinedIcon />
+                  {cartItems.length}
+                </div>
+
+              </div>
             </div>
-          </Col>
-
-          <Col className="imageBuilderContainer">
-            <div className="imageBuilder"></div>
-          </Col>
-        </Row>
-
-        {/*  Thunder logo section  */}
-        {showMap && (
-          <div
-            className="mapOverPlay"
-            onClick={() => setShowMap(false)}>
-            <div
-              onClick={(e) => e.stopPropagation()}>
-              <Map />
-            </div>
-          </div>
-        )}
-      </Container>
-
+          </>
+        )
+      }
     </>
-  );
+  )
+
 };
 
 export default Header;

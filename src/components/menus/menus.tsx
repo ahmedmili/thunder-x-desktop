@@ -9,7 +9,7 @@ import {
   CardMedia,
   Checkbox,
   CircularProgress,
-  Container,
+  // Container,
   FormControl,
   FormControlLabel,
   FormGroup,
@@ -39,7 +39,10 @@ import { useTranslation } from 'react-i18next';
 import { localStorageService } from '../../services/localStorageService';
 import { productService } from '../../services/api/product.api';
 
-import './menus.css'
+import './menus.scss'
+import instaposter from "../../assets/food_instagram_story.png";
+
+import { Container, Row, Col } from 'react-bootstrap';
 
 interface MenuProps { }
 
@@ -63,6 +66,8 @@ const Menu: React.FC<MenuProps> = () => {
   const restaurant = location.state.restaurant;
   const [currentPage, setCurrentPage] = useState<{ [key: string]: number }>({});
   const productsPerPage = 3;
+
+
   const handlePaginationClick = (pageNumber: number, menuItemId: number) => {
     setCurrentPage((prevPages) => ({
       ...prevPages,
@@ -81,6 +86,7 @@ const Menu: React.FC<MenuProps> = () => {
   const [selectedOptionalOption, setSelectedOptionalOption] =
     useState<Option | null>(null);
   const [showMismatchModal, setShowMismatchModal] = useState(false);
+  const [selectedOption, setSelectedOption] = useState(1);
 
   useEffect(() => {
     // Separate the options into obligatory and optional arrays based on the `type` property
@@ -113,7 +119,7 @@ const Menu: React.FC<MenuProps> = () => {
 
   useEffect(() => {
     const getMenu = async () => {
-      const {status,data} = await productService.getMenu(id);
+      const { status, data } = await productService.getMenu(id);
       if (status === 200) {
         setMenuData(data.data);
       }
@@ -178,8 +184,8 @@ const Menu: React.FC<MenuProps> = () => {
   useEffect(() => {
     const getOptions = async () => {
       try {
-        const {status,data} = await productService.getProduct(selectedMenuItem?.id);
-        if(status === 200){
+        const { status, data } = await productService.getProduct(selectedMenuItem?.id);
+        if (status === 200) {
           setOptions(data.data.product.options);
         }
       } catch (error: any) {
@@ -204,19 +210,73 @@ const Menu: React.FC<MenuProps> = () => {
       ? `${name.slice(0, MAX_NAME_LENGTH)}...`
       : name;
   };
+  const handleOptionChange = (event: any) => {
+    setSelectedOption(parseInt(event.target.value));
+  };
+  useEffect(() => {
+    console.log("restaurant", restaurant)
+  }, [])
   return (
     <>
-      <CardMedia
-        component='img'
-        height='350px'
-        image={restaurant?.images[0].path}
-        onError={(e: any) => {
-          e.target.onerror = null;
-          e.target.src = missingImage;
-        }}
-      />
-      <Container maxWidth="lg" className="container">
+      <Container fluid className='supplier-page-header' >
+        <Row>
+          <div className="background-container">
+            <img src={restaurant?.images[0].path} alt="restaurant image" className="background" />
+            <div className="open-time">
+              <span>Ouvert jusqu’à {restaurant?.closetime}</span>
+            </div>
+          </div>
+        </Row>
 
+        <Row>
+          <div className="info-container">
+            <div className="left-side">
+              <div className='name'>{restaurant?.name}</div>
+              <div className='price'>Frais de livraison : <span className='price-value'> {restaurant?.service_price} dt</span></div>
+            </div>
+
+            <div className="right-side">
+              {/* style={restaurant?.star ? { visibility: 'visible' } : { visibility: 'hidden' }} */}
+              <Star className='starIcon' />
+              <div className='time'>
+                <p>
+                  {`${restaurant?.medium_time - 10} - ${restaurant?.medium_time + 10
+                    } min`}
+
+                </p>
+              </div>
+            </div>
+          </div>
+        </Row>
+      </Container>
+      <Container fluid className='supplier-page-main-container'>
+        <Row className='main-row'>
+          <div className="pub-contained">
+            <img className='supplier-logo' src={restaurant?.images[1].path} alt="" />
+            <div className="pub-posts">
+              <img className='insta-img' src={instaposter} alt=" insta img posts" />
+              <img className='insta-img' src={instaposter} alt=" insta img posts" />
+            </div>
+          </div>
+          <section className='main-container'>
+            <div className="filers">
+              <div className={`select ${selectedOption == 1 ? "selected" : ""}`}  >
+                <input type="radio" value="1" id='tout' name='type' checked={selectedOption === 1} onChange={handleOptionChange} />
+                {/* <label htmlFor="domicile">{t("domicile")}</label> */}
+                <label htmlFor="tout">Tous les produits</label>
+              </div>
+              <div className={`select ${selectedOption == 2 ? "selected" : ""}`}  >
+                <input type="radio" value="2" id='poulettes' name='type' checked={selectedOption === 2} onChange={handleOptionChange} />
+                {/* <label htmlFor="travail"> {t("tavail")}</label> */}
+                <label htmlFor="poulettes">Poulettes</label>
+              </div>
+            </div>
+
+          </section>
+        </Row>
+      </Container>
+
+      {/*         
         {showMismatchModal && (
           <MismatchModal onClose={handleMismatchModalClose} />
         )}
@@ -426,7 +486,7 @@ const Menu: React.FC<MenuProps> = () => {
                         key={product.id}
                         className="product-card">
                         <div
-                         className="product-image">
+                          className="product-image">
                           <CardMedia
                             component='img'
                             height='150'
@@ -440,7 +500,7 @@ const Menu: React.FC<MenuProps> = () => {
                             <Typography
                               variant='h5'
                               className="product-title"
-                              >
+                            >
                               {getTruncatedName(product.name, 20)}
                             </Typography>
                           </Tooltip>
@@ -468,7 +528,7 @@ const Menu: React.FC<MenuProps> = () => {
                             </Typography>
                           </Tooltip>
 
-                          <Typography variant='h6'  className="product-price">
+                          <Typography variant='h6' className="product-price">
                             {`${t('price')}: ${Math.round(product.price)} DT`}
                           </Typography>
 
@@ -478,7 +538,7 @@ const Menu: React.FC<MenuProps> = () => {
                             onClick={() => {
                               handleChooseOptions(product);
                             }}>
-                            <AddIcon className="product-button-icon"/>{' '}
+                            <AddIcon className="product-button-icon" />{' '}
                             {t('choose_options')}
                           </Button>
                         </CardContent>
@@ -489,8 +549,7 @@ const Menu: React.FC<MenuProps> = () => {
               </Box>
             );
           })
-        )}
-      </Container>
+        )} */}
     </>
   );
 };

@@ -161,11 +161,105 @@
 
 .minimizedFixedHeaderContainer {
     height: 62px;
+
     .minimizedlogoMain {
-        height: 32.64px !important ;
+        height: 32.64px !important;
         background-size: 32%;
     }
 }
+
+
+
+
+.fixedHeaderContainer2 {
+
+    background-color: $white_001;
+    height: 75px;
+    position: fixed;
+    top: 0;
+    left: 10%;
+    right: 10%;
+    bottom: 0;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0 10px;
+    border-radius: 0px 0px 20px 20px;
+    z-index: 999;
+
+    .logoContainer {
+        cursor: pointer;
+
+        .logoMain {
+            background-repeat: no-repeat;
+            display: inline-block;
+            background-image: url("/src/assets/icon.png");
+            background-position: center;
+            background-size: cover;
+            width: 31.81px;
+            height: 39px;
+        }
+    }
+
+    .info {
+        background-color: aliceblue;
+        width: 50%;
+        height: 80%;
+        display: flex;
+        justify-content: end;
+        align-items: center;
+        gap: 10px;
+
+
+        .position {
+            color: $dark_Gray;
+            font-family: Poppins;
+            font-size: 18px;
+            font-style: normal;
+            font-weight: 500;
+            line-height: normal;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 7px;
+
+            .icon {
+                font-size: 18px;
+                color: $primary_color;
+            }
+        }
+
+        .account {
+            color: $primary_color;
+
+        }
+
+        .search {
+            color: $primary_color;
+
+        }
+
+        .cart-item {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 7px;
+            width: 82px;
+            height: 46px;
+            background-color: $orange_color;
+            border-radius: 55px;
+            color: white;
+            font-family: Poppins;
+            font-size: 22px;
+            font-style: normal;
+            font-weight: 400;
+            line-height: normal;
+
+
+        }
+    }
+}
+
 
 
 
