@@ -216,6 +216,96 @@ const Menu: React.FC<MenuProps> = () => {
   useEffect(() => {
     console.log("restaurant", restaurant)
   }, [])
+
+  const Product = () => {
+
+    return <>
+      {
+        // loading ? (
+        //   <CircularProgress sx={{ alignSelf: 'center', my: '2rem' }} />
+        // ) : 
+        // (
+        menuData.map((menuItem) => {
+          const menuItemId = menuItem.id;
+          const menuItemProducts = menuItem.products;
+
+          const indexOfLastProduct = currentPage[menuItemId]
+            ? currentPage[menuItemId] * productsPerPage
+            : productsPerPage;
+          const indexOfFirstProduct = indexOfLastProduct - productsPerPage;
+          const displayedProducts = menuItemProducts.slice(
+            indexOfFirstProduct,
+            indexOfLastProduct
+          );
+
+
+          return (
+            <div key={menuItemId} className="menu-item-container">
+              <div className="menu-item-header">
+                <span className='menu-item-header-title'>
+                  {menuItem.name}
+                </span>
+                <span className='menu-item-header-choix'>
+                  choix
+                </span>
+              </div>
+
+              {/* {menuItemProducts.length > productsPerPage && (
+                <Pagination
+                  style={{ marginTop: '1rem' }}
+                  count={Math.ceil(menuItemProducts.length / productsPerPage)}
+                  page={currentPage[menuItemId] || 1}
+                  onChange={(event, page) =>
+                    handlePaginationClick(page, menuItemId)
+                  }
+                />
+              )} */}
+
+              <div className='product-container'>
+                <div className="product-grid">
+                  {displayedProducts.map((product) => (
+                    <div key={product.id} className="product-card">
+                      <div className='info-container' >
+                        <p className="product-title" >
+                          {getTruncatedName(product.name, 10)}
+                        </p>
+
+                        <p className="product-price">
+                          {`${t('price')}: ${Math.round(product.price)} DT`}
+                        </p>
+
+                        <p className="product-description">
+                          {getTruncatedName(product.description, 27)}
+                        </p>
+
+
+                        <button className="product-button"
+                          onClick={() => {
+                            handleChooseOptions(product);
+                          }}>
+                          {/* <AddIcon className="product-button-icon" /> */}
+                          +
+                        </button>
+                      </div>
+
+                      <div >
+                        <img src={product.image[0]?.path} alt='product photo' className="product-image"
+                        />
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              </div>
+            </div>
+          );
+        }
+          // )
+        )}
+    </>
+
+  }
+
+
   return (
     <>
       <Container fluid className='supplier-page-header' >
@@ -271,6 +361,8 @@ const Menu: React.FC<MenuProps> = () => {
                 <label htmlFor="poulettes">Poulettes</label>
               </div>
             </div>
+            <Product />
+
 
           </section>
         </Row>
@@ -416,140 +508,9 @@ const Menu: React.FC<MenuProps> = () => {
           </div>
         )}
 
-        <Typography
-          variant='h4'
-          className='restaurant-name' >
-          Menu {restaurant.name}
-        </Typography>
-        <Box
-          className='rating-container'
-        >
-          <Typography className="rating-text">
-            {restaurant.star ? restaurant.star : t('noRating')}
-          </Typography>
-          <Star sx={{ ml: '0.3rem', color: '#FFD700' }} />
-        </Box>
-        <Box className="time-container">
-          {restaurant.medium_time ? (
-            <Typography variant='subtitle2'>
-              {`${restaurant.medium_time - 10}mins - ${restaurant.medium_time + 10
-                }mins`}
-            </Typography>
-          ) : (
-            <Typography variant='subtitle2'></Typography>
-          )}
-        </Box>
-        <Typography variant='h5'>
-          {t('delivery_price')} {restaurant.delivery_price} DT
-        </Typography>
-
-        {loading ? (
-          <CircularProgress sx={{ alignSelf: 'center', my: '2rem' }} />
-        ) : (
-          menuData.map((menuItem) => {
-            const menuItemId = menuItem.id;
-            const menuItemProducts = menuItem.products;
-
-            const indexOfLastProduct = currentPage[menuItemId]
-              ? currentPage[menuItemId] * productsPerPage
-              : productsPerPage;
-            const indexOfFirstProduct = indexOfLastProduct - productsPerPage;
-            const displayedProducts = menuItemProducts.slice(
-              indexOfFirstProduct,
-              indexOfLastProduct
-            );
-
-
-            return (
-              <Box key={menuItemId} className="menu-item-container">
-                <Box className="menu-item-header">
-                  <Typography variant='h5' className='menu-item-header-title'>
-                    {menuItem.name}
-                  </Typography>
-                </Box>
-
-                {menuItemProducts.length > productsPerPage && (
-                  <Pagination
-                    style={{ marginTop: '1rem' }}
-                    count={Math.ceil(menuItemProducts.length / productsPerPage)}
-                    page={currentPage[menuItemId] || 1}
-                    onChange={(event, page) =>
-                      handlePaginationClick(page, menuItemId)
-                    }
-                  />
-                )}
-                <Box
-                  className='product-container'>
-                  <Grid container spacing={2} className="product-grid">
-                    {displayedProducts.map((product) => (
-                      <Card
-                        key={product.id}
-                        className="product-card">
-                        <div
-                          className="product-image">
-                          <CardMedia
-                            component='img'
-                            height='150'
-                            image={product.image[0]?.path}
-                            loading='lazy'
-                          />
-                        </div>
-
-                        <CardContent sx={{ flexGrow: 1 }}>
-                          <Tooltip title={product.name} arrow>
-                            <Typography
-                              variant='h5'
-                              className="product-title"
-                            >
-                              {getTruncatedName(product.name, 20)}
-                            </Typography>
-                          </Tooltip>
-
-                          <Tooltip
-                            title={
-                              <div
-                                dangerouslySetInnerHTML={{
-                                  __html: product.description,
-                                }}
-                              />
-                            }
-                            arrow>
-                            <Typography
-                              variant='body1'
-                              className="product-description">
-                              <div
-                                dangerouslySetInnerHTML={{
-                                  __html: getTruncatedName(
-                                    product.description,
-                                    90
-                                  ),
-                                }}
-                              />
-                            </Typography>
-                          </Tooltip>
-
-                          <Typography variant='h6' className="product-price">
-                            {`${t('price')}: ${Math.round(product.price)} DT`}
-                          </Typography>
-
-                          <Button
-                            variant='contained'
-                            className="product-button"
-                            onClick={() => {
-                              handleChooseOptions(product);
-                            }}>
-                            <AddIcon className="product-button-icon" />{' '}
-                            {t('choose_options')}
-                          </Button>
-                        </CardContent>
-                      </Card>
-                    ))}
-                  </Grid>
-                </Box>
-              </Box>
-            );
-          })
-        )} */}
+        
+        
+        */}
     </>
   );
 };
