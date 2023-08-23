@@ -76,21 +76,11 @@ const HomePage = () => {
     handleCategorySelect("");
   }, []);
 
-  // return (
-  //   <>
-  //   <HomeSkeleton/>
-  //   </>
-  // )
+
   return (
     <>
       <Container maxWidth="lg" className="containerr">
         {isLoading ? (
-
-          // <div className="skeleton-container">
-          //   <Skeleton count={12} className="loading-skeleton" />
-          //   <Skeleton count={12} className="loading-skeleton" />
-          //   <Skeleton count={12} className="loading-skeleton" />
-          // </div>
           <HomeSkeleton/>
         ) : (
           <>

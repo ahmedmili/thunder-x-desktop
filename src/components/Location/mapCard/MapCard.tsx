@@ -164,7 +164,6 @@ function MapCard() {
         setSelectedOption(parseInt(event.target.value));
     };
     const handleDefaultChange = () => {
-        // setSelectedOption(parseInt(event.target.value));
         setPrimary(!primary)
     };
 
@@ -201,7 +200,7 @@ function MapCard() {
 
                             <Formik
                                 initialValues={{
-                                    appNum: 0,
+                                    appNum:"",
                                     appEnt: "",
                                     codePost: "",
                                     intitule: "",

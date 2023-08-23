@@ -59,7 +59,10 @@ const Map = () => {
             className="cancel-icon"
           ></ClearRoundedIcon>
         </div>
-        <ContentProvider />
+        {
+          searchType == '' ? <Options /> : <MapCard />
+
+        }
       </div>
     </>
   )
@@ -136,21 +139,6 @@ const Map = () => {
       </>
     )
   }
-
-  function ContentProvider() {
-    switch (searchType) {
-      case "":
-        return (
-          <Options />
-        );
-      case "card":
-        return (
-          <MapCard />
-        );
-    }
-    return null;
-  }
-
   function AutocompleteInput() {
     const [inputValue, setInputValue] = useState<string>('');
     const [suggestions, setSuggestions] = useState([]);
@@ -227,6 +215,27 @@ const Map = () => {
     );
   };
 
+  
+function AdressComponent({
+  type,
+  street,
+  region,
+  lat,
+  long,
+}: AdressComponentProps) {
+
+  const changeAdress = () => {
+    dispatch({
+      type: "SET_LOCATION",
+      payload: {
+        coords: {
+          latitude: lat,
+          longitude: long,
+          label: type,
+        },
+      },
+    });
+  };
 
   function AdressComponent({
     type,
