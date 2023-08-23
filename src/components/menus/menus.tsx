@@ -2,23 +2,15 @@ import { useEffect, useState } from 'react';
 import { FoodItem, MenuData } from '../../services/types';
 import { useLocation, useParams } from 'react-router-dom';
 import {
-  Box,
   Button,
-  Card,
-  CardContent,
-  CardMedia,
   Checkbox,
   CircularProgress,
-  // Container,
   FormControl,
   FormControlLabel,
   FormGroup,
-  FormLabel,
-  Grid,
   Pagination,
   Radio,
   RadioGroup,
-  Tooltip,
   Typography,
 } from '@mui/material';
 import { Add as AddIcon, Star } from '@mui/icons-material';
@@ -65,7 +57,7 @@ const Menu: React.FC<MenuProps> = () => {
   const location = useLocation();
   const restaurant = location.state.restaurant;
   const [currentPage, setCurrentPage] = useState<{ [key: string]: number }>({});
-  const productsPerPage = 3;
+  const productsPerPage = 4;
 
 
   const handlePaginationClick = (pageNumber: number, menuItemId: number) => {
@@ -221,36 +213,36 @@ const Menu: React.FC<MenuProps> = () => {
 
     return <>
       {
-        // loading ? (
-        //   <CircularProgress sx={{ alignSelf: 'center', my: '2rem' }} />
-        // ) : 
-        // (
-        menuData.map((menuItem) => {
-          const menuItemId = menuItem.id;
-          const menuItemProducts = menuItem.products;
+        loading ? (
+          <CircularProgress sx={{ alignSelf: 'center', my: '2rem' }} />
+        ) :
+          (
+            menuData.map((menuItem) => {
+              const menuItemId = menuItem.id;
+              const menuItemProducts = menuItem.products;
 
-          const indexOfLastProduct = currentPage[menuItemId]
-            ? currentPage[menuItemId] * productsPerPage
-            : productsPerPage;
-          const indexOfFirstProduct = indexOfLastProduct - productsPerPage;
-          const displayedProducts = menuItemProducts.slice(
-            indexOfFirstProduct,
-            indexOfLastProduct
-          );
+              const indexOfLastProduct = currentPage[menuItemId]
+                ? currentPage[menuItemId] * productsPerPage
+                : productsPerPage;
+              const indexOfFirstProduct = indexOfLastProduct - productsPerPage;
+              const displayedProducts = menuItemProducts.slice(
+                indexOfFirstProduct,
+                indexOfLastProduct
+              );
 
 
-          return (
-            <div key={menuItemId} className="menu-item-container">
-              <div className="menu-item-header">
-                <span className='menu-item-header-title'>
-                  {menuItem.name}
-                </span>
-                <span className='menu-item-header-choix'>
-                  choix
-                </span>
-              </div>
+              return (
+                <div key={menuItemId} className="menu-item-container">
+                  <div className="menu-item-header">
+                    <span className='menu-item-header-title'>
+                      {menuItem.name}
+                    </span>
+                    <span className='menu-item-header-choix'>
+                      {menuItemProducts.length} choix
+                    </span>
+                  </div>
 
-              {/* {menuItemProducts.length > productsPerPage && (
+                  {menuItemProducts.length > productsPerPage && (
                 <Pagination
                   style={{ marginTop: '1rem' }}
                   count={Math.ceil(menuItemProducts.length / productsPerPage)}
@@ -259,48 +251,48 @@ const Menu: React.FC<MenuProps> = () => {
                     handlePaginationClick(page, menuItemId)
                   }
                 />
-              )} */}
+              )}
 
-              <div className='product-container'>
-                <div className="product-grid">
-                  {displayedProducts.map((product) => (
-                    <div key={product.id} className="product-card">
-                      <div className='info-container' >
-                        <p className="product-title" >
-                          {getTruncatedName(product.name, 10)}
-                        </p>
+                  <div className='product-container'>
+                    <div className="product-grid">
+                      {displayedProducts.map((product) => (
+                        <div key={product.id} className="product-card">
+                          <div className='info-container' >
+                            <p className="product-title" >
+                              {getTruncatedName(product.name, 10)}
+                            </p>
 
-                        <p className="product-price">
-                          {`${t('price')}: ${Math.round(product.price)} DT`}
-                        </p>
+                            <p className="product-price">
+                              {`${t('price')}: ${Math.round(product.price)} DT`}
+                            </p>
 
-                        <p className="product-description">
-                          {getTruncatedName(product.description, 27)}
-                        </p>
+                            <p className="product-description">
+                              {getTruncatedName(product.description, 27)}
+                            </p>
 
 
-                        <button className="product-button"
-                          onClick={() => {
-                            handleChooseOptions(product);
-                          }}>
-                          {/* <AddIcon className="product-button-icon" /> */}
-                          +
-                        </button>
-                      </div>
+                            <button className="product-button"
+                              onClick={() => {
+                                handleChooseOptions(product);
+                              }}>
+                              <AddIcon className="product-button-icon" />
+                              {/* + */}
+                            </button>
+                          </div>
 
-                      <div >
-                        <img src={product.image[0]?.path} alt='product photo' className="product-image"
-                        />
-                      </div>
+                          <div >
+                            <img src={product.image[0]?.path} alt='product photo' className="product-image"
+                            />
+                          </div>
+                        </div>
+                      ))}
                     </div>
-                  ))}
+                  </div>
                 </div>
-              </div>
-            </div>
-          );
-        }
-          // )
-        )}
+              );
+            }
+            )
+          )}
     </>
 
   }
@@ -317,37 +309,41 @@ const Menu: React.FC<MenuProps> = () => {
             </div>
           </div>
         </Row>
+      </Container>
 
+      <Container fluid className='supplier-page-main-container'>
         <Row>
-          <div className="info-container">
-            <div className="left-side">
-              <div className='name'>{restaurant?.name}</div>
-              <div className='price'>Frais de livraison : <span className='price-value'> {restaurant?.service_price} dt</span></div>
+          <section className='info-section'>
+            <div className="info-container">
+              <div className="left-side">
+                <div className='name'>{restaurant?.name}</div>
+                <div className='price'>Frais de livraison : <span className='price-value'> {restaurant?.service_price} dt</span></div>
+              </div>
+
+              <div className="right-side">
+                <Star className='starIcon' style={restaurant?.star ? { visibility: 'visible' } : { visibility: 'hidden' }} />
+                <div className='time'>
+                  <p>
+                    {`${restaurant?.medium_time - 10} - ${restaurant?.medium_time + 10
+                      } min`}
+
+                  </p>
+                </div>
+              </div>
             </div>
-
-            <div className="right-side">
-              {/* style={restaurant?.star ? { visibility: 'visible' } : { visibility: 'hidden' }} */}
-              <Star className='starIcon' />
-              <div className='time'>
-                <p>
-                  {`${restaurant?.medium_time - 10} - ${restaurant?.medium_time + 10
-                    } min`}
-
-                </p>
+          </section>
+        </Row>
+        <Row className='main-row'>
+          <div className="side-bar">
+            <div className="pub-contained">
+              <img className='supplier-logo' src={restaurant?.images[1].path} alt="" />
+              <div className="pub-posts">
+                <img className='insta-img' src={instaposter} alt=" insta img posts" />
+                <img className='insta-img' src={instaposter} alt=" insta img posts" />
               </div>
             </div>
           </div>
-        </Row>
-      </Container>
-      <Container fluid className='supplier-page-main-container'>
-        <Row className='main-row'>
-          <div className="pub-contained">
-            <img className='supplier-logo' src={restaurant?.images[1].path} alt="" />
-            <div className="pub-posts">
-              <img className='insta-img' src={instaposter} alt=" insta img posts" />
-              <img className='insta-img' src={instaposter} alt=" insta img posts" />
-            </div>
-          </div>
+
           <section className='main-container'>
             <div className="filers">
               <div className={`select ${selectedOption == 1 ? "selected" : ""}`}  >
@@ -368,149 +364,149 @@ const Menu: React.FC<MenuProps> = () => {
         </Row>
       </Container>
 
-      {/*         
-        {showMismatchModal && (
-          <MismatchModal onClose={handleMismatchModalClose} />
-        )}
-        {showOptions && (
-          <div
-            className="modal"
-            onClick={() => {
-              setShowOptions(false);
-              setSelectedObligatoryOption(null);
-              setSelectedOptionalOption(null);
-            }}>
-            <div
-              className="modal-content"
-              onClick={(e) => e.stopPropagation()}>
-              <div className="modal-content-image">
-                <div className="modal-content-image-inner"
-                  style={{ backgroundImage: `url(${selectedMenuItem?.image[0]?.path})`, }}>
-                </div>
+
+      {showMismatchModal && (
+        <MismatchModal onClose={handleMismatchModalClose} />
+      )}
+
+      {/* {showOptions && (
+        <div
+          className="modal"
+          onClick={() => {
+            setShowOptions(false);
+            setSelectedObligatoryOption(null);
+            setSelectedOptionalOption(null);
+          }}>
+          <div className="modal-content" onClick={(e) => e.stopPropagation()}>
+            <div className="modal-content-image">
+              <div className="modal-content-image-inner"
+                style={{ backgroundImage: `url(${selectedMenuItem?.image[0]?.path})`, }}>
               </div>
-              <div className="modal-content-options">
-                <Box>
-                  <Typography
-                    variant='h5'
-                    className="menu-title"                    >
-                    {t('menu_options')} {selectedMenuItem?.name}
-                  </Typography>
-                  {options.length === 0 ? (
-                    <>
-                      <Typography variant='h6' className="no-options-needed">
-                        {t('no_options_needed')}
-                      </Typography>
-                      <Button
-                        variant='contained'
-                        color='primary'
-                        startIcon={<AddIcon />}
-                        className="add-to-cart-button"
-                        onClick={() => {
-                          if (selectedMenuItem !== null) {
-                            handleAddToCart(selectedMenuItem);
-                            setShowOptions(false);
-                            setSelectedObligatoryOption(null);
-                            setSelectedOptionalOption(null);
-                            setSelectedMenuItem(null);
-                          }
-                        }}>
-                        {t('add_to_cart')}
-                      </Button>
-                    </>
-                  ) : (
-                    <Box className="menu-options">
-                      {obligatoryOptions.length > 0 && (
-                        <Box className="obligatory-options">
+            </div>
+            <div className="modal-content-options">
 
-                          <Box>
-                            <Typography variant="h6" className="obligatory-options-title">
-                              {t('sauce')}
-                            </Typography>
-                            <Typography variant="body2" className="option-label">
-                              {t('select_one_option')}
-                            </Typography>
-                          </Box>
+              <div>
+                <h5 className="menu-title">
+                  {t('menu_options')} {selectedMenuItem?.name}
+                </h5>
 
-                          <FormControl component='fieldset'>
-                            <RadioGroup
-                              aria-label='obligatory-options'
-                              name='obligatory-options'
-                              value={selectedObligatoryOption?.id || ''}
-                              onChange={handleObligatoryOptionChange}>
-                              {obligatoryOptions.map((option) => (
-                                <FormControlLabel
-                                  key={option.id}
-                                  value={option.id.toString()}
-                                  control={<Radio />}
-                                  label={`${option.name} (${option.price} DT)`}
-                                />
-                              ))}
-                            </RadioGroup>
-                          </FormControl>
-                        </Box>
-                      )}
+                {options.length === 0 ? (
+                  <>
+                    <h6 className="no-options-needed">
+                      {t('no_options_needed')}
+                    </h6>
 
-                      {optionalOptions.length > 0 && (
-                        <Box className='menu-extras'>
-                          <Box className="menu-extras-header">
-                            <Typography className="menu-extras-header-title" variant='h6'>
-                              {t('extras')}
-                            </Typography>
-                            <Typography className="menu-extras-header-subtitle" variant='body2'>
-                              {t('select_one_or_multiple_extras')}
-                            </Typography>
-                          </Box>
-                          <FormControl component='fieldset'>
-                            <FormGroup>
-                              {optionalOptions.map((option) => (
-                                <FormControlLabel
-                                  key={option.id}
-                                  control={
-                                    <Checkbox
-                                      checked={option.checked || false}
-                                      onChange={handleOptionalOptionChange}
-                                      value={option.id.toString()}
-                                    />
-                                  }
-                                  label={`${option.name} (${option.price} DT)`}
-                                />
-                              ))}
-                            </FormGroup>
-                          </FormControl>
-                        </Box>
-                      )}
-                      <Button
-                        className="add-to-cart-button"
+                    <Button
+                      variant='contained'
+                      color='primary'
+                      startIcon={<AddIcon />}
+                      className="add-to-cart-button"
+                      onClick={() => {
+                        if (selectedMenuItem !== null) {
+                          handleAddToCart(selectedMenuItem);
+                          setShowOptions(false);
+                          setSelectedObligatoryOption(null);
+                          setSelectedOptionalOption(null);
+                          setSelectedMenuItem(null);
+                        }
+                      }}>
+                      {t('add_to_cart')}
+                    </Button>
+                  </>
+                ) : (
+                  <div className="menu-options">
+                    {obligatoryOptions.length > 0 && (
+                      <div className="obligatory-options">
 
-                        variant='contained'
-                        color='primary'
-                        startIcon={<AddIcon />}
-                        onClick={() => {
-                          if (selectedMenuItem !== null) {
-                            handleAddToCart(selectedMenuItem);
-                            setShowOptions(false);
-                            setSelectedObligatoryOption(null);
-                            setSelectedOptionalOption(null);
-                            setSelectedMenuItem(null);
-                          }
-                        }}
-                        disabled={
-                          obligatoryOptions.length > 0 &&
-                          !selectedObligatoryOption
-                        }>
-                        {t('add_to_cart')}
-                      </Button>
-                    </Box>
-                  )}
-                </Box>
+                        <div>
+                          <h6 className="obligatory-options-title">
+                            {t('sauce')}
+                          </h6>
+                          <p className="option-label">
+                            {t('select_one_option')}
+                          </p>
+                        </div>
+
+                        <FormControl component='fieldset'>
+                          <RadioGroup
+                            aria-label='obligatory-options'
+                            name='obligatory-options'
+                            value={selectedObligatoryOption?.id || ''}
+                            onChange={handleObligatoryOptionChange}>
+                            {obligatoryOptions.map((option) => (
+                              <FormControlLabel
+                                key={option.id}
+                                value={option.id.toString()}
+                                control={<Radio />}
+                                label={`${option.name} (${option.price} DT)`}
+                              />
+                            ))}
+                          </RadioGroup>
+                        </FormControl>
+                      </div>
+                    )}
+
+                    {optionalOptions.length > 0 && (
+                      <div className='menu-extras'>
+                        <div className="menu-extras-header">
+                          <Typography className="menu-extras-header-title" variant='h6'>
+                            {t('extras')}
+                          </Typography>
+                          <Typography className="menu-extras-header-subtitle" variant='body2'>
+                            {t('select_one_or_multiple_extras')}
+                          </Typography>
+                        </div>
+                        <FormControl component='fieldset'>
+                          <FormGroup>
+                            {optionalOptions.map((option) => (
+                              <FormControlLabel
+                                key={option.id}
+                                control={
+                                  <Checkbox
+                                    checked={option.checked || false}
+                                    onChange={handleOptionalOptionChange}
+                                    value={option.id.toString()}
+                                  />
+                                }
+                                label={`${option.name} (${option.price} DT)`}
+                              />
+                            ))}
+                          </FormGroup>
+                        </FormControl>
+                      </div>
+                    )}
+                    <Button
+                      className="add-to-cart-button"
+
+                      variant='contained'
+                      color='primary'
+                      startIcon={<AddIcon />}
+                      onClick={() => {
+                        if (selectedMenuItem !== null) {
+                          handleAddToCart(selectedMenuItem);
+                          setShowOptions(false);
+                          setSelectedObligatoryOption(null);
+                          setSelectedOptionalOption(null);
+                          setSelectedMenuItem(null);
+                        }
+                      }}
+                      disabled={
+                        obligatoryOptions.length > 0 &&
+                        !selectedObligatoryOption
+                      }>
+                      {t('add_to_cart')}
+                    </Button>
+                  </div>
+                )}
               </div>
             </div>
           </div>
-        )}
+        </div>
+      )} */}
 
-        
-        
-        */}
+
+
+
     </>
   );
 };
