@@ -216,7 +216,7 @@ const Header = () => {
               <div className='info'>
                 <div className="position">
 
-                  <LocationOnIcon className='icon' />
+                  <LocationOnIcon className='position-icon' />
                   {location
                     ? location?.coords.label
                     : t('no_location_detected')}
@@ -224,11 +224,13 @@ const Header = () => {
                 </div>
                 <div className="account">
 
-                  <PermIdentityOutlinedIcon />
+                  <PermIdentityOutlinedIcon className='account-icon' />
                 </div>
-                <div className="search"> <Search /></div>
+                <div className="search">
+                  <Search  className='search-icon'/>
+                </div>
                 <div className="cart-item">
-                  <ShoppingCartOutlinedIcon />
+                  <ShoppingCartOutlinedIcon className='cart-icon' />
                   {cartItems.length}
                 </div>
 
