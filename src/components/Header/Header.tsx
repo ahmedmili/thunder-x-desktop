@@ -11,7 +11,6 @@ import PinDropIcon from "@mui/icons-material/PinDrop";
 import LocationOnIcon from '@mui/icons-material/LocationOn';
 import { logout } from "../../Redux/slices/userSlice";
 import { useEffect, useState } from "react";
-// import CartPage from '../../views/cart/cart.page';
 import { useTranslation } from "react-i18next";
 import { localStorageService } from "../../services/localStorageService";
 import Switches from "../toggleSwitch/toggleSwitch";
@@ -31,9 +30,9 @@ const Header = () => {
 
   const cartItems = useAppSelector((state) => state.cart.items);
   const location = useAppSelector((state) => state.location.position);
+  const showMapState = useAppSelector((state) => state.location.showMap);
 
   const [showCart, setShowCart] = useState(false); // Add state variable for showing/hiding the cart
-  const [showMap, setShowMap] = useState(false);
   const [scrolling, setScrolling] = useState(false);
 
   const dispatch = useAppDispatch();
@@ -172,7 +171,7 @@ const Header = () => {
                     <div className="Switches">
                       <Switches />
                     </div>
-                    <Box className="headerLocalisationMessageContainer" onClick={() => setShowMap(true)} >
+                    <Box className="headerLocalisationMessageContainer" onClick={() => dispatch({ type: "SET_SHOW", payload: true })}>
                       <a href="#" >
                         <span className="localisationIcon" >
                           <PinDropIcon />
@@ -193,10 +192,10 @@ const Header = () => {
               </Row>
 
               {/*  Thunder logo section  */}
-              {showMap && (
+              {showMapState && (
                 <div
                   className="mapOverPlay"
-                  onClick={() => setShowMap(false)}>
+                  onClick={() => dispatch({ type: "SET_SHOW", payload: false })}>
                   <div
                     onClick={(e) => e.stopPropagation()}>
                     <Map />
@@ -216,8 +215,8 @@ const Header = () => {
 
               <div className='info'>
                 <div className="position">
-                  
-                  <LocationOnIcon className='icon'/>
+
+                  <LocationOnIcon className='icon' />
                   {location
                     ? location?.coords.label
                     : t('no_location_detected')}

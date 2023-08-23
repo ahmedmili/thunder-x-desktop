@@ -48,18 +48,21 @@ const Map = () => {
     };
     userItem != null ? fetchData() : console.log("no user connected");
   }, []);
- 
+
   const userItem = localStorageService.getUser();
   return (
     <>
       <div className="location-container">
         <div className="cancel-icon-container">
           <ClearRoundedIcon
-            onClick={() => setSearchType("")}
+            onClick={() => searchType === "" ? dispatch({ type: "SET_SHOW", payload: false }) : setSearchType("")}
             className="cancel-icon"
           ></ClearRoundedIcon>
         </div>
-        <ContentProvider />
+        {
+          searchType == '' ? <Options /> : <MapCard />
+
+        }
       </div>
     </>
   )
@@ -88,7 +91,10 @@ const Map = () => {
           </button>
 
           {/*  search location input */}
-          <AutocompleteInput />
+          <div className="adresses_container">
+            <AutocompleteInput />
+
+          </div>
         </div>
 
         <div style={{ display: userItem ? "inline" : "none" }} className="Text-container">
@@ -133,21 +139,6 @@ const Map = () => {
       </>
     )
   }
-
-  function ContentProvider() {
-    switch (searchType) {
-      case "":
-        return (
-          <Options />
-        );
-      case "card":
-        return (
-          <MapCard />
-        );
-    }
-    return null;
-  }
-
   function AutocompleteInput() {
     const [inputValue, setInputValue] = useState<string>('');
     const [suggestions, setSuggestions] = useState([]);
@@ -205,7 +196,7 @@ const Map = () => {
             placeholder={`${t("searchButton")} ...`}
           />
           <span className="icon">
-            <SearchIcon className='icon'/>
+            <SearchIcon className='icon' />
           </span>
         </div>
         {loading && <div>Loading...</div>}
@@ -232,36 +223,38 @@ function AdressComponent({
   lat,
   long,
 }: AdressComponentProps) {
-  // const dispatch = useDispatch();
 
   const changeAdress = () => {
-    dispatch(
-      setSelectedLocation({
+    dispatch({
+      type: "SET_LOCATION",
+      payload: {
         coords: {
           latitude: lat,
           longitude: long,
           label: type,
         },
-      })
-    );
+      },
+    });
   };
 
-  return (
-    <div onClick={changeAdress} className="adressCompContainer">
-      <header>
-        <div className="type">
-          <HomeRoundedIcon className="home-icon" />
-          {type}
+
+
+    return (
+      <div onClick={changeAdress} className="adressCompContainer">
+        <header>
+          <div className="type">
+            <HomeRoundedIcon className="home-icon" />
+            {type}
+          </div>
+          <MenuIcon />
+        </header>
+        <div className="labels">
+          <p>
+            {street}, <br /> {region}
+          </p>
         </div>
-        <MenuIcon />
-      </header>
-      <div className="labels">
-        <p>
-          {street}, <br /> {region}
-        </p>
       </div>
-    </div>
-  );
-}
+    );
+  }
 };
 export default Map;

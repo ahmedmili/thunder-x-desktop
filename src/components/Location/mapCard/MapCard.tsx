@@ -55,29 +55,40 @@ function MapCard() {
 
     const handleSubmit = async (values: LocationFormValues, { setSubmitting }: FormikHelpers<LocationFormValues>) => {
         setSubmitting(false);
-        try {
-            await validationSchema.validate(values).then(
-                async () => {
+        let empty = (values.appEnt === "") && (values.codePost === "") && (values.appNum === 0) && (values.codePost === "");
+        let emptyIntitule = values.intitule === "";
+        if (emptyIntitule) {
+            toast.warn(t('adress.intitule_message'))
+            dispatch({ type: "SET_SHOW", payload: false })
+        } else {
+            try {
+                await validationSchema.validate(values).then(
+                    async () => {
 
-                    const data = {
-                        long: userPosition?.coords.longitude,
-                        lat: userPosition?.coords.latitude,
-                        appartement: values.appEnt,
-                        door: values.codePost,
-                        flat: values.appNum,
-                        label: values.intitule,
-                        type: selectedOption,
-                        primary: primary ? 1 : 0,
-                    };
-                    const resp = await LocationService.addaddresse(data);
-                    toast.success(resp.data.data.message);
-                    resp.data.code === 200 && navigate('/')
-                }
-            )
-        } catch (error) {
-            setSubmitting(false);
-            console.error(error);
+                        const data = {
+                            long: userPosition?.coords.longitude,
+                            lat: userPosition?.coords.latitude,
+                            appartement: values.appEnt,
+                            door: values.codePost,
+                            flat: values.appNum,
+                            label: values.intitule,
+                            type: selectedOption,
+                            primary: primary ? 1 : 0,
+                        };
+                        const resp = await LocationService.addaddresse(data);
+                        let message = resp.data.message;
+                        toast.success(message);
+                        console.log(message);
+                        resp.data.code === 200 && dispatch({ type: "SET_SHOW", payload: false })
+
+                    }
+                )
+            } catch (error) {
+                setSubmitting(false);
+                console.error(error);
+            }
         }
+
     };
 
     const handleMapClick = (event: google.maps.MapMouseEvent) => {
@@ -153,7 +164,6 @@ function MapCard() {
         setSelectedOption(parseInt(event.target.value));
     };
     const handleDefaultChange = () => {
-        // setSelectedOption(parseInt(event.target.value));
         setPrimary(!primary)
     };
 
@@ -176,9 +186,6 @@ function MapCard() {
                                             <div className="icon"></div>
                                             <p>Position actuelle</p>
                                         </button>
-                                        {/* <div className="position-button-label">
-                                           
-                                        </div> */}
                                     </div>
                                 </div>
                             </>
@@ -193,9 +200,9 @@ function MapCard() {
 
                             <Formik
                                 initialValues={{
-                                    appNum: 0,
-                                    appEnt: 0,
-                                    codePost: 0,
+                                    appNum:"",
+                                    appEnt: "",
+                                    codePost: "",
                                     intitule: "",
                                     selectedOption: 1,
                                 }}
@@ -243,7 +250,7 @@ function MapCard() {
                                             <label htmlFor="default"> Adresse par défaut</label>
                                         </div>
                                         <button type="submit" className="submit-cart" >
-                                            Sélectionner
+                                        {t("select")}
                                         </button>
                                     </Form>
                                 )}
@@ -252,7 +259,7 @@ function MapCard() {
                     )}
                     {logged_in && showForm === false && (
                         <button type="button" className="submit-cart" onClick={() => setShowForm(true)} >
-                            Sélectionner
+                            {t("continuer")}
                         </button>
                     )}
                 </div>

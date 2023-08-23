@@ -88,6 +88,7 @@
   "adress.message1": "Mes Adresses de livraison",
   "adress.message2": "Filtrer l’adresse par :",
   "adress.cartSelect": "sélectionner sur la carte",
+  "adress.intitule_message": "L'intitulé de l'adresse est nécessaire",
   "adress.searchWithAdress": "Chercher par rue, quartier, ville ",
   "faq.title": "Foire Aux Questions",
   "faq.questions": [
