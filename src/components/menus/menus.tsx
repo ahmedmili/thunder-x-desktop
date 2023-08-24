@@ -78,7 +78,8 @@ const Menu: React.FC<MenuProps> = () => {
   const [selectedOptionalOption, setSelectedOptionalOption] =
     useState<Option | null>(null);
   const [showMismatchModal, setShowMismatchModal] = useState(false);
-  const [selectedOption, setSelectedOption] = useState(1);
+  const [selectedOption, setSelectedOption] = useState("tous");
+  const [filtreddMenuData, setFiltreddMenuData] = useState<MenuData[]>([]);
 
   useEffect(() => {
     // Separate the options into obligatory and optional arrays based on the `type` property
@@ -203,11 +204,23 @@ const Menu: React.FC<MenuProps> = () => {
       : name;
   };
   const handleOptionChange = (event: any) => {
-    setSelectedOption(parseInt(event.target.value));
+    setSelectedOption(event.target.value);
   };
+
+  const handleFilter = () => {
+    if (selectedOption === "tous") {
+      setFiltreddMenuData(menuData)
+    }
+    else {
+      let filtredData = menuData.filter((data) => {
+        return data.name === selectedOption
+      })
+      setFiltreddMenuData(filtredData)
+    }
+  }
   useEffect(() => {
-    console.log("restaurant", restaurant)
-  }, [])
+    handleFilter()
+  }, [selectedOption])
 
   const Product = () => {
 
@@ -217,7 +230,7 @@ const Menu: React.FC<MenuProps> = () => {
           <CircularProgress sx={{ alignSelf: 'center', my: '2rem' }} />
         ) :
           (
-            menuData.map((menuItem) => {
+            filtreddMenuData.map((menuItem) => {
               const menuItemId = menuItem.id;
               const menuItemProducts = menuItem.products;
 
@@ -243,15 +256,15 @@ const Menu: React.FC<MenuProps> = () => {
                   </div>
 
                   {menuItemProducts.length > productsPerPage && (
-                <Pagination
-                  style={{ marginTop: '1rem' }}
-                  count={Math.ceil(menuItemProducts.length / productsPerPage)}
-                  page={currentPage[menuItemId] || 1}
-                  onChange={(event, page) =>
-                    handlePaginationClick(page, menuItemId)
-                  }
-                />
-              )}
+                    <Pagination
+                      style={{ marginTop: '1rem' }}
+                      count={Math.ceil(menuItemProducts.length / productsPerPage)}
+                      page={currentPage[menuItemId] || 1}
+                      onChange={(event, page) =>
+                        handlePaginationClick(page, menuItemId)
+                      }
+                    />
+                  )}
 
                   <div className='product-container'>
                     <div className="product-grid">
@@ -267,7 +280,8 @@ const Menu: React.FC<MenuProps> = () => {
                             </p>
 
                             <p className="product-description">
-                              {getTruncatedName(product.description, 27)}
+                              {/* {getTruncatedName(product.description, 27)} */}
+                              {product.description}
                             </p>
 
 
@@ -280,10 +294,7 @@ const Menu: React.FC<MenuProps> = () => {
                             </button>
                           </div>
 
-                          <div >
-                            <img src={product.image[0]?.path} alt='product photo' className="product-image"
-                            />
-                          </div>
+                          <img src={product.image[0]?.path} alt='product photo' className="product-image" />
                         </div>
                       ))}
                     </div>
@@ -346,16 +357,27 @@ const Menu: React.FC<MenuProps> = () => {
 
           <section className='main-container'>
             <div className="filers">
-              <div className={`select ${selectedOption == 1 ? "selected" : ""}`}  >
-                <input type="radio" value="1" id='tout' name='type' checked={selectedOption === 1} onChange={handleOptionChange} />
+
+              <div className={`select ${selectedOption == "tous" ? "selected" : ""}`}  >
+                <input type="radio" value="tous" id='tous' name='type' checked={selectedOption === "1"} onChange={handleOptionChange} />
                 {/* <label htmlFor="domicile">{t("domicile")}</label> */}
-                <label htmlFor="tout">Tous les produits</label>
+                <label htmlFor="tous">Tous les produits</label>
               </div>
-              <div className={`select ${selectedOption == 2 ? "selected" : ""}`}  >
-                <input type="radio" value="2" id='poulettes' name='type' checked={selectedOption === 2} onChange={handleOptionChange} />
-                {/* <label htmlFor="travail"> {t("tavail")}</label> */}
-                <label htmlFor="poulettes">Poulettes</label>
-              </div>
+              {
+                menuData.map((data, index) => {
+                  return (
+                    <>
+                      <div key={index} className={`select ${selectedOption == data.name ? "selected" : ""}`}  >
+                        <input type="radio" value={data.name} id={data.name} name='type' checked={selectedOption === data.name} onChange={handleOptionChange} />
+                        {/* <label htmlFor="travail"> {t("tavail")}</label> */}
+                        <label htmlFor={data.name}>{data.name}</label>
+                      </div>
+                    </>
+                  )
+
+                })
+              }
+
             </div>
             <Product />
 
