@@ -237,25 +237,7 @@ function AdressComponent({
     });
   };
 
-  function AdressComponent({
-    type,
-    street,
-    region,
-    lat,
-    long,
-  }: AdressComponentProps) {
 
-    const changeAdress = () => {
-      dispatch(
-        setSelectedLocation({
-          coords: {
-            latitude: lat,
-            longitude: long,
-            label: type,
-          },
-        })
-      );
-    };
 
     return (
       <div onClick={changeAdress} className="adressCompContainer">

@@ -161,11 +161,113 @@
 
 .minimizedFixedHeaderContainer {
     height: 62px;
+
     .minimizedlogoMain {
-        height: 32.64px !important ;
+        height: 32.64px !important;
         background-size: 32%;
     }
 }
+
+
+
+
+.fixedHeaderContainer2 {
+    background-color: $white_001;
+    height: 75px;
+    position: fixed;
+    top: 0;
+    left: 10%;
+    right: 10%;
+    bottom: 0;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0 10px;
+    border-radius: 0px 0px 20px 20px;
+    z-index: 999;
+
+    .logoContainer {
+        cursor: pointer;
+
+        .logoMain {
+            background-repeat: no-repeat;
+            display: inline-block;
+            background-image: url("/src/assets/icon.png");
+            background-position: center;
+            background-size: cover;
+            width: 31.81px;
+            height: 39px;
+        }
+    }
+
+    .info {
+        width: 50%;
+        height: 80%;
+        display: flex;
+        justify-content: end;
+        align-items: center;
+        gap: 10px;
+
+
+        .position {
+            color: $dark_Gray;
+            font-family: Poppins;
+            font-size: 18px;
+            font-style: normal;
+            font-weight: 500;
+            line-height: normal;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 7px;
+
+            .position-icon {
+                font-size: 18px;
+                color: $primary_color;
+            }
+        }
+
+        .account {
+            color: $primary_color;
+
+            .account-icon {
+                font-size: 18px;
+            }
+
+        }
+
+        .search {
+            color: $primary_color;
+
+            .search-icon {
+                font-size: 18px;
+            }
+        }
+
+        .cart-item {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 7px;
+            width: 82px;
+            height: 46px;
+            background-color: $orange_color;
+            border-radius: 55px;
+            color: white;
+            font-family: Poppins;
+            font-size: 22px;
+            font-style: normal;
+            font-weight: 400;
+            line-height: normal;
+
+            .cart-icon {
+                font-size: 20px;
+            }
+
+        }
+    }
+}
+
 
 
 
@@ -223,10 +325,52 @@
         }
     }
 
+
+
+    .fixedHeaderContainer2 {
+        max-height: 75px;
+        bottom: 0;
+        padding: 0 10px;
+
+        .logoContainer {
+            .logoMain {
+                width: 31.81px;
+                height: 39px;
+            }
+        }
+
+        .info {
+            width: 60%;
+            height: 80%;
+            gap: 10px;
+
+            .position {
+                font-size: 16px;
+                gap: 7px;
+                width: 400px;
+            }
+
+            .cart-item {
+                gap: 7px;
+                width: 82px;
+                height: 46px;
+                font-size: 20px;
+            }
+        }
+    }
 }
 
 
 @media only screen and (max-width: 992px) {
+    .fixedHeaderContainer2 {
+        .info {
+            .position {
+                font-size: 15px;
+                gap: 7px;
+                width: 400px;
+            }
+        }
+    }
 
     .head1 {
         .demiCercle {
@@ -273,6 +417,15 @@
 
 @media only screen and (max-width: 768px) {
 
+    .fixedHeaderContainer2 {
+        .info {
+            .position {
+                font-size: 12px;
+                gap: 7px;
+                width: 400px;
+            }
+        }
+    }
 
     .headerContainer {
         .imageBuilder {
@@ -305,6 +458,15 @@
 }
 
 @media only screen and (max-width: 576px) {
+    .fixedHeaderContainer2 {
+        .info {
+            .position {
+                font-size: 10px;
+                gap: 7px;
+                width: 400px;
+            }
+        }
+    }
 
     .head1 {
         .demiCercle {
