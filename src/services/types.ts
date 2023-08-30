@@ -15,14 +15,16 @@ export interface IUser {
   __v: number;
 }
 export interface FoodItem {
-  id: number;
-  name: string;
-  price: number;
-  image: any;
-  supplier_id: any;
+  supplier_data: {
+    supplier_id: number,
+    supplier_name: string,
+    delivery_price: number,
+  },
+  product: Product;
+  options: Option[];
   quantity: number;
-  obligatoryOptions: Option[];
-  optionalOptions: Option[];
+  total: number;
+  unitePrice: number;
 }
 
 export interface Option {
@@ -61,6 +63,35 @@ export type Position = {
     label: string | null;
   };
 };
+
+export interface Product {
+  id: number;
+  available: number;
+  description: string;
+  discount_price: number;
+  discount_source: string;
+  discount_type: string;
+  discount_value: number;
+  image: [{
+    id: number;
+    created_at: string | null;
+    deleted_at: string | null;
+    updated_at: string | null;
+    name: string;
+    path: string;
+    user_id: number
+  }];
+  is_popular: number;
+  name: string;
+  options: Option[]
+  options_max: [{
+    id: number;
+    max: number;
+    type_option: string;
+  }];
+  position: number;
+  price: number;
+}
 
 export interface Restaurant {
   cashout: string;

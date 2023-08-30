@@ -9,6 +9,7 @@ interface CartState {
   supplierMismatch: FoodItem | null;
   supplier: any | null;
   deliveryPrice: number;
+  
 }
 
 const initialState: CartState = {
@@ -56,20 +57,24 @@ const cartSlice = createSlice({
       action: PayloadAction<{ itemId: number; quantity: number }>
     ) => {
       const { itemId, quantity } = action.payload;
-      const item = state.items.find((item) => item.id === itemId);
+      const item = state.items.find((item) => item.product.id === itemId);
 
       if (item) {
         item.quantity = quantity;
+        item.total = quantity * item.unitePrice
       }
+      localStorageService.setCart(state.items)
     },
-    removeItem: (state, action: PayloadAction<FoodItem>) => {
+    removeItem: (state, action: PayloadAction<{ id: number }>) => {
       const index = state.items.findIndex(
-        (item) => item.id === action.payload.id
+        (item) => item.product.id === action.payload.id
       );
       if (index !== -1) {
+        localStorageService.setCart(state.items.splice(index, 1))
         state.items.splice(index, 1);
       }
     },
+
     setDeliveryOption: (
       state,
       action: PayloadAction<'delivery' | 'pickup' | 'surplace'>
@@ -96,17 +101,15 @@ const cartSlice = createSlice({
 
       if (
         state.items.length > 0 &&
-        state.items[0].supplier_id !== newItem.supplier_id
+        state.items[0].supplier_data.supplier_id !== newItem.supplier_data.supplier_id
       ) {
         state.supplierMismatch = newItem;
       } else {
         const existingItemIndex = state.items.findIndex((item) => {
           return (
-            item.name === newItem.name &&
-            JSON.stringify(item.obligatoryOptions) ===
-              JSON.stringify(newItem.obligatoryOptions) &&
-            JSON.stringify(item.optionalOptions) ===
-              JSON.stringify(newItem.optionalOptions)
+            item.product.name === newItem.product.name &&
+            JSON.stringify(item.options) ===
+            JSON.stringify(newItem.options)
           );
         });
 

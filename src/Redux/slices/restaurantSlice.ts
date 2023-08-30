@@ -1,6 +1,5 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
-import { Restaurant } from '../../services/types';
-import { ReactNode } from 'react';
+import { Product, Restaurant } from '../../services/types';
 
 interface RestaurantState {
   restaurants: Restaurant[];
@@ -11,10 +10,39 @@ interface RestaurantState {
   ratingFilter: number;
   plateFilter: string[];
   list: string[];
+  product: Product;
 }
 
 const initialState: RestaurantState = {
   restaurants: [],
+  product: {
+    id: 0,
+    available: 0,
+    description: "",
+    discount_price: 0,
+    discount_source: "",
+    discount_type: "",
+    discount_value: 0,
+    image: [{
+      id: 0,
+      created_at: "",
+      deleted_at: "",
+      updated_at: "",
+      name: "",
+      path: "",
+      user_id: 0
+    }],
+    is_popular: 0,
+    name: "",
+    options: [],
+    options_max: [{
+      id: 0,
+      max: 0,
+      type_option: "",
+    }],
+    position: 0,
+    price: 0,
+  },
   filterRestaurants: [],
   searchQuery: '',
   priceFilter: [],
@@ -46,6 +74,9 @@ const restaurantsSlice = createSlice({
     setRestaurants: (state, action) => {
       state.restaurants = action.payload;
     },
+    setProduct: (state, action) => {
+      state.product = action.payload;
+    },
     setfilterRestaurants: (state, action) => {
       state.filterRestaurants = action.payload;
     },
@@ -60,6 +91,7 @@ export const {
   setPlateFilter,
   setRestaurants,
   setfilterRestaurants,
+  setProduct,
 } = restaurantsSlice.actions;
 
 export default restaurantsSlice.reducer;

@@ -55,7 +55,6 @@ function MapCard() {
 
     const handleSubmit = async (values: LocationFormValues, { setSubmitting }: FormikHelpers<LocationFormValues>) => {
         setSubmitting(false);
-        let empty = (values.appEnt === "") && (values.codePost === "") && (values.appNum === 0) && (values.codePost === "");
         let emptyIntitule = values.intitule === "";
         if (emptyIntitule) {
             toast.warn(t('adress.intitule_message'))

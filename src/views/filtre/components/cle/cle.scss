@@ -43,6 +43,7 @@
 
                     &:hover {
                         font-weight: 500;
+                        cursor: pointer;
                     }
                 }
                 .btn-check[type="radio"]:checked~.radio-button {

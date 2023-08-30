@@ -14,12 +14,13 @@
         font-style: normal;
         font-weight: 600;
         line-height: normal;
+        
     }
 
     ul {
         background-color: $Buttercream;
         padding: 10px;
-
+        border-radius: 10px;
         li {
             list-style: none;
             margin-bottom: 5px;
