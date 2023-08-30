@@ -36,6 +36,7 @@ import FilterPage from "./views/filtre/FilterPage";
 import HomeSkeleton from "./views/home/skeleton/HomeSkeleton";
 import Header from "./components/Header/Header";
 import Footer from "./components/footer/footer";
+import MenuOptions from "./components/menus/menuOptions/MenuOptions";
 
 //lazy loading
 const HomePage = lazy(() => import("./views/home/home.page"));
@@ -189,6 +190,7 @@ function App() {
           <Route path="/" element={<Layout />}>
             <Route index element={<HomePage />} />
             <Route path="/supplier-store/:id/*" element={<Menu />} />
+            <Route path="/product" element={<MenuOptions />} />
             <Route path="cart" element={<CartPage />} />
             <Route path="/search" element={<FilterPage />} />
 

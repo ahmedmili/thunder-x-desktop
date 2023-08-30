@@ -48,29 +48,29 @@ const CartPage: React.FC = () => {
   const dispatch = useAppDispatch();
   const navigate = useNavigate();
 
-  const calculateOptionalPrice = (item: FoodItem) => {
-    let optionalPrice = 0;
-    if (item.optionalOptions) {
-      optionalPrice = item.optionalOptions.reduce(
-        (acc, option) =>
-          acc +
-          (option.checked && option.price
-            ? parseFloat(option.price.toString())
-            : 0),
-        0
-      );
-    }
-    return optionalPrice;
-  };
+  // const calculateOptionalPrice = (item: FoodItem) => {
+  //   let optionalPrice = 0;
+  //   if (item.optionalOptions) {
+  //     optionalPrice = item.optionalOptions.reduce(
+  //       (acc, option) =>
+  //         acc +
+  //         (option.checked && option.price
+  //           ? parseFloat(option.price.toString())
+  //           : 0),
+  //       0
+  //     );
+  //   }
+  //   return optionalPrice;
+  // };
 
-  const total = cartItems.reduce((acc, item) => {
-    if (item.price && item.quantity) {
-      const parsedPrice = parseFloat(item.price.toString());
-      const optionalPrice = calculateOptionalPrice(item);
-      return acc + (parsedPrice + optionalPrice) * item.quantity;
-    }
-    return acc;
-  }, parseFloat(JSON.stringify(Math.round(deliveryPrice))) || 0);
+  // const total = cartItems.reduce((acc, item) => {
+  //   if (item.price && item.quantity) {
+  //     const parsedPrice = parseFloat(item.price.toString());
+  //     const optionalPrice = calculateOptionalPrice(item);
+  //     return acc + (parsedPrice + optionalPrice) * item.quantity;
+  //   }
+  //   return acc;
+  // }, parseFloat(JSON.stringify(Math.round(deliveryPrice))) || 0);
 
   const handleCommentChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     setAComment(event.target.value);
@@ -86,68 +86,68 @@ const CartPage: React.FC = () => {
     }
   }, [cartItems]);
 
-  const submitOrder = async (
-    cartItems: FoodItem[],
-    deliveryOption: "delivery" | "pickup" | "surplace",
-    name: string,
-    phoneNumber: string,
-    aComment: string,
-    total: number,
-    dispatch: any,
-    userPosition: any,
-    supplier: number,
-    deliveryPrice: number
-  ) => {
-    try {
-      const order = {
-        addresse_id: 1,
-        supplier_id: supplier,
-        delivery_price: Math.round(deliveryPrice),
-        mode_pay: 1,
-        total_price: total,
-        products: cartItems.map((item) => ({
-          id: item.id,
-          supplier_id: item.supplier_id,
-          qte: item.quantity, // set the quantity to the item's quantity
-          options: item.optionalOptions
-            .filter((option) => option.checked)
-            .map((option) => ({ option_id: option.id })),
-        })),
-        lat: userPosition?.coords.latitude,
-        lng: userPosition?.coords.longitude,
-        total_price_coupon: 14,
-        tip: 14,
-        is_delivery: deliveryOption === "delivery" ? 1 : 0,
-        phone: phoneNumber,
-        name: name,
-        comment: aComment,
-      };
-      if (isAuthenticated) {
-        // validate the order object against the schema
-        orderSchema.parse(order);
-        const userToken = localStorageService.getUserToken();
-        if (!userToken) {
-          dispatch(logout());
-          return;
-        }
-        const { status, data } = await cartService.createOrder(order);
-        if (status === 200) {
-          dispatch(clearCart());
-          toast.success("Order submitted successfully", data);
-          dispatch(setDeliveryPrice(0));
-          dispatch(setComment(""));
-          dispatch(setSupplier(null));
-          navigate("/track-order");
-        }
-      } else {
-        navigate("/login");
-        toast.warn("You need to be logged in to make an order!");
-      }
-    } catch (error: any) {
-      console.error("Error submitting order:", error.message);
-      toast.error("Failed to submit order. Please try again.", error.message);
-    }
-  };
+  // const submitOrder = async (
+  //   cartItems: FoodItem[],
+  //   deliveryOption: "delivery" | "pickup" | "surplace",
+  //   name: string,
+  //   phoneNumber: string,
+  //   aComment: string,
+  //   total: number,
+  //   dispatch: any,
+  //   userPosition: any,
+  //   supplier: number,
+  //   deliveryPrice: number
+  // ) => {
+  //   try {
+  //     const order = {
+  //       addresse_id: 1,
+  //       supplier_id: supplier,
+  //       delivery_price: Math.round(deliveryPrice),
+  //       mode_pay: 1,
+  //       total_price: total,
+  //       products: cartItems.map((item) => ({
+  //         id: item.id,
+  //         supplier_id: item.supplier_id,
+  //         qte: item.quantity, // set the quantity to the item's quantity
+  //         options: item.optionalOptions
+  //           .filter((option) => option.checked)
+  //           .map((option) => ({ option_id: option.id })),
+  //       })),
+  //       lat: userPosition?.coords.latitude,
+  //       lng: userPosition?.coords.longitude,
+  //       total_price_coupon: 14,
+  //       tip: 14,
+  //       is_delivery: deliveryOption === "delivery" ? 1 : 0,
+  //       phone: phoneNumber,
+  //       name: name,
+  //       comment: aComment,
+  //     };
+  //     if (isAuthenticated) {
+  //       // validate the order object against the schema
+  //       orderSchema.parse(order);
+  //       const userToken = localStorageService.getUserToken();
+  //       if (!userToken) {
+  //         dispatch(logout());
+  //         return;
+  //       }
+  //       const { status, data } = await cartService.createOrder(order);
+  //       if (status === 200) {
+  //         dispatch(clearCart());
+  //         toast.success("Order submitted successfully", data);
+  //         dispatch(setDeliveryPrice(0));
+  //         dispatch(setComment(""));
+  //         dispatch(setSupplier(null));
+  //         navigate("/track-order");
+  //       }
+  //     } else {
+  //       navigate("/login");
+  //       toast.warn("You need to be logged in to make an order!");
+  //     }
+  //   } catch (error: any) {
+  //     console.error("Error submitting order:", error.message);
+  //     toast.error("Failed to submit order. Please try again.", error.message);
+  //   }
+  // };
 
   return (
     <Container maxWidth={false} className="container">
@@ -178,7 +178,7 @@ const CartPage: React.FC = () => {
         </Typography>
 
         <Typography style={{ color: "#000000", margin: "1rem" }} variant="h6">
-          {t("cartPage.total")}: {total} DT
+          {t("cartPage.total")}: {/*total*/} DT
         </Typography>
         <TextField
           label={t("cartPage.addComment")}
@@ -233,20 +233,20 @@ const CartPage: React.FC = () => {
           variant="contained"
           color="primary"
           style={{ margin: "2rem" }}
-          onClick={() =>
-            submitOrder(
-              cartItems,
-              deliveryOption,
-              name,
-              phoneNumber,
-              aComment,
-              total,
-              dispatch,
-              userPosition,
-              supplier.id,
-              deliveryPrice
-            )
-          }
+          // onClick={() =>
+          //   submitOrder(
+          //     cartItems,
+          //     deliveryOption,
+          //     name,
+          //     phoneNumber,
+          //     aComment,
+          //     total,
+          //     dispatch,
+          //     userPosition,
+          //     supplier.id,
+          //     deliveryPrice
+          //   )
+          // }
         >
           {t("submitOrder")}
         </Button>

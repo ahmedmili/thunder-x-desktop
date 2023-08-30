@@ -20,6 +20,7 @@ import { Box } from '@mui/material';
 
 import { useLocation } from 'react-router-dom';
 import { Search } from '@mui/icons-material';
+import { Cart } from '../cart/cart';
 
 const Header = () => {
   const logged_in = localStorageService.getUserToken() !== null;
@@ -91,18 +92,11 @@ const Header = () => {
     navigate("/track-order");
   };
 
-  useEffect(() => {
-    if (showCart) {
-      document.body.style.overflow = "hidden";
-    } else {
-      document.body.style.overflow = "auto";
-    }
-  }, [showCart]);
   return (
     <>
 
       {
-        routerLocation.pathname == "/" ? (
+        (routerLocation.pathname == "/" || routerLocation.pathname == "/search") ? (
           <>
             <div className="head1">
               <div className="demiCercle">
@@ -227,15 +221,24 @@ const Header = () => {
                   <PermIdentityOutlinedIcon className='account-icon' />
                 </div>
                 <div className="search">
-                  <Search  className='search-icon'/>
+                  <Search className='search-icon' />
                 </div>
-                <div className="cart-item">
+
+                <button onClick={handleCart} className="cart-item">
                   <ShoppingCartOutlinedIcon className='cart-icon' />
                   {cartItems.length}
-                </div>
+                </button>
 
               </div>
             </div>
+            {
+              showCart && (<div className="cart-container">
+                <Cart items={cartItems} />
+              </div>
+              )
+            }
+
+
           </>
         )
       }

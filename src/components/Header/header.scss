@@ -11,7 +11,7 @@
     width: 100vw;
     height: 100vh;
     background-color: rgba(0, 0, 0, 0.5);
-    z-index: 999;
+    z-index: 990;
 
 }
 
@@ -47,7 +47,7 @@
     padding: 9px 11px 0px 13px;
     border-radius: 0 0 10px 10px;
 
-    z-index: 999;
+    z-index: 990;
 
     .logoContainer {
         cursor: pointer;
@@ -184,7 +184,7 @@
     align-items: center;
     padding: 0 10px;
     border-radius: 0px 0px 20px 20px;
-    z-index: 999;
+    z-index: 990;
 
     .logoContainer {
         cursor: pointer;
@@ -245,6 +245,7 @@
         }
 
         .cart-item {
+            all: unset;
             display: flex;
             justify-content: center;
             align-items: center;
@@ -264,11 +265,38 @@
                 font-size: 20px;
             }
 
+            &:hover {
+                cursor: pointer;
+            }
+
         }
     }
 }
 
+.cart-container {
+    position: fixed;
+    top:80px;
+    right:150px;
+    width: 473px;
+    max-height: 80vh;
+    background-color: white;
+    z-index: 999;
+    overflow-y: scroll;
+    border-radius: 15px;
+    box-shadow: 0px 4px 4px 0px rgba(0, 0, 0, 0.25);
+    &::-webkit-scrollbar {
+        width: 0.5rem; /* Set a width for the scrollbar */
+      }
+      
+      &::-webkit-scrollbar-track {
+        background-color: transparent; /* Set the track color to transparent */
+      }
+      
+      &::-webkit-scrollbar-thumb {
+        background-color: transparent; /* Set the thumb color to transparent */
+      }
 
+}
 
 
 @media only screen and (max-width:1200px) {
