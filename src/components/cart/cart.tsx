@@ -1,153 +1,184 @@
 import { useAppDispatch } from '../../Redux/store';
 import { removeItem, changeItemQuantity } from '../../Redux/slices/cart/cartSlice'; // Change import statement to changeItemQuantity
 
-import {
-  Button,
-  Box,
-  Typography,
-  List,
-  ListItem,
-  ListItemText,
-  ListItemSecondaryAction,
-  ListItemAvatar,
-  Avatar,
-} from '@mui/material';
 import { FoodItem } from '../../services/types';
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 
-import './cart.css'
+import KeyboardArrowUpOutlinedIcon from '@mui/icons-material/KeyboardArrowUpOutlined';
+import KeyboardArrowDownOutlinedIcon from '@mui/icons-material/KeyboardArrowDownOutlined';
+
+import './cart.scss'
 interface CartProps {
   items: FoodItem[];
 }
 
+interface Article {
+  id: number;
+  image: string;
+  price: number
+  total: number;
+  name: string;
+  description: string;
+  count: number
+}
+
+
 export const Cart: React.FC<CartProps> = ({ items }) => {
-  const calculateOptionalPrice = (item: FoodItem) => {
-    let optionalPrice = 0;
-    if (item.optionalOptions) {
-      optionalPrice = item.optionalOptions.reduce(
-        (acc, option) =>
-          acc +
-          (option.checked && option.price
-            ? parseFloat(option.price.toString())
-            : 0),
-        0
-      );
-    }
-    return optionalPrice;
-  };
+  const [sousTotal, setSousTotal] = useState<number>(0)
+
+  useEffect(() => {
+    console.log(items)
+  }, [items])
 
   const dispatch = useAppDispatch();
 
-  const handleIncreaseQuantity = (item: FoodItem) => {
-    dispatch(
-      changeItemQuantity({
-        itemId: Number(item.id),
-        quantity: item.quantity + 1,
-      })
+  const ArticlesProvider: React.FC<Article> = (props) => {
+    const [count, setCount] = useState<number>(props.count)
+
+    const handleRemoveItemFromCart = () => dispatch(removeItem({ id: props.id }));
+
+    const handleIncreaseQuantity = () => {
+      dispatch(
+        changeItemQuantity({
+          itemId: Number(props.id),
+          quantity: props.count + 1,
+        })
+      );
+    };
+
+    const handleDecreaseQuantity = () => {
+      if (count > 1) {
+        dispatch(
+          changeItemQuantity({
+            itemId: Number(props.id),
+            quantity: props.count - 1,
+          })
+        );
+      }
+    };
+
+    return (
+      <section className='article-provider'>
+        {/* Use the props here */}
+        <div className='head'>
+          <div className="image-container">
+            <img src={props.image} alt="product image" className='product-image' />
+          </div>
+          <div className="product-info">
+            {/* <div>Product: {props.id}</div> */}
+            <div className='name'>{props.name}</div>
+            <div className='unit-total'>{props.price} DT</div>
+            <div className='description'>{props.description}</div>
+          </div>
+          <button className="remove-btn" onClick={handleRemoveItemFromCart}>
+            X
+          </button>
+        </div>
+        <div className='foot'>
+          <div className="count-container">
+            <input readOnly={true} type="number" name="product-count" id="product-count" value={count} onChange={(e) => { (parseInt(e.target.value) >= 1) && setCount(parseInt(e.target.value)) }} />
+
+            <div className="count-buttons">
+              <button onClick={handleIncreaseQuantity} >
+                <KeyboardArrowUpOutlinedIcon className="count-more" />
+              </button>
+              <button onClick={handleDecreaseQuantity} >
+
+                <KeyboardArrowDownOutlinedIcon className="count-less" />
+              </button>
+            </div>
+          </div>
+          <span className='total'>{props.total.toFixed(2)} DT</span>
+        </div>
+      </section>
     );
   };
 
-  const handleDecreaseQuantity = (item: FoodItem) => {
-    if (item.quantity > 1) {
-      dispatch(
-        changeItemQuantity({
-          itemId: Number(item.id),
-          quantity: item.quantity - 1,
-        })
-      );
-    }
-  };
+  const getSousTotal = () => {
+    let sum = 0;
+    items.forEach((item: FoodItem) => sum = sum + item.total);
+    setSousTotal(sum);
+  }
 
-  const handleRemoveItemFromCart = (item: FoodItem) =>
-    dispatch(removeItem(item));
-
+  useEffect(() => {
+    getSousTotal();
+  }, [])
   return (
-    <Box>
-      <List>
-        {items.map((item) => (
-          <ListItem
-            key={item.id}
-            className="list-item"
-          >
-            <ListItemAvatar>
-              <Avatar
-                src={item.image[0]?.path}
-                alt={item.name}
-                variant='rounded'
-                className="list-item-avatar"
-              />
-            </ListItemAvatar>
-            <li>
-              <ListItemText
-                className="list-item-text-primary"
-                primary={`${item.quantity} ${item.name}`}
-              />
-              <div
-                style={{
-                  display: 'flex',
-                  flexDirection: 'row',
-                }}>
-                {item.obligatoryOptions &&
-                  item.obligatoryOptions.map((option, index) => (
-                    <ListItemText
-                      key={option.id}
-                      className="list-item-text-secondary">
-                      {option.name}
-                    </ListItemText>
-                  ))}
+    <div className="cart-main">
 
-                {item.optionalOptions &&
-                  item.optionalOptions.map((option, index) => (
-                    <ListItemText className="list-item-text-secondary">
-                      {', '}
-                      {option.name} ({option.price || 0} DT)
-                    </ListItemText>
-                  ))}
+      {
+        items.length > 0 ? (
+          <>
+            <section className="cart-info">
+              <div className="text-info">
+                <span className='title'> Votre Commande</span>
+                <p className='supplier-name'>{items[0].supplier_data.supplier_name}</p>
+                <p className='position'>Livraison a khzama sousse</p>
               </div>
-              <ListItemText
-                className="list-item-text-primary"
-                primary={`${item.price && item.quantity
-                  ? (parseFloat(item.price.toString()) +
-                    calculateOptionalPrice(item)) *
-                  item.quantity
-                  : 0
-                  } DT`}
-              />
-            </li>
+              <button className="close-btn">
+                X
+              </button>
+            </section>
+            <div className='sous-total'>
+              <span>{items.length} article</span>
+              <span>sous-total {sousTotal.toFixed(2)} dt</span>
+            </div>
 
-            <ListItemSecondaryAction className="list-item-secondary-action">
-              <ListItemText
-                className="list-item-text-primary"
-                 primary={
-                  <>
-                    <Button
-                      variant='outlined'
-                      color='primary'
-                      onClick={() => handleIncreaseQuantity(item)}>
-                      +
-                    </Button>{' '}
-                    <Button
-                      variant='outlined'
-                      color='primary'
-                      onClick={() => handleDecreaseQuantity(item)}>
-                      -
-                    </Button>
-                  </>
+
+            {
+              items.length > 0 &&
+              items.map((item, index) => {
+                let data: Article = {
+                  id: item.product.id,
+                  image: item.product.image[0].path,
+                  price: item.unitePrice,
+                  total: item.total,
+                  name: item.product.name,
+                  description: item.product.description,
+                  count: item.quantity
                 }
-              />
+                return (
+                  <div key={index}>
+                    <ArticlesProvider {...data} />
+                  </div>)
+              })
+            }
 
-              <Button
-                variant='outlined'
-                color='error'
-                onClick={() => handleRemoveItemFromCart(item)}
-                className="remove-button"                
-                >
-                Remove
-              </Button>
-            </ListItemSecondaryAction>
-          </ListItem>
-        ))}
-      </List>
-    </Box>
+            <section className="price-resume">
+              <div className="info-text">
+                <span className='title'>Sous-total</span>
+                <span className='value'>{sousTotal.toFixed(2)} DT</span>
+              </div>
+              <div className="info-text">
+                <span className='title'>Forfait</span>
+                <span className='value'>0.00 DT</span>
+              </div>
+              <div className="info-text">
+                <span className='title'>Frais de livraison</span>
+                <span className='value'>{Number(items[0].supplier_data.delivery_price).toFixed(2)}DT</span>
+              </div>
+            </section>
+            <section className="price-resume">
+              <div className="info-text">
+                <span className='title'>Total</span>
+                <span className='value'>{sousTotal + Number(items[0].supplier_data.delivery_price)} DT</span>
+              </div>
+            </section>
+          </>
+        ) : (
+          <>
+            no commands yet
+          </>
+        )
+      }
+      <section className='cart-btns' >
+        <button className='to-panier'>
+          Voir le panier
+        </button>
+        <button className='to-paiment'>
+          Passer au paiement
+        </button>
+      </section>
+    </div>
   );
 };
