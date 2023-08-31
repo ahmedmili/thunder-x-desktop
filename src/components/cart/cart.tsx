@@ -10,6 +10,7 @@ import KeyboardArrowDownOutlinedIcon from '@mui/icons-material/KeyboardArrowDown
 import './cart.scss'
 interface CartProps {
   items: FoodItem[];
+  closeButton:any
 }
 
 interface Article {
@@ -23,7 +24,7 @@ interface Article {
 }
 
 
-export const Cart: React.FC<CartProps> = ({ items }) => {
+export const Cart: React.FC<CartProps> = ({ items,closeButton }) => {
   const [sousTotal, setSousTotal] = useState<number>(0)
 
   useEffect(() => {
@@ -114,7 +115,7 @@ export const Cart: React.FC<CartProps> = ({ items }) => {
                 <p className='supplier-name'>{items[0].supplier_data.supplier_name}</p>
                 <p className='position'>Livraison a khzama sousse</p>
               </div>
-              <button className="close-btn">
+              <button className="close-btn" onClick={closeButton}>
                 X
               </button>
             </section>
