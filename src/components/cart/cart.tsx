@@ -65,7 +65,6 @@ export const Cart: React.FC<CartProps> = ({ items }) => {
             <img src={props.image} alt="product image" className='product-image' />
           </div>
           <div className="product-info">
-            {/* <div>Product: {props.id}</div> */}
             <div className='name'>{props.name}</div>
             <div className='unit-total'>{props.price} DT</div>
             <div className='description'>{props.description}</div>
@@ -102,7 +101,7 @@ export const Cart: React.FC<CartProps> = ({ items }) => {
 
   useEffect(() => {
     getSousTotal();
-  }, [])
+  }, [items])
   return (
     <div className="cart-main">
 
