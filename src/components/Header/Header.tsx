@@ -233,7 +233,7 @@ const Header = () => {
             </div>
             {
               showCart && (<div className="cart-container">
-                <Cart items={cartItems} />
+                <Cart items={cartItems} closeButton={handleCart} />
               </div>
               )
             }
