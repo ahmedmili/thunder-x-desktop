@@ -81,6 +81,7 @@
 
     .head {
       display: flex;
+
       .image-container {
         .product-image {
           width: 69px;
@@ -261,4 +262,144 @@
       background-color: $orange_color;
     }
   }
+}
+
+@media only screen and (max-width: 600px) {
+
+
+  .cart-main {
+    padding: 20px 20px;
+
+    .cart-info {
+      .close-btn {
+        width: 10px;
+        height: 10px;
+        font-size: 15px;
+      }
+
+      .title {
+
+        font-size: 16px;
+      }
+
+      .supplier-name {
+        color: $dark_Gray;
+        font-family: Poppins;
+        font-size: 28px;
+        font-style: normal;
+        font-weight: 600;
+        line-height: normal;
+        margin: 0;
+
+      }
+
+      .position {
+        color: $dark_Gray;
+        font-family: Poppins;
+        font-size: 15px;
+        font-style: normal;
+        font-weight: 300;
+        line-height: normal;
+        margin-bottom: 17px;
+      }
+    }
+
+    .sous-total {
+      display: flex;
+      justify-content: space-between;
+
+      margin-bottom: 10px;
+
+      span {
+        font-size: 15px;
+      }
+    }
+
+    .article-provider {
+      padding-top: 20px;
+      margin-bottom: 10px;
+
+      .head {
+        .image-container {
+          .product-image {
+            width: 69px;
+          }
+        }
+
+        .product-info {
+          margin: 0 auto 0 43px;
+
+          .name {
+            font-size: 18px;
+            line-height: 20px;
+          }
+
+          .unit-total {
+            font-size: 15px;
+          }
+
+          .descriptin {
+            font-size: 15px;
+            line-height: 20px;
+          }
+        }
+
+        .remove-btn {
+          width: 24px;
+          height: 24px;
+          font-size: 20px;
+        }
+      }
+
+      .foot {
+        .total {
+          font-size: 15px;
+        }
+
+        .count-container {
+          width: 51px;
+          margin: 0 10px 0 auto;
+
+          .count-buttons {
+            gap: 0;
+
+            button {
+              all: unset;
+              margin-right: 10px;
+              .count-more,
+              .count-less {
+                width: 14px;
+                height: 14px;
+              }
+            }
+          }
+
+
+          input[type="number"] {
+            width: 70%;
+            font-size: 20px;
+          }
+        }
+      }
+
+    }
+
+    .price-resume {
+      .info-text {
+        span {
+          font-size: 15px;
+        }
+      }
+    }
+
+    .cart-btns {
+      gap: 10px;
+
+      button {
+        height: 55px;
+        font-size: 16px;
+      }
+    }
+  }
+
 }
