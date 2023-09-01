@@ -13,4 +13,22 @@ async function createOrder(order: any) {
         throw error;
     }
 }
-export const cartService = { createOrder };
+
+async function getAllPromoCodes() {
+    try {
+        const response = await api.get(
+            "/mycoupons",
+        );
+        console.log("response",response)
+        const { status, data } = response;
+        return { status, data };
+    } catch (error) {
+        console.error('Error', error);
+        throw error;
+    }
+}
+
+export const cartService = {
+    createOrder,
+    getAllPromoCodes,
+};

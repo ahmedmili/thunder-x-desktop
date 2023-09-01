@@ -6,6 +6,7 @@ interface CartState {
   items: FoodItem[];
   deliveryOption: 'delivery' | 'pickup' | 'surplace';
   comment: string;
+  codePromo: string;
   supplierMismatch: FoodItem | null;
   supplier: any | null;
   deliveryPrice: number;
@@ -16,6 +17,7 @@ const initialState: CartState = {
   items: [],
   deliveryOption: 'delivery',
   comment: '',
+  codePromo: '',
   supplierMismatch: null,
   supplier: null,
   deliveryPrice: 0,
@@ -46,7 +48,9 @@ const cartSlice = createSlice({
       state.items = [];
       state.deliveryOption = 'delivery';
       state.comment = '';
+      state.codePromo = '';
       localStorageService.unsetComment();
+      localStorageService.unsetCodePromo();
       localStorageService.unsetCart();
     },
     setCartItems: (state, action: PayloadAction<FoodItem[]>) => {
@@ -83,6 +87,9 @@ const cartSlice = createSlice({
     },
     setComment: (state, action: PayloadAction<string>) => {
       state.comment = action.payload;
+    },
+    setCodePromo: (state, action: PayloadAction<string>) => {
+      state.codePromo = action.payload;
     },
     setSupplierMismatch: (state, action: PayloadAction<FoodItem>) => {
       state.supplierMismatch = action.payload;
@@ -128,6 +135,7 @@ export const {
   removeItem,
   setDeliveryOption,
   setComment,
+  setCodePromo,
   changeItemQuantity,
   clearCart,
   setSupplierMismatch,

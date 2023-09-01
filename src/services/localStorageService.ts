@@ -38,9 +38,23 @@ function getCart(){
 function setComment(comment: string) {
     localStorage.setItem('comment', comment);
 }
+function getComment() {
+    return localStorage.getItem('comment');
+}
 function unsetComment() {
     localStorage.removeItem('comment');
 }
+function setCodePromo(comment: string) {
+    localStorage.setItem('codePromo', comment);
+}
+function getCodePromo() {
+    return localStorage.getItem('codePromo');
+}
+function unsetCodePromo() {
+    localStorage.removeItem('codePromo');
+}
+
+
 function setSupplier(restaurant:any){
     localStorage.setItem('supplier', JSON.stringify(restaurant));
 }
@@ -69,7 +83,11 @@ export const localStorageService = {
     unsetCart,
     getCart,
     setComment,
+    getComment,
     unsetComment,
+    setCodePromo,
+    getCodePromo,
+    unsetCodePromo,
     setSupplier,
     getSupplier,
     setDelivery,
