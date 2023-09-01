@@ -19,7 +19,20 @@ async function getAllPromoCodes() {
         const response = await api.get(
             "/mycoupons",
         );
-        console.log("response",response)
+        const { status, data } = response;
+        return { status, data };
+    } catch (error) {
+        console.error('Error', error);
+        throw error;
+    }
+}
+
+async function getGift(formData: any) {
+    try {
+        const response = await api.post(
+            "/getclientGift",
+            formData,
+        );
         const { status, data } = response;
         return { status, data };
     } catch (error) {
@@ -31,4 +44,5 @@ async function getAllPromoCodes() {
 export const cartService = {
     createOrder,
     getAllPromoCodes,
+    getGift,
 };

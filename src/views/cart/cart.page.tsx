@@ -41,6 +41,7 @@ const CartPage: React.FC = () => {
   const userItem = localStorageService.getUser();
   const codePromo = localStorageService.getCodePromo();
   const comment = localStorageService.getComment();
+  const supplier_bonus = localStorageService.getBonus();
   const user = userItem ? JSON.parse(userItem) : null;
   const [name, setName] = React.useState(user?.firstname || "");
   const [phoneNumber, setPhoneNumber] = React.useState(user?.tel || "");
@@ -49,23 +50,41 @@ const CartPage: React.FC = () => {
 
   const [aComment, setAComment] = React.useState<string>(comment ? comment : "");
   const [promo, setPromo] = React.useState<string>(codePromo ? codePromo : "");
+
   const [sousTotal, setSousTotal] = useState<number>(0)
+  const [total, setTotal] = useState<number>(0)
+
+  const [bonus, setbonus] = useState<number>(Number(supplier_bonus))
+  const [appliedBonus, setAppliedBonus] = useState<number>(0)
+  const [initBonus, setInitBonus] = useState<number>(0)
+  const [bonusApplied, setBonusApplied] = useState<boolean>(false)
+
+  const [limitReachedBonus, setLimitReachedBonus] = useState<boolean>(false)
+
+  const [has_gift, setHas_gift] = useState<boolean>(false)
+  const [giftApplied, setGiftApplied] = useState<boolean>(false)
+  const [maxGiftCost, setMaxGiftCost] = useState<any>(null)
+  const [giftId, setMaxGiftId] = useState<number>(0)
+  const [giftAmmount, setGiftAmmount] = useState<number>(0)
+  const [limitReachedGift, setLimitReachedGift] = useState<boolean>(false)
 
 
   const dispatch = useAppDispatch();
   const navigate = useNavigate();
 
+  const getPromo = async () => {
+    const { status, data } = await cartService.getAllPromoCodes()
+  }
+
   useEffect(() => {
-    console.log("userPosition", userPosition)
-    console.log("deliveryOption", deliveryOption)
-    console.log("deliveryPrice", deliveryPrice)
-    console.log("cartItems", cartItems)
-    console.log("supplier", supplier);
-    isAuthenticated && (
-      async () => {
-        const { status, data } = await cartService.getAllPromoCodes()
-        console.log("data", data)
-      })
+    // console.log("userPosition", userPosition)
+    // console.log("bonus", bonus)
+    // console.log("deliveryOption", deliveryOption)
+    // console.log("deliveryPrice", deliveryPrice)
+    // console.log("cartItems", cartItems)
+    // console.log("supplier", supplier);
+    isAuthenticated && getPromo();
+
   }, [])
 
 
@@ -158,9 +177,7 @@ const CartPage: React.FC = () => {
     cartItems.forEach((item: FoodItem) => sum = sum + item.total);
     setSousTotal(sum);
   }
-  useEffect(() => {
-    getSousTotal()
-  }, [])
+
 
   interface Article {
     item: FoodItem,
@@ -233,6 +250,117 @@ const CartPage: React.FC = () => {
     </>
   }
 
+
+  const getclientGift = async () => {
+    let body = { supplier_id: cartItems[0].supplier_data.supplier_id };
+    const { status, data } = await cartService.getGift(body)
+    if (data.data.succuss) {
+      let gift = data.data.has_gift
+      setHas_gift(gift);
+
+      if (gift) {
+        setMaxGiftCost(data.data.max_gift_cost)
+        setMaxGiftId(data.data.gift_id)
+      }
+    }
+  }
+
+  const applyBonus = () => {
+    let sum = 0;
+    if (giftApplied) {
+      sum = sousTotal - giftAmmount;
+    } else {
+      sum = sousTotal;
+    }
+    //  if the bonus exceeds 40000pts
+    if (bonus > 40000 && sum > 40) {
+      setAppliedBonus(40000);
+      setbonus((bonus) => bonus - 40000);
+      console.log("1")
+    }
+    //   // if bonus exceeds the total amouunt
+    else if (bonus / 1000 > sum) {
+      console.log("2")
+      setAppliedBonus(sum * 1000);
+      setbonus((bonus) => bonus - (sum * 1000));
+    }
+    // if the bonus less than the total amount
+    else {
+      console.log("3")
+      setAppliedBonus(bonus);
+      setbonus(0);
+    }
+    setBonusApplied(true);
+    if (sum === (appliedBonus / 1000)) {
+      console.log("4")
+      setLimitReachedGift(true);
+    }
+    else {
+      console.log("5")
+      setLimitReachedGift(false);
+    }
+  }
+
+  useEffect(() => {
+    console.log("total", total)
+    console.log("giftAmmount", giftAmmount)
+    console.log("appliedBonus", appliedBonus)
+    console.log("bonus", bonus)
+    console.log("limitReachedBonus", limitReachedGift)
+  }, [bonus])
+
+  const applyGift = () => {
+    setGiftApplied(true)
+    let sum = 0
+    if (bonusApplied) {
+      sum = sousTotal - appliedBonus / 1000;
+    } else {
+      sum = sousTotal;
+    }
+    if (sum > 0 && sum <= maxGiftCost) {
+      setGiftAmmount(sum);
+    }
+    else {
+      setGiftAmmount(maxGiftCost);
+    }
+    if (sum === giftAmmount) {
+      setLimitReachedBonus(true);
+
+    }
+    else {
+      setLimitReachedBonus(false);
+    }
+  }
+
+  // useEffect(() => {
+  //   console.log("total", total)
+  //   console.log("giftAmmount", giftAmmount)
+  //   console.log("limitReachedBonus", limitReachedBonus)
+  // }, [giftAmmount])
+
+
+  const calcTotal = () => {
+    console.log("with bonus ",)
+    setTotal(
+
+      ((sousTotal - (appliedBonus / 1000)) + Number(cartItems[0].supplier_data.delivery_price))
+
+    )
+  }
+  const clearGift = () => {
+    setGiftAmmount(0)
+    setGiftApplied(false)
+    setLimitReachedBonus(false)
+  }
+  useEffect(() => {
+    getSousTotal()
+    getclientGift()
+  }, [])
+
+  useEffect(() => {
+    calcTotal()
+  }, [sousTotal, appliedBonus])
+
   return (
     <Container className="cart-page-container" fluid>
       <Row className="header">
@@ -272,10 +400,6 @@ const CartPage: React.FC = () => {
                         </>)
                     })
                   }
-                  {/* <tr className="devider-row">
-                    <td className="devider">
-                    </td>
-                  </tr> */}
                 </tbody>
               </table>
               <div className="devider">
@@ -300,9 +424,9 @@ const CartPage: React.FC = () => {
               </div>
 
               <div className="bonus">
-                <span>Bonus : 0 pts</span>
+                <span>Bonus : {bonus.toFixed(2)} pts</span>
 
-                <button>
+                <button className={bonus === 0 ? "disabled" : ""} disabled={ bonus === 0} onClick={() => applyBonus()}>
                   Appliquer
                 </button>
               </div>
@@ -324,7 +448,7 @@ const CartPage: React.FC = () => {
                   <span>Panier</span>
                   <div className="panie-row">
                     <span>Forfait</span>
-                    <span>0.00 DT</span>
+                    <span>{(appliedBonus / 1000).toFixed(2)} DT</span>
                   </div>
                   <div className="panie-row">
                     <span>Frais de livraison</span>
@@ -335,7 +459,7 @@ const CartPage: React.FC = () => {
 
                 <div className="a-payer">
                   <span className="title">A payer</span>
-                  <span className="value">{sousTotal + Number(cartItems[0].supplier_data.delivery_price)} DT</span>
+                  <span className="value">{total.toFixed(2)} DT</span>
                 </div>
                 <div className="button-container">
                   <button type="button">
@@ -350,108 +474,6 @@ const CartPage: React.FC = () => {
       </Row>
 
     </Container>
-    // <Container maxWidth={false} className="container">
-    //   <Box
-    //     width="100%"
-    //     sx={{
-    //       backgroundColor: "#fcfcfc",
-    //       alignSelf: "center",
-    //       display: "flex",
-    //       flexDirection: "column",
-    //     }}
-    //   >
-    //     <Typography style={{ color: "#000000", margin: "1rem" }} variant="h4">
-    //       {t("cartPage.yourCart")}
-    //     </Typography>
-
-    //     {/* suppliers section */}
-    //     <Typography className="suppliers" variant="h6">
-    //       {t("cartPage.supplier")}:{" "}
-    //       {supplier ? supplier.name : t("cartPage.noSupplierYet")}
-    //     </Typography>
-
-    //     {/* <Cart items={cartItems} /> */}
-
-    //     <Typography className="delivery" variant="h6">
-    //       {t("cartPage.delivery")}:{" "}
-    //       {deliveryPrice ? Math.round(deliveryPrice) : "0"} DT
-    //     </Typography>
-
-    //     <Typography style={{ color: "#000000", margin: "1rem" }} variant="h6">
-    //       {t("cartPage.total")}: {/*total*/} DT
-    //     </Typography>
-    //     <TextField
-    //       label={t("cartPage.addComment")}
-    //       value={aComment}
-    //       onChange={handleCommentChange}
-    //       fullWidth
-    //       margin="normal"
-    //     />
-    //     <RadioGroup
-    //       value={deliveryOption}
-    //       onChange={(event: any) =>
-    //         dispatch(setDeliveryOption(event.target.value))
-    //       }
-    //       className="RadioGroup"
-    //     >
-    //       <FormControlLabel
-    //         className="FormControlLabel"
-    //         value="delivery"
-    //         control={<Radio />}
-    //         label={t("livraison")}
-    //       />
-    //       <FormControlLabel
-    //         className="FormControlLabel"
-    //         value="pickup"
-    //         control={<Radio />}
-    //         label={t("emporter")}
-    //       />
-    //       <FormControlLabel
-    //         className="FormControlLabel"
-    //         value="surplace"
-    //         control={<Radio />}
-    //         label="Sur place"
-    //       />
-    //     </RadioGroup>
-    //     <Box>
-    //       <TextField
-    //         label={t("cartPage.name")}
-    //         value={name}
-    //         onChange={(event) => setName(event.target.value)}
-    //         fullWidth
-    //         margin="normal"
-    //       />
-    //       <TextField
-    //         label={t("cartPage.phoneNumber")}
-    //         value={phoneNumber}
-    //         onChange={(event) => setPhoneNumber(event.target.value)}
-    //         fullWidth
-    //         margin="normal"
-    //       />
-    //     </Box>
-    //     <Button
-    //       variant="contained"
-    //       color="primary"
-    //       style={{ margin: "2rem" }}
-    //       // onClick={() =>
-    //       //   submitOrder(
-    //       //     cartItems,
-    //       //     deliveryOption,
-    //       //     name,
-    //       //     phoneNumber,
-    //       //     aComment,
-    //       //     total,
-    //       //     dispatch,
-    //       //     userPosition,
-    //       //     supplier.id,
-    //       //     deliveryPrice
-    //       //   )
-    //       // }
-    //     >
-    //       {t("submitOrder")}
-    //     </Button>
-    //   </Box>
-    // </Container>
   );
 };
 
@@ -490,3 +512,89 @@ const orderSchema = z.object({
   phone: phoneSchema,
   name: nameSchema,
 });
+
+
+
+
+// setPromoCode($event){
+//   this.promoError = false;
+//   this.promoObj = false;
+//   this.promoReduction = 0;
+//   this.promoCode = $event.target.value;
+//   this.isValExist = true;
+//   if($event.target.value.toString().length <= 0){
+//     this.isValExist = false;
+//     this.promoCode = "";
+//     this.setOpenApply(true)
+//   }
+// }
+
+// checkPromoCode(){
+//   this.loadingpromo=false;
+//   if(this.promoCode.toString().length >= 0){
+//     let formData = new FormData();
+//     formData.append('code_coupon',this.promoCode)
+//     this.orderService.getPromoCode(formData).subscribe((res:any) => {
+//       this.loadingpromo=true;
+//       if (res === "code promo invalid"){
+//         this.promoError = true;
+//       }
+//       if(res.status === 422){
+//             this.promoError = true;
+//             return 0
+//       }else {
+//         if(res?.code && res?.code === 200){
+//           if(res?.success){
+//             this.promoObj = res.data;
+//             this.promoError=false;
+//             this.CalculatePromoPrice();
+//             return 0;
+//           }
+//           this.promoError = true;
+//           return 0
+//         }
+//         this.promoError = true;
+//         return 0
+//       }
+
+//     },(erreor)=>{
+//       console.log(erreor);
+//     })
+//   }
+//   else{
+//     this.loadingpromo=true;
+//     this.CalculatePromoPrice();
+//   }
+// }
+
+// CalculatePromoPrice() {
+//   if (this.promoObj !== false) {
+//     if (this.promoObj.apply_on === 'DELIVERY') {
+//         if(this.promoObj.type === 'percentage'){
+//           this.promoReduction = (this.delivery_fees * (this.promoObj.value / 100)).toFixed(2);
+//           return 0
+//         }
+//       this.promoReduction =  this.promoObj.value.toFixed(2);
+//         return 0
+//     }
+//     if (this.promoObj.apply_on === 'COMMAND') {
+//         if(this.promoObj.type === 'percentage'){
+//         this.promoReduction =  (this.total * (this.promoObj.value / 100)).toFixed(2);
+//           return 0;
+//         }
+//       this.promoReduction =  this.promoObj.value.toFixed(2);
+//       return 0;
+//     }
+//     if (this.promoObj.apply_on === 'ALL') {
+//         if(this.promoObj.type === 'percentage'){
+//           this.promoReduction = (this.getSum() * (this.promoObj.value / 100)).toFixed(2);
+//           return 0;
+//         }
+//       this.promoReduction = this.promoObj.value.toFixed(2);
+//       return 0;
+//     }
+
+//   }
+//   this.promoReduction = 0;
+//   return 0;
+// }

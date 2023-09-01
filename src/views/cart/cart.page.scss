@@ -38,9 +38,9 @@
   main {
     display: flex;
     justify-content: center;
-    align-items: center;
+    // align-items: center;
     gap: 61px;
-    padding: 10px 0;
+    padding: 10px 0 129px 0;
 
     .product-detail-container {
       width: 632px;
@@ -363,6 +363,7 @@
             cursor: pointer;
           }
         }
+       
       }
 
       .bonus-message {
@@ -516,7 +517,10 @@
   }
 }
 
-
+.disabled{
+  opacity: 0.5;
+  background-color: red;
+}
 // .container {
 //     display: flex;
 //     justify-content: center;
