@@ -26,9 +26,6 @@ interface Article {
 
 
 export const Cart: React.FC<CartProps> = ({ items,closeButton }) => {
-
-
-
   const [sousTotal, setSousTotal] = useState<number>(0)
 
   useEffect(() => {
