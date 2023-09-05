@@ -10,6 +10,14 @@ import {
   setSupplier,
 } from "../../Redux/slices/cart/cartSlice";
 import { Cart } from "../../components/cart/cart";
+
+import PaymentIcon from '@mui/icons-material/Payment';
+import PayCashSVG from '../../assets/panier/pay-cash.svg'
+
+import bagPaperShoppingIcn from '../../assets/panier/bag-paper-shopping-icn.png'
+import dinnerFurnitureIcn from '../../assets/panier/dinner-furniture-icn.png'
+import scooterTransportIcn from '../../assets/panier/scooter-transport-icn.png'
+
 import { RootState, useAppDispatch, useAppSelector } from "../../Redux/store";
 import KeyboardArrowUpOutlinedIcon from '@mui/icons-material/KeyboardArrowUpOutlined';
 import KeyboardArrowDownOutlinedIcon from '@mui/icons-material/KeyboardArrowDownOutlined';
@@ -24,6 +32,8 @@ import "./cart.page.scss";
 import { cartService } from "../../services/api/cart.api";
 import { localStorageService } from "../../services/localStorageService";
 import { Col, Container, Row } from "react-bootstrap";
+import { supplierServices } from "../../services/api/suppliers.api";
+import { adressService } from "../../services/api/adress.api";
 
 const CartPage: React.FC = () => {
   const { t } = useTranslation();
@@ -32,33 +42,35 @@ const CartPage: React.FC = () => {
     (state: RootState) => state.cart.deliveryPrice
   );
 
-
   const cartItems = useAppSelector((state: RootState) => state.cart.items);
   const userPosition = useAppSelector((state) => state.location.position);
   const deliveryOption = useAppSelector(
     (state: RootState) => state.cart.deliveryOption
   );
-  const userItem = localStorageService.getUser();
-  const codePromo = localStorageService.getCodePromo();
+  const isAuthenticated = useAppSelector((state) => state.user.isAuthenticated);
+  // const codePromo = localStorageService.getCodePromo();
+  // const supplier_bonus = localStorageService.getBonus();
   const comment = localStorageService.getComment();
-  const supplier_bonus = localStorageService.getBonus();
+  const userItem = localStorageService.getUser();
   const user = userItem ? JSON.parse(userItem) : null;
+
   const [name, setName] = React.useState(user?.firstname || "");
   const [phoneNumber, setPhoneNumber] = React.useState(user?.tel || "");
-  const isAuthenticated = useAppSelector((state) => state.user.isAuthenticated);
-
-
-  const [aComment, setAComment] = React.useState<string>(comment ? comment : "");
-  const [promo, setPromo] = React.useState<string>(codePromo ? codePromo : "");
 
   const [sousTotal, setSousTotal] = useState<number>(0)
   const [total, setTotal] = useState<number>(0)
+  
+  const [aComment, setAComment] = React.useState<string>(comment ? comment : "");
 
-  const [bonus, setbonus] = useState<number>(Number(supplier_bonus))
+  const [promo, setPromo] = React.useState<string>("");
+  const [promosList, setPromosList] = useState<any>([])
+  const [couponExiste, setCouponExiste] = React.useState<boolean>(false);
+  const [selectedCoupon, setSelectedCoupon] = React.useState<any>(null);
+  const [promoReduction, setPromoReduction] = useState<number>(0)
+
+  const [bonus, setbonus] = useState<number>(Number(supplier.bonus))
   const [appliedBonus, setAppliedBonus] = useState<number>(0)
-  const [initBonus, setInitBonus] = useState<number>(0)
   const [bonusApplied, setBonusApplied] = useState<boolean>(false)
-
   const [limitReachedBonus, setLimitReachedBonus] = useState<boolean>(false)
 
   const [has_gift, setHas_gift] = useState<boolean>(false)
@@ -68,25 +80,10 @@ const CartPage: React.FC = () => {
   const [giftAmmount, setGiftAmmount] = useState<number>(0)
   const [limitReachedGift, setLimitReachedGift] = useState<boolean>(false)
 
+  const [selectedOption, setSelectedOption] = useState<number>(1);
 
   const dispatch = useAppDispatch();
   const navigate = useNavigate();
-
-  const getPromo = async () => {
-    const { status, data } = await cartService.getAllPromoCodes()
-  }
-
-  useEffect(() => {
-    // console.log("userPosition", userPosition)
-    // console.log("bonus", bonus)
-    // console.log("deliveryOption", deliveryOption)
-    // console.log("deliveryPrice", deliveryPrice)
-    // console.log("cartItems", cartItems)
-    // console.log("supplier", supplier);
-    isAuthenticated && getPromo();
-
-  }, [])
-
 
 
   const handleCommentChange = (comment: string) => {
@@ -94,19 +91,10 @@ const CartPage: React.FC = () => {
     localStorageService.setComment(comment);
     dispatch(setComment(comment));
   };
-  const handlePromoChange = (code: string) => {
-    setPromo(code);
-    localStorageService.setCodePromo(code);
-    dispatch(setCodePromo(code));
-  };
 
-  useEffect(() => {
-    localStorageService.setCart(cartItems);
-    if (cartItems.length == 0) {
-      dispatch(setSupplier(null));
-      dispatch(setDeliveryPrice(null));
-    }
-  }, [cartItems]);
+  const handleOptionChange = (event: any) => {
+    setSelectedOption(parseInt(event.target.value));
+  };
 
   const submitOrder = async (
     cartItems: FoodItem[],
@@ -115,6 +103,7 @@ const CartPage: React.FC = () => {
     phoneNumber: string,
     aComment: string,
     total: number,
+    applied_bonus: number,
     dispatch: any,
     userPosition: any,
     supplier: number,
@@ -126,18 +115,20 @@ const CartPage: React.FC = () => {
         supplier_id: supplier,
         delivery_price: Math.round(deliveryPrice),
         mode_pay: 1,
+        applied_bonus: applied_bonus,
         total_price: total,
+        promo_code: promo,
         products: cartItems.map((item) => ({
           id: item.product.id,
           supplier_id: item.supplier_data.supplier_id,
           qte: item.quantity, // set the quantity to the item's quantity
-          options: item.options
-            .map((option) => ({ option_id: option.id })),
+          // options: item.options
+          //   .map((option) => ({ option_id: option.id })),
         })),
         lat: userPosition?.coords.latitude,
         lng: userPosition?.coords.longitude,
-        total_price_coupon: 14,
-        tip: 14,
+        total_price_coupon: promoReduction,
+        tip: 0,
         is_delivery: deliveryOption === "delivery" ? 1 : 0,
         phone: phoneNumber,
         name: name,
@@ -151,6 +142,7 @@ const CartPage: React.FC = () => {
           dispatch(logout());
           return;
         }
+
         const { status, data } = await cartService.createOrder(order);
         if (status === 200) {
           dispatch(clearCart());
@@ -257,11 +249,21 @@ const CartPage: React.FC = () => {
     if (data.data.succuss) {
       let gift = data.data.has_gift
       setHas_gift(gift);
-
       if (gift) {
         setMaxGiftCost(data.data.max_gift_cost)
         setMaxGiftId(data.data.gift_id)
       }
+    }
+  }
+
+  const selectCoupon = (coupon: any) => {
+    setPromo(coupon.code_coupon);
+    //check if you're clicking on the same promo code
+    if (selectedCoupon !== coupon) {
+      setSelectedCoupon(coupon);
+      setCouponExiste(true)
+    } else {
+      setCouponExiste(false)
     }
   }
 
@@ -276,61 +278,151 @@ const CartPage: React.FC = () => {
     if (bonus > 40000 && sum > 40) {
       setAppliedBonus(40000);
       setbonus((bonus) => bonus - 40000);
-      console.log("1")
     }
     //   // if bonus exceeds the total amouunt
     else if (bonus / 1000 > sum) {
-      console.log("2")
       setAppliedBonus(sum * 1000);
       setbonus((bonus) => bonus - (sum * 1000));
     }
     // if the bonus less than the total amount
     else {
-      console.log("3")
       setAppliedBonus(bonus);
       setbonus(0);
     }
     setBonusApplied(true);
     if (sum === (appliedBonus / 1000)) {
-      console.log("4")
-      setLimitReachedGift(true);
-    }
-    else {
-      console.log("5")
-      setLimitReachedGift(false);
-    }
-  }
-
-  useEffect(() => {
-    console.log("total", total)
-    console.log("giftAmmount", giftAmmount)
-    console.log("appliedBonus", appliedBonus)
-    console.log("bonus", bonus)
-    console.log("limitReachedBonus", limitReachedGift)
-  }, [bonus])
-
-  const applyGift = () => {
-    setGiftApplied(true)
-    let sum = 0
-    if (bonusApplied) {
-      sum = sousTotal - appliedBonus / 1000;
-    } else {
-      sum = sousTotal;
-    }
-    if (sum > 0 && sum <= maxGiftCost) {
-      setGiftAmmount(sum);
-    }
-    else {
-      setGiftAmmount(maxGiftCost);
-    }
-    if (sum === giftAmmount) {
       setLimitReachedBonus(true);
-
     }
     else {
       setLimitReachedBonus(false);
     }
   }
+
+  // const applyGift = () => {
+  //   setGiftApplied(true)
+  //   let sum = 0
+  //   if (bonusApplied) {
+  //     sum = sousTotal - (appliedBonus / 1000);
+  //   } else {
+  //     sum = sousTotal;
+  //   }
+  //   if (sum > 0 && sum <= maxGiftCost) {
+  //     setGiftAmmount(sum);
+  //   }
+  //   else {
+  //     setGiftAmmount(maxGiftCost);
+  //   }
+  //   if (sum === giftAmmount) {
+  //     setLimitReachedGift(true);
+
+  //   }
+  //   else {
+  //     setLimitReachedGift(false);
+  //   }
+  // }
+
+  const handlePromoChange = (code: string) => {
+    setPromo(code);
+    // localStorageService.setCodePromo(code);
+    dispatch(setCodePromo(code));
+    setCouponExiste(true)
+    if (code.length <= 0) {
+      setCouponExiste(false)
+    }
+  };
+
+  const checkPromoCode = async () => {
+
+    if (promo.length >= 0) {
+      let formData = new FormData();
+      formData.append('code_coupon', promo)
+      cartService.getPromoCode(formData).then((res) => {
+        if (res.status === 422) {
+          toast.error("code promo invalid")
+          return 0
+        }
+        if (res.data.code && res.data.code === 200) {
+          if (res.data.success) {
+            toast.success("valide code")
+            CalculatePromoPrice();
+            return 0;
+          }else {
+            toast.error("code promo invalid")
+            return 0
+          }
+        } 
+      })
+    }
+  }
+
+  const CalculatePromoPrice = () => {
+    var promoReduction
+    if (Object.keys(selectedCoupon).length > 0) {
+
+      if (selectedCoupon.apply_on === 'DELIVERY') {
+        if (selectedCoupon.type === 'percentage') {
+          promoReduction = (deliveryPrice * (selectedCoupon.value / 100));
+          setPromoReduction(promoReduction)
+          return 0
+        }
+        promoReduction = selectedCoupon.value;
+        setPromoReduction(promoReduction)
+        return 0
+      }
+      if (selectedCoupon.apply_on === 'COMMAND') {
+        if (selectedCoupon.type === 'percentage') {
+          promoReduction = (sousTotal * (selectedCoupon.value / 100));
+          setPromoReduction(promoReduction)
+          return 0;
+        }
+        promoReduction = selectedCoupon.value;
+        setPromoReduction(promoReduction)
+        return 0;
+      }
+      if (selectedCoupon.apply_on === 'ALL') {
+        if (selectedCoupon.type === 'percentage') {
+          promoReduction = (total * (selectedCoupon.value / 100));
+          setPromoReduction(promoReduction)
+          return 0;
+        }
+        promoReduction = selectedCoupon.value;
+        setPromoReduction(promoReduction)
+        return 0;
+      }
+    }
+    promoReduction = 0;
+    setPromoReduction(promoReduction)
+    return 0;
+  }
+
+  const calcTotal = () => {
+    console.log("caluating total")
+    console.log("caluating total", ((sousTotal - (appliedBonus / 1000)) + Number(cartItems[0].supplier_data.delivery_price) - promoReduction))
+    setTotal(
+      ((sousTotal - (appliedBonus / 1000)) + Number(cartItems[0].supplier_data.delivery_price) - promoReduction)
+    )
+  }
+  // const clearGift = () => {
+  //   setGiftAmmount(0)
+  //   setGiftApplied(false)
+  //   setLimitReachedBonus(false)
+  // }
+
+  // const getSupplierById = async () => {
+  //   const { status, data } = await supplierServices.getSupplierById(supplier.id)
+  //   max_distance = data?.max_distance;
+  //   minCost = data?.min_cost;
+  //   isClosed = data?.status;
+  // }
+
+  // const getDistance = () => {
+  //   let obj = {
+  //     supplier_id: supplier.id,
+  //     lat: userPosition?.coords.latitude,
+  //     lng: userPosition?.coords.longitude,
+  //   };
+  //   adressService.getDistance(obj).then(res => console.log("distance", res))
+  // }
 
   // useEffect(() => {
   //   console.log("total", total)
@@ -339,27 +431,40 @@ const CartPage: React.FC = () => {
   // }, [giftAmmount])
 
 
-  const calcTotal = () => {
-    console.log("with bonus ",)
-    setTotal(
-
-      ((sousTotal - (appliedBonus / 1000)) + Number(cartItems[0].supplier_data.delivery_price))
-
-    )
+  const getPromo = async () => {
+    const { status, data } = await cartService.getAllPromoCodes()
+    setPromosList(data.data)
   }
-  const clearGift = () => {
-    setGiftAmmount(0)
-    setGiftApplied(false)
-    setLimitReachedBonus(false)
-  }
+
   useEffect(() => {
+    // console.log("userPosition", userPosition)
+    // console.log("bonus", bonus)
+    // console.log("deliveryOption", deliveryOption)
+    // console.log("deliveryPrice", deliveryPrice)
+    // console.log("cartItems", cartItems)
+    // console.log("supplier", supplier);
+    // getDistance()
+  }, [])
+
+  useEffect(() => {
+    localStorageService.setCart(cartItems);
+    if (cartItems.length == 0) {
+      dispatch(setSupplier(null));
+      dispatch(setDeliveryPrice(null));
+    }
+  }, [cartItems]);
+
+
+  useEffect(() => {
+    isAuthenticated && getPromo();
+    isAuthenticated && getclientGift();
+    // getSupplierById()
     getSousTotal()
-    getclientGift()
   }, [])
 
   useEffect(() => {
     calcTotal()
-  }, [sousTotal, appliedBonus])
+  }, [sousTotal, appliedBonus, promoReduction])
 
   return (
     <Container className="cart-page-container" fluid>
@@ -409,13 +514,42 @@ const CartPage: React.FC = () => {
                 <span>Commentaire</span>
                 <textarea name="commentaire" id="commentaire" cols={30} rows={10} value={aComment} onChange={(e) => handleCommentChange(e.target.value)} ></textarea>
               </div>
-
+              {
+                has_gift && (
+                  <>
+                  </>
+                )
+              }
               <div className="devider">
               </div>
 
+              <div className="promos-list">
+                <ul>
+                  {
+                    promosList.length !== 0 && (
+                      <>
+                        {
+                          promosList.map((promo: any, index: number) => {
+                            return (<>
+                              <button className="promo-button" onClick={() => {
+                                selectCoupon(promo)
+                                // handlePromoChange(promo.code_coupon)
+                              }}>
+                                {promo.code_coupon}
+                              </button>
+                              <li></li>
+                            </>)
+
+                          })
+                        }
+                      </>
+                    )
+                  }
+                </ul>
+              </div>
               <div className="promo-container">
                 <input type="text" name="code_promo" id="code_promo" placeholder="Code promo" value={promo} onChange={(e) => handlePromoChange(e.target.value)} />
-                <button>
+                <button disabled={!couponExiste} className={(couponExiste) ? "button" : "button disabled"} onClick={checkPromoCode}>
                   Applique
                 </button>
               </div>
@@ -426,7 +560,7 @@ const CartPage: React.FC = () => {
               <div className="bonus">
                 <span>Bonus : {bonus.toFixed(2)} pts</span>
 
-                <button className={bonus === 0 ? "disabled" : ""} disabled={ bonus === 0} onClick={() => applyBonus()}>
+                <button className={(bonus < 5000 || appliedBonus || limitReachedBonus) ? "button disabled" : "button"} disabled={bonus < 5000} onClick={() => applyBonus()}>
                   Appliquer
                 </button>
               </div>
@@ -435,6 +569,94 @@ const CartPage: React.FC = () => {
                   <p className="bonus-message">vous pouvez utiliser vos points une fois que vous avez accumulé un total de 5000 points</p>
                 </li>
               </ul>
+
+              <div className="devider">
+              </div>
+
+              <div className="paiment-container">
+                <span className="title">Mode de paiement</span>
+                <div className="method">
+                  <img className="icon" src={PayCashSVG} alt="My SVG" />
+                  <label htmlFor="espece">En espèces à la livraison</label>
+                  <input className="form-check-input" type="radio" name="pay" id="espece" />
+                </div>
+                <div className="method">
+                  <PaymentIcon className="icon" />
+                  <label htmlFor="bnc-cart">Par carte bancaire</label>
+                  <input className="form-check-input" type="radio" name="pay" id="bnc-cart" />
+                </div>
+              </div>
+
+              <div className="devider">
+              </div>
+
+              <div className="deliv-details">
+                <div className={`select ${selectedOption == 1 ? "selected" : ""}`}  >
+                  <img className="icon1" src={dinnerFurnitureIcn} alt="sur place icon" onClick={() => setSelectedOption(1)} />
+                  <input type="radio" value="1" id='domicile' name='type' checked={selectedOption === 1} onChange={handleOptionChange} />
+                  <label htmlFor="domicile">Sur palce</label>
+                </div>
+                <div className={`select ${selectedOption == 2 ? "selected" : ""}`}  >
+                  <img className="icon2" src={bagPaperShoppingIcn} alt="a emporter icon" onClick={() => setSelectedOption(2)} />
+
+                  <input type="radio" value="2" id='travail' name='type' checked={selectedOption === 2} onChange={handleOptionChange} />
+                  <label htmlFor="travail">A emporter</label>
+                </div>
+                <div className={`select ${selectedOption == 3 ? "selected" : ""}`}  >
+                  <img className="icon3" src={scooterTransportIcn} alt="Livraison icon" onClick={() => setSelectedOption(3)} />
+                  <input type="radio" value="3" id='autre' name='type' checked={selectedOption === 3} onChange={handleOptionChange} />
+                  <label htmlFor="autre">Livraison</label>
+                </div>
+              </div>
+
+              <div className="deliv-to">
+                <span className="title">Livraison à</span>
+                <div className="info-container">
+                  <label htmlFor="client-name">Client : </label>
+                  <input type="text" name="client-name" value={name} placeholder="Client Name" onChange={(e) => setName(e.target.value)} />
+                </div>
+
+                <div className="info-container">
+                  <label htmlFor="client-name">N° de téléphone :</label>
+                  <input type="text" name="" value={phoneNumber} placeholder="phone number" onChange={(e) => setPhoneNumber(e.target.value)} />
+                </div>
+                <div className="adress">
+                  <p className="title" style={{ margin: 0 }} >
+                    Adresse de livraison :
+                  </p>
+                  <p className="adress-text">
+                    {userPosition?.coords.label}
+                  </p>
+                </div>
+
+                <div className="buttons">
+                  <button className="continue" onClick={() => navigate('/')}>
+                    Continuer mes achats
+                  </button>
+                  <button className="commander"
+                    onClick={() =>
+                      submitOrder(
+                        cartItems,
+                        deliveryOption,
+                        name,
+                        phoneNumber,
+                        aComment,
+                        total,
+                        appliedBonus,
+                        dispatch,
+                        userPosition,
+                        supplier.id,
+                        deliveryPrice
+                      )
+                    }
+
+                  >
+                    Commander
+                  </button>
+                </div>
+
+              </div>
+
             </div>
 
             <div className="summair-container">
@@ -446,10 +668,22 @@ const CartPage: React.FC = () => {
                 </div>
                 <div className="panier">
                   <span>Panier</span>
-                  <div className="panie-row">
-                    <span>Forfait</span>
-                    <span>{(appliedBonus / 1000).toFixed(2)} DT</span>
-                  </div>
+                  {appliedBonus > 0 &&
+                    (
+                      <div className="panie-row">
+                        <span>bonus</span>
+                        <span> - {(appliedBonus / 1000).toFixed(2)} DT</span>
+                      </div>
+                    )
+                  }
+                  {
+                    promoReduction > 0 && (
+                      <div className="panie-row">
+                        <span>Coupon</span>
+                        <span> - {(promoReduction).toFixed(2)} DT</span>
+                      </div>
+                    )
+                  }
                   <div className="panie-row">
                     <span>Frais de livraison</span>
                     <span>{cartItems[0].supplier_data.delivery_price} DT</span>
@@ -465,7 +699,6 @@ const CartPage: React.FC = () => {
                   <button type="button">
                     contenu le paiement
                   </button>
-
                 </div>
               </div>
             </div>
@@ -501,100 +734,15 @@ const orderSchema = z.object({
       id: z.number(),
       supplier_id: z.number(),
       qte: z.number(),
-      options: z.array(z.object({ option_id: z.number() })),
+      // options: z.array(z.object({ option_id: z.number() })),
     })
   ),
   tip: z.number(),
   total_price_coupon: z.number(),
   lat: z.number(),
   lng: z.number(),
+  applied_bonus: z.number(),
   is_delivery: z.number(),
   phone: phoneSchema,
   name: nameSchema,
 });
-
-
-
-
-// setPromoCode($event){
-//   this.promoError = false;
-//   this.promoObj = false;
-//   this.promoReduction = 0;
-//   this.promoCode = $event.target.value;
-//   this.isValExist = true;
-//   if($event.target.value.toString().length <= 0){
-//     this.isValExist = false;
-//     this.promoCode = "";
-//     this.setOpenApply(true)
-//   }
-// }
-
-// checkPromoCode(){
-//   this.loadingpromo=false;
-//   if(this.promoCode.toString().length >= 0){
-//     let formData = new FormData();
-//     formData.append('code_coupon',this.promoCode)
-//     this.orderService.getPromoCode(formData).subscribe((res:any) => {
-//       this.loadingpromo=true;
-//       if (res === "code promo invalid"){
-//         this.promoError = true;
-//       }
-//       if(res.status === 422){
-//             this.promoError = true;
-//             return 0
-//       }else {
-//         if(res?.code && res?.code === 200){
-//           if(res?.success){
-//             this.promoObj = res.data;
-//             this.promoError=false;
-//             this.CalculatePromoPrice();
-//             return 0;
-//           }
-//           this.promoError = true;
-//           return 0
-//         }
-//         this.promoError = true;
-//         return 0
-//       }
-
-//     },(erreor)=>{
-//       console.log(erreor);
-//     })
-//   }
-//   else{
-//     this.loadingpromo=true;
-//     this.CalculatePromoPrice();
-//   }
-// }
-
-// CalculatePromoPrice() {
-//   if (this.promoObj !== false) {
-//     if (this.promoObj.apply_on === 'DELIVERY') {
-//         if(this.promoObj.type === 'percentage'){
-//           this.promoReduction = (this.delivery_fees * (this.promoObj.value / 100)).toFixed(2);
-//           return 0
-//         }
-//       this.promoReduction =  this.promoObj.value.toFixed(2);
-//         return 0
-//     }
-//     if (this.promoObj.apply_on === 'COMMAND') {
-//         if(this.promoObj.type === 'percentage'){
-//         this.promoReduction =  (this.total * (this.promoObj.value / 100)).toFixed(2);
-//           return 0;
-//         }
-//       this.promoReduction =  this.promoObj.value.toFixed(2);
-//       return 0;
-//     }
-//     if (this.promoObj.apply_on === 'ALL') {
-//         if(this.promoObj.type === 'percentage'){
-//           this.promoReduction = (this.getSum() * (this.promoObj.value / 100)).toFixed(2);
-//           return 0;
-//         }
-//       this.promoReduction = this.promoObj.value.toFixed(2);
-//       return 0;
-//     }
-
-//   }
-//   this.promoReduction = 0;
-//   return 0;
-// }

@@ -41,8 +41,27 @@ async function getGift(formData: any) {
     }
 }
 
+ const  getPromoCode = async (formData: any) => { //code_coupon
+
+    try {
+        const response = await api.post(
+            "/update_tentative",
+            formData,
+        );
+        const { status, data } = response;
+
+        return { status, data };
+    } catch (error) {
+        return {status:422 , data:{}}
+       
+    }
+}
+ 
+
+
 export const cartService = {
     createOrder,
     getAllPromoCodes,
     getGift,
+    getPromoCode,
 };

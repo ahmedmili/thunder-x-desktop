@@ -70,13 +70,16 @@ const cartSlice = createSlice({
       localStorageService.setCart(state.items)
     },
     removeItem: (state, action: PayloadAction<{ id: number }>) => {
-      const index = state.items.findIndex(
-        (item) => item.product.id === action.payload.id
+      const idToRemove = action.payload.id
+      const updatedItems = state.items.filter(
+        (item) => item.product.id !== idToRemove
       );
-      if (index !== -1) {
-        localStorageService.setCart(state.items.splice(index, 1))
-        state.items.splice(index, 1);
-      }
+      // if (index !== -1) {
+      //   state.items.splice(index, 1);
+      //   localStorageService.setCart(state.items.splice(index, 1))
+        state.items = updatedItems ;
+        localStorageService.setCart(updatedItems)
+      // }
     },
 
     setDeliveryOption: (
