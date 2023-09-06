@@ -552,6 +552,27 @@
       }
     }
 
+    .time-picker {
+      width: 95%;
+      text-align: center;
+      font-size: 18px;
+      color: #24A6A4;
+      outline: none;
+      border: none;
+
+      // margin: 0 8px;
+      .react-time-picker__clear-button {
+        display: none;
+      }
+
+      .react-time-picker__inputGroup__input {
+        &:focus{
+          border: none;
+          outline: none;
+        }
+      }
+    }
+
     .deliv-to {
       width: 100%;
       display: flex;

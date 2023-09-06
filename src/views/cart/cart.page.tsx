@@ -22,6 +22,10 @@ import { RootState, useAppDispatch, useAppSelector } from "../../Redux/store";
 import KeyboardArrowUpOutlinedIcon from '@mui/icons-material/KeyboardArrowUpOutlined';
 import KeyboardArrowDownOutlinedIcon from '@mui/icons-material/KeyboardArrowDownOutlined';
 
+import TimePicker from 'react-time-picker';
+import 'react-time-picker/dist/TimePicker.css';
+import 'react-clock/dist/Clock.css';
+
 import * as z from "zod";
 import { logout } from "../../Redux/slices/userSlice";
 import { FoodItem } from "../../services/types";
@@ -37,42 +41,44 @@ import { adressService } from "../../services/api/adress.api";
 
 const CartPage: React.FC = () => {
   const { t } = useTranslation();
-  const supplier = useAppSelector((state: RootState) => state.cart.supplier);
-  const deliveryPrice = useAppSelector(
-    (state: RootState) => state.cart.deliveryPrice
-  );
 
+  // redux state vars
+  const supplier = useAppSelector((state: RootState) => state.cart.supplier);
+  const deliveryPrice = useAppSelector((state: RootState) => state.cart.deliveryPrice);
   const cartItems = useAppSelector((state: RootState) => state.cart.items);
   const userPosition = useAppSelector((state) => state.location.position);
-  const deliveryOption = useAppSelector(
-    (state: RootState) => state.cart.deliveryOption
-  );
+  const deliveryOption = useAppSelector((state: RootState) => state.cart.deliveryOption);
   const isAuthenticated = useAppSelector((state) => state.user.isAuthenticated);
+
+  //local storeg vars
   // const codePromo = localStorageService.getCodePromo();
   // const supplier_bonus = localStorageService.getBonus();
   const comment = localStorageService.getComment();
   const userItem = localStorageService.getUser();
   const user = userItem ? JSON.parse(userItem) : null;
 
+  //util vars
   const [name, setName] = React.useState(user?.firstname || "");
   const [phoneNumber, setPhoneNumber] = React.useState(user?.tel || "");
 
   const [sousTotal, setSousTotal] = useState<number>(0)
   const [total, setTotal] = useState<number>(0)
-  
   const [aComment, setAComment] = React.useState<string>(comment ? comment : "");
 
+  // promo vars
   const [promo, setPromo] = React.useState<string>("");
   const [promosList, setPromosList] = useState<any>([])
   const [couponExiste, setCouponExiste] = React.useState<boolean>(false);
   const [selectedCoupon, setSelectedCoupon] = React.useState<any>(null);
   const [promoReduction, setPromoReduction] = useState<number>(0)
 
-  const [bonus, setbonus] = useState<number>(Number(supplier.bonus))
+  // bonus vars
+  const [bonus, setbonus] = useState<number>(Number(supplier ? supplier.bonus : 0))
   const [appliedBonus, setAppliedBonus] = useState<number>(0)
   const [bonusApplied, setBonusApplied] = useState<boolean>(false)
   const [limitReachedBonus, setLimitReachedBonus] = useState<boolean>(false)
 
+  // gift vars
   const [has_gift, setHas_gift] = useState<boolean>(false)
   const [giftApplied, setGiftApplied] = useState<boolean>(false)
   const [maxGiftCost, setMaxGiftCost] = useState<any>(null)
@@ -80,8 +86,32 @@ const CartPage: React.FC = () => {
   const [giftAmmount, setGiftAmmount] = useState<number>(0)
   const [limitReachedGift, setLimitReachedGift] = useState<boolean>(false)
 
-  const [selectedOption, setSelectedOption] = useState<number>(1);
 
+  // take away plan vars
+  const [selectedOption, setSelectedOption] = useState<number>(1);
+  const [dateValue, setDateValue] = useState<string>("")
+
+  var extra_supplier_info: any = {
+    distance: 0
+  };
+  var max_distance: any = 5;
+  var distance = 0;
+  var isDelivery = 1;
+  var isPayment = true;
+  var showPicker: Boolean = false;
+  var tip = 0;
+  var mode_pay = 1;
+
+  var take_away_plan = 'default';
+  const [takeAwayDate, setTakeAwayDate] = useState(new Date(new Date().getTime() + 30 * 60000));
+
+  var date_input: any;
+  var minCost: any;
+  var show_min_cost_modal = false;
+  var show_is_closed_text: boolean = false
+  var show_is_cost_text: boolean = false
+  var isClosed: any;
+  var redirect: any = [];
   const dispatch = useAppDispatch();
   const navigate = useNavigate();
 
@@ -128,6 +158,8 @@ const CartPage: React.FC = () => {
         lat: userPosition?.coords.latitude,
         lng: userPosition?.coords.longitude,
         total_price_coupon: promoReduction,
+        take_away_plan: take_away_plan,
+        take_away_date: (takeAwayDate.getFullYear() + '-' + takeAwayDate.getDate() + '-' + takeAwayDate.getMonth() + 1) + ', ' + (takeAwayDate.getHours() % 12 || 12) + ':' + (takeAwayDate.getMinutes() < 10 ? '0' : '') + takeAwayDate.getMinutes() + ' ' + (takeAwayDate.getHours() < 12 ? 'AM' : 'PM'),
         tip: 0,
         is_delivery: deliveryOption === "delivery" ? 1 : 0,
         phone: phoneNumber,
@@ -346,11 +378,11 @@ const CartPage: React.FC = () => {
             toast.success("valide code")
             CalculatePromoPrice();
             return 0;
-          }else {
+          } else {
             toast.error("code promo invalid")
             return 0
           }
-        } 
+        }
       })
     }
   }
@@ -396,8 +428,8 @@ const CartPage: React.FC = () => {
   }
 
   const calcTotal = () => {
-    console.log("caluating total")
-    console.log("caluating total", ((sousTotal - (appliedBonus / 1000)) + Number(cartItems[0].supplier_data.delivery_price) - promoReduction))
+    // console.log("caluating total")
+    // console.log("caluating total", ((sousTotal - (appliedBonus / 1000)) + Number(cartItems[0].supplier_data.delivery_price) - promoReduction))
     setTotal(
       ((sousTotal - (appliedBonus / 1000)) + Number(cartItems[0].supplier_data.delivery_price) - promoReduction)
     )
@@ -429,7 +461,31 @@ const CartPage: React.FC = () => {
   //   console.log("giftAmmount", giftAmmount)
   //   console.log("limitReachedBonus", limitReachedBonus)
   // }, [giftAmmount])
+  const formatDate = (date: Date) => {
+    const year = date.getFullYear();
+    const month = String(date.getMonth() + 1).padStart(2, '0'); // Month is 0-indexed, so add 1 and pad with '0'
+    const day = String(date.getDate()).padStart(2, '0');
+    return `${year}-${month}-${day}T09:00:00.000Z`;
+  }
 
+  useEffect(() => {
+    let dateValue = formatDate(new Date)
+    setDateValue(dateValue)
+    switch (selectedOption) {
+      case 1:
+        take_away_plan = "default"
+        setTakeAwayDate(new Date(new Date().getTime() + 30 * 60000))
+        break;
+      case 3:
+        take_away_plan = "plan"
+        setTakeAwayDate(new Date(new Date().getTime() + 30 * 60000))
+        break;
+      default:
+        take_away_plan = "plan"
+        // take_away_date = new Date(dateValue);
+        break;
+    }
+  }, [selectedOption])
 
   const getPromo = async () => {
     const { status, data } = await cartService.getAllPromoCodes()
@@ -447,6 +503,8 @@ const CartPage: React.FC = () => {
   }, [])
 
   useEffect(() => {
+    // let check = supplier && cartItems.length > 0
+
     localStorageService.setCart(cartItems);
     if (cartItems.length == 0) {
       dispatch(setSupplier(null));
@@ -456,21 +514,25 @@ const CartPage: React.FC = () => {
 
 
   useEffect(() => {
+    let check = supplier && cartItems.length > 0
     isAuthenticated && getPromo();
     isAuthenticated && getclientGift();
+    !check && navigate('/')
     // getSupplierById()
-    getSousTotal()
+    check && getSousTotal()
   }, [])
 
   useEffect(() => {
-    calcTotal()
+    let check = supplier && cartItems.length > 0
+
+    check && calcTotal()
   }, [sousTotal, appliedBonus, promoReduction])
 
   return (
     <Container className="cart-page-container" fluid>
       <Row className="header">
         <div className="image-container">
-          <img src={supplier.images[0].path} alt="supplier image" className="background-image" />
+          <img src={supplier ? supplier.images[0].path : ""} alt="supplier image" className="background-image" />
           <span>Mon Panier</span>
         </div>
       </Row>
@@ -514,12 +576,12 @@ const CartPage: React.FC = () => {
                 <span>Commentaire</span>
                 <textarea name="commentaire" id="commentaire" cols={30} rows={10} value={aComment} onChange={(e) => handleCommentChange(e.target.value)} ></textarea>
               </div>
-              {
+              {/* {
                 has_gift && (
                   <>
                   </>
                 )
-              }
+              } */}
               <div className="devider">
               </div>
 
@@ -530,15 +592,14 @@ const CartPage: React.FC = () => {
                       <>
                         {
                           promosList.map((promo: any, index: number) => {
-                            return (<>
-                              <button className="promo-button" onClick={() => {
+                            return (
+                              <button key={index} className="promo-button" onClick={() => {
                                 selectCoupon(promo)
                                 // handlePromoChange(promo.code_coupon)
                               }}>
                                 {promo.code_coupon}
                               </button>
-                              <li></li>
-                            </>)
+                            )
 
                           })
                         }
@@ -609,6 +670,38 @@ const CartPage: React.FC = () => {
                 </div>
               </div>
 
+              {
+                selectedOption == 2 && (
+                  <>
+                    <TimePicker
+                      className="time-picker"
+                      onChange={(newTime) => {
+                        // Parse the selected time and create a Date object
+                        if (newTime !== null) {
+                          const [hours, minutes] = newTime.split(':');
+                          const selectedDate = new Date();
+                          selectedDate.setHours(parseInt(hours, 10));
+                          selectedDate.setMinutes(parseInt(minutes, 10));
+                          const formattedTime = selectedDate.toLocaleString('en-US', {
+                            hour: 'numeric',
+                            minute: 'numeric',
+                            month: 'numeric',
+                            day: 'numeric',
+                            year: 'numeric',
+                          });
+                          const parsedDate = new Date(formattedTime);
+                          setTakeAwayDate(parsedDate);
+                        }
+                      }}
+                      value={takeAwayDate}
+                      format="h:m a"
+                      disableClock={true}
+                    />
+
+                  </>
+                )
+              }
+
               <div className="deliv-to">
                 <span className="title">Livraison à</span>
                 <div className="info-container">
@@ -649,7 +742,6 @@ const CartPage: React.FC = () => {
                         deliveryPrice
                       )
                     }
-
                   >
                     Commander
                   </button>
@@ -686,7 +778,7 @@ const CartPage: React.FC = () => {
                   }
                   <div className="panie-row">
                     <span>Frais de livraison</span>
-                    <span>{cartItems[0].supplier_data.delivery_price} DT</span>
+                    <span>{cartItems.length > 0 ? cartItems[0].supplier_data.delivery_price : 0} DT</span>
                   </div>
                   <div className="panie-row"></div>
                 </div>
