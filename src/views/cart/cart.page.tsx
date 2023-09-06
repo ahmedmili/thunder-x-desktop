@@ -666,8 +666,8 @@ const CartPage: React.FC = () => {
                       </div>
                       <div className="method">
                         <PaymentIcon className="icon" />
-                        <label htmlFor="bnc-cart">Par carte bancaire</label>
-                        <input className="form-check-input" type="radio" name="pay" id="bnc-cart" />
+                        <label htmlFor="bnc-cart">Par carte bancaire (soon)</label>
+                        <input disabled className="form-check-input" type="radio" name="pay" id="bnc-cart" />
                       </div>
                     </div>
 
