@@ -6,12 +6,13 @@ import React, { useEffect, useState } from 'react';
 
 import KeyboardArrowUpOutlinedIcon from '@mui/icons-material/KeyboardArrowUpOutlined';
 import KeyboardArrowDownOutlinedIcon from '@mui/icons-material/KeyboardArrowDownOutlined';
+import empty from '../../assets/panier/empty.png'
 
 import './cart.scss'
 import { useNavigate } from 'react-router-dom';
 interface CartProps {
   items: FoodItem[];
-  closeButton:any
+  closeButton: any
 }
 
 interface Article {
@@ -25,7 +26,7 @@ interface Article {
 }
 
 
-export const Cart: React.FC<CartProps> = ({ items,closeButton }) => {
+export const Cart: React.FC<CartProps> = ({ items, closeButton }) => {
   const [sousTotal, setSousTotal] = useState<number>(0)
 
   useEffect(() => {
@@ -33,7 +34,7 @@ export const Cart: React.FC<CartProps> = ({ items,closeButton }) => {
   }, [items])
 
   const dispatch = useAppDispatch();
-const navigate = useNavigate()
+  const navigate = useNavigate()
   const ArticlesProvider: React.FC<Article> = (props) => {
     const [count, setCount] = useState<number>(props.count)
 
@@ -165,25 +166,42 @@ const navigate = useNavigate()
                 <span className='value'>{sousTotal + Number(items[0].supplier_data.delivery_price)} DT</span>
               </div>
             </section>
+            <section className='cart-btns' >
+              <button className='to-panier' onClick={() => {
+                closeButton()
+                navigate('/cart')
+              }
+
+              }>
+                Voir le panier
+              </button>
+              <button className='to-paiment'>
+                Passer au paiement
+              </button>
+            </section>
           </>
         ) : (
           <>
-            no commands yet
+            <section className="cart-info">
+              <div className="text-info">
+                <span className='title'> Votre Commande</span>
+              </div>
+              <button className="close-btn" onClick={closeButton}>
+                X
+              </button>
+            </section>
+            <section className='empty-cart-main'>
+              <img src={empty} alt="empty cart" />
+              <p>Vous n’avez passé aucune commande pour le moment</p>
+              <button className='emptyButton' onClick={() => navigate('/')}>
+                Je commande
+              </button>
+            </section>
           </>
         )
+
       }
-      <section className='cart-btns' >
-        <button className='to-panier' onClick={()=>{
-           closeButton()
-           navigate('/cart')}
-           
-           }>
-          Voir le panier
-        </button>
-        <button className='to-paiment'>
-          Passer au paiement
-        </button>
-      </section>
+
     </div>
   );
 };
