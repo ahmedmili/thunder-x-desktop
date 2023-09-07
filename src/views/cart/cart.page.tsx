@@ -352,7 +352,10 @@ const CartPage: React.FC = () => {
   //  get promos list 
   const getPromo = async () => {
     const { status, data } = await cartService.getAllPromoCodes()
-    setPromosList(data.data)
+    const list = data.data.filter((item: any) => {
+      item.nbr_commands > 0
+    })
+    setPromosList(list)
   }
 
   //  check promo validation
@@ -511,15 +514,6 @@ const CartPage: React.FC = () => {
         break;
     }
   }, [selectedOption])
-
-  useEffect(() => {
-    // console.log("userPosition", userPosition)
-    // console.log("bonus", bonus)
-    // console.log("deliveryOption", deliveryOption)
-    // console.log("deliveryPrice", deliveryPrice)
-    // console.log("cartItems", cartItems)
-    // console.log("extraDeliveryCost", extraDeliveryCost);
-  }, [])
 
   //init cartItems
   useEffect(() => {

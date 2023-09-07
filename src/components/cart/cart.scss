@@ -278,7 +278,7 @@
       width: 299px;
       height: 46px;
 
-      color: #484848;
+      color: $dark_Gray;
       text-align: center;
       font-family: Poppins;
       font-size: 15px;
@@ -290,7 +290,7 @@
     .emptyButton {
       all: unset;
       border-radius: 55px;
-      background-color: #FBC000;
+      background-color: $orange_color;
       min-width: 271px;
       height: 55px;
       text-align: center;
