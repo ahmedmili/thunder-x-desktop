@@ -223,7 +223,6 @@ const CartPage: React.FC = () => {
         name: name,
         comment: aComment,
       };
-      console.log(order)
       if (isAuthenticated) {
 
         // validate the order object against the schema
@@ -476,7 +475,9 @@ const CartPage: React.FC = () => {
       lat: userPosition?.coords.latitude,
       lng: userPosition?.coords.longitude,
     };
-    adressService.getDistance(obj).then(res => console.log("distance", res))
+    adressService.getDistance(obj).then(res => {
+      res.data.data.code == 200 ? distance = res.data.data.distance : distance = 0
+    })
   }
   // calc extra cost
   const getExtraSupplierInfo = () => {
