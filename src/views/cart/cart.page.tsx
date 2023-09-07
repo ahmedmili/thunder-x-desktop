@@ -32,13 +32,15 @@ import { logout } from "../../Redux/slices/userSlice";
 import { FoodItem } from "../../services/types";
 import { toast } from "react-toastify";
 import { useTranslation } from "react-i18next";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useLocation } from "react-router-dom";
+
 import "./cart.page.scss";
 import { cartService } from "../../services/api/cart.api";
 import { localStorageService } from "../../services/localStorageService";
 import { Col, Container, Row } from "react-bootstrap";
 import { supplierServices } from "../../services/api/suppliers.api";
 import { adressService } from "../../services/api/adress.api";
+import PaymentPopup from "../../components/Popups/payment/PaymentPopup";
 
 const CartPage: React.FC = () => {
   const { t } = useTranslation();
@@ -65,6 +67,9 @@ const CartPage: React.FC = () => {
   const [sousTotal, setSousTotal] = useState<number>(0)
   const [total, setTotal] = useState<number>(0)
   const [aComment, setAComment] = React.useState<string>(comment ? comment : "");
+
+  const [popupType, setPopupType] = React.useState<string>("");
+  const [showPopup, setShowPopup] = React.useState<boolean>(false);
 
   // promo vars
   const [promo, setPromo] = React.useState<string>("");
@@ -245,7 +250,8 @@ const CartPage: React.FC = () => {
             dispatch(setComment(""));
             dispatch(setCodePromo(""));
             dispatch(setSupplier(null));
-            navigate("/track-order");
+            setPopupType('command_success')
+            handlePopup()
           } else {
             toast.warn("something went wrong")
           }
@@ -260,6 +266,10 @@ const CartPage: React.FC = () => {
       toast.error("Failed to submit order. Please try again.", error.message);
     }
   };
+
+  const handlePopup = () => {
+    setShowPopup(!showPopup)
+  }
 
   //  manage comments state
   const handleCommentChange = (comment: string) => {
@@ -465,7 +475,6 @@ const CartPage: React.FC = () => {
     max_distance = data?.max_distance;
     minCost = data?.data.min_cost;
     isClosed = data?.status;
-    console.log("minCost", data.data)
   }
 
   // get distance 
@@ -607,7 +616,6 @@ const CartPage: React.FC = () => {
                                   return (
                                     <button key={index} className="promo-button" onClick={() => {
                                       selectCoupon(promo)
-                                      // handlePromoChange(promo.code_coupon)
                                     }}>
                                       {promo.code_coupon}
                                     </button>
@@ -735,7 +743,7 @@ const CartPage: React.FC = () => {
                       </div>
 
                       <div className="buttons">
-                        <button className="continue" onClick={() => navigate('/')}>
+                        <button className="continue" onClick={() => navigate('/', { replace: true })}>
                           Continuer mes achats
                         </button>
                         <button className="commander"
@@ -800,7 +808,14 @@ const CartPage: React.FC = () => {
                         <span className="value">{total.toFixed(2)} DT</span>
                       </div>
                       <div className="button-container">
-                        <button type="button">
+                        <button type="button"
+                          onClick={
+                            () => {
+                              setPopupType("error")
+                              handlePopup()
+                            }
+                          }
+                        >
                           contenu le paiement
                         </button>
                       </div>
@@ -809,6 +824,12 @@ const CartPage: React.FC = () => {
                 </main>
               </Col>
             </Row>
+            {
+              showPopup && (
+
+                <PaymentPopup close={handlePopup} type={popupType} />
+              )
+            }
 
           </Container>
         ) : (
@@ -823,11 +844,17 @@ const CartPage: React.FC = () => {
                     <p>Votre panier est actuellement vide.</p>
                   </div>
                   <img src={empty} alt=" not command items" />
-                  <button className="emptyButton" onClick={() => navigate('/')}>
+                  <button className="emptyButton" onClick={() => navigate('/', { replace: true })}>
                     Je commande
                   </button>
                 </div>
               </Col>
+              {
+                showPopup && (
+
+                  <PaymentPopup close={handlePopup} type={popupType} />
+                )
+              }
             </Row>
           </Container>
         )

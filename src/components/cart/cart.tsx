@@ -10,6 +10,7 @@ import empty from '../../assets/panier/empty.png'
 
 import './cart.scss'
 import { useNavigate } from 'react-router-dom';
+import PaymentPopup from '../Popups/payment/PaymentPopup';
 interface CartProps {
   items: FoodItem[];
   closeButton: any
@@ -28,15 +29,16 @@ interface Article {
 
 export const Cart: React.FC<CartProps> = ({ items, closeButton }) => {
   const [sousTotal, setSousTotal] = useState<number>(0)
+  const [popupType, setPopupType] = useState<string>("")
+  const [showPopup, setShowPopup] = useState<boolean>(false)
 
-  useEffect(() => {
-    console.log(items)
-  }, [items])
 
   const dispatch = useAppDispatch();
   const navigate = useNavigate()
+
   const ArticlesProvider: React.FC<Article> = (props) => {
     const [count, setCount] = useState<number>(props.count)
+
 
     const handleRemoveItemFromCart = () => dispatch(removeItem({ id: props.id }));
 
@@ -102,9 +104,15 @@ export const Cart: React.FC<CartProps> = ({ items, closeButton }) => {
     setSousTotal(sum);
   }
 
+  const handlePopupe = () => {
+    setShowPopup(!showPopup)
+    setPopupType("error")
+  }
+  
   useEffect(() => {
     getSousTotal();
   }, [items])
+
   return (
     <div className="cart-main">
 
@@ -175,10 +183,26 @@ export const Cart: React.FC<CartProps> = ({ items, closeButton }) => {
               }>
                 Voir le panier
               </button>
-              <button className='to-paiment'>
+              <button className='to-paiment'
+                onClick={
+                  () => {
+                    // closeButton()
+                    handlePopupe()
+                  }
+                }
+              >
                 Passer au paiement
               </button>
             </section>
+
+            {
+              showPopup && (
+                <>
+                <PaymentPopup type='error' close={handlePopupe}/>
+                </>
+              )
+
+            }
           </>
         ) : (
           <>
@@ -193,7 +217,10 @@ export const Cart: React.FC<CartProps> = ({ items, closeButton }) => {
             <section className='empty-cart-main'>
               <img src={empty} alt="empty cart" />
               <p>Vous n’avez passé aucune commande pour le moment</p>
-              <button className='emptyButton' onClick={() => navigate('/')}>
+              <button className='emptyButton' onClick={() => {
+                closeButton()
+                navigate('/')
+              }}>
                 Je commande
               </button>
             </section>
