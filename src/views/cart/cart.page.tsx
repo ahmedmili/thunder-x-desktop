@@ -200,6 +200,7 @@ const CartPage: React.FC = () => {
       const order = {
         addresse_id: 1,
         supplier_id: supplier,
+        extraDeliveryCost: extraDeliveryCost,
         delivery_price: Math.round(deliveryPrice),
         mode_pay: 1,
         applied_bonus: applied_bonus,
@@ -455,7 +456,7 @@ const CartPage: React.FC = () => {
   // calc total function
   const calcTotal = () => {
     setTotal(
-      ((sousTotal - (appliedBonus / 1000)) + Number(cartItems[0].supplier_data.delivery_price) - promoReduction)
+      ((sousTotal - (appliedBonus / 1000)) + extraDeliveryCost + Number(cartItems[0].supplier_data.delivery_price) - promoReduction)
     )
   }
 
@@ -489,13 +490,6 @@ const CartPage: React.FC = () => {
   }
 
   // useEffect Part
-
-  // useEffect(() => {
-  //   console.log("total", total)
-  //   console.log("giftAmmount", giftAmmount)
-  //   console.log("limitReachedBonus", limitReachedBonus)
-  // }, [giftAmmount])
-
 
   // switch deliv plan
   useEffect(() => {
@@ -858,6 +852,7 @@ const orderSchema = z.object({
   supplier_id: z.number(),
   addresse_id: z.number(),
   delivery_price: z.number(),
+  extraDeliveryCost: z.number(),
   mode_pay: z.number(),
   total_price: z.number(),
   products: z.array(
