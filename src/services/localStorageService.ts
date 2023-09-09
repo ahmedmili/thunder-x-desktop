@@ -8,8 +8,8 @@ function unsetUserCredentials() {
     localStorage.removeItem('userId');
     localStorage.removeItem('user');
 }
-function setUserToken(token:string){
-    localStorage.setItem('token',token)
+function setUserToken(token: string) {
+    localStorage.setItem('token', token)
 }
 function getUserToken() {
     return localStorage.getItem('token')
@@ -32,27 +32,50 @@ function setCart(cart_items: any) {
 function unsetCart() {
     localStorage.removeItem('cart_items');
 }
-function getCart(){
+function getCart() {
     return localStorage.getItem('cart_items');
 }
 function setComment(comment: string) {
     localStorage.setItem('comment', comment);
 }
+function getComment() {
+    return localStorage.getItem('comment');
+}
 function unsetComment() {
     localStorage.removeItem('comment');
 }
-function setSupplier(restaurant:any){
+function setCodePromo(comment: string) {
+    localStorage.setItem('codePromo', comment);
+}
+function getCodePromo() {
+    return localStorage.getItem('codePromo');
+}
+function unsetCodePromo() {
+    localStorage.removeItem('codePromo');
+}
+function setBonus(bonus: string) {
+    localStorage.setItem('bonus', bonus);
+}
+function getBonus() {
+    return localStorage.getItem('bonus');
+}
+function unsetBonus() {
+    localStorage.removeItem('bonus');
+}
+
+
+function setSupplier(restaurant: any) {
     localStorage.setItem('supplier', JSON.stringify(restaurant));
 }
-function getSupplier(){
+function getSupplier() {
     return localStorage.getItem('supplier');
 }
 
-function setDelivery(delivery:number){
-    localStorage.setItem('delivery',delivery.toString());
+function setDelivery(delivery: number) {
+    localStorage.setItem('delivery', delivery.toString());
 }
 
-function getDelivery(){
+function getDelivery() {
     return localStorage.getItem('delivery');
 }
 
@@ -69,7 +92,14 @@ export const localStorageService = {
     unsetCart,
     getCart,
     setComment,
+    getComment,
     unsetComment,
+    setCodePromo,
+    getCodePromo,
+    unsetCodePromo,
+    setBonus,
+    getBonus,
+    unsetBonus,
     setSupplier,
     getSupplier,
     setDelivery,

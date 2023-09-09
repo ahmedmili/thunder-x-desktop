@@ -30,16 +30,16 @@ const Footer: React.FC<FooterProps> = () => {
             <p className={"FooterText"} > <span><LocalPhoneIcon /></span> +216 22 543 123 </p>
 
             <div className={"socialMedia"}>
-              <div className={"icon"}>
+              <div className={"icons"}>
                 <FacebookIcon ></FacebookIcon>
 
               </div>
-              <div className={"icon"}>
+              <div className={"icons"}>
                 <InstaIcon ></InstaIcon>
 
               </div>
 
-              <div className={"icon"}>
+              <div className={"icons"}>
                 <TikTokIcon></TikTokIcon>
 
               </div>

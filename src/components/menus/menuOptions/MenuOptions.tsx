@@ -344,6 +344,7 @@ function MenuOptions() {
         usedispatch(setDeliveryPrice(restaurant.delivery_price));
         usedispatch(setSupplier(restaurant));
         localStorageService.setSupplier(restaurant);
+        localStorageService.setBonus(restaurant.bonus);
         usedispatch(addItem(obj));
     }
 

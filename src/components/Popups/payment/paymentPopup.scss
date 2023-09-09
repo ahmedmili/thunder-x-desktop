@@ -1,0 +1,60 @@
+@import '../../../_colors.scss';
+
+@keyframes popup-animation {
+    0% {
+        scale: 0;
+        opacity: 0;
+    }
+
+    40% {
+        scale: 1;
+        opacity: 1;
+    }
+
+    60% {
+        scale: 0.7;
+    }
+
+    100% {
+        scale: 1;
+        opacity: 1;
+    }
+}
+
+.popup-container {
+    height: 100vh;
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: rgba(0, 0, 0, 0.527);
+    position: fixed;
+    top: 0;
+    right: 0;
+    z-index: 999;
+
+    .popup-box {
+        width: 800px;
+        height: 537px;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        gap: 25px;
+        border-radius: 222px;
+        background-color: #F7F7F7;
+        animation: popup-animation 0.5s ease-out;
+    }
+
+    p {
+        color: #958E8E;
+        text-align: center;
+        font-family: Poppins;
+        font-size: 16px;
+        font-style: normal;
+        font-weight: 500;
+        line-height: normal;
+        width: 395px;
+        height: 61px;
+    }
+}

@@ -191,7 +191,7 @@ function App() {
             <Route index element={<HomePage />} />
             <Route path="/supplier-store/:id/*" element={<Menu />} />
             <Route path="/product" element={<MenuOptions />} />
-            <Route path="cart" element={<CartPage />} />
+            <Route path="/cart" element={<CartPage/>} />
             <Route path="/search" element={<FilterPage />} />
 
             {/* Private Route */}

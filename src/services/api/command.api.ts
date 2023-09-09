@@ -13,4 +13,13 @@ async function myCommands() {
     }
 }
 
+
+// VerifyDistance(formData: any) {
+//     return this.http.post(`${this.url}/verifydistance`,formData, { observe: 'response' });
+//   }
+ 
+
+//   MyOrders() {
+//     return this.http.get(`${this.url}/mycommands`,{ observe: 'response' });
+//   }
 export const commandService = { myCommands };
