@@ -6,6 +6,7 @@ interface CartState {
   items: FoodItem[];
   deliveryOption: 'delivery' | 'pickup' | 'surplace';
   comment: string;
+  codePromo: string;
   supplierMismatch: FoodItem | null;
   supplier: any | null;
   deliveryPrice: number;
@@ -16,6 +17,7 @@ const initialState: CartState = {
   items: [],
   deliveryOption: 'delivery',
   comment: '',
+  codePromo: '',
   supplierMismatch: null,
   supplier: null,
   deliveryPrice: 0,
@@ -46,7 +48,9 @@ const cartSlice = createSlice({
       state.items = [];
       state.deliveryOption = 'delivery';
       state.comment = '';
+      state.codePromo = '';
       localStorageService.unsetComment();
+      localStorageService.unsetCodePromo();
       localStorageService.unsetCart();
     },
     setCartItems: (state, action: PayloadAction<FoodItem[]>) => {
@@ -66,13 +70,16 @@ const cartSlice = createSlice({
       localStorageService.setCart(state.items)
     },
     removeItem: (state, action: PayloadAction<{ id: number }>) => {
-      const index = state.items.findIndex(
-        (item) => item.product.id === action.payload.id
+      const idToRemove = action.payload.id
+      const updatedItems = state.items.filter(
+        (item) => item.product.id !== idToRemove
       );
-      if (index !== -1) {
-        localStorageService.setCart(state.items.splice(index, 1))
-        state.items.splice(index, 1);
-      }
+      // if (index !== -1) {
+      //   state.items.splice(index, 1);
+      //   localStorageService.setCart(state.items.splice(index, 1))
+        state.items = updatedItems ;
+        localStorageService.setCart(updatedItems)
+      // }
     },
 
     setDeliveryOption: (
@@ -83,6 +90,9 @@ const cartSlice = createSlice({
     },
     setComment: (state, action: PayloadAction<string>) => {
       state.comment = action.payload;
+    },
+    setCodePromo: (state, action: PayloadAction<string>) => {
+      state.codePromo = action.payload;
     },
     setSupplierMismatch: (state, action: PayloadAction<FoodItem>) => {
       state.supplierMismatch = action.payload;
@@ -128,6 +138,7 @@ export const {
   removeItem,
   setDeliveryOption,
   setComment,
+  setCodePromo,
   changeItemQuantity,
   clearCart,
   setSupplierMismatch,

@@ -1,5 +1,7 @@
 @import '../../colors';
 
+
+
 .cart-main {
   width: 100%;
   border-radius: 15px;
@@ -251,6 +253,10 @@
       line-height: normal;
       border-radius: 55px;
       border: 1px solid $orange_color;
+
+      &:hover {
+        cursor: pointer;
+      }
     }
 
     .to-panier {
@@ -260,6 +266,45 @@
     .to-paiment {
       color: white;
       background-color: $orange_color;
+    }
+  }
+
+  .empty-cart-main {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    margin-top: 41px;
+
+    p {
+      width: 299px;
+      height: 46px;
+
+      color: $dark_Gray;
+      text-align: center;
+      font-family: Poppins;
+      font-size: 15px;
+      font-style: normal;
+      font-weight: 600;
+      line-height: normal;
+    }
+
+    .emptyButton {
+      all: unset;
+      border-radius: 55px;
+      background-color: $orange_color;
+      min-width: 271px;
+      height: 55px;
+      text-align: center;
+      color: #FFF;
+      font-family: Poppins;
+      font-size: 20px;
+      font-style: normal;
+      font-weight: 600;
+      line-height: normal;
+      &:hover{
+        cursor: pointer;
+      }
     }
   }
 }
@@ -365,6 +410,7 @@
             button {
               all: unset;
               margin-right: 10px;
+
               .count-more,
               .count-less {
                 width: 14px;
