@@ -482,6 +482,10 @@ const MenuPopup: React.FC<Props> = ({ close, restaurant }) => {
                                                                 </div>
                                                             ))}
                                                         </form>
+                                                        
+                                                        <div className="devider">
+
+                                                        </div>
                                                     </>
 
                                                 </>)
