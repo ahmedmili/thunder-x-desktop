@@ -94,8 +94,12 @@ const MenuPopup: React.FC<Props> = ({ close, restaurant }) => {
     const packRef: RefObject<HTMLFormElement> = useRef(null);
 
     // const [optionsCounts, setOptionsCounts] = useState<number>(0);
+    const itemsPerPage = 3;
+
     const [totalPages, setTotalPages] = useState<number>(0);
     const [currentPage, setCurrentPage] = useState<number>(1);
+    const [allContent, setAllContent] = useState<any[]>([]);
+    const [displayedContent, setDisplayedContent] = useState<any[]>([]);
     const [productCount, setProductCount] = useState<number>(1);
     const [product, setProduct] = useState<any>([])
 
@@ -211,84 +215,59 @@ const MenuPopup: React.FC<Props> = ({ close, restaurant }) => {
         dispatch({ type: 'SET_TOTAL', payload: unite_price * productCount })
     }
 
-    const selectExtra = (index: number, event: any) => {
-        if (state.extra_max.max !== -1 && event.target.checked == true) {
-            let opts = [];
-            let extra = state.extra.filter((item: any) => item.checked === true)
-            extra.length > 0 && opts.push(extra);
-            if (opts.length >= state.extra_max.max) {
-                event.target.checked = false;
-                return true;
+
+    const selectOption = (type: string, index: number, event: any) => {
+
+        const newContent = displayedContent.map((option) => {
+            // Check if the key in the object matches the 'type' variable
+            if (Object.keys(option)[0] === type) {
+                // Clone the option to avoid mutating the original array
+                const updatedOption = { ...option };
+                var max = -1;
+                switch (type) {
+                    case 'viande':
+                        max = state.viande_max.max
+                        break;
+
+                    case 'sauce':
+                        max = state.sauce_max.max
+                        break;
+
+                    case 'extra':
+                        max = state.extra_max.max
+                        break;
+
+                    default:
+                        break;
+                }
+                if (!((type == "pate") || (type == 'packet' || (type == 'free')))) {
+                    let ok = true;
+                    if (max !== -1 && event.target.checked == true) {
+                        let opts = [];
+                        let max_selected = updatedOption[type].filter((item: any) => item.checked === true)
+                        max_selected.legth > 0 && opts.push(max_selected);
+                        if (opts.length >= max) {
+                            event.target.checked = false;
+                            ok = false
+                        }
+                    }
+                    if (ok) {
+                        updatedOption[type][index].checked = event.target.checked;
+                    }
+                } else if ((type == "pate") || (type == 'packet')) {
+                    updatedOption[type].forEach((item: any) => item.checked = false);
+                    updatedOption[type][index].checked = event.target.checked;
+                } else {
+                    updatedOption[type][index].checked = event.target.checked;
+
+                }
+                return updatedOption; // Return the updated object
             }
-        }
-        state.extra[index].checked = event.target.checked;
-        calculateTotal();
-    }
 
-    const selectSauce = (index: number, event: any) => {
-        let ok = true;
-        if (state.sauce_max.max !== -1 && event.target.checked == true) {
-            let opts = [];
-            let sauce = state.sauce.filter((item: any) => item.checked === true)
-            sauce.legth > 0 && opts.push(sauce);
-            if (opts.length >= state.sauce_max.max) {
-                event.target.checked = false;
-                ok = false
-            }
-        }
-        if (ok) {
-            state.sauce[index].checked = event.target.checked;
-            calculateTotal();
-        }
-    }
+            return option; // Return unchanged objects
+        });
 
-    const selectViande = (index: number, event: any) => {
-        let ok = true;
-        if (state.viande_max.max !== -1 && event.target.checked == true) {
-            let opts = [];
-            let viande = state.viande.filter((item: any) => item.checked === true)
-            viande.legth > 0 && opts.push(viande);
-            if (opts.length >= state.viande_max.max) {
-                event.target.checked = false;
-                ok = false
-            }
-        }
-        if (ok) {
-            state.viande[index].checked = event.target.checked;
-            calculateTotal();
-        }
-    }
-
-    const selectSupp = (index: number, event: any) => {
-
-        if (state.supplement_max.max !== -1 && event.target.checked == true) {
-            let opts = [];
-            let suppls = state.supplement.filter((item: any) => item.checked === true)
-            suppls.length > 0 && opts.push(suppls);
-            if (opts.length >= state.supplement_max.max) {
-                event.target.checked = false;
-                return true;
-            }
-        }
-        state.supplement[index].checked = event.target.checked;
-        calculateTotal();
-    }
-
-    const selectFree = (index: number, event: any) => {
-        state.free[index].checked = event.target.checked;
-        calculateTotal();
-
-    }
-
-    const selectPack = (index: number, event: any) => {
-        state.packet?.forEach((item: any) => item.checked = false);
-        state.packet[index].checked = event.target.checked;
-        calculateTotal();
-    }
-
-    const selectPate = (index: number, event: any) => {
-        state.pate?.forEach((item: any) => item.checked = false);
-        state.pate[index].checked = event.target.checked;
+        setDisplayedContent(newContent)
         calculateTotal();
     }
 
@@ -352,6 +331,13 @@ const MenuPopup: React.FC<Props> = ({ close, restaurant }) => {
         usedispatch(addItem(obj));
     }
 
+    // handle displayed content
+    const handleContent = () => {
+        const startIndex = (currentPage - 1) * itemsPerPage;
+        const endIndex = startIndex + itemsPerPage;
+        const displayedContent = allContent.slice(startIndex, endIndex)
+        setDisplayedContent(displayedContent)
+    }
 
     useEffect(() => {
         localStorageService.setCart(cartItems)
@@ -367,8 +353,8 @@ const MenuPopup: React.FC<Props> = ({ close, restaurant }) => {
     }, []);
 
     useEffect(() => {
-        let optionsCount: number = 0;
         let totalPages: number = 1;
+        const allContent = []
 
         state.packet.length > 0 && state.packet?.forEach((item: any) => item.checked = false)
         state.free.length > 0 && state.free?.forEach((item: any) => item.checked = false);
@@ -376,14 +362,20 @@ const MenuPopup: React.FC<Props> = ({ close, restaurant }) => {
         state.supplement.length > 0 && state.supplement?.forEach((item: any) => item.checked = false);
         state.pate.length > 0 && state.pate?.forEach((item: any) => item.checked = false);
 
-        state.packet.length > 0 && (optionsCount = optionsCount + 1);
-        state.free.length > 0 && (optionsCount = optionsCount + 1);
-        state.extra.length > 0 && (optionsCount = optionsCount + 1);
-        state.supplement.length > 0 && (optionsCount = optionsCount + 1);
-        state.pate.length > 0 && (optionsCount = optionsCount + 1);
-        // setOptionsCounts(optionsCount)
-        totalPages = optionsCount / 3
+        state.packet.length > 0 && allContent.push({ packet: state.packet });
+        state.extra.length > 0 && allContent.push({ extra: state.extra });
+        state.supplement.length > 0 && allContent.push({ supplement: state.supplement });
+        state.pate.length > 0 && allContent.push({ pate: state.pate });
+        state.free.length > 0 && allContent.push({ free: state.free });
+
+        let optionsCount: number = allContent.length;
+        totalPages = Math.ceil(optionsCount / itemsPerPage)
+        const startIndex = (currentPage - 1) * itemsPerPage;
+        const endIndex = startIndex + itemsPerPage;
+        const displayedContent = allContent.slice(startIndex, endIndex)
+        setDisplayedContent(displayedContent)
         setTotalPages(totalPages)
+        setAllContent(allContent)
         dispatch({ type: 'SET_TOTAL', payload: Number(product.default_price) })
         dispatch({ type: 'SET_UNITPRICE', payload: Number(product.default_price) })
         if (product.computed_value?.discount_value) {
@@ -392,8 +384,16 @@ const MenuPopup: React.FC<Props> = ({ close, restaurant }) => {
         }
     }, [product])
 
-    const changePage = () => {
-        setCurrentPage(currentPage === 1 ? 2 : 1);
+
+    useEffect(() => {
+        handleContent()
+    }, [currentPage])
+
+    const nextPage = () => {
+        setCurrentPage(currentPage + 1);
+    }
+    const prevPage = () => {
+        setCurrentPage(currentPage - 1);
     }
 
     // close popup when user click outside the box
@@ -443,229 +443,72 @@ const MenuPopup: React.FC<Props> = ({ close, restaurant }) => {
                         ) : (
                             <div className="menu-options">
                                 {
-                                    currentPage == 1 && (
-                                        <>
-                                            {/* pate options */}
-                                            {state.pate.length > 0 && (
-                                                <>
-                                                    <div className='menu-options-header'>
-                                                        <div className="option-name">Choisissez votre pate</div>
-                                                    </div>
-                                                    <form>
-                                                        {state.pate.map((option: any, index: number) => (
-                                                            <div key={option.id} className="options-list">
-                                                                <div className="checkBox">
-                                                                    <input type='checkbox' name={option.id} id={option.id} value={option.id || ''} onChange={(e) => selectPate(index, e)} checked={option?.checked}>
-                                                                    </input>
-                                                                    <div className="custom-checkbox"></div>
-                                                                    <label htmlFor={option.id}>{option.name} </label>
-                                                                </div>
-                                                                <span className='option-price'>{option.price} DT</span>
-                                                            </div>
-                                                        ))}
-                                                    </form>
-                                                </>
-                                            )}
-                                            {/* packet options */}
-                                            {state.packet.length > 0 && (
-                                                <>
-                                                    <div className='menu-options-header'>
-                                                        <div className="option-name">Choisissez votre packet</div>
-                                                        <div className="option-obligatoir">Obligatoire</div>
-                                                    </div>
-                                                    <form ref={packRef}>
-                                                        {state.packet.map((option: any, index: number) => (
-                                                            <div key={option.id} className="options-list">
-                                                                <div className="checkBox">
-                                                                    <input type='checkbox'
-                                                                        name={option.id}
-                                                                        id={option.id}
-                                                                        value={option.id || ''}
-                                                                        onChange={(e) => selectPack(index, e)}
-                                                                        checked={option?.checked}
-                                                                    >
-                                                                    </input>
-                                                                    <div className="custom-checkbox"></div>
-                                                                    <label htmlFor={option.id}>{option.name} </label>
-                                                                </div>
-                                                                <span className='option-price'>{option.price} DT</span>
-                                                            </div>
-                                                        ))}
-                                                    </form>
-                                                </>
-                                            )}
 
-                                            {/* supplement options */}
-                                            {state.supplement.length > 0 && (
+                                    <>
+                                        {displayedContent.length > 0 && displayedContent.map((options, index) => {
+                                            return (
                                                 <>
-                                                    <div className='menu-options-header'>
-                                                        <div className="option-name">Choisissez votre supplement</div>
-                                                        {/* <div className="option-obligatoir">{"MAX " + state.supplement_max?.max}</div> */}
-                                                    </div>
-                                                    <form>
-                                                        {state.supplement.map((option: any, index: number) => (
-                                                            <div key={option.id} className="options-list">
-                                                                <div className="checkBox">
-                                                                    <input type='checkbox'
-                                                                        name={option.id}
-                                                                        id={option.id}
-                                                                        value={option.id || ''}
-                                                                        checked={option?.checked}
-                                                                        onChange={(e) => selectSupp(index, e)}
-                                                                    >
-                                                                    </input>
-                                                                    <div className="custom-checkbox"></div>
-                                                                    <label htmlFor={option.id}>{option.name} </label>
+                                                    <>
+                                                        <div className='menu-options-header'>
+                                                            <div className="option-name">Choisissez votre {Object.keys(options)[0]}</div>
+                                                            {
+
+                                                                Object.keys(options)[0] === "packet" && <div className="option-obligatoir">Obligatoire</div>
+                                                            }
+
+                                                            {
+                                                                Object.keys(options)[0] === "sauce" && state.sauce_max?.max > 0 && <div className="option-max">{"MAX " + state.sauce_max?.max}</div>
+                                                            }
+                                                            {
+                                                                Object.keys(options)[0] === "viande" && state.viande_max?.max > 0 && <div className="option-max">{"MAX " + state.viande_max?.max}</div>
+                                                            }
+                                                            {
+                                                                Object.keys(options)[0] === "extra" && state.extra_max?.max > 0 && <div className="option-max">{"MAX " + state.extra_max?.max}</div>
+                                                            }
+                                                            {
+                                                                Object.keys(options)[0] === "supplement" && state.supplement_max?.max > 0 && <div className="option-max">{"MAX " + state.supplement_max?.max}</div>
+                                                            }
+                                                        </div>
+                                                        <form>
+                                                            {state[Object.keys(options)[0]].map((option: any, index: number) => (
+                                                                <div key={index} className="options-list">
+                                                                    <div className="checkBox">
+                                                                        <input type='checkbox' name={option.id} id={option.id} value={option.id || ''} onChange={(e) => selectOption(Object.keys(options)[0], index, e)} checked={option?.checked}>
+                                                                        </input>
+                                                                        <div className="custom-checkbox"></div>
+                                                                        <label htmlFor={option.id}>{option.name} </label>
+                                                                    </div>
+                                                                    <span className='option-price'>{option.price} DT</span>
                                                                 </div>
-                                                                <span className='option-price'>{option.price} DT</span>
-                                                            </div>
-                                                        ))}
-                                                    </form>
-                                                </>
-                                            )}
+                                                            ))}
+                                                        </form>
+                                                    </>
+
+                                                </>)
+                                        })
+                                        }
+
+                                        {/* next button  */}
+                                        {!(currentPage === totalPages) &&
                                             <div className="next-page-button">
-                                                <button onClick={changePage}>
+                                                <button onClick={nextPage}>
                                                     <ArrowRightAltIcon className="next-page-icon" />
                                                 </button>
                                             </div>
-
-                                        </>
-                                    )
-                                }
-
-                                {
-                                    currentPage == 2 && (
-                                        <>
-                                            {/* sauce options */}
-                                            {state.sauce.length > 0 && (
-                                                <>
-                                                    <div className='menu-options-header'>
-                                                        <div className="option-name">Choisissez votre sauce</div>
-                                                        {
-                                                            state.sauce_max?.max > 0 &&
-                                                            <div className="option-max">{"MAX " + state.sauce_max?.max}</div>
-                                                        }
-                                                    </div>
-                                                    <form>
-                                                        {state.sauce.map((option: any, index: number) => (
-                                                            <div key={option.id} className="options-list">
-                                                                <div className="checkBox">
-                                                                    <input type='checkbox'
-                                                                        name={option.id}
-                                                                        id={option.id}
-                                                                        value={option.id || ''}
-                                                                        checked={option?.checked}
-                                                                        onChange={(e) => selectSauce(index, e)}
-                                                                    >
-                                                                    </input>
-                                                                    <div className="custom-checkbox"></div>
-                                                                    <label htmlFor={option.id}>{option.name} </label>
-                                                                </div>
-                                                                <span className='option-price'>{option.price} DT</span>
-                                                            </div>
-                                                        ))}
-                                                    </form>
-                                                </>
-                                            )}
-
-                                            {/* viande options */}
-                                            {state.viande.length > 0 && (
-                                                <>
-                                                    <div className='menu-options-header'>
-                                                        <div className="option-name">Choisissez votre viande</div>
-                                                        {
-                                                            state.viande_max?.max > 0 &&
-                                                            <div className="option-max">{"MAX " + state.viande_max?.max}</div>
-                                                        }
-                                                    </div>
-                                                    <form>
-                                                        {state.viande.map((option: any, index: number) => (
-                                                            <div key={option.id} className="options-list">
-                                                                <div className="checkBox">
-                                                                    <input type='checkbox'
-                                                                        name={option.id}
-                                                                        id={option.id}
-                                                                        value={option.id || ''}
-                                                                        checked={option?.checked}
-                                                                        onChange={(e) => selectViande(index, e)}
-                                                                    >
-                                                                    </input>
-                                                                    <div className="custom-checkbox"></div>
-                                                                    <label htmlFor={option.id}>{option.name} </label>
-                                                                </div>
-                                                                <span className='option-price'>{option.price} DT</span>
-                                                            </div>
-                                                        ))}
-                                                    </form>
-                                                </>
-                                            )}
-
-                                            {/* extra options */}
-                                            {state.extra.length > 0 && (
-                                                <>
-                                                    <div className='menu-options-header'>
-                                                        <div className="option-name">Choisissez votre extra</div>
-                                                        {
-                                                            state.extra_max?.max > 0 &&
-                                                            <div className="option-max">{"MAX " + state.extra_max?.max}</div>
-                                                        }
-                                                    </div>
-                                                    <form>
-                                                        {state.extra.map((option: any, index: number) => (
-                                                            <div key={option.id} className="options-list">
-                                                                <div className="checkBox">
-                                                                    <input type='checkbox'
-                                                                        name={option.id}
-                                                                        id={option.id}
-                                                                        value={option.id || ''}
-                                                                        checked={option?.checked}
-                                                                        onChange={(e) => selectExtra(index, e)}
-
-                                                                    >
-                                                                    </input>
-                                                                    <div className="custom-checkbox"></div>
-                                                                    <label htmlFor={option.id}>{option.name} </label>
-                                                                </div>
-                                                                <span className='option-price'>{option.price} DT</span>
-                                                            </div>
-                                                        ))}
-                                                    </form>
-                                                </>
-                                            )}
-                                            {/* free options */}
-                                            {state.free.length > 0 && (
-                                                <>
-                                                    <div className='menu-options-header'>
-                                                        <div className="option-name">Free</div>
-                                                    </div>
-
-                                                    <form>
-                                                        {state.free.map((option: any, index: number) => (
-                                                            <div key={option.id} className="options-list">
-                                                                <div className="checkBox">
-
-                                                                    <input type='checkbox'
-                                                                        name={option.id}
-                                                                        id={option.id}
-                                                                        value={option.id || ''}
-                                                                        onChange={(e) => selectFree(index, e)}
-                                                                        checked={option?.checked}
-
-                                                                    >
-                                                                    </input>
-                                                                    <div className="custom-checkbox"></div>
-                                                                    <label htmlFor={option.id}>{option.name} </label>
-                                                                </div>
-                                                                <span className='option-price'>{option.price} DT</span>
-
-                                                            </div>
-                                                        ))}
-                                                    </form>
-                                                </>
-                                            )}
-
+                                        }
+                                        {/* prev button */}
+                                        {!(currentPage === 1) &&
+                                            <div className="prev-page-button">
+                                                <button onClick={prevPage}>
+                                                    <ArrowRightAltIcon className="prev-page-icon" />
+                                                </button>
+                                            </div>
+                                        }
+                                        {/* command buttons */}
+                                        {(currentPage === totalPages) &&
 
                                             <div className="buttons">
+                                                {/* counting */}
                                                 <div className="count-container">
                                                     <input type="number" name="product-count" id="product-count" value={productCount} onChange={(e) => { (parseInt(e.target.value) >= 1) && setProductCount(parseInt(e.target.value)) }} />
                                                     <div className="count-buttons">
@@ -678,21 +521,272 @@ const MenuPopup: React.FC<Props> = ({ close, restaurant }) => {
                                                         </button>
                                                     </div>
                                                 </div>
-
+                                                {/* add to cart */}
                                                 <button className="add-to-cart-button" onClick={() => { addToCart() }}>
                                                     <ShoppingCartOutlinedIcon className='cart-icon' />
                                                     {t('add_to_cart')}
                                                 </button>
 
                                             </div>
+                                        }
+                                    </>
 
-                                            <div className="prev-page-button">
-                                                <button onClick={changePage}>
-                                                    <ArrowRightAltIcon className="prev-page-icon" />
-                                                </button>
-                                            </div>
-                                        </>
-                                    )
+                                    // <p>
+                                    //     {
+                                    //       displayedContent.length > 0 && Object.keys(displayedContent[0]).toString()
+                                    //     }
+                                    // </p>
+
+                                    // currentPage == 1 && (
+                                    //     <>
+                                    // {/* pate options */}
+                                    // {state.pate.length > 0 && (
+                                    // <>
+                                    //     <div className='menu-options-header'>
+                                    //         <div className="option-name">Choisissez votre pate</div>
+                                    //     </div>
+                                    //     <form>
+                                    //         {state.pate.map((option: any, index: number) => (
+                                    //             <div key={option.id} className="options-list">
+                                    //                 <div className="checkBox">
+                                    //                     <input type='checkbox' name={option.id} id={option.id} value={option.id || ''} onChange={(e) => selectPate(index, e)} checked={option?.checked}>
+                                    //                     </input>
+                                    //                     <div className="custom-checkbox"></div>
+                                    //                     <label htmlFor={option.id}>{option.name} </label>
+                                    //                 </div>
+                                    //                 <span className='option-price'>{option.price} DT</span>
+                                    //             </div>
+                                    //         ))}
+                                    //     </form>
+                                    // </>
+                                    // )}
+                                    // {/* packet options */}
+                                    // {state.packet.length > 0 && (
+                                    //     <>
+                                    //         <div className='menu-options-header'>
+                                    //             <div className="option-name">Choisissez votre packet</div>
+                                    //             <div className="option-obligatoir">Obligatoire</div>
+                                    //         </div>
+                                    //         <form ref={packRef}>
+                                    //             {state.packet.map((option: any, index: number) => (
+                                    //                 <div key={option.id} className="options-list">
+                                    //                     <div className="checkBox">
+                                    //                         <input type='checkbox'
+                                    //                             name={option.id}
+                                    //                             id={option.id}
+                                    //                             value={option.id || ''}
+                                    //                             onChange={(e) => selectPack(index, e)}
+                                    //                             checked={option?.checked}
+                                    //                         >
+                                    //                         </input>
+                                    //                         <div className="custom-checkbox"></div>
+                                    //                         <label htmlFor={option.id}>{option.name} </label>
+                                    //                     </div>
+                                    //                     <span className='option-price'>{option.price} DT</span>
+                                    //                 </div>
+                                    //             ))}
+                                    //         </form>
+                                    //     </>
+                                    // )}
+
+                                    // {/* supplement options */}
+                                    // {state.supplement.length > 0 && (
+                                    //     <>
+                                    //         <div className='menu-options-header'>
+                                    //             <div className="option-name">Choisissez votre supplement</div>
+                                    //             {/* <div className="option-obligatoir">{"MAX " + state.supplement_max?.max}</div> */}
+                                    //         </div>
+                                    //         <form>
+                                    //             {state.supplement.map((option: any, index: number) => (
+                                    //                 <div key={option.id} className="options-list">
+                                    //                     <div className="checkBox">
+                                    //                         <input type='checkbox'
+                                    //                             name={option.id}
+                                    //                             id={option.id}
+                                    //                             value={option.id || ''}
+                                    //                             checked={option?.checked}
+                                    //                             onChange={(e) => selectSupp(index, e)}
+                                    //                         >
+                                    //                         </input>
+                                    //                         <div className="custom-checkbox"></div>
+                                    //                         <label htmlFor={option.id}>{option.name} </label>
+                                    //                     </div>
+                                    //                     <span className='option-price'>{option.price} DT</span>
+                                    //                 </div>
+                                    //             ))}
+                                    //         </form>
+                                    //     </>
+                                    // )}
+                                    // <div className="next-page-button">
+                                    //     <button onClick={changePage}>
+                                    //         <ArrowRightAltIcon className="next-page-icon" />
+                                    //     </button>
+                                    // </div>
+
+                                    //     </>
+                                    // )
+                                }
+
+                                {
+                                    // currentPage == 2 && (
+                                    //     <>
+                                    //         {/* sauce options */}
+                                    //         {state.sauce.length > 0 && (
+                                    //             <>
+                                    //                 <div className='menu-options-header'>
+                                    //                     <div className="option-name">Choisissez votre sauce</div>
+                                    //                     {
+                                    //                         state.sauce_max?.max > 0 &&
+                                    //                         <div className="option-max">{"MAX " + state.sauce_max?.max}</div>
+                                    //                     }
+                                    //                 </div>
+                                    //                 <form>
+                                    //                     {state.sauce.map((option: any, index: number) => (
+                                    //                         <div key={option.id} className="options-list">
+                                    //                             <div className="checkBox">
+                                    //                                 <input type='checkbox'
+                                    //                                     name={option.id}
+                                    //                                     id={option.id}
+                                    //                                     value={option.id || ''}
+                                    //                                     checked={option?.checked}
+                                    //                                     onChange={(e) => selectSauce(index, e)}
+                                    //                                 >
+                                    //                                 </input>
+                                    //                                 <div className="custom-checkbox"></div>
+                                    //                                 <label htmlFor={option.id}>{option.name} </label>
+                                    //                             </div>
+                                    //                             <span className='option-price'>{option.price} DT</span>
+                                    //                         </div>
+                                    //                     ))}
+                                    //                 </form>
+                                    //             </>
+                                    //         )}
+
+                                    //         {/* viande options */}
+                                    //         {state.viande.length > 0 && (
+                                    //             <>
+                                    //                 <div className='menu-options-header'>
+                                    //                     <div className="option-name">Choisissez votre viande</div>
+                                    //                     {
+                                    //                         state.viande_max?.max > 0 &&
+                                    //                         <div className="option-max">{"MAX " + state.viande_max?.max}</div>
+                                    //                     }
+                                    //                 </div>
+                                    //                 <form>
+                                    //                     {state.viande.map((option: any, index: number) => (
+                                    //                         <div key={option.id} className="options-list">
+                                    //                             <div className="checkBox">
+                                    //                                 <input type='checkbox'
+                                    //                                     name={option.id}
+                                    //                                     id={option.id}
+                                    //                                     value={option.id || ''}
+                                    //                                     checked={option?.checked}
+                                    //                                     onChange={(e) => selectViande(index, e)}
+                                    //                                 >
+                                    //                                 </input>
+                                    //                                 <div className="custom-checkbox"></div>
+                                    //                                 <label htmlFor={option.id}>{option.name} </label>
+                                    //                             </div>
+                                    //                             <span className='option-price'>{option.price} DT</span>
+                                    //                         </div>
+                                    //                     ))}
+                                    //                 </form>
+                                    //             </>
+                                    //         )}
+
+                                    //         {/* extra options */}
+                                    //         {state.extra.length > 0 && (
+                                    //             <>
+                                    //                 <div className='menu-options-header'>
+                                    //                     <div className="option-name">Choisissez votre extra</div>
+                                    //                     {
+                                    //                         state.extra_max?.max > 0 &&
+                                    //                         <div className="option-max">{"MAX " + state.extra_max?.max}</div>
+                                    //                     }
+                                    //                 </div>
+                                    //                 <form>
+                                    //                     {state.extra.map((option: any, index: number) => (
+                                    //                         <div key={option.id} className="options-list">
+                                    //                             <div className="checkBox">
+                                    //                                 <input type='checkbox'
+                                    //                                     name={option.id}
+                                    //                                     id={option.id}
+                                    //                                     value={option.id || ''}
+                                    //                                     checked={option?.checked}
+                                    //                                     onChange={(e) => selectExtra(index, e)}
+
+                                    //                                 >
+                                    //                                 </input>
+                                    //                                 <div className="custom-checkbox"></div>
+                                    //                                 <label htmlFor={option.id}>{option.name} </label>
+                                    //                             </div>
+                                    //                             <span className='option-price'>{option.price} DT</span>
+                                    //                         </div>
+                                    //                     ))}
+                                    //                 </form>
+                                    //             </>
+                                    //         )}
+                                    //         {/* free options */}
+                                    //         {state.free.length > 0 && (
+                                    //             <>
+                                    //                 <div className='menu-options-header'>
+                                    //                     <div className="option-name">Free</div>
+                                    //                 </div>
+
+                                    //                 <form>
+                                    //                     {state.free.map((option: any, index: number) => (
+                                    //                         <div key={option.id} className="options-list">
+                                    //                             <div className="checkBox">
+
+                                    //                                 <input type='checkbox'
+                                    //                                     name={option.id}
+                                    //                                     id={option.id}
+                                    //                                     value={option.id || ''}
+                                    //                                     onChange={(e) => selectFree(index, e)}
+                                    //                                     checked={option?.checked}
+
+                                    //                                 >
+                                    //                                 </input>
+                                    //                                 <div className="custom-checkbox"></div>
+                                    //                                 <label htmlFor={option.id}>{option.name} </label>
+                                    //                             </div>
+                                    //                             <span className='option-price'>{option.price} DT</span>
+
+                                    //                         </div>
+                                    //                     ))}
+                                    //                 </form>
+                                    //             </>
+                                    //         )}
+
+
+                                    //         <div className="buttons">
+                                    //             <div className="count-container">
+                                    //                 <input type="number" name="product-count" id="product-count" value={productCount} onChange={(e) => { (parseInt(e.target.value) >= 1) && setProductCount(parseInt(e.target.value)) }} />
+                                    //                 <div className="count-buttons">
+                                    //                     <button onClick={() => handleCount("add")} >
+                                    //                         <KeyboardArrowUpOutlinedIcon className="count-more" />
+                                    //                     </button>
+                                    //                     <button onClick={() => handleCount("remove")} >
+
+                                    //                         <KeyboardArrowDownOutlinedIcon className="count-less" />
+                                    //                     </button>
+                                    //                 </div>
+                                    //             </div>
+
+                                    //             <button className="add-to-cart-button" onClick={() => { addToCart() }}>
+                                    //                 <ShoppingCartOutlinedIcon className='cart-icon' />
+                                    //                 {t('add_to_cart')}
+                                    //             </button>
+
+                                    //         </div>
+
+                                    // <div className="prev-page-button">
+                                    //     <button onClick={changePage}>
+                                    //         <ArrowRightAltIcon className="prev-page-icon" />
+                                    //     </button>
+                                    // </div>
+                                    //     </>
+                                    // )
                                 }
                             </div >
                         )}
