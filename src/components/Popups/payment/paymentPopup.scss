@@ -1,25 +1,7 @@
 @import '../../../_colors.scss';
+@import '../../../animations';
 
-@keyframes popup-animation {
-    0% {
-        scale: 0;
-        opacity: 0;
-    }
 
-    40% {
-        scale: 1;
-        opacity: 1;
-    }
-
-    60% {
-        scale: 0.7;
-    }
-
-    100% {
-        scale: 1;
-        opacity: 1;
-    }
-}
 
 .popup-container {
     height: 100vh;
@@ -43,7 +25,7 @@
         gap: 25px;
         border-radius: 222px;
         background-color: #F7F7F7;
-        animation: popup-animation 0.5s ease-out;
+        animation: $PopupAnimation 0.5s ease-out;
     }
 
     p {
