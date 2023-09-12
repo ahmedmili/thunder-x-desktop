@@ -32,7 +32,12 @@ interface AdressComponentProps {
   children?: React.ReactNode;
 }
 
-const Map = () => {
+interface MapProps {
+  className?: string;
+
+}
+
+const Map: React.FC<MapProps> = ({ className }) => {
   const { t } = useTranslation();
   const [clientAdressTable, setClientAdressTable] = useState([]);
   const dispatch = useAppDispatch();
@@ -52,13 +57,14 @@ const Map = () => {
   const userItem = localStorageService.getUser();
   return (
     <>
-      <div className="location-container">
+      <div className={`location-container ${className ? className : ""}`}>
         <div className="cancel-icon-container">
           <ClearRoundedIcon
             onClick={() => searchType === "" ? dispatch({ type: "SET_SHOW", payload: false }) : setSearchType("")}
             className="cancel-icon"
           ></ClearRoundedIcon>
         </div>
+
         {
           searchType == '' ? <Options /> : <MapCard />
 
@@ -132,10 +138,15 @@ const Map = () => {
             ))}
           </div>
         ) : (
-          <h6 style={{ display: userItem ? "inline" : "none" }}>
-            no saved adress to display
-          </h6>
-        )}
+          <div className="Text-container">
+
+            <h6 style={{ display: userItem ? "inline" : "none" }}>
+              no saved adress to display
+            </h6>
+          </div>
+        )
+
+        }
       </>
     )
   }
@@ -215,27 +226,27 @@ const Map = () => {
     );
   };
 
-  
-function AdressComponent({
-  type,
-  street,
-  region,
-  lat,
-  long,
-}: AdressComponentProps) {
 
-  const changeAdress = () => {
-    dispatch({
-      type: "SET_LOCATION",
-      payload: {
-        coords: {
-          latitude: lat,
-          longitude: long,
-          label: type,
+  function AdressComponent({
+    type,
+    street,
+    region,
+    lat,
+    long,
+  }: AdressComponentProps) {
+
+    const changeAdress = () => {
+      dispatch({
+        type: "SET_LOCATION",
+        payload: {
+          coords: {
+            latitude: lat,
+            longitude: long,
+            label: type,
+          },
         },
-      },
-    });
-  };
+      });
+    };
 
 
 

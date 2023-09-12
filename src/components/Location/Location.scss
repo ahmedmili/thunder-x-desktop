@@ -4,7 +4,6 @@
 .location-container {
   padding-top: 37px;
   position: relative;
-  // padding: 24px;
   height: 504px;
   overflow-y: scroll;
   scrollbar-width: thin;
@@ -213,7 +212,7 @@
     display: flex;
     flex-direction: column;
     justify-content: center;
-    align-items: center;
+    align-items: start;
     margin-top: 25px;
     padding-left: 3%;
 
@@ -228,6 +227,19 @@
       text-align: start;
       margin-left: 10%;
     }
+
+    h6 {
+      width: 342px;
+      height: 39px;
+      color: #484848;
+      font-family: Poppins;
+      font-size: 20px;
+      font-style: normal;
+      font-weight: 500;
+      line-height: normal;
+      text-align: start;
+      margin-left: 10%;  
+    }
   }
 
   .adresses-container {
@@ -236,9 +248,17 @@
     grid-template-columns: repeat(2, 1fr);
     grid-gap: 10px;
   }
+
+
 }
 
-
+.profile-config-map {
+  width: 700px;
+  box-shadow: none;
+  .cancel-icon-container {
+    display: none;
+  }
+}
 
 @media only screen and (max-width : 786px) {
   .location-container {
@@ -297,6 +317,7 @@
 
     .location-search-input-container {
       width: 191px;
+
       .location-search-inpute {
 
         input[type="text"] {

@@ -6,6 +6,8 @@ import './configPage.scss'
 import { useState } from 'react';
 import Longue from './Longue/Longue';
 import Theme from './Theme/Theme';
+import MapCard from '../../../Location/mapCard/MapCard';
+import Map from '../../../Location/Location';
 
 interface Settingsection {
   title: string;
@@ -50,6 +52,15 @@ const ConfigPage = () => {
           </>
         }
         <SettingSection settingIndex={2} actionListener={handleselect} title='Mes adresses de livraison' className={`${selectedSetting === 2 ? "active" : ""}`} />
+        {
+          selectedSetting === 2 &&
+          <div className='map-container'>
+          <Map className='profile-config-map'/>
+          </div>
+        }
+          {/* <div className='map-container'>
+          <Map className='profile-config-map'/>
+          </div> */}
         <SettingSection settingIndex={3} actionListener={handleselect} title='Changer la langue' className={`${selectedSetting === 3 ? "active" : ""}`} />
         {selectedSetting === 3 &&
           <div className='longue-container'>
