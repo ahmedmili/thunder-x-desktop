@@ -37,6 +37,8 @@ import HomeSkeleton from "./views/home/skeleton/HomeSkeleton";
 import Header from "./components/Header/Header";
 import Footer from "./components/footer/footer";
 import MenuOptions from "./components/menus/menuOptions/MenuOptions";
+import Profile from "./components/layout/Profile/Profile";
+import ConfigPage from "./components/layout/Profile/ConfigPage/ConfigPage";
 
 //lazy loading
 const HomePage = lazy(() => import("./views/home/home.page"));
@@ -190,21 +192,18 @@ function App() {
           <Route path="/" element={<Layout />}>
             <Route index element={<HomePage />} />
             <Route path="/supplier-store/:id/*" element={<Menu />} />
-            <Route path="/product" element={<MenuOptions />} />
-            <Route path="/cart" element={<CartPage/>} />
+            {/* <Route path="/product" element={<MenuOptions />} /> */}
+            <Route path="/cart" element={<CartPage />} />
             <Route path="/search" element={<FilterPage />} />
-
             {/* Private Route */}
             <Route path="track-order" element={<OrderTrackingPage />} />
-            <Route
-              path="profile"
-              element={
-                <ProtectedRoute>
-                  <ProfilePage />
-                </ProtectedRoute>
-              }
-            />
           </Route>
+
+          <Route path="/profile" element={<Profile />}>
+            <Route index element={<ConfigPage />} />
+          </Route>
+
+
           <Route path="unauthorized" element={<UnauthorizePage />} />
           <Route path="login" element={<LoginPage />} />
           <Route path="register" element={<RegisterPage />} />
