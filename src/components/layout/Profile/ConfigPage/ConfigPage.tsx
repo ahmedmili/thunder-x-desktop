@@ -6,8 +6,8 @@ import './configPage.scss'
 import { useState } from 'react';
 import Longue from './Longue/Longue';
 import Theme from './Theme/Theme';
-import MapCard from '../../../Location/mapCard/MapCard';
 import Map from '../../../Location/Location';
+import Legale from './Legale/Legale';
 
 interface Settingsection {
   title: string;
@@ -39,7 +39,6 @@ const ConfigPage = () => {
 
   const [selectedSetting, setSelectedSetting] = useState<number>(0)
   const handleselect = (index: number) => {
-    console.log(index)
     setSelectedSetting(index)
   }
   return (
@@ -55,12 +54,9 @@ const ConfigPage = () => {
         {
           selectedSetting === 2 &&
           <div className='map-container'>
-          <Map className='profile-config-map'/>
+            <Map className='profile-config-map' />
           </div>
         }
-          {/* <div className='map-container'>
-          <Map className='profile-config-map'/>
-          </div> */}
         <SettingSection settingIndex={3} actionListener={handleselect} title='Changer la langue' className={`${selectedSetting === 3 ? "active" : ""}`} />
         {selectedSetting === 3 &&
           <div className='longue-container'>
@@ -69,6 +65,13 @@ const ConfigPage = () => {
 
         }
         <SettingSection settingIndex={4} actionListener={handleselect} title='Mensions légales' className={`${selectedSetting === 4 ? "active" : ""}`} />
+        {
+          selectedSetting === 4 &&
+          <div className='legal-container'>
+            <Legale />
+          </div>
+        }
+  
         <SettingSection settingIndex={5} actionListener={handleselect} title='Politiques de confidentialité' className={`${selectedSetting === 5 ? "active" : ""}`} />
         <SettingSection settingIndex={6} actionListener={handleselect} title='Sélectionner le théme' className={`${selectedSetting === 6 ? "active" : ""}`} />
         {selectedSetting === 6 &&

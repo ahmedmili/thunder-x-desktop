@@ -34,7 +34,7 @@ const Theme = () => {
   }, [theme])
   return (
     <>
-      <section className="long-section">
+      <section className="theme-section">
         <div className='option-container'>
           <input className='form-check-input' value='ligth' onChange={(e) => handleChange(e, 1)} checked={theme == 0} type="radio" name="theme" id="ligth" />
           <label htmlFor="ligth">{t('Clair')}</label>
