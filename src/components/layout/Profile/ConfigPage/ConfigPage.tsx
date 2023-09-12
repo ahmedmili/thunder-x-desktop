@@ -5,6 +5,7 @@ import KeyboardArrowUpOutlinedIcon from '@mui/icons-material/KeyboardArrowUpOutl
 import './configPage.scss'
 import { useState } from 'react';
 import Longue from './Longue/Longue';
+import Theme from './Theme/Theme';
 
 interface Settingsection {
   title: string;
@@ -51,15 +52,20 @@ const ConfigPage = () => {
         <SettingSection settingIndex={2} actionListener={handleselect} title='Mes adresses de livraison' className={`${selectedSetting === 2 ? "active" : ""}`} />
         <SettingSection settingIndex={3} actionListener={handleselect} title='Changer la langue' className={`${selectedSetting === 3 ? "active" : ""}`} />
         {selectedSetting === 3 &&
-          <div className='option-container'>
+          <div className='longue-container'>
             <Longue />
           </div>
 
         }
-        {/* <Longue /> */}
         <SettingSection settingIndex={4} actionListener={handleselect} title='Mensions légales' className={`${selectedSetting === 4 ? "active" : ""}`} />
         <SettingSection settingIndex={5} actionListener={handleselect} title='Politiques de confidentialité' className={`${selectedSetting === 5 ? "active" : ""}`} />
         <SettingSection settingIndex={6} actionListener={handleselect} title='Sélectionner le théme' className={`${selectedSetting === 6 ? "active" : ""}`} />
+        {selectedSetting === 6 &&
+          <div className='theme-container'>
+            <Theme />
+          </div>
+        }
+        {/* <Theme /> */}
         <SettingSection settingIndex={7} actionListener={handleselect} title='Supprimer mon compte' className={`${selectedSetting === 7 ? "active" : ""}`} />
       </div>
 

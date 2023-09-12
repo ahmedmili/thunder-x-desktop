@@ -1,59 +1,47 @@
 
 import { useTranslation } from 'react-i18next';
-import './longue.scss'
+import './theme.scss'
 import { useEffect, useState } from 'react';
-
-interface LongueProps {
-  title: string;
-  settingIndex: number;
-  actionListener: any;
-  className: string;
-}
-
-const Longue = () => {
-
-  const [selectedLangue, setSelectedLangue] = useState<number>(0)
+import { useDispatch } from 'react-redux';
+import {
+  setTheme
+} from "../../../../../Redux/slices/home";
+import { useAppSelector } from '../../../../../Redux/store';
 
 
-  const { t, i18n } = useTranslation();
+const Theme = () => {
 
-  const handleChange = (event:any,i:number) => {
-    i18n.changeLanguage(event.target.value);
-    setSelectedLangue(i)
+  const theme = useAppSelector((state) => state.home.theme)
+  const dispatch = useDispatch();
+  const { t } = useTranslation();
+
+  const handleChange = (event: any, i: number) => {
+    const currentTheme = event.target.value == "ligth" ? 0 : 1
+    dispatch(setTheme(currentTheme))
   };
 
 
-useEffect(()=>{
-  const currentLong = i18n.language ;
-  switch (currentLong) {
-    case 'ar':
-      setSelectedLangue(1)
-      break;
-    case 'fr':
-      setSelectedLangue(2)
-      break;
-    case 'en':
-      setSelectedLangue(3)
-      break;
-    default:
-      break;
-  }
-console.log(currentLong)
-},[selectedLangue])
+  useEffect(() => {
+    switch (theme) {
+      case 0:
+        break;
+      case 1:
+        break;
+      default:
+        break;
+    }
+    console.log(theme)
+  }, [theme])
   return (
     <>
       <section className="long-section">
         <div className='option-container'>
-          <input className='form-check-input' value='ar' checked={selectedLangue == 1} onClick={(e)=> handleChange(e,1)} type="radio" name="long" id="Ar" />
-          <label htmlFor="Ar">{t('Arabic')}</label>
+          <input className='form-check-input' value='ligth' onChange={(e) => handleChange(e, 1)} checked={theme == 0} type="radio" name="theme" id="ligth" />
+          <label htmlFor="ligth">{t('Clair')}</label>
         </div>
         <div className='option-container'>
-          <input className='form-check-input' value='fr' checked={selectedLangue == 2} onClick={(e)=> handleChange(e,2)} type="radio" name="long" id="Fr" />
-          <label htmlFor="Fr">{t('French')}</label>
-        </div>
-        <div className='option-container'>
-          <input className='form-check-input' value='en' checked={selectedLangue == 3} onClick={(e)=> handleChange(e,3)} type="radio" name="long" id="En" />
-          <label htmlFor="En">{t('English')}</label>
+          <input className='form-check-input' value='dark' onChange={(e) => handleChange(e, 1)}  checked={theme == 1}  type="radio" name="theme" id="dark" />
+          <label htmlFor="dark">{t('Sombre')}</label>
         </div>
       </section>
 
@@ -61,4 +49,4 @@ console.log(currentLong)
   );
 };
 
-export default Longue;
+export default Theme;

@@ -2,6 +2,7 @@ import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 import { RootState } from ".";
 import { api } from "../../services/axiosApi";
 import { AppDispatch } from "../store";
+import { localStorageService } from "../../services/localStorageService";
 
 type HomeDataProps = {
   ads: any;
@@ -13,6 +14,7 @@ type HomeDataProps = {
   today_offers: any[];
 };
 export type HomeDataState = {
+  theme: number;
   data: HomeDataProps;
   loading: boolean;
   error: any;
@@ -20,6 +22,7 @@ export type HomeDataState = {
 };
 
 const initialState: HomeDataState = {
+  theme: 0,
   data: {
     ads: {},
     categories: [],
@@ -64,6 +67,10 @@ const homeSlice = createSlice({
     setIsDelivery: (state, action) => {
       state.isDelivery = action.payload;
     },
+    setTheme: (state, action) => {
+      state.theme = action.payload;
+      localStorageService.setUserTheme(action.payload)
+    },
   },
 });
 
@@ -72,6 +79,7 @@ export const {
   startLoading,
   getHomeDataError,
   setIsDelivery,
+  setTheme,
 } = homeSlice.actions;
 
 const homeReducer = homeSlice.reducer;
@@ -97,22 +105,22 @@ export const homeLoadingSelector = (state: RootState) => state.home.loading;
 // Action
 export const fetchHomeData =
   (isDelivery: number, long: any, lat: any) =>
-  async (dispatch: AppDispatch) => {
-    try {
-      dispatch(startLoading());
-      const response = await api.post("get_home_page_data", {
-        delivery: isDelivery,
-        lat: lat,
-        long: long,
-      });
-      const { success, data } = response.data;
-      // console.log(data)
-      if (success) {
-        dispatch(getHomeDataSuccess(data));
-      } else {
-        dispatch(getHomeDataError(response));
+    async (dispatch: AppDispatch) => {
+      try {
+        dispatch(startLoading());
+        const response = await api.post("get_home_page_data", {
+          delivery: isDelivery,
+          lat: lat,
+          long: long,
+        });
+        const { success, data } = response.data;
+        // console.log(data)
+        if (success) {
+          dispatch(getHomeDataSuccess(data));
+        } else {
+          dispatch(getHomeDataError(response));
+        }
+      } catch (error) {
+        dispatch(getHomeDataError(error));
       }
-    } catch (error) {
-      dispatch(getHomeDataError(error));
-    }
-  };
+    };

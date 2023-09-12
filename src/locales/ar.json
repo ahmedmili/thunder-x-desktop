@@ -2,6 +2,8 @@
   "English": "إنجليزي",
   "French": "فرنسي",
   "Arabic": "عربي",
+  "Sombre": "مظلم",
+  "Clair": "ضوء",
   "orderTrackingPage.status": "الحالة:",
   "orderTrackingPage.delivery_driver": "سائق التوصيل:",
   "orderTrackingPage.call_us": "اتصل بنا",

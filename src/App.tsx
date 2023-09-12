@@ -31,7 +31,7 @@ import { localStorageService } from "./services/localStorageService";
 // import { homedataService } from "./services/api/homeData.api";
 import { supplierServices } from "./services/api/suppliers.api";
 import { Restaurant } from "./services/types";
-import { fetchHomeData } from "./Redux/slices/home";
+import { fetchHomeData, setTheme } from "./Redux/slices/home";
 import FilterPage from "./views/filtre/FilterPage";
 import HomeSkeleton from "./views/home/skeleton/HomeSkeleton";
 import Header from "./components/Header/Header";
@@ -171,10 +171,21 @@ function App() {
     }
   }, [])
 
-  // webSocket create instance
+  // initialize theme
   useEffect(() => {
-    const socket = WebSocket.getInstance();
+    const theme = localStorageService.getUserTheme();
+
+    !theme && (() => {
+      localStorageService.setUserTheme('0');
+    })
+    theme == "0" ? dispatch(setTheme(0)) : dispatch(setTheme(1));
+
   }, []);
+
+  // webSocket create instance
+  // useEffect(() => {
+  //   const socket = WebSocket.getInstance();
+  // }, []);
 
   return (
     <>

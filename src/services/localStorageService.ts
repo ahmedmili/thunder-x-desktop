@@ -1,3 +1,10 @@
+function setUserTheme(theme: string) {
+    localStorage.setItem('theme', theme)
+}
+function getUserTheme() {
+    return localStorage.getItem('theme')
+}
+
 function setUserCredentials(user: any, token: string) {
     localStorage.setItem('token', token);
     localStorage.setItem('userId', user.id.toString());
@@ -80,6 +87,9 @@ function getDelivery() {
 }
 
 export const localStorageService = {
+    setUserTheme,
+    getUserTheme,
+    
     setUserCredentials,
     unsetUserCredentials,
     setUserToken,

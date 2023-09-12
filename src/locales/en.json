@@ -2,6 +2,8 @@
   "English": "English",
   "French": "French",
   "Arabic": "Arabic",
+  "Sombre": "Dark",
+  "Clair": "Ligth",
   "orderTrackingPage.status": "Status:",
   "orderTrackingPage.deliveryDriver": "Delivery Driver:",
   "orderTrackingPage.callUs": "Call us",
