@@ -1,0 +1,102 @@
+@import '../../../../../colors';
+
+.Lgale-section {
+    width: 80%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: start;
+    gap: 25px;
+
+    h1 {
+        color: black;
+        font-family: Poppins;
+        font-size: 16px;
+        font-style: normal;
+        font-weight: 400;
+        line-height: normal;
+    }
+
+    .logo-container {
+        width: 123%;
+        display: flex;
+        justify-content: center;
+
+        .logo-wrapper {
+            width: 141.24px;
+            height: 141.078px;
+            object-fit: cover;
+            background-position: center;
+            background-repeat: no-repeat;
+        }
+    }
+
+    main {
+        display: grid;
+        grid-template-columns: repeat(2, 1fr);
+        gap: 34px;
+
+        .legal-cart {
+            width: 360px;
+            max-height: 165px;
+            border-radius: 25px;
+            background: #EBFFFC;
+            box-shadow: 0px 4px 4px 0px rgba(0, 0, 0, 0.25);
+            padding: 21px 39px;
+            overflow-y: scroll;
+
+            &::-webkit-scrollbar {
+                width: 0;
+            }
+
+            .title {
+                color: $Ocean_Teal;
+                font-family: Poppins;
+                font-size: 20px;
+                font-style: normal;
+                font-weight: 500;
+                line-height: normal;
+            }
+
+            .body {
+                color: $light_Gray;
+                font-family: Poppins;
+                font-size: 15px;
+                font-style: normal;
+                font-weight: 400;
+                line-height: normal;
+            }
+        }
+
+
+    }
+
+    .buttons {
+        width: 125%;
+        display: flex;
+        justify-content: end;
+        .nav-page-button {
+            display: flex;
+            justify-content: end;
+            align-items: center;
+            padding-right: 15px;
+
+            button {
+                all: unset;
+
+                &:hover {
+                    cursor: pointer;
+                }
+
+                .next-page-icon {
+                    color: $Ocean_Teal;
+                    width: 53px;
+                    height: 52px;
+                    font-size: 22px;
+                }
+            }
+        }
+    }
+
+
+}

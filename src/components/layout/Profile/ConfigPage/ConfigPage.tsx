@@ -8,6 +8,8 @@ import Longue from './Longue/Longue';
 import Theme from './Theme/Theme';
 import Map from '../../../Location/Location';
 import Legale from './Legale/Legale';
+import Politiques from './Politiques/Politiques';
+import ModifPassword from '../../../Popups/ModifPassword/ModifPassword';
 
 interface Settingsection {
   title: string;
@@ -41,6 +43,9 @@ const ConfigPage = () => {
   const handleselect = (index: number) => {
     setSelectedSetting(index)
   }
+  const closePopup = () =>{
+    setSelectedSetting(0)
+  }
   return (
     <>
       <div className="config-page">
@@ -48,6 +53,7 @@ const ConfigPage = () => {
         {
           selectedSetting === 1 &&
           <>
+          <ModifPassword close={closePopup}/>
           </>
         }
         <SettingSection settingIndex={2} actionListener={handleselect} title='Mes adresses de livraison' className={`${selectedSetting === 2 ? "active" : ""}`} />
@@ -71,8 +77,14 @@ const ConfigPage = () => {
             <Legale />
           </div>
         }
-  
+
         <SettingSection settingIndex={5} actionListener={handleselect} title='Politiques de confidentialité' className={`${selectedSetting === 5 ? "active" : ""}`} />
+        {
+          selectedSetting === 5 &&
+          <div className='legal-container'>
+            <Politiques />
+          </div>
+        }
         <SettingSection settingIndex={6} actionListener={handleselect} title='Sélectionner le théme' className={`${selectedSetting === 6 ? "active" : ""}`} />
         {selectedSetting === 6 &&
           <div className='theme-container'>

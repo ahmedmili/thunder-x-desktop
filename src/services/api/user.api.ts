@@ -1,9 +1,10 @@
+import { localStorageService } from '../localStorageService';
 import { api } from './../axiosApi';
 interface loginValues {
   email: string,
   password: string,
-  remember? : boolean,
-  fcm:string
+  remember?: boolean,
+  fcm: string
 }
 interface registerValues {
   firstname: string,
@@ -21,7 +22,7 @@ async function loginUser(values: loginValues) {
     const response = await api.post("loginClient", {
       email: data.email,
       password: data.password,
-      fcm:"",
+      fcm: "",
     });
     const { token, user } = response.data.data;
     return { token, user };
@@ -52,17 +53,40 @@ async function registerUser(values: registerValues) {
 async function getUser(user_id: string) {
   try {
     if (user_id === undefined) {
-        return { status: undefined, data: undefined };
+      return { status: undefined, data: undefined };
     }
     const response = await api.get(
       `getClient/${user_id}`,
     );
     const { status, data } = response;
     return { status, data };
-} catch (error) {
+  } catch (error) {
     console.error('Error', error);
     throw error;
-}
+  }
 }
 
-export const userService = { loginUser, registerUser, getUser };
+async function updatePassword(userData: any) {
+  try {
+    const user_id = localStorageService.getUserId()
+    if (user_id === undefined) {
+      return { status: undefined, data: undefined };
+    }
+    const response = await api.put(
+      `updateClienPW/${user_id}`,
+      userData
+    );
+    const { status, data } = response;
+    return { status, data };
+  } catch (error) {
+    console.error('Error', error);
+    throw error;
+  }
+}
+
+export const userService = {
+  loginUser,
+  registerUser,
+  getUser,
+  updatePassword
+};
