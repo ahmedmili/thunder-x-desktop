@@ -229,19 +229,30 @@
         }
 
         .account {
+            all: unset;
             color: $primary_color;
 
-            .account-icon {
-                font-size: 18px;
+            &:hover {
+                cursor: pointer;
             }
 
+            .account-icon {
+                width: 30px;
+                height: 30px;
+            }
         }
 
         .search {
+            all: unset;
             color: $primary_color;
 
+            &:hover {
+                cursor: pointer;
+            }
+
             .search-icon {
-                font-size: 18px;
+                width: 30px;
+                height: 30px;
             }
         }
 
@@ -280,7 +291,6 @@
     top: 80px;
     right: 12vw;
     width: 473px;
-    max-height: 80vh;
     background-color: white;
     z-index: 999;
     overflow-y: scroll;
