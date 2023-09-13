@@ -21,6 +21,7 @@ import { Box } from '@mui/material';
 import { useLocation } from 'react-router-dom';
 import { Search } from '@mui/icons-material';
 import { Cart } from '../cart/cart';
+import { UserCart } from '../UserCart/UserCart';
 
 const Header = () => {
   const logged_in = localStorageService.getUserToken() !== null;
@@ -34,6 +35,7 @@ const Header = () => {
   const showMapState = useAppSelector((state) => state.location.showMap);
 
   const [showCart, setShowCart] = useState(false); // Add state variable for showing/hiding the cart
+  const [showProfile, setShowProfile] = useState(false); // Add state variable for showing/hiding the cart
   const [scrolling, setScrolling] = useState(false);
 
   const dispatch = useAppDispatch();
@@ -85,12 +87,17 @@ const Header = () => {
   };
 
   const handleCart = async () => {
+    showProfile && setShowProfile(false)
     setShowCart(!showCart); // Toggle the state of showCart
   };
-
-  const handleCommand = async () => {
-    navigate("/track-order");
+  const handleUserCart = async () => {
+    showCart && setShowCart(false);
+    setShowProfile(!showProfile); // Toggle the state of showCart
   };
+
+  // const handleCommand = async () => {
+  //   navigate("/track-order");
+  // };
 
   return (
     <>
@@ -216,13 +223,14 @@ const Header = () => {
                     : t('no_location_detected')}
 
                 </div>
-                <div className="account">
+                <button onClick={handleUserCart} className="account">
 
                   <PermIdentityOutlinedIcon className='account-icon' />
-                </div>
-                <div className="search">
+                </button>
+
+                <button className="search">
                   <Search className='search-icon' />
-                </div>
+                </button>
 
                 <button onClick={handleCart} className="cart-item">
                   <ShoppingCartOutlinedIcon className='cart-icon' />
@@ -234,6 +242,13 @@ const Header = () => {
             {
               showCart && (<div className="cart-container">
                 <Cart items={cartItems} closeButton={handleCart} />
+              </div>
+              )
+            }
+
+            {
+              showProfile && user && (<div className="cart-container">
+                <UserCart firstName={user.firstname} lastName={user.lastname} closeButton={handleUserCart} />
               </div>
               )
             }
