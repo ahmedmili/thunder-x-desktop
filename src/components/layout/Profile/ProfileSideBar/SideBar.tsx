@@ -4,15 +4,6 @@ import profileImg from '../../../../assets/profile/profile_img.png'
 import phoneIcon from "../../../../assets/profile/phoneIcon.svg"
 import lockIcon from "../../../../assets/profile/lockIcon.svg"
 
-// import Accueil from '../../../../assets/profile/Accueil.svg'
-// import Offres from '../../../../assets/profile/Offres.svg'
-// import Config from '../../../../assets/profile/Config.svg'
-// import Archive from '../../../../assets/profile/Archive.svg'
-// import Espace from '../../../../assets/profile/Espace.svg'
-// import Discuter from '../../../../assets/profile/Discuter.svg'
-// import Favors from '../../../../assets/profile/Favors.svg'
-// import Deconnecter from '../../../../assets/profile/Deconnecter.svg'
-
 import Accueil from '../../../../assets/profile/blue/Accueil.svg'
 import Offres from '../../../../assets/profile/blue/Offres.svg'
 import Config from '../../../../assets/profile/blue/Config.svg'
@@ -29,15 +20,13 @@ import ArchiveW from '../../../../assets/profile/white/Archive.svg'
 import EspaceW from '../../../../assets/profile/white/Espace.svg'
 import DiscuterW from '../../../../assets/profile/white/Discuter.svg'
 import FavorsW from '../../../../assets/profile/white/Favors.svg'
-import DeconnecterW from '../../../../assets/profile/white/Deconnecter.svg'
-
 
 import './sideBar.scss'
 import { useState } from 'react';
 const SideBar = () => {
-  const [selectedNav, setSelectedNav] = useState<number>(1)
+  const [selectedNav, setSelectedNav] = useState<number>(0)
   const handleSelect = (e: any, index: number) => {
-    e.preventDefault()
+    // e.preventDefault()
     setSelectedNav(index)
   }
   return (
@@ -59,14 +48,14 @@ const SideBar = () => {
           <ul>
             <li>
 
-              <Link to={'/profile'} className={selectedNav == 1 ? "active" : ""} onClick={(e) => handleSelect(e, 1)} >
+              <Link to={'/'} className={selectedNav == 1 ? "active" : ""} onClick={(e) => handleSelect(e, 1)} >
                 <span className='profile-list-icon' style={{ backgroundImage: `url(${selectedNav === 1 ? AccueilW : Accueil})` }}></span>
                 Accueil
               </Link>
             </li>
 
             <li>
-              <Link to={'/profile'} className={selectedNav == 2 ? "active" : ""} onClick={(e) => handleSelect(e, 2)}>
+              <Link to={'/profile/annonces'} className={selectedNav == 2 ? "active" : ""} onClick={(e) => handleSelect(e, 2)}>
                 <span className='profile-list-icon' style={{ backgroundImage: `url(${selectedNav === 2 ? OffresW : Offres})` }}></span>
                 Mes offres &annonces
               </Link>

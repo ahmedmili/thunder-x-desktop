@@ -39,6 +39,7 @@ import Footer from "./components/footer/footer";
 import MenuOptions from "./components/menus/menuOptions/MenuOptions";
 import Profile from "./components/layout/Profile/Profile";
 import ConfigPage from "./components/layout/Profile/ConfigPage/ConfigPage";
+import Annonces from "./components/layout/Profile/All_Annonces/All_Annonces";
 
 //lazy loading
 const HomePage = lazy(() => import("./views/home/home.page"));
@@ -83,7 +84,8 @@ function App() {
       var suppliersList: Restaurant[] = [];
       let dataList = data.data;
       dataList.map((resto: any, index: number) => {
-        if (resto.supplier) suppliersList.push(resto.supplier);
+        if (resto.supplier)
+          suppliersList.push(resto.supplier);
       });
       dispatch(setRestaurants(suppliersList));
     }
@@ -212,8 +214,8 @@ function App() {
 
           <Route path="/profile" element={<Profile />}>
             <Route index element={<ConfigPage />} />
+            <Route path="/profile/annonces" element={<Annonces />} />
           </Route>
-
 
           <Route path="unauthorized" element={<UnauthorizePage />} />
           <Route path="login" element={<LoginPage />} />
