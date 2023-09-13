@@ -77,7 +77,7 @@ export const UserCart: React.FC<CartProps> = ({ firstName, lastName, closeButton
             <li>
               <div className='link-list'>
                 <div className='profile-list-icon' style={{ backgroundImage: `url(${Config})` }}></div>
-                <Link to={'/'}>Mes configurations</Link>
+                <Link to={'/profile/'}>Mes configurations</Link>
               </div>
             </li>
             <li>
