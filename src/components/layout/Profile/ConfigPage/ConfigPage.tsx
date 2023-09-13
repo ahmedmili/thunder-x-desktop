@@ -59,13 +59,18 @@ const ConfigPage = () => {
       <div className="config-page">
         <SettingSection settingIndex={1} actionListener={handleselect} title='Modifier le compte' className={`${selectedSetting === 1 ? "active" : ""}`} />
         {
-          showPWPopup  &&
+          selectedSetting === 1 &&
+          <>
+            <UpdateAccount showPassword={showPasswordPopup} />
+          </>
+        }
+        {
+          showPWPopup &&
           <>
             {/* <UpdateAccount /> */}
             <ModifPassword close={showPasswordPopup} />
           </>
         }
-        <UpdateAccount showPassword={showPasswordPopup} />
         <SettingSection settingIndex={2} actionListener={handleselect} title='Mes adresses de livraison' className={`${selectedSetting === 2 ? "active" : ""}`} />
         {
           selectedSetting === 2 &&
