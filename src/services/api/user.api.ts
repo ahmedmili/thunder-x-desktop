@@ -16,7 +16,6 @@ interface registerValues {
 }
 
 async function loginUser(values: loginValues) {
-  // console.log(values)
   const data = values;
   try {
     const response = await api.post("loginClient", {
@@ -27,7 +26,6 @@ async function loginUser(values: loginValues) {
     const { token, user } = response.data.data;
     return { token, user };
   } catch (error) {
-    console.error('Error', error);
     throw error;
   }
 }
@@ -46,7 +44,6 @@ async function registerUser(values: registerValues) {
     const user = response.data.data.client;
     return { token, user };
   } catch (error) {
-    console.error('Error', error);
     throw error;
   }
 }
@@ -61,7 +58,6 @@ async function getUser(user_id: string) {
     const { status, data } = response;
     return { status, data };
   } catch (error) {
-    console.error('Error', error);
     throw error;
   }
 }
@@ -79,7 +75,22 @@ async function updatePassword(userData: any) {
     const { status, data } = response;
     return { status, data };
   } catch (error) {
-    console.error('Error', error);
+    throw error;
+  }
+}
+async function updateAccount(userData: any) {
+  try {
+    const user_id = localStorageService.getUserId()
+    if (user_id === undefined) {
+      return { status: undefined, data: undefined };
+    }
+    const response = await api.post(
+      `updateClient/${user_id}`,
+      userData
+    );
+    const { status, data } = response;
+    return { status, data };
+  } catch (error) {
     throw error;
   }
 }
@@ -88,5 +99,6 @@ export const userService = {
   loginUser,
   registerUser,
   getUser,
-  updatePassword
+  updatePassword,
+  updateAccount,
 };

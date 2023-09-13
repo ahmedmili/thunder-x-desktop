@@ -186,7 +186,6 @@ export const Cart: React.FC<CartProps> = ({ items, closeButton }) => {
               <button className='to-paiment'
                 onClick={
                   () => {
-                    // closeButton()
                     handlePopupe()
                   }
                 }

@@ -51,7 +51,7 @@ const Map: React.FC<MapProps> = ({ className }) => {
       let res = await adressService.getAdressByid(JSON.parse(userItem!).id);
       setClientAdressTable(res.data.data);
     };
-    userItem != null ? fetchData() : console.log("no user connected");
+    userItem != null && fetchData() ;
   }, []);
 
   const userItem = localStorageService.getUser();
@@ -83,9 +83,7 @@ const Map: React.FC<MapProps> = ({ className }) => {
     const filtredPositions = clientAdressTable.filter((pos: any) => {
       return pos.type == selectedOption;
     })
-    useEffect(() => {
-      console.log("filtredPositions", filtredPositions)
-    }, [filtredPositions])
+
     return (
       <>
         <div className="form">

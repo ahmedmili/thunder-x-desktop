@@ -21,6 +21,10 @@ function setUserToken(token: string) {
 function getUserToken() {
     return localStorage.getItem('token')
 }
+function setUser(user:any) {
+    let userData = JSON.stringify(user)
+    return localStorage.setItem('user',userData)
+}
 function getUser() {
     return localStorage.getItem('user')
 }
@@ -95,6 +99,7 @@ export const localStorageService = {
     setUserToken,
     getUserToken,
     getUser,
+    setUser,
     getUserId,
     setCurrentLocation,
     getCurrentLocation,

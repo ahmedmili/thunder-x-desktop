@@ -77,14 +77,12 @@ function MapCard() {
                         const resp = await LocationService.addaddresse(data);
                         let message = resp.data.message;
                         toast.success(message);
-                        console.log(message);
                         resp.data.code === 200 && dispatch({ type: "SET_SHOW", payload: false })
 
                     }
                 )
             } catch (error) {
                 setSubmitting(false);
-                console.error(error);
             }
         }
 
@@ -106,7 +104,6 @@ function MapCard() {
     useEffect(() => {
         const mapContainer = mapContainerRef.current;
         if (!mapContainer) {
-            console.error("Map container not found.");
             return;
         }
         if (!mapRef.current) {

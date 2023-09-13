@@ -30,7 +30,6 @@ const Theme = () => {
       default:
         break;
     }
-    console.log(theme)
   }, [theme])
   return (
     <>

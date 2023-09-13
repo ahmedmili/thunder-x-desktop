@@ -53,27 +53,24 @@ const ModifPassword: React.FC<Props> = ({ close }) => {
                     schema.validate(userData)
                         .catch((err) => {
                             setErrorMessage(err.errors[0]);
-                            console.log(err.errors)
                         });
                 } else {
                     setErrorMessage('');
                 }
             });
+
         try {
             if (valid) {
 
                 const { status, data } = await userService.updatePassword(userData)
-                console.log("data", data)
 
                 if (data && data.success === undefined) {
                     const errors = Object.keys(data).map(key => data[key]);
-                    // console.log("errors", errors)
                     errors.map((element: string) => {
                         toast.warn(element[0])
                     })
                 } else if (data.success === false) {
                     toast.warn(data.message)
-                    console.log(data.message)
 
                 }
             }
@@ -111,13 +108,12 @@ const ModifPassword: React.FC<Props> = ({ close }) => {
                         <label htmlFor="confirm-password">Confirmation du mot de passe</label>
                         <div className="input">
                             <input className="password-input" type={showNewPassword ? "text" : "password"} name="confirm-password" placeholder="Entrer ici" onChange={(e) => setConfirmPassword(e.target.value)} />
-                            {/* {showConfirmPassword ? <VisibilityIcon onClick={() => handleDisplayPW(3)} className="visible-icon" /> : <VisibilityOffIcon onClick={() => handleDisplayPW(3)} className="visible-icon" />} */}
                         </div>
 
                     </div>
                     {!valid && <p className={`error-message ${!valid ? "visible" : ""}`} >{eroorMessage}</p>}
                     <div className="buttons">
-                        <button className="annule">Annuler</button>
+                        <button type="reset" className="annule">Annuler</button>
                         <button type="submit" className="submit">Enregistrer</button>
 
                     </div>

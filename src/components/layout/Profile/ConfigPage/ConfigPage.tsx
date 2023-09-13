@@ -10,6 +10,7 @@ import Map from '../../../Location/Location';
 import Legale from './Legale/Legale';
 import Politiques from './Politiques/Politiques';
 import ModifPassword from '../../../Popups/ModifPassword/ModifPassword';
+import UpdateAccount from './UpdateAccount/UpdateAccount';
 
 interface Settingsection {
   title: string;
@@ -19,6 +20,7 @@ interface Settingsection {
 }
 
 const SettingSection: React.FC<Settingsection> = (props) => {
+
   const index = props.settingIndex
   const handleClick = () => {
     props.actionListener(index)
@@ -40,22 +42,30 @@ const SettingSection: React.FC<Settingsection> = (props) => {
 const ConfigPage = () => {
 
   const [selectedSetting, setSelectedSetting] = useState<number>(0)
+  const [showPWPopup, setShowPWPopup] = useState<boolean>(false)
+
   const handleselect = (index: number) => {
     setSelectedSetting(index)
   }
-  const closePopup = () =>{
+  const closePopup = () => {
     setSelectedSetting(0)
+  }
+
+  const showPasswordPopup = () => {
+    setShowPWPopup(!showPWPopup)
   }
   return (
     <>
       <div className="config-page">
         <SettingSection settingIndex={1} actionListener={handleselect} title='Modifier le compte' className={`${selectedSetting === 1 ? "active" : ""}`} />
         {
-          selectedSetting === 1 &&
+          showPWPopup  &&
           <>
-          <ModifPassword close={closePopup}/>
+            {/* <UpdateAccount /> */}
+            <ModifPassword close={showPasswordPopup} />
           </>
         }
+        <UpdateAccount showPassword={showPasswordPopup} />
         <SettingSection settingIndex={2} actionListener={handleselect} title='Mes adresses de livraison' className={`${selectedSetting === 2 ? "active" : ""}`} />
         {
           selectedSetting === 2 &&
