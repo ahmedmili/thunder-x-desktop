@@ -23,20 +23,31 @@ import FavorsW from '../../../../assets/profile/white/Favors.svg'
 
 import './sideBar.scss'
 import { useEffect, useState } from 'react';
-import { useAppDispatch } from '../../../../Redux/store';
+import { useAppDispatch, useAppSelector } from '../../../../Redux/store';
 import { logout } from '../../../../Redux/slices/userSlice';
 import { useTranslation } from 'react-i18next';
+import { setProfilePage } from '../../../../Redux/slices/home';
 
 const SideBar = () => {
-  const [selectedNav, setSelectedNav] = useState<number>(0)
+
+
+  const dispatch = useAppDispatch();
+  const { t } = useTranslation()
+
+  const currentPage = useAppSelector(state => state.home.profilePage)
+
+  const [selectedNav, setSelectedNav] = useState<number>(currentPage)
+
+  useEffect(() => {
+    setSelectedNav(currentPage)
+  }, [currentPage])
   const handleSelect = (e: any, index: number) => {
     setSelectedNav(index)
+    dispatch(setProfilePage(index))
   }
 
   const [isDivVisible, setIsDivVisible] = useState(true);
 
-  const dispatch = useAppDispatch();
-  const { t } = useTranslation()
   useEffect(() => {
     // Function to handle window resize events
     const handleResize = () => {
@@ -120,7 +131,7 @@ const SideBar = () => {
               </Link>
             </li>
             <li>
-              <Link to={'/profile'} className={`disconnect`} onClick={(e) => {
+              <Link to={'/'} className={`disconnect`} onClick={(e) => {
                 e.preventDefault()
                 dispatch(logout())
               }}>

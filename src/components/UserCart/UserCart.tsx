@@ -21,6 +21,7 @@ import { RootState } from '../../Redux/slices';
 import { localStorageService } from '../../services/localStorageService';
 import { Link } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
+import { setProfilePage } from '../../Redux/slices/home';
 interface CartProps {
   closeButton: any,
   lastName: string,
@@ -29,12 +30,17 @@ interface CartProps {
 
 
 export const UserCart: React.FC<CartProps> = ({ firstName, lastName, closeButton }) => {
+
   const { t } = useTranslation()
-  // const user = JSON.parse(localStorageService.getUser()!);
+  const dispatch = useAppDispatch();
+  const currentPage = useAppSelector(state => state.home.profilePage)
+
   const userItem = localStorageService.getUser();
   const user = userItem ? JSON.parse(userItem) : null;
 
-  const dispatch = useAppDispatch();
+  const handleSelect = (index: number) => {
+    dispatch(setProfilePage(index))
+  }
 
   return (
     <div className="profile-cart-main">
@@ -64,46 +70,46 @@ export const UserCart: React.FC<CartProps> = ({ firstName, lastName, closeButton
             <li>
               <div className='link-list'>
                 <div className='profile-list-icon' style={{ backgroundImage: `url(${Accueil})` }}></div>
-                <Link to={'/'}>{t("home")}</Link>
+                <Link onClick={() => handleSelect(1)} to={'/'}>{t("home")}</Link>
               </div>
             </li>
 
             <li>
               <div className='link-list'>
                 <div className='profile-list-icon' style={{ backgroundImage: `url(${Offres})` }}></div>
-                <Link to={'/'}>{t("profile.mesOffres")}</Link>
+                <Link onClick={() => handleSelect(2)} to={'/profile/annonces'}>{t("profile.mesOffres")}</Link>
               </div>
             </li>
             <li>
               <div className='link-list'>
                 <div className='profile-list-icon' style={{ backgroundImage: `url(${Config})` }}></div>
-                <Link to={'/profile/'}>{t("profile.mesConfig")}</Link>
+                <Link onClick={() => handleSelect(3)} to={'/profile'}>{t("profile.mesConfig")}</Link>
               </div>
             </li>
             <li>
               <div className='link-list'>
                 <div className='profile-list-icon' style={{ backgroundImage: `url(${Archive})` }}></div>
-                <Link to={'/'}>{t("profile.commands")}</Link>
+                <Link onClick={() => handleSelect(4)} to={'/profile/archivedCommands'}>{t("profile.commands")}</Link>
               </div>
             </li>
             <li>
 
               <div className='link-list'>
                 <div className='profile-list-icon' style={{ backgroundImage: `url(${Espace})` }}></div>
-                <Link to={'/'}>{t("profile.espaceFidel")}</Link>
+                <Link onClick={() => handleSelect(5)} to={'/profile'}>{t("profile.espaceFidel")}</Link>
               </div>
 
             </li>
             <li>
               <div className='link-list'>
                 <div className='profile-list-icon' style={{ backgroundImage: `url(${Discuter})` }}></div>
-                <Link to={'/'}>{t("profile.discuter")}</Link>
+                <Link onClick={() => handleSelect(6)} to={'/profile'}>{t("profile.discuter")}</Link>
               </div>
             </li>
             <li>
               <div className='link-list'>
                 <div className='profile-list-icon' style={{ backgroundImage: `url(${Favors})` }}></div>
-                <Link to={'/'}>{t("profile.favors")}</Link>
+                <Link onClick={() => handleSelect(7)} to={'/profile'}>{t("profile.favors")}</Link>
               </div>
             </li>
           </ul>
@@ -111,7 +117,7 @@ export const UserCart: React.FC<CartProps> = ({ firstName, lastName, closeButton
         <div className="disconnect">
           <div className='link-list'>
             <div className='profile-list-icon' style={{ backgroundImage: `url(${Deconnecter})` }}></div>
-            <Link to={'login'} onClick={() => dispatch(logout())}>{t("profile.deconnecter")}</Link>
+            <Link to={'/'} onClick={() => dispatch(logout())}>{t("profile.deconnecter")}</Link>
           </div>
         </div>
       </main>

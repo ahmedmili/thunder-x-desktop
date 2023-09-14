@@ -15,6 +15,7 @@ type HomeDataProps = {
 };
 export type HomeDataState = {
   theme: number;
+  profilePage: number;
   data: HomeDataProps;
   loading: boolean;
   error: any;
@@ -23,6 +24,7 @@ export type HomeDataState = {
 
 const initialState: HomeDataState = {
   theme: 0,
+  profilePage: 3,
   data: {
     ads: {},
     categories: [],
@@ -71,6 +73,9 @@ const homeSlice = createSlice({
       state.theme = action.payload;
       localStorageService.setUserTheme(action.payload)
     },
+    setProfilePage: (state, action) => {
+      state.profilePage = action.payload;
+    },
   },
 });
 
@@ -80,6 +85,7 @@ export const {
   getHomeDataError,
   setIsDelivery,
   setTheme,
+  setProfilePage,
 } = homeSlice.actions;
 
 const homeReducer = homeSlice.reducer;
