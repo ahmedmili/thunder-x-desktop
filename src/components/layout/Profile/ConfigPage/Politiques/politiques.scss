@@ -7,16 +7,6 @@
     justify-content: center;
     align-items: start;
     gap: 25px;
-
-    h1 {
-        color: black;
-        font-family: Poppins;
-        font-size: 16px;
-        font-style: normal;
-        font-weight: 400;
-        line-height: normal;
-    }
-
     .logo-container {
         width: 100%;
         display: flex;
@@ -117,9 +107,6 @@
 
 @media only screen and (max-width: 992px) {
     .Politique-section {
-        h1 {
-            font-size: 14px;
-        }
 
         main {
             .legal-cart {
@@ -140,10 +127,6 @@
 
 @media only screen and (max-width: 576px) {
     .Politique-section {
-        h1 {
-            font-size: 14px;
-        }
-
         main {
             grid-template-columns: repeat(1, 1fr);
 

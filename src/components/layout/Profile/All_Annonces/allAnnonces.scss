@@ -1,7 +1,7 @@
 @import '../../../../colors';
 
 .annonces-section {
-    width: 80%;
+    width: 100%;
     display: flex;
     flex-direction: column;
     justify-content: start;
@@ -9,37 +9,14 @@
     align-items: start;
     gap: 25px;
 
-    h1 {
-        color: black;
-        font-family: Poppins;
-        font-size: 16px;
-        font-style: normal;
-        font-weight: 400;
-        line-height: normal;
-    }
-
-    .logo-container {
-        width: 123%;
-        display: flex;
-        justify-content: center;
-
-        .logo-wrapper {
-            width: 141.24px;
-            height: 141.078px;
-            object-fit: cover;
-            background-position: center;
-            background-repeat: no-repeat;
-        }
-    }
-
     main {
+        padding-right: 3%;
         display: grid;
         grid-template-columns: repeat(2, 1fr);
         gap: 34px;
 
 
         .legal-cart {
-            width: 360px;
             max-height: 282;
             border-radius: 25px;
             background: #FFF;
@@ -93,10 +70,10 @@
     }
 
     .buttons {
-        width: 80%;
+        width: 90%;
         display: flex;
         justify-content: end;
-        margin:  0 0 20px 0;
+        margin: 0 0 20px 0;
 
         .nav-page-button {
             display: flex;
@@ -120,6 +97,53 @@
             }
         }
     }
+}
 
 
+@media only screen and (max-width: 992px) {
+    .annonces-section {
+        h1 {
+            font-size: 14px;
+        }
+
+        main {
+            .legal-cart {
+                padding: 19px 14px;
+
+                .title {
+                    font-size: 18px;
+
+                }
+
+                .body {
+                    font-size: 13px;
+                }
+            }
+        }
+    }
+}
+
+@media only screen and (max-width: 576px) {
+    .annonces-section {
+        h1 {
+            font-size: 14px;
+        }
+
+        main {
+            grid-template-columns: repeat(1, 1fr);
+
+            .legal-cart {
+                padding: 19px 14px;
+
+                .title {
+                    font-size: 18px;
+
+                }
+
+                .body {
+                    font-size: 13px;
+                }
+            }
+        }
+    }
 }

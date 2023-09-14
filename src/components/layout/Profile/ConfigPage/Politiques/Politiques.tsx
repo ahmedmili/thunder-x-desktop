@@ -6,13 +6,10 @@ import RigthArrow from '../../../../../assets/profile/rigthArrow.svg';
 import legalsData from './Politiques.json';
 import { useEffect, useState } from 'react';
 
-import ArrowRightAltIcon from '@mui/icons-material/ArrowRightAlt';
-
 interface legalProps {
   title: string,
   bodyText: string,
 }
-
 
 const LegalCart: React.FC<legalProps> = ({ title, bodyText }) => {
 
@@ -62,7 +59,6 @@ const Politiques = () => {
   return (
     <>
       <section className="Politique-section">
-        <h1>Conditions générales d’utilisation de l’application Thunder Express</h1>
         <div className="logo-container">
 
           <div className="logo-wrapper" style={{ backgroundImage: `url(${thunderLogo})` }}>

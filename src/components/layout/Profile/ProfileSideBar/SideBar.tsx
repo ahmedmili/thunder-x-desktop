@@ -25,6 +25,8 @@ import './sideBar.scss'
 import { useEffect, useState } from 'react';
 import { useAppDispatch } from '../../../../Redux/store';
 import { logout } from '../../../../Redux/slices/userSlice';
+import { useTranslation } from 'react-i18next';
+
 const SideBar = () => {
   const [selectedNav, setSelectedNav] = useState<number>(0)
   const handleSelect = (e: any, index: number) => {
@@ -34,7 +36,7 @@ const SideBar = () => {
   const [isDivVisible, setIsDivVisible] = useState(true);
 
   const dispatch = useAppDispatch();
-
+  const { t } = useTranslation()
   useEffect(() => {
     // Function to handle window resize events
     const handleResize = () => {
@@ -77,53 +79,53 @@ const SideBar = () => {
 
               <Link to={'/'} className={selectedNav == 1 ? "active" : ""} onClick={(e) => handleSelect(e, 1)} >
                 <span className='profile-list-icon' style={{ backgroundImage: `url(${selectedNav === 1 ? AccueilW : Accueil})` }}></span>
-                Accueil
+                {t('home')}
               </Link>
             </li>
 
             <li>
               <Link to={'/profile/annonces'} className={selectedNav == 2 ? "active" : ""} onClick={(e) => handleSelect(e, 2)}>
                 <span className='profile-list-icon' style={{ backgroundImage: `url(${selectedNav === 2 ? OffresW : Offres})` }}></span>
-                Mes offres &annonces
+                {t('profile.mesOffres')}
               </Link>
             </li>
             <li>
               <Link to={'/profile'} className={selectedNav == 3 ? "active" : ""} onClick={(e) => handleSelect(e, 3)}>
                 <span className='profile-list-icon' style={{ backgroundImage: `url(${selectedNav === 3 ? ConfigW : Config})` }}></span>
-                Mes configurations
+                {t('profile.mesConfig')}
               </Link>
             </li>
             <li>
               <Link to={'/profile/archivedCommands'} className={selectedNav == 4 ? "active" : ""} onClick={(e) => handleSelect(e, 4)}>
                 <span className='profile-list-icon' style={{ backgroundImage: `url(${selectedNav === 4 ? ArchiveW : Archive})` }}></span>
-                Archive commandes
+                {t('profile.commands')}
               </Link>
             </li>
             <li>
               <Link to={'/profile'} className={selectedNav == 5 ? "active" : ""} onClick={(e) => handleSelect(e, 5)}>
                 <span className='profile-list-icon' style={{ backgroundImage: `url(${selectedNav === 5 ? EspaceW : Espace})` }}></span>
-                Espace de fidelité
+                {t('profile.espaceFidel')}
               </Link>
             </li>
             <li>
               <Link to={'/profile'} className={selectedNav == 6 ? "active" : ""} onClick={(e) => handleSelect(e, 6)}>
                 <span className='profile-list-icon' style={{ backgroundImage: `url(${selectedNav === 6 ? DiscuterW : Discuter})` }}></span>
-                Discuter avec nous
+                {t('profile.discuter')}
               </Link>
             </li>
             <li>
               <Link to={'/profile'} className={selectedNav == 7 ? "active" : ""} onClick={(e) => handleSelect(e, 7)}>
                 <span className='profile-list-icon' style={{ backgroundImage: `url(${selectedNav === 7 ? FavorsW : Favors})` }}></span>
-                Mes favoris
+                {t('profile.favors')}
               </Link>
             </li>
             <li>
-              <Link to={'/profile'}className={`disconnect`} onClick={(e) => {
+              <Link to={'/profile'} className={`disconnect`} onClick={(e) => {
                 e.preventDefault()
                 dispatch(logout())
               }}>
                 <span className='profile-list-icon' style={{ backgroundImage: `url(${Deconnecter})` }}></span>
-                Se deconnecter
+                {t('profile.deconnecter')}
               </Link>
             </li>
           </ul>

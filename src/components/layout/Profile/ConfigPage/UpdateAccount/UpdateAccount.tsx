@@ -5,6 +5,7 @@ import { userService } from '../../../../../services/api/user.api';
 import * as yup from 'yup';
 import { localStorageService } from '../../../../../services/localStorageService';
 import { useNavigate } from 'react-router';
+import { useTranslation } from 'react-i18next';
 
 
 interface updateProps {
@@ -13,11 +14,11 @@ interface updateProps {
 
 const UpdateAccount: React.FC<updateProps> = ({ showPassword }) => {
 
+  const { t } = useTranslation()
   const [firstName, setFirstName] = useState<string>("")
   const [lastName, setLastName] = useState<string>("")
   const [email, setEmail] = useState<string>("")
   const [phone, setPhone] = useState<string>("")
-
   const [valid, setValid] = useState<boolean>(false);
   const [eroorMessage, setErrorMessage] = useState<string>('');
   const navigate = useNavigate()
@@ -90,45 +91,45 @@ const UpdateAccount: React.FC<updateProps> = ({ showPassword }) => {
         <form onSubmit={(e) => handleSubmit(e)} >
 
           <div className="input-container">
-            <label htmlFor="firstName">Nom</label>
+            <label htmlFor="firstName">{t("lastName")}</label>
             <div className="input">
               <input className="update-input" value={firstName} type="text" name="firstName" placeholder="Entrer ici" onChange={(e) => setFirstName(e.target.value)} />
             </div>
 
           </div>
           <div className="input-container">
-            <label htmlFor="lastName">Prénom</label>
+            <label htmlFor="lastName">{t("firstName")}</label>
             <div className="input">
               <input className="update-input" value={lastName} type="text" name="lastName" placeholder="Entrer ici" onChange={(e) => setLastName(e.target.value)} />
             </div>
           </div>
 
           <div className="input-container">
-            <label htmlFor="email">Email</label>
+            <label htmlFor="email">{t("emailAddress")}</label>
             <div className="input">
               <input className="update-input" value={email} type="text" name="email" placeholder="Entrer ici" onChange={(e) => setEmail(e.target.value)} />
-              <button className='verif'>Vérifier</button>
+              <button className='verif'>{t("Verifier")}</button>
             </div>
           </div>
           <div className="input-container">
-            <label htmlFor="password">Mot de passe</label>
+            <label htmlFor="password">{t("password")}</label>
             <div className="input">
               <input readOnly className="update-input" type="password" name="password" placeholder="Entrer ici" />
-              <button onClick={showPassword} className='verif' >Vérifier</button>
+              <button onClick={showPassword} className='verif' >{t("Verifier")}</button>
             </div>
           </div>
 
           <div className="input-container">
-            <label htmlFor="phone">Telephone</label>
+            <label htmlFor="phone">{t("cartPage.phoneNumber")}</label>
             <div className="input">
               <input className="update-input" value={phone} type="text" name="phone" placeholder="Entrer ici" onChange={(e) => setPhone(e.target.value)} />
-              <button className='verif'>Vérifier</button>
+              <button className='verif'>{t("Verifier")}</button>
             </div>
           </div>
           {!valid && <p className={`error-message ${!valid ? "visible" : ""}`} >{eroorMessage}</p>}
           <div className="buttons">
-            <button className="annule" type='reset'>Annuler</button>
-            <button className="submit" type="submit">Enregistrer</button>
+            <button className="annule" type='reset'>{t("Annuler")}</button>
+            <button className="submit" type="submit">{t("Enregistrer")}</button>
           </div>
         </form>
       </section>

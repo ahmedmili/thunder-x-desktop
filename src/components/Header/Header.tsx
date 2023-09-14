@@ -145,7 +145,7 @@ const Header = () => {
                         onClick={onLogoutHandler}
                         className={`LoadingButton ${scrolling ? 'minimizedLoadingButton' : ''}`}
                       >
-                        {t('signout')}
+                        {t('profile.deconnecter')}
                       </button>
                     </div>
                   </>

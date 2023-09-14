@@ -7,6 +7,7 @@ import legalsData from './legals.json';
 import { useEffect, useState } from 'react';
 
 import ArrowRightAltIcon from '@mui/icons-material/ArrowRightAlt';
+import { useTranslation } from 'react-i18next';
 
 interface legalProps {
   title: string,
@@ -26,6 +27,8 @@ const LegalCart: React.FC<legalProps> = ({ title, bodyText }) => {
 
 
 const Legale = () => {
+  const { t } = useTranslation()
+
   const itemsPerPage = 6;
 
   const [totalPages, setTotalPages] = useState<number>(0);
@@ -62,7 +65,7 @@ const Legale = () => {
   return (
     <>
       <section className="Lgale-section">
-        <h1>Conditions générales d’utilisation de l’application Thunder Express</h1>
+        <h1>{t('profile.mesConfig.legales.message')}</h1>
         <div className="logo-container">
 
           <div className="logo-wrapper" style={{ backgroundImage: `url(${thunderLogo})` }}>

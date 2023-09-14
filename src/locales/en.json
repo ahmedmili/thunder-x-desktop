@@ -4,6 +4,28 @@
   "Arabic": "Arabic",
   "Sombre": "Dark",
   "Clair": "Ligth",
+  "Verifier": "Check",
+  "Annuler": "Cancel",
+  "Enregistrer": "Save",
+
+  "profile.mesOffres": "My offers & announcements",
+  "profile.mesConfig": "My settings",
+  "profile.commands": "Archived commandes",
+  "profile.espaceFidel": "Fidelity Space",
+  "profile.discuter": "Contact us",
+  "profile.favors": "My favoris",
+  "profile.deconnecter": "Deconnecter",
+
+  "profile.mesConfig.modifAccount": "Edit Account",
+  "profile.mesConfig.delivAdress": "My delivery addresses",
+  "profile.mesConfig.modifLong": "Change Language",
+  "profile.mesConfig.legales": "Legal Messages",
+  "profile.mesConfig.legales.message": "Thunder Express Terms and Conditions",
+
+  "profile.mesConfig.politiques": "Privacy Policies",
+  "profile.mesConfig.theme": "Select Theme",
+  "profile.mesConfig.deleteAccount": "Delete My Account",
+
   "orderTrackingPage.status": "Status:",
   "orderTrackingPage.deliveryDriver": "Delivery Driver:",
   "orderTrackingPage.callUs": "Call us",
