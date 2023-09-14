@@ -23,14 +23,17 @@ import FavorsW from '../../../../assets/profile/white/Favors.svg'
 
 import './sideBar.scss'
 import { useEffect, useState } from 'react';
+import { useAppDispatch } from '../../../../Redux/store';
+import { logout } from '../../../../Redux/slices/userSlice';
 const SideBar = () => {
   const [selectedNav, setSelectedNav] = useState<number>(0)
   const handleSelect = (e: any, index: number) => {
-    // e.preventDefault()
     setSelectedNav(index)
   }
 
   const [isDivVisible, setIsDivVisible] = useState(true);
+
+  const dispatch = useAppDispatch();
 
   useEffect(() => {
     // Function to handle window resize events
@@ -115,7 +118,10 @@ const SideBar = () => {
               </Link>
             </li>
             <li>
-              <Link to={'/profile'} className={`disconnect`} onClick={(e) => e.preventDefault()}>
+              <Link to={'/profile'}className={`disconnect`} onClick={(e) => {
+                e.preventDefault()
+                dispatch(logout())
+              }}>
                 <span className='profile-list-icon' style={{ backgroundImage: `url(${Deconnecter})` }}></span>
                 Se deconnecter
               </Link>
