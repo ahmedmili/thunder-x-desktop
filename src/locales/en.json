@@ -12,9 +12,9 @@
   "profile.mesConfig": "My settings",
   "profile.commands": "Archived commandes",
   "profile.espaceFidel": "Fidelity Space",
-  "profile.discuter": "Contact us",
+  "profile.discuter": "Contact",
   "profile.favors": "My favoris",
-  "profile.deconnecter": "Deconnecter",
+  "profile.deconnecter": "Sign out",
 
   "profile.mesConfig.modifAccount": "Edit Account",
   "profile.mesConfig.delivAdress": "My delivery addresses",

@@ -20,6 +20,7 @@ import './userCart.scss'
 import { RootState } from '../../Redux/slices';
 import { localStorageService } from '../../services/localStorageService';
 import { Link } from 'react-router-dom';
+import { useTranslation } from 'react-i18next';
 interface CartProps {
   closeButton: any,
   lastName: string,
@@ -28,7 +29,7 @@ interface CartProps {
 
 
 export const UserCart: React.FC<CartProps> = ({ firstName, lastName, closeButton }) => {
-
+  const { t } = useTranslation()
   // const user = JSON.parse(localStorageService.getUser()!);
   const userItem = localStorageService.getUser();
   const user = userItem ? JSON.parse(userItem) : null;
@@ -41,7 +42,7 @@ export const UserCart: React.FC<CartProps> = ({ firstName, lastName, closeButton
         <div className='profile-info'>
           <img src={profile_img} alt="profile photo" />
           <p className='welcome-msg'>
-            Bienvenu !
+            {t('welcome')} !
           </p>
           {
             user && (
@@ -62,48 +63,47 @@ export const UserCart: React.FC<CartProps> = ({ firstName, lastName, closeButton
           <ul>
             <li>
               <div className='link-list'>
-                {/* <div className='profile-list-icon' style={{ backgroundImage: Accueil }}></div>*/}
                 <div className='profile-list-icon' style={{ backgroundImage: `url(${Accueil})` }}></div>
-                <Link to={'/'}>Accueil</Link>
+                <Link to={'/'}>{t("home")}</Link>
               </div>
             </li>
 
             <li>
               <div className='link-list'>
                 <div className='profile-list-icon' style={{ backgroundImage: `url(${Offres})` }}></div>
-                <Link to={'/'}>Mes offres &annonces</Link>
+                <Link to={'/'}>{t("profile.mesOffres")}</Link>
               </div>
             </li>
             <li>
               <div className='link-list'>
                 <div className='profile-list-icon' style={{ backgroundImage: `url(${Config})` }}></div>
-                <Link to={'/profile/'}>Mes configurations</Link>
+                <Link to={'/profile/'}>{t("profile.mesConfig")}</Link>
               </div>
             </li>
             <li>
               <div className='link-list'>
                 <div className='profile-list-icon' style={{ backgroundImage: `url(${Archive})` }}></div>
-                <Link to={'/'}>Archive commandes</Link>
+                <Link to={'/'}>{t("profile.commands")}</Link>
               </div>
             </li>
             <li>
 
               <div className='link-list'>
                 <div className='profile-list-icon' style={{ backgroundImage: `url(${Espace})` }}></div>
-                <Link to={'/'}>Espace de fidelité</Link>
+                <Link to={'/'}>{t("profile.espaceFidel")}</Link>
               </div>
 
             </li>
             <li>
               <div className='link-list'>
                 <div className='profile-list-icon' style={{ backgroundImage: `url(${Discuter})` }}></div>
-                <Link to={'/'}>Discuter avec nous</Link>
+                <Link to={'/'}>{t("profile.discuter")}</Link>
               </div>
             </li>
             <li>
               <div className='link-list'>
                 <div className='profile-list-icon' style={{ backgroundImage: `url(${Favors})` }}></div>
-                <Link to={'/'}>Mes favoris</Link>
+                <Link to={'/'}>{t("profile.favors")}</Link>
               </div>
             </li>
           </ul>
@@ -111,7 +111,7 @@ export const UserCart: React.FC<CartProps> = ({ firstName, lastName, closeButton
         <div className="disconnect">
           <div className='link-list'>
             <div className='profile-list-icon' style={{ backgroundImage: `url(${Deconnecter})` }}></div>
-            <Link to={'login'} onClick={() => dispatch(logout())}>Se deconnecter</Link>
+            <Link to={'login'} onClick={() => dispatch(logout())}>{t("profile.deconnecter")}</Link>
           </div>
         </div>
       </main>
