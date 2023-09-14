@@ -22,17 +22,41 @@ import DiscuterW from '../../../../assets/profile/white/Discuter.svg'
 import FavorsW from '../../../../assets/profile/white/Favors.svg'
 
 import './sideBar.scss'
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 const SideBar = () => {
   const [selectedNav, setSelectedNav] = useState<number>(0)
   const handleSelect = (e: any, index: number) => {
     // e.preventDefault()
     setSelectedNav(index)
   }
+
+  const [isDivVisible, setIsDivVisible] = useState(true);
+
+  useEffect(() => {
+    // Function to handle window resize events
+    const handleResize = () => {
+      if (window.innerWidth <= 600) {
+        setIsDivVisible(false);
+      } else {
+        setIsDivVisible(true);
+      }
+    };
+
+    // Attach the event listener when the component mounts
+    window.addEventListener('resize', handleResize);
+
+    // Initial check for visibility
+    handleResize();
+
+    // Clean up the event listener when the component unmounts
+    return () => {
+      window.removeEventListener('resize', handleResize);
+    };
+  }, []);
+
   return (
     <>
-
-      <div className="side-bar">
+      <div className={`side-bar ${isDivVisible ? "visible-bar" : ""} `}>
         <header className='sideBar-header'>
           <div className="image" style={{ backgroundImage: `url(${profileImg})` }}></div>
           <div className='info'>
@@ -67,7 +91,7 @@ const SideBar = () => {
               </Link>
             </li>
             <li>
-              <Link to={'/profile'} className={selectedNav == 4 ? "active" : ""} onClick={(e) => handleSelect(e, 4)}>
+              <Link to={'/profile/archivedCommands'} className={selectedNav == 4 ? "active" : ""} onClick={(e) => handleSelect(e, 4)}>
                 <span className='profile-list-icon' style={{ backgroundImage: `url(${selectedNav === 4 ? ArchiveW : Archive})` }}></span>
                 Archive commandes
               </Link>
@@ -99,7 +123,13 @@ const SideBar = () => {
           </ul>
         </nav>
 
+
+
       </div >
+
+      <button onClick={() => setIsDivVisible(!isDivVisible)} className={`visibility-button ${isDivVisible ? "visible-bar" : ""}`}>
+        ...
+      </button >
     </>
   );
 };

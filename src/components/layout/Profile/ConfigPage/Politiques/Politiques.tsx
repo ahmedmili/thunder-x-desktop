@@ -1,5 +1,5 @@
 
-import './Politiques.scss';
+import './politiques.scss';
 import thunderLogo from '../../../../../assets/icon.png';
 import LeftArrow from '../../../../../assets/profile/leftArrow.svg';
 import RigthArrow from '../../../../../assets/profile/rigthArrow.svg';
@@ -61,7 +61,7 @@ const Politiques = () => {
 
   return (
     <>
-      <section className="Lgale-section">
+      <section className="Politique-section">
         <h1>Conditions générales d’utilisation de l’application Thunder Express</h1>
         <div className="logo-container">
 

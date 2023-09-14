@@ -1,0 +1,65 @@
+@import '../../../../colors';
+
+
+
+
+.archived-commands-container {
+    height: 100vh;
+    width: 934px;
+    padding-top: 150px;
+    // background-color: white;
+    header {
+
+        .title {
+            color: #484848;
+            font-family: Poppins;
+            font-size: 24px;
+            font-style: normal;
+            font-weight: 700;
+            line-height: normal;
+        }
+
+        .archivedC-image {
+            background-position: center;
+            background-repeat: no-repeat;
+            background-size: cover;
+            height: 335.896px;
+            border-radius: 25px 25px 25px 25px;
+            margin-bottom: 32px;
+
+        }
+
+        nav {
+            margin-top: 47px;
+            margin-bottom: 40px;
+
+            ul {
+                list-style: none;
+                display: flex;
+                justify-content: center;
+                gap: 169px;
+
+                li {
+                    &:hover {
+                        cursor: pointer;
+                    }
+
+                    .list-item-text {
+                        color: #958E8E;
+                        font-family: Poppins;
+                        font-size: 24px;
+                        font-style: normal;
+                        font-weight: 500;
+                        line-height: normal;
+                    }
+
+                    .active {
+                        color: #1F94A4;
+                    }
+                }
+            }
+        }
+    }
+
+    .commands-list-container {}
+}

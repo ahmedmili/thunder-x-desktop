@@ -1,0 +1,47 @@
+@import '../../../../../colors';
+
+
+.commands-List {
+    width: 100%;
+    // margin: 500px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+
+    .command-header {
+        width: 100%;
+        height: 67px;
+        border-radius: 15px;
+        background: #5DBDBC;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 0 28px;
+
+        span {
+            color: #FFF;
+            font-family: Poppins;
+            font-size: 18px;
+            font-style: normal;
+            font-weight: 500;
+            line-height: normal;
+        }
+
+        .icon {
+            color: white;
+            font-size: 20px;
+            width: 25px;
+            height: 25px;
+            rotate: 90deg;
+
+        }
+
+        .active {
+
+            .icon {
+                rotate: 180deg;
+            }
+        }
+    }
+}

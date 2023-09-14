@@ -38,3 +38,19 @@
 
     }
 }
+
+
+@media only screen and (max-width: 576px) {
+    .long-section {
+        .option-container {
+            label {
+                color: #958E8E;
+                font-family: Poppins;
+                font-size: 14px;
+                font-style: normal;
+                font-weight: 600;
+                line-height: normal;
+            }
+        }
+    }
+}

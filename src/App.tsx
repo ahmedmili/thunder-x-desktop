@@ -40,6 +40,7 @@ import MenuOptions from "./components/menus/menuOptions/MenuOptions";
 import Profile from "./components/layout/Profile/Profile";
 import ConfigPage from "./components/layout/Profile/ConfigPage/ConfigPage";
 import Annonces from "./components/layout/Profile/All_Annonces/All_Annonces";
+import ArchivedCommands from "./components/layout/Profile/Archivedcommands/ArchivedCommands";
 
 //lazy loading
 const HomePage = lazy(() => import("./views/home/home.page"));
@@ -215,6 +216,7 @@ function App() {
           <Route path="/profile" element={<Profile />}>
             <Route index element={<ConfigPage />} />
             <Route path="/profile/annonces" element={<Annonces />} />
+            <Route path="/profile/archivedCommands" element={<ArchivedCommands />} />
           </Route>
 
           <Route path="unauthorized" element={<UnauthorizePage />} />
