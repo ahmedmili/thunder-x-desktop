@@ -3,7 +3,6 @@ import './allAnnonces.scss';
 import LeftArrow from '../../../../assets/profile/leftArrow.svg';
 import RigthArrow from '../../../../assets/profile/rigthArrow.svg';
 import { useEffect, useState } from 'react';
-import data from './Annonces.json'
 import allAnnonces from './Annonces.json';
 import { useAppSelector } from '../../../../Redux/store';
 
@@ -35,15 +34,14 @@ const Annonces = () => {
   const handleContent = () => {
     const startIndex = (currentPage - 1) * itemsPerPage;
     const endIndex = startIndex + itemsPerPage;
-    const displayedContent = data.slice(startIndex, endIndex)
+    const displayedContent = allAnnoncesData.slice(startIndex, endIndex)
     setDisplayedContent(displayedContent)
   }
-  
+
   useEffect(() => {
     let totalPages: number = 1;
     totalPages = Math.ceil(allAnnonces.length / itemsPerPage)
     setTotalPages(totalPages)
-    console.log(data)
   }, [allAnnonces])
 
   useEffect(() => {
@@ -59,45 +57,58 @@ const Annonces = () => {
 
   useEffect(() => {
     let totalPages: number = 1;
-    totalPages = Math.ceil(data.length / itemsPerPage)
+    totalPages = Math.ceil(allAnnoncesData.length / itemsPerPage)
     setTotalPages(totalPages)
-    console.log(data)
-  }, [data])
+  }, [allAnnoncesData])
 
   return (
     <>
       <section className="annonces-section">
+        {
+          allAnnoncesData.length > 0 ? (
+            <>
+              <main>
+                {
+                  displayedContent.length > 0 && (
+                    displayedContent.map((annonce: any, index: number) => {
+                      return <AnnonceCart key={index} title={annonce.title} bodyText={annonce.description} />
+                    })
+                  )
 
-        <main>
-          {
-            displayedContent.length > 0 && (
-              displayedContent.map((annonce: any, index: number) => {
-                return <AnnonceCart key={index} title={annonce.title} bodyText={annonce.description} />
-              })
-            )
+                }
+              </main>
+              <div className='buttons'>
+                {/* prev button */}
+                {!(currentPage === 1) &&
+                  <div className="nav-page-button">
+                    <button onClick={prevPage}>
+                      <img src={LeftArrow} alt="prev button" />
+                    </button>
+                  </div>
+                }
+                {/* next */}
+                {(!(currentPage === totalPages) && (currentPage + 1 <= totalPages)) &&
+                  <div className="nav-page-button">
+                    <button onClick={nextPage}>
+                      <img src={RigthArrow} alt="prev button" />
 
-          }
-        </main>
-        <div className='buttons'>
-          {/* prev button */}
-          {!(currentPage === 1) &&
-            <div className="nav-page-button">
-              <button onClick={prevPage}>
-                <img src={LeftArrow} alt="prev button" />
-              </button>
-            </div>
-          }
-          {/* next */}
-          {(!(currentPage === totalPages ) && (currentPage +1 <=  totalPages) )&&
-            <div className="nav-page-button">
-              <button onClick={nextPage}>
-                <img src={RigthArrow} alt="prev button" />
+                    </button>
+                  </div>
+                }
 
-              </button>
-            </div>
-          }
+              </div>
+            </>
+          ) : (
+            <>
+              <center>
+                <span className='title'>
+                  no announces
+                </span>
+              </center>
+            </>
+          )
+        }
 
-        </div>
       </section>
 
     </>

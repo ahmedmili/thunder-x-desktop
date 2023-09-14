@@ -41,6 +41,7 @@ import Profile from "./components/layout/Profile/Profile";
 import ConfigPage from "./components/layout/Profile/ConfigPage/ConfigPage";
 import Annonces from "./components/layout/Profile/All_Annonces/All_Annonces";
 import ArchivedCommands from "./components/layout/Profile/Archivedcommands/ArchivedCommands";
+import Discuter from "./components/layout/Profile/Discuter/Discuter";
 
 //lazy loading
 const HomePage = lazy(() => import("./views/home/home.page"));
@@ -217,6 +218,7 @@ function App() {
             <Route index element={<ConfigPage />} />
             <Route path="/profile/annonces" element={<Annonces />} />
             <Route path="/profile/archivedCommands" element={<ArchivedCommands />} />
+            <Route path="/profile/discuter" element={<Discuter />} />
           </Route>
 
           <Route path="unauthorized" element={<UnauthorizePage />} />

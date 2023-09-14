@@ -27,6 +27,7 @@ import { useAppDispatch, useAppSelector } from '../../../../Redux/store';
 import { logout } from '../../../../Redux/slices/userSlice';
 import { useTranslation } from 'react-i18next';
 import { setProfilePage } from '../../../../Redux/slices/home';
+import { localStorageService } from '../../../../services/localStorageService';
 
 const SideBar = () => {
 
@@ -37,7 +38,13 @@ const SideBar = () => {
   const currentPage = useAppSelector(state => state.home.profilePage)
 
   const [selectedNav, setSelectedNav] = useState<number>(currentPage)
+  const [fullName, setFullName] = useState<string>("")
+  const userItem = localStorageService.getUser();
+  const user = userItem ? JSON.parse(userItem) : null;
 
+  useEffect(() => {
+    setFullName(`${user.firstname} ${user.lastname}`)
+  }, [user])
   useEffect(() => {
     setSelectedNav(currentPage)
   }, [currentPage])
@@ -76,7 +83,7 @@ const SideBar = () => {
         <header className='sideBar-header'>
           <div className="image" style={{ backgroundImage: `url(${profileImg})` }}></div>
           <div className='info'>
-            <div className="name">Toumi Marwa</div>
+            <div className="name">{fullName}</div>
             <div className="icons">
               <div className="icon" style={{ backgroundImage: `url(${phoneIcon})` }}></div>
               <div className="icon" style={{ backgroundImage: `url(${lockIcon})` }}></div>
@@ -119,7 +126,7 @@ const SideBar = () => {
               </Link>
             </li>
             <li>
-              <Link to={'/profile'} className={selectedNav == 6 ? "active" : ""} onClick={(e) => handleSelect(e, 6)}>
+              <Link to={'/profile/discuter'} className={selectedNav == 6 ? "active" : ""} onClick={(e) => handleSelect(e, 6)}>
                 <span className='profile-list-icon' style={{ backgroundImage: `url(${selectedNav === 6 ? DiscuterW : Discuter})` }}></span>
                 {t('profile.discuter')}
               </Link>

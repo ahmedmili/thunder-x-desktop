@@ -52,7 +52,7 @@ const CommandsList: React.FC<CommandsListProps> = ({ data }) => {
                     return (
                         <div className='command-header' key={index}>
                             <span >
-                                Commande N°3567
+                                Commande N°{command.id}
                             </span>
                             <span >
                                 {command.client.name}
