@@ -11,7 +11,7 @@ const PhoneNumber: React.FC<Props> = ({ close }) => {
 
     return (
         <div className="popup-container" onClick={close}>
-            <div className="popup-box">
+            <div className="phone-popup-box">
                 <LocalPhoneRoundedIcon className="phone-icon" />
                 <span className="phone-number">44 100 162</span>
             </div>

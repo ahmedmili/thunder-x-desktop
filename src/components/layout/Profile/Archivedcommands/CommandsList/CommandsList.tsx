@@ -43,7 +43,9 @@ const ListBody: React.FC<CommandsListProps> = ({ data }) => {
     const products = data.products
 
     const position = supplier.street + " " + supplier.region + " " + supplier.city
-
+    useEffect(() => {
+        console.log(data)
+    }, [])
     return (
         <>
 
@@ -111,6 +113,11 @@ const ListBody: React.FC<CommandsListProps> = ({ data }) => {
                     })
                 )
             }
+            <footer className='command-footer'>
+                <p>{data.total_price}</p>
+                <button className='avis'>Donner votre avis</button>
+
+            </footer>
 
         </>
 

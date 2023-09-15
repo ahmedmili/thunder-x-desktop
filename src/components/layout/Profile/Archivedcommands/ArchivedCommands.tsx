@@ -48,7 +48,7 @@ function ArchivedCommands() {
 
             </header>
             <main className='commands-list-container'>
-                {(allCommands && nav == 1) && <CommandsList data={allCommands} />}
+                {(allCommands) && <CommandsList data={allCommands} />}
             </main>
         </div>
     )
