@@ -26,8 +26,8 @@ const Footer: React.FC<FooterProps> = () => {
         <Col className={"footerContacteTelCol"}>
           <div>
             <p className={"footerTitle"}>Contactez-Nous</p>
-            <p className={"FooterText"} ><span> <LocalPhoneIcon /></span>  +216 22 543 123 </p>
-            <p className={"FooterText"} > <span><LocalPhoneIcon /></span> +216 22 543 123 </p>
+            <p className={"FooterText"} ><span> <LocalPhoneIcon className="icon" /></span> &nbsp; +216 22 543 123 </p>
+            <p className={"FooterText"} > <span><LocalPhoneIcon className="icon" /></span> &nbsp; +216 22 543 123 </p>
 
             <div className={"socialMedia"}>
               <div className={"icons"}>

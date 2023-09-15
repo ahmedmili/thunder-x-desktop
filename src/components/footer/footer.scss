@@ -72,6 +72,9 @@
             font-style: normal;
             font-weight: 600;
             line-height: 33px;
+            display: flex;
+            // justify-content: center;
+            align-items: center;
 
             span {
                 color: $orange_color;
@@ -196,6 +199,10 @@
             .FooterText {
                 font-size: 0.5rem;
                 line-height: 21px;
+
+                .icon {
+                    font-size: 0.7rem;
+                }
             }
 
             .webifyIcon {
@@ -226,6 +233,7 @@
 
         .footerRightReserverCol {
             height: 15px;
+
             p {
                 font-size: 7px;
             }
