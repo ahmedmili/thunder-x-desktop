@@ -4,9 +4,8 @@
 .location-container {
   padding-top: 37px;
   position: relative;
-  // padding: 24px;
-  height: 504px;
-  overflow-y: scroll;
+  min-height: 500px;
+  max-height: 700px;
   scrollbar-width: thin;
   scrollbar-color: transparent transparent;
   width: 794px;
@@ -15,15 +14,6 @@
   border-radius: 25px;
   display: flex;
   flex-direction: column;
-
-
-  &::-webkit-scrollbar-thumb {
-    background-color: transparent;
-  }
-
-  &::-webkit-scrollbar-track {
-    background-color: transparent;
-  }
 
   .cancel-icon-container {
     position: absolute;
@@ -89,7 +79,6 @@
     .adresses_container {
       display: flex;
       justify-content: center;
-      // align-items: center;
 
     }
   }
@@ -230,11 +219,97 @@
     }
   }
 
+  .saved-adresses-title {
+    width: 80%;
+    color: #484848;
+    font-family: Poppins;
+    font-size: 20px;
+    font-style: normal;
+    font-weight: 500;
+    line-height: normal;
+    margin: 0 auto 5px auto;
+  }
   .adresses-container {
-    padding: 5px 5px 8px 5px;
-    display: grid;
-    grid-template-columns: repeat(2, 1fr);
-    grid-gap: 10px;
+
+    overflow-y: scroll;
+    width: 80%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    margin: 0 auto;
+    padding: 1px 0;
+
+    &::-webkit-scrollbar {
+      width: 0;
+    }
+
+
+
+    .adressCompContainer {
+      display: flex;
+      flex-direction: column;
+
+      width: 100%;
+      border-radius: 15px;
+      background: #F7F7F7;
+      margin-top: 25px;
+      padding: 21px 18px 17px 18px;
+
+      .type {
+        display: flex;
+        flex: 1;
+        justify-content: space-between;
+
+        .label {
+          display: flex;
+          gap: 16px;
+          color: #484848;
+          font-family: Poppins;
+          font-size: 20px;
+          font-style: normal;
+          font-weight: 600;
+          line-height: normal;
+
+          .position-icon {
+            width: 20px;
+            height: 27.5px;
+            background-position: center;
+            background-repeat: no-repeat;
+            object-fit: cover;
+          }
+        }
+
+        .edit-button {
+          width: 44px;
+          height: 44px;
+          background-color: #CEE5E5;
+          border-radius: 50%;
+          border: none;
+          display: flex;
+          justify-content: center;
+          align-items: center;
+
+          .edit-icon {
+            width: 20px;
+            height: 20px;
+          }
+        }
+      }
+
+      .position-name {
+        width: 100%;
+        color: #484848;
+        font-family: Poppins;
+        font-size: 20px;
+        font-style: normal;
+        font-weight: 400;
+        line-height: normal;
+        padding-left: 35px;
+      }
+    }
+
+
   }
 }
 
@@ -297,6 +372,7 @@
 
     .location-search-input-container {
       width: 191px;
+
       .location-search-inpute {
 
         input[type="text"] {
