@@ -1,5 +1,15 @@
 @import '../../../../colors';
 
+@keyframes fadeIn {
+    0% {
+        opacity: 0;
+    }
+
+    100% {
+        opacity: 1;
+    }
+}
+
 .annonces-section {
     width: 100%;
     display: flex;
@@ -8,6 +18,7 @@
     margin-top: 150px;
     align-items: start;
     gap: 25px;
+    animation: fadeIn 1s;
 
     main {
         padding-right: 3%;

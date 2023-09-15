@@ -1,7 +1,18 @@
 @import '../../../../colors';
 
+@keyframes fadeIn {
+    0% {
+        opacity: 0;
+    }
+
+    100% {
+        opacity: 1;
+    }
+}
+
 .discuter-main-container {
     width: 100%;
+    animation: fadeIn 1s;
 
     .discuter-header {
         margin-top: 150px;
