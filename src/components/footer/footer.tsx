@@ -31,16 +31,16 @@ const Footer: React.FC<FooterProps> = () => {
 
             <div className={"socialMedia"}>
               <div className={"icons"}>
-                <FacebookIcon ></FacebookIcon>
+                <FacebookIcon className="icon"></FacebookIcon>
 
               </div>
               <div className={"icons"}>
-                <InstaIcon ></InstaIcon>
+                <InstaIcon className="icon" ></InstaIcon>
 
               </div>
 
               <div className={"icons"}>
-                <TikTokIcon></TikTokIcon>
+                <TikTokIcon className="icon" ></TikTokIcon>
 
               </div>
             </div>
@@ -73,7 +73,7 @@ const Footer: React.FC<FooterProps> = () => {
                   totalSlides={
                     ads.length
                   }
-                  visibleSlides={2}
+                  visibleSlides={3}
                   step={1}
                   infinite={true}
                   isPlaying={true}
