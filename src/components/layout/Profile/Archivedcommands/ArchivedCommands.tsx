@@ -29,13 +29,6 @@ function ArchivedCommands() {
         nav == 2 && getCurrentCommands()
     }, [nav])
 
-
-    useEffect(() => {
-        console.log("passed commands ", allCommands)
-    }, [allCommands])
-
-
-
     return (
         <div className='archived-commands-container'>
             <header>
@@ -55,7 +48,7 @@ function ArchivedCommands() {
 
             </header>
             <main className='commands-list-container'>
-                {allCommands && <CommandsList data={allCommands} />}
+                {(allCommands && nav == 1) && <CommandsList data={allCommands} />}
             </main>
         </div>
     )
