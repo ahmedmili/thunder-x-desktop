@@ -31,14 +31,15 @@ import { localStorageService } from '../../../../services/localStorageService';
 
 const SideBar = () => {
 
-
+  const theme = useAppSelector((state) => state.home.theme)
+  const currentPage = useAppSelector(state => state.home.profilePage)
   const dispatch = useAppDispatch();
   const { t } = useTranslation()
 
-  const currentPage = useAppSelector(state => state.home.profilePage)
+  const [template, setTemplate] = useState<number>(theme)
 
-  const [selectedNav, setSelectedNav] = useState<number>(currentPage)
   const [fullName, setFullName] = useState<string>("")
+  const [selectedNav, setSelectedNav] = useState<number>(currentPage)
   const userItem = localStorageService.getUser();
   const user = userItem ? JSON.parse(userItem) : null;
 
@@ -76,10 +77,13 @@ const SideBar = () => {
       window.removeEventListener('resize', handleResize);
     };
   }, []);
-
+  useEffect(() => {
+    console.log("theme !! ", theme)
+    setTemplate(theme)
+  }, [theme])
   return (
     <>
-      <div className={`side-bar ${isDivVisible ? "visible-bar" : ""} `}>
+      <div className={`side-bar ${isDivVisible ? "visible-bar" : ""} ${template === 1 ? 'dark-background2' : ""} `}>
         <header className='sideBar-header'>
           <div className="image" style={{ backgroundImage: `url(${profileImg})` }}></div>
           <div className='info'>

@@ -1,3 +1,5 @@
+@import '../../../colors';
+
 .profile-container {
     background-color: #F7F7F7;
     width: 100vw;
@@ -5,7 +7,9 @@
     display: flex;
     gap: 60px;
     overflow-y: scroll;
-    &::-webkit-scrollbar{
+    transition: all 1s ease-in-out;
+
+    &::-webkit-scrollbar {
         width: 0;
     }
 }
@@ -21,4 +25,3 @@
         gap: 30px;
     }
 }
-

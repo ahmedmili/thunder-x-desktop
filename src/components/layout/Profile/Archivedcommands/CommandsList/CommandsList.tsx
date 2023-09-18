@@ -6,146 +6,63 @@ import PositionIcon from "../../../../../assets/profile/ArchivedCommands/positio
 import DestinationIcon from "../../../../../assets/profile/ArchivedCommands/destination.svg"
 import TimeIcon from "../../../../../assets/profile/ArchivedCommands/time.svg"
 import DefaultImg from "../../../../../assets/profile/ArchivedCommands/default.jpg"
+import OldCommands from '../OldCommands/OldCommands';
+import { commandService } from '../../../../../services/api/command.api';
+import CurrentCommands from '../CurrentCommands/CurrentCommands';
+import { useAppSelector } from '../../../../../Redux/store';
+import { useNavigate } from 'react-router-dom';
 
 interface CommandsListProps {
-    data: any
+    type?: string
 }
 
-interface ProductPropd {
-    data: {
-        img: string,
-        name: string,
-        description: string,
-        qt: number,
-        price: number
-    }
-}
+const CommandsList: React.FC<CommandsListProps> = ({ type = "old" }) => {
 
-const Product: React.FC<ProductPropd> = ({ data }) => {
-    return (
-        <div className='product-container'>
-            <img src={data.img} alt="product image" />
-            <div className='product-info' >
-                <p className='name'> {data.name}</p>
-                <p className='qt'> X{data.qt}</p>
-                <p className='description' dangerouslySetInnerHTML={{ __html: data.description }} />
-                <p className='price'> {data.price}</p>
-            </div>
+    const navigate = useNavigate()
+    const theme = useAppSelector((state) => state.home.theme)
+    const [template, setTemplate] = useState<number>(theme)
 
-        </div>
-    )
-
-}
-
-const ListBody: React.FC<CommandsListProps> = ({ data }) => {
-    const supplier = data.supplier
-    const delivery = data.delivery
-    const products = data.products
-
-    const position = supplier.street + " " + supplier.region + " " + supplier.city
-    useEffect(() => {
-        console.log(data)
-    }, [])
-    return (
-        <>
-
-            <div className='command-info-container'>
-                <div className='supplier-info'>
-                    <div className='logo' >
-                        <div className='logo-img' style={{ backgroundImage: `url(${supplier.images[0].path.length > 0 ? supplier.images[0].path : DefaultImg})` }}></div>
-                        <div className="name-rate">
-                            <span className='supplier-name'>{supplier.name}</span>
-                            <span className='supplier-rates'>{(supplier.star && supplier.star > 0) ? supplier.star : "no rates"}</span>
-                        </div>
-                    </div>
-                </div>
-                <span className='devider'></span>
-                <div className='command-info'>
-                    <div className='start'>
-                        <img src={PositionIcon} alt="Supplier position" />
-                        <div className="info">
-                            <p className="supplier-name">{supplier.name}</p>
-                            <p className="supplier-position">{position}</p>
-                        </div>
-                    </div>
-                    <div className='delay'>
-                        <img className='time-icon' src={TimeIcon} alt="time icon" />
-                        <span className='meduim-time'>{supplier.medium_time}<span>min</span> </span>
-                    </div>
-                    <div className='end'>
-                        <img src={DestinationIcon} alt="Client position" />
-                        <div className="info">
-                            <p className="deliv-type">Domicile</p>
-                            <p className="supplier-position">{data.to_adresse}</p>
-                        </div>
-                    </div>
-                </div>
-                <span className='devider'></span>
-
-                <div className='delivery-info'>
-                    <div className='logo' >
-                        <div className='logo-img' style={{ backgroundImage: `url(${(delivery.image.length > 0 && delivery.image != null) ? delivery.image : DefaultImg})` }}></div>
-                        <div className="name-rate">
-                            <span className='supplier-Title'>Votre livreur</span>
-                            <span className='supplier-name'>{delivery.name}</span>
-                            <span className='supplier-rates'>{(delivery.star && delivery.star > 0) ? delivery.star : "no rates"}</span>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            {
-                products.length > 0 && (
-                    products.map((product: any, index: number) => {
-                        const productData: ProductPropd = {
-                            data: {
-                                img: product.computed_value.image[0].path,
-                                name: product.name,
-                                description: product.computed_value.description,
-                                qt: product.quantity,
-                                price: product.price
-                            }
-                        }
-                        return (
-                            <>
-                                <Product key={index} data={productData.data}></Product>
-                            </>
-                        )
-                    })
-                )
-            }
-            <footer className='command-footer'>
-                <p>{data.total_price}</p>
-                <button className='avis'>Donner votre avis</button>
-
-            </footer>
-
-        </>
-
-    )
-}
-
-
-const CommandsList: React.FC<CommandsListProps> = ({ data }) => {
-
-    const [commands, setCommands] = useState<any>(data)
+    const [commands, setCommands] = useState<any>([])
     const [selectedCommand, setSelectedCommand] = useState<number>(-1)
-    useEffect(() => {
-        setCommands(data)
-
-    }, [data])
 
     const handleSelectCommand = (i: number) => {
         i === selectedCommand ? setSelectedCommand(-1) : setSelectedCommand(i)
     }
+
+    const HandleRemove = async (command_id: number) => {
+        const { status, data } = await commandService.removecommand(command_id)
+        data.success && getCurrentCommands()
+    }
+    const getPassedCommands = async () => {
+        const { status, data } = await commandService.passedCommands()
+        const commands = data.data
+        setCommands(commands)
+    }
+    const getCurrentCommands = async () => {
+        const { status, data } = await commandService.myCommands()
+        const commands = data.data
+        setCommands(commands)
+    }
+    useEffect(() => {
+        type === "old" && getPassedCommands()
+        type === "current" && getCurrentCommands()
+    }, [type])
+
+    useEffect(() => {
+        setSelectedCommand(-1)
+    }, [commands])
+    useEffect(() => {
+        setTemplate(theme)
+    }, [theme])
     return (
 
         <>
             <section className='commands-List' >
-                {commands.map((command: any, index: number) => {
+                {commands.length > 0 && commands.map((command: any, index: number) => {
 
                     return (
                         <>
-                            <div className={`command-header  ${selectedCommand === index ? "active-header" : ""}`} key={index} onClick={() => handleSelectCommand(index)}>
+                            <div className={`command-header  ${selectedCommand === index ? "active-header" : ""} ${(template === 1 && selectedCommand !== index) && "dark-background2"}`} key={index} onClick={() => handleSelectCommand(index)}>
                                 <span >
                                     Commande N°{command.id}
                                 </span>
@@ -160,9 +77,8 @@ const CommandsList: React.FC<CommandsListProps> = ({ data }) => {
                                 </span>
                                 <KeyboardArrowUpOutlinedIcon className='icon' />
                             </div>
-                            {
-                                selectedCommand === index && <ListBody data={command} />
-                            }
+                            {(selectedCommand === index && type === "old") && <OldCommands data={command} />}
+                            {(selectedCommand === index && type === "current") && <CurrentCommands removeCommand={HandleRemove} data={command} />}
                         </>
                     )
                 })}
