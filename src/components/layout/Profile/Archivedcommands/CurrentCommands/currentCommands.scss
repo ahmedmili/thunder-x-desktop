@@ -197,7 +197,7 @@
                 .cancel-btn {
                     width: 312px;
                     height: 42px;
-                    margin: 32px 0 0 auto;
+                    margin: 32px auto 0 auto;
                     border-radius: 25px;
                     background: #FFF;
                     border-radius: 25px;
@@ -317,6 +317,98 @@
                     }
                 }
             }
+
+            // background-color: #24A6A4;
+            .buttons {
+
+                .lieu-button {
+                    width: 339px;
+                    height: 43px;
+                    margin: 0 auto;
+                    display: flex;
+                    justify-content: center;
+                    align-items: center;
+                    border: none;
+                    gap: 15px;
+
+
+                    border-radius: 21px;
+                    background: #ECECEC;
+
+
+                    color: #484848;
+                    font-family: Poppins;
+                    font-size: 14px;
+                    font-style: normal;
+                    font-weight: 500;
+                    line-height: normal;
+                    margin-bottom: 36px;
+
+                    .position-icon {
+                        width: 13px;
+                        height: 18px;
+                        background-position: center;
+                        background-repeat: no-repeat;
+                        background-size: cover;
+                    }
+
+
+                }
+
+                .recup-btn {
+                    width: 295px;
+                    height: 43px;
+                    border-radius: 21px;
+                    background: #24A6A4;
+                }
+            }
+
+            .import-position {
+                display: flex;
+                justify-content: center;
+                align-items: center;
+                gap: 10px;
+                margin-top: 33px;
+
+                .position-icon {
+                    background-position: center;
+                    background-size: cover;
+                    background-repeat: no-repeat;
+                    width: 32px;
+                    height: 32px;
+                }
+
+                .position-text {
+                    color: #958E8E;
+                    text-align: center;
+                    font-family: Poppins;
+                    font-size: 13px;
+                    font-style: normal;
+                    font-weight: 400;
+                    line-height: normal;
+                    margin: 0;
+                }
+            }
+
+            .tacke-away-date {
+                display: flex;
+                justify-content: space-between;
+                align-items: center;
+                border-radius: 10px;
+                border: 1px solid #24A6A4;
+                background: rgba(46, 181, 178, 0.22);
+                padding: 10px 47px;
+                margin-top: 33px;
+
+                span {
+                    color: #24A6A4;
+                    font-family: Poppins;
+                    font-size: 14px;
+                    font-style: normal;
+                    font-weight: 400;
+                    line-height: normal;
+                }
+            }
         }
 
         .position {
@@ -325,7 +417,7 @@
             align-items: center;
             position: relative;
             width: 85%;
-            margin: 0 auto 31px auto;
+            margin: 37px auto 31px auto;
 
             .start-position {
                 flex: 1;
@@ -334,6 +426,7 @@
                 justify-content: center;
                 align-items: center;
                 z-index: 5;
+                // gap: 12px;
 
                 .position-icon {
                     background-position: center;
@@ -341,6 +434,7 @@
                     background-repeat: no-repeat;
                     width: 32px;
                     height: 32px;
+                    margin-bottom: 15px;
                 }
 
                 .name {
@@ -409,7 +503,7 @@
             width: 85%;
             gap: 32px;
             justify-content: space-between;
-            margin: 0 auto;
+            margin: 46px auto 0 auto;
 
             button {
                 flex: 1;

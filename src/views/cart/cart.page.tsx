@@ -53,9 +53,8 @@ const CartPage: React.FC = () => {
   const deliveryOption = useAppSelector((state: RootState) => state.cart.deliveryOption);
   const isAuthenticated = useAppSelector((state) => state.user.isAuthenticated);
 
-  //local storeg vars
-  // const codePromo = localStorageService.getCodePromo();
-  // const supplier_bonus = localStorageService.getBonus();
+  const [isDelevery, setIsDelevery] = useState(deliveryOption)
+  //local storege vars
   const comment = localStorageService.getComment();
   const userItem = localStorageService.getUser();
   const user = userItem ? JSON.parse(userItem) : null;
@@ -63,6 +62,8 @@ const CartPage: React.FC = () => {
   //util vars
   const [name, setName] = React.useState(user?.firstname || "");
   const [phoneNumber, setPhoneNumber] = React.useState(user?.tel || "");
+
+  const [payMode, setPayMode] = useState<number>(1)
 
   const [sousTotal, setSousTotal] = useState<number>(0)
   const [total, setTotal] = useState<number>(0)
@@ -94,14 +95,15 @@ const CartPage: React.FC = () => {
 
 
   // take away plan vars
-  const [selectedOption, setSelectedOption] = useState<number>(1);
+  const command_type = deliveryOption === "delivery" ? 3 : 1;
+  const [selectedOption, setSelectedOption] = useState<number>(command_type);
 
   var extraDeliveryCost = 0;
   var max_distance: any = 5;
   var distance = 0;
 
   var take_away_plan = 'default';
-  const [takeAwayDate, setTakeAwayDate] = useState(new Date(new Date().getTime() + 30 * 60000));
+  const [takeAwayDate, setTakeAwayDate] = useState(new Date());
 
   var minCost: any;
   var isClosed: any;
@@ -202,12 +204,21 @@ const CartPage: React.FC = () => {
         { option_id: opt[0].id }
       )
       )
+      var year = takeAwayDate.getFullYear();
+      var month = (takeAwayDate.getMonth() + 1).toString().padStart(2, '0'); // Zero-padding month
+      var day = takeAwayDate.getDate().toString().padStart(2, '0'); // Zero-padding day
+      var hours = takeAwayDate.getHours().toString().padStart(2, '0'); // Zero-padding hours
+      var minutes = takeAwayDate.getMinutes().toString().padStart(2, '0'); // Zero-padding minutes
+      var seconds = "00"; // Assuming you don't have seconds information
+
+      var formattedDate = year + '-' + month + '-' + day + ' ' + hours + ':' + minutes + ':' + seconds;
+
       const order = {
         addresse_id: 1,
         supplier_id: supplier,
         extraDeliveryCost: extraDeliveryCost,
         delivery_price: Math.round(deliveryPrice),
-        mode_pay: 1,
+        mode_pay: payMode,
         applied_bonus: applied_bonus,
         total_price: total,
         promo_code: promo,
@@ -221,9 +232,9 @@ const CartPage: React.FC = () => {
         lng: userPosition?.coords.longitude,
         total_price_coupon: promoReduction,
         take_away_plan: take_away_plan,
-        take_away_date: (takeAwayDate.getFullYear() + '-' + takeAwayDate.getDate() + '-' + takeAwayDate.getMonth() + 1) + ', ' + (takeAwayDate.getHours() % 12 || 12) + ':' + (takeAwayDate.getMinutes() < 10 ? '0' : '') + takeAwayDate.getMinutes() + ' ' + (takeAwayDate.getHours() < 12 ? 'AM' : 'PM'),
+        take_away_date: formattedDate,
         tip: 0,
-        is_delivery: deliveryOption === "delivery" ? 1 : 0,
+        is_delivery: selectedOption === 3 ? 1 : 0,
         phone: phoneNumber,
         name: name,
         comment: aComment,
@@ -262,7 +273,6 @@ const CartPage: React.FC = () => {
         toast.warn("You need to be logged in to make an order!");
       }
     } catch (error: any) {
-      console.error("Error submitting order:", error.message);
       toast.error("Failed to submit order. Please try again.", error.message);
     }
   };
@@ -506,10 +516,17 @@ const CartPage: React.FC = () => {
     switch (selectedOption) {
       case 1:
         take_away_plan = "default"
+        setIsDelevery("surplace")
+        setTakeAwayDate(new Date(new Date().getTime() + 30 * 60000))
+        break;
+      case 2:
+        take_away_plan = "default"
+        setIsDelevery("pickup")
         setTakeAwayDate(new Date(new Date().getTime() + 30 * 60000))
         break;
       case 3:
         take_away_plan = "plan"
+        setIsDelevery("delivery")
         setTakeAwayDate(new Date(new Date().getTime() + 30 * 60000))
         break;
       default:
@@ -659,12 +676,12 @@ const CartPage: React.FC = () => {
                       <div className="method">
                         <img className="icon" src={PayCashSVG} alt="My SVG" />
                         <label htmlFor="espece">En espèces à la livraison</label>
-                        <input className="form-check-input" type="radio" name="pay" id="espece" />
+                        <input className="form-check-input" type="radio" name="pay" id="espece" checked={payMode === 1} onClick={() => setPayMode(1)} />
                       </div>
                       <div className="method">
                         <PaymentIcon className="icon" />
-                        <label htmlFor="bnc-cart">Par carte bancaire (soon)</label>
-                        <input disabled className="form-check-input" type="radio" name="pay" id="bnc-cart" />
+                        <label htmlFor="bnc-cart">Par carte bancaire</label>
+                        <input className="form-check-input" type="radio" name="pay" id="bnc-cart" checked={payMode === 2} onClick={() => setPayMode(2)} />
                       </div>
                     </div>
 

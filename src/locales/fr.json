@@ -13,7 +13,6 @@
   "profile.discuter": "Discuter avec nous",
   "profile.favors": "Mes favoris",
   "profile.deconnecter": "deconnecter",
-
   "profile.mesConfig.modifAccount": "Modifier le compte",
   "profile.mesConfig.delivAdress": "Mes adresses de livraison",
   "profile.mesConfig.modifLong": "Changer la langue",
@@ -22,8 +21,12 @@
   "profile.mesConfig.politiques": "Politiques de confidentialité",
   "profile.mesConfig.theme": "Sélectionner le théme",
   "profile.mesConfig.deleteAccount": "Supprimer mon compte",
-
-
+  "profile.commands.PENDING": "En attente de livraison",
+  "profile.commands.VERIFY": "Vérifié par le fournisseur",
+  "profile.commands.ASSIGNED": "Conducteur en route vers le fournisseur",
+  "profile.commands.Aboutassigned": "À l'approche de l'affectation",
+  "profile.commands.INPROGRESS": "En phase de préparation",
+  "profile.commands.sousMessage": "La commande est en attente d’acceptation de la part du restaurant",
   "orderTrackingPage.status": "Statut :",
   "orderTrackingPage.deliveryDriver": "Livreur :",
   "orderTrackingPage.callUs": "Appelez-nous",

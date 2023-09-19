@@ -78,7 +78,6 @@ const SideBar = () => {
     };
   }, []);
   useEffect(() => {
-    console.log("theme !! ", theme)
     setTemplate(theme)
   }, [theme])
   return (
