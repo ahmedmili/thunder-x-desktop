@@ -18,9 +18,7 @@ import preparatinA from "../../../../../assets/profile/ArchivedCommands/preparat
 import delivD from "../../../../../assets/profile/ArchivedCommands/deliv-D.svg"
 import traitementD from "../../../../../assets/profile/ArchivedCommands/traitement-D.svg"
 import preparatinD from "../../../../../assets/profile/ArchivedCommands/preparatin-D.svg"
-import { commandService } from '../../../../../services/api/command.api'
 import { useAppSelector } from '../../../../../Redux/store'
-import { useNavigate } from 'react-router-dom'
 import { useTranslation } from 'react-i18next';
 
 interface CommandsListProps {
@@ -40,15 +38,17 @@ interface CommandProps {
 }
 
 const Command: React.FC<CommandProps> = ({ removeCommand, data }) => {
+    const { t } = useTranslation()
+
     return (
         <div className='command-product-container'>
-            <p className='title'> Commande</p>
+            <p className='title'> {t('profile.commands.command')}</p>
             <div className='total'>
-                <span>Total</span>
+                <span>{t('cartPage.total')}</span>
                 <span className='total-value'>{data.total_price}</span>
             </div>
             <div className='sous-total'>
-                <span>Sous-total</span>
+                <span>{t('profile.commands.sousTotal')}</span>
                 <span>{data.total_price}</span>
             </div>
 
@@ -67,25 +67,19 @@ const Command: React.FC<CommandProps> = ({ removeCommand, data }) => {
                 }
             </ul>
             <hr />
-            <button className='cancel-btn' onClick={() => removeCommand(data.command_id)}>Annuler la comamnde</button>
+            <button className='cancel-btn' onClick={() => removeCommand(data.command_id)}>{t('profile.commands.annuler')}</button>
         </div>
     )
 
 }
 
-
-
-
 const CurrentCommands: React.FC<CommandsListProps> = ({ removeCommand, data }) => {
 
     const { t } = useTranslation()
     const theme = useAppSelector((state) => state.home.theme)
-    const client = data.client
     const supplier = data.supplier
     const delivery = data.delivery
-    const products = data.products
     const cycle = data.cycle
-    const mode_pay = data.mode_pay
     const isDelevery = data.is_delivery
     const take_away_date = data.take_away_date
 
@@ -95,11 +89,6 @@ const CurrentCommands: React.FC<CommandsListProps> = ({ removeCommand, data }) =
     const [messsage, setMessage] = useState<string>('')
     const [time, setTime] = useState<string>('')
     const [date, setDate] = useState<string>('')
-    useEffect(() => {
-        console.log(data)
-    }, [data])
-
-
 
     useEffect(() => {
         if (take_away_date != null) {
@@ -181,8 +170,7 @@ const CurrentCommands: React.FC<CommandsListProps> = ({ removeCommand, data }) =
                         <img src={supplier.images[0].path} alt="supplier logo" />
                         <div className='name-rate'>
                             <p className='supplier-name'>{supplier.name}</p>
-                            <p className='supplier-rates'><StarIcon className='rate-icon' /> {(supplier.star && supplier.star > 0) ? supplier.star : "no rates"}</p>
-
+                            {(supplier.star && supplier.star > 0) && <p className='supplier-rates'><StarIcon className='rate-icon' /> {supplier.star}</p>}
                         </div>
 
                     </div>
@@ -214,7 +202,7 @@ const CurrentCommands: React.FC<CommandsListProps> = ({ removeCommand, data }) =
                                                 <div className='no-deliv-assigned'>
                                                     <div className='img'></div>
                                                     <div className='delivery-info'>
-                                                        <p className="title">En recherche d’un livreur</p>
+                                                        <p className="title">{t('profile.commands.livRecherche')}</p>
                                                         <div className='bleck-box'></div>
                                                         <p className="rate"> <StarIcon className='rate-icon' /> <div className='orange-box'></div></p>
                                                     </div>
@@ -229,9 +217,9 @@ const CurrentCommands: React.FC<CommandsListProps> = ({ removeCommand, data }) =
                                                 <div className='deliv-assigned'>
                                                     <img src={(delivery && delivery.image.path) ? delivery.image.path : defaultImage} alt="supplier image" />
                                                     <div className='delivery-info'>
-                                                        <p className="title">Votre livreur</p>
+                                                        <p className="title">{t('profile.commands.votreLiv')}</p>
                                                         <p className="name">{(delivery && delivery.name) ? delivery.name : "Med Fendri"}</p>
-                                                        <p className="rate"><StarIcon /> {(delivery && delivery.star && delivery.star > 0) ? delivery.star : "no rates"}</p>
+                                                        <p className="rate"><StarIcon /> {(delivery && delivery.star && delivery.star > 0) ? delivery.star : ""}</p>
                                                     </div>
                                                 </div>
                                                 <hr />
@@ -248,11 +236,11 @@ const CurrentCommands: React.FC<CommandsListProps> = ({ removeCommand, data }) =
                                                     <p className='position-text' > {position}</p>
                                                 </div>
                                                 <div className='delay'>
-                                                    <p className='time-text'> Temps de déplacement <span>15min</span></p>
+                                                    <p className='time-text'> {t('profile.commands.delivTime')} <span>15min</span></p>
                                                 </div>
                                                 <div className='start-position'>
                                                     <div className='position-icon' style={{ backgroundImage: `url(${destinationIcon}) ` }}></div>
-                                                    <p className='name'>Domicile</p>
+                                                    <p className='name'>{t('home2')}</p>
                                                     <p className='position-text' > {data.to_adresse}</p>
                                                 </div>
 
@@ -264,11 +252,11 @@ const CurrentCommands: React.FC<CommandsListProps> = ({ removeCommand, data }) =
                             ) : (
                                 <>
                                     <div className="buttons">
-                                        <button className='lieu-button'> <span className='position-icon' style={{ backgroundImage: `url(${positionIconBlue})` }}></span> Voir le lieu</button>
+                                        <button className='lieu-button'> <span className='position-icon' style={{ backgroundImage: `url(${positionIconBlue})` }}></span> {t('profile.commands.lieu')}</button>
                                         {
                                             status >= 5 && (
 
-                                                <button className='recup-btn'>Commande récuperé</button>
+                                                <button className='recup-btn'>{t('profile.commands.recupere')}</button>
                                             )
                                         }
 
@@ -280,7 +268,7 @@ const CurrentCommands: React.FC<CommandsListProps> = ({ removeCommand, data }) =
                                     </div>
 
                                     <div className='tacke-away-date'>
-                                        <span>Prévu le:</span>
+                                        <span>{t('profile.commands.prevu')}:</span>
                                         <span>{date}</span>
                                         <span>{time}</span>
                                     </div>
@@ -294,8 +282,8 @@ const CurrentCommands: React.FC<CommandsListProps> = ({ removeCommand, data }) =
                     {
                         status >= 5 && (
                             <div className='buttons'>
-                                <button className="recue">Commande reçue</button>
-                                <button className="problem">Signaler un problème ?</button>
+                                <button className="recue">{t('profile.commands.recue')}</button>
+                                <button className="problem">{t('profile.commands.problem')}</button>
                             </div>
                         )
                     }
