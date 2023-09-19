@@ -57,6 +57,11 @@
                 font-style: normal;
                 font-weight: 600;
                 line-height: normal;
+
+                .rate-icon {
+                    color: #FBC000;
+                    font-size: 18px;
+                }
             }
         }
 
@@ -192,7 +197,7 @@
                 .cancel-btn {
                     width: 312px;
                     height: 42px;
-                    margin: 32px  0 0 auto;
+                    margin: 32px 0 0 auto;
                     border-radius: 25px;
                     background: #FFF;
                     border-radius: 25px;
@@ -205,6 +210,237 @@
                     line-height: normal;
                 }
             }
+        }
+
+        .deliv-info-section {
+            margin: 22px auto;
+            width: 85%;
+
+            .deliv-assigned {
+                display: flex;
+                margin-bottom: 31px;
+
+                img {
+                    width: 102.369px;
+                    height: 76.667px;
+                    border-radius: 8px;
+                }
+
+                .delivery-info {
+                    display: flex;
+                    flex-direction: column;
+                    padding-left: 9px;
+
+                    .title {
+                        color: #FBC000;
+                        font-family: Poppins;
+                        font-size: 16px;
+                        font-style: normal;
+                        font-weight: 500;
+                        line-height: normal;
+                        margin: 0;
+                    }
+
+                    .name {
+                        color: #484848;
+                        font-family: Poppins;
+                        font-size: 20px;
+                        font-style: normal;
+                        font-weight: 500;
+                        line-height: normal;
+                        margin: 0;
+                    }
+
+                    .rate {
+                        color: #FBC000;
+                        font-family: Poppins;
+                        font-size: 16px;
+                        font-style: normal;
+                        font-weight: 500;
+                        line-height: normal;
+                        margin: 0;
+                    }
+                }
+
+            }
+
+            .no-deliv-assigned {
+                display: flex;
+
+                .img {
+                    width: 76.5px;
+                    height: 75px;
+                    border-radius: 25px;
+                    background: rgb(255, 255, 255);
+                    background: linear-gradient(171deg, rgba(255, 255, 255, 1) 0%, rgba(233, 233, 233, 1) 96%, rgba(255, 255, 255, 1) 100%);
+                }
+
+                .delivery-info {
+                    display: flex;
+                    flex-direction: column;
+                    gap: 11px;
+
+                    .title {
+                        color: #FBC000;
+                        font-family: Poppins;
+                        font-size: 16px;
+                        font-style: normal;
+                        font-weight: 500;
+                        line-height: normal;
+                        margin: 0;
+                    }
+
+                    .bleck-box {
+                        width: 106px;
+                        height: 8px;
+                        border-radius: 25px;
+                        background: #958E8E;
+                    }
+
+                    .rate {
+                        display: flex;
+                        align-items: center;
+
+                        margin-top: 0;
+
+                        .rate-icon {
+                            color: $orange_color;
+                        }
+
+                        .orange-box {
+                            width: 32px;
+                            height: 6px;
+                            border-radius: 25px;
+                            background: rgba(251, 195, 1, 0.51);
+                        }
+
+                    }
+                }
+            }
+        }
+
+        .position {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            position: relative;
+            width: 85%;
+            margin: 0 auto 31px auto;
+
+            .start-position {
+                flex: 1;
+                display: flex;
+                flex-direction: column;
+                justify-content: center;
+                align-items: center;
+                z-index: 5;
+
+                .position-icon {
+                    background-position: center;
+                    background-size: cover;
+                    background-repeat: no-repeat;
+                    width: 32px;
+                    height: 32px;
+                }
+
+                .name {
+                    color: #484848;
+                    text-align: center;
+                    font-family: Poppins;
+                    font-size: 15px;
+                    font-style: normal;
+                    font-weight: 600;
+                    line-height: normal;
+                    margin: 0;
+                }
+
+                .position-text {
+                    color: #958E8E;
+                    text-align: center;
+                    font-family: Poppins;
+                    font-size: 13px;
+                    font-style: normal;
+                    font-weight: 400;
+                    line-height: normal;
+                    margin: 0;
+                    height: 29px;
+                }
+            }
+
+            .delay {
+
+                flex: 2;
+
+                display: flex;
+                justify-content: center;
+                align-items: end;
+
+                .time-text {
+                    color: #958E8E;
+                    text-align: center;
+                    font-family: Poppins;
+                    font-size: 13px;
+                    font-style: normal;
+                    font-weight: 400;
+                    line-height: normal;
+                    margin: 35px 0 0 0;
+                    width: 100px;
+
+                    span {
+                        color: #484848;
+                    }
+                }
+            }
+
+            .time-line {
+                position: absolute;
+                width: 75%;
+                height: 0px;
+                border: #FBC000 dashed 2px;
+                top: 20px;
+                left: 70px;
+            }
+
+
+        }
+
+        .buttons {
+            display: flex;
+            width: 85%;
+            gap: 32px;
+            justify-content: space-between;
+            margin: 0 auto;
+
+            button {
+                flex: 1;
+                border-radius: 25px;
+                background-color: #FBC000;
+                border: none;
+                padding: 8px 0;
+                display: flex;
+                justify-content: center;
+                align-items: center;
+                color: #FFF;
+                font-family: Poppins;
+                font-size: 16px;
+                font-style: normal;
+                font-weight: 700;
+                line-height: normal;
+
+            }
+
+            .problem {
+                border: 1px solid #24A6A4;
+                border-radius: 25px;
+                background: #FFF;
+                color: #24A6A4;
+                font-family: Poppins;
+                font-size: 16px;
+                font-style: normal;
+                font-weight: 700;
+                line-height: normal;
+            }
+
         }
     }
 

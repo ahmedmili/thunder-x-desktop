@@ -1,12 +1,13 @@
 import React, { useEffect, useState } from 'react'
 
 import "./currentCommands.scss"
-import PositionIcon from "../../../../../assets/profile/ArchivedCommands/position.svg"
-import DestinationIcon from "../../../../../assets/profile/ArchivedCommands/destination.svg"
-import TimeIcon from "../../../../../assets/profile/ArchivedCommands/time.svg"
-import DefaultImg from "../../../../../assets/profile/ArchivedCommands/default.jpg"
 
+import StarIcon from '@mui/icons-material/Star';
 
+import positionIcon from "../../../../../assets/profile/ArchivedCommands/position.svg"
+import destinationIcon from "../../../../../assets/profile/ArchivedCommands/destination.svg"
+
+import defaultImage from "../../../../../assets/profile/ArchivedCommands/default.jpg"
 import delivA from "../../../../../assets/profile/ArchivedCommands/deliv-A.svg"
 import traitementA from "../../../../../assets/profile/ArchivedCommands/traitement-A.svg"
 import preparatinA from "../../../../../assets/profile/ArchivedCommands/preparatin-A.svg"
@@ -83,7 +84,9 @@ const CurrentCommands: React.FC<CommandsListProps> = ({ removeCommand, data }) =
     const [status, setStatus] = useState<number>(0)
     const [template, setTemplate] = useState<number>(theme)
     const [messsage, setMessage] = useState<string>('')
-
+    useEffect(() => {
+        console.log(data)
+    }, [data])
     const getProgressDescription = (cycle: string): { message: string, status: number } => {
         switch (cycle) {
             case 'PENDING':
@@ -152,49 +155,94 @@ const CurrentCommands: React.FC<CommandsListProps> = ({ removeCommand, data }) =
                     <img src={supplier.images[1].path} alt="supplier background" />
                 </header>
                 <main className='current-command-main'>
-                    <section className='supplier-info'>
+                    <div className='supplier-info'>
                         <img src={supplier.images[0].path} alt="supplier logo" />
                         <div className='name-rate'>
                             <p className='supplier-name'>{supplier.name}</p>
-                            <p className='supplier-rates'>{(supplier.star && supplier.star > 0) ? supplier.star : "no rates"}</p>
+                            <p className='supplier-rates'><StarIcon className='rate-icon' /> {(supplier.star && supplier.star > 0) ? supplier.star : "no rates"}</p>
 
                         </div>
 
-                    </section>
+                    </div>
 
-                    <section className='command-info'>
+                    <div className='command-info'>
                         <p className="title">En cours de traitement</p>
                         <p className="description">La commande est en attente d’acceptation de la part du restaurant</p>
                         <div className='command-graph'>
                             <div className='time-line'></div>
                             <img src={status === 1 ? traitementA : traitementD} alt="traitement logo" className='traitement-logo' />
-                            <img src={status === 4 ? preparatinA : preparatinD} alt="preparation logo" className='preparation-logo' />
-                            <img src={status === 6 ? delivA : delivD} alt="deliv logo" className='deliv-logo' />
+                            <img src={(status <= 4 && status > 1) ? preparatinA : preparatinD} alt="preparation logo" className='preparation-logo' />
+                            <img src={(status === 6 || status === 5) ? delivA : delivD} alt="deliv logo" className='deliv-logo' />
                         </div>
                         <hr />
-                    </section>
-                    <section className='command-list-product'>
+                    </div>
+                    <div className='command-list-product'>
                         {
                             (status === 1) && <Command removeCommand={removeCommand} data={commanddata.data} />
                         }
-                    </section>
-                    <section className='deliv-info-section'>
+                    </div>
+                    <div className='deliv-info-section'>
                         {
-                            (status >= 5) ? (
+                            (status <= 4 && status > 1) && (
                                 <>
-                                    <img src={delivery.image[0].path} alt="supplier image" />
-                                    <div className='delivery-info'>
-                                        <p className="title">Votre livreur</p>
-                                        <p className="name">{delivery.name}</p>
-                                        <p className="rate">{(delivery.star && delivery.star > 0) ? delivery.star : "no rates"}</p>
+                                    <div className='no-deliv-assigned'>
+                                        <div className='img'></div>
+                                        <div className='delivery-info'>
+                                            <p className="title">En recherche d’un livreur</p>
+                                            <div className='bleck-box'></div>
+                                            <p className="rate"> <StarIcon className='rate-icon' /> <div className='orange-box'></div></p>
+                                        </div>
                                     </div>
-                                </>
-                            ) : (
-                                <>
+                                    <hr />
                                 </>
                             )
                         }
-                    </section>
+                        {
+                            (status >= 5) && (
+                                <>
+                                    <div className='deliv-assigned'>
+                                        <img src={(delivery && delivery.image.path) ? delivery.image.path : defaultImage} alt="supplier image" />
+                                        <div className='delivery-info'>
+                                            <p className="title">Votre livreur</p>
+                                            <p className="name">{(delivery && delivery.name) ? delivery.name : "Med Fendri"}</p>
+                                            <p className="rate"><StarIcon /> {(delivery && delivery.star && delivery.star > 0) ? delivery.star : "no rates"}</p>
+                                        </div>
+                                    </div>
+                                    <hr />
+                                </>
+                            )
+                        }
+                    </div>
+                    {
+                        (status <= 5 && status > 1) && (
+                            
+                            <div className='position'>
+                                <div className='start-position'>
+                                    <div className='position-icon' style={{ backgroundImage: `url(${positionIcon}) ` }}></div>
+                                    <p className='name'>{supplier.name}</p>
+                                    <p className='position-text' > {position}</p>
+                                </div>
+                                <div className='delay'>
+                                    <p className='time-text'> Temps de déplacement <span>15min</span></p>
+                                </div>
+                                <div className='start-position'>
+                                    <div className='position-icon' style={{ backgroundImage: `url(${destinationIcon}) ` }}></div>
+                                    <p className='name'>Domicile</p>
+                                    <p className='position-text' > {data.to_adresse}</p>
+                                </div>
+
+                                <div className='time-line'></div>
+                            </div>
+                        )
+                    }
+                    {
+                        status >= 5 && (
+                            <div className='buttons'>
+                                <button className="recue">Commande reçue</button>
+                                <button className="problem">Signaler un problème ?</button>
+                            </div>
+                        )
+                    }
                 </main>
             </div>
         </>
