@@ -7,8 +7,7 @@ import {
 
 } from '@mui/material';
 import { Add as AddIcon, Star } from '@mui/icons-material';
-import missingImage from '../../assets/missingImage.png';
-import { RootState, useAppDispatch } from '../../Redux/store';
+import { useAppDispatch } from '../../Redux/store';
 import {
   clearCart,
   clearSupplierMismatch,
@@ -31,7 +30,6 @@ interface MenuProps { }
 const Menu: React.FC<MenuProps> = () => {
   const { t } = useTranslation();
   const dispatch = useAppDispatch();
-  const navigate = useNavigate();
   const [menuData, setMenuData] = useState<MenuData[]>([]);
   const { id } = useParams<{ id: string }>();
   // const [showOptions, setShowOptions] = useState(false);
@@ -91,13 +89,8 @@ const Menu: React.FC<MenuProps> = () => {
 
   // close options
   const handleChooseOptions = (selectedMenuItem: any | null) => {
-    // setShowOptions(true);
-
-    setSelectedMenuItem(selectedMenuItem);
     dispatch(setProduct(selectedMenuItem))
-    // navigate('/product', {state:{restaurant:restaurant}})
     handlePopup()
-
   };
 
 
@@ -177,16 +170,10 @@ const Menu: React.FC<MenuProps> = () => {
                             <p className="product-title" >
                               {getTruncatedName(product.name, 10)}
                             </p>
-
                             <p className="product-price">
                               {`${t('price')}: ${Math.round(product.price)} DT`}
                             </p>
-
-                            <p className="product-description">
-                              {product.description}
-                            </p>
-
-
+                            <p className="product-description" dangerouslySetInnerHTML={{ __html: product.description }}></p>
                             <button className="product-button"
                               onClick={() => {
                                 handleChooseOptions(product);
@@ -292,7 +279,7 @@ const Menu: React.FC<MenuProps> = () => {
         <MismatchModal onClose={handleMismatchModalClose} />
       )}
       {showOptionsPopup && (
-        <MenuPopup close={handlePopup} restaurant={restaurant}  isOpen={showOptionsPopup}/>
+        <MenuPopup close={handlePopup} restaurant={restaurant} isOpen={showOptionsPopup} />
       )}
 
     </>

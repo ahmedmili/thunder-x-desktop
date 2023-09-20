@@ -116,6 +116,7 @@ const MenuPopup: React.FC<Props> = ({ close, restaurant }) => {
     const getProduct = async () => {
         try {
             const { status, data } = await productService.getProduct(selectedMenuItem?.id);
+            console.log(data.data)
             if (status === 200) {
                 setProduct(data.data.product);
 
@@ -531,8 +532,6 @@ const MenuPopup: React.FC<Props> = ({ close, restaurant }) => {
                                     </div >
                                 )
                             }
-
-
                         </div>
 
                     </div>
