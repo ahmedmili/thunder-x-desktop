@@ -99,6 +99,7 @@ const MenuPopup: React.FC<Props> = ({ close, restaurant }) => {
     const [product, setProduct] = useState<any>([])
 
     const [state, dispatch] = useReducer(reducer, initialState);
+    const [isLoading, setIsLoading] = useState(true);
 
     const usedispatch = useAppDispatch();
 
@@ -111,7 +112,9 @@ const MenuPopup: React.FC<Props> = ({ close, restaurant }) => {
     const getProduct = async () => {
         try {
             const { status, data } = await productService.getProduct(selectedMenuItem?.id);
+            // console.log(status.ok)
             if (status === 200) {
+                setIsLoading(false)
                 setProduct(data.data.product);
 
                 let optionslist = data.data.product.options;
@@ -371,11 +374,12 @@ const MenuPopup: React.FC<Props> = ({ close, restaurant }) => {
 
         let optionsCount: number = allContent.length;
         totalPages = Math.ceil(optionsCount / itemsPerPage)
+        console.log(totalPages)
         const startIndex = (currentPage - 1) * itemsPerPage;
         const endIndex = startIndex + itemsPerPage;
         const displayedContent = allContent.slice(startIndex, endIndex)
         setDisplayedContent(displayedContent)
-        setTotalPages(totalPages)
+        totalPages > 0 ? setTotalPages(totalPages) : setTotalPages(1)
         setAllContent(allContent)
         dispatch({ type: 'SET_TOTAL', payload: Number(product.default_price) })
         dispatch({ type: 'SET_UNITPRICE', payload: Number(product.default_price) })
@@ -426,127 +430,133 @@ const MenuPopup: React.FC<Props> = ({ close, restaurant }) => {
                             </div>
 
                             {
-                                state.optionslist.length === 0 ? (
-                                    <>
-
-                                        <div className="loader">
-                                            <CircularProgress style={{ alignSelf: "center" }} />
-                                        </div>
-                                    </>
-                                ) : (
-                                    <div className="menu-options">
-                                        {
-
-                                            <>
-                                                {displayedContent.length > 0 && displayedContent.map((options, index) => {
-                                                    return (
-                                                        <>
-                                                            <>
-                                                                <div className='menu-options-header'>
-                                                                    <div className="option-name">Choisissez votre {Object.keys(options)[0]}</div>
-                                                                    {
-
-                                                                        Object.keys(options)[0] === "packet" && <div className="option-obligatoir">Obligatoire</div>
-                                                                    }
-
-                                                                    {
-                                                                        Object.keys(options)[0] === "sauce" && state.sauce_max?.max > 0 && <div className="option-max">{"MAX " + state.sauce_max?.max}</div>
-                                                                    }
-                                                                    {
-                                                                        Object.keys(options)[0] === "viande" && state.viande_max?.max > 0 && <div className="option-max">{"MAX " + state.viande_max?.max}</div>
-                                                                    }
-                                                                    {
-                                                                        Object.keys(options)[0] === "extra" && state.extra_max?.max > 0 && <div className="option-max">{"MAX " + state.extra_max?.max}</div>
-                                                                    }
-                                                                    {
-                                                                        Object.keys(options)[0] === "supplement" && state.supplement_max?.max > 0 && <div className="option-max">{"MAX " + state.supplement_max?.max}</div>
-                                                                    }
-                                                                </div>
-                                                                <form>
-                                                                    {state[Object.keys(options)[0]].map((option: any, index: number) => (
-                                                                        <div key={index} className="options-list">
-                                                                            <div className="checkBox">
-                                                                                <input type='checkbox' name={option.id} id={option.id} value={option.id || ''} onChange={(e) => selectOption(Object.keys(options)[0], index, e)} checked={option?.checked}>
-                                                                                </input>
-                                                                                <div className="custom-checkbox"></div>
-                                                                                <label htmlFor={option.id}>{option.name} </label>
-                                                                            </div>
-                                                                            <span className='option-price'>{option.price} DT</span>
-                                                                        </div>
-                                                                    ))}
-                                                                </form>
-
-                                                                <div className="devider">
-
-                                                                </div>
-                                                            </>
-
-                                                        </>)
-                                                })
-                                                }
-
-
-                                                <div className="prev-next-buttons">
-                                                    {/* prev button */}
-                                                    <span className="prev-page-button">
-                                                        {!(currentPage === 1) &&
-                                                            <button onClick={prevPage}>
-                                                                <ArrowRightAltIcon className="prev-page-icon" />
-                                                            </button>
-                                                        }
-                                                    </span>
-                                                    {/* next button  */}
-                                                    <span className="next-page-button">
-                                                        {!(currentPage === totalPages) &&
-                                                            <button onClick={nextPage}>
-                                                                <ArrowRightAltIcon className="next-page-icon" />
-                                                            </button>
-                                                        }
-                                                    </span>
-
-
-                                                </div>
-                                                {/* command buttons */}
-                                                {(currentPage === totalPages) &&
-
-                                                    <div className="buttons">
-                                                        {/* counting */}
-                                                        <div className="count-container">
-                                                            <input type="number" name="product-count" id="product-count" value={productCount} onChange={(e) => { (parseInt(e.target.value) >= 1) && setProductCount(parseInt(e.target.value)) }} />
-                                                            <div className="count-buttons">
-                                                                <button onClick={() => handleCount("add")} >
-                                                                    <KeyboardArrowUpOutlinedIcon className="count-more" />
-                                                                </button>
-                                                                <button onClick={() => handleCount("remove")} >
-
-                                                                    <KeyboardArrowDownOutlinedIcon className="count-less" />
-                                                                </button>
-                                                            </div>
-                                                        </div>
-                                                        {/* add to cart */}
-                                                        <button className="add-to-cart-button" onClick={() => { addToCart() }}>
-                                                            <ShoppingCartOutlinedIcon className='cart-icon' />
-                                                            {t('add_to_cart')}
-                                                        </button>
-
-                                                    </div>
-                                                }
-                                            </>
-                                        }
-                                    </div >
+                                isLoading && (
+                                    <div className="loader">
+                                        <CircularProgress style={{ alignSelf: "center" }} />
+                                    </div>
                                 )
                             }
+                            <div className="menu-options">
+
+                                {
+                                    state.optionslist.length === 0 ? (
+                                        <>
+                                        </>
+                                    ) : (
+                                        <>
+                                            {
+                                                <>
+                                                    {displayedContent.length > 0 && displayedContent.map((options, index) => {
+                                                        return (
+                                                            <>
+                                                                <>
+                                                                    <div className='menu-options-header'>
+                                                                        <div className="option-name">Choisissez votre {Object.keys(options)[0]}</div>
+                                                                        {
+
+                                                                            Object.keys(options)[0] === "packet" && <div className="option-obligatoir">Obligatoire</div>
+                                                                        }
+
+                                                                        {
+                                                                            Object.keys(options)[0] === "sauce" && state.sauce_max?.max > 0 && <div className="option-max">{"MAX " + state.sauce_max?.max}</div>
+                                                                        }
+                                                                        {
+                                                                            Object.keys(options)[0] === "viande" && state.viande_max?.max > 0 && <div className="option-max">{"MAX " + state.viande_max?.max}</div>
+                                                                        }
+                                                                        {
+                                                                            Object.keys(options)[0] === "extra" && state.extra_max?.max > 0 && <div className="option-max">{"MAX " + state.extra_max?.max}</div>
+                                                                        }
+                                                                        {
+                                                                            Object.keys(options)[0] === "supplement" && state.supplement_max?.max > 0 && <div className="option-max">{"MAX " + state.supplement_max?.max}</div>
+                                                                        }
+                                                                    </div>
+                                                                    <form>
+                                                                        {state[Object.keys(options)[0]].map((option: any, index: number) => (
+                                                                            <div key={index} className="options-list">
+                                                                                <div className="checkBox">
+                                                                                    <input type='checkbox' name={option.id} id={option.id} value={option.id || ''} onChange={(e) => selectOption(Object.keys(options)[0], index, e)} checked={option?.checked}>
+                                                                                    </input>
+                                                                                    <div className="custom-checkbox"></div>
+                                                                                    <label htmlFor={option.id}>{option.name} </label>
+                                                                                </div>
+                                                                                <span className='option-price'>{option.price} DT</span>
+                                                                            </div>
+                                                                        ))}
+                                                                    </form>
+
+                                                                    <div className="devider">
+
+                                                                    </div>
+                                                                </>
+
+                                                            </>)
+                                                    })
+                                                    }
+
+                                                    <div className="prev-next-buttons">
+                                                        {/* prev button */}
+                                                        <span className="prev-page-button">
+                                                            {!(currentPage === 1) &&
+                                                                <button onClick={prevPage}>
+                                                                    <ArrowRightAltIcon className="prev-page-icon" />
+                                                                </button>
+                                                            }
+                                                        </span>
+                                                        {/* next button  */}
+                                                        <span className="next-page-button">
+                                                            {!(currentPage === totalPages) &&
+                                                                <button onClick={nextPage}>
+                                                                    <ArrowRightAltIcon className="next-page-icon" />
+                                                                </button>
+                                                            }
+                                                        </span>
+
+
+                                                    </div>
+                                                    {/* command buttons */}
+
+                                                </>
+                                            }
+
+                                        </>
+                                    )
+
+
+                                }
+
+                                {(currentPage === totalPages) &&
+
+                                    <div className="buttons">
+                                        {/* counting */}
+                                        <div className="count-container">
+                                            <input type="number" name="product-count" id="product-count" value={productCount} onChange={(e) => { (parseInt(e.target.value) >= 1) && setProductCount(parseInt(e.target.value)) }} />
+                                            <div className="count-buttons">
+                                                <button onClick={() => handleCount("add")} >
+                                                    <KeyboardArrowUpOutlinedIcon className="count-more" />
+                                                </button>
+                                                <button onClick={() => handleCount("remove")} >
+
+                                                    <KeyboardArrowDownOutlinedIcon className="count-less" />
+                                                </button>
+                                            </div>
+                                        </div>
+                                        {/* add to cart */}
+                                        <button className="add-to-cart-button" onClick={() => { addToCart() }}>
+                                            <ShoppingCartOutlinedIcon className='cart-icon' />
+                                            {t('add_to_cart')}
+                                        </button>
+
+                                    </div>
+                                }
+                            </div >
+
                         </div>
 
                     </div>
                 </div>
             </>
-
         </Suspense>
-
-
     )
-
 }
 
 export default MenuPopup
