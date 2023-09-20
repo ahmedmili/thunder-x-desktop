@@ -110,7 +110,6 @@ const Map = () => {
           {/*  search location input */}
           <div className="adresses_container">
             <AutocompleteInput />
-
           </div>
         </div>
 
@@ -219,7 +218,7 @@ const Map = () => {
             type="text"
             value={inputValue}
             onChange={handleInputChange}
-            placeholder={`${t("searchButton")} ...`}
+            placeholder={`${t("adress.searchWithAdress")} . . .`}
           />
           <span className="icon">
             <SearchIcon className='icon' />
