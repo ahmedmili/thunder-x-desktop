@@ -1,6 +1,11 @@
 @import '../../../_colors.scss';
 @import '../../../animations';
 
+@mixin min-height-media-query($max-height) {
+    @media screen and (max-height: #{$max-height}) {
+        @content;
+    }
+}
 
 .popup-overlay {
     height: 100vh;
@@ -31,6 +36,20 @@
         display: flex;
         animation: $PopupAnimation 0.5s ease-out;
 
+        @include min-height-media-query(800px) {
+            height: 574px;
+            margin-top: 50px;
+        }
+        @include min-height-media-query(700px) {
+            height: 474px;
+            margin-top: 50px;
+        }
+
+        @include min-height-media-query(500px) {
+            height: 374px;
+            margin-top: 50px;
+        }
+
         .modal-content-image {
             flex: 1;
             background-repeat: no-repeat;
@@ -43,10 +62,19 @@
             margin-right: 8px;
             width: 794px;
             height: 625px;
-
             background-color: #FFF;
             overflow-y: scroll;
             flex: 1;
+
+            @include min-height-media-query(800px) {
+                height: 574px;
+            }
+            @include min-height-media-query(700px) {
+                height: 474px;
+            }
+            @include min-height-media-query(500px) {
+                height: 374px;
+            }
 
             &::-webkit-scrollbar {
                 width: 0rem;
