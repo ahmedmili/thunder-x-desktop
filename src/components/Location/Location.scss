@@ -238,10 +238,17 @@
     justify-content: center;
     align-items: center;
     margin: 0 auto;
-    padding: 32px 0;
+    padding: 32px 16px 32px 0;
+
 
     &::-webkit-scrollbar {
-      width: 0;
+      width: 9px;
+    }
+    &::-webkit-scrollbar-track {
+      background: #F7F7F7;
+    }
+    &::-webkit-scrollbar-thumb {
+      background: #CEE5E5;
     }
 
 
