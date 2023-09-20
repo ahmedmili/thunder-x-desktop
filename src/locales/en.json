@@ -89,6 +89,8 @@
   "adress.message2": "Filter address by:",
   "adress.searchWithAdress": "Search by street, neighborhood, city ",
   "adress.intitule_message": "The address title is required",
+  "adress.adressDetected": "Your current position detected:",
+  "adress.adressSelected": "The selected address is: ",
   "faq.header": "Frequently Asked Questions",
   "faq.questions": [
     {

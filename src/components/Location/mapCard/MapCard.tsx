@@ -26,7 +26,7 @@ function MapCard() {
     const [primary, setPrimary] = useState<boolean>(false);
     const [selectedOption, setSelectedOption] = useState<number>(1);
 
-
+    const [locationChanged, setLocationChanger] = useState<boolean>(false)
     const [showForm, setShowForm] = useState<boolean>(false);
 
     const [marker, setMarker] = useState<google.maps.Marker | null>(null);
@@ -92,6 +92,8 @@ function MapCard() {
 
     const handleMapClick = (event: google.maps.MapMouseEvent) => {
         // Change state position
+        !locationChanged && setLocationChanger(true)
+
         const latLng = event.latLng;
         LocationService.geoCode(latLng?.lat(), latLng?.lng()).then(data => {
             dispatch({
@@ -178,6 +180,8 @@ function MapCard() {
                                 <div className='map-and-button'>
                                     <div id="map" ref={mapContainerRef}></div>
                                     <div className="location-indicator">
+                                        {!locationChanged && <h1>{t("adress.adressDetected")}</h1>}
+                                        {locationChanged && <h1>{t("adress.adressSelected")}</h1>}
                                         <h1>{userPosition?.coords.label}</h1>
                                     </div>
                                     <div className='buttons'>

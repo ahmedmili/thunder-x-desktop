@@ -90,6 +90,8 @@
   "adress.cartSelect": "sélectionner sur la carte",
   "adress.intitule_message": "L'intitulé de l'adresse est nécessaire",
   "adress.searchWithAdress": "Chercher par rue, quartier, ville ",
+  "adress.adressDetected": "Votre position actuelle détéctée :",
+  "adress.adressSelected": "L’adresse séléctionnée est : ",
   "faq.title": "Foire Aux Questions",
   "faq.questions": [
     {
