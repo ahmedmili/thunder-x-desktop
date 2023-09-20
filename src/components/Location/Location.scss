@@ -2,7 +2,7 @@
 
 
 .location-container {
-  padding-top: 37px;
+  padding-top: 37px 0;
   position: relative;
   min-height: 500px;
   max-height: 700px;
@@ -14,16 +14,20 @@
   border-radius: 25px;
   display: flex;
   flex-direction: column;
+  z-index: 999;
 
   .cancel-icon-container {
     position: absolute;
-    top: 10px;
-    right: 10px;
+    top: 29px;
+    right: 26px;
     width: 15px;
     height: 15px;
     display: flex;
     justify-content: end;
     z-index: 99;
+    &:hover{
+      cursor: pointer;
+    }
 
     .cancel-icon {
       border-radius: 50%;
@@ -39,6 +43,7 @@
   }
 
   .form {
+    margin-top: 37px;
     display: flex;
     flex-direction: column;
     justify-content: center;
@@ -70,12 +75,12 @@
       width: 80%;
       height: 58px;
       margin-top: 11px;
-      
+
       &:hover {
         background-color: #005ab5;
       }
     }
-    
+
     .adresses_container {
       display: flex;
       justify-content: center;
@@ -240,9 +245,11 @@
     &::-webkit-scrollbar {
       width: 9px;
     }
+
     &::-webkit-scrollbar-track {
       background: #F7F7F7;
     }
+
     &::-webkit-scrollbar-thumb {
       background: #CEE5E5;
     }

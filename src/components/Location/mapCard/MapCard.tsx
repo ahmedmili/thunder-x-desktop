@@ -199,7 +199,7 @@ function MapCard() {
 
                             <Formik
                                 initialValues={{
-                                    appNum:"",
+                                    appNum: "",
                                     appEnt: "",
                                     codePost: "",
                                     intitule: "",
@@ -245,21 +245,28 @@ function MapCard() {
 
                                         </div>
                                         <div className="default">
-                                            <input type="checkbox" value="3" id='default' name='type' checked={primary} onChange={handleDefaultChange} />
-                                            <label htmlFor="default"> Adresse par défaut</label>
+                                            <label className='custom-checkbox' htmlFor="default">
+                                                <input type="checkbox" value="3" id='default' name='type' checked={primary} onChange={handleDefaultChange} />
+                                                <span className="checkmark"></span>
+                                                Adresse par défaut
+                                            </label>
                                         </div>
-                                        <button type="submit" className="submit-cart" >
-                                        {t("select")}
-                                        </button>
+                                        <div className='map-continue-btn'>
+                                            <button type="submit" className="submit-cart" >
+                                                {t("select")}
+                                            </button>
+                                        </div>
                                     </Form>
                                 )}
                             </Formik>
                         </>
                     )}
                     {logged_in && showForm === false && (
-                        <button type="button" className="submit-cart" onClick={() => setShowForm(true)} >
-                            {t("continuer")}
-                        </button>
+                        <div className='map-continue-btn'>
+                            <button type="button" className="submit-cart" onClick={() => setShowForm(true)} >
+                                {t("continuer")}
+                            </button>
+                        </div>
                     )}
                 </div>
             </div>
