@@ -1,4 +1,4 @@
-import React, { RefObject, useEffect, useReducer, useRef, useState } from "react";
+import React, { RefObject, Suspense, useEffect, useReducer, useRef, useState } from "react";
 
 import './menuPopup.scss'
 
@@ -8,7 +8,7 @@ import KeyboardArrowDownOutlinedIcon from '@mui/icons-material/KeyboardArrowDown
 import ArrowRightAltIcon from '@mui/icons-material/ArrowRightAlt';
 import { Add as AddIcon, Star } from '@mui/icons-material';
 
-import { Button } from '@mui/material';
+import { Button, CircularProgress } from '@mui/material';
 
 
 import { useNavigate } from "react-router";
@@ -260,7 +260,7 @@ const MenuPopup: React.FC<Props> = ({ close, restaurant }) => {
                     updatedOption[type][index].checked = event.target.checked;
                 } else {
                     updatedOption[type][index].checked = event.target.checked;
-          
+
                 }
                 return updatedOption; // Return the updated object
             }
@@ -403,401 +403,144 @@ const MenuPopup: React.FC<Props> = ({ close, restaurant }) => {
     };
 
     return (
-        <>
-            <div className="popup-overlay" onClick={handleOutsideClick}>
+        <Suspense fallback={
+            <CircularProgress style={{ alignSelf: "center" }} />
 
-            </div>
-            <div className="menu-popup-container">
-                <div className="popup-box">
-                    <div className="modal-content-image"
-                        style={{ backgroundImage: `url(${selectedMenuItem?.image[0]?.path})`, }}>
-                    </div>
-                    <div className="modal-content-options">
-                        <div className="options-info">
-                            <h5 className="menu-title" dangerouslySetInnerHTML={{ __html: selectedMenuItem?.name }}></h5>
-                            <h6 className='menu-price'>
-                                A partir de {selectedMenuItem?.price}
-                            </h6>
-                            <p className='menu-description' dangerouslySetInnerHTML={{ __html: selectedMenuItem?.description }}></p>
-                        </div>
-                        {state.optionslist.length === 0 ? (
-                            <>
-                                <h6 className="no-options-needed">
-                                    {t('no_options_needed')}
-                                </h6>
-
-                                <Button
-                                    variant='contained'
-                                    color='primary'
-                                    startIcon={<AddIcon />}
-                                    className="add-to-cart-button"
-                                    onClick={() => {
-                                        addToCart()
-                                    }}>
-                                    {t('add_to_cart')}
-                                </Button>
-                            </>
-                        ) : (
-                            <div className="menu-options">
-                                {
-
-                                    <>
-                                        {displayedContent.length > 0 && displayedContent.map((options, index) => {
-                                            return (
-                                                <>
-                                                    <>
-                                                        <div className='menu-options-header'>
-                                                            <div className="option-name">Choisissez votre {Object.keys(options)[0]}</div>
-                                                            {
-
-                                                                Object.keys(options)[0] === "packet" && <div className="option-obligatoir">Obligatoire</div>
-                                                            }
-
-                                                            {
-                                                                Object.keys(options)[0] === "sauce" && state.sauce_max?.max > 0 && <div className="option-max">{"MAX " + state.sauce_max?.max}</div>
-                                                            }
-                                                            {
-                                                                Object.keys(options)[0] === "viande" && state.viande_max?.max > 0 && <div className="option-max">{"MAX " + state.viande_max?.max}</div>
-                                                            }
-                                                            {
-                                                                Object.keys(options)[0] === "extra" && state.extra_max?.max > 0 && <div className="option-max">{"MAX " + state.extra_max?.max}</div>
-                                                            }
-                                                            {
-                                                                Object.keys(options)[0] === "supplement" && state.supplement_max?.max > 0 && <div className="option-max">{"MAX " + state.supplement_max?.max}</div>
-                                                            }
-                                                        </div>
-                                                        <form>
-                                                            {state[Object.keys(options)[0]].map((option: any, index: number) => (
-                                                                <div key={index} className="options-list">
-                                                                    <div className="checkBox">
-                                                                        <input type='checkbox' name={option.id} id={option.id} value={option.id || ''} onChange={(e) => selectOption(Object.keys(options)[0], index, e)} checked={option?.checked}>
-                                                                        </input>
-                                                                        <div className="custom-checkbox"></div>
-                                                                        <label htmlFor={option.id}>{option.name} </label>
-                                                                    </div>
-                                                                    <span className='option-price'>{option.price} DT</span>
-                                                                </div>
-                                                            ))}
-                                                        </form>
-
-                                                        <div className="devider">
-
-                                                        </div>
-                                                    </>
-
-                                                </>)
-                                        })
-                                        }
-
-                                        {/* next button  */}
-                                        {!(currentPage === totalPages) &&
-                                            <div className="next-page-button">
-                                                <button onClick={nextPage}>
-                                                    <ArrowRightAltIcon className="next-page-icon" />
-                                                </button>
-                                            </div>
-                                        }
-                                        {/* prev button */}
-                                        {!(currentPage === 1) &&
-                                            <div className="prev-page-button">
-                                                <button onClick={prevPage}>
-                                                    <ArrowRightAltIcon className="prev-page-icon" />
-                                                </button>
-                                            </div>
-                                        }
-                                        {/* command buttons */}
-                                        {(currentPage === totalPages) &&
-
-                                            <div className="buttons">
-                                                {/* counting */}
-                                                <div className="count-container">
-                                                    <input type="number" name="product-count" id="product-count" value={productCount} onChange={(e) => { (parseInt(e.target.value) >= 1) && setProductCount(parseInt(e.target.value)) }} />
-                                                    <div className="count-buttons">
-                                                        <button onClick={() => handleCount("add")} >
-                                                            <KeyboardArrowUpOutlinedIcon className="count-more" />
-                                                        </button>
-                                                        <button onClick={() => handleCount("remove")} >
-
-                                                            <KeyboardArrowDownOutlinedIcon className="count-less" />
-                                                        </button>
-                                                    </div>
-                                                </div>
-                                                {/* add to cart */}
-                                                <button className="add-to-cart-button" onClick={() => { addToCart() }}>
-                                                    <ShoppingCartOutlinedIcon className='cart-icon' />
-                                                    {t('add_to_cart')}
-                                                </button>
-
-                                            </div>
-                                        }
-                                    </>
-
-                                    // <p>
-                                    //     {
-                                    //       displayedContent.length > 0 && Object.keys(displayedContent[0]).toString()
-                                    //     }
-                                    // </p>
-
-                                    // currentPage == 1 && (
-                                    //     <>
-                                    // {/* pate options */}
-                                    // {state.pate.length > 0 && (
-                                    // <>
-                                    //     <div className='menu-options-header'>
-                                    //         <div className="option-name">Choisissez votre pate</div>
-                                    //     </div>
-                                    //     <form>
-                                    //         {state.pate.map((option: any, index: number) => (
-                                    //             <div key={option.id} className="options-list">
-                                    //                 <div className="checkBox">
-                                    //                     <input type='checkbox' name={option.id} id={option.id} value={option.id || ''} onChange={(e) => selectPate(index, e)} checked={option?.checked}>
-                                    //                     </input>
-                                    //                     <div className="custom-checkbox"></div>
-                                    //                     <label htmlFor={option.id}>{option.name} </label>
-                                    //                 </div>
-                                    //                 <span className='option-price'>{option.price} DT</span>
-                                    //             </div>
-                                    //         ))}
-                                    //     </form>
-                                    // </>
-                                    // )}
-                                    // {/* packet options */}
-                                    // {state.packet.length > 0 && (
-                                    //     <>
-                                    //         <div className='menu-options-header'>
-                                    //             <div className="option-name">Choisissez votre packet</div>
-                                    //             <div className="option-obligatoir">Obligatoire</div>
-                                    //         </div>
-                                    //         <form ref={packRef}>
-                                    //             {state.packet.map((option: any, index: number) => (
-                                    //                 <div key={option.id} className="options-list">
-                                    //                     <div className="checkBox">
-                                    //                         <input type='checkbox'
-                                    //                             name={option.id}
-                                    //                             id={option.id}
-                                    //                             value={option.id || ''}
-                                    //                             onChange={(e) => selectPack(index, e)}
-                                    //                             checked={option?.checked}
-                                    //                         >
-                                    //                         </input>
-                                    //                         <div className="custom-checkbox"></div>
-                                    //                         <label htmlFor={option.id}>{option.name} </label>
-                                    //                     </div>
-                                    //                     <span className='option-price'>{option.price} DT</span>
-                                    //                 </div>
-                                    //             ))}
-                                    //         </form>
-                                    //     </>
-                                    // )}
-
-                                    // {/* supplement options */}
-                                    // {state.supplement.length > 0 && (
-                                    //     <>
-                                    //         <div className='menu-options-header'>
-                                    //             <div className="option-name">Choisissez votre supplement</div>
-                                    //             {/* <div className="option-obligatoir">{"MAX " + state.supplement_max?.max}</div> */}
-                                    //         </div>
-                                    //         <form>
-                                    //             {state.supplement.map((option: any, index: number) => (
-                                    //                 <div key={option.id} className="options-list">
-                                    //                     <div className="checkBox">
-                                    //                         <input type='checkbox'
-                                    //                             name={option.id}
-                                    //                             id={option.id}
-                                    //                             value={option.id || ''}
-                                    //                             checked={option?.checked}
-                                    //                             onChange={(e) => selectSupp(index, e)}
-                                    //                         >
-                                    //                         </input>
-                                    //                         <div className="custom-checkbox"></div>
-                                    //                         <label htmlFor={option.id}>{option.name} </label>
-                                    //                     </div>
-                                    //                     <span className='option-price'>{option.price} DT</span>
-                                    //                 </div>
-                                    //             ))}
-                                    //         </form>
-                                    //     </>
-                                    // )}
-                                    // <div className="next-page-button">
-                                    //     <button onClick={changePage}>
-                                    //         <ArrowRightAltIcon className="next-page-icon" />
-                                    //     </button>
-                                    // </div>
-
-                                    //     </>
-                                    // )
-                                }
-
-                                {
-                                    // currentPage == 2 && (
-                                    //     <>
-                                    //         {/* sauce options */}
-                                    //         {state.sauce.length > 0 && (
-                                    //             <>
-                                    //                 <div className='menu-options-header'>
-                                    //                     <div className="option-name">Choisissez votre sauce</div>
-                                    //                     {
-                                    //                         state.sauce_max?.max > 0 &&
-                                    //                         <div className="option-max">{"MAX " + state.sauce_max?.max}</div>
-                                    //                     }
-                                    //                 </div>
-                                    //                 <form>
-                                    //                     {state.sauce.map((option: any, index: number) => (
-                                    //                         <div key={option.id} className="options-list">
-                                    //                             <div className="checkBox">
-                                    //                                 <input type='checkbox'
-                                    //                                     name={option.id}
-                                    //                                     id={option.id}
-                                    //                                     value={option.id || ''}
-                                    //                                     checked={option?.checked}
-                                    //                                     onChange={(e) => selectSauce(index, e)}
-                                    //                                 >
-                                    //                                 </input>
-                                    //                                 <div className="custom-checkbox"></div>
-                                    //                                 <label htmlFor={option.id}>{option.name} </label>
-                                    //                             </div>
-                                    //                             <span className='option-price'>{option.price} DT</span>
-                                    //                         </div>
-                                    //                     ))}
-                                    //                 </form>
-                                    //             </>
-                                    //         )}
-
-                                    //         {/* viande options */}
-                                    //         {state.viande.length > 0 && (
-                                    //             <>
-                                    //                 <div className='menu-options-header'>
-                                    //                     <div className="option-name">Choisissez votre viande</div>
-                                    //                     {
-                                    //                         state.viande_max?.max > 0 &&
-                                    //                         <div className="option-max">{"MAX " + state.viande_max?.max}</div>
-                                    //                     }
-                                    //                 </div>
-                                    //                 <form>
-                                    //                     {state.viande.map((option: any, index: number) => (
-                                    //                         <div key={option.id} className="options-list">
-                                    //                             <div className="checkBox">
-                                    //                                 <input type='checkbox'
-                                    //                                     name={option.id}
-                                    //                                     id={option.id}
-                                    //                                     value={option.id || ''}
-                                    //                                     checked={option?.checked}
-                                    //                                     onChange={(e) => selectViande(index, e)}
-                                    //                                 >
-                                    //                                 </input>
-                                    //                                 <div className="custom-checkbox"></div>
-                                    //                                 <label htmlFor={option.id}>{option.name} </label>
-                                    //                             </div>
-                                    //                             <span className='option-price'>{option.price} DT</span>
-                                    //                         </div>
-                                    //                     ))}
-                                    //                 </form>
-                                    //             </>
-                                    //         )}
-
-                                    //         {/* extra options */}
-                                    //         {state.extra.length > 0 && (
-                                    //             <>
-                                    //                 <div className='menu-options-header'>
-                                    //                     <div className="option-name">Choisissez votre extra</div>
-                                    //                     {
-                                    //                         state.extra_max?.max > 0 &&
-                                    //                         <div className="option-max">{"MAX " + state.extra_max?.max}</div>
-                                    //                     }
-                                    //                 </div>
-                                    //                 <form>
-                                    //                     {state.extra.map((option: any, index: number) => (
-                                    //                         <div key={option.id} className="options-list">
-                                    //                             <div className="checkBox">
-                                    //                                 <input type='checkbox'
-                                    //                                     name={option.id}
-                                    //                                     id={option.id}
-                                    //                                     value={option.id || ''}
-                                    //                                     checked={option?.checked}
-                                    //                                     onChange={(e) => selectExtra(index, e)}
-
-                                    //                                 >
-                                    //                                 </input>
-                                    //                                 <div className="custom-checkbox"></div>
-                                    //                                 <label htmlFor={option.id}>{option.name} </label>
-                                    //                             </div>
-                                    //                             <span className='option-price'>{option.price} DT</span>
-                                    //                         </div>
-                                    //                     ))}
-                                    //                 </form>
-                                    //             </>
-                                    //         )}
-                                    //         {/* free options */}
-                                    //         {state.free.length > 0 && (
-                                    //             <>
-                                    //                 <div className='menu-options-header'>
-                                    //                     <div className="option-name">Free</div>
-                                    //                 </div>
-
-                                    //                 <form>
-                                    //                     {state.free.map((option: any, index: number) => (
-                                    //                         <div key={option.id} className="options-list">
-                                    //                             <div className="checkBox">
-
-                                    //                                 <input type='checkbox'
-                                    //                                     name={option.id}
-                                    //                                     id={option.id}
-                                    //                                     value={option.id || ''}
-                                    //                                     onChange={(e) => selectFree(index, e)}
-                                    //                                     checked={option?.checked}
-
-                                    //                                 >
-                                    //                                 </input>
-                                    //                                 <div className="custom-checkbox"></div>
-                                    //                                 <label htmlFor={option.id}>{option.name} </label>
-                                    //                             </div>
-                                    //                             <span className='option-price'>{option.price} DT</span>
-
-                                    //                         </div>
-                                    //                     ))}
-                                    //                 </form>
-                                    //             </>
-                                    //         )}
-
-
-                                    //         <div className="buttons">
-                                    //             <div className="count-container">
-                                    //                 <input type="number" name="product-count" id="product-count" value={productCount} onChange={(e) => { (parseInt(e.target.value) >= 1) && setProductCount(parseInt(e.target.value)) }} />
-                                    //                 <div className="count-buttons">
-                                    //                     <button onClick={() => handleCount("add")} >
-                                    //                         <KeyboardArrowUpOutlinedIcon className="count-more" />
-                                    //                     </button>
-                                    //                     <button onClick={() => handleCount("remove")} >
-
-                                    //                         <KeyboardArrowDownOutlinedIcon className="count-less" />
-                                    //                     </button>
-                                    //                 </div>
-                                    //             </div>
-
-                                    //             <button className="add-to-cart-button" onClick={() => { addToCart() }}>
-                                    //                 <ShoppingCartOutlinedIcon className='cart-icon' />
-                                    //                 {t('add_to_cart')}
-                                    //             </button>
-
-                                    //         </div>
-
-                                    // <div className="prev-page-button">
-                                    //     <button onClick={changePage}>
-                                    //         <ArrowRightAltIcon className="prev-page-icon" />
-                                    //     </button>
-                                    // </div>
-                                    //     </>
-                                    // )
-                                }
-                            </div >
-                        )}
-
-
-                    </div>
+        }>
+            <>
+                <div className="popup-overlay" onClick={handleOutsideClick}>
 
                 </div>
-            </div>
-        </>
+                <div className="menu-popup-container">
+                    <div className="popup-box">
+                        <div className="modal-content-image"
+                            style={{ backgroundImage: `url(${selectedMenuItem?.image[0]?.path})`, }}>
+                        </div>
+                        <div className="modal-content-options">
+                            <div className="options-info">
+                                <h5 className="menu-title" dangerouslySetInnerHTML={{ __html: selectedMenuItem?.name }}></h5>
+                                <h6 className='menu-price'>
+                                    A partir de {selectedMenuItem?.price}
+                                </h6>
+                                <p className='menu-description' dangerouslySetInnerHTML={{ __html: selectedMenuItem?.description }}></p>
+                            </div>
+
+                            {
+                                state.optionslist.length === 0 ? (
+                                    <>
+
+                                        <div className="loader">
+                                            <CircularProgress style={{ alignSelf: "center" }} />
+                                        </div>
+                                    </>
+                                ) : (
+                                    <div className="menu-options">
+                                        {
+
+                                            <>
+                                                {displayedContent.length > 0 && displayedContent.map((options, index) => {
+                                                    return (
+                                                        <>
+                                                            <>
+                                                                <div className='menu-options-header'>
+                                                                    <div className="option-name">Choisissez votre {Object.keys(options)[0]}</div>
+                                                                    {
+
+                                                                        Object.keys(options)[0] === "packet" && <div className="option-obligatoir">Obligatoire</div>
+                                                                    }
+
+                                                                    {
+                                                                        Object.keys(options)[0] === "sauce" && state.sauce_max?.max > 0 && <div className="option-max">{"MAX " + state.sauce_max?.max}</div>
+                                                                    }
+                                                                    {
+                                                                        Object.keys(options)[0] === "viande" && state.viande_max?.max > 0 && <div className="option-max">{"MAX " + state.viande_max?.max}</div>
+                                                                    }
+                                                                    {
+                                                                        Object.keys(options)[0] === "extra" && state.extra_max?.max > 0 && <div className="option-max">{"MAX " + state.extra_max?.max}</div>
+                                                                    }
+                                                                    {
+                                                                        Object.keys(options)[0] === "supplement" && state.supplement_max?.max > 0 && <div className="option-max">{"MAX " + state.supplement_max?.max}</div>
+                                                                    }
+                                                                </div>
+                                                                <form>
+                                                                    {state[Object.keys(options)[0]].map((option: any, index: number) => (
+                                                                        <div key={index} className="options-list">
+                                                                            <div className="checkBox">
+                                                                                <input type='checkbox' name={option.id} id={option.id} value={option.id || ''} onChange={(e) => selectOption(Object.keys(options)[0], index, e)} checked={option?.checked}>
+                                                                                </input>
+                                                                                <div className="custom-checkbox"></div>
+                                                                                <label htmlFor={option.id}>{option.name} </label>
+                                                                            </div>
+                                                                            <span className='option-price'>{option.price} DT</span>
+                                                                        </div>
+                                                                    ))}
+                                                                </form>
+
+                                                                <div className="devider">
+
+                                                                </div>
+                                                            </>
+
+                                                        </>)
+                                                })
+                                                }
+
+                                                {/* next button  */}
+                                                {!(currentPage === totalPages) &&
+                                                    <div className="next-page-button">
+                                                        <button onClick={nextPage}>
+                                                            <ArrowRightAltIcon className="next-page-icon" />
+                                                        </button>
+                                                    </div>
+                                                }
+                                                {/* prev button */}
+                                                {!(currentPage === 1) &&
+                                                    <div className="prev-page-button">
+                                                        <button onClick={prevPage}>
+                                                            <ArrowRightAltIcon className="prev-page-icon" />
+                                                        </button>
+                                                    </div>
+                                                }
+                                                {/* command buttons */}
+                                                {(currentPage === totalPages) &&
+
+                                                    <div className="buttons">
+                                                        {/* counting */}
+                                                        <div className="count-container">
+                                                            <input type="number" name="product-count" id="product-count" value={productCount} onChange={(e) => { (parseInt(e.target.value) >= 1) && setProductCount(parseInt(e.target.value)) }} />
+                                                            <div className="count-buttons">
+                                                                <button onClick={() => handleCount("add")} >
+                                                                    <KeyboardArrowUpOutlinedIcon className="count-more" />
+                                                                </button>
+                                                                <button onClick={() => handleCount("remove")} >
+
+                                                                    <KeyboardArrowDownOutlinedIcon className="count-less" />
+                                                                </button>
+                                                            </div>
+                                                        </div>
+                                                        {/* add to cart */}
+                                                        <button className="add-to-cart-button" onClick={() => { addToCart() }}>
+                                                            <ShoppingCartOutlinedIcon className='cart-icon' />
+                                                            {t('add_to_cart')}
+                                                        </button>
+
+                                                    </div>
+                                                }
+                                            </>
+                                        }
+                                    </div >
+                                )
+                            }
+
+
+                        </div>
+
+                    </div>
+                </div>
+            </>
+
+        </Suspense>
+
 
     )
 
