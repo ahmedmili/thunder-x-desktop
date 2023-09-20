@@ -219,9 +219,7 @@ const MenuPopup: React.FC<Props> = ({ close, restaurant }) => {
     const selectOption = (type: string, index: number, event: any) => {
 
         const newContent = displayedContent.map((option) => {
-            // Check if the key in the object matches the 'type' variable
             if (Object.keys(option)[0] === type) {
-                // Clone the option to avoid mutating the original array
                 const updatedOption = { ...option };
                 var max = -1;
                 switch (type) {
@@ -413,15 +411,18 @@ const MenuPopup: React.FC<Props> = ({ close, restaurant }) => {
                     </div>
                     <div className="modal-content-options">
                         <div className="options-info">
-                            <h5 className="menu-title">
+                            {/* <h5 className="menu-title">
                                 {selectedMenuItem?.name}
-                            </h5>
+                            </h5> */}
+                            <h5 className="menu-title" dangerouslySetInnerHTML={{ __html: selectedMenuItem?.name }}></h5>
+
                             <h6 className='menu-price'>
                                 A partir de {selectedMenuItem?.price}
                             </h6>
-                            <p className='menu-description'>
+                            {/* <p className='menu-description'>
                                 {selectedMenuItem?.description}
-                            </p>
+                            </p> */}
+                            <p className='menu-description' dangerouslySetInnerHTML={{ __html: selectedMenuItem?.description }}></p>
                         </div>
                         {state.optionslist.length === 0 ? (
                             <>
@@ -482,7 +483,7 @@ const MenuPopup: React.FC<Props> = ({ close, restaurant }) => {
                                                                 </div>
                                                             ))}
                                                         </form>
-                                                        
+
                                                         <div className="devider">
 
                                                         </div>
