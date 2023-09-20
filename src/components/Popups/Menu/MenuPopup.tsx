@@ -87,13 +87,8 @@ const reducer = (state: any, action: any) => {
 
 const MenuPopup: React.FC<Props> = ({ close, restaurant }) => {
 
-
-    const navigate = useNavigate()
     const { t } = useTranslation();
-
     const packRef: RefObject<HTMLFormElement> = useRef(null);
-
-    // const [optionsCounts, setOptionsCounts] = useState<number>(0);
     const itemsPerPage = 3;
 
     const [totalPages, setTotalPages] = useState<number>(0);
@@ -116,7 +111,6 @@ const MenuPopup: React.FC<Props> = ({ close, restaurant }) => {
     const getProduct = async () => {
         try {
             const { status, data } = await productService.getProduct(selectedMenuItem?.id);
-            console.log(data.data)
             if (status === 200) {
                 setProduct(data.data.product);
 
@@ -138,7 +132,7 @@ const MenuPopup: React.FC<Props> = ({ close, restaurant }) => {
                 let sauce = data.data.product.options.filter((option: any) => option.type === 'sauce');
                 dispatch({ type: 'SET_SAUCE', payload: sauce })
 
-                let viande = data.data.product.options.filter((option: any) => option.type === 'viande');
+                let viande = data.data.product.options.filter((option: any) => option.type === "viande");
                 dispatch({ type: 'SET_VIANDE', payload: viande })
 
                 let supplement = data.data.product.options.filter((option: any) => option.type === 'supplement');
@@ -159,7 +153,7 @@ const MenuPopup: React.FC<Props> = ({ close, restaurant }) => {
 
             }
         } catch (error: any) {
-        } finally {
+            throw (error)
         }
     };
 
@@ -218,7 +212,6 @@ const MenuPopup: React.FC<Props> = ({ close, restaurant }) => {
 
 
     const selectOption = (type: string, index: number, event: any) => {
-
         const newContent = displayedContent.map((option) => {
             if (Object.keys(option)[0] === type) {
                 const updatedOption = { ...option };
@@ -323,14 +316,18 @@ const MenuPopup: React.FC<Props> = ({ close, restaurant }) => {
         };
 
         if (items.length > 0 && items[0].supplier_data.supplier_id !== obj.supplier_data.supplier_id) {
-            toast.warn("you have allready selected items")
+            toast.warn("you have already selected items", {
+                position: toast.POSITION.TOP_CENTER, // Change the position
+            });
             return;
         }
+        toast.success("item added ")
         usedispatch(setDeliveryPrice(restaurant.delivery_price));
         usedispatch(setSupplier(restaurant));
         localStorageService.setSupplier(restaurant);
         localStorageService.setBonus(restaurant.bonus);
         usedispatch(addItem(obj));
+        close()
     }
 
     // handle displayed content
@@ -349,7 +346,6 @@ const MenuPopup: React.FC<Props> = ({ close, restaurant }) => {
         calculateTotal()
     }, [productCount])
 
-
     useEffect(() => {
         getProduct();
     }, []);
@@ -363,11 +359,14 @@ const MenuPopup: React.FC<Props> = ({ close, restaurant }) => {
         state.extra.length > 0 && state.extra?.forEach((item: any) => item.checked = false);
         state.supplement.length > 0 && state.supplement?.forEach((item: any) => item.checked = false);
         state.pate.length > 0 && state.pate?.forEach((item: any) => item.checked = false);
-
+        state.viande.length > 0 && state.viande?.forEach((item: any) => item.checked = false);
+        state.sauce.length > 0 && state.sauce?.forEach((item: any) => item.checked = false);
         state.packet.length > 0 && allContent.push({ packet: state.packet });
         state.extra.length > 0 && allContent.push({ extra: state.extra });
         state.supplement.length > 0 && allContent.push({ supplement: state.supplement });
         state.pate.length > 0 && allContent.push({ pate: state.pate });
+        state.sauce.length > 0 && allContent.push({ sauce: state.sauce });
+        state.viande.length > 0 && allContent.push({ viande: state.viande });
         state.free.length > 0 && allContent.push({ free: state.free });
 
         let optionsCount: number = allContent.length;
