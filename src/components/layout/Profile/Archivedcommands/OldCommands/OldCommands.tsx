@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react'
+import React, { useEffect, useState } from 'react'
 
 import "./oldCommands.scss"
 import PositionIcon from "../../../../../assets/profile/ArchivedCommands/position.svg"
@@ -6,6 +6,7 @@ import DestinationIcon from "../../../../../assets/profile/ArchivedCommands/dest
 import TimeIcon from "../../../../../assets/profile/ArchivedCommands/time.svg"
 import DefaultImg from "../../../../../assets/profile/ArchivedCommands/default.jpg"
 import { useTranslation } from 'react-i18next'
+import { useAppSelector } from '../../../../../Redux/store'
 
 interface CommandsListProps {
     data: any
@@ -40,14 +41,20 @@ const Product: React.FC<ProductProps> = ({ data }) => {
 const OldCommands: React.FC<CommandsListProps> = ({ data }) => {
 
     const { t } = useTranslation()
+    const theme = useAppSelector((state) => state.home.theme)
+    // const [template, setTomplate] = useState<number>(theme)
     const supplier = data.supplier
     const delivery = data.delivery
     const products = data.products
 
     const position = supplier.street + " " + supplier.region + " " + supplier.city
-    useEffect(() => {
-        console.log("data !!!", data)
-    }, [data])
+    // useEffect(() => {
+    //     console.log(theme)
+    //     setTomplate(theme)
+    // }, [theme])
+
+    // useEffect(())
+
     return (
         <>
             {
@@ -114,8 +121,8 @@ const OldCommands: React.FC<CommandsListProps> = ({ data }) => {
                         </div>
 
 
-                        {
-                            (products.length > 0) && (
+                        {/* {
+                            (products && (products.length > 0))(
                                 products.map((product: any, index: number) => {
                                     const productData: ProductProps = {
                                         data: {
@@ -133,7 +140,7 @@ const OldCommands: React.FC<CommandsListProps> = ({ data }) => {
                                     )
                                 })
                             )
-                        }
+                        } */}
                         <footer className='command-footer'>
                             <p>{data.total_price}</p>
                             <button className='avis'>{t('profile.commands.avis')}</button>

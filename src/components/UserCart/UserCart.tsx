@@ -34,6 +34,8 @@ export const UserCart: React.FC<CartProps> = ({ firstName, lastName, closeButton
   const { t } = useTranslation()
   const dispatch = useAppDispatch();
   const currentPage = useAppSelector(state => state.home.profilePage)
+  const theme = useAppSelector((state) => state.home.theme)
+  const [template, setTemplate] = useState<number>(theme)
 
   const userItem = localStorageService.getUser();
   const user = userItem ? JSON.parse(userItem) : null;
@@ -42,8 +44,12 @@ export const UserCart: React.FC<CartProps> = ({ firstName, lastName, closeButton
     dispatch(setProfilePage(index))
   }
 
+  useEffect(() => {
+    setTemplate(theme)
+  }, [theme])
+
   return (
-    <div className="profile-cart-main">
+    <div className={`profile-cart-main ${template === 1 && "dark-background2"}`}>
       <header>
         <div className='profile-info'>
           <img src={profile_img} alt="profile photo" />
@@ -103,7 +109,7 @@ export const UserCart: React.FC<CartProps> = ({ firstName, lastName, closeButton
             <li>
               <div className='link-list'>
                 <div className='profile-list-icon' style={{ backgroundImage: `url(${Discuter})` }}></div>
-                <Link onClick={() => handleSelect(6)} to={'/profile'}>{t("profile.discuter")}</Link>
+                <Link onClick={() => handleSelect(6)} to={'/profile/discuter'}>{t("profile.discuter")}</Link>
               </div>
             </li>
             <li>

@@ -8,6 +8,7 @@ import { useEffect, useState } from 'react';
 
 import ArrowRightAltIcon from '@mui/icons-material/ArrowRightAlt';
 import { useTranslation } from 'react-i18next';
+import { useAppSelector } from '../../../../../Redux/store';
 
 interface legalProps {
   title: string,
@@ -35,12 +36,19 @@ const Legale = () => {
   const [currentPage, setCurrentPage] = useState<number>(1);
   const [displayedContent, setDisplayedContent] = useState<any[]>([]);
 
+  const theme = useAppSelector((state) => state.home.theme)
+  const [template, setTemplate] = useState<number>(theme)
+
   const handleContent = () => {
     const startIndex = (currentPage - 1) * itemsPerPage;
     const endIndex = startIndex + itemsPerPage;
     const displayedContent = legalsData.slice(startIndex, endIndex)
     setDisplayedContent(displayedContent)
   }
+
+  useEffect(() => {
+    setTemplate(theme)
+  }, [theme])
 
   useEffect(() => {
     handleContent()
@@ -65,7 +73,7 @@ const Legale = () => {
   return (
     <>
       <section className="Lgale-section">
-        <h1>{t('profile.mesConfig.legales.message')}</h1>
+        <h1 style={{ color: `${template === 1 ? "white" : "black"}` }}>{t('profile.mesConfig.legales.message')}</h1>
         <div className="logo-container">
 
           <div className="logo-wrapper" style={{ backgroundImage: `url(${thunderLogo})` }}>
@@ -73,7 +81,7 @@ const Legale = () => {
         </div>
         <main>
           {
-            displayedContent.length > 0 && (
+            (displayedContent && displayedContent.length > 0) && (
               displayedContent.map((legal: any, index: number) => {
                 return <LegalCart key={index} title={legal.title} bodyText={legal.body} />
               })
@@ -99,12 +107,8 @@ const Legale = () => {
               </button>
             </div>
           }
-
         </div>
-
-
-
-      </section>
+      </section >
 
     </>
   );

@@ -3,7 +3,7 @@ import KeyboardArrowUpOutlinedIcon from '@mui/icons-material/KeyboardArrowUpOutl
 
 
 import './configPage.scss'
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import Longue from './Longue/Longue';
 import Theme from './Theme/Theme';
 import Map from '../../../Location/Location';
@@ -12,6 +12,7 @@ import Politiques from './Politiques/Politiques';
 import ModifPassword from '../../../Popups/ModifPassword/ModifPassword';
 import UpdateAccount from './UpdateAccount/UpdateAccount';
 import { useTranslation } from 'react-i18next';
+import { useAppSelector } from '../../../../Redux/store';
 
 interface Settingsection {
   title: string;
@@ -42,11 +43,14 @@ const SettingSection: React.FC<Settingsection> = (props) => {
 
 const ConfigPage = () => {
   const { t } = useTranslation()
+  const theme = useAppSelector((state) => state.home.theme)
+  const [template, setTemplate] = useState<number>(theme)
+
   const [selectedSetting, setSelectedSetting] = useState<number>(0)
   const [showPWPopup, setShowPWPopup] = useState<boolean>(false)
 
   const handleselect = (index: number) => {
-    setSelectedSetting(index)
+    index === selectedSetting ? setSelectedSetting(0) : setSelectedSetting(index);
   }
   const closePopup = () => {
     setSelectedSetting(0)
@@ -55,9 +59,12 @@ const ConfigPage = () => {
   const showPasswordPopup = () => {
     setShowPWPopup(!showPWPopup)
   }
+  useEffect(() => {
+    setTemplate(theme)
+  }, [theme])
   return (
     <>
-      <div className="config-page">
+      <div className={`config-page ${template === 1 && 'dark-background2'}`}>
         <SettingSection settingIndex={1} actionListener={handleselect} title={t('profile.mesConfig.modifAccount')} className={`${selectedSetting === 1 ? "active" : ""}`} />
         {
           selectedSetting === 1 &&
@@ -101,7 +108,7 @@ const ConfigPage = () => {
             <Politiques />
           </div>
         }
-        <SettingSection settingIndex={6} actionListener={handleselect} title={t('profile.mesConfig.theme')}  className={`${selectedSetting === 6 ? "active" : ""}`} />
+        <SettingSection settingIndex={6} actionListener={handleselect} title={t('profile.mesConfig.theme')} className={`${selectedSetting === 6 ? "active" : ""}`} />
         {selectedSetting === 6 &&
           <div className='theme-container'>
             <Theme />

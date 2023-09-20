@@ -24,6 +24,10 @@ import { Cart } from '../cart/cart';
 import { UserCart } from '../UserCart/UserCart';
 
 const Header = () => {
+
+  const theme = useAppSelector((state) => state.home.theme)
+  const [template, setTemplate] = useState<number>(theme)
+
   const logged_in = localStorageService.getUserToken() !== null;
   const userItem = localStorageService.getUser();
 
@@ -52,6 +56,10 @@ const Header = () => {
       setScrolling(false);
     }
   };
+
+  useEffect(() => {
+    setTemplate(theme)
+  }, [theme])
 
   useEffect(() => {
     // Attach the scroll event listener when the component mounts
@@ -95,10 +103,6 @@ const Header = () => {
     setShowProfile(!showProfile); // Toggle the state of showCart
   };
 
-  // const handleCommand = async () => {
-  //   navigate("/track-order");
-  // };
-
   return (
     <>
 
@@ -111,7 +115,7 @@ const Header = () => {
               </div>
             </div>
             <Container  >
-              <Row className={`fixedHeaderContainer ${scrolling ? 'minimizedFixedHeaderContainer' : ''}`} >
+              <Row className={`fixedHeaderContainer ${scrolling ? 'minimizedFixedHeaderContainer' : ''}  ${template === 1 && "dark-background2"}`} >
                 <Col>
                   <div className="logoContainer"
 
@@ -154,7 +158,7 @@ const Header = () => {
 
               </Row>
 
-              <Row className="headerContainer">
+              <Row className={`headerContainer  ${template === 1 && "dark-background2"}`}>
                 <Col className='col-12 col-sm-7'>
                   <div className="headerAppBar2">
                     <div className="headerMessage">
@@ -208,7 +212,7 @@ const Header = () => {
           </>
         ) : (
           <>
-            <div className={`fixedHeaderContainer2`} >
+            <div className={`fixedHeaderContainer2 ${template === 1 && "dark-background2"}`} >
               <div className="logoContainer"
                 onClick={() => navigate('/')} >
                 <a href="#" className={`logoMain minimizedlogoMain`}></a>
@@ -240,14 +244,15 @@ const Header = () => {
               </div>
             </div>
             {
-              showCart && (<div className="cart-container">
-                <Cart items={cartItems} closeButton={handleCart} />
-              </div>
+              showCart && (
+                <div className={`cart-container  ${template === 1 && "dark-background2"}`}>
+                  <Cart items={cartItems} closeButton={handleCart} />
+                </div>
               )
             }
 
             {
-              showProfile && user && (<div className="cart-container">
+              showProfile && user && (<div className={`cart-container ${template === 1 && "dark-background2"}`}>
                 <UserCart firstName={user.firstname} lastName={user.lastname} closeButton={handleUserCart} />
               </div>
               )

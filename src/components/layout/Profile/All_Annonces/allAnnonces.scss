@@ -25,9 +25,9 @@
         display: grid;
         grid-template-columns: repeat(2, 1fr);
         gap: 34px;
+        width: 100%;
 
-
-        .legal-cart {
+        .annonce-cart {
             max-height: 282;
             border-radius: 25px;
             background: #FFF;

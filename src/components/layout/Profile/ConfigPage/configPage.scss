@@ -52,7 +52,8 @@
     flex-direction: column;
     gap: 37px;
     overflow: scroll;
-animation: fadeIn 1s ;
+    animation: fadeIn 1s ease-in-out;
+
     &::-webkit-scrollbar {
         width: 0;
     }

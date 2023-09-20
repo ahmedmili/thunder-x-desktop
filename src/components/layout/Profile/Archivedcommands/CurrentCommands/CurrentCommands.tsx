@@ -162,10 +162,10 @@ const CurrentCommands: React.FC<CommandsListProps> = ({ removeCommand, data }) =
 
         <>
             <div className="current-commands-container">
-                <header className='current-command-header'>
+                <header className={` current-command-header `}>
                     <img src={supplier.images[1].path} alt="supplier background" />
                 </header>
-                <main className='current-command-main'>
+                <main className={`current-command-main ${template === 1 ? 'dark-background2' : ""} `}>
                     <div className='supplier-info'>
                         <img src={supplier.images[0].path} alt="supplier logo" />
                         <div className='name-rate'>

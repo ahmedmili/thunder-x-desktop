@@ -6,6 +6,7 @@ import * as yup from 'yup';
 import { localStorageService } from '../../../../../services/localStorageService';
 import { useNavigate } from 'react-router';
 import { useTranslation } from 'react-i18next';
+import { useAppSelector } from '../../../../../Redux/store';
 
 
 interface updateProps {
@@ -15,6 +16,9 @@ interface updateProps {
 const UpdateAccount: React.FC<updateProps> = ({ showPassword }) => {
 
   const { t } = useTranslation()
+  const theme = useAppSelector((state) => state.home.theme)
+  const [template, setTemplate] = useState<number>(theme)
+
   const [firstName, setFirstName] = useState<string>("")
   const [lastName, setLastName] = useState<string>("")
   const [email, setEmail] = useState<string>("")
@@ -84,7 +88,9 @@ const UpdateAccount: React.FC<updateProps> = ({ showPassword }) => {
       setPhone(tel)
     }
   }, [])
-
+  useEffect(() => {
+    setTemplate(theme)
+  }, [theme])
   return (
     <>
       <section className="update-section">

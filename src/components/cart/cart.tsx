@@ -108,7 +108,7 @@ export const Cart: React.FC<CartProps> = ({ items, closeButton }) => {
     setShowPopup(!showPopup)
     setPopupType("error")
   }
-  
+
   useEffect(() => {
     getSousTotal();
   }, [items])
@@ -147,6 +147,7 @@ export const Cart: React.FC<CartProps> = ({ items, closeButton }) => {
                   description: item.product.description,
                   count: item.quantity
                 }
+                console.log(data)
                 return (
                   <div key={index}>
                     <ArticlesProvider {...data} />
@@ -197,7 +198,7 @@ export const Cart: React.FC<CartProps> = ({ items, closeButton }) => {
             {
               showPopup && (
                 <>
-                <PaymentPopup type='error' close={handlePopupe}/>
+                  <PaymentPopup type='error' close={handlePopupe} />
                 </>
               )
 
