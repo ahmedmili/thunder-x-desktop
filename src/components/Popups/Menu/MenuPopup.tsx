@@ -234,6 +234,9 @@ const MenuPopup: React.FC<Props> = ({ close, restaurant }) => {
                     case 'extra':
                         max = state.extra_max.max
                         break;
+                    case 'supplement':
+                        max = state.supplement_max.max
+                        break;
 
                     default:
                         break;
@@ -244,7 +247,7 @@ const MenuPopup: React.FC<Props> = ({ close, restaurant }) => {
                         let opts = [];
                         let max_selected = updatedOption[type].filter((item: any) => item.checked === true)
                         max_selected.legth > 0 && opts.push(max_selected);
-                        if (opts.length >= max) {
+                        if (max_selected.length >= max) {
                             event.target.checked = false;
                             ok = false
                         }
@@ -257,7 +260,7 @@ const MenuPopup: React.FC<Props> = ({ close, restaurant }) => {
                     updatedOption[type][index].checked = event.target.checked;
                 } else {
                     updatedOption[type][index].checked = event.target.checked;
-
+          
                 }
                 return updatedOption; // Return the updated object
             }
@@ -411,17 +414,10 @@ const MenuPopup: React.FC<Props> = ({ close, restaurant }) => {
                     </div>
                     <div className="modal-content-options">
                         <div className="options-info">
-                            {/* <h5 className="menu-title">
-                                {selectedMenuItem?.name}
-                            </h5> */}
                             <h5 className="menu-title" dangerouslySetInnerHTML={{ __html: selectedMenuItem?.name }}></h5>
-
                             <h6 className='menu-price'>
                                 A partir de {selectedMenuItem?.price}
                             </h6>
-                            {/* <p className='menu-description'>
-                                {selectedMenuItem?.description}
-                            </p> */}
                             <p className='menu-description' dangerouslySetInnerHTML={{ __html: selectedMenuItem?.description }}></p>
                         </div>
                         {state.optionslist.length === 0 ? (
