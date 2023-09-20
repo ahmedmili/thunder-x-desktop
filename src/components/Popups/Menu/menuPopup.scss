@@ -40,6 +40,7 @@
             height: 574px;
             margin-top: 50px;
         }
+
         @include min-height-media-query(700px) {
             height: 474px;
             margin-top: 50px;
@@ -69,9 +70,11 @@
             @include min-height-media-query(800px) {
                 height: 574px;
             }
+
             @include min-height-media-query(700px) {
                 height: 474px;
             }
+
             @include min-height-media-query(500px) {
                 height: 374px;
             }
@@ -249,52 +252,57 @@
                     background-color: #D9D9D9;
                 }
 
-                .next-page-button {
+                .prev-next-buttons {
                     display: flex;
-                    justify-content: end;
-                    align-items: center;
-                    padding-right: 15px;
+                    justify-content: space-between;
 
-                    button {
-                        all: unset;
+                    .next-page-button {
+                        display: flex;
+                        justify-content: end;
+                        align-items: center;
+                        padding-right: 15px;
 
-                        &:hover {
-                            cursor: pointer;
+                        button {
+                            all: unset;
+
+                            &:hover {
+                                cursor: pointer;
+                            }
+
+                            .next-page-icon {
+                                color: #24A6A4;
+                                width: 53px;
+                                height: 52px;
+                                font-size: 22px;
+                            }
                         }
+                    }
 
-                        .next-page-icon {
-                            color: #24A6A4;
-                            width: 53px;
-                            height: 52px;
-                            font-size: 22px;
+                    .prev-page-button {
+                        display: flex;
+                        justify-content: start;
+                        align-items: center;
+
+                        button {
+                            all: unset;
+
+                            &:hover {
+                                cursor: pointer;
+                            }
+
+                            .prev-page-icon {
+                                color: #24a6a4;
+                                width: 53px;
+                                height: 52px;
+                                font-size: 22px;
+                                transform: rotate(180deg);
+
+                            }
+
                         }
                     }
                 }
 
-                .prev-page-button {
-
-                    display: flex;
-                    justify-content: start;
-                    align-items: center;
-
-                    button {
-                        all: unset;
-
-                        &:hover {
-                            cursor: pointer;
-                        }
-
-                        .prev-page-icon {
-                            color: #24a6a4;
-                            width: 53px;
-                            height: 52px;
-                            font-size: 22px;
-                            transform: rotate(180deg);
-
-                        }
-
-                    }
-                }
 
 
             }

@@ -327,7 +327,7 @@ const MenuPopup: React.FC<Props> = ({ close, restaurant }) => {
         localStorageService.setSupplier(restaurant);
         localStorageService.setBonus(restaurant.bonus);
         usedispatch(addItem(obj));
-        close()
+        // close()
     }
 
     // handle displayed content
@@ -485,22 +485,27 @@ const MenuPopup: React.FC<Props> = ({ close, restaurant }) => {
                                                 })
                                                 }
 
-                                                {/* next button  */}
-                                                {!(currentPage === totalPages) &&
-                                                    <div className="next-page-button">
-                                                        <button onClick={nextPage}>
-                                                            <ArrowRightAltIcon className="next-page-icon" />
-                                                        </button>
-                                                    </div>
-                                                }
-                                                {/* prev button */}
-                                                {!(currentPage === 1) &&
-                                                    <div className="prev-page-button">
-                                                        <button onClick={prevPage}>
-                                                            <ArrowRightAltIcon className="prev-page-icon" />
-                                                        </button>
-                                                    </div>
-                                                }
+
+                                                <div className="prev-next-buttons">
+                                                    {/* prev button */}
+                                                    <span className="prev-page-button">
+                                                        {!(currentPage === 1) &&
+                                                            <button onClick={prevPage}>
+                                                                <ArrowRightAltIcon className="prev-page-icon" />
+                                                            </button>
+                                                        }
+                                                    </span>
+                                                    {/* next button  */}
+                                                    <span className="next-page-button">
+                                                        {!(currentPage === totalPages) &&
+                                                            <button onClick={nextPage}>
+                                                                <ArrowRightAltIcon className="next-page-icon" />
+                                                            </button>
+                                                        }
+                                                    </span>
+
+
+                                                </div>
                                                 {/* command buttons */}
                                                 {(currentPage === totalPages) &&
 
