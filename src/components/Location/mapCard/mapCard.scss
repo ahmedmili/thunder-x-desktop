@@ -5,7 +5,7 @@ $svg_location_icon : url('../../../assets/location.svg');
 .container-map {
 
     padding: 53px 63px 0 63px;
-    height: 608px;
+    min-height: 608px;
     overflow-y: scroll;
     scrollbar-width: thin;
     width: 100%;
@@ -22,8 +22,11 @@ $svg_location_icon : url('../../../assets/location.svg');
     }
 
     .map-container {
-        height: 113%;
+        height: 551px;
         width: 100%;
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
 
         p {
             margin: 0;
@@ -415,8 +418,7 @@ $svg_location_icon : url('../../../assets/location.svg');
 
         .map-container {
             margin-top: 48px;
-
-            height: 110%;
+            justify-content: space-evenly;
 
             .map-and-button {
                 gap: 3px;
@@ -435,7 +437,6 @@ $svg_location_icon : url('../../../assets/location.svg');
                     font-size: 16px;
                     margin: 0;
                     color: white;
-                    // text-align: center;
                 }
 
             }
