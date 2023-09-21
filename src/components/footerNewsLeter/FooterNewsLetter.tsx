@@ -1,8 +1,6 @@
-import React from 'react'
 import style from './footerNewsLetter.module.scss'
 import { Container, Row, Col } from 'react-bootstrap'
 import KeyboardArrowRightIcon from '@mui/icons-material/KeyboardArrowRight';
-// import background from '../../assets/news_letter_bg.jpg';
 export const FooterNewsLeter = () => {
     return (
         <Container fluid className={style.newsLetterContainer}>

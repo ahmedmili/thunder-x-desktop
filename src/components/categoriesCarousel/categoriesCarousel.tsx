@@ -33,6 +33,13 @@ const CategoryCarousel: React.FC<CategoryCarouselProps> = ({
   onCategorySelect,
 }) => {
 
+  const theme = useAppSelector(state => state.home.theme)
+  const [template, setTemplate] = useState<number>(theme)
+
+  useEffect(() => {
+    setTemplate(theme)
+  }, [theme])
+
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const cats = useAppSelector((state) => state.home.data.categories)
@@ -104,10 +111,10 @@ const CategoryCarousel: React.FC<CategoryCarouselProps> = ({
           lat: location!.latitude,
           long: location!.longitude
         }
-         supplierServices.searchSupplierBySubArticle(requestData).then((res:any)=>{
+        supplierServices.searchSupplierBySubArticle(requestData).then((res: any) => {
           dispatch(setfilterRestaurants(res.data.data.suppliers)) //
-          navLocation.pathname != "/search" && navigate(`/search` );
-         })
+          navLocation.pathname != "/search" && navigate(`/search`);
+        })
       }
     }
   };
@@ -122,7 +129,8 @@ const CategoryCarousel: React.FC<CategoryCarouselProps> = ({
   };
 
   return (
-    <Container className='container' >
+    // <Container className={`container ${template === 1 && "dark-background2"}`} >
+    <Container className={`container ${template === 1 && "bg-transparent"}`} >
       <Row>
         <p className='carousal-cat-title'>Qu’est ce qu’on vous apporte ? {selectedCategories}</p>
       </Row>

@@ -73,13 +73,9 @@ const Header = () => {
 
   const onLogoutHandler = async () => {
     try {
-      // Clear the user data from the state and the localStorage items associated with the user
       dispatch(logout());
-
-      // Navigate to the login page
       navigate("/");
     } catch (error: any) {
-      // Handle any errors that occur during the logout process
       if (Array.isArray(error.data.error)) {
         error.data.error.forEach((el: any) =>
           toast.error(el.message, {
@@ -96,11 +92,12 @@ const Header = () => {
 
   const handleCart = async () => {
     showProfile && setShowProfile(false)
-    setShowCart(!showCart); // Toggle the state of showCart
+    setShowCart(!showCart);
   };
   const handleUserCart = async () => {
+    // console.log(showProfile)
     showCart && setShowCart(false);
-    setShowProfile(!showProfile); // Toggle the state of showCart
+    setShowProfile(!showProfile);
   };
 
   return (
@@ -257,8 +254,6 @@ const Header = () => {
         </div>
         )
       }
-
-
     </>
   )
 }

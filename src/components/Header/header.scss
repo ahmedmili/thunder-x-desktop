@@ -16,7 +16,6 @@
 }
 
 .headerContainer {
-    // margin-top: 136px;
     padding-top: 135px;
 }
 
@@ -45,14 +44,14 @@
     left: 10%;
     right: 10%;
     bottom: 0;
-    padding: 9px 11px 0px 13px;
+    padding: 9px 11px 9px 13px;
     border-radius: 0 0 10px 10px;
 
     z-index: 990;
 
     .logoContainer {
         cursor: pointer;
-
+height: 100%;
         .logoMain {
             background-repeat: no-repeat;
             display: inline-block;
@@ -66,6 +65,8 @@
     .appBar {
         display: flex;
         justify-content: end;
+        align-items: center;
+        height: 100%;
         gap: 2px;
         position: relative;
 
@@ -161,10 +162,12 @@
 
 .minimizedFixedHeaderContainer {
     height: 62px;
-
+padding: 0;
     .minimizedlogoMain {
-        height: 32.64px !important;
+        height: 100% !important;
         background-size: 32%;
+        background-position: center;
+        background-repeat: no-repeat;
     }
 }
 

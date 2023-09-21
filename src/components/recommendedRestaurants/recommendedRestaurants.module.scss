@@ -8,11 +8,12 @@
   .container {
     background-color: white;
     position: relative;
-    padding: 0;
+    padding: 25px;
     top: 0;
     justify-content: center;
     // padding-bottom: 5px;
     margin-bottom: 10px;
+    height: 560px;
 
     .recaommandedTitle {
       text-align: center;
@@ -58,8 +59,7 @@
     }
 
     .bouble {
-      width: 100%;
-
+      width: 96%;
       height: 317px;
       top: 160px;
       border-radius: 60px;
