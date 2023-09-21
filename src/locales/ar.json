@@ -128,5 +128,8 @@
   "adress.intitule_message": "إسم الموقع ضروري",
   "adress.searchWithAdress": "البحث عن الشارع، البلد، المدينة ",
   "adress.adressDetected": "موقعك الحالي :",
-  "adress.adressSelected": "العنوان المختار هو: "
+  "adress.adressSelected": "العنوان المختار هو: ",
+  "supplier.opentime": "مفتوح حتى",
+  "supplier.delivPrice": "تكلفة التسليم:",
+  "supplier.allProducts": "جميع المنتجات"
 }

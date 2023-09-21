@@ -133,6 +133,9 @@
   "adress.intitule_message": "The address title is required",
   "adress.adressDetected": "Your current position detected:",
   "adress.adressSelected": "The selected address is: ",
+  "supplier.opentime": "Open up to",
+  "supplier.delivPrice": "Shipping costs:",
+  "supplier.allProducts": "All products",
   "faq.header": "Frequently Asked Questions",
   "faq.questions": [
     {

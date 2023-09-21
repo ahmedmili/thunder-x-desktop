@@ -133,6 +133,9 @@
   "adress.searchWithAdress": "Chercher par rue, quartier, ville ",
   "adress.adressDetected": "Votre position actuelle détéctée :",
   "adress.adressSelected": "L’adresse séléctionnée est : ",
+  "supplier.opentime": "Ouvert jusqu’à",
+  "supplier.delivPrice": "Frais de livraison :",
+  "supplier.allProducts": "Tous les produits",
   "faq.title": "Foire Aux Questions",
   "faq.questions": [
     {
