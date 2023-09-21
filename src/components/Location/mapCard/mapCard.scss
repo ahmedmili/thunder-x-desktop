@@ -36,6 +36,7 @@ $svg_location_icon : url('../../../assets/location.svg');
             font-style: normal;
             font-weight: 600;
             line-height: normal;
+            text-align: center;
         }
 
         .map-and-button {
@@ -318,14 +319,12 @@ $svg_location_icon : url('../../../assets/location.svg');
             }
         }
 
-
-
         .map-continue-btn {
             width: 100%;
             display: flex;
             justify-content: center;
             margin-top: 14px;
-
+            min-height: 49px;
             .submit-cart {
                 font-family: Poppins;
                 font-size: 18px;
