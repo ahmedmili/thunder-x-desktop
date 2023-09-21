@@ -65,7 +65,7 @@ const RestaurantList: React.FC<Props> = ({ restaurants, listType }) => {
   return (
     <div className={recommandedStyle.recommandedContainer}>
       {
-        <Container className={recommandedStyle.container +` ${template === 1 && 'dark-background2'}`}>
+        <Container className={recommandedStyle.container +` ${!displayNormal && recommandedStyle.uniqueContainer} ${template === 1 && 'dark-background2'}`}>
           <Row>
             {listType == "recommanded" && (
               <h2 className={recommandedStyle.recaommandedTitle}>
