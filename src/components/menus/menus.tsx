@@ -1,21 +1,20 @@
 import { useEffect, useState } from 'react';
 import { FoodItem, MenuData } from '../../services/types';
-import { useLocation, useParams ,useNavigate } from 'react-router-dom';
+import { useLocation, useParams, useNavigate } from 'react-router-dom';
 import {
   CircularProgress,
   Pagination,
 
 } from '@mui/material';
 import { Add as AddIcon, Star } from '@mui/icons-material';
-import missingImage from '../../assets/missingImage.png';
-import { RootState, useAppDispatch } from '../../Redux/store';
+import { useAppDispatch } from '../../Redux/store';
 import {
   clearCart,
   clearSupplierMismatch,
   setDeliveryPrice,
   setSupplier,
 } from '../../Redux/slices/cart/cartSlice';
-import {setProduct} from "../../Redux/slices/restaurantSlice"
+import { setProduct } from "../../Redux/slices/restaurantSlice"
 import MismatchModal from '../mismatchModal/mismatchModal';
 import { useTranslation } from 'react-i18next';
 import { productService } from '../../services/api/product.api';
@@ -23,6 +22,7 @@ import { productService } from '../../services/api/product.api';
 import './menus.scss'
 import instaposter from "../../assets/food_instagram_story.png";
 import { Container, Row, Col } from 'react-bootstrap';
+import MenuPopup from '../Popups/Menu/MenuPopup';
 
 interface MenuProps { }
 
@@ -30,7 +30,6 @@ interface MenuProps { }
 const Menu: React.FC<MenuProps> = () => {
   const { t } = useTranslation();
   const dispatch = useAppDispatch();
-  const navigate = useNavigate();
   const [menuData, setMenuData] = useState<MenuData[]>([]);
   const { id } = useParams<{ id: string }>();
   // const [showOptions, setShowOptions] = useState(false);
@@ -43,10 +42,14 @@ const Menu: React.FC<MenuProps> = () => {
 
 
   const [showMismatchModal, setShowMismatchModal] = useState(false);
+  const [showOptionsPopup, setShowOptionsPopup] = useState(false);
   const [selectedOption, setSelectedOption] = useState("tous");
   const [filtreddMenuData, setFiltreddMenuData] = useState<MenuData[]>([]);
   const [selectedMenuItem, setSelectedMenuItem] = useState<FoodItem | null>(null);
 
+  const handlePopup = () => {
+    setShowOptionsPopup(!showOptionsPopup)
+  }
 
   const handlePaginationClick = (pageNumber: number, menuItemId: number) => {
     setCurrentPage((prevPages) => ({
@@ -86,11 +89,8 @@ const Menu: React.FC<MenuProps> = () => {
 
   // close options
   const handleChooseOptions = (selectedMenuItem: any | null) => {
-    // setShowOptions(true);
-    
-    setSelectedMenuItem(selectedMenuItem);
     dispatch(setProduct(selectedMenuItem))
-    navigate('/product', {state:{restaurant:restaurant}})
+    handlePopup()
   };
 
 
@@ -170,16 +170,10 @@ const Menu: React.FC<MenuProps> = () => {
                             <p className="product-title" >
                               {getTruncatedName(product.name, 10)}
                             </p>
-
                             <p className="product-price">
                               {`${t('price')}: ${Math.round(product.price)} DT`}
                             </p>
-
-                            <p className="product-description">
-                              {product.description}
-                            </p>
-
-
+                            <p className="product-description" dangerouslySetInnerHTML={{ __html: product.description }}></p>
                             <button className="product-button"
                               onClick={() => {
                                 handleChooseOptions(product);
@@ -215,74 +209,77 @@ const Menu: React.FC<MenuProps> = () => {
           </div>
         </Row>
       </Container>
-   
-          <Container fluid className='supplier-page-main-container'>
-            <Row>
-              <section className='info-section'>
-                <div className="info-container">
-                  <div className="left-side">
-                    <div className='name'>{restaurant?.name}</div>
-                    <div className='price'>Frais de livraison : <span className='price-value'> {restaurant?.service_price} dt</span></div>
-                  </div>
 
-                  <div className="right-side">
-                    <Star className='starIcon' style={restaurant?.star ? { visibility: 'visible' } : { visibility: 'hidden' }} />
-                    <div className='time'>
-                      <p>
-                        {`${restaurant?.medium_time - 10} - ${restaurant?.medium_time + 10
-                          } min`}
-
-                      </p>
-                    </div>
-                  </div>
-                </div>
-              </section>
-            </Row>
-            <Row className='main-row'>
-              <div className="side-bar">
-                <div className="pub-contained">
-                  <img className='supplier-logo' src={restaurant?.images[1].path} alt="" />
-                  <div className="pub-posts">
-                    <img className='insta-img' src={instaposter} alt=" insta img posts" />
-                    <img className='insta-img' src={instaposter} alt=" insta img posts" />
-                  </div>
-                </div>
+      <Container fluid className='supplier-page-main-container'>
+        <Row>
+          <section className='info-section'>
+            <div className="info-container">
+              <div className="left-side">
+                <div className='name'>{restaurant?.name}</div>
+                <div className='price'>Frais de livraison : <span className='price-value'> {restaurant?.service_price} dt</span></div>
               </div>
 
-              <section className='main-container'>
-                <div className="filers">
-                  {
-                    menuData.length != 0 && (
-                      <>
-                        <div className={`select ${selectedOption == "tous" ? "selected" : ""}`}  >
-                          <input type="radio" value="tous" id='tous' name='type' checked={selectedOption === "1"} onChange={handleOptionChange} />
-                          <label htmlFor="tous">Tous les produits</label>
-                        </div>
-                        {
-                          menuData.map((data, index) => {
-                            return (
-                              <>
-                                <div key={index} className={`select ${selectedOption == data.name ? "selected" : ""}`}  >
-                                  <input type="radio" value={data.name} id={data.name} name='type' checked={selectedOption === data.name} onChange={handleOptionChange} />
-                                  <label htmlFor={data.name}>{data.name}</label>
-                                </div>
-                              </>
-                            )
+              <div className="right-side">
+                <Star className='starIcon' style={restaurant?.star ? { visibility: 'visible' } : { visibility: 'hidden' }} />
+                <div className='time'>
+                  <p>
+                    {`${restaurant?.medium_time - 10} - ${restaurant?.medium_time + 10
+                      } min`}
 
-                          })
-                        }
-
-                      </>
-                    )
-                  }
-
+                  </p>
                 </div>
-                <Product />
-              </section>
-            </Row>
-          </Container>
+              </div>
+            </div>
+          </section>
+        </Row>
+        <Row className='main-row'>
+          <div className="side-bar">
+            <div className="pub-contained">
+              <img className='supplier-logo' src={restaurant?.images[1].path} alt="" />
+              <div className="pub-posts">
+                <img className='insta-img' src={instaposter} alt=" insta img posts" />
+                <img className='insta-img' src={instaposter} alt=" insta img posts" />
+              </div>
+            </div>
+          </div>
+
+          <section className='main-container'>
+            <div className="filers">
+              {
+                menuData.length != 0 && (
+                  <>
+                    <div className={`select ${selectedOption == "tous" ? "selected" : ""}`}  >
+                      <input type="radio" value="tous" id='tous' name='type' checked={selectedOption === "1"} onChange={handleOptionChange} />
+                      <label htmlFor="tous">Tous les produits</label>
+                    </div>
+                    {
+                      menuData.map((data, index) => {
+                        return (
+                          <>
+                            <div key={index} className={`select ${selectedOption == data.name ? "selected" : ""}`}  >
+                              <input type="radio" value={data.name} id={data.name} name='type' checked={selectedOption === data.name} onChange={handleOptionChange} />
+                              <label htmlFor={data.name}>{data.name}</label>
+                            </div>
+                          </>
+                        )
+
+                      })
+                    }
+
+                  </>
+                )
+              }
+
+            </div>
+            <Product />
+          </section>
+        </Row>
+      </Container>
       {showMismatchModal && (
         <MismatchModal onClose={handleMismatchModalClose} />
+      )}
+      {showOptionsPopup && (
+        <MenuPopup close={handlePopup} restaurant={restaurant} isOpen={showOptionsPopup} />
       )}
 
     </>

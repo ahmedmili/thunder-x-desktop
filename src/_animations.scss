@@ -1,0 +1,33 @@
+$CartAnimation: cart-animation;
+$PopupAnimation: popup-animation;
+
+@keyframes #{$CartAnimation} {
+    0% {
+        height: 0%;
+    }
+
+    100% {
+        height: 100%;
+    }
+}
+
+@keyframes #{$PopupAnimation} {
+    0% {
+        scale: 0;
+        opacity: 0;
+    }
+
+    40% {
+        scale: 1;
+        opacity: 1;
+    }
+
+    60% {
+        scale: 0.7;
+    }
+
+    100% {
+        scale: 1;
+        opacity: 1;
+    }
+}
