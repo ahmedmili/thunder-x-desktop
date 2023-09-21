@@ -34,6 +34,9 @@ const HomePage = () => {
   const categories = useSelector(categoriesHomeSelector);
   const recommanded = useSelector(recommendedHomeSelector);
   const isLoading = useSelector(homeLoadingSelector);
+  const theme = useAppSelector((state) => state.home.theme)
+  const [template, setTemplate] = useState<number>(theme)
+
 
   const restaurantsList = useAppSelector(
     (state) => state.restaurant.restaurants
@@ -43,6 +46,10 @@ const HomePage = () => {
   const [filteredRestaurants, setFilteredRestaurants] = useState<Restaurant[]>(
     []
   );
+
+  useEffect(() => {
+    setTemplate(theme)
+  }, [theme])
 
   const handleCategorySelect = (category: string) => {
     if (selectedCategory === category) {
@@ -79,9 +86,9 @@ const HomePage = () => {
 
   return (
     <>
-      <Container maxWidth="lg" className="containerr">
+      <Container maxWidth="lg" className={`containerr ${template === 1 && "dark-background"}`}>
         {isLoading ? (
-          <HomeSkeleton/>
+          <HomeSkeleton />
         ) : (
           <>
             {/* categories list */}

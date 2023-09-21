@@ -114,154 +114,154 @@ const Header = () => {
 
               </div>
             </div>
-            <Container  >
-              <Row className={`fixedHeaderContainer ${scrolling ? 'minimizedFixedHeaderContainer' : ''}  ${template === 1 && "dark-background2"}`} >
-                <Col>
-                  <div className="logoContainer"
+            <Container className={template === 1 ? "bg-transparent" : ""} style={{ marginTop: template === 1 ? 0 : "10px" }} >
+            <Row className={`fixedHeaderContainer ${scrolling ? 'minimizedFixedHeaderContainer' : ''}  ${template === 1 && "dark-background2"}`} >
+              <Col>
+                <div className="logoContainer"
 
-                    onClick={() => navigate('/')} >
-                    <a href="#" className={`logoMain ${scrolling ? 'minimizedlogoMain' : ''}`}></a>
-                  </div>
-                </Col>
+                  onClick={() => navigate('/')} >
+                  <a href="#" className={`logoMain ${scrolling ? 'minimizedlogoMain' : ''}`}></a>
+                </div>
+              </Col>
 
-                <Col>
-                  {/* login register buttons  */}
-                  {!logged_in ? (
-                    <>
-                      <div className="appBar">
-                        <button
-                          onClick={() => navigate('/register')}
-                          className={`LoadingButton ${scrolling ? 'minimizedLoadingButton' : ''}`}
-                        >
-                          {t('signup')}
-                        </button>
-                        <button
-                          onClick={() => navigate('/login')}
-                          className={`LoadingButton ${scrolling ? 'minimizedLoadingButton' : ''}`}
-                        >
-                          {t('login')}
-                        </button>
-                      </div>
-                    </>
-                  ) : <>
+              <Col>
+                {/* login register buttons  */}
+                {!logged_in ? (
+                  <>
                     <div className="appBar">
                       <button
-                        onClick={onLogoutHandler}
+                        onClick={() => navigate('/register')}
                         className={`LoadingButton ${scrolling ? 'minimizedLoadingButton' : ''}`}
                       >
-                        {t('profile.deconnecter')}
+                        {t('signup')}
+                      </button>
+                      <button
+                        onClick={() => navigate('/login')}
+                        className={`LoadingButton ${scrolling ? 'minimizedLoadingButton' : ''}`}
+                      >
+                        {t('login')}
                       </button>
                     </div>
                   </>
-                  }
-                </Col>
-
-              </Row>
-
-              <Row className={`headerContainer  ${template === 1 && "dark-background2"}`}>
-                <Col className='col-12 col-sm-7'>
-                  <div className="headerAppBar2">
-                    <div className="headerMessage">
-                      <p className="headerMessageSyle1" > Nous &nbsp;
-                        <span className="headerMessageSyle2">
-                          livrons
-                        </span>
-                      </p>
-                      <p className="headerMessageSyle1"> plus que de la &nbsp;
-                        <span className="headerMessageSyle2">
-                          nourriture
-                        </span> .
-                      </p>
-                    </div>
-                    <div className="Switches">
-                      <Switches />
-                    </div>
-                    <Box className="headerLocalisationMessageContainer" onClick={() => dispatch({ type: "SET_SHOW", payload: true })}>
-                      <a href="#" >
-                        <span className="localisationIcon" >
-                          <PinDropIcon />
-                        </span>
-                        {location
-                          ? location?.coords.label + " ! " + t('clickToChange')
-                          : t('no_location_detected')}
-                      </a>
-                    </Box>
-                    <SearchBar placeholder={t('search_placeholder')} />
-
+                ) : <>
+                  <div className="appBar">
+                    <button
+                      onClick={onLogoutHandler}
+                      className={`LoadingButton ${scrolling ? 'minimizedLoadingButton' : ''}`}
+                    >
+                      {t('profile.deconnecter')}
+                    </button>
                   </div>
-                </Col>
+                </>
+                }
+              </Col>
 
-                <Col className="imageBuilderContainer">
-                  <div className="imageBuilder"></div>
-                </Col>
-              </Row>
+            </Row>
 
-              {/*  Thunder logo section  */}
-              {showMapState && (
+            <Row className={`headerContainer  ${template === 1 && "bg-transparent"}`}>
+              <Col className='col-12 col-sm-7'>
+                <div className="headerAppBar2">
+                  <div className="headerMessage">
+                    <p className="headerMessageSyle1" > Nous &nbsp;
+                      <span className="headerMessageSyle2">
+                        livrons
+                      </span>
+                    </p>
+                    <p className="headerMessageSyle1"> plus que de la &nbsp;
+                      <span className="headerMessageSyle2">
+                        nourriture
+                      </span> .
+                    </p>
+                  </div>
+                  <div className="Switches">
+                    <Switches />
+                  </div>
+                  <Box className="headerLocalisationMessageContainer" onClick={() => dispatch({ type: "SET_SHOW", payload: true })}>
+                    <a href="#" >
+                      <span className="localisationIcon" >
+                        <PinDropIcon />
+                      </span>
+                      {location
+                        ? location?.coords.label + " ! " + t('clickToChange')
+                        : t('no_location_detected')}
+                    </a>
+                  </Box>
+                  <SearchBar placeholder={t('search_placeholder')} />
+
+                </div>
+              </Col>
+
+              <Col className="imageBuilderContainer">
+                <div className="imageBuilder"></div>
+              </Col>
+            </Row>
+
+            {/*  Thunder logo section  */}
+            {showMapState && (
+              <div
+                className="mapOverPlay"
+                onClick={() => dispatch({ type: "SET_SHOW", payload: false })}>
                 <div
-                  className="mapOverPlay"
-                  onClick={() => dispatch({ type: "SET_SHOW", payload: false })}>
-                  <div
-                    onClick={(e) => e.stopPropagation()}>
-                    <Map />
-                  </div>
+                  onClick={(e) => e.stopPropagation()}>
+                  <Map />
                 </div>
-              )}
-            </Container>
-
-          </>
-        ) : (
-          <>
-            <div className={`fixedHeaderContainer2 ${template === 1 && "dark-background2"}`} >
-              <div className="logoContainer"
-                onClick={() => navigate('/')} >
-                <a href="#" className={`logoMain minimizedlogoMain`}></a>
               </div>
+            )}
+          </Container>
 
-              <div className='info'>
-                <div className="position">
+    </>
+  ) : (
+    <>
+      <div className={`fixedHeaderContainer2 ${template === 1 && "dark-background2"}`} >
+        <div className="logoContainer"
+          onClick={() => navigate('/')} >
+          <a href="#" className={`logoMain minimizedlogoMain`}></a>
+        </div>
 
-                  <LocationOnIcon className='position-icon' />
-                  {location
-                    ? location?.coords.label
-                    : t('no_location_detected')}
+        <div className='info'>
+          <div className="position">
 
-                </div>
-                <button onClick={handleUserCart} className="account">
+            <LocationOnIcon className='position-icon' />
+            {location
+              ? location?.coords.label
+              : t('no_location_detected')}
 
-                  <PermIdentityOutlinedIcon className='account-icon' />
-                </button>
+          </div>
+          <button onClick={handleUserCart} className="account">
 
-                <button className="search">
-                  <Search className='search-icon' />
-                </button>
+            <PermIdentityOutlinedIcon className='account-icon' />
+          </button>
 
-                <button onClick={handleCart} className="cart-item">
-                  <ShoppingCartOutlinedIcon className='cart-icon' />
-                  {cartItems.length}
-                </button>
+          <button className="search">
+            <Search className='search-icon' />
+          </button>
 
-              </div>
-            </div>
-            {
-              showCart && (
-                <div className={`cart-container  ${template === 1 && "dark-background2"}`}>
-                  <Cart items={cartItems} closeButton={handleCart} />
-                </div>
-              )
-            }
+          <button onClick={handleCart} className="cart-item">
+            <ShoppingCartOutlinedIcon className='cart-icon' />
+            {cartItems.length}
+          </button>
 
-            {
-              showProfile && user && (<div className={`cart-container ${template === 1 && "dark-background2"}`}>
-                <UserCart firstName={user.firstname} lastName={user.lastname} closeButton={handleUserCart} />
-              </div>
-              )
-            }
-
-
-          </>
+        </div>
+      </div>
+      {
+        showCart && (
+          <div className={`cart-container  ${template === 1 && "dark-background2"}`}>
+            <Cart items={cartItems} closeButton={handleCart} />
+          </div>
         )
       }
+
+      {
+        showProfile && user && (<div className={`cart-container ${template === 1 && "dark-background2"}`}>
+          <UserCart firstName={user.firstname} lastName={user.lastname} closeButton={handleUserCart} />
+        </div>
+        )
+      }
+
+
+    </>
+  )
+}
     </>
   )
 

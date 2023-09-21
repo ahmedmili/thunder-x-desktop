@@ -190,9 +190,14 @@ function App() {
   // useEffect(() => {
   //   const socket = WebSocket.getInstance();
   // }, []);
+  const theme = useAppSelector((state) => state.home.theme)
+  const [template, setTemplate] = useState<number>(theme)
+  useEffect(() => {
+    setTemplate(theme)
+  }, [theme])
 
   return (
-    <>
+    <div className={`${template === 1 && "dark-background"}`}>
       <CssBaseline />
       <ToastContainer />
       <Suspense fallback={
@@ -229,7 +234,7 @@ function App() {
           <Route path="forgotpassword" element={<ForgotPasswordPage />} />
         </Routes>
       </Suspense>
-    </>
+    </div>
   );
 }
 
