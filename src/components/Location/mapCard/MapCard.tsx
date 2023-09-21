@@ -26,7 +26,7 @@ function MapCard() {
     const [primary, setPrimary] = useState<boolean>(false);
     const [selectedOption, setSelectedOption] = useState<number>(1);
 
-
+    const [locationChanged, setLocationChanger] = useState<boolean>(false)
     const [showForm, setShowForm] = useState<boolean>(false);
 
     const [marker, setMarker] = useState<google.maps.Marker | null>(null);
@@ -90,6 +90,8 @@ function MapCard() {
 
     const handleMapClick = (event: google.maps.MapMouseEvent) => {
         // Change state position
+        !locationChanged && setLocationChanger(true)
+
         const latLng = event.latLng;
         LocationService.geoCode(latLng?.lat(), latLng?.lng()).then(data => {
             dispatch({
@@ -175,6 +177,8 @@ function MapCard() {
                                 <div className='map-and-button'>
                                     <div id="map" ref={mapContainerRef}></div>
                                     <div className="location-indicator">
+                                        {!locationChanged && <h1>{t("adress.adressDetected")}</h1>}
+                                        {locationChanged && <h1>{t("adress.adressSelected")}</h1>}
                                         <h1>{userPosition?.coords.label}</h1>
                                     </div>
                                     <div className='buttons'>
@@ -196,7 +200,7 @@ function MapCard() {
 
                             <Formik
                                 initialValues={{
-                                    appNum:"",
+                                    appNum: "",
                                     appEnt: "",
                                     codePost: "",
                                     intitule: "",
@@ -242,21 +246,28 @@ function MapCard() {
 
                                         </div>
                                         <div className="default">
-                                            <input type="checkbox" value="3" id='default' name='type' checked={primary} onChange={handleDefaultChange} />
-                                            <label htmlFor="default"> Adresse par défaut</label>
+                                            <label className='custom-checkbox' htmlFor="default">
+                                                <input type="checkbox" value="3" id='default' name='type' checked={primary} onChange={handleDefaultChange} />
+                                                <span className="checkmark"></span>
+                                                Adresse par défaut
+                                            </label>
                                         </div>
-                                        <button type="submit" className="submit-cart" >
-                                        {t("select")}
-                                        </button>
+                                        <div className='map-continue-btn'>
+                                            <button type="submit" className="submit-cart" >
+                                                {t("select")}
+                                            </button>
+                                        </div>
                                     </Form>
                                 )}
                             </Formik>
                         </>
                     )}
                     {logged_in && showForm === false && (
-                        <button type="button" className="submit-cart" onClick={() => setShowForm(true)} >
-                            {t("continuer")}
-                        </button>
+                        <div className='map-continue-btn'>
+                            <button type="button" className="submit-cart" onClick={() => setShowForm(true)} >
+                                {t("continuer")}
+                            </button>
+                        </div>
                     )}
                 </div>
             </div>

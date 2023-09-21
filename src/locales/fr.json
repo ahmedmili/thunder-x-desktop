@@ -120,7 +120,7 @@
   "adress.title1": "Ajouter une adresse de livraison",
   "adress.card.title1": "Indiquer votre adresse sur la carte",
   "adress.current_position": "Current Position",
-  "adress.input1": "Numéro d’appartement, porte, étage...",
+  "adress.input1": "Numéro d’appartement, porte, étage . . .",
   "adress.input2": "Nom de l’entreprise ou l’immeuble",
   "adress.input3": "Code de porte et nom de famille",
   "adress.input4": "Intitulé de l’adresse",
@@ -131,6 +131,8 @@
   "adress.cartSelect": "sélectionner sur la carte",
   "adress.intitule_message": "L'intitulé de l'adresse est nécessaire",
   "adress.searchWithAdress": "Chercher par rue, quartier, ville ",
+  "adress.adressDetected": "Votre position actuelle détéctée :",
+  "adress.adressSelected": "L’adresse séléctionnée est : ",
   "faq.title": "Foire Aux Questions",
   "faq.questions": [
     {

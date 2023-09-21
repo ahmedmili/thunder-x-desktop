@@ -112,5 +112,21 @@
   "select_one_or_multiple_extras": "حدد إضافة واحدة أو عدة إضافات!",
   "delivery_price": "سعر التوصيل:",
   "choose_options": "اختر الخيارات",
-  "price": "السعر"
+  "price": "السعر",
+  "adress.title1": "إضافة عنوان إرسال",
+  "adress.card.title1": "تحديد عنوانك على الخريطة",
+  "adress.current_position": "الموقع  الحالي",
+  "adress.input1": "رقم الشقة، الباب، الطابق.",
+  "adress.input2": "اسم الشركة أو المبنى",
+  "adress.input3": "رمز البوابة و اسم الأسرة",
+  "adress.input4": "العنوان ",
+  "adress.default_adress": "عنوان طلقائي",
+  "adress.empty": "لم يتم تسجيل أي عنوان",
+  "adress.message1": "عناوين التسليم الخاصة بي",
+  "adress.message2": "تصفح االعناوين بواسطة:",
+  "adress.cartSelect": "اختيار على الخريطة",
+  "adress.intitule_message": "إسم الموقع ضروري",
+  "adress.searchWithAdress": "البحث عن الشارع، البلد، المدينة ",
+  "adress.adressDetected": "موقعك الحالي :",
+  "adress.adressSelected": "العنوان المختار هو: "
 }
