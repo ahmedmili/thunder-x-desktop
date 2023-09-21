@@ -332,6 +332,10 @@
             font-weight: 600;
             line-height: normal;
 
+            &:hover {
+                cursor: pointer;
+            }
+
             .cart-icon {
                 width: 34.624px;
                 height: 34.99px;
