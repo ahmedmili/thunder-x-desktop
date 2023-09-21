@@ -46,6 +46,8 @@ const CartPage: React.FC = () => {
   const { t } = useTranslation();
 
   // redux state vars
+  const theme = useAppSelector(state => state.home.theme)
+  const [template, setTemplate] = useState<number>(theme)
   const supplier = useAppSelector((state: RootState) => state.cart.supplier);
   const deliveryPrice = useAppSelector((state: RootState) => state.cart.deliveryPrice);
   const cartItems = useAppSelector((state: RootState) => state.cart.items);
@@ -141,6 +143,9 @@ const CartPage: React.FC = () => {
         );
       }
     };
+    useEffect(() => {
+      setTemplate(theme)
+    }, [theme])
 
     return <>
       <td className="image-container">
@@ -502,16 +507,13 @@ const CartPage: React.FC = () => {
   const getExtraSupplierInfo = () => {
     let extra_cost = localStorage.getItem('extra_delivery_cost') ?? 0;
     if (Number(extra_cost) > 0) {
-      //this.extraDeliveryCost = parseFloat(extra_cost.toString()) - this.max_distance;
     } else {
       extraDeliveryCost = (distance - max_distance) > 0 ? (distance - max_distance) : 0
 
     }
   }
 
-  // useEffect Part
 
-  // switch deliv plan
   useEffect(() => {
     switch (selectedOption) {
       case 1:
@@ -531,12 +533,10 @@ const CartPage: React.FC = () => {
         break;
       default:
         take_away_plan = "plan"
-        // take_away_date = new Date(dateValue);
         break;
     }
   }, [selectedOption])
 
-  //init cartItems
   useEffect(() => {
     localStorageService.setCart(cartItems);
     if (cartItems.length == 0) {
@@ -545,7 +545,6 @@ const CartPage: React.FC = () => {
     }
   }, [cartItems]);
 
-  // initialize data
   useEffect(() => {
     let check = supplier && cartItems.length > 0
     isAuthenticated && getPromo();
@@ -571,26 +570,26 @@ const CartPage: React.FC = () => {
             <Row className="header">
               <div className="image-container">
                 <img src={supplier ? supplier.images[0].path : ""} alt="supplier image" className="background-image" />
-                <span>Mon Panier</span>
+                <span>{t('cartPage.monPanier')}</span>
               </div>
             </Row>
             <Row>
               <Col>
                 <main>
-                  <div className="product-detail-container">
+                  <div className={`product-detail-container ${template === 1 && 'dark-background2'}`}>
                     <table>
                       <thead>
                         <td className="header-name">
-                          Produit
+                          {t('cartPage.product')}
                         </td>
                         <td>
-                          Prix
+                          {t('orderTrackingPage.price')}
                         </td>
                         <td>
-                          Quantité
+                          {t('cartPage.Quantite')}
                         </td>
                         <td >
-                          Sous-total
+                          {t('profile.commands.sousTotal')}
                         </td>
                         <td>   </td>
                       </thead>
@@ -611,7 +610,7 @@ const CartPage: React.FC = () => {
                     </div>
 
                     <div className="commentaire-section">
-                      <span>Commentaire</span>
+                      <span>{t('cartPage.commentaire')}</span>
                       <textarea name="commentaire" id="commentaire" cols={30} rows={10} value={aComment} onChange={(e) => handleCommentChange(e.target.value)} ></textarea>
                     </div>
                     {/* {
@@ -648,7 +647,7 @@ const CartPage: React.FC = () => {
                     <div className="promo-container">
                       <input type="text" name="code_promo" id="code_promo" placeholder="Code promo" value={promo} onChange={(e) => handlePromoChange(e.target.value)} />
                       <button disabled={!couponExiste} className={(couponExiste) ? "button" : "button disabled"} onClick={checkPromoCode}>
-                        Applique
+                        {t('cartPage.appliquer')}
                       </button>
                     </div>
 
@@ -656,15 +655,15 @@ const CartPage: React.FC = () => {
                     </div>
 
                     <div className="bonus">
-                      <span>Bonus : {bonus.toFixed(2)} pts</span>
+                      <span>{t('cartPage.bonus')} : {bonus.toFixed(2)} pts</span>
 
                       <button className={(bonus < 5000 || appliedBonus || limitReachedBonus) ? "button disabled" : "button"} disabled={bonus < 5000} onClick={() => applyBonus()}>
-                        Appliquer
+                        {t('cartPage.appliquer')}
                       </button>
                     </div>
                     <ul>
                       <li>
-                        <p className="bonus-message">vous pouvez utiliser vos points une fois que vous avez accumulé un total de 5000 points</p>
+                        <p className="bonus-message">{t('cartPage.bonusMsg')}</p>
                       </li>
                     </ul>
 
@@ -672,15 +671,15 @@ const CartPage: React.FC = () => {
                     </div>
 
                     <div className="paiment-container">
-                      <span className="title">Mode de paiement</span>
+                      <span className="title">{t('cartPage.payMode')}</span>
                       <div className="method">
                         <img className="icon" src={PayCashSVG} alt="My SVG" />
-                        <label htmlFor="espece">En espèces à la livraison</label>
+                        <label htmlFor="espece">{t('cartPage.espece')}</label>
                         <input className="form-check-input" type="radio" name="pay" id="espece" checked={payMode === 1} onClick={() => setPayMode(1)} />
                       </div>
                       <div className="method">
                         <PaymentIcon className="icon" />
-                        <label htmlFor="bnc-cart">Par carte bancaire</label>
+                        <label htmlFor="bnc-cart">{t('cartPage.bankPay')}</label>
                         <input className="form-check-input" type="radio" name="pay" id="bnc-cart" checked={payMode === 2} onClick={() => setPayMode(2)} />
                       </div>
                     </div>
@@ -692,18 +691,18 @@ const CartPage: React.FC = () => {
                       <div className={`select ${selectedOption == 1 ? "selected" : ""}`}  >
                         <img className="icon1" src={dinnerFurnitureIcn} alt="sur place icon" onClick={() => setSelectedOption(1)} />
                         <input type="radio" value="1" id='domicile' name='type' checked={selectedOption === 1} onChange={handleOptionChange} />
-                        <label htmlFor="domicile">Sur palce</label>
+                        <label htmlFor="domicile">{t('cartPage.surPalce')}</label>
                       </div>
                       <div className={`select ${selectedOption == 2 ? "selected" : ""}`}  >
                         <img className="icon2" src={bagPaperShoppingIcn} alt="a emporter icon" onClick={() => setSelectedOption(2)} />
 
                         <input type="radio" value="2" id='travail' name='type' checked={selectedOption === 2} onChange={handleOptionChange} />
-                        <label htmlFor="travail">A emporter</label>
+                        <label htmlFor="travail">{t('cartPage.emporter')}</label>
                       </div>
                       <div className={`select ${selectedOption == 3 ? "selected" : ""}`}  >
                         <img className="icon3" src={scooterTransportIcn} alt="Livraison icon" onClick={() => setSelectedOption(3)} />
                         <input type="radio" value="3" id='autre' name='type' checked={selectedOption === 3} onChange={handleOptionChange} />
-                        <label htmlFor="autre">Livraison</label>
+                        <label htmlFor="autre">{t('cartPage.delivery')}</label>
                       </div>
                     </div>
 
@@ -740,19 +739,19 @@ const CartPage: React.FC = () => {
                     }
 
                     <div className="deliv-to">
-                      <span className="title">Livraison à</span>
+                      <span className="title">{t('cartPage.delivto')}</span>
                       <div className="info-container">
-                        <label htmlFor="client-name">Client : </label>
+                        <label htmlFor="client-name">{t('cartPage.client')} : </label>
                         <input type="text" name="client-name" value={name} placeholder="Client Name" onChange={(e) => setName(e.target.value)} />
                       </div>
 
                       <div className="info-container">
-                        <label htmlFor="client-name">N° de téléphone :</label>
+                        <label htmlFor="client-name">{t('cartPage.phoneNumber2')}</label>
                         <input type="text" name="" value={phoneNumber} placeholder="phone number" onChange={(e) => setPhoneNumber(e.target.value)} />
                       </div>
                       <div className="adress">
                         <p className="title" style={{ margin: 0 }} >
-                          Adresse de livraison :
+                          {t('profile.mesConfig.delivAdress')} :
                         </p>
                         <p className="adress-text">
                           {userPosition?.coords.label}
@@ -761,7 +760,7 @@ const CartPage: React.FC = () => {
 
                       <div className="buttons">
                         <button className="continue" onClick={() => navigate('/', { replace: true })}>
-                          Continuer mes achats
+                          {t('cartPage.continueAchats')}
                         </button>
                         <button className="commander"
                           onClick={() =>
@@ -780,7 +779,7 @@ const CartPage: React.FC = () => {
                             )
                           }
                         >
-                          Commander
+                          {t('cartPage.commander')}
                         </button>
                       </div>
 
@@ -789,18 +788,18 @@ const CartPage: React.FC = () => {
                   </div>
 
                   <div className="summair-container">
-                    <span>Total</span>
-                    <div className="info">
+                    <span>{t('cartPage.total')}</span>
+                    <div className={`info ${template === 1 && "dark-background2"}`}>
                       <div className="sous-total">
-                        <span className="title">Sous-total</span>
+                        <span className="title">{t('profile.commands.sousTotal')}</span>
                         <span className="value">{sousTotal.toFixed(2)} DT</span>
                       </div>
                       <div className="panier">
-                        <span>Panier</span>
+                        <span>{t('cartPage.yourCart')}</span>
                         {appliedBonus > 0 &&
                           (
                             <div className="panie-row">
-                              <span>bonus</span>
+                              <span>{t('cartPage.bonus')}</span>
                               <span> - {(appliedBonus / 1000).toFixed(2)} DT</span>
                             </div>
                           )
@@ -808,13 +807,13 @@ const CartPage: React.FC = () => {
                         {
                           promoReduction > 0 && (
                             <div className="panie-row">
-                              <span>Coupon</span>
+                              <span>{t('cartPage.Coupon')}</span>
                               <span> - {(promoReduction).toFixed(2)} DT</span>
                             </div>
                           )
                         }
                         <div className="panie-row">
-                          <span>Frais de livraison</span>
+                          <span>{t('supplier.delivPrice')}</span>
                           <span>{cartItems.length > 0 ? cartItems[0].supplier_data.delivery_price : 0} DT</span>
                         </div>
                         <div className="panie-row"></div>
@@ -833,7 +832,7 @@ const CartPage: React.FC = () => {
                             }
                           }
                         >
-                          contenu le paiement
+                          {t('cartPage.paymentContinue')}
                         </button>
                       </div>
                     </div>
@@ -862,7 +861,7 @@ const CartPage: React.FC = () => {
                   </div>
                   <img src={empty} alt=" not command items" />
                   <button className="emptyButton" onClick={() => navigate('/', { replace: true })}>
-                    Je commande
+                    {t('cart.payment.iCommand')}
                   </button>
                 </div>
               </Col>
