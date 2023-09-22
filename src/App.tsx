@@ -4,8 +4,6 @@ import { Navigate, Outlet, Route, Routes } from "react-router-dom";
 import { lazy, Suspense, useCallback, useEffect, useState } from "react";
 import Layout from "./components/layout/layout";
 import { ToastContainer, toast } from "react-toastify";
-import "react-toastify/dist/ReactToastify.css";
-import 'react-multi-carousel/lib/styles.css'; 
 
 import { useAppDispatch, useAppSelector } from "./Redux/store";
 
