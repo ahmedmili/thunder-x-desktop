@@ -6,6 +6,9 @@ import { adressService } from "../../services/api/adress.api";
 import { useTranslation } from "react-i18next";
 import "./Location.scss";
 
+
+import HomeLocation from '../../assets/home-location.svg'
+import EditPen from '../../assets/edit-pen.svg'
 import ClearRoundedIcon from "@mui/icons-material/ClearRounded";
 
 import HomeRoundedIcon from "@mui/icons-material/HomeRounded";
@@ -38,6 +41,20 @@ const Map = () => {
   const dispatch = useAppDispatch();
   const [searchType, setSearchType] = useState("");
 
+  useEffect(() => {
+    // Function to disable scrolling
+    const disableScroll = (e:any) => {
+      e.preventDefault();
+    };
+
+    // Add an event listener to the window to prevent scrolling
+    window.addEventListener('scroll', disableScroll);
+
+    // Clean up the event listener when the component unmounts
+    return () => {
+      window.removeEventListener('scroll', disableScroll);
+    };
+  }, []);
 
   // read client adresses
   useEffect(() => {
@@ -93,7 +110,6 @@ const Map = () => {
           {/*  search location input */}
           <div className="adresses_container">
             <AutocompleteInput />
-
           </div>
         </div>
 
@@ -120,17 +136,26 @@ const Map = () => {
 
 
         {filtredPositions.length > 0 ? (
-          <div className="adresses-container">
-            {filtredPositions.map((element) => (
-              <AdressComponent
-                type={element["label"]}
-                street={element["street"]}
-                region={element["region"]}
-                long={element["long"]}
-                lat={element["lat"]}
-              ></AdressComponent>
-            ))}
-          </div>
+          <>
+            {/* <center>
+            </center> */}
+            <p className="saved-adresses-title">Lieux enregistré</p>
+            <div className="adresses-container">
+
+              {filtredPositions.map((element) => (
+                <>
+                  <AdressComponent
+                    type={element["label"]}
+                    street={element["street"]}
+                    region={element["region"]}
+                    long={element["long"]}
+                    lat={element["lat"]}
+                  ></AdressComponent>
+                </>
+              ))}
+            </div>
+          </>
+
         ) : (
           <h6 style={{ display: userItem ? "inline" : "none" }}>
             no saved adress to display
@@ -193,7 +218,7 @@ const Map = () => {
             type="text"
             value={inputValue}
             onChange={handleInputChange}
-            placeholder={`${t("searchButton")} ...`}
+            placeholder={`${t("adress.searchWithAdress")} . . .`}
           />
           <span className="icon">
             <SearchIcon className='icon' />
@@ -215,44 +240,44 @@ const Map = () => {
     );
   };
 
-  
-function AdressComponent({
-  type,
-  street,
-  region,
-  lat,
-  long,
-}: AdressComponentProps) {
 
-  const changeAdress = () => {
-    dispatch({
-      type: "SET_LOCATION",
-      payload: {
-        coords: {
-          latitude: lat,
-          longitude: long,
-          label: type,
+  function AdressComponent({
+    type,
+    street,
+    region,
+    lat,
+    long,
+  }: AdressComponentProps) {
+
+    const changeAdress = () => {
+      dispatch({
+        type: "SET_LOCATION",
+        payload: {
+          coords: {
+            latitude: lat,
+            longitude: long,
+            label: type,
+          },
         },
-      },
-    });
-  };
-
-
-
+      });
+    };
     return (
       <div onClick={changeAdress} className="adressCompContainer">
         <header>
           <div className="type">
-            <HomeRoundedIcon className="home-icon" />
-            {type}
+            <div className="label">
+              <div className="position-icon" style={{ backgroundImage: `url(${HomeLocation})` }} ></div>
+              <span>{type}</span>
+            </div>
+            <button className="edit-button">
+              <div className="edit-icon" style={{ backgroundImage: `url(${EditPen})` }} ></div>
+            </button>
           </div>
-          <MenuIcon />
-        </header>
-        <div className="labels">
-          <p>
+          <p className="position-name">
             {street}, <br /> {region}
           </p>
-        </div>
+        </header>
+
       </div>
     );
   }

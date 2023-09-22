@@ -210,6 +210,7 @@ function MenuOptions() {
         dispatch({ type: 'SET_UNITPRICE', payload: unite_price });
         dispatch({ type: 'SET_TOTAL', payload: unite_price * productCount })
     }
+    
     const selectExtra = (index: number, event: any) => {
         if (state.extra_max.max !== -1 && event.target.checked == true) {
             let opts = [];

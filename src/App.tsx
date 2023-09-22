@@ -193,7 +193,7 @@ function App() {
           <Route path="/" element={<Layout />}>
             <Route index element={<HomePage />} />
             <Route path="/supplier-store/:id/*" element={<Menu />} />
-            <Route path="/product" element={<MenuOptions />} />
+            {/* <Route path="/product" element={<MenuOptions />} /> */}
             <Route path="/cart" element={<CartPage/>} />
             <Route path="/search" element={<FilterPage />} />
 
