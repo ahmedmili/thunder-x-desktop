@@ -1,4 +1,4 @@
-import { CircularProgress, CssBaseline } from "@mui/material";
+import {  CssBaseline } from "@mui/material";
 import "bootstrap/dist/css/bootstrap.min.css";
 import { Navigate, Outlet, Route, Routes } from "react-router-dom";
 import { lazy, Suspense, useCallback, useEffect, useState } from "react";
@@ -36,8 +36,7 @@ import FilterPage from "./views/filtre/FilterPage";
 import HomeSkeleton from "./views/home/skeleton/HomeSkeleton";
 import Header from "./components/Header/Header";
 import Footer from "./components/footer/footer";
-import MenuOptions from "./components/menus/menuOptions/MenuOptions";
-import Profile from "./components/layout/Profile/Profile";
+import Profile from "./components/layout/Profile/Profile"
 import ConfigPage from "./components/layout/Profile/ConfigPage/ConfigPage";
 import Annonces from "./components/layout/Profile/All_Annonces/All_Annonces";
 import ArchivedCommands from "./components/layout/Profile/Archivedcommands/ArchivedCommands";
@@ -212,8 +211,8 @@ function App() {
           <Route path="/" element={<Layout />}>
             <Route index element={<HomePage />} />
             <Route path="/supplier-store/:id/*" element={<Menu />} />
-            <Route path="/product" element={<MenuOptions />} />
-            <Route path="/cart" element={<CartPage />} />
+            {/* <Route path="/product" element={<MenuOptions />} /> */}
+            <Route path="/cart" element={<CartPage/>} />
             <Route path="/search" element={<FilterPage />} />
             {/* Private Route */}
             <Route path="track-order" element={<OrderTrackingPage />} />

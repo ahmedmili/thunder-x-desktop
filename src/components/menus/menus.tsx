@@ -23,6 +23,7 @@ import { productService } from '../../services/api/product.api';
 import './menus.scss'
 import instaposter from "../../assets/food_instagram_story.png";
 import { Container, Row, Col } from 'react-bootstrap';
+import MenuPopup from '../Popups/Menu/MenuPopup';
 
 interface MenuProps { }
 
@@ -44,6 +45,7 @@ const Menu: React.FC<MenuProps> = () => {
   const productsPerPage = 4;
 
   const [showMismatchModal, setShowMismatchModal] = useState(false);
+  const [showOptionsPopup, setShowOptionsPopup] = useState(false);
   const [selectedOption, setSelectedOption] = useState("tous");
   const [filtreddMenuData, setFiltreddMenuData] = useState<MenuData[]>([]);
   const [selectedMenuItem, setSelectedMenuItem] = useState<FoodItem | null>(null);
@@ -51,6 +53,9 @@ const Menu: React.FC<MenuProps> = () => {
   useEffect(() => {
     setTemplate(theme)
   }, [theme])
+  const handlePopup = () => {
+    setShowOptionsPopup(!showOptionsPopup)
+  }
 
   const handlePaginationClick = (pageNumber: number, menuItemId: number) => {
     setCurrentPage((prevPages) => ({
@@ -90,10 +95,8 @@ const Menu: React.FC<MenuProps> = () => {
 
   // close options
   const handleChooseOptions = (selectedMenuItem: any | null) => {
-    // setShowOptions(true);
-    setSelectedMenuItem(selectedMenuItem);
     dispatch(setProduct(selectedMenuItem))
-    navigate('/product', { state: { restaurant: restaurant } })
+    handlePopup()
   };
 
 
@@ -173,9 +176,7 @@ const Menu: React.FC<MenuProps> = () => {
                             <p className="product-price">
                               {`${t('price')}: ${Math.round(product.price)} DT`}
                             </p>
-                            <p className="product-description">
-                              {product.description}
-                            </p>
+                            <p className="product-description" dangerouslySetInnerHTML={{ __html: product.description }}></p>
                             <button className="product-button"
                               onClick={() => {
                                 handleChooseOptions(product);
@@ -277,6 +278,9 @@ const Menu: React.FC<MenuProps> = () => {
       </Container>
       {showMismatchModal && (
         <MismatchModal onClose={handleMismatchModalClose} />
+      )}
+      {showOptionsPopup && (
+        <MenuPopup close={handlePopup} restaurant={restaurant} isOpen={showOptionsPopup} />
       )}
 
     </>

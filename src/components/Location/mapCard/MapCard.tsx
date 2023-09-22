@@ -262,13 +262,13 @@ function MapCard() {
                             </Formik>
                         </>
                     )}
-                    {logged_in && showForm === false && (
-                        <div className='map-continue-btn'>
+                    <div className='map-continue-btn'>
+                        {logged_in && showForm === false && (
                             <button type="button" className="submit-cart" onClick={() => setShowForm(true)} >
                                 {t("continuer")}
                             </button>
-                        </div>
-                    )}
+                        )}
+                    </div>
                 </div>
             </div>
         </div >
