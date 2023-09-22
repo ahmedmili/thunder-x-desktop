@@ -10,6 +10,9 @@ function ArchivedCommands() {
         setNav(i)
     }
 
+    const goToPassedCommands = () => {
+        setNav(1)
+    }
     return (
         <div className='archived-commands-container'>
             <header>
@@ -29,7 +32,7 @@ function ArchivedCommands() {
 
             </header>
             <main className='commands-list-container'>
-                <CommandsList type={nav === 1 ? "old" : "current"} />
+                <CommandsList goToPassedCommands={goToPassedCommands} type={nav === 1 ? "old" : "current"} />
             </main>
         </div>
     )

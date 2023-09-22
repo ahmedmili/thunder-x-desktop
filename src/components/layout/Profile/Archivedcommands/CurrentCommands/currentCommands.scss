@@ -12,15 +12,15 @@
 }
 
 .current-commands-container {
+
     width: 100%;
     display: flex;
     flex-direction: column;
+    justify-content: space-between;
     animation: fadeIn 1s;
-    padding-bottom: 50px;
     margin-top: 10px;
     position: relative;
-    margin-bottom: 200px;
-
+    background-color: #24A6A4;
     .current-command-header {
         width: 100%;
 

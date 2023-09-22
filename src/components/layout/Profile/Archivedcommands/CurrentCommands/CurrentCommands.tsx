@@ -20,11 +20,14 @@ import traitementD from "../../../../../assets/profile/ArchivedCommands/traiteme
 import preparatinD from "../../../../../assets/profile/ArchivedCommands/preparatin-D.svg"
 import { useAppSelector } from '../../../../../Redux/store'
 import { useTranslation } from 'react-i18next';
+import CommandsFooter from '../Footer/Footer';
 
 interface CommandsListProps {
     data: any
     removeCommand: any;
+    goToPassedCommands: any;
 }
+
 
 interface CommandProps {
     removeCommand: any;
@@ -73,7 +76,7 @@ const Command: React.FC<CommandProps> = ({ removeCommand, data }) => {
 
 }
 
-const CurrentCommands: React.FC<CommandsListProps> = ({ removeCommand, data }) => {
+const CurrentCommands: React.FC<CommandsListProps> = ({ removeCommand, goToPassedCommands, data }) => {
 
     const { t } = useTranslation()
     const theme = useAppSelector((state) => state.home.theme)
@@ -82,9 +85,11 @@ const CurrentCommands: React.FC<CommandsListProps> = ({ removeCommand, data }) =
     const cycle = data.cycle
     const isDelevery = data.is_delivery
     const take_away_date = data.take_away_date
-
+    const lat = supplier.localisation.lat;
+    const long = supplier.localisation.long;
     const position = supplier.street + " " + supplier.region + " " + supplier.city
     const [status, setStatus] = useState<number>(0)
+
     const [template, setTemplate] = useState<number>(theme)
     const [messsage, setMessage] = useState<string>('')
     const [time, setTime] = useState<string>('')
@@ -98,6 +103,7 @@ const CurrentCommands: React.FC<CommandsListProps> = ({ removeCommand, data }) =
             setTime(timePart.split(':').slice(0, 2).join(':'))
         }
     }, [take_away_date])
+
     const getProgressDescription = (cycle: string): { message: string, status: number } => {
         switch (cycle) {
             case 'PENDING':
@@ -137,6 +143,15 @@ const CurrentCommands: React.FC<CommandsListProps> = ({ removeCommand, data }) =
                 };
         }
     };
+
+    const openGoogleMap = () => {
+        const latitude = lat;
+        const longitude = long;
+        const zoom = 15;
+        const url = `https://www.google.com/maps?q=${latitude},${longitude}&z=${zoom}`;
+        window.open(url, '_blank');
+    };
+
     useEffect(() => {
         const { message, status } = getProgressDescription(cycle)
         setStatus(status)
@@ -252,7 +267,7 @@ const CurrentCommands: React.FC<CommandsListProps> = ({ removeCommand, data }) =
                             ) : (
                                 <>
                                     <div className="buttons">
-                                        <button className='lieu-button'> <span className='position-icon' style={{ backgroundImage: `url(${positionIconBlue})` }}></span> {t('profile.commands.lieu')}</button>
+                                        <button className='lieu-button' onClick={openGoogleMap}> <span className='position-icon' style={{ backgroundImage: `url(${positionIconBlue})` }}></span> {t('profile.commands.lieu')}</button>
                                         {
                                             status >= 5 && (
 
@@ -282,11 +297,12 @@ const CurrentCommands: React.FC<CommandsListProps> = ({ removeCommand, data }) =
                     {
                         status >= 5 && (
                             <div className='buttons'>
-                                <button className="recue">{t('profile.commands.recue')}</button>
+                                <button className="recue" onClick={goToPassedCommands} >{t('profile.commands.recue')}  </button>
                                 <button className="problem">{t('profile.commands.problem')}</button>
                             </div>
                         )
                     }
+                    <CommandsFooter />
                 </main >
             </div >
         </>

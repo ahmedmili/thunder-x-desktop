@@ -49,16 +49,13 @@ const SideBar = () => {
   }, [user])
 
   // save path on refresh
-  const pathSchema = ["/","/profile/annonces","/profile","/profile/archivedCommands" ,"","/profile/discuter",""]
+  const pathSchema = ["/", "/profile/annonces", "/profile", "/profile/archivedCommands", "", "/profile/discuter", ""]
   useEffect(() => {
     const location = window.location.pathname
-    console.log("location", location)
-    console.log("location index", pathSchema.indexOf(location) +1)
-    setSelectedNav((pathSchema.indexOf(location)+1))
+    setSelectedNav((pathSchema.indexOf(location) + 1))
   }, [currentPage])
 
   const handleSelect = (e: any, index: number) => {
-    // setSelectedNav(index)
     dispatch(setProfilePage(index))
   }
 

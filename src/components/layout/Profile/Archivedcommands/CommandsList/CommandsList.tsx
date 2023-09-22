@@ -13,10 +13,11 @@ import { useAppSelector } from '../../../../../Redux/store';
 import { useNavigate } from 'react-router-dom';
 
 interface CommandsListProps {
-    type?: string
+    type?: string;
+    goToPassedCommands: any;
 }
 
-const CommandsList: React.FC<CommandsListProps> = ({ type = "old" }) => {
+const CommandsList: React.FC<CommandsListProps> = ({ type = "old", goToPassedCommands }) => {
 
     const navigate = useNavigate()
     const theme = useAppSelector((state) => state.home.theme)
@@ -78,7 +79,7 @@ const CommandsList: React.FC<CommandsListProps> = ({ type = "old" }) => {
                                 <KeyboardArrowUpOutlinedIcon className='icon' />
                             </div>
                             {(selectedCommand === index && type === "old") && <OldCommands data={command} />}
-                            {(selectedCommand === index && type === "current") && <CurrentCommands removeCommand={HandleRemove} data={command} />}
+                            {(selectedCommand === index && type === "current") && <CurrentCommands goToPassedCommands={goToPassedCommands} removeCommand={HandleRemove} data={command} />}
                         </>
                     )
                 })}
