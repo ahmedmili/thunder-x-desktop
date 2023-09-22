@@ -17,7 +17,6 @@
 
 
         .textContainer {
-            // background-color: rgb(21, 22, 22);
             padding-left: 5%;
             display: flex;
             justify-content: center;
@@ -166,7 +165,7 @@
         .newsLetterRow {
 
             .textContainer {
-                padding-left: 12%;
+                padding-left: 11%;
 
                 .firstPara {
                     width: 293px;
@@ -215,8 +214,9 @@
         height: 300px;
 
         .newsLetterRow {
-
             .textContainer {
+                padding-left: 4%;
+
                 .firstPara {
                     height: 49px;
                     width: 442px;
@@ -235,7 +235,53 @@
                 width: 382px;
                 top: 39%;
                 height: 18%;
-                right: 2%;
+                right: 8%;
+
+
+                input {
+
+                    font-size: 14px;
+                }
+
+                button {
+                    width: 36%;
+                    font-size: 14px;
+                }
+            }
+        }
+    }
+}
+
+@media only screen and (min-width: 1200px) {
+
+    .newsLetterContainer {
+        height: 300px;
+
+        .newsLetterRow {
+
+            .textContainer {
+                padding-left: 15%;
+
+                .firstPara {
+                    width: 596px;
+                    height: 66px;
+                    font-size: 32px;
+                }
+
+                .secondPara {
+                    width: 659px;
+                    height: 59px;
+                    font-size: 18px;
+                }
+            }
+
+            .emailInputContainer {
+                justify-content: space-between;
+                width: 382px;
+                top: 39%;
+                height: 18%;
+                right: 8%;
+
 
                 input {
 
