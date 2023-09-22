@@ -80,7 +80,6 @@ const Annonces = () => {
                 {
                   displayedContent.length > 0 && (
                     displayedContent.map((annonce: any, index: number) => {
-                      console.log("displayedContent", annonce)
                       return <AnnonceCart key={index} title={annonce.title} bodyText={annonce.description} />
                     })
                   )

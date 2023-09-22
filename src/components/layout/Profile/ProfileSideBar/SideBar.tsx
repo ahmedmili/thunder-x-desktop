@@ -42,22 +42,29 @@ const SideBar = () => {
   const [selectedNav, setSelectedNav] = useState<number>(currentPage)
   const userItem = localStorageService.getUser();
   const user = userItem ? JSON.parse(userItem) : null;
+  const [isDivVisible, setIsDivVisible] = useState(true);
 
   useEffect(() => {
     setFullName(`${user.firstname} ${user.lastname}`)
   }, [user])
+
+  // save path on refresh
+  const pathSchema = ["/","/profile/annonces","/profile","/profile/archivedCommands" ,"","/profile/discuter",""]
   useEffect(() => {
-    setSelectedNav(currentPage)
+    const location = window.location.pathname
+    console.log("location", location)
+    console.log("location index", pathSchema.indexOf(location) +1)
+    setSelectedNav((pathSchema.indexOf(location)+1))
   }, [currentPage])
+
   const handleSelect = (e: any, index: number) => {
-    setSelectedNav(index)
+    // setSelectedNav(index)
     dispatch(setProfilePage(index))
   }
 
-  const [isDivVisible, setIsDivVisible] = useState(true);
 
+  // phone adaptive
   useEffect(() => {
-    // Function to handle window resize events
     const handleResize = () => {
       if (window.innerWidth <= 600) {
         setIsDivVisible(false);
@@ -65,18 +72,13 @@ const SideBar = () => {
         setIsDivVisible(true);
       }
     };
-
-    // Attach the event listener when the component mounts
     window.addEventListener('resize', handleResize);
-
-    // Initial check for visibility
     handleResize();
-
-    // Clean up the event listener when the component unmounts
     return () => {
       window.removeEventListener('resize', handleResize);
     };
   }, []);
+
   useEffect(() => {
     setTemplate(theme)
   }, [theme])
