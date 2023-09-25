@@ -83,7 +83,6 @@ function App() {
       dataList.map((resto: any) => {
         if (resto.supplier) suppliersList.push(resto.supplier);
       });
-      console.log("announces",dataList)
       dispatch(setRestaurants(suppliersList));
     }
   };

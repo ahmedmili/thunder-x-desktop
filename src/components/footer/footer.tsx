@@ -19,8 +19,9 @@ const Footer: React.FC<FooterProps> = () => {
   const [images, setImages] = useState<any>([]);
 
   useEffect(() => {
-    setImages(ads);
+    ads && setImages(ads);
   }, [ads]);
+
   useEffect(() => {
     const interval = setInterval(() => {
       setCurrentIndex((prevIndex) => (prevIndex + 1) % images.length);
