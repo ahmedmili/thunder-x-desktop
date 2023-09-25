@@ -4,7 +4,7 @@ import { Navigate, Outlet, Route, Routes } from "react-router-dom";
 import { lazy, Suspense, useCallback, useEffect, useState } from "react";
 import Layout from "./components/layout/layout";
 import { ToastContainer, toast } from "react-toastify";
-import "react-toastify/dist/ReactToastify.css";
+
 import { useAppDispatch, useAppSelector } from "./Redux/store";
 
 import {
@@ -80,7 +80,7 @@ function App() {
     if (status === 200) {
       var suppliersList: Restaurant[] = [];
       let dataList = data.data;
-      dataList.map((resto: any, index: number) => {
+      dataList.map((resto: any) => {
         if (resto.supplier) suppliersList.push(resto.supplier);
       });
       dispatch(setRestaurants(suppliersList));
