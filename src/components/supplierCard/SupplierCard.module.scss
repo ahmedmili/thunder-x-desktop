@@ -6,6 +6,7 @@
   max-height: 50%;
   border-radius: 25px;
   margin: 0 5px;
+
   .restaurantLink {
     margin-bottom: 4px;
     text-decoration: none;
@@ -14,9 +15,27 @@
     .card {
       position: relative;
       border-radius: 18px;
+
       .imageContainer {
         position: relative;
         height: 150px;
+
+        .favorIcon {
+          border-radius: 50%;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          padding: 5px;
+          border: none;
+          position: absolute;
+          top: 5%;
+          background-color: white;
+          right: 5px;
+          .activeIcon{
+            color: red;
+          }
+         
+        }
 
         .discountBox {
           display: flex;
@@ -71,29 +90,29 @@
             max-height: 200px;
             max-width: 100px;
             margin-bottom: 0;
-            
+
             abbr {
               text-decoration: none;
-              
+
               &:hover {
                 cursor: pointer;
               }
             }
           }
-          
+
           .price {
             margin-bottom: 0;
             color: $light_Gray;
             font-size: 13px;
             font-weight: 600;
-            
+
             span {
               margin-bottom: 0;
               color: $orange_color;
               font-size: 10px;
             }
           }
-          
+
           .option {
             margin-bottom: 0;
             color: $primary_color;
@@ -123,7 +142,8 @@
               color: white;
               text-align: center;
               font-family: Poppins;
-              font-size: 12px;;
+              font-size: 12px;
+              ;
               font-style: normal;
               font-weight: 600;
             }
@@ -177,11 +197,14 @@
 
           .rightSide {
             justify-content: space-around;
+
             .restaurantTime {
               p {
-                font-size: 7px;;
+                font-size: 7px;
+                ;
               }
             }
+
             .ratingBox {
               .starIcon {
                 font-size: 2.2rem;
@@ -219,6 +242,7 @@
               max-height: 200px;
               max-width: 100px;
             }
+
             .price {
               font-size: 6px;
               ;

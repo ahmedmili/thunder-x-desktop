@@ -15,7 +15,6 @@ import { Container } from "@mui/material";
 import { useAppSelector } from "../../Redux/store";
 import { useEffect, useState } from "react";
 import CategoryCarousel from "../../components/categoriesCarousel/categoriesCarousel";
-import { useTranslation } from "react-i18next";
 import "laravel-echo/dist/echo";
 import {
   adsHomeSelector,
@@ -24,19 +23,16 @@ import {
   recommendedHomeSelector,
 } from "../../Redux/slices/home";
 import { useSelector } from "react-redux";
-import { useSelect } from "@mui/base";
 import HomeSkeleton from "./skeleton/HomeSkeleton";
 
 const HomePage = () => {
 
-  const { t } = useTranslation();
   const ads = useSelector(adsHomeSelector);
   const categories = useSelector(categoriesHomeSelector);
   const recommanded = useSelector(recommendedHomeSelector);
   const isLoading = useSelector(homeLoadingSelector);
   const theme = useAppSelector((state) => state.home.theme)
   const [template, setTemplate] = useState<number>(theme)
-
 
   const restaurantsList = useAppSelector(
     (state) => state.restaurant.restaurants
@@ -53,7 +49,6 @@ const HomePage = () => {
 
   const handleCategorySelect = (category: string) => {
     if (selectedCategory === category) {
-      // User clicked on the same category again, so show the restaurants that correspond to the state of isDelivery
       setSelectedCategory("");
       setFilteredRestaurants(filteredRestaurants.length > 0 ? filteredRestaurants : recommanded);
     } else {

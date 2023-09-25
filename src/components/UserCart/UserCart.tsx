@@ -115,7 +115,7 @@ export const UserCart: React.FC<CartProps> = ({ firstName, lastName, closeButton
             <li>
               <div className='link-list'>
                 <div className='profile-list-icon' style={{ backgroundImage: `url(${Favors})` }}></div>
-                <Link onClick={() => handleSelect(7)} to={'/profile'}>{t("profile.favors")}</Link>
+                <Link onClick={() => handleSelect(7)} to={'/profile/Favors'}>{t("profile.favors")}</Link>
               </div>
             </li>
           </ul>

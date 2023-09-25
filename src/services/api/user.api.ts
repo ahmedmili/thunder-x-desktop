@@ -94,6 +94,28 @@ async function updateAccount(userData: any) {
     throw error;
   }
 }
+async function addfavorite(supp_id: number) {
+  try {
+    const response = await api.post(
+      `addfavorite`, { id_supplier: supp_id }
+    );
+    const { status, data } = response;
+    return { status, data };
+  } catch (error) {
+    throw error;
+  }
+}
+async function getClientFavorits() {
+  try {
+    const response = await api.get(
+      `getClientFavorits`
+    );
+    const { status, data } = response;
+    return { status, data };
+  } catch (error) {
+    throw error;
+  }
+}
 
 export const userService = {
   loginUser,
@@ -101,4 +123,6 @@ export const userService = {
   getUser,
   updatePassword,
   updateAccount,
+  addfavorite,
+  getClientFavorits,
 };

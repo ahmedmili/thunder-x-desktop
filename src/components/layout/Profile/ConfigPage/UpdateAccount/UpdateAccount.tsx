@@ -114,14 +114,12 @@ const UpdateAccount: React.FC<updateProps> = ({ showPassword }) => {
             <label htmlFor="email">{t("emailAddress")}</label>
             <div className="input">
               <input className="update-input" value={email} type="text" name="email" placeholder="Entrer ici" onChange={(e) => setEmail(e.target.value)} />
-              <button className='verif'>{t("Verifier")}</button>
             </div>
           </div>
           <div className="input-container">
             <label htmlFor="password">{t("password")}</label>
             <div className="input">
               <input readOnly className="update-input" type="password" name="password" placeholder="Entrer ici" />
-              <button onClick={showPassword} className='verif' >{t("Verifier")}</button>
             </div>
           </div>
 
@@ -129,7 +127,6 @@ const UpdateAccount: React.FC<updateProps> = ({ showPassword }) => {
             <label htmlFor="phone">{t("cartPage.phoneNumber")}</label>
             <div className="input">
               <input className="update-input" value={phone} type="text" name="phone" placeholder="Entrer ici" onChange={(e) => setPhone(e.target.value)} />
-              <button className='verif'>{t("Verifier")}</button>
             </div>
           </div>
           {!valid && <p className={`error-message ${!valid ? "visible" : ""}`} >{eroorMessage}</p>}

@@ -3,6 +3,8 @@ import { RootState } from ".";
 import { api } from "../../services/axiosApi";
 import { AppDispatch } from "../store";
 import { localStorageService } from "../../services/localStorageService";
+import { userService } from "../../services/api/user.api";
+import { Restaurant } from "../../services/types";
 
 type HomeDataProps = {
   ads: any;
@@ -107,11 +109,23 @@ export const isDeliveryHomeSelector = (state: RootState) =>
   state.home.isDelivery;
 export const homeErrorsSelector = (state: RootState) => state.home.error;
 export const homeLoadingSelector = (state: RootState) => state.home.loading;
-
+var favorsList: number[] = []
 // Action
+const getClientFavors = async () => {
+  const { status, data } = await userService.getClientFavorits()
+  var favs: any = []
+  data.success && data.data.map((i: Restaurant) => {
+    favs.push(i.id)
+  })
+  favorsList = favs
+}
+
 export const fetchHomeData =
   (isDelivery: number, long: any, lat: any) =>
     async (dispatch: AppDispatch) => {
+      getClientFavors()
+
+
       try {
         dispatch(startLoading());
         const response = await api.post("get_home_page_data", {
@@ -120,7 +134,17 @@ export const fetchHomeData =
           long: long,
         });
         const { success, data } = response.data;
-        // console.log(data)
+        var suppliersList: Restaurant[] = [];
+        data.recommended.map((resto: any, index: number) => {
+          let rest = resto;
+          if (favorsList.includes(rest.id)) {
+            rest.favor = true;
+          } else {
+            rest.favor = false;
+          }
+          suppliersList.push(rest);
+        });
+        data.recommended = suppliersList;
         if (success) {
           dispatch(getHomeDataSuccess(data));
         } else {

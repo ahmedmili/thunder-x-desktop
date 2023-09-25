@@ -143,4 +143,5 @@ export interface Restaurant {
   priceRange: number;
   rating: number;
   plates: string[];
+  favor?: boolean;
 }

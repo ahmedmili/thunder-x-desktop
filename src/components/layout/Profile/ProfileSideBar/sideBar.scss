@@ -22,7 +22,6 @@
     background-color: #FFF;
     height: 1024px;
     width: 351px;
-    // display: none;
     transition: all 1s ease-in-out;
 
     .sideBar-header {
@@ -34,9 +33,9 @@
         flex-direction: column;
         align-items: center;
         gap: 28px;
+        padding-top: 155px;
 
         .image {
-            margin-top: 155px;
             width: 104.952px;
             height: 102.743px;
             border-radius: 104.952px;
@@ -60,6 +59,7 @@
                 font-style: normal;
                 font-weight: 600;
                 line-height: normal;
+                text-align: center;
             }
 
             .icons {
@@ -76,8 +76,6 @@
                         cursor: pointer;
                     }
                 }
-
-                margin-bottom: 16px;
             }
         }
     }
@@ -95,9 +93,6 @@
             li {
                 list-style: none;
 
-
-
-
                 a {
                     display: flex;
                     align-items: center;
@@ -113,9 +108,10 @@
                     gap: 22px;
 
                     .profile-list-icon {
-                        background-size: 100%;
-                        width: 18px;
+                        background-size: 15px auto;
+                        width: 20px;
                         height: 18px;
+                        background-repeat: no-repeat;
                     }
                 }
 

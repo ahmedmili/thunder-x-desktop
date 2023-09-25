@@ -1,4 +1,4 @@
-import {  CssBaseline } from "@mui/material";
+import { CssBaseline } from "@mui/material";
 import "bootstrap/dist/css/bootstrap.min.css";
 import { Navigate, Outlet, Route, Routes } from "react-router-dom";
 import { lazy, Suspense, useCallback, useEffect, useState } from "react";
@@ -41,6 +41,8 @@ import ConfigPage from "./components/layout/Profile/ConfigPage/ConfigPage";
 import Annonces from "./components/layout/Profile/All_Annonces/All_Annonces";
 import ArchivedCommands from "./components/layout/Profile/Archivedcommands/ArchivedCommands";
 import Discuter from "./components/layout/Profile/Discuter/Discuter";
+import Favors from "./components/layout/Profile/Favors/Favors";
+import { userService } from "./services/api/user.api";
 
 //lazy loading
 const HomePage = lazy(() => import("./views/home/home.page"));
@@ -65,6 +67,7 @@ type Position = {
 function App() {
   const dispatch = useAppDispatch();
 
+  var favorsList: number[] = [];
   const location = useAppSelector((state) => state.location.position);
   const deliv = useAppSelector((state) => state.homeData.isDelivery);
   const [updateTrigger, setUpdateTrigger] = useState(false);
@@ -79,14 +82,30 @@ function App() {
     };
   }, [updateHomeData]);
 
+  const getClientFavors = async () => {
+    const { status, data } = await userService.getClientFavorits()
+    var favs: any = []
+    data.success && data.data.map((i: Restaurant) => {
+      favs.push(i.id)
+    })
+    favorsList = favs
+  }
+
   const getSupplierData = async () => {
     const { status, data } = await supplierServices.all_annonces();
     if (status === 200) {
       var suppliersList: Restaurant[] = [];
       let dataList = data.data;
       dataList.map((resto: any, index: number) => {
-        if (resto.supplier)
-          suppliersList.push(resto.supplier);
+        if (resto.supplier) {
+          let rest = resto.supplier;
+          if (favorsList.includes(rest.id)) {
+            rest.favor = true;
+          } else {
+            rest.favor = false;
+          }
+          suppliersList.push(rest);
+        }
       });
       dispatch(setRestaurants(suppliersList));
     }
@@ -94,6 +113,7 @@ function App() {
 
   useEffect(() => {
     let isLoggedIn = localStorageService.getUserToken();
+    isLoggedIn?.length! > 0 && getClientFavors();
     isLoggedIn?.length! > 0 && getSupplierData();
   }, [updateTrigger]);
 
@@ -212,7 +232,7 @@ function App() {
             <Route index element={<HomePage />} />
             <Route path="/supplier-store/:id/*" element={<Menu />} />
             {/* <Route path="/product" element={<MenuOptions />} /> */}
-            <Route path="/cart" element={<CartPage/>} />
+            <Route path="/cart" element={<CartPage />} />
             <Route path="/search" element={<FilterPage />} />
             {/* Private Route */}
             <Route path="track-order" element={<OrderTrackingPage />} />
@@ -223,6 +243,7 @@ function App() {
             <Route path="/profile/annonces" element={<Annonces />} />
             <Route path="/profile/archivedCommands" element={<ArchivedCommands />} />
             <Route path="/profile/discuter" element={<Discuter />} />
+            <Route path="/profile/Favors" element={<Favors />} />
           </Route>
 
           <Route path="unauthorized" element={<UnauthorizePage />} />
