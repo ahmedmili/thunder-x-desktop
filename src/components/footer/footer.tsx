@@ -107,8 +107,9 @@ const Footer: React.FC<FooterProps> = () => {
             }
           </div>
         </Col>
-        <div className="demi-cercle">
-
+        <div className="demi-cerlce-container">
+          <div className="demi-cercle">
+          </div>
         </div>
       </Row>
 
