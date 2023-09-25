@@ -1,6 +1,6 @@
 
 
-import React, { useEffect } from 'react'
+import React, { useEffect, useState } from 'react'
 
 import supplierStyle from './SupplierCard.module.scss'
 import { Box, Card, CardContent, CardMedia, Grid, Typography } from '@mui/material';
@@ -11,22 +11,23 @@ import missingImage from '../../assets/missingImage.png';
 import { useTranslation } from 'react-i18next';
 import FavoriteBorderIcon from '@mui/icons-material/FavoriteBorder';
 import FavoriteIcon from '@mui/icons-material/Favorite';
+import { userService } from '../../services/api/user.api';
 
 interface SupplierCard {
     data: Restaurant,
-    favors?: boolean,
+    favors?: boolean  ,
     className?: string
 }
 
-const SupplierCard: React.FC<SupplierCard> = ({ data, favors, className }) => {
+const SupplierCard: React.FC<SupplierCard> = ({ data, favors = false, className }) => {
     const { t } = useTranslation();
+
+    const [fav, setFav] = useState<boolean>(data.favor !== undefined ? data.favor : favors);
     const getImageUrl = (restaurant: Restaurant) => {
         const image1 = restaurant.images.length > 0 ? restaurant.images[0] : null;
         const image2 = restaurant.images.length > 1 ? restaurant.images[1] : null;
         return image1 ? `${image1.path}` : image2 ? `${image2.path}` : '';
     };
-
-
 
     const MAX_NAME_LENGTH = 10;
 
@@ -35,10 +36,27 @@ const SupplierCard: React.FC<SupplierCard> = ({ data, favors, className }) => {
             ? `${name.slice(0, MAX_NAME_LENGTH)}...`
             : name;
     };
-
+    const handleFavorsAdd = async () => {
+        const response = await userService.addfavorite(data.id)
+        response.data.success && setFav(true)
+    }
+    const deletefavorite = async (e: React.MouseEvent<HTMLButtonElement>) => {
+        const response = await userService.deletefavorite(data.id)
+        response.data.success && setFav(false)
+    }
 
     return (
         <div className={`${supplierStyle.supplierCard} ${className}`}>
+            {/* favors icons */}
+            {(fav) ? (
+                <button className={supplierStyle.favorIcon} onClick={deletefavorite} >
+                    <FavoriteIcon className={supplierStyle.activeIcon} />
+                </button>
+            ) : (
+                <button className={supplierStyle.favorIcon} onClick={handleFavorsAdd} >
+                    <FavoriteBorderIcon />
+                </button>
+            )}
 
             <Link
                 className={supplierStyle.restaurantLink}
@@ -63,16 +81,6 @@ const SupplierCard: React.FC<SupplierCard> = ({ data, favors, className }) => {
                             </Box>
                         )}
 
-                        {/* favors icons */}
-                        {(data.favor || favors) ? (
-                            <button className={supplierStyle.favorIcon}>
-                                <FavoriteIcon className={supplierStyle.activeIcon} />
-                            </button>
-                        ) : (
-                            <button className={supplierStyle.favorIcon}>
-                                <FavoriteBorderIcon />
-                            </button>
-                        )}
 
                         {/* card image */}
                         <CardMedia

@@ -105,6 +105,17 @@ async function addfavorite(supp_id: number) {
     throw error;
   }
 }
+async function deletefavorite(supp_id: number) {
+  try {
+    const response = await api.post(
+      `deletefavorite`, { id_supplier: supp_id }
+    );
+    const { status, data } = response;
+    return { status, data };
+  } catch (error) {
+    throw error;
+  }
+}
 async function getClientFavorits() {
   try {
     const response = await api.get(
@@ -124,5 +135,6 @@ export const userService = {
   updatePassword,
   updateAccount,
   addfavorite,
+  deletefavorite,
   getClientFavorits,
 };

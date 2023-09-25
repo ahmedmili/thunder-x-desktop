@@ -30,11 +30,9 @@ function Favors() {
                                     <SupplierCard className={'favors-supplier-card'} favors={true} data={favor} key={index} />
                                 </div>
                             )
-
                         })
                     }
                 </main>
-
             </div >
         </>
     )
