@@ -40,18 +40,21 @@
   "profile.commands.sousMessage": "The order is pending acceptance by the restaurant",
   "profile.commands.command": "Order",
   "profile.commands.avis": "Feedback",
-  
   "profile.fidelite.title": "Loyalty Space",
   "profile.fidelite.freeRepas": "My free meals",
   "profile.fidelite.myBonus": "My bonus",
   "profile.fidelite.tompons.title": "Collect all the buffers to have 1 meal offered",
-
   "profile.fidelite.footer.repas.title": "Collect all the buffers to have 1 meal offered",
   "profile.fidelite.footer.repas.body": "Thunder Express grants you buffers for each qualified order and rewards your loyalty by offering you a free meal once you have accumulated 10 specific buffs from a particular supplier",
   "profile.fidelite.footer.bonus.title": "Transfer Bonus",
   "profile.fidelite.footer.bonus.body": "Thunder Express grants you buffers for each qualified order and rewards your loyalty by offering you a free meal once you have accumulated 10 specific buffs from a particular supplier",
-
-
+  "profile.fidelite.bonus.yourBonus": "You have a bonus of :",
+  "profile.fidelite.bonus.yourBonus2": "Your bonus is",
+  "profile.fidelite.bonus.points": "POINTS",
+  "profile.fidelite.bonus.mySoldeBonus": "My solde bonus",
+  "profile.fidelite.bonus.destinationNumber": "Enter recipient number",
+  "profile.fidelite.bonus.transferBonus": "Transfer Bonus",
+  "profile.fidelite.bonus.bonusError": "You can only transfer bonus from 5000 pts",
   "orderTrackingPage.status": "Status:",
   "orderTrackingPage.deliveryDriver": "Delivery Driver:",
   "orderTrackingPage.callUs": "Call us",
@@ -173,7 +176,6 @@
   "cartPage.Quantite": "Quantity",
   "cartPage.product": "Product",
   "cartPage.monPanier": "My cart",
-
   "cart.payment.toPayment": "Go to Payment",
   "cart.payment.noCommands": "You have not placed any orders yet",
   "cart.payment.iCommand": "Order",

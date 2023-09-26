@@ -1,0 +1,129 @@
+.transfer-bonus-container {
+    header {
+        height: 41px;
+        border-radius: 10px 10px 0px 0px;
+        background: #BBE3E3;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        padding: 10px 30px;
+
+        p {
+            color: #484848;
+            font-family: Poppins;
+            font-size: 14px;
+            font-style: normal;
+            font-weight: 400;
+            line-height: normal;
+            margin: 0;
+        }
+
+        .icon {
+            width: 51.5px;
+            height: 33px;
+            transform: rotate(90deg);
+        }
+    }
+
+    main {
+        display: flex;
+        flex-direction: column;
+        gap: 12px;
+
+        .giftIcon {
+            color: #FBC000;
+        }
+
+        p {
+            color: #484848;
+            font-family: Poppins;
+            font-size: 14px;
+            font-style: normal;
+            font-weight: 400;
+            line-height: normal;
+
+            .gift-value {
+                font-weight: 700;
+            }
+        }
+
+        .phone-devision {
+            display: flex;
+            align-items: center;
+            justify-content: start;
+            gap: 40px;
+
+            label {
+                color: #484848;
+                font-family: Poppins;
+                font-size: 14px;
+                font-style: normal;
+                font-weight: 400;
+                line-height: normal;
+                margin: 0;
+            }
+
+            input[type="text"] {
+                width: 50%;
+                height: 43px;
+                border-radius: 7px;
+                border: 1px solid #FBC000;
+                background-color: #FFF7DC;
+                padding: 11px 13px;
+                font-family: Poppins;
+                font-size: 14px;
+                font-style: normal;
+                font-weight: 400;
+                line-height: normal;
+
+                &::placeholder {
+                    color: #FBC000;
+                    font-family: Poppins;
+                    font-size: 14px;
+                    font-style: normal;
+                    font-weight: 400;
+                    line-height: normal;
+                }
+
+                &:focus {
+                    outline: none;
+                }
+            }
+
+        }
+
+        .transfer-btn {
+            height: 43px;
+            border-radius: 21px;
+            border: 1px solid #24A6A4;
+            background: #8AC8C7;
+            border: none;
+
+            color: #FFF;
+            font-family: Poppins;
+            font-size: 16px;
+            font-style: normal;
+            font-weight: 500;
+            line-height: normal;
+            letter-spacing: 0.72px;
+            margin-top: 30px;
+        }
+
+        .ammount-error {
+            border-radius: 7px;
+            border: 1px solid #EF4444;
+            height: 46px;
+            padding: 11px 13px;
+
+            p {
+                color: #EF4444;
+                font-family: Poppins;
+                font-size: 14px;
+                font-style: normal;
+                font-weight: 400;
+                line-height: normal;
+                margin: 0;
+            }
+        }
+    }
+}

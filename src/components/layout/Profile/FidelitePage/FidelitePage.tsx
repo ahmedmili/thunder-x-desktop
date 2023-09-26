@@ -2,10 +2,10 @@ import React, { useEffect, useState } from 'react'
 import CoverImage from '../../../.../../../assets/profile/ArchivedCommands/cover.svg'
 import CoverImage2 from '../../../.../../../assets/profile/ArchivedCommands/cover.svg'
 import './fidelitePage.scss'
-import { userService } from '../../../../services/api/user.api'
-import RepasList from './RepasList/RepasList'
-import RepasFooter from './Footer/Footer'
+import RepasList from './MonRepas/RepasList/RepasList'
+import RepasFooter from './MonRepas/Footer/Footer'
 import { useTranslation } from 'react-i18next'
+import Bonus from './Bonus/Bonus'
 
 function FidelitePage() {
 
@@ -50,13 +50,12 @@ function FidelitePage() {
                 {
                     nav === 2 && (
                         <>
-                            {/* <RepasList /> */}
+                            <Bonus />
                             <RepasFooter Ftitle={t('profile.fidelite.footer.bonus.title')} Fbody={t('profile.fidelite.footer.bonus.body')} />
                         </>
 
                     )
                 }
-                {/* <CommandsList goToPassedCommands={goToPassedCommands} type={nav === 1 ? "repas" : "bonus"} /> */}
             </main>
         </div>
     )

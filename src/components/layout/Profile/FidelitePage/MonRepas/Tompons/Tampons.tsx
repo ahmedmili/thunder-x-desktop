@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react'
 
 import "./tampons.scss"
 
-import ThunderTompon from '../../../../../assets/Thunder-Tompon.png'
+import ThunderTompon from '../../../../../../assets/Thunder-Tompon.png'
 
 import { useTranslation } from 'react-i18next';
 interface TemponsListProps {

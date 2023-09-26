@@ -3,7 +3,7 @@ import React, { useEffect, useState } from 'react'
 import "./repasList.scss"
 import KeyboardArrowUpOutlinedIcon from '@mui/icons-material/KeyboardArrowUpOutlined';
 import { useNavigate } from 'react-router-dom';
-import { userService } from '../../../../../services/api/user.api';
+import { userService } from '../../../../../../services/api/user.api';
 import TemponsGrid from '../Tompons/Tampons';
 
 interface RepasListProps {
@@ -22,7 +22,6 @@ const RepasList: React.FC<RepasListProps> = () => {
     const getGifts = async () => {
         const { status, data } = await userService.gifts()
         data.success && setGifts(data.data.gifts)
-        data.success && console.log('data !!', data.data)
     }
     useEffect(() => {
         getGifts()
