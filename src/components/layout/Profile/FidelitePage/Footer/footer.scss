@@ -1,0 +1,53 @@
+@import '../../../../../colors';
+
+
+@keyframes fadeIn {
+    0% {
+        opacity: 0;
+    }
+
+    100% {
+        opacity: 1;
+    }
+}
+
+.repas-footer-container {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    align-items: center;
+    animation: fadeIn 1s;
+    margin: 0 auto;
+
+
+    p {
+        color: #484848;
+        font-family: Poppins;
+        font-style: normal;
+        font-weight: 400;
+        line-height: normal;
+        margin: 0;
+        font-size: 14px;
+
+    }
+
+    .footer-title-container {
+        border-radius: 10px 10px 0px 0px;
+        width: 100%;
+        height: 41px;
+        padding: 10px 30px;
+        background-color: #BBE3E3;
+
+    }
+
+    .footer-descirtion {
+        padding: 30px;
+        min-height: 123px;
+
+        border-radius: 0px 0px 10px 10px;
+        background-color: #F5F5F5;
+    }
+
+
+}

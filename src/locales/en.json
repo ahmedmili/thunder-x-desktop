@@ -40,6 +40,18 @@
   "profile.commands.sousMessage": "The order is pending acceptance by the restaurant",
   "profile.commands.command": "Order",
   "profile.commands.avis": "Feedback",
+  
+  "profile.fidelite.title": "Loyalty Space",
+  "profile.fidelite.freeRepas": "My free meals",
+  "profile.fidelite.myBonus": "My bonus",
+  "profile.fidelite.tompons.title": "Collect all the buffers to have 1 meal offered",
+
+  "profile.fidelite.footer.repas.title": "Collect all the buffers to have 1 meal offered",
+  "profile.fidelite.footer.repas.body": "Thunder Express grants you buffers for each qualified order and rewards your loyalty by offering you a free meal once you have accumulated 10 specific buffs from a particular supplier",
+  "profile.fidelite.footer.bonus.title": "Transfer Bonus",
+  "profile.fidelite.footer.bonus.body": "Thunder Express grants you buffers for each qualified order and rewards your loyalty by offering you a free meal once you have accumulated 10 specific buffs from a particular supplier",
+
+
   "orderTrackingPage.status": "Status:",
   "orderTrackingPage.deliveryDriver": "Delivery Driver:",
   "orderTrackingPage.callUs": "Call us",

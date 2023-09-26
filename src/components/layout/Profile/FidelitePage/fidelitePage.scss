@@ -1,0 +1,89 @@
+@import '../../../../colors';
+
+
+@keyframes fadeIn {
+    0% {
+        opacity: 0;
+    }
+
+    100% {
+        opacity: 1;
+    }
+}
+
+.fidelite-container {
+    height: 100vh;
+    width: 100%;
+    padding-right: 80px;
+    padding-top: 150px;
+    animation: fadeIn 1s;
+    header {
+
+        .title {
+            color: #484848;
+            font-family: Poppins;
+            font-size: 24px;
+            font-style: normal;
+            font-weight: 700;
+            line-height: normal;
+        }
+
+        .header-imgs-container {
+            display: flex;
+            gap: 15px;
+            justify-content: center;
+            align-items: center;
+            height: 335.896px;
+
+            .archivedC-image {
+                background-position: center;
+                background-repeat: no-repeat;
+                background-size: cover;
+                background-color: #1F94A4;
+                // background-origin: border-box;
+                height: 100%;
+                width: 449px;
+                border-radius: 25px;
+            }
+        }
+
+        nav {
+            margin-top: 47px;
+            margin-bottom: 40px;
+
+            ul {
+                list-style: none;
+                display: flex;
+                justify-content: center;
+                gap: 169px;
+
+                li {
+                    &:hover {
+                        cursor: pointer;
+                    }
+
+                    .list-item-text {
+                        color: #958E8E;
+                        font-family: Poppins;
+                        font-size: 24px;
+                        font-style: normal;
+                        font-weight: 500;
+                        line-height: normal;
+                    }
+
+                    .active {
+                        color: #1F94A4;
+                    }
+                }
+            }
+        }
+    }
+
+    main{
+        border-radius: 25px;
+        padding: 42px 60px ;
+        background-color: white;
+
+    }
+
+}

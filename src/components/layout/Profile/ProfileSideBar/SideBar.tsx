@@ -49,7 +49,7 @@ const SideBar = () => {
   }, [user])
 
   // save path on refresh
-  const pathSchema = ["/", "/profile/annonces", "/profile", "/profile/archivedCommands", "", "/profile/discuter", "/profile/Favors"]
+  const pathSchema = ["/", "/profile/annonces", "/profile", "/profile/archivedCommands", "/profile/Fidelite", "/profile/discuter", "/profile/Favors"]
   useEffect(() => {
     const location = window.location.pathname
     setSelectedNav((pathSchema.indexOf(location) + 1))
@@ -122,7 +122,7 @@ const SideBar = () => {
               </Link>
             </li>
             <li>
-              <Link to={'/profile'} className={selectedNav == 5 ? "active" : ""} onClick={(e) => handleSelect(e, 5)}>
+              <Link to={'/profile/Fidelite'} className={selectedNav == 5 ? "active" : ""} onClick={(e) => handleSelect(e, 5)}>
                 <span className='profile-list-icon' style={{ backgroundImage: `url(${selectedNav === 5 ? EspaceW : Espace})` }}></span>
                 {t('profile.espaceFidel')}
               </Link>

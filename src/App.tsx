@@ -43,6 +43,7 @@ import ArchivedCommands from "./components/layout/Profile/Archivedcommands/Archi
 import Discuter from "./components/layout/Profile/Discuter/Discuter";
 import Favors from "./components/layout/Profile/Favors/Favors";
 import { userService } from "./services/api/user.api";
+import FidelitePage from "./components/layout/Profile/FidelitePage/FidelitePage";
 
 //lazy loading
 const HomePage = lazy(() => import("./views/home/home.page"));
@@ -244,6 +245,7 @@ function App() {
             <Route path="/profile/archivedCommands" element={<ArchivedCommands />} />
             <Route path="/profile/discuter" element={<Discuter />} />
             <Route path="/profile/Favors" element={<Favors />} />
+            <Route path="/profile/Fidelite" element={<FidelitePage />} />
           </Route>
 
           <Route path="unauthorized" element={<UnauthorizePage />} />

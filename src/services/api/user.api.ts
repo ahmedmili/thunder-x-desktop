@@ -127,6 +127,17 @@ async function getClientFavorits() {
     throw error;
   }
 }
+async function gifts() {
+  try {
+    const response = await api.get(
+      `gifts`
+    );
+    const { status, data } = response;
+    return { status, data };
+  } catch (error) {
+    throw error;
+  }
+}
 
 export const userService = {
   loginUser,
@@ -137,4 +148,5 @@ export const userService = {
   addfavorite,
   deletefavorite,
   getClientFavorits,
+  gifts,
 };
