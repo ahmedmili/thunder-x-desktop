@@ -43,13 +43,36 @@
             justify-content: center;
             align-items: start;
 
-            ._supplierCard_16qrd_1 {
-                width: 100% !important;
-            }
-            .favors-supplier-card{
+            .favors-supplier-card {
                 width: 100%;
             }
         }
     }
+}
 
+@media screen and (max-width : 786px) {
+    .favors-main-container {
+        .favors-header {
+            padding-right: 27px;
+            .cover-img{
+                margin-bottom: 47px;
+            }
+        }
+
+        .favors-main {
+            width: calc(100% - 27px);
+        }
+    }
+}
+@media screen and (max-width : 600px) {
+    .favors-main-container {
+        .favors-header {
+            padding-left: 27px;
+        }
+        
+        .favors-main {
+            padding-left: 27px;
+            width: calc(100% - 27px);
+        }
+    }
 }

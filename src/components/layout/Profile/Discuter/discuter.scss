@@ -54,6 +54,7 @@
             padding-top: 48px;
             padding-left: 51px;
             padding-bottom: 50px;
+            border-radius: 25px;
 
             .title {
                 color: #484848;
@@ -113,6 +114,129 @@
                 background-size: 100%;
                 object-fit: cover;
             }
+        }
+    }
+}
+
+
+@media only screen and (max-width : 1200px) {
+
+    .discuter-main-container {
+        .discuter-main {
+
+            .aide-service {
+                .title {
+                    font-size: 19px;
+                }
+
+                .sub-title {
+                    font-size: 15px;
+                    margin: 0 0 17px 0;
+                }
+
+                .buttons {
+                    button {
+                        font-size: 14px;
+                    }
+                }
+            }
+        }
+    }
+}
+
+@media only screen and (max-width : 900px) {
+
+    .discuter-main-container {
+        .discuter-main {
+            .aide-service {
+
+                padding-top: 26px;
+                padding-left: 15px;
+                padding-bottom: 0px;
+                height: 329px;
+
+                .title {
+                    font-size: 19px;
+                }
+
+                .sub-title {
+                    font-size: 15px;
+                    margin: 0 0 17px 0;
+                }
+            }
+
+            .aide-service {
+                .buttons {
+
+                    button {
+                        margin: 0 auto;
+                        font-size: 14px;
+                    }
+                }
+            }
+        }
+    }
+}
+
+@media only screen and (max-width : 768px) {
+
+    .discuter-main-container {
+        .discuter-header {
+            padding-right: 32px;
+        }
+
+        .discuter-main {
+            padding-right: 32px;
+            gap: 10px;
+
+            .aide-service {
+
+                padding-top: 26px;
+                padding-left: 15px;
+                padding-bottom: 0px;
+                height: 250px;
+
+                .title {
+                    font-size: 19px;
+                }
+
+                .sub-title {
+                    font-size: 11px;
+                    margin: 0 0 10px 0;
+                }
+
+                .service-24 {
+                    height: 74px;
+                }
+            }
+
+            .aide-service {
+                .buttons {
+
+                    gap: 6px;
+                    padding: 3px;
+
+                    button {
+                        font-size: 11px;
+                        height: 39px;
+                    }
+                }
+            }
+        }
+    }
+}
+
+@media only screen and (max-width : 600px) {
+
+    .discuter-main-container {
+        .discuter-header {
+            padding-right: 32px;
+            padding-left: 32px;
+        }
+
+        .discuter-main {
+            padding-right: 32px;
+            padding-left: 32px;
         }
     }
 }

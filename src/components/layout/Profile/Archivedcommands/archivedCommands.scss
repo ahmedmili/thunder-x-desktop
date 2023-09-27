@@ -72,3 +72,80 @@
     }
 
 }
+
+
+@media screen and (max-width : 1200px) {
+    .archived-commands-container {
+        padding-right: 31px;
+
+        .commands-List .command-header span {
+
+            font-size: 14px;
+
+        }
+
+        header {
+            nav {
+                ul {
+                    gap: 66px;
+
+                    li {
+                        .list-item-text {
+                            font-size: 17px;
+                        }
+                    }
+                }
+            }
+        }
+    }
+}
+
+@media screen and (max-width : 786px) {
+    .archived-commands-container {
+        padding-right: 31px;
+
+        .commands-List .command-header span {
+
+            font-size: 10px;
+
+        }
+
+        header {
+            .archivedC-image {
+                background-size: 100%;
+                height: 119.896px;
+
+            }
+
+            nav {
+                ul {
+                    li {
+                        .list-item-text {
+                            font-size: 17px;
+                        }
+                    }
+                }
+            }
+        }
+    }
+}
+
+@media screen and (max-width : 600px) {
+    .archived-commands-container {
+        padding-right: 31px;
+        padding-left: 31px;
+    }
+}
+
+
+@media screen and (max-width : 375px) {
+    .archived-commands-container {
+        padding-right: 31px;
+
+        .commands-List .command-header span {
+
+            font-size: 7px;
+
+        }
+    }
+}

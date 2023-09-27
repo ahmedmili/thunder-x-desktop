@@ -19,7 +19,7 @@
     align-items: center;
     animation: fadeIn 1s;
     padding-bottom: 50px;
-    
+
     .command-header {
         width: 100%;
         height: 67px;
@@ -67,282 +67,282 @@
         }
     }
 
-    .command-info-container {
-        width: 100%;
-        margin: 50px 0;
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        padding: 0 10px;
+    // .command-info-container {
+    //     width: 100%;
+    //     margin: 50px 0;
+    //     display: flex;
+    //     justify-content: center;
+    //     align-items: center;
+    //     padding: 0 10px;
 
-        .devider {
-            width: 1px;
-            height: 84px;
-            background-color: #D9D9D9;
-        }
+    //     .devider {
+    //         width: 1px;
+    //         height: 84px;
+    //         background-color: #D9D9D9;
+    //     }
 
-        .supplier-info {
-            display: flex;
-            flex: 1;
+    //     .supplier-info {
+    //         display: flex;
+    //         flex: 1;
 
-            .logo {
-                display: flex;
-                justify-content: center;
-                align-items: center;
-                gap: 27px;
+    //         .logo {
+    //             display: flex;
+    //             justify-content: center;
+    //             align-items: center;
+    //             gap: 27px;
 
-                .logo-img {
-                    background-position: center;
-                    background-repeat: no-repeat;
-                    object-fit: cover;
-                    width: 73.394px;
-                    height: 73.394px;
-                    border-radius: 50%;
-                }
+    //             .logo-img {
+    //                 background-position: center;
+    //                 background-repeat: no-repeat;
+    //                 object-fit: cover;
+    //                 width: 73.394px;
+    //                 height: 73.394px;
+    //                 border-radius: 50%;
+    //             }
 
-                .name-rate {
-                    display: flex;
-                    flex-direction: column;
-                    gap: 10px;
-                    color: #484848;
-                    font-family: Poppins;
-                    font-size: 15px;
-                    font-style: normal;
-                    font-weight: 600;
-                    line-height: normal;
-                }
-            }
-        }
+    //             .name-rate {
+    //                 display: flex;
+    //                 flex-direction: column;
+    //                 gap: 10px;
+    //                 color: #484848;
+    //                 font-family: Poppins;
+    //                 font-size: 15px;
+    //                 font-style: normal;
+    //                 font-weight: 600;
+    //                 line-height: normal;
+    //             }
+    //         }
+    //     }
 
-        .command-info {
-            flex: 1;
-            display: flex;
-            flex-direction: column;
-            padding-left: 85px;
-            padding-right: 37px;
-
-
-            .start {
-                display: flex;
-                align-items: center;
-                gap: 10px;
-                font-family: Poppins;
-                font-style: normal;
-                font-weight: 600;
-                line-height: normal;
-
-                img {
-                    width: 34px;
-                    height: 34px;
-                }
-
-                .info {
-                    .supplier-name {
-                        color: #484848;
-                        font-size: 15px;
-                        margin: 0;
-
-                    }
-
-                    .supplier-position {
-                        color: #958E8E;
-                        font-size: 13px;
-                        margin: 0;
-
-                    }
-                }
-            }
-
-            .delay {
-                display: flex;
-                align-items: center;
-                gap: 10px;
-                border-left: #FBC000 dashed 3px;
-                padding-left: 27px;
-                margin-left: 15px;
-                height: 56px;
-
-                .time-icon {
-                    width: 16px;
-                    height: 16px;
-                }
-
-                .meduim-time {
-                    color: #FBC000;
-                    font-family: Poppins;
-                    font-size: 24px;
-                    font-style: normal;
-                    font-weight: 800;
-                    line-height: normal;
-
-                    span {
-                        color: #484848;
-                        font-family: Poppins;
-                        font-size: 13px;
-                        font-style: normal;
-                        font-weight: 600;
-                        line-height: normal;
-                    }
-                }
-            }
-
-            .end {
-                display: flex;
-                align-items: start;
-                gap: 10px;
-                font-family: Poppins;
-                font-style: normal;
-                font-weight: 600;
-                line-height: normal;
-
-                img {
-                    width: 34px;
-                    height: 34px;
-                }
-
-                .info {
-                    .deliv-type {
-                        color: #484848;
-                        font-size: 15px;
-                        margin: 0;
-                    }
-
-                    .supplier-position {
-                        color: #958E8E;
-                        font-size: 13px;
-                        margin: 0;
-
-                    }
-                }
-            }
-        }
-    }
-
-    .delivery-info {
-        display: flex;
-        flex: 1;
-        padding-left: 40px;
-
-        .logo {
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            gap: 27px;
-
-            .logo-img {
-                background-position: center;
-                background-repeat: no-repeat;
-                object-fit: cover;
-                width: 102.369px;
-                height: 76.667px;
-                border-radius: 8px;
-                background-color: #5DBDBC;
-            }
-
-            .name-rate {
-                display: flex;
-                flex-direction: column;
-                align-items: start;
-                justify-content: start;
-                gap: 5px;
-                color: #484848;
-                font-family: Poppins;
-                font-size: 15px;
-                font-style: normal;
-                font-weight: 600;
-                line-height: normal;
-
-                .supplier-Title {
-                    color: #FBC000;
-                    font-family: Poppins;
-                    font-size: 16px;
-                    font-style: normal;
-                    font-weight: 500;
-                    line-height: normal;
-                }
-
-                // .supplier-name {}
-
-                // .supplier-rates {}
-            }
-        }
-    }
+    //     .command-info {
+    //         flex: 1;
+    //         display: flex;
+    //         flex-direction: column;
+    //         padding-left: 85px;
+    //         padding-right: 37px;
 
 
-    .product-container {
-        width: 100%;
-        height: 100px;
-        display: flex;
-        align-items: center;
-        margin-bottom: 20px;
-        gap: 20px;
-        // background-color: red;
+    //         .start {
+    //             display: flex;
+    //             align-items: center;
+    //             gap: 10px;
+    //             font-family: Poppins;
+    //             font-style: normal;
+    //             font-weight: 600;
+    //             line-height: normal;
 
-        img {
-            width: 142px;
-            height: 107.544px;
-            border-radius: 20px;
-        }
+    //             img {
+    //                 width: 34px;
+    //                 height: 34px;
+    //             }
 
-        .product-info {
-            width: 100%;
-            border-bottom: 1px solid #D9D9D9;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
+    //             .info {
+    //                 .supplier-name {
+    //                     color: #484848;
+    //                     font-size: 15px;
+    //                     margin: 0;
+
+    //                 }
+
+    //                 .supplier-position {
+    //                     color: #958E8E;
+    //                     font-size: 13px;
+    //                     margin: 0;
+
+    //                 }
+    //             }
+    //         }
+
+    //         .delay {
+    //             display: flex;
+    //             align-items: center;
+    //             gap: 10px;
+    //             border-left: #FBC000 dashed 3px;
+    //             padding-left: 27px;
+    //             margin-left: 15px;
+    //             height: 56px;
+
+    //             .time-icon {
+    //                 width: 16px;
+    //                 height: 16px;
+    //             }
+
+    //             .meduim-time {
+    //                 color: #FBC000;
+    //                 font-family: Poppins;
+    //                 font-size: 24px;
+    //                 font-style: normal;
+    //                 font-weight: 800;
+    //                 line-height: normal;
+
+    //                 span {
+    //                     color: #484848;
+    //                     font-family: Poppins;
+    //                     font-size: 13px;
+    //                     font-style: normal;
+    //                     font-weight: 600;
+    //                     line-height: normal;
+    //                 }
+    //             }
+    //         }
+
+    //         .end {
+    //             display: flex;
+    //             align-items: start;
+    //             gap: 10px;
+    //             font-family: Poppins;
+    //             font-style: normal;
+    //             font-weight: 600;
+    //             line-height: normal;
+
+    //             img {
+    //                 width: 34px;
+    //                 height: 34px;
+    //             }
+
+    //             .info {
+    //                 .deliv-type {
+    //                     color: #484848;
+    //                     font-size: 15px;
+    //                     margin: 0;
+    //                 }
+
+    //                 .supplier-position {
+    //                     color: #958E8E;
+    //                     font-size: 13px;
+    //                     margin: 0;
+
+    //                 }
+    //             }
+    //         }
+    //     }
+    // }
+
+    // .delivery-info {
+    //     display: flex;
+    //     flex: 1;
+    //     padding-left: 40px;
+
+    //     .logo {
+    //         display: flex;
+    //         justify-content: center;
+    //         align-items: center;
+    //         gap: 27px;
+
+    //         .logo-img {
+    //             background-position: center;
+    //             background-repeat: no-repeat;
+    //             object-fit: cover;
+    //             width: 102.369px;
+    //             height: 76.667px;
+    //             border-radius: 8px;
+    //             background-color: #5DBDBC;
+    //         }
+
+    //         .name-rate {
+    //             display: flex;
+    //             flex-direction: column;
+    //             align-items: start;
+    //             justify-content: start;
+    //             gap: 5px;
+    //             color: #484848;
+    //             font-family: Poppins;
+    //             font-size: 15px;
+    //             font-style: normal;
+    //             font-weight: 600;
+    //             line-height: normal;
+
+    //             .supplier-Title {
+    //                 color: #FBC000;
+    //                 font-family: Poppins;
+    //                 font-size: 16px;
+    //                 font-style: normal;
+    //                 font-weight: 500;
+    //                 line-height: normal;
+    //             }
+
+    //             // .supplier-name {}
+
+    //             // .supplier-rates {}
+    //         }
+    //     }
+    // }
+
+
+    // .product-container {
+    //     width: 100%;
+    //     height: 100px;
+    //     display: flex;
+    //     align-items: center;
+    //     margin-bottom: 20px;
+    //     gap: 20px;
+    //     // background-color: red;
+
+    //     img {
+    //         width: 142px;
+    //         height: 107.544px;
+    //         border-radius: 20px;
+    //     }
+
+    //     .product-info {
+    //         width: 100%;
+    //         border-bottom: 1px solid #D9D9D9;
+    //         display: flex;
+    //         justify-content: space-between;
+    //         align-items: center;
 
 
 
-            .description,
-            .name,
-            .qt,
-            .price {
-                color: #484848;
-                font-family: Poppins;
-                font-size: 16px;
-                font-style: normal;
-                font-weight: 600;
-                line-height: 20px;
-                margin: 0;
-            }
+    //         .description,
+    //         .name,
+    //         .qt,
+    //         .price {
+    //             color: #484848;
+    //             font-family: Poppins;
+    //             font-size: 16px;
+    //             font-style: normal;
+    //             font-weight: 600;
+    //             line-height: 20px;
+    //             margin: 0;
+    //         }
 
-            .description {
-                width: 200px;
+    //         .description {
+    //             width: 200px;
 
-            }
-        }
-    }
+    //         }
+    //     }
+    // }
 
-    .command-footer {
-        width: 100%;
-        display: flex;
-        flex-direction: column;
-        justify-content: end;
-        align-items: end;
+    // .command-footer {
+    //     width: 100%;
+    //     display: flex;
+    //     flex-direction: column;
+    //     justify-content: end;
+    //     align-items: end;
 
-        p {
-            color: #24A6A4;
-            font-family: Poppins;
-            font-size: 24px;
-            font-style: normal;
-            font-weight: 600;
-        }
+    //     p {
+    //         color: #24A6A4;
+    //         font-family: Poppins;
+    //         font-size: 24px;
+    //         font-style: normal;
+    //         font-weight: 600;
+    //     }
 
-        .avis {
-            width: 270px;
-            height: 69px;
+    //     .avis {
+    //         width: 270px;
+    //         height: 69px;
 
-            border-radius: 50px;
-            background-color: #FBC000;
-            border: none;
+    //         border-radius: 50px;
+    //         background-color: #FBC000;
+    //         border: none;
 
-            color: #FFF;
-            font-family: Poppins;
-            font-size: 16px;
-            font-style: normal;
-            font-weight: 700;
-            line-height: normal;
-        }
-    }
+    //         color: #FFF;
+    //         font-family: Poppins;
+    //         font-size: 16px;
+    //         font-style: normal;
+    //         font-weight: 700;
+    //         line-height: normal;
+    //     }
+    // }
 
 }
