@@ -5,23 +5,41 @@ interface FooterProps { }
 import icon from "../../assets/icon.png";
 import { useSelector } from "react-redux";
 import { adsHomeSelector } from "../../Redux/slices/home";
-import { CarouselProvider, Slide, Slider } from "pure-react-carousel";
 import Email from "../../assets/icons/Email";
 import TikTokIcon from "../../assets/icons/TiktokIcon";
 import InstaIcon from "../../assets/icons/InstaIcon";
 import FacebookIcon from "../../assets/icons/FacebookIcon";
+<<<<<<< HEAD
 import { useAppSelector } from "../../Redux/store";
+=======
+>>>>>>> develop
 import { useEffect, useState } from "react";
 
 const Footer: React.FC<FooterProps> = () => {
 
   const adsSelector = useSelector(adsHomeSelector);
   const ads = adsSelector.HOME_1;
+<<<<<<< HEAD
   const theme = useAppSelector((state) => state.home.theme)
   const [template, setTemplate] = useState<number>(theme)
   useEffect(() => {
     setTemplate(theme)
   }, [theme])
+=======
+  const [currentIndex, setCurrentIndex] = useState(0);
+  const [images, setImages] = useState<any>([]);
+
+  useEffect(() => {
+    ads && setImages(ads);
+  }, [ads]);
+
+  useEffect(() => {
+    const interval = setInterval(() => {
+      setCurrentIndex((prevIndex) => (prevIndex + 1) % images.length);
+    }, 3000);
+    return () => clearInterval(interval);
+  }, [images]);
+>>>>>>> develop
 
   return (
     <Container fluid className={`footerContainer ${template === 1 && 'dark-background2'}`}>
@@ -34,21 +52,21 @@ const Footer: React.FC<FooterProps> = () => {
         <Col className={"footerContacteTelCol"}>
           <div>
             <p className={"footerTitle"}>Contactez-Nous</p>
-            <p className={"FooterText"} ><span> <LocalPhoneIcon /></span>  +216 22 543 123 </p>
-            <p className={"FooterText"} > <span><LocalPhoneIcon /></span> +216 22 543 123 </p>
+            <p className={"FooterText"} ><span> <LocalPhoneIcon className="icon" /></span> &nbsp; +216 22 543 123 </p>
+            <p className={"FooterText"} > <span><LocalPhoneIcon className="icon" /></span> &nbsp; +216 22 543 123 </p>
 
             <div className={"socialMedia"}>
               <div className={"icons"}>
-                <FacebookIcon ></FacebookIcon>
+                <FacebookIcon className="icon"></FacebookIcon>
 
               </div>
               <div className={"icons"}>
-                <InstaIcon ></InstaIcon>
+                <InstaIcon className="icon" ></InstaIcon>
 
               </div>
 
               <div className={"icons"}>
-                <TikTokIcon></TikTokIcon>
+                <TikTokIcon className="icon" ></TikTokIcon>
 
               </div>
             </div>
@@ -61,7 +79,7 @@ const Footer: React.FC<FooterProps> = () => {
               <span>
                 <Email></Email>
               </span>
-              contacte
+              contacts
             </p>
             <p className={"FooterText"}> thunder-express.com</p>
 
@@ -74,32 +92,25 @@ const Footer: React.FC<FooterProps> = () => {
             <p className={"footerTitle"}> Derniere publication</p>
 
             {
-              ads ? (
-                <CarouselProvider
-                  naturalSlideWidth={250}
-                  naturalSlideHeight={80}
-                  totalSlides={
-                    ads.length
-                  }
-                  visibleSlides={2}
-                  step={1}
-                  infinite={true}
-                  isPlaying={true}
-                  lockOnWindowScroll={true}
-                  orientation='vertical'
-                >
-
-                  <Slider >
-                    {ads.map((ad: any) => (
-                      <Slide key={ad.id} index={ad.id}>
-                        <div className={"slideInner"}>
-                          <img src={ad.image} alt="ads images" className={"pubsImage"} />
-                          <p className={"FooterText"}>{ad.menu?.description}</p>
+              images ? (
+                <>
+                  <div className="bottom-to-top-scroll-carousel-container">
+                    <div
+                      className="bottom-to-top-scroll-carousel-items"
+                      style={{
+                        transform: `translateY(-${currentIndex * 57}px)`,
+                        transition: 'transform 1s ease', // Adjust the transition duration as needed
+                      }}
+                    >
+                      {images.map((item: any, index: number) => (
+                        <div key={index} className="bottom-to-top-scroll-carousel-item">
+                          <img src={item.image} alt="" />
                         </div>
-                      </Slide>
-                    ))}
-                  </Slider>
-                </CarouselProvider>
+                      ))}
+                    </div>
+                  </div>
+                </>
+
               ) :
                 (
                   <>
@@ -107,8 +118,11 @@ const Footer: React.FC<FooterProps> = () => {
                 )
             }
           </div>
-
         </Col>
+        <div className="demi-cerlce-container">
+          <div className="demi-cercle">
+          </div>
+        </div>
       </Row>
 
       {/* all right reserved section */}
