@@ -7,6 +7,7 @@ import TimeIcon from "../../../../../assets/profile/ArchivedCommands/time.svg"
 import DefaultImg from "../../../../../assets/profile/ArchivedCommands/default.jpg"
 import { useTranslation } from 'react-i18next'
 import { useAppSelector } from '../../../../../Redux/store'
+import { Star } from '@mui/icons-material';
 
 interface CommandsListProps {
     data: any
@@ -59,7 +60,16 @@ const OldCommands: React.FC<CommandsListProps> = ({ data }) => {
                                     <div className='logo-img' style={{ backgroundImage: `url(${supplier.images[0].path.length > 0 ? supplier.images[0].path : DefaultImg})` }}></div>
                                     <div className="name-rate">
                                         <span className='supplier-name'>{supplier.name}</span>
-                                        <span className='supplier-rates'>{(supplier.star && supplier.star > 0) ? supplier.star : "no rates"}</span>
+                                        {
+                                            (supplier.star && supplier.star > 0) ? (
+                                                <span className='supplier-rates'> <Star className='star-icon' />{supplier.star}  </span>
+                                            )
+                                                :
+                                                (
+                                                    <>
+                                                    </>
+                                                )
+                                        }
                                     </div>
                                 </div>
                             </div>
@@ -102,7 +112,7 @@ const OldCommands: React.FC<CommandsListProps> = ({ data }) => {
                                                 <div className="name-rate">
                                                     <span className='supplier-Title'>{t("profile.commands.votreLiv")}</span>
                                                     <span className='supplier-name'>{delivery.name}</span>
-                                                    <span className='supplier-rates'>{(delivery.star && delivery.star > 0) ? delivery.star : "no rates"}</span>
+                                                    <span className='supplier-rates'> <Star className='star-icon' /> {(delivery.star && delivery.star > 0) ? delivery.star : "no rates"}</span>
                                                 </div>
                                             </div>
                                         </div>

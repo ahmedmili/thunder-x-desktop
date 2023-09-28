@@ -14,10 +14,12 @@ import defaultImage from "../../../../../assets/profile/ArchivedCommands/default
 import delivA from "../../../../../assets/profile/ArchivedCommands/deliv-A.svg"
 import traitementA from "../../../../../assets/profile/ArchivedCommands/traitement-A.svg"
 import preparatinA from "../../../../../assets/profile/ArchivedCommands/preparatin-A.svg"
+import doneA from "../../../../../assets/profile/ArchivedCommands/done-A.svg"
 
 import delivD from "../../../../../assets/profile/ArchivedCommands/deliv-D.svg"
 import traitementD from "../../../../../assets/profile/ArchivedCommands/traitement-D.svg"
 import preparatinD from "../../../../../assets/profile/ArchivedCommands/preparatin-D.svg"
+import doneD from "../../../../../assets/profile/ArchivedCommands/done-D.svg"
 import { useAppSelector } from '../../../../../Redux/store'
 import { useTranslation } from 'react-i18next';
 import CommandsFooter from '../Footer/Footer';
@@ -197,7 +199,15 @@ const CurrentCommands: React.FC<CommandsListProps> = ({ removeCommand, goToPasse
                             <div className='time-line'></div>
                             <img src={status === 1 ? traitementA : traitementD} alt="traitement logo" className='traitement-logo' />
                             <img src={(status <= 4 && status > 1) ? preparatinA : preparatinD} alt="preparation logo" className='preparation-logo' />
-                            <img src={(status === 6 || status === 5) ? delivA : delivD} alt="deliv logo" className='deliv-logo' />
+                            {
+                                isDelevery === 1 ? (
+                                    <img src={(status === 6 || status === 5) ? delivA : delivD} alt="deliv logo" className='deliv-logo' />
+
+                                ) : (
+                                    <img src={(status === 6 || status === 5) ? doneA : doneD} alt="deliv logo" className='deliv-logo' />
+
+                                )
+                            }
                         </div>
                         <hr />
                     </div>

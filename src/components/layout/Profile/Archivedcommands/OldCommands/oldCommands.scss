@@ -56,6 +56,19 @@
                 font-style: normal;
                 font-weight: 600;
                 line-height: normal;
+
+                .supplier-rates {
+                    display: flex;
+                    justify-content: start;
+                    align-items: center;
+                    gap: 5px;
+                    font-size: 14px;
+                    .star-icon {
+                        color: gold;
+                        width: 18px;
+                        height: 18px;
+                    }
+                }
             }
         }
     }
@@ -209,7 +222,13 @@
 
             // .supplier-name {}
 
-            // .supplier-rates {}
+            .supplier-rates {
+                .star-icon {
+                    color: gold;
+                    width: 18px;
+                    height: 18px;
+                }
+            }
         }
     }
 
