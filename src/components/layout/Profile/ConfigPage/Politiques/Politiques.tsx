@@ -7,15 +7,14 @@ import legalsData from './Politiques.json';
 import { useEffect, useState } from 'react';
 
 interface legalProps {
-  title: string,
-  bodyText: string,
+  bodyText: string[],
 }
 
-const LegalCart: React.FC<legalProps> = ({ title, bodyText }) => {
+const LegalCart: React.FC<legalProps> = ({bodyText }) => {
 
   return (<>
     <div className="legal-cart">
-      <p className='title'>{title}</p>
+      
       <p className='body' >{bodyText}</p>
     </div>
   </>)
@@ -68,7 +67,7 @@ const Politiques = () => {
           {
             displayedContent.length > 0 && (
               displayedContent.map((legal: any, index: number) => {
-                return <LegalCart key={index} title={legal.title} bodyText={legal.body} />
+                return <LegalCart key={index} bodyText={legal.body} />
               })
             )
 

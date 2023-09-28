@@ -1,82 +1,32 @@
 [
     {
-        "title" : "Article 1",
-        "body" : "Le passage classique «Lorem ipsum dolor sit amet…» est attribué à un remixage du texte du philosophe romain ciceron 45 de C."
+        "body": [
+            "La présente déclaration de confidentialité règle l’utilisation de l'application Thunder Express pour appareils mobiles, créée et développée par la société Webify, qui est une société privée enregistrée en Tunisie et dont le siège social est Immeuble Jaziri Boulevard 14 janvier, Hammam Sousse."
+        ]
     },
     {
-        "title" : "Article 2",
-        "body" : "Le passage classique «Lorem ipsum dolor sit amet…» est attribué à un remixage du texte du philosophe romain ciceron 45 de C."
+        "body": [
+            "La présente déclaration de confidentialité a été élaborée dans le but de garantir et d’attester la conformité avec les exigences légales, et la transparence du traitement des données à caractère personnel, tant des clients de Thunder Express que des personnes concernées et des autorités chargées de la protection des données."
+        ]
     },
     {
-        "title" : "Article 3",
-        "body" : "Le passage classique «Lorem ipsum dolor sit amet…» est attribué à un remixage du texte du philosophe romain ciceron 45 de C."
+        "body": [
+            "Ces données servent uniquement au bon fonctionnement de l’application pour permettre à ses différents composants logiciels, au serveur et à la base de données d'interagir correctement entre eux."
+        ]
     },
     {
-        "title" : "Article 4",
-        "body" : "Le passage classique «Lorem ipsum dolor sit amet…» est attribué à un remixage du texte du philosophe romain ciceron 45 de C."
+        "body": [
+            "Des tiers peuvent-ils visualiser et/ou accéder à des informations collectées par l’application ? \n Les tiers n’ont pas accès aux informations collectées par l’application."
+        ]
     },
     {
-        "title" : "Article 5",
-        "body" : "Le passage classique «Lorem ipsum dolor sit amet…» est attribué à un remixage du texte du philosophe romain ciceron 45 de C."
+        "body": [
+            "Quels sont mes droits d’option de retrait ? \n Vous pouvez utiliser les processus de désinstallation standard disponibles sur votre appareil mobile ou passer par le marché ou le réseau des applications mobiles. "
+        ]
     },
     {
-        "title" : "Article 6",
-        "body" : "Le passage classique «Lorem ipsum dolor sit amet…» est attribué à un remixage du texte du philosophe romain ciceron 45 de C."
-    },
-    {
-        "title" : "Article 7",
-        "body" : "Le passage classique «Lorem ipsum dolor sit amet…» est attribué à un remixage du texte du philosophe romain ciceron 45 de C."
-    },
-    {
-        "title" : "Article 8",
-        "body" : "Le passage classique «Lorem ipsum dolor sit amet…» est attribué à un remixage du texte du philosophe romain ciceron 45 de C."
-    },
-    {
-        "title" : "Article 9",
-        "body" : "Le passage classique «Lorem ipsum dolor sit amet…» est attribué à un remixage du texte du philosophe romain ciceron 45 de C."
-    },
-    {
-        "title" : "Article 10",
-        "body" : "Le passage classique «Lorem ipsum dolor sit amet…» est attribué à un remixage du texte du philosophe romain ciceron 45 de C."
-    },
-    {
-        "title" : "Article 11",
-        "body" : "Le passage classique «Lorem ipsum dolor sit amet…» est attribué à un remixage du texte du philosophe romain ciceron 45 de C."
-    },
-    {
-        "title" : "Article 12",
-        "body" : "Le passage classique «Lorem ipsum dolor sit amet…» est attribué à un remixage du texte du philosophe romain ciceron 45 de C."
-    },
-    {
-        "title" : "Article 13",
-        "body" : "Le passage classique «Lorem ipsum dolor sit amet…» est attribué à un remixage du texte du philosophe romain ciceron 45 de C."
-    },
-    {
-        "title" : "Article 14",
-        "body" : "Le passage classique «Lorem ipsum dolor sit amet…» est attribué à un remixage du texte du philosophe romain ciceron 45 de C."
-    },
-    {
-        "title" : "Article 15",
-        "body" : "Le passage classique «Lorem ipsum dolor sit amet…» est attribué à un remixage du texte du philosophe romain ciceron 45 de C."
-    },
-    {
-        "title" : "Article 16",
-        "body" : "Le passage classique «Lorem ipsum dolor sit amet…» est attribué à un remixage du texte du philosophe romain ciceron 45 de C."
-    },
-    {
-        "title" : "Article 17",
-        "body" : "Le passage classique «Lorem ipsum dolor sit amet…» est attribué à un remixage du texte du philosophe romain ciceron 45 de C."
-    },
-    {
-        "title" : "Article 18",
-        "body" : "Le passage classique «Lorem ipsum dolor sit amet…» est attribué à un remixage du texte du philosophe romain ciceron 45 de C."
-    },
-    {
-        "title" : "Article 19",
-        "body" : "Le passage classique «Lorem ipsum dolor sit amet…» est attribué à un remixage du texte du philosophe romain ciceron 45 de C."
-    },
-    {
-        "title" : "Article 20",
-        "body" : "Le passage classique «Lorem ipsum dolor sit amet…» est attribué à un remixage du texte du philosophe romain ciceron 45 de C."
+        "body": [
+            "Contactez-nous \n  Pour toutes vos questions relatives à la confidentialité pendant l’utilisation de l’application ou sur nos pratiques, contactez-nous par e-mail et écrivez à l’adresse suivante : admin@thunder-express.com."
+        ]
     }
 ]

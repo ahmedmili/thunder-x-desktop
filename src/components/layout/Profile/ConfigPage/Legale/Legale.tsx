@@ -12,7 +12,7 @@ import { useAppSelector } from '../../../../../Redux/store';
 
 interface legalProps {
   title: string,
-  bodyText: string,
+  bodyText: string[],
 }
 
 
@@ -21,7 +21,9 @@ const LegalCart: React.FC<legalProps> = ({ title, bodyText }) => {
   return (<>
     <div className="legal-cart">
       <p className='title'>{title}</p>
-      <p className='body' >{bodyText}</p>
+      {
+        bodyText.map((text:string,index:number)=> <p key={index} className='body' >{text}</p> )
+      }
     </div>
   </>)
 }
