@@ -19,6 +19,7 @@
         gap: 20px;
 
         .input-container {
+            position: relative;
             display: flex;
             flex-direction: column;
 
@@ -44,6 +45,9 @@
                 padding: 0;
 
                 .verif {
+                    position: absolute;
+                    top: 15px;
+                    right: 10px;
                     color: #FBC000;
                     font-family: Poppins;
                     font-size: 13px;

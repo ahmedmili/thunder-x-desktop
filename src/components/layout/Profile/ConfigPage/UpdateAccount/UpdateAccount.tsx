@@ -120,6 +120,7 @@ const UpdateAccount: React.FC<updateProps> = ({ showPassword }) => {
             <label htmlFor="password">{t("password")}</label>
             <div className="input">
               <input readOnly className="update-input" type="password" name="password" placeholder="Entrer ici" />
+              <button onClick={showPassword} className='verif' >Vérifier</button>
             </div>
           </div>
 
