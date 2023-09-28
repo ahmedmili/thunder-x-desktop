@@ -196,15 +196,15 @@ function App() {
   }, [])
 
   // initialize theme
-  useEffect(() => {
-    const theme = localStorageService.getUserTheme();
+  // useEffect(() => {
+  //   const theme = localStorageService.getUserTheme();
 
-    !theme && (() => {
-      localStorageService.setUserTheme('0');
-    })
-    theme == "0" ? dispatch(setTheme(0)) : dispatch(setTheme(1));
+  //   !theme && (() => {
+  //     localStorageService.setUserTheme('0');
+  //   })
+  //   theme == "0" ? dispatch(setTheme(0)) : dispatch(setTheme(1));
 
-  }, []);
+  // }, []);
 
   // webSocket create instance
   // useEffect(() => {

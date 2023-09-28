@@ -141,7 +141,6 @@ const SideBar = () => {
             </li>
             <li>
               <Link to={'/'} className={`disconnect`} onClick={(e) => {
-                e.preventDefault()
                 dispatch(logout())
               }}>
                 <span className='profile-list-icon' style={{ backgroundImage: `url(${Deconnecter})` }}></span>

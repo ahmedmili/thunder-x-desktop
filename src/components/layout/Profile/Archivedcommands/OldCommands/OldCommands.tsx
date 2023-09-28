@@ -116,9 +116,10 @@ const OldCommands: React.FC<CommandsListProps> = ({ data }) => {
                         {
                             (products && (products.length > 0)) && (
                                 products.map((product: any, index: number) => {
+                                    console.log(product)
                                     const productData: ProductProps = {
                                         data: {
-                                            img: product.computed_value.image[0].path,
+                                            img: product.computed_value ? product.computed_value.image[0].path : '',
                                             name: product.name,
                                             description: product.computed_value.description,
                                             qt: product.quantity,

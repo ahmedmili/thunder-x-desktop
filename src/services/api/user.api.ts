@@ -127,10 +127,25 @@ async function getClientFavorits() {
     throw error;
   }
 }
+
 async function gifts() {
   try {
     const response = await api.get(
       `gifts`
+    );
+    const { status, data } = response;
+    return { status, data };
+  } catch (error) {
+    throw error;
+  }
+}
+
+async function deleteAccount() {
+  try {
+    const response = await api.delete(
+      `deleteClient/${localStorage.getItem('userId')}`, {
+    }
+
     );
     const { status, data } = response;
     return { status, data };
@@ -149,4 +164,5 @@ export const userService = {
   deletefavorite,
   getClientFavorits,
   gifts,
+  deleteAccount,
 };

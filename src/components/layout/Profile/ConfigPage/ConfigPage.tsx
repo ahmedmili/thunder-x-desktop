@@ -1,4 +1,4 @@
-import { Link, Outlet } from 'react-router-dom';
+import { Link, Outlet, useNavigate } from 'react-router-dom';
 import KeyboardArrowUpOutlinedIcon from '@mui/icons-material/KeyboardArrowUpOutlined';
 
 
@@ -13,6 +13,10 @@ import ModifPassword from '../../../Popups/ModifPassword/ModifPassword';
 import UpdateAccount from './UpdateAccount/UpdateAccount';
 import { useTranslation } from 'react-i18next';
 import { useAppSelector } from '../../../../Redux/store';
+import { userService } from '../../../../services/api/user.api';
+import { useDispatch } from 'react-redux';
+import { logout } from '../../../../Redux/slices/userSlice';
+import { toast } from 'react-toastify';
 
 interface Settingsection {
   title: string;
@@ -49,11 +53,28 @@ const ConfigPage = () => {
   const [selectedSetting, setSelectedSetting] = useState<number>(0)
   const [showPWPopup, setShowPWPopup] = useState<boolean>(false)
 
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
+
   const handleselect = (index: number) => {
     index === selectedSetting ? setSelectedSetting(0) : setSelectedSetting(index);
   }
   const closePopup = () => {
     setSelectedSetting(0)
+  }
+
+  const deleteAccount = async () => {
+    const { status, data } = await userService.deleteAccount()
+    if (data.success) {
+      let lang = localStorage.getItem('lang');
+      localStorage.clear();
+      localStorage.setItem('lang', lang!);
+      dispatch(logout())
+      navigate('/')
+    }
+    else {
+      toast.error('un probléme')
+    }
   }
 
   const showPasswordPopup = () => {
@@ -115,7 +136,7 @@ const ConfigPage = () => {
           </div>
         } */}
         {/* <Theme /> */}
-        <SettingSection settingIndex={7} actionListener={handleselect} title={t('profile.mesConfig.deleteAccount')} className={`${selectedSetting === 7 ? "active" : ""}`} />
+        <SettingSection settingIndex={7} actionListener={deleteAccount} title={t('profile.mesConfig.deleteAccount')} className={`${selectedSetting === 7 ? "active" : ""}`} />
       </div>
 
     </>
