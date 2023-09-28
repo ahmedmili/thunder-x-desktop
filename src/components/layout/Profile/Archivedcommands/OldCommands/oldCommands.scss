@@ -257,6 +257,9 @@
         .description {
             width: 200px;
 
+            p {
+                margin: 0;
+            }
         }
     }
 }
@@ -348,15 +351,19 @@
         .old-command-info-container {
             .delivery-info {
                 .logo {
-
                     flex-direction: column;
                     gap: 8px;
+
+                    .name-rate {
+                        text-align: center;
+                    }
                 }
             }
 
             .command-info {
                 padding-left: 20px;
                 padding-right: 37px;
+
             }
 
             .supplier-info {
@@ -364,6 +371,10 @@
                 .logo {
                     flex-direction: column;
                     gap: 8px;
+
+                    .name-rate {
+                        text-align: center;
+                    }
                 }
 
             }
@@ -384,6 +395,7 @@
                 font-weight: 600;
                 line-height: 20px;
                 margin: 0;
+                width: 100px;
 
                 p {
                     overflow-wrap: break-word;
@@ -393,21 +405,42 @@
     }
 }
 
-@media only screen and (max-width : 786px) {
+@media only screen and (max-width : 768px) {
     .commands-List {
 
         .old-command-info-container {
             .delivery-info {
                 .logo {
-
                     flex-direction: column;
                     gap: 8px;
+
+                    .name-rate {
+                        font-size: 13px;
+                    }
                 }
             }
 
             .command-info {
                 padding-left: 20px;
                 padding-right: 37px;
+
+                .end {
+                    .info {
+                        .supplier-position {
+                            font-size: 9px;
+                        }
+                    }
+                }
+
+                .start {
+                    align-items: end;
+
+                    .info {
+                        .supplier-position {
+                            font-size: 9px;
+                        }
+                    }
+                }
             }
 
             .supplier-info {
@@ -415,30 +448,38 @@
                 .logo {
                     flex-direction: column;
                     gap: 8px;
+
+                    .name-rate {
+                        font-size: 13px;
+                    }
                 }
 
             }
         }
 
         .command-footer {
-            padding-right: 41px;
+            padding-right: 0;
+
+            p {
+                font-size: 20px;
+            }
+
+            .avis {
+                width: 192px;
+            }
         }
     }
 
     .product-container {
-        .product-info {
-            .description {
-                color: #484848;
-                font-family: Poppins;
-                font-size: 16px;
-                font-style: normal;
-                font-weight: 600;
-                line-height: 20px;
-                margin: 0;
+        gap: 4px;
 
-                p {
-                    overflow-wrap: break-word;
-                }
+        .product-info {
+            gap: 3px;
+
+            .qt,
+            .price,
+            .name {
+                font-size: 13px;
             }
         }
     }

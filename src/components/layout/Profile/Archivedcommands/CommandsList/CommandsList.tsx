@@ -2,24 +2,16 @@ import React, { useEffect, useState } from 'react'
 
 import "./commandsList.scss"
 import KeyboardArrowUpOutlinedIcon from '@mui/icons-material/KeyboardArrowUpOutlined';
-import PositionIcon from "../../../../../assets/profile/ArchivedCommands/position.svg"
-import DestinationIcon from "../../../../../assets/profile/ArchivedCommands/destination.svg"
-import TimeIcon from "../../../../../assets/profile/ArchivedCommands/time.svg"
-import DefaultImg from "../../../../../assets/profile/ArchivedCommands/default.jpg"
 import OldCommands from '../OldCommands/OldCommands';
 import { commandService } from '../../../../../services/api/command.api';
 import CurrentCommands from '../CurrentCommands/CurrentCommands';
 import { useAppSelector } from '../../../../../Redux/store';
-import { useNavigate } from 'react-router-dom';
-
 interface CommandsListProps {
     type?: string;
     goToPassedCommands: any;
 }
 
 const CommandsList: React.FC<CommandsListProps> = ({ type = "old", goToPassedCommands }) => {
-
-    const navigate = useNavigate()
     const theme = useAppSelector((state) => state.home.theme)
     const [template, setTemplate] = useState<number>(theme)
 

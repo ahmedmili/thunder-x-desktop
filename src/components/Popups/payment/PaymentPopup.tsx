@@ -45,7 +45,7 @@ const PaymentPopup: React.FC<Props> = ({ close, type }) => {
     return (
         <div className="popup-container" onClick={() => {
             close()
-            type !== "error" && navigate("/track-order", { replace: true })
+            type !== "error" && navigate("/", { replace: true })
         }
         }>
             <div className="popup-box">

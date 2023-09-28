@@ -36,13 +36,13 @@ import FilterPage from "./views/filtre/FilterPage";
 import HomeSkeleton from "./views/home/skeleton/HomeSkeleton";
 import Header from "./components/Header/Header";
 import Footer from "./components/footer/footer";
+import { userService } from "./services/api/user.api";
 import Profile from "./components/layout/Profile/Profile"
 import ConfigPage from "./components/layout/Profile/ConfigPage/ConfigPage";
 import Annonces from "./components/layout/Profile/All_Annonces/All_Annonces";
 import ArchivedCommands from "./components/layout/Profile/Archivedcommands/ArchivedCommands";
 import Discuter from "./components/layout/Profile/Discuter/Discuter";
 import Favors from "./components/layout/Profile/Favors/Favors";
-import { userService } from "./services/api/user.api";
 import FidelitePage from "./components/layout/Profile/FidelitePage/FidelitePage";
 
 //lazy loading

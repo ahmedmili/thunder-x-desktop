@@ -21,6 +21,7 @@
     margin-top: 10px;
     position: relative;
     background-color: #24A6A4;
+
     .current-command-header {
         width: 100%;
 
@@ -538,4 +539,64 @@
         }
     }
 
+}
+
+@media only screen and (max-width:1200px) {
+    .current-commands-container {
+        .current-command-main {
+            top: 183px;
+            left: 37px;
+        }
+    }
+}
+
+@media only screen and (max-width:900px) {
+    .current-commands-container {
+        .current-command-main {
+            top: 148px;
+            left: 23px;
+
+            .command-list-product {
+                .command-product-container {
+                    .cancel-btn {
+                        width: 257px;
+                    }
+                }
+            }
+        }
+    }
+}
+
+@media only screen and (min-width :600px) and (max-width:768px) {
+    .current-commands-container {
+        .current-command-main {
+            top: 124px;
+            left: 23px;
+            padding: 27px 27px;
+          .supplier-info {
+            margin-bottom: 15px;
+                p{
+                    margin: 0;
+                }
+            }
+            .command-info {
+                margin: 0;
+                width: 100%;
+                .command-graph{
+                    gap: 0;
+                }
+            }
+
+
+            .command-list-product {
+                .command-product-container {
+                    .cancel-btn {
+                        width: 90%;
+                        font-size: 12px;
+                        margin: 11px auto 0 auto;
+                    }
+                }
+            }
+        }
+    }
 }
