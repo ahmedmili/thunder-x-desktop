@@ -198,6 +198,7 @@
     }
 
     .visible-bar {
+        z-index: 1000;
         transform: translateX(272px);
     }
 
