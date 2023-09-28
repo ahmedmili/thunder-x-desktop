@@ -60,6 +60,11 @@
                 rotate: 180deg;
             }
         }
+        img{
+            border-radius: 50%;
+            width: 81px;
+            object-fit: cover;
+        }
     }
 
     .active-header {
@@ -86,4 +91,16 @@
         }
     }
 
+}
+
+@media only screen and (max-width:900px) {
+    .repas-List{
+        .repas-header{
+            justify-content: space-between;
+            span{
+                text-align: center;
+                font-size: 15px;
+            }
+        }
+    }
 }
