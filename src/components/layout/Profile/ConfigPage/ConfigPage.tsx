@@ -108,12 +108,12 @@ const ConfigPage = () => {
             <Politiques />
           </div>
         }
-        <SettingSection settingIndex={6} actionListener={handleselect} title={t('profile.mesConfig.theme')} className={`${selectedSetting === 6 ? "active" : ""}`} />
+        {/* <SettingSection settingIndex={6} actionListener={handleselect} title={t('profile.mesConfig.theme')} className={`${selectedSetting === 6 ? "active" : ""}`} />
         {selectedSetting === 6 &&
           <div className='theme-container'>
             <Theme />
           </div>
-        }
+        } */}
         {/* <Theme /> */}
         <SettingSection settingIndex={7} actionListener={handleselect} title={t('profile.mesConfig.deleteAccount')} className={`${selectedSetting === 7 ? "active" : ""}`} />
       </div>
