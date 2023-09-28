@@ -34,10 +34,8 @@ const Menu: React.FC<MenuProps> = () => {
   const dispatch = useAppDispatch();
   const navigate = useNavigate();
   const theme = useAppSelector(state => state.home.theme)
-  const [template, setTemplate] = useState<number>(theme)
   const [menuData, setMenuData] = useState<MenuData[]>([]);
   const { id } = useParams<{ id: string }>();
-  // const [showOptions, setShowOptions] = useState(false);
   const [loading, setLoading] = useState(true);
   const location = useLocation();
   const restaurant = location.state.restaurant;
@@ -50,9 +48,6 @@ const Menu: React.FC<MenuProps> = () => {
   const [filtreddMenuData, setFiltreddMenuData] = useState<MenuData[]>([]);
   const [selectedMenuItem, setSelectedMenuItem] = useState<FoodItem | null>(null);
 
-  useEffect(() => {
-    setTemplate(theme)
-  }, [theme])
   const handlePopup = () => {
     setShowOptionsPopup(!showOptionsPopup)
   }
@@ -125,7 +120,6 @@ const Menu: React.FC<MenuProps> = () => {
   }, [selectedOption])
 
   const Product = () => {
-
     return <>
       {
         loading ? (
@@ -195,12 +189,11 @@ const Menu: React.FC<MenuProps> = () => {
             )
           )}
     </>
-
   }
 
   return (
     <>
-      <Container fluid className={`supplier-page-header ${template === 1 && 'dark-background'}`} >
+      <Container fluid className={`supplier-page-header`} >
         <Row>
           <div className="background-container">
             <img src={restaurant?.images[0].path} alt="restaurant image" className="background" />
@@ -211,9 +204,9 @@ const Menu: React.FC<MenuProps> = () => {
         </Row>
       </Container>
 
-      <Container fluid className={`supplier-page-main-container ${template === 1 && 'dark-background'}`}>
+      <Container fluid className={`supplier-page-main-container`}>
         <Row>
-          <section className={`info-section ${template === 1 && 'dark-background'}`}>
+          <section className={`info-section `}>
             <div className="info-container">
               <div className="left-side">
                 <div className='name'>{restaurant?.name}</div>
@@ -233,18 +226,18 @@ const Menu: React.FC<MenuProps> = () => {
             </div>
           </section>
         </Row>
-        <Row className={`main-row ${template === 1 && 'dark-background'}`}>
+        <Row className={`main-row`}>
           <div className={`supplier-page-side-bar`}>
-            <div className={`pub-contained ${template === 1 && 'dark-background2'}`}>
+            <div className={`pub-contained`}>
               <img className='supplier-logo' src={restaurant?.images[1].path} alt="" />
-              <div className={`pub-posts ${template === 1 && 'dark-background2'}`}>
+              <div className={`pub-posts`}>
                 <img className='insta-img' src={instaposter} alt=" insta img posts" />
                 <img className='insta-img' src={instaposter} alt=" insta img posts" />
               </div>
             </div>
           </div>
 
-          <section className={`main-container ${template === 1 && 'dark-background2'}`}>
+          <section className={`main-container`}>
             <div className="filers">
               {
                 menuData.length != 0 && (

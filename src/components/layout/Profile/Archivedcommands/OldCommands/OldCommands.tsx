@@ -24,7 +24,7 @@ interface ProductProps {
 
 const Product: React.FC<ProductProps> = ({ data }) => {
     return (
-        <div className='product-container'>
+        <div className='old-commands-product-container'>
             <img src={data.img} alt="product image" />
             <div className='product-info' >
                 <p className='name'> {data.name}</p>
