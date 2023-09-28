@@ -1,5 +1,4 @@
 import React, { useState, useEffect, useCallback } from "react";
-import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { useAppDispatch } from "../../Redux/store";
 import { adressService } from "../../services/api/adress.api";
@@ -11,8 +10,6 @@ import HomeLocation from '../../assets/home-location.svg'
 import EditPen from '../../assets/edit-pen.svg'
 import ClearRoundedIcon from "@mui/icons-material/ClearRounded";
 
-import HomeRoundedIcon from "@mui/icons-material/HomeRounded";
-import MenuIcon from "@mui/icons-material/Menu";
 import NearMeOutlinedIcon from "@mui/icons-material/NearMeOutlined";
 import { localStorageService } from "../../services/localStorageService";
 import { LocationService } from "../../services/api/Location.api";
