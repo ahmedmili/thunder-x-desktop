@@ -20,7 +20,7 @@
     animation: fadeIn 1s;
     margin-top: 10px;
     position: relative;
-    background-color: #24A6A4;
+    margin-bottom: 50px;
 
     .current-command-header {
         width: 100%;
@@ -36,8 +36,8 @@
         padding: 28px 44px;
         background-color: white;
         border-radius: 25px;
-        position: absolute;
-        top: 300px;
+        position: relative;
+        top: -110px;
         left: 50px;
         width: 90%;
 
@@ -69,7 +69,6 @@
         .command-info {
             width: 85%;
             margin-top: 52px;
-            // padding-left: 95px;
             margin: 52px auto;
 
             p {
@@ -544,7 +543,7 @@
 @media only screen and (max-width:1200px) {
     .current-commands-container {
         .current-command-main {
-            top: 183px;
+            top: -67px;
             left: 37px;
         }
     }
@@ -553,7 +552,7 @@
 @media only screen and (max-width:900px) {
     .current-commands-container {
         .current-command-main {
-            top: 148px;
+            top: -52px;
             left: 23px;
 
             .command-list-product {
@@ -570,19 +569,22 @@
 @media only screen and (min-width :600px) and (max-width:768px) {
     .current-commands-container {
         .current-command-main {
-            top: 124px;
             left: 23px;
             padding: 27px 27px;
-          .supplier-info {
-            margin-bottom: 15px;
-                p{
+
+            .supplier-info {
+                margin-bottom: 15px;
+
+                p {
                     margin: 0;
                 }
             }
+
             .command-info {
                 margin: 0;
                 width: 100%;
-                .command-graph{
+
+                .command-graph {
                     gap: 0;
                 }
             }
