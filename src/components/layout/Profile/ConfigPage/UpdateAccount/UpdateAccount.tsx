@@ -11,9 +11,10 @@ import { useAppSelector } from '../../../../../Redux/store';
 
 interface updateProps {
   showPassword: any
+  showPhone: any
 }
 
-const UpdateAccount: React.FC<updateProps> = ({ showPassword }) => {
+const UpdateAccount: React.FC<updateProps> = ({ showPassword, showPhone }) => {
 
   const { t } = useTranslation()
   const theme = useAppSelector((state) => state.home.theme)
@@ -120,7 +121,7 @@ const UpdateAccount: React.FC<updateProps> = ({ showPassword }) => {
             <label htmlFor="password">{t("password")}</label>
             <div className="input">
               <input readOnly className="update-input" type="password" name="password" placeholder="Entrer ici" />
-              <button onClick={showPassword} className='verif' >Vérifier</button>
+              <button onClick={showPassword} className='verif' >{t('Verifier')}</button>
             </div>
           </div>
 
@@ -128,6 +129,8 @@ const UpdateAccount: React.FC<updateProps> = ({ showPassword }) => {
             <label htmlFor="phone">{t("cartPage.phoneNumber")}</label>
             <div className="input">
               <input className="update-input" value={phone} type="text" name="phone" placeholder="Entrer ici" onChange={(e) => setPhone(e.target.value)} />
+              <button onClick={showPhone} className='verif' >{t('Verifier')}</button>
+
             </div>
           </div>
           {!valid && <p className={`error-message ${!valid ? "visible" : ""}`} >{eroorMessage}</p>}

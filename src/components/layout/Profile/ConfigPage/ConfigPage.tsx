@@ -17,6 +17,7 @@ import { userService } from '../../../../services/api/user.api';
 import { useDispatch } from 'react-redux';
 import { logout } from '../../../../Redux/slices/userSlice';
 import { toast } from 'react-toastify';
+import PhoneNumberInput from '../../../Popups/PhoneNumberInput/PhoneNumberInput';
 
 interface Settingsection {
   title: string;
@@ -52,6 +53,7 @@ const ConfigPage = () => {
 
   const [selectedSetting, setSelectedSetting] = useState<number>(0)
   const [showPWPopup, setShowPWPopup] = useState<boolean>(false)
+  const [showPhoneInputPopup, setShowPhoneInputPopup] = useState<boolean>(false)
 
   const dispatch = useDispatch();
   const navigate = useNavigate();
@@ -80,6 +82,9 @@ const ConfigPage = () => {
   const showPasswordPopup = () => {
     setShowPWPopup(!showPWPopup)
   }
+  const handlePhonePopup = () => {
+    setShowPhoneInputPopup(!showPhoneInputPopup)
+  }
   useEffect(() => {
     setTemplate(theme)
   }, [theme])
@@ -90,7 +95,7 @@ const ConfigPage = () => {
         {
           selectedSetting === 1 &&
           <>
-            <UpdateAccount showPassword={showPasswordPopup} />
+            <UpdateAccount showPassword={showPasswordPopup} showPhone={handlePhonePopup} />
           </>
         }
         {
@@ -98,6 +103,13 @@ const ConfigPage = () => {
           <>
             {/* <UpdateAccount /> */}
             <ModifPassword close={showPasswordPopup} />
+          </>
+        }
+        {
+          showPhoneInputPopup &&
+          <>
+            {/* <updatePhone /> */}
+            <PhoneNumberInput close={handlePhonePopup} />
           </>
         }
         <SettingSection settingIndex={2} actionListener={handleselect} title={t('profile.mesConfig.delivAdress')} className={`${selectedSetting === 2 ? "active" : ""}`} />

@@ -70,6 +70,7 @@
   "firstName": "Prénom",
   "lastName": "Nom",
   "Verifier": "Vérifier",
+  "Verifier.phone": "Vérification numéro de téléphone",
   "confirmPassword": "Confirmer le mot de passe",
   "haveAcc": "Vous avez déjà un compte?",
   "conncetHere": "Connectez-vous ici",
