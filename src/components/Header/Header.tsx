@@ -24,6 +24,10 @@ import { Cart } from '../cart/cart';
 import { UserCart } from '../UserCart/UserCart';
 
 const Header = () => {
+
+  const theme = useAppSelector((state) => state.home.theme)
+  const [template, setTemplate] = useState<number>(theme)
+
   const logged_in = localStorageService.getUserToken() !== null;
   const userItem = localStorageService.getUser();
 
@@ -54,6 +58,10 @@ const Header = () => {
   };
 
   useEffect(() => {
+    setTemplate(theme)
+  }, [theme])
+
+  useEffect(() => {
     // Attach the scroll event listener when the component mounts
     window.addEventListener('scroll', handleScroll);
 
@@ -65,13 +73,9 @@ const Header = () => {
 
   const onLogoutHandler = async () => {
     try {
-      // Clear the user data from the state and the localStorage items associated with the user
       dispatch(logout());
-
-      // Navigate to the login page
       navigate("/");
     } catch (error: any) {
-      // Handle any errors that occur during the logout process
       if (Array.isArray(error.data.error)) {
         error.data.error.forEach((el: any) =>
           toast.error(el.message, {
@@ -88,16 +92,17 @@ const Header = () => {
 
   const handleCart = async () => {
     showProfile && setShowProfile(false)
-    setShowCart(!showCart); // Toggle the state of showCart
-  };
-  const handleUserCart = async () => {
-    showCart && setShowCart(false);
-    setShowProfile(!showProfile); // Toggle the state of showCart
+    setShowCart(!showCart);
   };
 
-  // const handleCommand = async () => {
-  //   navigate("/track-order");
-  // };
+  const handleUserCart = async () => {
+    if (user) {
+      showCart && setShowCart(false);
+      setShowProfile(!showProfile);
+    } else {
+      navigate('/login')
+    }
+  };
 
   return (
     <>
@@ -110,8 +115,8 @@ const Header = () => {
 
               </div>
             </div>
-            <Container  >
-              <Row className={`fixedHeaderContainer ${scrolling ? 'minimizedFixedHeaderContainer' : ''}`} >
+            <Container className={template === 1 ? "bg-transparent" : ""} style={{ marginTop: template === 1 ? 0 : "10px" }} >
+              <Row className={`fixedHeaderContainer ${scrolling ? 'minimizedFixedHeaderContainer' : ''}  ${template === 1 && "dark-background2"}`} >
                 <Col>
                   <div className="logoContainer"
 
@@ -145,7 +150,7 @@ const Header = () => {
                         onClick={onLogoutHandler}
                         className={`LoadingButton ${scrolling ? 'minimizedLoadingButton' : ''}`}
                       >
-                        {t('signout')}
+                        {t('profile.deconnecter')}
                       </button>
                     </div>
                   </>
@@ -154,7 +159,7 @@ const Header = () => {
 
               </Row>
 
-              <Row className="headerContainer">
+              <Row className={`headerContainer  ${template === 1 && "bg-transparent"}`}>
                 <Col className='col-12 col-sm-7'>
                   <div className="headerAppBar2">
                     <div className="headerMessage">
@@ -208,7 +213,7 @@ const Header = () => {
           </>
         ) : (
           <>
-            <div className={`fixedHeaderContainer2`} >
+            <div className={`fixedHeaderContainer2 ${template === 1 && "dark-background2"}`} >
               <div className="logoContainer"
                 onClick={() => navigate('/')} >
                 <a href="#" className={`logoMain minimizedlogoMain`}></a>
@@ -240,20 +245,19 @@ const Header = () => {
               </div>
             </div>
             {
-              showCart && (<div className="cart-container">
-                <Cart items={cartItems} closeButton={handleCart} />
-              </div>
+              showCart && (
+                <div className={`cart-container  ${template === 1 && "dark-background2"}`}>
+                  <Cart items={cartItems} closeButton={handleCart} />
+                </div>
               )
             }
 
             {
-              showProfile && user && (<div className="cart-container">
+              showProfile && user && (<div className={`cart-container ${template === 1 && "dark-background2"}`}>
                 <UserCart firstName={user.firstname} lastName={user.lastname} closeButton={handleUserCart} />
               </div>
               )
             }
-
-
           </>
         )
       }

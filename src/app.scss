@@ -1,3 +1,5 @@
+@import './colors';
+
 /* Set the width and height of the scroll bar */
 ::-webkit-scrollbar {
   width: 6px;
@@ -19,11 +21,13 @@
 ::-webkit-scrollbar-thumb:hover {
   background: #15808a;
 }
+
 * {
   margin: 0;
   padding: 0;
   box-sizing: border-box;
 }
+
 :root {
   --errorColor: rgba(168, 50, 50, 0.87);
   --secondaryColor: #484848;
@@ -35,20 +39,25 @@
   --yellow: #ffedb0;
   --fontPrimary: "Poppins", sans-serif;
 }
+
 html {
   font-size: 62.5%;
 }
+
 body {
   line-height: 1.2;
   font-family: "Poppins", sans-serif;
 }
+
 a {
   text-decoration: none;
 }
+
 img {
   max-width: 100%;
   max-height: 100%;
 }
+
 .App {
   min-height: 100vh;
   display: flex;
@@ -76,6 +85,18 @@ img {
 ::-webkit-scrollbar-thumb:hover {
   background: #15808a;
 }
+
 .container {
   background-color: white;
+}
+
+.dark-background {
+  background-color: $dark_002 !important;
+}
+
+.dark-background2 {
+  background-color: $dark_001 !important;
+}
+.bg-transparent {
+  background-color: transparent !important;
 }

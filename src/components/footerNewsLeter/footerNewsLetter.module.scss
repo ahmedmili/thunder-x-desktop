@@ -1,10 +1,10 @@
 @import '../../colors';
 
 .newsLetterContainer {
-    background-image: url(/src/assets/news_letter_bg.jpg);
+    background-image: url(/src/assets/news_letter_bg.png);
     background-repeat: no-repeat;
     background-size: 100% 100%;
-    background-color: #30c5c5;
+    background-color: linear-gradient(180deg, rgba(36, 166, 164, 0.58) 34.28%, rgba(36, 166, 164, 0.17) 114.13%);
     height: 95px;
     display: flex;
     padding: 0;

@@ -1,5 +1,4 @@
 import React, { useState, useEffect, useCallback } from "react";
-import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { useAppDispatch } from "../../Redux/store";
 import { adressService } from "../../services/api/adress.api";
@@ -11,8 +10,6 @@ import HomeLocation from '../../assets/home-location.svg'
 import EditPen from '../../assets/edit-pen.svg'
 import ClearRoundedIcon from "@mui/icons-material/ClearRounded";
 
-import HomeRoundedIcon from "@mui/icons-material/HomeRounded";
-import MenuIcon from "@mui/icons-material/Menu";
 import NearMeOutlinedIcon from "@mui/icons-material/NearMeOutlined";
 import { localStorageService } from "../../services/localStorageService";
 import { LocationService } from "../../services/api/Location.api";
@@ -35,7 +32,12 @@ interface AdressComponentProps {
   children?: React.ReactNode;
 }
 
-const Map = () => {
+interface MapProps {
+  className?: string;
+
+}
+
+const Map: React.FC<MapProps> = ({ className }) => {
   const { t } = useTranslation();
   const [clientAdressTable, setClientAdressTable] = useState([]);
   const dispatch = useAppDispatch();
@@ -63,19 +65,20 @@ const Map = () => {
       let res = await adressService.getAdressByid(JSON.parse(userItem!).id);
       setClientAdressTable(res.data.data);
     };
-    userItem != null ? fetchData() : console.log("no user connected");
+    userItem != null && fetchData() ;
   }, []);
 
   const userItem = localStorageService.getUser();
   return (
     <>
-      <div className="location-container">
+      <div className={`location-container ${className ? className : ""}`}>
         <div className="cancel-icon-container">
           <ClearRoundedIcon
             onClick={() => searchType === "" ? dispatch({ type: "SET_SHOW", payload: false }) : setSearchType("")}
             className="cancel-icon"
           ></ClearRoundedIcon>
         </div>
+
         {
           searchType == '' ? <Options /> : <MapCard />
 
@@ -94,9 +97,7 @@ const Map = () => {
     const filtredPositions = clientAdressTable.filter((pos: any) => {
       return pos.type == selectedOption;
     })
-    useEffect(() => {
-      console.log("filtredPositions", filtredPositions)
-    }, [filtredPositions])
+
     return (
       <>
         <div className="form">
@@ -157,10 +158,15 @@ const Map = () => {
           </>
 
         ) : (
-          <h6 style={{ display: userItem ? "inline" : "none" }}>
-            no saved adress to display
-          </h6>
-        )}
+          <div className="Text-container">
+
+            <h6 style={{ display: userItem ? "inline" : "none" }}>
+              no saved adress to display
+            </h6>
+          </div>
+        )
+
+        }
       </>
     )
   }
@@ -239,7 +245,6 @@ const Map = () => {
       </div>
     );
   };
-
 
   function AdressComponent({
     type,

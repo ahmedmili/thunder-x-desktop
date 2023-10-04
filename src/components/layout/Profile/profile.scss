@@ -1,0 +1,28 @@
+@import '../../../colors';
+
+.profile-container {
+    background-color: #F7F7F7;
+    width: 100vw;
+    min-height: 100vh;
+    display: flex;
+    gap: 60px;
+    overflow-y: scroll;
+    transition: all 1s ease-in-out;
+    padding-bottom: 70px;
+
+    &::-webkit-scrollbar {
+        width: 0;
+    }
+}
+
+@media only screen and (max-width: 992px) {
+    .profile-container {
+        gap: 60px;
+    }
+}
+
+@media only screen and (max-width: 768px) {
+    .profile-container {
+        gap: 30px;
+    }
+}

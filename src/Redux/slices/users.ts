@@ -1,5 +1,4 @@
 import { Action, createSlice, PayloadAction } from "@reduxjs/toolkit";
-import { Console } from "console";
 import { stat } from "fs";
 import { RootState } from ".";
 import { api } from "../../services/axiosApi";

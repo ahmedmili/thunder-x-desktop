@@ -2,6 +2,9 @@ import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 import { RootState } from ".";
 import { api } from "../../services/axiosApi";
 import { AppDispatch } from "../store";
+import { localStorageService } from "../../services/localStorageService";
+import { userService } from "../../services/api/user.api";
+import { Restaurant } from "../../services/types";
 
 type HomeDataProps = {
   ads: any;
@@ -13,6 +16,8 @@ type HomeDataProps = {
   today_offers: any[];
 };
 export type HomeDataState = {
+  theme: number;
+  profilePage: number;
   data: HomeDataProps;
   loading: boolean;
   error: any;
@@ -20,6 +25,8 @@ export type HomeDataState = {
 };
 
 const initialState: HomeDataState = {
+  theme: 0,
+  profilePage: 3,
   data: {
     ads: {},
     categories: [],
@@ -64,6 +71,13 @@ const homeSlice = createSlice({
     setIsDelivery: (state, action) => {
       state.isDelivery = action.payload;
     },
+    setTheme: (state, action) => {
+      state.theme = action.payload;
+      localStorageService.setUserTheme(action.payload)
+    },
+    setProfilePage: (state, action) => {
+      state.profilePage = action.payload;
+    },
   },
 });
 
@@ -72,6 +86,8 @@ export const {
   startLoading,
   getHomeDataError,
   setIsDelivery,
+  setTheme,
+  setProfilePage,
 } = homeSlice.actions;
 
 const homeReducer = homeSlice.reducer;
@@ -93,26 +109,48 @@ export const isDeliveryHomeSelector = (state: RootState) =>
   state.home.isDelivery;
 export const homeErrorsSelector = (state: RootState) => state.home.error;
 export const homeLoadingSelector = (state: RootState) => state.home.loading;
-
+var favorsList: number[] = []
 // Action
+const getClientFavors = async () => {
+  const { status, data } = await userService.getClientFavorits()
+  var favs: any = []
+  data.success && data.data.map((i: Restaurant) => {
+    favs.push(i.id)
+  })
+  favorsList = favs
+}
+
 export const fetchHomeData =
   (isDelivery: number, long: any, lat: any) =>
-  async (dispatch: AppDispatch) => {
-    try {
-      dispatch(startLoading());
-      const response = await api.post("get_home_page_data", {
-        delivery: isDelivery,
-        lat: lat,
-        long: long,
-      });
-      const { success, data } = response.data;
-      // console.log(data)
-      if (success) {
-        dispatch(getHomeDataSuccess(data));
-      } else {
-        dispatch(getHomeDataError(response));
+    async (dispatch: AppDispatch) => {
+      getClientFavors()
+
+
+      try {
+        dispatch(startLoading());
+        const response = await api.post("get_home_page_data", {
+          delivery: isDelivery,
+          lat: lat,
+          long: long,
+        });
+        const { success, data } = response.data;
+        var suppliersList: Restaurant[] = [];
+        data.recommended.map((resto: any, index: number) => {
+          let rest = resto;
+          if (favorsList.includes(rest.id)) {
+            rest.favor = true;
+          } else {
+            rest.favor = false;
+          }
+          suppliersList.push(rest);
+        });
+        data.recommended = suppliersList;
+        if (success) {
+          dispatch(getHomeDataSuccess(data));
+        } else {
+          dispatch(getHomeDataError(response));
+        }
+      } catch (error) {
+        dispatch(getHomeDataError(error));
       }
-    } catch (error) {
-      dispatch(getHomeDataError(error));
-    }
-  };
+    };

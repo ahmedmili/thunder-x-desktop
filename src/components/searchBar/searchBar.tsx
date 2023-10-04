@@ -20,7 +20,6 @@ const SearchBar: React.FC<Props> = ({ placeholder }) => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const navLocation = useLocation();
-  // const deliv = useAppSelector((state)=> state.homeData.isDelivery)
   const [searchTerm, setSearchTerm] = useState("");
   const [errorMessage, setErrorMessage] = useState("");
   const [dfaultDistanceFilter, setDefaultDistanceFilter] = useState<number>(10);
@@ -73,14 +72,13 @@ const SearchBar: React.FC<Props> = ({ placeholder }) => {
             navLocation.pathname != "/search" && navigate(`/search`);
           })
         } catch (e) {
-          console.log(e);
+          throw e
         }
       } else {
         setErrorMessage("Veuillez compléter la recherche.");
       }
     } else {
       setErrorMessage("choisissez l\'emplacement s\'il vous plaît");
-      console.log(errorMessage)
     }
 
     dispatch(setSearchQuery(searchTerm));

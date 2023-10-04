@@ -1,3 +1,10 @@
+function setUserTheme(theme: string) {
+    localStorage.setItem('theme', theme)
+}
+function getUserTheme() {
+    return localStorage.getItem('theme')
+}
+
 function setUserCredentials(user: any, token: string) {
     localStorage.setItem('token', token);
     localStorage.setItem('userId', user.id.toString());
@@ -13,6 +20,10 @@ function setUserToken(token: string) {
 }
 function getUserToken() {
     return localStorage.getItem('token')
+}
+function setUser(user:any) {
+    let userData = JSON.stringify(user)
+    return localStorage.setItem('user',userData)
 }
 function getUser() {
     return localStorage.getItem('user')
@@ -80,11 +91,15 @@ function getDelivery() {
 }
 
 export const localStorageService = {
+    setUserTheme,
+    getUserTheme,
+    
     setUserCredentials,
     unsetUserCredentials,
     setUserToken,
     getUserToken,
     getUser,
+    setUser,
     getUserId,
     setCurrentLocation,
     getCurrentLocation,

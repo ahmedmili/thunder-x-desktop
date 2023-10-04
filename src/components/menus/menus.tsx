@@ -7,7 +7,8 @@ import {
 
 } from '@mui/material';
 import { Add as AddIcon, Star } from '@mui/icons-material';
-import { useAppDispatch } from '../../Redux/store';
+import missingImage from '../../assets/missingImage.png';
+import { RootState, useAppDispatch, useAppSelector } from '../../Redux/store';
 import {
   clearCart,
   clearSupplierMismatch,
@@ -28,18 +29,18 @@ interface MenuProps { }
 
 
 const Menu: React.FC<MenuProps> = () => {
+
   const { t } = useTranslation();
   const dispatch = useAppDispatch();
+  const navigate = useNavigate();
+  const theme = useAppSelector(state => state.home.theme)
   const [menuData, setMenuData] = useState<MenuData[]>([]);
   const { id } = useParams<{ id: string }>();
-  // const [showOptions, setShowOptions] = useState(false);
   const [loading, setLoading] = useState(true);
   const location = useLocation();
   const restaurant = location.state.restaurant;
   const [currentPage, setCurrentPage] = useState<{ [key: string]: number }>({});
   const productsPerPage = 4;
-
-
 
   const [showMismatchModal, setShowMismatchModal] = useState(false);
   const [showOptionsPopup, setShowOptionsPopup] = useState(false);
@@ -119,7 +120,6 @@ const Menu: React.FC<MenuProps> = () => {
   }, [selectedOption])
 
   const Product = () => {
-
     return <>
       {
         loading ? (
@@ -138,10 +138,8 @@ const Menu: React.FC<MenuProps> = () => {
                 indexOfFirstProduct,
                 indexOfLastProduct
               );
-
-
               return (
-                <div key={menuItemId} className="menu-item-container">
+                <div key={menuItemId} className={`menu-item-container`}>
                   <div className="menu-item-header">
                     <span className='menu-item-header-title'>
                       {menuItem.name}
@@ -150,7 +148,6 @@ const Menu: React.FC<MenuProps> = () => {
                       {menuItemProducts.length} choix
                     </span>
                   </div>
-
                   {menuItemProducts.length > productsPerPage && (
                     <Pagination
                       style={{ marginTop: '1rem' }}
@@ -181,7 +178,6 @@ const Menu: React.FC<MenuProps> = () => {
                               <AddIcon className="product-button-icon" />
                             </button>
                           </div>
-
                           <img src={product.image[0]?.path} alt='product photo' className="product-image" />
                         </div>
                       ))}
@@ -193,30 +189,28 @@ const Menu: React.FC<MenuProps> = () => {
             )
           )}
     </>
-
   }
-
 
   return (
     <>
-      <Container fluid className='supplier-page-header' >
+      <Container fluid className={`supplier-page-header`} >
         <Row>
           <div className="background-container">
             <img src={restaurant?.images[0].path} alt="restaurant image" className="background" />
             <div className="open-time">
-              <span>Ouvert jusqu’à {restaurant?.closetime}</span>
+              <span>{t("supplier.opentime")} {restaurant?.closetime}</span>
             </div>
           </div>
         </Row>
       </Container>
 
-      <Container fluid className='supplier-page-main-container'>
+      <Container fluid className={`supplier-page-main-container`}>
         <Row>
-          <section className='info-section'>
+          <section className={`info-section `}>
             <div className="info-container">
               <div className="left-side">
                 <div className='name'>{restaurant?.name}</div>
-                <div className='price'>Frais de livraison : <span className='price-value'> {restaurant?.service_price} dt</span></div>
+                <div className='price'>{t("supplier.delivPrice")} <span className='price-value'> {restaurant?.service_price} dt</span></div>
               </div>
 
               <div className="right-side">
@@ -232,25 +226,25 @@ const Menu: React.FC<MenuProps> = () => {
             </div>
           </section>
         </Row>
-        <Row className='main-row'>
-          <div className="side-bar">
-            <div className="pub-contained">
+        <Row className={`main-row`}>
+          <div className={`supplier-page-side-bar`}>
+            <div className={`pub-contained`}>
               <img className='supplier-logo' src={restaurant?.images[1].path} alt="" />
-              <div className="pub-posts">
+              <div className={`pub-posts`}>
                 <img className='insta-img' src={instaposter} alt=" insta img posts" />
                 <img className='insta-img' src={instaposter} alt=" insta img posts" />
               </div>
             </div>
           </div>
 
-          <section className='main-container'>
+          <section className={`main-container`}>
             <div className="filers">
               {
                 menuData.length != 0 && (
                   <>
                     <div className={`select ${selectedOption == "tous" ? "selected" : ""}`}  >
                       <input type="radio" value="tous" id='tous' name='type' checked={selectedOption === "1"} onChange={handleOptionChange} />
-                      <label htmlFor="tous">Tous les produits</label>
+                      <label htmlFor="tous">{t('supplier.allProducts')}</label>
                     </div>
                     {
                       menuData.map((data, index) => {

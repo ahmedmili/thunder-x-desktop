@@ -9,12 +9,18 @@ import Email from "../../assets/icons/Email";
 import TikTokIcon from "../../assets/icons/TiktokIcon";
 import InstaIcon from "../../assets/icons/InstaIcon";
 import FacebookIcon from "../../assets/icons/FacebookIcon";
+import { useAppSelector } from "../../Redux/store";
 import { useEffect, useState } from "react";
 
 const Footer: React.FC<FooterProps> = () => {
 
   const adsSelector = useSelector(adsHomeSelector);
   const ads = adsSelector.HOME_1;
+  const theme = useAppSelector((state) => state.home.theme)
+  const [template, setTemplate] = useState<number>(theme)
+  useEffect(() => {
+    setTemplate(theme)
+  }, [theme])
   const [currentIndex, setCurrentIndex] = useState(0);
   const [images, setImages] = useState<any>([]);
 
@@ -30,7 +36,7 @@ const Footer: React.FC<FooterProps> = () => {
   }, [images]);
 
   return (
-    <Container fluid className="footerContainer">
+    <Container fluid className={`footerContainer ${template === 1 && 'dark-background2'}`}>
       <Row className="bodyRow">
         {/* logo section */}
         <Col className="footerLogoCol" >
@@ -115,7 +121,7 @@ const Footer: React.FC<FooterProps> = () => {
 
       {/* all right reserved section */}
       <Row >
-        <Col className={"footerRightReserverCol"}>
+        <Col className={`footerRightReserverCol  ${template === 1 && 'dark-background'} `} >
           <p >Tous droits réservés © 2023</p>
         </Col>
       </Row>

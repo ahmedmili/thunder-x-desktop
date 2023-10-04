@@ -15,6 +15,7 @@ import { Container, Row, Col } from "react-bootstrap";
 
 import KeyboardDoubleArrowLeftIcon from "@mui/icons-material/KeyboardDoubleArrowLeft";
 import KeyboardDoubleArrowRightIcon from "@mui/icons-material/KeyboardDoubleArrowRight";
+import { useAppSelector } from "../../Redux/store";
 
 interface Props {
   listType: string;
@@ -25,6 +26,13 @@ const RestaurantList: React.FC<Props> = ({ restaurants, listType }) => {
   const { t } = useTranslation();
 
   const [restaurantsList, setRestaurantsList] = useState(restaurants);
+
+  const theme = useAppSelector(state => state.home.theme)
+  const [template, setTemplate] = useState<number>(theme)
+
+  useEffect(() => {
+    setTemplate(theme)
+  }, [theme])
 
   useEffect(() => {
     setRestaurantsList(restaurants);
@@ -57,7 +65,7 @@ const RestaurantList: React.FC<Props> = ({ restaurants, listType }) => {
   return (
     <div className={recommandedStyle.recommandedContainer}>
       {
-        <Container className={recommandedStyle.container}>
+        <Container className={recommandedStyle.container +` ${!displayNormal && recommandedStyle.uniqueContainer} ${template === 1 && 'dark-background2'}`}>
           <Row>
             {listType == "recommanded" && (
               <h2 className={recommandedStyle.recaommandedTitle}>

@@ -23,7 +23,6 @@
       justify-content: center;
       align-items: center;
 
-      img {}
 
       .welcome-msg {
         color: #484848;
@@ -54,6 +53,10 @@
       height: 19px;
       font-size: 18px;
       color: #FBC000;
+
+      &:hover {
+        cursor: pointer;
+      }
     }
   }
 

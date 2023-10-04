@@ -1,4 +1,3 @@
-import React from 'react'
 import style from './footerNewsLetter.module.scss'
 import { Container, Row, Col } from 'react-bootstrap'
 import KeyboardArrowRightIcon from '@mui/icons-material/KeyboardArrowRight';

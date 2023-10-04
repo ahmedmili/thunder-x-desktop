@@ -17,7 +17,7 @@
 }
 
 .headerContainer {
-    margin-top: 136px;
+    padding-top: 135px;
 }
 
 .head1 {
@@ -45,13 +45,14 @@
     left: 10%;
     right: 10%;
     bottom: 0;
-    padding: 9px 11px 0px 13px;
+    padding: 9px 11px 9px 13px;
     border-radius: 0 0 10px 10px;
 
     z-index: 990;
 
     .logoContainer {
         cursor: pointer;
+        height: 100%;
 
         .logoMain {
             background-repeat: no-repeat;
@@ -66,6 +67,8 @@
     .appBar {
         display: flex;
         justify-content: end;
+        align-items: center;
+        height: 100%;
         gap: 2px;
         position: relative;
 
@@ -153,7 +156,6 @@
 .imageBuilder {
     background-image: url(/src/assets/home/images.png);
     background-size: 100% 100%;
-    // background-position: right;
     background-repeat: no-repeat;
     width: 438px;
     height: 310px;
@@ -162,10 +164,13 @@
 
 .minimizedFixedHeaderContainer {
     height: 62px;
+    padding: 0;
 
     .minimizedlogoMain {
-        height: 32.64px !important;
+        height: 100% !important;
         background-size: 32%;
+        background-position: center;
+        background-repeat: no-repeat;
     }
 }
 
@@ -185,7 +190,8 @@
     align-items: center;
     padding: 0 10px;
     border-radius: 0px 0px 20px 20px;
-    z-index: 990;
+    z-index: 1001;
+    box-shadow: 0px 0px 10px 0px rgba(0, 0, 0, 0.75);
 
     .logoContainer {
         cursor: pointer;
@@ -197,7 +203,8 @@
             background-position: center;
             background-size: cover;
             width: 31.81px;
-            height: 39px;
+            height: 51px;
+            margin-left: 20px;
         }
     }
 
@@ -290,29 +297,13 @@
     position: fixed;
     top: 80px;
     right: 12vw;
-    width: 473px;
+    width: 500px;
     background-color: white;
     z-index: 999;
-    overflow-y: scroll;
     border-radius: 15px;
     box-shadow: 0px 4px 4px 0px rgba(0, 0, 0, 0.25);
-    animation: $CartAnimation 0.5s linear;
-
-    &::-webkit-scrollbar {
-        width: 0.5rem;
-        /* Set a width for the scrollbar */
-    }
-
-    &::-webkit-scrollbar-track {
-        background-color: transparent;
-        /* Set the track color to transparent */
-    }
-
-    &::-webkit-scrollbar-thumb {
-        background-color: transparent;
-        /* Set the thumb color to transparent */
-    }
-
+    animation: cart-animation 0.3s linear;
+    padding: 15px 0;
 }
 
 

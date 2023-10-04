@@ -1,11 +1,48 @@
 @import '../../colors';
 
 
+.dark-text {
+  color: $Off-White !important;
+
+  span {
+    color: $Off-White !important;
+  }
+
+  p {
+    color: $Off-White !important;
+  }
+}
+
+
+@keyframes cart-animation {
+  0% {
+    height: 0%;
+  }
+
+  100% {
+    height: 60%;
+  }
+}
 
 .cart-main {
-  width: 100%;
+  width: 98%;
   border-radius: 15px;
   padding: 20px 20px;
+  overflow-y: scroll;
+  max-height: 601px;
+  margin-right: 5px;
+  animation: cart-animation 0.3s linear;
+
+  &::-webkit-scrollbar-track {
+    width: 0;
+    background-color: transparent;
+  }
+
+  &::-webkit-scrollbar-thumb {
+    width: 5px;
+    height: 392px;
+    background-color: #E9E8E8;
+  }
 
   .cart-info {
     border-radius: 15px;
@@ -302,7 +339,8 @@
       font-style: normal;
       font-weight: 600;
       line-height: normal;
-      &:hover{
+
+      &:hover {
         cursor: pointer;
       }
     }

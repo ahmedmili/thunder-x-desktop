@@ -2,7 +2,10 @@
 
 .container {
   top: 0;
-margin-top: 10px;
+  margin-top: 10px;
+  border-radius: 50px;
+  padding: 25px;
+
   .carousal-cat-title {
     text-align: center;
     color: $primary_color;
@@ -19,7 +22,7 @@ margin-top: 10px;
   padding-top: 16px;
   padding-bottom: 213px;
   height: 150px;
-  background-size: 104% 100%; //104%
+  background-size: 104% 100%;
   background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='1200' height='281' viewBox='0 0 1241 281' fill='%2324A6A4' fill-opacity='0.74'%3E%3Cpath d='M0 148.737C0 117.418 24.089 91.3674 55.3123 88.9205L1176.31 1.06948C1211.19 -1.66385 1241 25.9012 1241 60.8861V221C1241 254.137 1214.14 281 1181 281H60C26.8629 281 0 254.137 0 221V148.737Z'/%3E%3C/svg%3E");
   background-repeat: no-repeat;
 

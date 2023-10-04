@@ -1,4 +1,4 @@
-import { CircularProgress, CssBaseline } from "@mui/material";
+import { CssBaseline } from "@mui/material";
 import "bootstrap/dist/css/bootstrap.min.css";
 import { Navigate, Outlet, Route, Routes } from "react-router-dom";
 import { lazy, Suspense, useCallback, useEffect, useState } from "react";
@@ -31,12 +31,19 @@ import { localStorageService } from "./services/localStorageService";
 // import { homedataService } from "./services/api/homeData.api";
 import { supplierServices } from "./services/api/suppliers.api";
 import { Restaurant } from "./services/types";
-import { fetchHomeData } from "./Redux/slices/home";
+import { fetchHomeData, setTheme } from "./Redux/slices/home";
 import FilterPage from "./views/filtre/FilterPage";
 import HomeSkeleton from "./views/home/skeleton/HomeSkeleton";
 import Header from "./components/Header/Header";
 import Footer from "./components/footer/footer";
-import MenuOptions from "./components/menus/menuOptions/MenuOptions";
+import { userService } from "./services/api/user.api";
+import Profile from "./components/layout/Profile/Profile"
+import ConfigPage from "./components/layout/Profile/ConfigPage/ConfigPage";
+import Annonces from "./components/layout/Profile/All_Annonces/All_Annonces";
+import ArchivedCommands from "./components/layout/Profile/Archivedcommands/ArchivedCommands";
+import Discuter from "./components/layout/Profile/Discuter/Discuter";
+import Favors from "./components/layout/Profile/Favors/Favors";
+import FidelitePage from "./components/layout/Profile/FidelitePage/FidelitePage";
 
 //lazy loading
 const HomePage = lazy(() => import("./views/home/home.page"));
@@ -61,6 +68,7 @@ type Position = {
 function App() {
   const dispatch = useAppDispatch();
 
+  var favorsList: number[] = [];
   const location = useAppSelector((state) => state.location.position);
   const deliv = useAppSelector((state) => state.homeData.isDelivery);
   const [updateTrigger, setUpdateTrigger] = useState(false);
@@ -75,13 +83,30 @@ function App() {
     };
   }, [updateHomeData]);
 
+  const getClientFavors = async () => {
+    const { status, data } = await userService.getClientFavorits()
+    var favs: any = []
+    data.success && data.data.map((i: Restaurant) => {
+      favs.push(i.id)
+    })
+    favorsList = favs
+  }
+
   const getSupplierData = async () => {
     const { status, data } = await supplierServices.all_annonces();
     if (status === 200) {
       var suppliersList: Restaurant[] = [];
       let dataList = data.data;
-      dataList.map((resto: any) => {
-        if (resto.supplier) suppliersList.push(resto.supplier);
+      dataList.map((resto: any, index: number) => {
+        if (resto.supplier) {
+          let rest = resto.supplier;
+          if (favorsList.includes(rest.id)) {
+            rest.favor = true;
+          } else {
+            rest.favor = false;
+          }
+          suppliersList.push(rest);
+        }
       });
       dispatch(setRestaurants(suppliersList));
     }
@@ -89,6 +114,7 @@ function App() {
 
   useEffect(() => {
     let isLoggedIn = localStorageService.getUserToken();
+    isLoggedIn?.length! > 0 && getClientFavors();
     isLoggedIn?.length! > 0 && getSupplierData();
   }, [updateTrigger]);
 
@@ -169,13 +195,29 @@ function App() {
     }
   }, [])
 
+  // initialize theme
+  // useEffect(() => {
+  //   const theme = localStorageService.getUserTheme();
+
+  //   !theme && (() => {
+  //     localStorageService.setUserTheme('0');
+  //   })
+  //   theme == "0" ? dispatch(setTheme(0)) : dispatch(setTheme(1));
+
+  // }, []);
+
   // webSocket create instance
+  // useEffect(() => {
+  //   const socket = WebSocket.getInstance();
+  // }, []);
+  const theme = useAppSelector((state) => state.home.theme)
+  const [template, setTemplate] = useState<number>(theme)
   useEffect(() => {
-    const socket = WebSocket.getInstance();
-  }, []);
+    setTemplate(theme)
+  }, [theme])
 
   return (
-    <>
+    <div className={`${template === 1 && "dark-background"}`}>
       <CssBaseline />
       <ToastContainer />
       <Suspense fallback={
@@ -191,20 +233,21 @@ function App() {
             <Route index element={<HomePage />} />
             <Route path="/supplier-store/:id/*" element={<Menu />} />
             {/* <Route path="/product" element={<MenuOptions />} /> */}
-            <Route path="/cart" element={<CartPage/>} />
+            <Route path="/cart" element={<CartPage />} />
             <Route path="/search" element={<FilterPage />} />
-
             {/* Private Route */}
             <Route path="track-order" element={<OrderTrackingPage />} />
-            <Route
-              path="profile"
-              element={
-                <ProtectedRoute>
-                  <ProfilePage />
-                </ProtectedRoute>
-              }
-            />
           </Route>
+
+          <Route path="/profile" element={<Profile />}>
+            <Route index element={<ConfigPage />} />
+            <Route path="/profile/annonces" element={<Annonces />} />
+            <Route path="/profile/archivedCommands" element={<ArchivedCommands />} />
+            <Route path="/profile/discuter" element={<Discuter />} />
+            <Route path="/profile/Favors" element={<Favors />} />
+            <Route path="/profile/Fidelite" element={<FidelitePage />} />
+          </Route>
+
           <Route path="unauthorized" element={<UnauthorizePage />} />
           <Route path="login" element={<LoginPage />} />
           <Route path="register" element={<RegisterPage />} />
@@ -213,7 +256,7 @@ function App() {
           <Route path="forgotpassword" element={<ForgotPasswordPage />} />
         </Routes>
       </Suspense>
-    </>
+    </div>
   );
 }
 

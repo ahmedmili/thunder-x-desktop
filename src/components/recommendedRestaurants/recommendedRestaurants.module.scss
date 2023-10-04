@@ -8,11 +8,11 @@
   .container {
     background-color: white;
     position: relative;
-    padding: 0;
+    padding: 25px;
     top: 0;
     justify-content: center;
-    // padding-bottom: 5px;
     margin-bottom: 10px;
+    height: 100%;
 
     .recaommandedTitle {
       text-align: center;
@@ -49,7 +49,7 @@
     }
 
     .unique {
-      width: 100%;
+      width: 96%;
       height: 223px;
       border-radius: 60px;
       background: $Light_yellow;
@@ -58,8 +58,7 @@
     }
 
     .bouble {
-      width: 100%;
-
+      width: 96%;
       height: 317px;
       top: 160px;
       border-radius: 60px;
@@ -136,8 +135,8 @@
   .recommandedContainer {
     .container {
       .unique {
-        height: 120px;
-        top: 88px;
+        height: 143px;
+        top: 108px;
       }
 
       .bouble {
@@ -165,8 +164,9 @@
   .recommandedContainer {
     .container {
       .unique {
-        height: 112px;
+        height: 157px;
         top: 101px;
+        width: 95%;
       }
 
       .bouble {
@@ -192,7 +192,8 @@
   .recommandedContainer {
     .container {
       .unique {
-        top: 104px;
+        top: 110px;
+        height: 128px;
       }
 
       .bouble {
@@ -231,15 +232,15 @@
     font-size: 1rem;
 
     .container {
+      .unique {
+        height: 106px;
+        top: 103px;
+        width: 88%;
+      }
 
       .recaommandedTitle {
 
         font-size: 2rem;
-      }
-
-      .unique {
-        height: 90px;
-        top: 85px;
       }
 
       .bouble {
@@ -279,14 +280,16 @@
 
   .recommandedContainer {
     .container {
+
       .unique {
         height: 90px;
-        top: 79px;
+        top: 66px;
       }
 
       .bouble {
-        height: 135px;
-        top: 45px;
+        height: 88px;
+        top: 112px;
+        width: 88%;
       }
 
       .discountTitleContainer {

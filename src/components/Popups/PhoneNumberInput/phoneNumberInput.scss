@@ -1,0 +1,133 @@
+@import '../../../_colors.scss';
+
+@keyframes popup-animation {
+    0% {
+        scale: 0;
+        opacity: 0;
+    }
+
+    100% {
+        scale: 1;
+        opacity: 1;
+    }
+}
+
+.phone-input-popup-container {
+    height: 100vh;
+    width: 100%;
+    background: rgba(72, 72, 72, 0.60);
+    position: fixed;
+    top: 0;
+    right: 0;
+    z-index: 999;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    .phone-popup-box {
+        width: 594px;
+        height: 489px;
+        background-color: white;
+        border-radius: 25px;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        gap: 95px;
+        animation: popup-animation 1s ease-in-out;
+        position: relative;
+
+        .phone-input-popup-close {
+            position: absolute;
+            top: 15px;
+            right: 15px;
+            width: 20px;
+            height: 20px;
+            color: #FBC000;
+            background-color: transparent;
+            border: none;
+            font-size: 20px;
+        }
+
+        .input-text-zone {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+
+            label {
+                color: #484848;
+                font-family: Poppins;
+                font-size: 16px;
+                font-style: normal;
+                font-weight: 500;
+                line-height: normal;
+            }
+
+            .input-box {
+
+                input[type="number"]::-webkit-inner-spin-button,
+                input[type="number"]::-webkit-outer-spin-button,
+                input[type="number"] {
+                    -webkit-appearance: none;
+                    appearance: none;
+                    margin: 0;
+                    /* Optional: You can adjust the margin if needed */
+                }
+
+                .phone-input {
+                    border: none;
+                    border-radius: 7px;
+                    border: 2px solid #8ACDCC;
+                    width: 100%;
+                    height: 49px;
+                    padding: 12px 15px;
+                    font-family: Poppins;
+                    font-size: 20px;
+                    font-style: normal;
+                    font-weight: 600;
+                    line-height: normal;
+
+                    &::placeholder {
+                        color: #958E8E;
+                        font-family: Poppins;
+                        font-size: 20px;
+                        font-style: normal;
+                        font-weight: 600;
+                        line-height: normal;
+                    }
+
+                    &:focus {
+                        outline: none;
+                    }
+                }
+            }
+        }
+
+        .input-numbers-keys-zone {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 5px;
+            row-gap: 7px;
+
+            button {
+                border-radius: 5px;
+                border: none;
+                padding: 6px 47px;
+                color: #24A6A4;
+                font-family: Poppins;
+                font-size: 18px;
+                font-style: normal;
+                font-weight: 600;
+                line-height: normal;
+            }
+
+            .number-key {
+                background: rgba(46, 181, 178, 0.34);
+            }
+
+            .number-delete {
+                background-color: transparent;
+            }
+        }
+    }
+}
