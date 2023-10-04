@@ -1,0 +1,131 @@
+@import '../../../../colors';
+
+
+.feedback-page-main-container {
+    padding-top: 150px;
+    display: flex;
+    flex-direction: column;
+    gap: 25px;
+
+    .feedback-page-title {
+        color: #484848;
+        font-family: Poppins;
+        font-size: 24px;
+        font-style: normal;
+        font-weight: 700;
+        line-height: normal;
+    }
+
+    .images-header {
+        display: flex;
+        gap: 36px;
+        width: calc(100vw - 476px);
+
+
+        .feedback-banner {
+            border-radius: 25px;
+            width: 50%;
+
+            img {
+                width: 50%;
+                object-fit: cover;
+            }
+        }
+
+        .feedback-satifait {
+            max-height: 298px;
+            width: 50%;
+            border-radius: 25px;
+            background: #8ACDCC;
+            padding: 46px 67px 102px 57px;
+            display: flex;
+            flex-direction: column;
+            gap: 9px;
+
+
+            .feedback-question {
+                color: #FFF;
+                font-family: Poppins;
+                font-size: 20px;
+                font-style: normal;
+                font-weight: 500;
+                line-height: normal;
+            }
+
+            .question-option {
+                display: flex;
+                justify-content: space-between;
+                align-items: center;
+
+                label {
+                    color: #FFF;
+                    font-family: Poppins;
+                    font-size: 16px;
+                    font-style: normal;
+                    font-weight: 500;
+                    line-height: normal;
+                    cursor: pointer;
+                }
+
+                .feedback-option-radio:checked~.form-check-label {
+                    color: $Ocean_Teal;
+                }
+
+                .feedback-option-radio:checked {
+                    background-color: $Ocean_Teal ;
+                    border-color: $Ocean_Teal;
+                }
+            }
+        }
+    }
+
+    .submit-avis {
+        border-radius: 25px;
+        background: #FBC000;
+        border: none;
+        width: 70%;
+        margin: 0 auto;
+        height: 42px;
+
+        color: #FFF;
+        font-family: Poppins;
+        font-size: 14px;
+        font-style: normal;
+        font-weight: 600;
+        line-height: normal;
+    }
+}
+
+@media only screen and (max-width:991px) {
+    .feedback-page-main-container {
+        .images-header {
+            .feedback-satifait {
+                padding: 16px 16px 21px 16px;
+                gap: 6px;
+
+                .feedback-question {
+                    font-size: 15px;
+                    margin: 0;
+                    width: 154px;
+
+                }
+
+                .question-option {
+
+                    label {
+                        font-size: 12px;
+                    }
+                }
+            }
+        }
+    }
+}
+
+@media only screen and (max-width:768px) {
+    .feedback-page-main-container {
+        .images-header {
+            // width: 146px;
+            gap: 8px;
+        }
+    }
+}
