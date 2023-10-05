@@ -1,5 +1,6 @@
 $CartAnimation: cart-animation;
 $PopupAnimation: popup-animation;
+$messangerSettingAnimation: messanger-setting-animation;
 
 @keyframes #{$CartAnimation} {
     0% {
@@ -29,5 +30,20 @@ $PopupAnimation: popup-animation;
     100% {
         scale: 1;
         opacity: 1;
+    }
+}
+
+@keyframes #{$messangerSettingAnimation} {
+    0% {
+
+        height: 0;
+        padding: 0;
+
+    }
+
+    100% {
+        height: 53px;
+        padding: 17px;
+
     }
 }

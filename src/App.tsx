@@ -5,7 +5,7 @@ import { lazy, Suspense, useCallback, useEffect, useState } from "react";
 import Layout from "./components/layout/layout";
 import { ToastContainer, toast } from "react-toastify";
 
-import { useAppDispatch, useAppSelector } from "./Redux/store";
+import { AppDispatch, useAppDispatch, useAppSelector } from "./Redux/store";
 
 import {
   selectIsDelivery,
@@ -24,13 +24,11 @@ import {
 import Menu from "./components/menus/menus";
 import { setUser, login, logout } from "./Redux/slices/userSlice";
 import jwt_decode from "jwt-decode";
-import WebSocket from "./services/websocket";
 import eventEmitter from "./services/thunderEventsService";
 import "./app.scss";
 import { localStorageService } from "./services/localStorageService";
-// import { homedataService } from "./services/api/homeData.api";
 import { supplierServices } from "./services/api/suppliers.api";
-import { Restaurant } from "./services/types";
+import { Message, Restaurant } from "./services/types";
 import { fetchHomeData, setTheme } from "./Redux/slices/home";
 import FilterPage from "./views/filtre/FilterPage";
 import HomeSkeleton from "./views/home/skeleton/HomeSkeleton";
@@ -44,6 +42,8 @@ import ArchivedCommands from "./components/layout/Profile/Archivedcommands/Archi
 import Discuter from "./components/layout/Profile/Discuter/Discuter";
 import Favors from "./components/layout/Profile/Favors/Favors";
 import FidelitePage from "./components/layout/Profile/FidelitePage/FidelitePage";
+import channelListener from "./services/web-socket";
+import { addMessangerSuccess, addUnReadedMessage } from "./Redux/slices/messanger";
 
 //lazy loading
 const HomePage = lazy(() => import("./views/home/home.page"));
@@ -195,21 +195,21 @@ function App() {
     }
   }, [])
 
-  // initialize theme
-  // useEffect(() => {
-  //   const theme = localStorageService.getUserTheme();
-
-  //   !theme && (() => {
-  //     localStorageService.setUserTheme('0');
-  //   })
-  //   theme == "0" ? dispatch(setTheme(0)) : dispatch(setTheme(1));
-
-  // }, []);
-
+  // handle recive admin message
+  const newMessage = async (message: Message) => {
+    dispatch(addMessangerSuccess(message))
+  }
   // webSocket create instance
-  // useEffect(() => {
-  //   const socket = WebSocket.getInstance();
-  // }, []);
+  useEffect(() => {
+    channelListener()
+    eventEmitter.on('NEW_ADMIN_MESSAGE', newMessage);
+    return () => {
+      eventEmitter.off('NEW_ADMIN_MESSAGE', newMessage);
+    }
+  }, [])
+
+
+
   const theme = useAppSelector((state) => state.home.theme)
   const [template, setTemplate] = useState<number>(theme)
   useEffect(() => {

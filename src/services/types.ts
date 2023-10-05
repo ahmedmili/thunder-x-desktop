@@ -145,3 +145,15 @@ export interface Restaurant {
   plates: string[];
   favor?: boolean;
 }
+
+export interface Message {
+  id?: number;
+  clinet_id?: number;
+  send?: number;
+  created_at?: string;
+  updated_at?: string;
+  date?: string;
+  deleted_at?: string;
+  read_at?: string;
+  message: string;
+}
