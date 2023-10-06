@@ -1,31 +1,31 @@
+import { Col, Container, Row } from "react-bootstrap";
 import { useNavigate } from 'react-router-dom';
-import { useAppDispatch, useAppSelector } from '../../Redux/store';
 import { toast } from 'react-toastify';
-import './header.scss'
-import { Container, Row, Col } from "react-bootstrap"
+import { useAppDispatch, useAppSelector } from '../../Redux/store';
+import './header.scss';
 
-import { LoadingButton as _LoadingButton } from "@mui/lab";
-import PermIdentityOutlinedIcon from '@mui/icons-material/PermIdentityOutlined';
-import ShoppingCartOutlinedIcon from '@mui/icons-material/ShoppingCartOutlined';
-import PinDropIcon from "@mui/icons-material/PinDrop";
 import LocationOnIcon from '@mui/icons-material/LocationOn';
-import { logout } from "../../Redux/slices/userSlice";
+import PermIdentityOutlinedIcon from '@mui/icons-material/PermIdentityOutlined';
+import PinDropIcon from "@mui/icons-material/PinDrop";
+import ShoppingCartOutlinedIcon from '@mui/icons-material/ShoppingCartOutlined';
+import { Box } from '@mui/material';
 import { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
+import { logout } from "../../Redux/slices/userSlice";
 import { localStorageService } from "../../services/localStorageService";
-import Switches from "../toggleSwitch/toggleSwitch";
-import SearchBar from "../searchBar/searchBar";
 import Map from "../Location/Location";
-import { Box } from '@mui/material';
+import SearchBar from "../searchBar/searchBar";
+import Switches from "../toggleSwitch/toggleSwitch";
 
-import { useLocation } from 'react-router-dom';
 import { Search } from '@mui/icons-material';
-import { Cart } from '../cart/cart';
+import { useLocation } from 'react-router-dom';
 import { UserCart } from '../UserCart/UserCart';
+import { Cart } from '../cart/cart';
 
 const Header = () => {
 
   const theme = useAppSelector((state) => state.home.theme)
+  const msg_notifs = useAppSelector((state) => state.messanger.unReadedMessages)
   const [template, setTemplate] = useState<number>(theme)
 
   const logged_in = localStorageService.getUserToken() !== null;
@@ -38,9 +38,10 @@ const Header = () => {
   const location = useAppSelector((state) => state.location.position);
   const showMapState = useAppSelector((state) => state.location.showMap);
 
-  const [showCart, setShowCart] = useState(false); // Add state variable for showing/hiding the cart
-  const [showProfile, setShowProfile] = useState(false); // Add state variable for showing/hiding the cart
-  const [scrolling, setScrolling] = useState(false);
+  const [showCart, setShowCart] = useState<boolean>(false); // Add state variable for showing/hiding the cart
+  const [showProfile, setShowProfile] = useState<boolean>(false); // Add state variable for showing/hiding the cart
+  const [scrolling, setScrolling] = useState<boolean>(false);
+  const [notifsQts, setNotifsQts] = useState<number>(msg_notifs);
 
   const dispatch = useAppDispatch();
   const navigate = useNavigate();
@@ -60,6 +61,10 @@ const Header = () => {
   useEffect(() => {
     setTemplate(theme)
   }, [theme])
+
+  useEffect(() => {
+    setNotifsQts(msg_notifs)
+  }, [msg_notifs])
 
   useEffect(() => {
     // Attach the scroll event listener when the component mounts
@@ -229,7 +234,14 @@ const Header = () => {
 
                 </div>
                 <button onClick={handleUserCart} className="account">
+                  {
+                    notifsQts > 0 && (
+                      <div className="notif-number-container">
+                        {notifsQts}
+                      </div>
+                    )
 
+                  }
                   <PermIdentityOutlinedIcon className='account-icon' />
                 </button>
 

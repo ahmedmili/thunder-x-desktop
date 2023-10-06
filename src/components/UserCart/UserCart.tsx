@@ -36,10 +36,12 @@ export const UserCart: React.FC<CartProps> = ({ firstName, lastName, closeButton
   const currentPage = useAppSelector(state => state.home.profilePage)
   const theme = useAppSelector((state) => state.home.theme)
   const [template, setTemplate] = useState<number>(theme)
+  const msg_notifs = useAppSelector((state) => state.messanger.unReadedMessages)
 
   const userItem = localStorageService.getUser();
   const user = userItem ? JSON.parse(userItem) : null;
 
+  const [discuterNotifActive, setDiscuterNotifActive] = useState<boolean>(msg_notifs > 0 ? true : false)
   const handleSelect = (index: number) => {
     dispatch(setProfilePage(index))
   }
@@ -47,6 +49,10 @@ export const UserCart: React.FC<CartProps> = ({ firstName, lastName, closeButton
   useEffect(() => {
     setTemplate(theme)
   }, [theme])
+
+  useEffect(() => {
+    setDiscuterNotifActive(msg_notifs > 0 ? true : false)
+  }, [msg_notifs])
 
   return (
     <div className={`profile-cart-main ${template === 1 && "dark-background2"}`}>
@@ -110,6 +116,12 @@ export const UserCart: React.FC<CartProps> = ({ firstName, lastName, closeButton
               <div className='link-list'>
                 <div className='profile-list-icon' style={{ backgroundImage: `url(${Discuter})` }}></div>
                 <Link onClick={() => handleSelect(6)} to={'/profile/discuter'}>{t("profile.discuter")}</Link>
+                {
+                  discuterNotifActive && (
+                    <div className='notif-indicator'>
+                    </div>
+                  )
+                }
               </div>
             </li>
             <li>
