@@ -96,6 +96,31 @@
     }
 }
 
+@media only screen and (max-width:1200px) {
+    .feedback-page-main-container {
+        .images-header {
+            .feedback-satifait {
+                padding: 45px 41px 59px 39px;
+                gap: 6px;
+
+                .feedback-question {
+                    font-size: 15px;
+                    margin: 0;
+                    width: 154px;
+
+                }
+
+                .question-option {
+
+                    label {
+                        font-size: 12px;
+                    }
+                }
+            }
+        }
+    }
+}
+
 @media only screen and (max-width:991px) {
     .feedback-page-main-container {
         .images-header {
@@ -124,8 +149,17 @@
 @media only screen and (max-width:768px) {
     .feedback-page-main-container {
         .images-header {
-            // width: 146px;
+            width: 90%;
             gap: 8px;
+        }
+
+        .images-header {
+            .feedback-satifait {
+                .feedback-question {
+                    font-size: 11px;
+
+                }
+            }
         }
     }
 }
