@@ -22,16 +22,6 @@ import { addMessangerSuccess } from "./Redux/slices/messanger";
 import { setRestaurants } from "./Redux/slices/restaurantSlice";
 import { login, logout, setUser } from "./Redux/slices/userSlice";
 import "./app.scss";
-import Header from "./components/Header/Header";
-import Footer from "./components/footer/footer";
-import Annonces from "./components/layout/Profile/All_Annonces/All_Annonces";
-import ArchivedCommands from "./components/layout/Profile/Archivedcommands/ArchivedCommands";
-import ConfigPage from "./components/layout/Profile/ConfigPage/ConfigPage";
-import Discuter from "./components/layout/Profile/Discuter/Discuter";
-import Favors from "./components/layout/Profile/Favors/Favors";
-import FidelitePage from "./components/layout/Profile/FidelitePage/FidelitePage";
-import Profile from "./components/layout/Profile/Profile";
-import Menu from "./components/menus/menus";
 import { LocationService } from "./services/api/Location.api";
 import { supplierServices } from "./services/api/suppliers.api";
 import { userService } from "./services/api/user.api";
@@ -39,14 +29,25 @@ import { localStorageService } from "./services/localStorageService";
 import eventEmitter from "./services/thunderEventsService";
 import { Message, Restaurant } from "./services/types";
 import channelListener from "./services/web-socket";
-import FilterPage from "./views/filtre/FilterPage";
-import HomeSkeleton from "./views/home/skeleton/HomeSkeleton";
 
-//lazy loading
+import HomeSkeleton from "./views/home/skeleton/HomeSkeleton";
+//lazy loading components
+const Header = lazy(() => import("./components/Header/Header"));
+const Footer = lazy(() => import("./components/footer/footer"));
+const Annonces = lazy(() => import("./components/layout/Profile/All_Annonces/All_Annonces"));
+const ArchivedCommands = lazy(() => import("./components/layout/Profile/Archivedcommands/ArchivedCommands"));
+const ConfigPage = lazy(() => import("./components/layout/Profile/ConfigPage/ConfigPage"));
+const Discuter = lazy(() => import("./components/layout/Profile/Discuter/Discuter"));
+const Favors = lazy(() => import("./components/layout/Profile/Favors/Favors"));
+const FidelitePage = lazy(() => import("./components/layout/Profile/FidelitePage/FidelitePage"));
+const Feedback = lazy(() => import("./components/layout/Profile/Feedback/Feedback"));
+const Menu = lazy(() => import("./components/menus/menus"));
+//lazy loading pages
+const Profile = lazy(() => import("./components/layout/Profile/Profile"));
 const HomePage = lazy(() => import("./views/home/home.page"));
+const FilterPage = lazy(() => import("./views/filtre/FilterPage"));
 const LoginPage = lazy(() => import("./views/login/login.page"));
 const RegisterPage = lazy(() => import("./views/RegisterPage"));
-const ProfilePage = lazy(() => import("./views/profile/profile.page"));
 const UnauthorizePage = lazy(
   () => import("./views/unauthorize/unauthorize.page")
 );
@@ -243,6 +244,7 @@ function App() {
               <Route path="/profile/discuter" element={<Discuter />} />
               <Route path="/profile/Favors" element={<Favors />} />
               <Route path="/profile/Fidelite" element={<FidelitePage />} />
+              <Route path="/profile/Feedback/:command_id" element={<Feedback />} />
             </Route>
           </Route>
 

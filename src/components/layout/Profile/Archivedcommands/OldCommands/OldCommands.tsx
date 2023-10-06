@@ -8,9 +8,11 @@ import DefaultImg from "../../../../../assets/profile/ArchivedCommands/default.j
 import { useTranslation } from 'react-i18next'
 import { useAppSelector } from '../../../../../Redux/store'
 import { Star } from '@mui/icons-material';
+import { useNavigate } from 'react-router-dom'
 
 interface CommandsListProps {
-    data: any
+    data: any,
+    feedbacksList: number[],
 }
 
 interface ProductProps {
@@ -39,14 +41,25 @@ const Product: React.FC<ProductProps> = ({ data }) => {
 
 }
 
-const OldCommands: React.FC<CommandsListProps> = ({ data }) => {
+const OldCommands: React.FC<CommandsListProps> = ({ data, feedbacksList }) => {
 
     const { t } = useTranslation()
-    const theme = useAppSelector((state) => state.home.theme)
+    // const theme = useAppSelector((state) => state.home.theme)
+    const navigate = useNavigate()
     const supplier = data.supplier
     const delivery = data.delivery
     const products = data.products
     const position = supplier.street + " " + supplier.region + " " + supplier.city
+
+    const gotToFeedBack = () => {
+        let command_id = data.id
+        navigate(`/profile/Feedback/${command_id}`)
+    }
+
+    useEffect(() => {
+        console.log(feedbacksList)
+        console.log(data)
+    }, [])
 
     return (
         <React.Fragment>
@@ -136,17 +149,28 @@ const OldCommands: React.FC<CommandsListProps> = ({ data }) => {
                                         }
                                     }
                                     return (
-                                        <>
+                                        <React.Fragment key={index}>
                                             <Product key={index} data={productData.data}></Product>
-                                        </>
+                                        </React.Fragment>
                                     )
                                 })
                             )
                         }
                         <footer className='command-footer'>
-                            <p>{data.total_price}</p>
-                            <button className='avis'>{t('profile.commands.avis')}</button>
-
+                            <p>{data.total_price}Dt</p>
+                            {
+                                feedbacksList.some(feedback => feedback === data.id) ? (
+                                    <>
+                                        {/* <p className=''>
+                                            On Vous remercie pour votre feedback concernant cette commande
+                                        </p> */}
+                                    </>
+                                ) : (
+                                    <>
+                                        <button className='avis' onClick={gotToFeedBack}>{t('profile.commands.avis')}</button>
+                                    </>
+                                )
+                            }
                         </footer>
                     </>
                 )

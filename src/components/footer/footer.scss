@@ -38,9 +38,9 @@
             overflow: hidden;
             position: absolute;
             top: -11px;
-            right: -239px;
+            right: 0;
             height: 384.415px;
-            width: 20vw;
+            width: 3vw;
 
             .demi-cercle {
                 position: absolute;
@@ -188,10 +188,10 @@
         .bodyRow {
             .demi-cerlce-container {
                 top: -35px;
-                right: -160px;
-                .demi-cercle{
-                    height: 542.415px;
-                }
+            }
+            .footerTitle {
+                font-size: 1.5rem;
+                line-height: 33px
             }
         }
     }
@@ -199,10 +199,6 @@
 @media only screen and (max-width:991px) {
     .footerContainer {
         .bodyRow {
-            .demi-cerlce-container {
-                right: -128px;
-            }
-
             .footerTitle {
                 font-size: 1.5rem;
                 line-height: 33px
@@ -216,7 +212,7 @@
     .footerContainer {
         .bodyRow {
             .demi-cerlce-container {
-                right: -133px;
+                // right: -133px;
                 top: -61px;
                 .demi-cercle{
                     height: 599.415px;
@@ -245,7 +241,7 @@
             padding: 20px 0;
 
             .demi-cerlce-container {
-                height: 271.415px;
+                // height: 271.415px;
 
                 .demi-cercle {
                     top: -119px;
