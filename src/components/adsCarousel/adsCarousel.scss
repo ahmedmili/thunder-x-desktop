@@ -10,12 +10,16 @@
 
     .carousol-ads-slider {
 
-      img {
+      img,
+      video {
         border-radius: 20px;
         margin: 0 3px;
         width: 95%;
         height: 100%;
+        object-fit: cover;
+        border: none;
       }
+
     }
   }
 }

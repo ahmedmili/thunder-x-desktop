@@ -9,6 +9,9 @@ export const AdsCarousel = (props: any) => {
     useEffect(() => {
         setTemplate(theme)
     }, [theme])
+    useEffect(() => {
+        console.log(props)
+    }, [])
     return (
         <div className={`carousal-ads-container ${template === 1 && 'dark-background2'}`}>
             <CarouselProvider className='carousel-ads'
@@ -28,8 +31,19 @@ export const AdsCarousel = (props: any) => {
                 <Slider className={`carousol-ads-slider ${template === 1 && 'dark-background2'}`}>
                     {props.data.map((ad: any) => (
                         <Slide key={ad.id} index={ad.id}>
-                            <img src={ad.image} alt={`Ad ${ad.id}`} loading='lazy'
-                            />
+                            {
+                                ad.type === 'IMAGE' ? (
+                                    <>
+                                        <img src={ad.image} alt={`Ad ${ad.id}`} loading='lazy' />
+                                    </>
+                                ) :
+                                    (
+                                        <video controls width={400} height={300}>
+                                            <source src={ad.image} type="video/mp4" />
+                                            Your browser does not support the video tag.
+                                        </video>
+                                    )
+                            }
                         </Slide>
                     ))}
                 </Slider>
