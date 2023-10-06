@@ -1,17 +1,14 @@
-import './messanger.scss'
-import SettingIcon from '../../../assets/profile/Discuter/setting-points.svg'
-import TimeIcon from '../../../assets/profile/Discuter/time-icon.svg'
+import React, { useEffect, useRef, useState } from 'react'
+import { useAppDispatch, useAppSelector } from '../../../Redux/store'
 import Wave from '../../../assets/profile/Discuter/wave.svg'
 import Profile from '../../../assets/profile/profile_img.png'
-import KeyboardArrowUpOutlinedIcon from '@mui/icons-material/KeyboardArrowUpOutlined';
-import NotificationsActiveIcon from '@mui/icons-material/NotificationsActive';
-import React, { useEffect, useRef, useState } from 'react'
 import { userService } from '../../../services/api/user.api'
 import { Message } from '../../../services/types'
-import { useAppDispatch, useAppSelector } from '../../../Redux/store'
+import './messanger.scss'
+import ThunderLogo from "../../../assets/icon-old.png"
 
-import { addMessangerSuccess, fetchMessages, handleMessanger, messagesSelector, initUnReadedMessage } from '../../../Redux/slices/messanger'
 import { useTranslation } from 'react-i18next'
+import { addMessangerSuccess, fetchMessages, handleMessanger, initUnReadedMessage, messagesSelector } from '../../../Redux/slices/messanger'
 
 interface MessangerProps {
     close: any,
@@ -26,21 +23,23 @@ const Messanger: React.FC<MessangerProps> = ({ className }) => {
     // const [showSetting, setShowSetting] = useState<boolean>(false)
     const { t } = useTranslation()
     const dispatch = useAppDispatch();
+
     const scrollToBottom = () => {
         if (canal.current) {
             canal.current.scrollTop = canal.current.scrollHeight;
         }
     };
 
-
     // send new message
     const sendMessage = async (event: any) => {
         if (event.key === 'Enter') {
             event.preventDefault()
             if (event.target.id == "input" && event.target.value != "") {
+                let currentDate = new Date()
                 const message: Message = {
                     message: event.target.value,
-                    send: 0
+                    send: 0,
+                    date: currentDate.toISOString()
                 }
 
                 try {
@@ -56,11 +55,6 @@ const Messanger: React.FC<MessangerProps> = ({ className }) => {
         }
     }
 
-
-
-    // const openSetting = () => {
-    //     setShowSetting(!showSetting)
-    // }
 
     // init messages
     const useFetchMessages = () => {
@@ -78,6 +72,26 @@ const Messanger: React.FC<MessangerProps> = ({ className }) => {
     };
 
     const getMessages = useFetchMessages()
+
+    // convert date 
+    const date = (date: string) => {
+        let dateToTime = new Date(date);
+        let hours = dateToTime.getHours();
+        let am_pm = hours >= 12 ? 'PM' : 'AM';
+        hours = hours % 12;
+        hours = hours ? hours : 12;
+        return hours + ' ' + am_pm
+    }
+
+    const checkDate = (dates?: any) => {
+        let date = new Date();
+        if (dates) {
+            date = new Date(dates);
+        }
+        let options: any = { year: 'numeric', month: 'long', day: 'numeric' };
+        return date.toLocaleDateString('fr-FR', options)
+    }
+
 
     useEffect(() => {
         canal && scrollToBottom();
@@ -127,10 +141,10 @@ const Messanger: React.FC<MessangerProps> = ({ className }) => {
                 </div>
                 <div className="messages-box">
                     <section ref={canal} className='canal-section'>
-                        <button className='older-messages-btn'>
+                        {/* <button className='older-messages-btn'>
                             <div className='time-icon' style={{ backgroundImage: `url(${TimeIcon})` }}></div>
                             {t('profile.discuter.messanger.oldMessages')}
-                        </button>
+                        </button> */}
 
                         {
                             canalMessages.map((message: Message, index: number) => {
@@ -139,15 +153,36 @@ const Messanger: React.FC<MessangerProps> = ({ className }) => {
                                         {
                                             message.send === 0 ? (
                                                 <div className='client-message' key={index}>
+                                                    {
+                                                        message.displayDate && (
+                                                            <p className='full-messages-date'>
+                                                                {message.date && checkDate(message.date)}
+                                                            </p>
+                                                        )
+                                                    }
+
                                                     <p>
                                                         {message.message}
+                                                        <span>{message.date && date(message.date.toString())}</span>
                                                     </p>
                                                 </div>
                                             ) : (
-                                                <div className='admin-message' key={index}>
-                                                    <p>
-                                                        {message.message}
-                                                    </p>
+                                                <div className='admin-message-container' key={index}>
+
+                                                    {
+                                                        message.displayDate && (
+                                                            <p className='full-messages-date'>
+                                                                {message.date && checkDate(message.date)}
+                                                            </p>
+                                                        )
+                                                    }
+                                                    <div className='admin-message'>
+                                                        <div className='thunder-message-logo' style={{ backgroundImage: `url(${ThunderLogo})` }}></div>
+                                                        <p>
+                                                            <span>{message.date && date(message.date.toString())}</span>
+                                                            {message.message}
+                                                        </p>
+                                                    </div>
                                                 </div>
 
                                             )

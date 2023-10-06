@@ -65,7 +65,7 @@ const RestaurantList: React.FC<Props> = ({ restaurants, listType }) => {
   return (
     <div className={recommandedStyle.recommandedContainer}>
       {
-        <Container className={recommandedStyle.container +` ${!displayNormal && recommandedStyle.uniqueContainer} ${template === 1 && 'dark-background2'}`}>
+        <Container className={recommandedStyle.container + ` ${!displayNormal && recommandedStyle.uniqueContainer} ${template === 1 && 'dark-background2'}`}>
           <Row>
             {listType == "recommanded" && (
               <h2 className={recommandedStyle.recaommandedTitle}>
@@ -105,48 +105,50 @@ const RestaurantList: React.FC<Props> = ({ restaurants, listType }) => {
           >
             <Row>
               <Col>
-                <Slider>
-                  {(() => {
-                    const cart = [];
-                    for (
-                      let i = 0;
-                      i <
-                      (displayNormal
-                        ? restaurantsList.length / 2
-                        : restaurantsList.length);
-                      i++
-                    ) {
-                      cart.push(
-                        <>
-
-                          {displayNormal ? (
-                            <div key={i}>
-                              <Slide index={i}>
-                                {firstMiddle![i] && (
-                                  <SupplierCard data={firstMiddle![i]} />
-                                )}
-
-                                <br />
-                                {lastMiddle![i] && (
-                                  <SupplierCard data={lastMiddle![i]} />
-                                )}
-                              </Slide>
-                            </div>
-                          ) : (
-                            <div key={i} className={recommandedStyle.uniqueDivCard}>
-                              <SupplierCard data={restaurantsList[i]} />
-                            </div>
-                          )}
-                        </>
-                      );
-                    }
-                    return cart;
-                  })()}
-                </Slider>
+                {(() => {
+                  const cart = [];
+                  for (
+                    let i = 0;
+                    i <
+                    (displayNormal
+                      ? restaurantsList.length / 2
+                      : restaurantsList.length);
+                    i++
+                  ) {
+                    cart.push(
+                      <div key={i}>
+                        {displayNormal ? (
+                          <>
+                            <Slide index={i} key={firstMiddle![i].id}>
+                              {firstMiddle![i] && (
+                                <SupplierCard data={firstMiddle![i]} />
+                              )}
+                              <br />
+                              {lastMiddle![i] && (
+                                <SupplierCard data={lastMiddle![i]} />
+                              )}
+                            </Slide>
+                          </>
+                        ) : (
+                          <div className={recommandedStyle.uniqueDivCard}>
+                            <SupplierCard data={restaurantsList[i]} />
+                          </div>
+                        )}
+                      </div>
+                    );
+                  }
+                  // Generate a unique key for the Slider
+                  const sliderKey = 'uniqueSliderKey'; // Replace with your unique key
+                  return (
+                    <Slider key={sliderKey}>
+                      {cart}
+                    </Slider>
+                  );
+                })()}
               </Col>
             </Row>
             <Row className={` ${recommandedStyle.recommandedListButtonsContainer} ${!displayNormal ? recommandedStyle.uniqueButtons + "" : " test"}`}>
-              <Col >
+              <Col>
                 <ButtonBack className={recommandedStyle.btn}>
                   <KeyboardDoubleArrowLeftIcon
                     className={recommandedStyle.sliderButtonIcon}

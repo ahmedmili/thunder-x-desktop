@@ -49,7 +49,7 @@ const OldCommands: React.FC<CommandsListProps> = ({ data }) => {
     const position = supplier.street + " " + supplier.region + " " + supplier.city
 
     return (
-        <>
+        <React.Fragment>
             {
                 (supplier && products) && (
                     <>
@@ -126,7 +126,6 @@ const OldCommands: React.FC<CommandsListProps> = ({ data }) => {
                         {
                             (products && (products.length > 0)) && (
                                 products.map((product: any, index: number) => {
-                                    console.log(product)
                                     const productData: ProductProps = {
                                         data: {
                                             img: product.computed_value ? product.computed_value.image[0].path : '',
@@ -152,7 +151,7 @@ const OldCommands: React.FC<CommandsListProps> = ({ data }) => {
                     </>
                 )
             }
-        </>
+        </React.Fragment>
 
     )
 }

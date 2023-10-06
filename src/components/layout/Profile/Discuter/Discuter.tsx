@@ -33,7 +33,6 @@ function Discuter() {
     }, [])
 
     useEffect(() => {
-        console.log("unReadMessages", unReadMessages)
         setUnReadedQt(unReadMessages)
     }, [unReadMessages])
     return (

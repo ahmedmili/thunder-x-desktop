@@ -54,7 +54,7 @@ const CommandsList: React.FC<CommandsListProps> = ({ type = "old", goToPassedCom
                 {commands.length > 0 && commands.map((command: any, index: number) => {
 
                     return (
-                        <>
+                        <div key={index}>
                             <div className={`command-header  ${selectedCommand === index ? "active-header" : ""} ${(template === 1 && selectedCommand !== index) && "dark-background2"}`} key={index} onClick={() => handleSelectCommand(index)}>
                                 <span >
                                     Commande N°{command.id}
@@ -72,7 +72,7 @@ const CommandsList: React.FC<CommandsListProps> = ({ type = "old", goToPassedCom
                             </div>
                             {(selectedCommand === index && type === "old") && <OldCommands data={command} />}
                             {(selectedCommand === index && type === "current") && <CurrentCommands goToPassedCommands={goToPassedCommands} removeCommand={HandleRemove} data={command} />}
-                        </>
+                        </div>
                     )
                 })}
             </section>

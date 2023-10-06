@@ -1,49 +1,46 @@
 import { CssBaseline } from "@mui/material";
 import "bootstrap/dist/css/bootstrap.min.css";
+import { Suspense, lazy, useCallback, useEffect, useState } from "react";
 import { Navigate, Outlet, Route, Routes } from "react-router-dom";
-import { lazy, Suspense, useCallback, useEffect, useState } from "react";
-import Layout from "./components/layout/layout";
 import { ToastContainer, toast } from "react-toastify";
+import Layout from "./components/layout/layout";
 
-import { AppDispatch, useAppDispatch, useAppSelector } from "./Redux/store";
+import { useAppDispatch, useAppSelector } from "./Redux/store";
 
 import {
-  selectIsDelivery,
-  setData as setHomeData,
-  setLoading as setHomeDataLoading,
-  setIsDelivery,
+  setIsDelivery
 } from "./Redux/slices/homeDataSlice";
 
-import { setRestaurants } from "./Redux/slices/restaurantSlice";
-import { LocationService } from "./services/api/Location.api"
+import jwt_decode from "jwt-decode";
 import {
   setCartItems,
   setDeliveryPrice,
   setSupplier,
 } from "./Redux/slices/cart/cartSlice";
-import Menu from "./components/menus/menus";
-import { setUser, login, logout } from "./Redux/slices/userSlice";
-import jwt_decode from "jwt-decode";
-import eventEmitter from "./services/thunderEventsService";
+import { fetchHomeData } from "./Redux/slices/home";
+import { addMessangerSuccess } from "./Redux/slices/messanger";
+import { setRestaurants } from "./Redux/slices/restaurantSlice";
+import { login, logout, setUser } from "./Redux/slices/userSlice";
 import "./app.scss";
-import { localStorageService } from "./services/localStorageService";
-import { supplierServices } from "./services/api/suppliers.api";
-import { Message, Restaurant } from "./services/types";
-import { fetchHomeData, setTheme } from "./Redux/slices/home";
-import FilterPage from "./views/filtre/FilterPage";
-import HomeSkeleton from "./views/home/skeleton/HomeSkeleton";
 import Header from "./components/Header/Header";
 import Footer from "./components/footer/footer";
-import { userService } from "./services/api/user.api";
-import Profile from "./components/layout/Profile/Profile"
-import ConfigPage from "./components/layout/Profile/ConfigPage/ConfigPage";
 import Annonces from "./components/layout/Profile/All_Annonces/All_Annonces";
 import ArchivedCommands from "./components/layout/Profile/Archivedcommands/ArchivedCommands";
+import ConfigPage from "./components/layout/Profile/ConfigPage/ConfigPage";
 import Discuter from "./components/layout/Profile/Discuter/Discuter";
 import Favors from "./components/layout/Profile/Favors/Favors";
 import FidelitePage from "./components/layout/Profile/FidelitePage/FidelitePage";
+import Profile from "./components/layout/Profile/Profile";
+import Menu from "./components/menus/menus";
+import { LocationService } from "./services/api/Location.api";
+import { supplierServices } from "./services/api/suppliers.api";
+import { userService } from "./services/api/user.api";
+import { localStorageService } from "./services/localStorageService";
+import eventEmitter from "./services/thunderEventsService";
+import { Message, Restaurant } from "./services/types";
 import channelListener from "./services/web-socket";
-import { addMessangerSuccess, addUnReadedMessage } from "./Redux/slices/messanger";
+import FilterPage from "./views/filtre/FilterPage";
+import HomeSkeleton from "./views/home/skeleton/HomeSkeleton";
 
 //lazy loading
 const HomePage = lazy(() => import("./views/home/home.page"));
@@ -238,14 +235,15 @@ function App() {
             {/* Private Route */}
             <Route path="track-order" element={<OrderTrackingPage />} />
           </Route>
-
-          <Route path="/profile" element={<Profile />}>
-            <Route index element={<ConfigPage />} />
-            <Route path="/profile/annonces" element={<Annonces />} />
-            <Route path="/profile/archivedCommands" element={<ArchivedCommands />} />
-            <Route path="/profile/discuter" element={<Discuter />} />
-            <Route path="/profile/Favors" element={<Favors />} />
-            <Route path="/profile/Fidelite" element={<FidelitePage />} />
+          <Route element={<ProtectedRoute children={undefined} />}>
+            <Route path="/profile" element={<Profile />}>
+              <Route index element={<ConfigPage />} />
+              <Route path="/profile/annonces" element={<Annonces />} />
+              <Route path="/profile/archivedCommands" element={<ArchivedCommands />} />
+              <Route path="/profile/discuter" element={<Discuter />} />
+              <Route path="/profile/Favors" element={<Favors />} />
+              <Route path="/profile/Fidelite" element={<FidelitePage />} />
+            </Route>
           </Route>
 
           <Route path="unauthorized" element={<UnauthorizePage />} />
@@ -260,13 +258,20 @@ function App() {
   );
 }
 
-const ProtectedRoute = (children: any) => {
+const ProtectedRoute = ({ children }: { children: React.ReactNode }) => {
   const isAuthenticated = useAppSelector((state) => state.user.isAuthenticated);
-  if (!isAuthenticated) {
+  const [passable, setPassable] = useState<boolean>(true)
+
+  useEffect(() => {
+    setPassable(isAuthenticated)
+  }, [isAuthenticated])
+
+  if (!passable) {
     return <Navigate to="/unauthorized" replace />;
+  } else {
+    return children ? <>{children}</> : <Outlet />;
   }
-  return children ? <>{children}</> : <Outlet />;
-};
+}
 
 export const verifyToken = (token: string): boolean => {
   try {

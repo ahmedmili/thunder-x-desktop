@@ -3,7 +3,6 @@ import { RootState } from ".";
 import { Message } from "../../services/types";
 import { AppDispatch } from "../store";
 import { userService } from "../../services/api/user.api";
-import eventEmitter from "../../services/thunderEventsService";
 
 export type MessangerState = {
   loading: boolean;
@@ -91,12 +90,28 @@ export const fetchMessages = () => async (dispatch: AppDispatch) => {
   try {
     dispatch(startLoading());
     const { status, data } = await userService.fetchMessages()
-    let response = data.data.messages
+    let response = data.data.messages.reverse()
     let messagesArray: Message[] = []
-    response.reverse().map((message: any) => {
-      messagesArray.push(message)
+
+    let date = new Date();
+    let currentDate: any = null;
+
+    response.map((message: Message) => {
+      let dateToCompare = new Date(message.date!);
+      let difference = date.getTime() - dateToCompare.getTime();
+      if (difference >= 86400000) { // 24h * 60m * 60s * 1000ms  === 1d
+      } else {
+        if (currentDate === null || currentDate.toDateString() !== dateToCompare.toDateString()) {
+          currentDate = dateToCompare;
+          message.displayDate = true;
+        } else {
+          message.displayDate = false;
+        }
+      }
+      difference <= 86400000 && messagesArray.push(message)
     })
-    dispatch(getMessagesSuccess(data.data.messages));
+    console.log(messagesArray)
+    dispatch(getMessagesSuccess(messagesArray));
     return data
   } catch (error) {
     dispatch(getMessangerError(error));

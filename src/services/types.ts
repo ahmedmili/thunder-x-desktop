@@ -155,5 +155,6 @@ export interface Message {
   date?: string;
   deleted_at?: string;
   read_at?: string;
+  displayDate?: boolean;
   message: string;
 }
