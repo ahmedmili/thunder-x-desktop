@@ -14,20 +14,14 @@ const VideoPlayer: React.FC<VideoPlayerProps> = ({ videoSrc, cover }) => {
         const video = videoRef.current;
 
         if (video) {
-            console.log("isPlaying",isPlaying)
-            console.log("video.paused",video.paused)
+            console.log("isPlaying", isPlaying)
+            console.log("video.paused", video.paused)
             if (!isPlaying) {
                 video.controls = true;
                 video.play();
-                // setIsPlaying(true);
-
+                setIsPlaying(true);
             } else {
-                // setIsPlaying(false);
-                // video.controls = false;
-                // video.pause();
-
             }
-            setIsPlaying(!video.paused);
         }
     };
 
@@ -59,9 +53,8 @@ const VideoPlayer: React.FC<VideoPlayerProps> = ({ videoSrc, cover }) => {
             </video>
             <div className="video-controls">
                 {
-                    !(isPlaying && videoRef.current?.played) &&
+                    !isPlaying &&
                     (<span className="video-time">
-                        {/* {(formatTime(videoRef.current?.currentTime || 0) - formatTime(videoRef.current?.currentTime || 0) ) } */}
                         - {restOfTime}
                     </span>)
                 }
