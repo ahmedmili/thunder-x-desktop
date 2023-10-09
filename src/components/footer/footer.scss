@@ -38,9 +38,9 @@
             overflow: hidden;
             position: absolute;
             top: -11px;
-            right: 0;
+            right: 0px;
             height: 384.415px;
-            width: 3vw;
+            width: 2vw;
 
             .demi-cercle {
                 position: absolute;
@@ -188,6 +188,12 @@
         .bodyRow {
             .demi-cerlce-container {
                 top: -35px;
+                right: 4px;
+                width: 3vw;
+
+                .demi-cercle {
+                    height: 542.415px;
+                }
             }
             .footerTitle {
                 font-size: 1.5rem;
@@ -196,9 +202,14 @@
         }
     }
 }
+
 @media only screen and (max-width:991px) {
     .footerContainer {
         .bodyRow {
+            .demi-cerlce-container {
+                right: 0;
+            }
+
             .footerTitle {
                 font-size: 1.5rem;
                 line-height: 33px
@@ -212,9 +223,9 @@
     .footerContainer {
         .bodyRow {
             .demi-cerlce-container {
-                // right: -133px;
                 top: -61px;
-                .demi-cercle{
+
+                .demi-cercle {
                     height: 599.415px;
                     width: 599.415px;
                 }
@@ -241,11 +252,8 @@
             padding: 20px 0;
 
             .demi-cerlce-container {
-                // height: 271.415px;
-
                 .demi-cercle {
                     top: -119px;
-                    // height: -126px;
                 }
             }
 
@@ -312,10 +320,7 @@
 @media only screen and (max-width:500px) {
     .footerContainer {
         .bodyRow {
-            .demi-cerlce-container {
-                right: -72px;
-             
-            }
+
 
             .footerLogoCol {
                 .webifyIcon {
