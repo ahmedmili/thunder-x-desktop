@@ -1,11 +1,11 @@
 import React, { useEffect, useRef, useState } from 'react'
 import { useAppDispatch, useAppSelector } from '../../../Redux/store'
+import ThunderLogo from "../../../assets/icon-old.png"
 import Wave from '../../../assets/profile/Discuter/wave.svg'
 import Profile from '../../../assets/profile/profile_img.png'
 import { userService } from '../../../services/api/user.api'
 import { Message } from '../../../services/types'
 import './messanger.scss'
-import ThunderLogo from "../../../assets/icon-old.png"
 
 import { useTranslation } from 'react-i18next'
 import { addMessangerSuccess, fetchMessages, handleMessanger, initUnReadedMessage, messagesSelector } from '../../../Redux/slices/messanger'
@@ -120,20 +120,6 @@ const Messanger: React.FC<MessangerProps> = ({ className }) => {
                     <div className='messanger-logo' style={{ backgroundImage: ` url(${Profile})` }}></div>
                     <p>Thunder Express</p>
                 </div>
-                <div className="messanger-header-icons">
-                    {/* <div onClick={openSetting} className='setting-icon-container' style={{ backgroundColor: ` ${showSetting ? "#24A6A4" : "transparent"}` }}>
-                        <div className='setting-icon' style={{ backgroundImage: ` url(${SettingIcon}) ` }}></div>
-                    </div> */}
-                    {/* <KeyboardArrowUpOutlinedIcon className='arrow-icon' /> */}
-                </div>
-                {/* {
-                    showSetting && (
-                        <div className='messanger-settings'>
-                            <NotificationsActiveIcon className='messanger-setting-icon' />
-                            <p>Activer les notifications</p>
-                        </div>
-                    )
-                } */}
             </header >
             <main className='messsanger-body'>
                 <div className="wave-container" style={{ backgroundImage: `url(${Wave})` }} >
@@ -141,11 +127,6 @@ const Messanger: React.FC<MessangerProps> = ({ className }) => {
                 </div>
                 <div className="messages-box">
                     <section ref={canal} className='canal-section'>
-                        {/* <button className='older-messages-btn'>
-                            <div className='time-icon' style={{ backgroundImage: `url(${TimeIcon})` }}></div>
-                            {t('profile.discuter.messanger.oldMessages')}
-                        </button> */}
-
                         {
                             canalMessages.map((message: Message, index: number) => {
                                 return (
@@ -160,11 +141,13 @@ const Messanger: React.FC<MessangerProps> = ({ className }) => {
                                                             </p>
                                                         )
                                                     }
-
-                                                    <p>
-                                                        {message.message}
+                                                    <div className='client-message-container'>
+                                                        <p>
+                                                            {message.message}
+                                                        </p>
                                                         <span>{message.date && date(message.date.toString())}</span>
-                                                    </p>
+
+                                                    </div>
                                                 </div>
                                             ) : (
                                                 <div className='admin-message-container' key={index}>
@@ -177,11 +160,16 @@ const Messanger: React.FC<MessangerProps> = ({ className }) => {
                                                         )
                                                     }
                                                     <div className='admin-message'>
-                                                        <div className='thunder-message-logo' style={{ backgroundImage: `url(${ThunderLogo})` }}></div>
-                                                        <p>
+                                                        <div className='message-logo-container'>
+                                                            <div className='thunder-message-logo' style={{ backgroundImage: `url(${ThunderLogo})` }}></div>
+                                                        </div>
+                                                        <div className='admin-message-container2'>
                                                             <span>{message.date && date(message.date.toString())}</span>
-                                                            {message.message}
-                                                        </p>
+                                                            <p>
+                                                                {message.message}
+                                                            </p>
+
+                                                        </div>
                                                     </div>
                                                 </div>
 
