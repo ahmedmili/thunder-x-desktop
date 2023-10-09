@@ -1,29 +1,28 @@
-import { useEffect, useState } from 'react';
-import { FoodItem, MenuData } from '../../services/types';
-import { useLocation, useParams, useNavigate } from 'react-router-dom';
+import { Add as AddIcon, Star } from '@mui/icons-material';
 import {
   CircularProgress,
   Pagination,
-
 } from '@mui/material';
-import { Add as AddIcon, Star } from '@mui/icons-material';
-import missingImage from '../../assets/missingImage.png';
-import { RootState, useAppDispatch, useAppSelector } from '../../Redux/store';
+import React, { useEffect, useState } from 'react';
+import { useTranslation } from 'react-i18next';
+import { useParams } from 'react-router-dom';
 import {
   clearCart,
   clearSupplierMismatch,
   setDeliveryPrice,
   setSupplier,
 } from '../../Redux/slices/cart/cartSlice';
-import { setProduct } from "../../Redux/slices/restaurantSlice"
-import MismatchModal from '../mismatchModal/mismatchModal';
-import { useTranslation } from 'react-i18next';
+import { setProduct } from "../../Redux/slices/restaurantSlice";
+import { useAppDispatch } from '../../Redux/store';
 import { productService } from '../../services/api/product.api';
+import { MenuData } from '../../services/types';
+import MismatchModal from '../mismatchModal/mismatchModal';
 
-import './menus.scss'
+import { Container, Row } from 'react-bootstrap';
 import instaposter from "../../assets/food_instagram_story.png";
-import { Container, Row, Col } from 'react-bootstrap';
+import { supplierServices } from '../../services/api/suppliers.api';
 import MenuPopup from '../Popups/Menu/MenuPopup';
+import './menus.scss';
 
 interface MenuProps { }
 
@@ -32,13 +31,10 @@ const Menu: React.FC<MenuProps> = () => {
 
   const { t } = useTranslation();
   const dispatch = useAppDispatch();
-  const navigate = useNavigate();
-  const theme = useAppSelector(state => state.home.theme)
+
   const [menuData, setMenuData] = useState<MenuData[]>([]);
   const { id } = useParams<{ id: string }>();
   const [loading, setLoading] = useState(true);
-  const location = useLocation();
-  const restaurant = location.state.restaurant;
   const [currentPage, setCurrentPage] = useState<{ [key: string]: number }>({});
   const productsPerPage = 4;
 
@@ -46,7 +42,7 @@ const Menu: React.FC<MenuProps> = () => {
   const [showOptionsPopup, setShowOptionsPopup] = useState(false);
   const [selectedOption, setSelectedOption] = useState("tous");
   const [filtreddMenuData, setFiltreddMenuData] = useState<MenuData[]>([]);
-  const [selectedMenuItem, setSelectedMenuItem] = useState<FoodItem | null>(null);
+  const [displayedRestaurant, setDisplayedRestaurant] = useState<any>();
 
   const handlePopup = () => {
     setShowOptionsPopup(!showOptionsPopup)
@@ -59,6 +55,19 @@ const Menu: React.FC<MenuProps> = () => {
     }));
   };
 
+  const getSupplierById = async () => {
+    try {
+
+      const { status, data } = await supplierServices.getSupplierById(Number(id!))
+      setDisplayedRestaurant(data.data)
+
+    } catch (error) {
+      throw error
+    }
+  }
+  useEffect(() => {
+    getSupplierById()
+  }, [])
 
   // initialize menue 
   useEffect(() => {
@@ -196,9 +205,9 @@ const Menu: React.FC<MenuProps> = () => {
       <Container fluid className={`supplier-page-header`} >
         <Row>
           <div className="background-container">
-            <img src={restaurant?.images[0].path} alt="restaurant image" className="background" />
+            <img src={displayedRestaurant?.images[0].path} alt="restaurant image" className="background" />
             <div className="open-time">
-              <span>{t("supplier.opentime")} {restaurant?.closetime}</span>
+              <span>{t("supplier.opentime")} {displayedRestaurant?.closetime}</span>
             </div>
           </div>
         </Row>
@@ -209,15 +218,15 @@ const Menu: React.FC<MenuProps> = () => {
           <section className={`info-section `}>
             <div className="info-container">
               <div className="left-side">
-                <div className='name'>{restaurant?.name}</div>
-                <div className='price'>{t("supplier.delivPrice")} <span className='price-value'> {restaurant?.service_price} dt</span></div>
+                <div className='name'>{displayedRestaurant?.name}</div>
+                <div className='price'>{t("supplier.delivPrice")} <span className='price-value'> {displayedRestaurant?.service_price} dt</span></div>
               </div>
 
               <div className="right-side">
-                <Star className='starIcon' style={restaurant?.star ? { visibility: 'visible' } : { visibility: 'hidden' }} />
+                <Star className='starIcon' style={displayedRestaurant?.star ? { visibility: 'visible' } : { visibility: 'hidden' }} />
                 <div className='time'>
                   <p>
-                    {`${restaurant?.medium_time - 10} - ${restaurant?.medium_time + 10
+                    {`${displayedRestaurant?.medium_time - 10} - ${displayedRestaurant?.medium_time + 10
                       } min`}
 
                   </p>
@@ -229,7 +238,7 @@ const Menu: React.FC<MenuProps> = () => {
         <Row className={`main-row`}>
           <div className={`supplier-page-side-bar`}>
             <div className={`pub-contained`}>
-              <img className='supplier-logo' src={restaurant?.images[1].path} alt="" />
+              <img className='supplier-logo' src={displayedRestaurant?.images[1].path} alt="" />
               <div className={`pub-posts`}>
                 <img className='insta-img' src={instaposter} alt=" insta img posts" />
                 <img className='insta-img' src={instaposter} alt=" insta img posts" />
@@ -249,12 +258,12 @@ const Menu: React.FC<MenuProps> = () => {
                     {
                       menuData.map((data, index) => {
                         return (
-                          <>
-                            <div key={index} className={`select ${selectedOption == data.name ? "selected" : ""}`}  >
+                          <React.Fragment key={index}>
+                            <div className={`select ${selectedOption == data.name ? "selected" : ""}`}  >
                               <input type="radio" value={data.name} id={data.name} name='type' checked={selectedOption === data.name} onChange={handleOptionChange} />
                               <label htmlFor={data.name}>{data.name}</label>
                             </div>
-                          </>
+                          </React.Fragment>
                         )
 
                       })
@@ -263,7 +272,6 @@ const Menu: React.FC<MenuProps> = () => {
                   </>
                 )
               }
-
             </div>
             <Product />
           </section>
@@ -273,7 +281,7 @@ const Menu: React.FC<MenuProps> = () => {
         <MismatchModal onClose={handleMismatchModalClose} />
       )}
       {showOptionsPopup && (
-        <MenuPopup close={handlePopup} restaurant={restaurant} isOpen={showOptionsPopup} />
+        <MenuPopup close={handlePopup} restaurant={displayedRestaurant} isOpen={showOptionsPopup} />
       )}
 
     </>

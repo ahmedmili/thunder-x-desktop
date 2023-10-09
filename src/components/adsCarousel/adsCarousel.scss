@@ -10,8 +10,7 @@
 
     .carousol-ads-slider {
 
-      img,
-      video {
+      img {
         border-radius: 20px;
         margin: 0 3px;
         width: 95%;
@@ -19,6 +18,8 @@
         object-fit: cover;
         border: none;
       }
+
+      
 
     }
   }
