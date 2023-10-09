@@ -195,6 +195,10 @@
                     height: 542.415px;
                 }
             }
+            .footerTitle {
+                font-size: 1.5rem;
+                line-height: 33px
+            }
         }
     }
 }
@@ -248,11 +252,8 @@
             padding: 20px 0;
 
             .demi-cerlce-container {
-                height: 271.415px;
-
                 .demi-cercle {
                     top: -119px;
-                    // height: -126px;
                 }
             }
 
