@@ -204,7 +204,6 @@
                         display: flex;
                         gap: 13px;
                         padding: 15px;
-                        // min-width: 150px;
                         border-radius: 10px;
                     }
 
@@ -289,5 +288,28 @@
             }
         }
 
+    }
+}
+
+@media only screen and (max-height: 800px) {
+
+    /* Add your styles here */
+    .messanger-popup-container {
+
+        height: 438px;
+
+        .messsanger-body {
+            .messages-box {
+                .canal-section {
+                    height: 182px;
+                }
+
+                .input-section {
+                    .input {
+                        height: 83%;
+                    }
+                }
+            }
+        }
     }
 }
