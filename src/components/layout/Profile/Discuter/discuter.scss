@@ -102,7 +102,21 @@
                 }
 
                 .support-client {
+                    padding: 13px 0;
+                    height: 82px;
                     background-color: #2EB5B2;
+
+                    p {
+                        display: flex;
+                        gap: 17px;
+                        justify-content: center;
+
+                        .support-phone-icon {
+                            font-size: 20px;
+                            height: 20px;
+                            width: 20px;
+                        }
+                    }
                 }
             }
 

@@ -1,17 +1,15 @@
-import React, { useEffect, useState } from 'react'
-import './discuter.scss'
+import { useEffect, useState } from 'react';
+import './discuter.scss';
 
-import NotificationsOffIcon from '@mui/icons-material/NotificationsOff';
 
-import Cover from '../../../../assets/profile/Discuter/cover.png'
-import Service from '../../../../assets/profile/Discuter/Service-24-7.png'
-import MessangerBtnIcon from '../../../../assets/profile/Discuter/messanger-btn.svg'
-import PhoneBtnIcon from '../../../../assets/profile/Discuter/phone-btn-icon.svg'
-import PhoneNumber from '../../../Popups/PhoneNumber/PhoneNumber'
-import Messanger from '../../../Popups/Messanger/Messanger'
-import { fetchMessages } from '../../../../Redux/slices/messanger';
 import { useTranslation } from 'react-i18next';
+import { fetchMessages } from '../../../../Redux/slices/messanger';
 import { useAppSelector } from '../../../../Redux/store';
+import Service from '../../../../assets/profile/Discuter/Service-24-7.png';
+import Cover from '../../../../assets/profile/Discuter/cover.png';
+import MessangerBtnIcon from '../../../../assets/profile/Discuter/messanger-btn.svg';
+import Messanger from '../../../Popups/Messanger/Messanger';
+import LocalPhoneRoundedIcon from '@mui/icons-material/LocalPhoneRounded';
 
 function Discuter() {
     const unReadMessages = useAppSelector((state) => state.messanger.unReadedMessages)
@@ -48,7 +46,10 @@ function Discuter() {
                     <p className='sub-title'>{t('profile.discuter.supportContact')}</p>
                     <div className='buttons'>
                         <button className='btn1' onClick={handlePhonePopup}>{t('profile.discuter.somethingToSay')}</button>
-                        <button className='support-client'>{t('profile.discuter.supportContact')}</button>
+                        <button className='support-client'>
+                            {t('profile.discuter.supportContact')}
+                            <p><span><LocalPhoneRoundedIcon className='support-phone-icon' /></span> 44 100 162</p>
+                        </button>
                     </div>
                 </div>
                 <div className='aide-service'>
@@ -63,17 +64,14 @@ function Discuter() {
             <div className='bulles'>
                 <button className='messanger-popup-btn' onClick={handleMessangerPopup} style={{ backgroundImage: `url(${MessangerBtnIcon})` }}>
                     {unReadedQt > 0 && (
-                        // <NotificationsOffIcon className='messanger-bull-notif-icon' />
                         <div className='messanger-bull-notif-icon'>
                             {unReadedQt}
                         </div>
                     )}
                 </button>
-                <button className='phone-popup-btn' onClick={handlePhonePopup} style={{ backgroundImage: `url(${PhoneBtnIcon})` }}></button>
+                {/* <button className='phone-popup-btn' onClick={handlePhonePopup} style={{ backgroundImage: `url(${PhoneBtnIcon})` }}></button> */}
             </div>
-            {
-                phonePopup && <PhoneNumber close={handlePhonePopup} />
-            }
+
             {
                 messangerPopup && <Messanger className="discuter-messanger-popup" close={handleMessangerPopup} />
             }
