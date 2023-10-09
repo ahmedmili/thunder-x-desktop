@@ -153,6 +153,18 @@ async function deleteAccount() {
     throw error;
   }
 }
+async function desactivateAccount(formData: any) {
+  try {
+    const response = await api.post(
+      `status_user/`, formData
+    );
+    const { status, data } = response;
+    return { status, data };
+  } catch (error) {
+    throw error;
+  }
+}
+
 
 export const userService = {
   loginUser,
@@ -164,5 +176,6 @@ export const userService = {
   deletefavorite,
   getClientFavorits,
   gifts,
+  desactivateAccount,
   deleteAccount,
 };

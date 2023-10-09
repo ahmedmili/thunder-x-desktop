@@ -1,23 +1,23 @@
-import { Link, Outlet, useNavigate } from 'react-router-dom';
 import KeyboardArrowUpOutlinedIcon from '@mui/icons-material/KeyboardArrowUpOutlined';
+import { useNavigate } from 'react-router-dom';
 
 
-import './configPage.scss'
-import { useEffect, useState } from 'react';
-import Longue from './Longue/Longue';
-import Theme from './Theme/Theme';
-import Map from '../../../Location/Location';
-import Legale from './Legale/Legale';
-import Politiques from './Politiques/Politiques';
-import ModifPassword from '../../../Popups/ModifPassword/ModifPassword';
-import UpdateAccount from './UpdateAccount/UpdateAccount';
+import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
+import { useDispatch } from 'react-redux';
+import { toast } from 'react-toastify';
+import { logout } from '../../../../Redux/slices/userSlice';
 import { useAppSelector } from '../../../../Redux/store';
 import { userService } from '../../../../services/api/user.api';
-import { useDispatch } from 'react-redux';
-import { logout } from '../../../../Redux/slices/userSlice';
-import { toast } from 'react-toastify';
+import Map from '../../../Location/Location';
+import ModifPassword from '../../../Popups/ModifPassword/ModifPassword';
 import PhoneNumberInput from '../../../Popups/PhoneNumberInput/PhoneNumberInput';
+import Legale from './Legale/Legale';
+import Longue from './Longue/Longue';
+import Politiques from './Politiques/Politiques';
+import UpdateAccount from './UpdateAccount/UpdateAccount';
+import './configPage.scss';
+import DesactiveAccount from './DesactiveAccount/DesactiveAccount';
 
 interface Settingsection {
   title: string;
@@ -49,7 +49,6 @@ const SettingSection: React.FC<Settingsection> = (props) => {
 const ConfigPage = () => {
   const { t } = useTranslation()
   const theme = useAppSelector((state) => state.home.theme)
-  const [template, setTemplate] = useState<number>(theme)
 
   const [selectedSetting, setSelectedSetting] = useState<number>(0)
   const [showPWPopup, setShowPWPopup] = useState<boolean>(false)
@@ -79,18 +78,30 @@ const ConfigPage = () => {
     }
   }
 
+  // const desactiveAccount = async () => {
+  //   const { status, data } = await userService.desactivateAccount()
+  //   if (data.success) {
+  //     let lang = localStorage.getItem('lang');
+  //     localStorage.clear();
+  //     localStorage.setItem('lang', lang!);
+  //     dispatch(logout())
+  //     navigate('/')
+  //   }
+  //   else {
+  //     toast.error('un probléme')
+  //   }
+  // }
+
   const showPasswordPopup = () => {
     setShowPWPopup(!showPWPopup)
   }
   const handlePhonePopup = () => {
     setShowPhoneInputPopup(!showPhoneInputPopup)
   }
-  useEffect(() => {
-    setTemplate(theme)
-  }, [theme])
+
   return (
     <>
-      <div className={`config-page ${template === 1 && 'dark-background2'}`}>
+      <div className={`config-page `}>
         <SettingSection settingIndex={1} actionListener={handleselect} title={t('profile.mesConfig.modifAccount')} className={`${selectedSetting === 1 ? "active" : ""}`} />
         {
           selectedSetting === 1 &&
@@ -141,13 +152,13 @@ const ConfigPage = () => {
             <Politiques />
           </div>
         }
-        {/* <SettingSection settingIndex={6} actionListener={handleselect} title={t('profile.mesConfig.theme')} className={`${selectedSetting === 6 ? "active" : ""}`} />
-        {selectedSetting === 6 &&
-          <div className='theme-container'>
-            <Theme />
+        <SettingSection settingIndex={6} actionListener={handleselect} title='Désactiver mon compte' className={`${selectedSetting === 6 ? "active" : ""}`} />
+        {
+          selectedSetting === 6 &&
+          <div className='desactive-container'>
+            <DesactiveAccount />
           </div>
-        } */}
-        {/* <Theme /> */}
+        }
         <SettingSection settingIndex={7} actionListener={deleteAccount} title={t('profile.mesConfig.deleteAccount')} className={`${selectedSetting === 7 ? "active" : ""}`} />
       </div>
 
