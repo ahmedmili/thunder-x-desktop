@@ -15,7 +15,7 @@ import { userService } from '../../services/api/user.api';
 
 interface SupplierCard {
     data: Restaurant,
-    favors?: boolean  ,
+    favors?: boolean,
     className?: string
 }
 
@@ -105,6 +105,7 @@ const SupplierCard: React.FC<SupplierCard> = ({ data, favors = false, className 
 
                                     {getTruncatedName(data.name)}
                                 </abbr>
+                                <Star className={supplierStyle.starIcon} />
                             </p>
                             {/* option take_away & delivery */}
                             <p className={supplierStyle.option} >
@@ -124,20 +125,29 @@ const SupplierCard: React.FC<SupplierCard> = ({ data, favors = false, className 
                                 <span>
                                     {" " + data.delivery_price + " DT"}
                                 </span>
+                                {/* time lable */}
+                                {data.medium_time && (
+                                    <Box
+                                        className={supplierStyle.restaurantTime}>
+
+                                        <p>
+                                            {`${data.medium_time - 10}mins - ${data.medium_time + 10
+                                                }mins`}
+
+                                        </p>
+                                    </Box>
+                                )}
                             </p>
                         </div>
 
                         <div className={supplierStyle.rightSide}>
 
                             {/* rating lable */}
-                            <Box className={supplierStyle.ratingBox} style={data.star ? { visibility: 'visible' } : { visibility: 'hidden' }} >
+                            {/* <Box className={supplierStyle.ratingBox} style={data.star ? { visibility: 'visible' } : { visibility: 'hidden' }} >
                                 <Star className={supplierStyle.starIcon} />
-                                <Typography>
-                                    {data.star && data.star}
-                                </Typography>
-                            </Box>
+                            </Box> */}
                             {/* time lable */}
-                            {data.medium_time && (
+                            {/* {data.medium_time && (
                                 <Box
                                     className={supplierStyle.restaurantTime}>
 
@@ -147,7 +157,7 @@ const SupplierCard: React.FC<SupplierCard> = ({ data, favors = false, className 
 
                                     </p>
                                 </Box>
-                            )}
+                            )} */}
 
 
                         </div>
