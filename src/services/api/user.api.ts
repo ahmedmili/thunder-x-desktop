@@ -156,7 +156,7 @@ async function deleteAccount() {
 async function desactivateAccount(formData: any) {
   try {
     const response = await api.post(
-      `status_user/`, formData
+      `status_user`, formData
     );
     const { status, data } = response;
     return { status, data };

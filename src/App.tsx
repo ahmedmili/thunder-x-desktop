@@ -1,49 +1,45 @@
 import { CssBaseline } from "@mui/material";
 import "bootstrap/dist/css/bootstrap.min.css";
+import { Suspense, lazy, useCallback, useEffect, useState } from "react";
 import { Navigate, Outlet, Route, Routes } from "react-router-dom";
-import { lazy, Suspense, useCallback, useEffect, useState } from "react";
-import Layout from "./components/layout/layout";
 import { ToastContainer, toast } from "react-toastify";
+import Layout from "./components/layout/layout";
 
 import { useAppDispatch, useAppSelector } from "./Redux/store";
 
 import {
-  selectIsDelivery,
-  setData as setHomeData,
-  setLoading as setHomeDataLoading,
-  setIsDelivery,
+  setIsDelivery
 } from "./Redux/slices/homeDataSlice";
 
-import { setRestaurants } from "./Redux/slices/restaurantSlice";
-import { LocationService } from "./services/api/Location.api"
+import jwt_decode from "jwt-decode";
 import {
   setCartItems,
   setDeliveryPrice,
   setSupplier,
 } from "./Redux/slices/cart/cartSlice";
-import Menu from "./components/menus/menus";
-import { setUser, login, logout } from "./Redux/slices/userSlice";
-import jwt_decode from "jwt-decode";
-import WebSocket from "./services/websocket";
-import eventEmitter from "./services/thunderEventsService";
+import { setRestaurants } from "./Redux/slices/restaurantSlice";
+import { login, logout, setUser } from "./Redux/slices/userSlice";
 import "./app.scss";
+import Menu from "./components/menus/menus";
+import { LocationService } from "./services/api/Location.api";
 import { localStorageService } from "./services/localStorageService";
+import eventEmitter from "./services/thunderEventsService";
 // import { homedataService } from "./services/api/homeData.api";
-import { supplierServices } from "./services/api/suppliers.api";
-import { Restaurant } from "./services/types";
-import { fetchHomeData, setTheme } from "./Redux/slices/home";
-import FilterPage from "./views/filtre/FilterPage";
-import HomeSkeleton from "./views/home/skeleton/HomeSkeleton";
+import { fetchHomeData } from "./Redux/slices/home";
 import Header from "./components/Header/Header";
 import Footer from "./components/footer/footer";
-import { userService } from "./services/api/user.api";
-import Profile from "./components/layout/Profile/Profile"
-import ConfigPage from "./components/layout/Profile/ConfigPage/ConfigPage";
 import Annonces from "./components/layout/Profile/All_Annonces/All_Annonces";
 import ArchivedCommands from "./components/layout/Profile/Archivedcommands/ArchivedCommands";
+import ConfigPage from "./components/layout/Profile/ConfigPage/ConfigPage";
 import Discuter from "./components/layout/Profile/Discuter/Discuter";
 import Favors from "./components/layout/Profile/Favors/Favors";
 import FidelitePage from "./components/layout/Profile/FidelitePage/FidelitePage";
+import Profile from "./components/layout/Profile/Profile";
+import { supplierServices } from "./services/api/suppliers.api";
+import { userService } from "./services/api/user.api";
+import { Restaurant } from "./services/types";
+import FilterPage from "./views/filtre/FilterPage";
+import HomeSkeleton from "./views/home/skeleton/HomeSkeleton";
 
 //lazy loading
 const HomePage = lazy(() => import("./views/home/home.page"));

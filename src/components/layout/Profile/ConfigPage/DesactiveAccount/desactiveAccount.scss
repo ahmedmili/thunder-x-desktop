@@ -122,6 +122,9 @@
                 margin: 0;
                 width: 43px;
                 height: 39px;
+                &.active{
+                    background-color: #2bc5c3;
+                }
             }
         }
 
