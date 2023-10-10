@@ -58,6 +58,7 @@
   "profile.desactive.warnMessage": "هل أنت متأكد من رغبتك في تعطيل حسابك مؤقتًا؟",
   "profile.desactive.title": "لماذا ترغب في تعطيل / حذف حسابك؟",
   "profile.desactive.message": "إذا قمت بتعطيل حسابك مؤقتًا، يمكنك استعادته في أي وقت باستخدام اسم المستخدم وكلمة المرور الخاصة بك",
+  "profile.delete.warnMessage": "هل أنت متأكد من رغبتك في حذف حسابك نهائيًا؟",
   "orderTrackingPage.verified_by_supplier": "تم التحقق من قبل المورد",
   "orderTrackingPage.assigned_to_driver": "تم تعيينه للسائق",
   "orderTrackingPage.driver_on_the_way_to_supplier": "السائق في الطريق إلى المورد",

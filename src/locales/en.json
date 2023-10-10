@@ -68,6 +68,7 @@
   "profile.desactive.warnMessage": "Are you sure you want to temporarily deactivate your account?",
   "profile.desactive.title": " Why do you want to deactivate/delete your account?",
   "profile.desactive.message": "If you temporarily deactivate your account, you can restore it at any time using your username and password",
+  "profile.delete.warnMessage": "Are you sure you want to permanently delete your account?",
   "orderTrackingPage.status": "Status:",
   "orderTrackingPage.deliveryDriver": "Delivery Driver:",
   "orderTrackingPage.callUs": "Call us",

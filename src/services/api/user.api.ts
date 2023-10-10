@@ -140,12 +140,10 @@ async function gifts() {
   }
 }
 
-async function deleteAccount() {
+async function deleteAccount(formData: any) {
   try {
     const response = await api.delete(
-      `deleteClient/${localStorage.getItem('userId')}`, {
-    }
-
+      `deleteClient/${localStorage.getItem('userId')}`, formData
     );
     const { status, data } = response;
     return { status, data };

@@ -5,10 +5,7 @@ import { useNavigate } from 'react-router-dom';
 import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useDispatch } from 'react-redux';
-import { toast } from 'react-toastify';
-import { logout } from '../../../../Redux/slices/userSlice';
 import { useAppSelector } from '../../../../Redux/store';
-import { userService } from '../../../../services/api/user.api';
 import Map from '../../../Location/Location';
 import ModifPassword from '../../../Popups/ModifPassword/ModifPassword';
 import PhoneNumberInput from '../../../Popups/PhoneNumberInput/PhoneNumberInput';
@@ -62,20 +59,6 @@ const ConfigPage = () => {
   }
   const closePopup = () => {
     setSelectedSetting(0)
-  }
-
-  const deleteAccount = async () => {
-    const { status, data } = await userService.deleteAccount()
-    if (data.success) {
-      let lang = localStorage.getItem('lang');
-      localStorage.clear();
-      localStorage.setItem('lang', lang!);
-      dispatch(logout())
-      navigate('/')
-    }
-    else {
-      toast.error('un probléme')
-    }
   }
 
 
@@ -143,10 +126,17 @@ const ConfigPage = () => {
         {
           selectedSetting === 6 &&
           <div className='desactive-container'>
-            <DesactiveAccount />
+            <DesactiveAccount type='desactiv' />
           </div>
         }
-        <SettingSection settingIndex={7} actionListener={deleteAccount} title={t('profile.mesConfig.deleteAccount')} className={`${selectedSetting === 7 ? "active" : ""}`} />
+        <SettingSection settingIndex={7} actionListener={handleselect} title={t('profile.mesConfig.deleteAccount')} className={`${selectedSetting === 7 ? "active" : ""}`} />
+        {
+          selectedSetting === 7 &&
+          <div className='desactive-container'>
+            <DesactiveAccount  type='delete'/>
+          </div>
+        }
+
       </div>
 
     </>

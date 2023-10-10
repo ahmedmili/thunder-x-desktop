@@ -1,20 +1,20 @@
 
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useNavigate } from 'react-router';
+import { toast } from 'react-toastify';
+import { logout } from '../../../../../Redux/slices/userSlice';
+import { useAppDispatch } from '../../../../../Redux/store';
 import Cover from '../../../../../assets/profile/desactive-cover.png';
+import { userService } from '../../../../../services/api/user.api';
 import ConfirmPopup from '../../../../Popups/ConfirmPopup/ConfirmPopup';
 import './desactiveAccount.scss';
-import { useAppDispatch } from '../../../../../Redux/store';
-import { userService } from '../../../../../services/api/user.api';
-import { logout } from '../../../../../Redux/slices/userSlice';
-import { toast } from 'react-toastify';
 
 interface DesactiveAccountProps {
-
+  type: string
 }
 
-const DesactiveAccount: React.FC<DesactiveAccountProps> = () => {
+const DesactiveAccount: React.FC<DesactiveAccountProps> = ({ type }) => {
 
 
 
@@ -68,6 +68,42 @@ const DesactiveAccount: React.FC<DesactiveAccountProps> = () => {
       }
     } catch (error) {
       throw error
+    }
+  }
+
+
+  const deleteAccount = async () => {
+    const checked = avisList.filter((e) => e.checked === true)
+    const formData = {
+      evaluation: rate,
+      reason: checked.length > 0 ? checked[0].reason : "",
+    }
+    try {
+      const { status, data } = await userService.deleteAccount(formData)
+      if (data.success) {
+        let lang = localStorage.getItem('lang');
+        localStorage.clear();
+        localStorage.setItem('lang', lang!);
+        dispatch(logout())
+        navigate('/')
+      }
+      else {
+        toast.error('un probléme')
+      }
+    } catch (error) {
+      throw error
+    }
+  }
+
+  const handleSubmit = () => {
+    switch (type) {
+      case 'desactiv':
+        desactiveAccount();
+        break;
+      case 'delete':
+        deleteAccount();
+        break;
+      default: break;
     }
   }
 
@@ -131,7 +167,7 @@ const DesactiveAccount: React.FC<DesactiveAccountProps> = () => {
         </div>
       </section>
       {
-        showConfirm && <ConfirmPopup accept={desactiveAccount} close={handleConfirm} title={t('profile.desactive.warnMessage')} />
+        showConfirm && <ConfirmPopup accept={handleSubmit} close={handleConfirm} title={type === "desactiv" ? t('profile.desactive.warnMessage') : t('profile.delete.warnMessage')} />
       }
     </>
   );
