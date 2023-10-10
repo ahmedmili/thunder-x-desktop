@@ -31,7 +31,7 @@
     height: 284px;
     border-radius: 25px;
     background: #FFF;
-    padding: 65px 65px 56px 65px; 
+    padding: 65px 65px 56px 65px;
 
     .confirm-message {
         color: #484848;
@@ -69,4 +69,22 @@
         }
     }
 
+}
+
+@media only screen and (max-width:992px) {
+    .confirm-popup-container {
+        width: 70vw;
+        height: 284px;
+    }
+}
+
+@media only screen and (max-width:786px) {
+    .confirm-popup-container {
+        padding: 67px 41px 56px 41px;
+
+        .confirm-message {
+            font-size: 17px;
+            margin: 0;
+        }
+    }
 }

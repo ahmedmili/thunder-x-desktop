@@ -122,7 +122,8 @@
                 margin: 0;
                 width: 43px;
                 height: 39px;
-                &.active{
+
+                &.active {
                     background-color: #2bc5c3;
                 }
             }
@@ -162,4 +163,65 @@
         }
     }
 
+}
+
+@media screen and (max-width :992px) {
+    .desactive-account-section {
+        .desactive-header-cover {
+            height: 152px;
+        }
+
+        .desactive-body {
+            gap: 10px;
+
+            .desactive-title {
+                font-size: 15px;
+            }
+
+            .desactive-warn {
+                font-size: 12 px;
+            }
+
+            .desactive-avis-container {
+                .avi-content {
+                    label {
+                        font-size: 10px;
+                    }
+                }
+            }
+
+            .desactive-rate-container {
+                gap: 10px;
+            }
+
+            .desactive-buttons {
+                gap: 10px;
+
+                button {
+                    font-size: 10px;
+                }
+            }
+
+        }
+    }
+}
+
+@media screen and (max-width :786px) {
+    .desactive-account-section {
+        .desactive-header-cover {
+            height: 119px;
+        }
+
+        .desactive-body {
+
+            .desactive-avis-container {
+                display: flex;
+                flex-direction: column;
+                justify-content: start;
+                align-items: start;
+                gap: 0px;
+                row-gap: 11px;
+            }
+        }
+    }
 }
