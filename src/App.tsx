@@ -17,36 +17,37 @@ import {
   setDeliveryPrice,
   setSupplier,
 } from "./Redux/slices/cart/cartSlice";
+import { fetchHomeData } from "./Redux/slices/home";
+import { addMessangerSuccess } from "./Redux/slices/messanger";
 import { setRestaurants } from "./Redux/slices/restaurantSlice";
 import { login, logout, setUser } from "./Redux/slices/userSlice";
 import "./app.scss";
-import Menu from "./components/menus/menus";
 import { LocationService } from "./services/api/Location.api";
-import { localStorageService } from "./services/localStorageService";
-import eventEmitter from "./services/thunderEventsService";
-// import { homedataService } from "./services/api/homeData.api";
-import { fetchHomeData } from "./Redux/slices/home";
-import Header from "./components/Header/Header";
-import Footer from "./components/footer/footer";
-import Annonces from "./components/layout/Profile/All_Annonces/All_Annonces";
-import ArchivedCommands from "./components/layout/Profile/Archivedcommands/ArchivedCommands";
-import ConfigPage from "./components/layout/Profile/ConfigPage/ConfigPage";
-import Discuter from "./components/layout/Profile/Discuter/Discuter";
-import Favors from "./components/layout/Profile/Favors/Favors";
-import FidelitePage from "./components/layout/Profile/FidelitePage/FidelitePage";
-import Profile from "./components/layout/Profile/Profile";
 import { supplierServices } from "./services/api/suppliers.api";
 import { userService } from "./services/api/user.api";
-import { Restaurant } from "./services/types";
-import FilterPage from "./views/filtre/FilterPage";
-import HomeSkeleton from "./views/home/skeleton/HomeSkeleton";
-import Feedback from "./components/layout/Profile/Feedback/Feedback";
+import { localStorageService } from "./services/localStorageService";
+import eventEmitter from "./services/thunderEventsService";
+import { Message, Restaurant } from "./services/types";
+import channelListener from "./services/web-socket";
 
-//lazy loading
+import HomeSkeleton from "./views/home/skeleton/HomeSkeleton";
+//lazy loading components
+const Header = lazy(() => import("./components/Header/Header"));
+const Footer = lazy(() => import("./components/footer/footer"));
+const Annonces = lazy(() => import("./components/layout/Profile/All_Annonces/All_Annonces"));
+const ArchivedCommands = lazy(() => import("./components/layout/Profile/Archivedcommands/ArchivedCommands"));
+const ConfigPage = lazy(() => import("./components/layout/Profile/ConfigPage/ConfigPage"));
+const Discuter = lazy(() => import("./components/layout/Profile/Discuter/Discuter"));
+const Favors = lazy(() => import("./components/layout/Profile/Favors/Favors"));
+const FidelitePage = lazy(() => import("./components/layout/Profile/FidelitePage/FidelitePage"));
+const Feedback = lazy(() => import("./components/layout/Profile/Feedback/Feedback"));
+const Menu = lazy(() => import("./components/menus/menus"));
+//lazy loading pages
+const Profile = lazy(() => import("./components/layout/Profile/Profile"));
 const HomePage = lazy(() => import("./views/home/home.page"));
+const FilterPage = lazy(() => import("./views/filtre/FilterPage"));
 const LoginPage = lazy(() => import("./views/login/login.page"));
 const RegisterPage = lazy(() => import("./views/RegisterPage"));
-const ProfilePage = lazy(() => import("./views/profile/profile.page"));
 const UnauthorizePage = lazy(
   () => import("./views/unauthorize/unauthorize.page")
 );
@@ -192,21 +193,21 @@ function App() {
     }
   }, [])
 
-  // initialize theme
-  // useEffect(() => {
-  //   const theme = localStorageService.getUserTheme();
-
-  //   !theme && (() => {
-  //     localStorageService.setUserTheme('0');
-  //   })
-  //   theme == "0" ? dispatch(setTheme(0)) : dispatch(setTheme(1));
-
-  // }, []);
-
+  // handle recive admin message
+  const newMessage = async (message: Message) => {
+    dispatch(addMessangerSuccess(message))
+  }
   // webSocket create instance
-  // useEffect(() => {
-  //   const socket = WebSocket.getInstance();
-  // }, []);
+  useEffect(() => {
+    channelListener()
+    eventEmitter.on('NEW_ADMIN_MESSAGE', newMessage);
+    return () => {
+      eventEmitter.off('NEW_ADMIN_MESSAGE', newMessage);
+    }
+  }, [])
+
+
+
   const theme = useAppSelector((state) => state.home.theme)
   const [template, setTemplate] = useState<number>(theme)
   useEffect(() => {
@@ -235,15 +236,16 @@ function App() {
             {/* Private Route */}
             <Route path="track-order" element={<OrderTrackingPage />} />
           </Route>
-
-          <Route path="/profile" element={<Profile />}>
-            <Route index element={<ConfigPage />} />
-            <Route path="/profile/annonces" element={<Annonces />} />
-            <Route path="/profile/archivedCommands" element={<ArchivedCommands />} />
-            <Route path="/profile/discuter" element={<Discuter />} />
-            <Route path="/profile/Favors" element={<Favors />} />
-            <Route path="/profile/Fidelite" element={<FidelitePage />} />
-            <Route path="/profile/Feedback/:command_id" element={<Feedback />} />
+          <Route element={<ProtectedRoute children={undefined} />}>
+            <Route path="/profile" element={<Profile />}>
+              <Route index element={<ConfigPage />} />
+              <Route path="/profile/annonces" element={<Annonces />} />
+              <Route path="/profile/archivedCommands" element={<ArchivedCommands />} />
+              <Route path="/profile/discuter" element={<Discuter />} />
+              <Route path="/profile/Favors" element={<Favors />} />
+              <Route path="/profile/Fidelite" element={<FidelitePage />} />
+              <Route path="/profile/Feedback/:command_id" element={<Feedback />} />
+            </Route>
           </Route>
 
           <Route path="unauthorized" element={<UnauthorizePage />} />
@@ -258,13 +260,20 @@ function App() {
   );
 }
 
-const ProtectedRoute = (children: any) => {
+const ProtectedRoute = ({ children }: { children: React.ReactNode }) => {
   const isAuthenticated = useAppSelector((state) => state.user.isAuthenticated);
-  if (!isAuthenticated) {
+  const [passable, setPassable] = useState<boolean>(true)
+
+  useEffect(() => {
+    setPassable(isAuthenticated)
+  }, [isAuthenticated])
+
+  if (!passable) {
     return <Navigate to="/unauthorized" replace />;
+  } else {
+    return children ? <>{children}</> : <Outlet />;
   }
-  return children ? <>{children}</> : <Outlet />;
-};
+}
 
 export const verifyToken = (token: string): boolean => {
   try {

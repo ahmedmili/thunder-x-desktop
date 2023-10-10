@@ -162,6 +162,38 @@ async function desactivateAccount(formData: any) {
     throw error;
   }
 }
+async function fetchMessages() {
+  try {
+    const client_id = localStorage.getItem('userId')
+    const formData = {
+      client_id: client_id
+    }
+    const response = await api.post(
+      `getclientmessage`, formData
+
+    );
+    const { status, data } = response;
+    return { status, data };
+  } catch (error) {
+    throw error;
+  }
+}
+
+async function createmessage(message: string) {
+  try {
+    const formData = {
+      message: message
+    }
+    const response = await api.post(
+      `createmessage`, formData
+
+    );
+    const { status, data } = response;
+    return { status, data };
+  } catch (error) {
+    throw error;
+  }
+}
 
 
 interface Rating {
@@ -227,6 +259,8 @@ export const userService = {
   gifts,
   desactivateAccount,
   deleteAccount,
+  fetchMessages,
+  createmessage,
   createDeliveryRating,
   getClientFeedback,
 };
