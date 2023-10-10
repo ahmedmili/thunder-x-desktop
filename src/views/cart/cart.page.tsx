@@ -149,7 +149,7 @@ const CartPage: React.FC = () => {
 
     return <>
       <td className="image-container">
-        <img src={item.product.image[0].path} alt="product image" />
+        <img src={`${item.product.image[0] ? item.product.image[0].path : ""}`} alt="product image" />
         <div className="info-text">
           <span className="title">{item.product.name}</span>
           <span className="description">{item.product.description}</span>

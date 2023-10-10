@@ -81,7 +81,7 @@ export const Cart: React.FC<CartProps> = ({ items, closeButton }) => {
         {/* Use the props here */}
         <div className='head'>
           <div className="image-container">
-            <img src={props.image} alt="product image" className='product-image' />
+            <img src={`${props.image ? props.image : ""}`} alt="product image" className='product-image' />
           </div>
           <div className="product-info">
             <div className='name'>{props.name}</div>
@@ -155,7 +155,7 @@ export const Cart: React.FC<CartProps> = ({ items, closeButton }) => {
               items.map((item, index) => {
                 let data: Article = {
                   id: item.product.id,
-                  image: item.product.image[0].path,
+                  image: item.product.image[0] ? item.product.image[0].path : "",
                   price: item.unitePrice,
                   total: item.total,
                   name: item.product.name,
