@@ -110,13 +110,13 @@ const SupplierCard: React.FC<SupplierCard> = ({ data, favors = false, className 
                             {/* option take_away & delivery */}
                             <p className={supplierStyle.option} >
                                 {
-                                    data.delivery === 1 && ("delivery")
+                                    data.delivery === 1 && t('cartPage.delivery')
                                 }
                                 {
                                     data.delivery === 1 && data.take_away === 1 && (" / ")
                                 }
                                 {
-                                    data.take_away === 1 && ("Home")
+                                    data.take_away === 1 && t("home2")
                                 }
                             </p>
                             {/* delivery Price */}
@@ -139,29 +139,6 @@ const SupplierCard: React.FC<SupplierCard> = ({ data, favors = false, className 
                                 )}
                             </p>
                         </div>
-
-                        <div className={supplierStyle.rightSide}>
-
-                            {/* rating lable */}
-                            {/* <Box className={supplierStyle.ratingBox} style={data.star ? { visibility: 'visible' } : { visibility: 'hidden' }} >
-                                <Star className={supplierStyle.starIcon} />
-                            </Box> */}
-                            {/* time lable */}
-                            {/* {data.medium_time && (
-                                <Box
-                                    className={supplierStyle.restaurantTime}>
-
-                                    <p>
-                                        {`${data.medium_time - 10}mins - ${data.medium_time + 10
-                                            }mins`}
-
-                                    </p>
-                                </Box>
-                            )} */}
-
-
-                        </div>
-
                     </CardContent>
                 </Card>
             </Link>

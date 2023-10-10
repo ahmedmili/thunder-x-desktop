@@ -162,50 +162,6 @@
           }
 
         }
-
-        .rightSide {
-          display: flex;
-          flex-direction: column;
-          align-items: stretch;
-          justify-content: space-between;
-
-          // .restaurantTime {
-          //   display: flex;
-          //   align-items: center;
-          //   justify-content: center;
-
-          //   background-color: $orange_color;
-          //   border-radius: 25px;
-          //   padding: 0.2rem 0.4rem;
-          //   z-index: 1;
-
-          //   p {
-          //     margin: 0;
-          //     color: white;
-          //     text-align: center;
-          //     font-family: Poppins;
-          //     font-size: 12px;
-          //     ;
-          //     font-style: normal;
-          //     font-weight: 600;
-          //   }
-          // }
-
-          // .ratingBox {
-          //   display: flex;
-          //   align-items: center;
-          //   justify-content: flex-end;
-          //   background-color: rgba(255, 255, 255, 0.8);
-          //   padding: 0.2rem 0.4rem;
-          //   border-radius: 0 0 0 1rem;
-
-          //   .starIcon {
-          //     color: $orange_color;
-          //     font-size: 2.2rem;
-          //   }
-          // }
-        }
-
       }
     }
 
@@ -235,23 +191,6 @@
 
           .leftSide {
             justify-content: space-around;
-          }
-
-          .rightSide {
-            justify-content: space-around;
-
-            .restaurantTime {
-              p {
-                font-size: 7px;
-                ;
-              }
-            }
-
-            .ratingBox {
-              .starIcon {
-                font-size: 2.2rem;
-              }
-            }
           }
         }
 
@@ -299,21 +238,6 @@
             }
 
           }
-
-          .rightSide {
-            .restaurantTime {
-              p {
-                font-size: 5px;
-              }
-            }
-
-            .ratingBox {
-              .starIcon {
-                font-size: 2.2rem;
-              }
-            }
-          }
-
         }
       }
     }
@@ -353,28 +277,6 @@
             }
 
           }
-
-          .rightSide {
-            .restaurantTime {
-              border-radius: 25px;
-              padding: 0.2rem 0.4rem;
-
-              p {
-                margin: 0;
-                font-size: 0.6vw;
-
-              }
-            }
-
-            .ratingBox {
-              padding: 0.2rem 0.4rem;
-
-              .starIcon {
-                font-size: 2.2rem;
-              }
-            }
-          }
-
         }
       }
     }
@@ -418,28 +320,6 @@
             }
 
           }
-
-          .rightSide {
-            .restaurantTime {
-              border-radius: 25px;
-              padding: 0.2rem 0.4rem;
-
-              p {
-                margin: 0;
-                font-size: 0.6vw;
-
-              }
-            }
-
-            .ratingBox {
-              padding: 0.2rem 0.4rem;
-
-              .starIcon {
-                font-size: 2.2rem;
-              }
-            }
-          }
-
         }
       }
     }
