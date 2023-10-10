@@ -62,7 +62,7 @@ const OldCommands: React.FC<CommandsListProps> = ({ data, feedbacksList }) => {
     }, [])
 
     return (
-        <>
+        <React.Fragment>
             {
                 (supplier && products) && (
                     <>
@@ -175,7 +175,7 @@ const OldCommands: React.FC<CommandsListProps> = ({ data, feedbacksList }) => {
                     </>
                 )
             }
-        </>
+        </React.Fragment>
 
     )
 }

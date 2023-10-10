@@ -74,6 +74,19 @@
         height: 18px;
       }
 
+      position: relative;
+
+      .notif-indicator {
+        position: absolute;
+        border-radius: 50%;
+        top: 5px;
+        left: 25px;
+        height: 12px;
+        width: 12px;
+        background-color: red;
+
+      }
+
       a {
         color: #484848;
         font-family: Poppins;

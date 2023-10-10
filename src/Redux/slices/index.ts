@@ -8,10 +8,12 @@ import usersReducer from "./users";
 import { locationReducer } from "./location";
 import verifysmsReducer from "./verifysms";
 import homeReducer from "./home";
+import messangerReducer from "./messanger";
 
 const rootReducer = combineReducers({
   user: userSlice,
   users: usersReducer,
+  messanger: messangerReducer,
   verifysms: verifysmsReducer,
   location: locationReducer,
   restaurant: restaurantSlice,
