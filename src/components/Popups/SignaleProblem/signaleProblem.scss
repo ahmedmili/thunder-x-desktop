@@ -1,0 +1,111 @@
+@import '../../../_colors.scss';
+
+@keyframes popup-animation {
+    0% {
+        scale: 0;
+        opacity: 0;
+    }
+
+    100% {
+        scale: 1;
+        opacity: 1;
+    }
+}
+
+.dignale-problem-popup-container {
+    height: 100vh;
+    width: 100%;
+    background: rgba(72, 72, 72, 0.60);
+    position: fixed;
+    top: 0;
+    right: 0;
+    z-index: 999;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    .dignale-problem-box {
+        position: relative;
+        width: 934px;
+        height: 451px;
+        border-radius: 25px;
+        background: #FFF;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        gap: 37px;
+        animation: popup-animation 1s ease-in-out;
+
+        .dignale-problem-close {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            border: none;
+            background-color: transparent;
+            font-size: 20px;
+        }
+
+        .messages-container {
+
+            width: 90%;
+            display: flex;
+            flex-direction: column;
+            align-items: start;
+            justify-content: start;
+            gap: 10px;
+
+            .problem-question,
+            .problem-msg {
+                color: #484848;
+                font-family: Poppins;
+                font-size: 20px;
+                font-style: normal;
+                font-weight: 500;
+                line-height: normal;
+                margin: 0;
+            }
+        }
+
+        .problem-text-input {
+            width: 851px;
+            height: 207px;
+            border-radius: 5px;
+            background: #F5F5F4;
+            margin: 0 auto;
+            border: none;
+            padding: 26px 42px;
+            font-size: 20px;
+
+            &::placeholder {
+                color: #958E8E;
+                font-family: Poppins;
+                font-size: 20px;
+                font-style: normal;
+                font-weight: 500;
+                line-height: normal;
+            }
+
+            &:focus {
+                outline: none;
+            }
+        }
+
+        .submit-problem {
+            width: 25%;
+            height: 42px;
+            border-radius: 25px;
+            background: #FBC000;
+            color: #FFF;
+            font-family: Poppins;
+            font-size: 20px;
+            font-style: normal;
+            font-weight: 700;
+            line-height: normal;
+            border: none;
+        }
+
+    }
+
+
+}

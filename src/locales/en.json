@@ -7,6 +7,8 @@
   "Verifier": "Check",
   "Verifier.phone": "Telephone number verification",
   "Annuler": "Cancel",
+  "Envoyer": "Send",
+
   "Enregistrer": "Save",
   "profile.mesOffres": "My offers & announcements",
   "profile.mesConfig": "My settings",
@@ -41,6 +43,9 @@
   "profile.commands.sousMessage": "The order is pending acceptance by the restaurant",
   "profile.commands.command": "Order",
   "profile.commands.avis": "Feedback",
+  "profile.commands.signal.question": "Do you have an issue related to your order ?",
+  "profile.commands.signal.message": "Please let us know about your issue",
+  "profile.commands.signal.placeholder": "Enter your issue here",
   "profile.fidelite.title": "Loyalty Space",
   "profile.fidelite.freeRepas": "My free meals",
   "profile.fidelite.myBonus": "My bonus",
