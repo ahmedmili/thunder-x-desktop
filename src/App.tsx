@@ -40,6 +40,7 @@ import { userService } from "./services/api/user.api";
 import { Restaurant } from "./services/types";
 import FilterPage from "./views/filtre/FilterPage";
 import HomeSkeleton from "./views/home/skeleton/HomeSkeleton";
+import Feedback from "./components/layout/Profile/Feedback/Feedback";
 
 //lazy loading
 const HomePage = lazy(() => import("./views/home/home.page"));
@@ -242,6 +243,7 @@ function App() {
             <Route path="/profile/discuter" element={<Discuter />} />
             <Route path="/profile/Favors" element={<Favors />} />
             <Route path="/profile/Fidelite" element={<FidelitePage />} />
+            <Route path="/profile/Feedback/:command_id" element={<Feedback />} />
           </Route>
 
           <Route path="unauthorized" element={<UnauthorizePage />} />

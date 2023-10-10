@@ -1,0 +1,143 @@
+@import '../../../../../colors';
+
+
+.command-feedback {
+
+    width: calc(100vw - 476px);
+    height: 298px;
+    background-color: white;
+    display: flex;
+    flex-direction: column;
+    justify-content: start;
+    align-items: center;
+    padding: 33px 70px 40px 70px;
+    margin-bottom: 30px;
+    gap: 36px;
+    border-radius: 25px;
+
+    .command-feedback-graph-container {
+        z-index: 1;
+        width: 100%;
+        position: relative;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+
+        .command-avis-container {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            gap: 17px;
+
+            .command-avis-label {
+                color: #24A6A4;
+                font-family: Poppins;
+                font-size: 20px;
+                font-style: normal;
+                font-weight: 600;
+                line-height: normal;
+            }
+
+            .avis-image-container {
+                width: 80px;
+                height: 80px;
+
+                display: flex;
+                justify-content: center;
+                align-items: center;
+
+                .command-rate-smile {
+                    width: 49px;
+                    height: 49px;
+                    transition: all .5s ease-in-out;
+
+                    &.active {
+                        width: 80px;
+                        height: 80px;
+                    }
+                }
+            }
+        }
+
+    }
+
+    .command-feedback-star-container {
+        width: 100%;
+        display: flex;
+        justify-content: space-around;
+        align-items: center;
+        border-radius: 250px;
+        border: 1px solid #FBC000;
+        background: #FFF;
+        height: 58px;
+
+        .avis-star-img-container {
+            width: 58px;
+            height: 58px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+
+            &.active-star {
+                border-radius: 50%;
+                border: solid 1px #FBC000;
+            }
+        }
+    }
+}
+
+@media only screen and (max-width:1200px) {
+    .command-feedback {
+        padding: 31px 10px 40px 21px;
+
+        .command-feedback-graph-container {
+            .command-avis-container {
+                .command-avis-label {
+                    font-size: 15px;
+                    margin: 0;
+                }
+            }
+        }
+    }
+}
+
+@media only screen and (max-width:900px) {
+    .command-feedback {
+        width: 52vw;
+        height: 230px;
+
+        .command-feedback-star-container {
+            .avis-star-img-container {
+                width: 40px;
+                height: 40px;
+            }
+        }
+
+        .command-feedback-graph-container {
+            .command-avis-container {
+                gap: 12px;
+
+                .avis-image-container {
+                    width: 65px;
+                    height: 50px;
+
+                    .command-rate-smile {
+                        width: 30px;
+                        height: 30px;
+
+                        &.active {
+                            width: 50px;
+                            height: 50px;
+                        }
+                    }
+                }
+
+                .command-avis-label {
+                    font-size: 10px;
+                    margin: 0;
+                }
+            }
+        }
+    }
+}

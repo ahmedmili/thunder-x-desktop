@@ -19,12 +19,12 @@ const DesactiveAccount: React.FC<DesactiveAccountProps> = () => {
 
 
   const { t } = useTranslation()
-  
+
   const aviDefault = [
-    { checked: false, reason: "L’application n’est pas pratique" },
-    { checked: false, reason: "L’application est lente" },
-    { checked: false, reason: "Je ne suis pas satisfait de mon expérience de livraison avec l’application" },
-    { checked: false, reason: "J’ai trouvé ubne autre alternative à Thunder Express avec des frais de livraison inférieurs aux vôtres" }
+    { checked: false, reason: t('profile.desactive.avi1') },
+    { checked: false, reason: t('profile.desactive.avi2') },
+    { checked: false, reason: t('profile.desactive.avi3') },
+    { checked: false, reason: t('profile.desactive.avi4') }
 
   ]
   const [showConfirm, setShowConfirm] = useState<boolean>(false)
@@ -81,10 +81,10 @@ const DesactiveAccount: React.FC<DesactiveAccountProps> = () => {
 
         <div className='desactive-body'>
           <h3 className='desactive-title'>
-            Pour quelles raisons vous voulez désactiver / supprimer votre compte ?
+            {t('profile.desactive.title')}
           </h3>
           <p className='desactive-warn'>
-            Si vous désactivez temporairement votre compte, vous pourrez à tout moment le restaurer en utilisant votre nom d’utilisateur et votre mot de passe
+            {t('profile.desactive.message')}
           </p>
           <div className='desactive-avis-container'>
             <div className='avi-content'>
@@ -124,14 +124,14 @@ const DesactiveAccount: React.FC<DesactiveAccountProps> = () => {
           </div>
 
           <div className='desactive-buttons'>
-            <button className='cancle-btn'>Annuler</button>
-            <button className='submit-btn' onClick={handleConfirm} >Désactiver mon compte</button>
+            <button className='cancle-btn'>{t('Annuler')}</button>
+            <button className='submit-btn' onClick={handleConfirm} >{t('profile.desactive.Desactiveok')}</button>
           </div>
 
         </div>
       </section>
       {
-        showConfirm && <ConfirmPopup accept={desactiveAccount} close={handleConfirm} title='Etes vous sure de vouloir désactiver temporairement votre compte ?' />
+        showConfirm && <ConfirmPopup accept={desactiveAccount} close={handleConfirm} title={t('profile.desactive.warnMessage')} />
       }
     </>
   );

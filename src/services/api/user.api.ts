@@ -166,6 +166,57 @@ async function desactivateAccount(formData: any) {
 }
 
 
+interface Rating {
+  command_id: number,
+  command_rating: number,
+  delivery_rating: number
+  delivery_comment: [
+    {
+      comment: string
+    }
+  ] | [],
+  command_comment: [
+    {
+      comment: string
+    }
+  ] | [],
+}
+async function createDeliveryRating(rate: Rating) {
+  try {
+    const response = await api.post(
+      `createDeliveryRating`, rate
+    );
+    const { status, data } = response;
+    return { status, data };
+  } catch (error) {
+    throw error;
+  }
+}
+async function getClientFeedback() {
+  try {
+    const user_id = localStorageService.getUserId()
+    const formDate = {
+      'client_id': 0,
+      'keyword': "",
+    }
+    if (user_id === undefined) {
+      return { status: undefined, data: undefined };
+
+
+    } else {
+      formDate.client_id = Number(user_id);
+      const response = await api.post(
+
+        `backoffice/client_all_feedback_commands`, formDate
+      );
+      const { status, data } = response;
+      return { status, data };
+    }
+  } catch (error) {
+    throw error;
+  }
+}
+
 export const userService = {
   loginUser,
   registerUser,
@@ -178,4 +229,6 @@ export const userService = {
   gifts,
   desactivateAccount,
   deleteAccount,
+  createDeliveryRating,
+  getClientFeedback,
 };
