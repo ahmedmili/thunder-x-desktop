@@ -1,3 +1,10 @@
+import './sideBar.scss'
+import { useEffect, useState } from 'react';
+import { useAppDispatch, useAppSelector } from '../../../../Redux/store';
+import { logout } from '../../../../Redux/slices/userSlice';
+import { useTranslation } from 'react-i18next';
+import { setProfilePage } from '../../../../Redux/slices/home';
+import { localStorageService } from '../../../../services/localStorageService';
 import { Link } from 'react-router-dom';
 
 import profileImg from '../../../../assets/profile/profile_img.png'
@@ -21,13 +28,6 @@ import EspaceW from '../../../../assets/profile/white/Espace.svg'
 import DiscuterW from '../../../../assets/profile/white/Discuter.svg'
 import FavorsW from '../../../../assets/profile/white/Favors.svg'
 
-import './sideBar.scss'
-import { useEffect, useState } from 'react';
-import { useAppDispatch, useAppSelector } from '../../../../Redux/store';
-import { logout } from '../../../../Redux/slices/userSlice';
-import { useTranslation } from 'react-i18next';
-import { setProfilePage } from '../../../../Redux/slices/home';
-import { localStorageService } from '../../../../services/localStorageService';
 
 const SideBar = () => {
 

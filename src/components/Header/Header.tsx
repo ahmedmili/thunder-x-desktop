@@ -24,6 +24,8 @@ import { Cart } from '../cart/cart';
 
 const Header = () => {
 
+  const msg_notifs = useAppSelector((state) => state.messanger.unReadedMessages)
+
   const logged_in = localStorageService.getUserToken() !== null;
   const userItem = localStorageService.getUser();
 
@@ -33,9 +35,10 @@ const Header = () => {
   const location = useAppSelector((state) => state.location.position);
   const showMapState = useAppSelector((state) => state.location.showMap);
 
-  const [showCart, setShowCart] = useState(false); // Add state variable for showing/hiding the cart
-  const [showProfile, setShowProfile] = useState(false); // Add state variable for showing/hiding the cart
-  const [scrolling, setScrolling] = useState(false);
+  const [showCart, setShowCart] = useState<boolean>(false); // Add state variable for showing/hiding the cart
+  const [showProfile, setShowProfile] = useState<boolean>(false); // Add state variable for showing/hiding the cart
+  const [scrolling, setScrolling] = useState<boolean>(false);
+  const [notifsQts, setNotifsQts] = useState<number>(msg_notifs);
 
   const dispatch = useAppDispatch();
   const navigate = useNavigate();
@@ -52,6 +55,10 @@ const Header = () => {
     }
   };
 
+
+  useEffect(() => {
+    setNotifsQts(msg_notifs)
+  }, [msg_notifs])
 
   useEffect(() => {
     // Attach the scroll event listener when the component mounts
@@ -223,7 +230,14 @@ const Header = () => {
 
                 </div>
                 <button onClick={handleUserCart} className="account">
+                  {
+                    notifsQts > 0 && (
+                      <div className="notif-number-container">
+                        {notifsQts}
+                      </div>
+                    )
 
+                  }
                   <PermIdentityOutlinedIcon className='account-icon' />
                 </button>
 
@@ -263,45 +277,3 @@ const Header = () => {
 export default Header;
 
 
-
-{/* <Row className={`fixedHeaderContainer ${scrolling ? 'minimizedFixedHeaderContainer' : ''}`} >
-<Col>
-  <div className="logoContainer"
-
-    onClick={() => navigate('/')} >
-    <a href="#" className={`logoMain ${scrolling ? 'minimizedlogoMain' : ''}`}></a>
-  </div>
-</Col>
-
-<Col>
-  {!logged_in ? (
-    <>
-      <div className="appBar">
-        <button
-          onClick={() => navigate('/register')}
-          className={`LoadingButton ${scrolling ? 'minimizedLoadingButton' : ''}`}
-        >
-          {t('signup')}
-        </button>
-        <button
-          onClick={() => navigate('/login')}
-          className={`LoadingButton ${scrolling ? 'minimizedLoadingButton' : ''}`}
-        >
-          {t('login')}
-        </button>
-      </div>
-    </>
-  ) : <>
-    <div className="appBar">
-      <button
-        onClick={onLogoutHandler}
-        className={`LoadingButton ${scrolling ? 'minimizedLoadingButton' : ''}`}
-      >
-        {t('profile.deconnecter')}
-      </button>
-    </div>
-  </>
-  }
-</Col>
-
-</Row> */}
