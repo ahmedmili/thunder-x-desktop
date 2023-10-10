@@ -12,12 +12,12 @@ import { userService } from '../../../../services/api/user.api';
 import Map from '../../../Location/Location';
 import ModifPassword from '../../../Popups/ModifPassword/ModifPassword';
 import PhoneNumberInput from '../../../Popups/PhoneNumberInput/PhoneNumberInput';
+import DesactiveAccount from './DesactiveAccount/DesactiveAccount';
 import Legale from './Legale/Legale';
 import Longue from './Longue/Longue';
 import Politiques from './Politiques/Politiques';
 import UpdateAccount from './UpdateAccount/UpdateAccount';
 import './configPage.scss';
-import DesactiveAccount from './DesactiveAccount/DesactiveAccount';
 
 interface Settingsection {
   title: string;
@@ -78,19 +78,6 @@ const ConfigPage = () => {
     }
   }
 
-  // const desactiveAccount = async () => {
-  //   const { status, data } = await userService.desactivateAccount()
-  //   if (data.success) {
-  //     let lang = localStorage.getItem('lang');
-  //     localStorage.clear();
-  //     localStorage.setItem('lang', lang!);
-  //     dispatch(logout())
-  //     navigate('/')
-  //   }
-  //   else {
-  //     toast.error('un probléme')
-  //   }
-  // }
 
   const showPasswordPopup = () => {
     setShowPWPopup(!showPWPopup)

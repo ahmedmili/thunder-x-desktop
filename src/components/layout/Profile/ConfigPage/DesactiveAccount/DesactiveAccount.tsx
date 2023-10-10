@@ -1,9 +1,14 @@
 
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useNavigate } from 'react-router';
+import Cover from '../../../../../assets/profile/desactive-cover.png';
+import ConfirmPopup from '../../../../Popups/ConfirmPopup/ConfirmPopup';
 import './desactiveAccount.scss';
-import Cover from '../../../../../assets/profile/desactive-cover.png'
+import { useAppDispatch } from '../../../../../Redux/store';
+import { userService } from '../../../../../services/api/user.api';
+import { logout } from '../../../../../Redux/slices/userSlice';
+import { toast } from 'react-toastify';
 
 interface DesactiveAccountProps {
 
@@ -11,11 +16,14 @@ interface DesactiveAccountProps {
 
 const DesactiveAccount: React.FC<DesactiveAccountProps> = () => {
 
+  const [showConfirm, setShowConfirm] = useState<boolean>(false)
   const [rate, setRate] = useState<number>(3)
   const [avisList, setAvisList] = useState<string[]>([])
 
   const { t } = useTranslation()
   const navigate = useNavigate()
+  const dispatch = useAppDispatch()
+
   const handleSubmit = async () => {
 
   }
@@ -35,6 +43,24 @@ const DesactiveAccount: React.FC<DesactiveAccountProps> = () => {
     !exist ? avis.push(aviDefault[index]) : avis = avis.filter((av: string) => av != aviDefault[index]);
     setAvisList(avis)
   }
+
+  const handleConfirm = () => {
+    setShowConfirm(current => !current)
+  }
+
+  // const desactiveAccount = async () => {
+  //   const { status, data } = await userService.desactivateAccount()
+  //   if (data.success) {
+  //     let lang = localStorage.getItem('lang');
+  //     localStorage.clear();
+  //     localStorage.setItem('lang', lang!);
+  //     dispatch(logout())
+  //     navigate('/')
+  //   }
+  //   else {
+  //     toast.error('un probléme')
+  //   }
+  // }
 
   // useEffect(() => {
   //   console.log(rate)
@@ -92,12 +118,14 @@ const DesactiveAccount: React.FC<DesactiveAccountProps> = () => {
 
           <div className='desactive-buttons'>
             <button className='cancle-btn'>Annuler</button>
-            <button className='submit-btn'>Désactiver mon compte</button>
+            <button className='submit-btn' onClick={handleConfirm} >Désactiver mon compte</button>
           </div>
 
         </div>
       </section>
-
+      {
+        showConfirm && <ConfirmPopup accept={handleSubmit} close={handleConfirm} title='Etes vous sure de vouloir désactiver temporairement votre compte ?' />
+      }
     </>
   );
 };
