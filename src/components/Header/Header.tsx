@@ -1,38 +1,33 @@
+import { Col, Container, Row } from "react-bootstrap";
 import { useNavigate } from 'react-router-dom';
-import { useAppDispatch, useAppSelector } from '../../Redux/store';
 import { toast } from 'react-toastify';
-import './header.scss'
-import { Container, Row, Col } from "react-bootstrap"
+import { useAppDispatch, useAppSelector } from '../../Redux/store';
+import './header.scss';
 
-import { LoadingButton as _LoadingButton } from "@mui/lab";
-import PermIdentityOutlinedIcon from '@mui/icons-material/PermIdentityOutlined';
-import ShoppingCartOutlinedIcon from '@mui/icons-material/ShoppingCartOutlined';
-import PinDropIcon from "@mui/icons-material/PinDrop";
 import LocationOnIcon from '@mui/icons-material/LocationOn';
-import { logout } from "../../Redux/slices/userSlice";
+import PermIdentityOutlinedIcon from '@mui/icons-material/PermIdentityOutlined';
+import PinDropIcon from "@mui/icons-material/PinDrop";
+import ShoppingCartOutlinedIcon from '@mui/icons-material/ShoppingCartOutlined';
+import { Box } from '@mui/material';
 import { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
+import { logout } from "../../Redux/slices/userSlice";
 import { localStorageService } from "../../services/localStorageService";
-import Switches from "../toggleSwitch/toggleSwitch";
-import SearchBar from "../searchBar/searchBar";
 import Map from "../Location/Location";
-import { Box } from '@mui/material';
+import SearchBar from "../searchBar/searchBar";
+import Switches from "../toggleSwitch/toggleSwitch";
 
-import { useLocation } from 'react-router-dom';
 import { Search } from '@mui/icons-material';
-import { Cart } from '../cart/cart';
+import { useLocation } from 'react-router-dom';
 import { UserCart } from '../UserCart/UserCart';
+import { Cart } from '../cart/cart';
 
 const Header = () => {
-
-  const theme = useAppSelector((state) => state.home.theme)
-  const [template, setTemplate] = useState<number>(theme)
 
   const logged_in = localStorageService.getUserToken() !== null;
   const userItem = localStorageService.getUser();
 
   const user = userItem ? JSON.parse(userItem) : null;
-  const firstname = user ? user.firstname : null;
 
   const cartItems = useAppSelector((state) => state.cart.items);
   const location = useAppSelector((state) => state.location.position);
@@ -57,9 +52,6 @@ const Header = () => {
     }
   };
 
-  useEffect(() => {
-    setTemplate(theme)
-  }, [theme])
 
   useEffect(() => {
     // Attach the scroll event listener when the component mounts
@@ -115,62 +107,64 @@ const Header = () => {
 
               </div>
             </div>
-            <Container className={template === 1 ? "bg-transparent" : ""} style={{ marginTop: template === 1 ? 0 : "10px" }} >
-              <Row className={`fixedHeaderContainer ${scrolling ? 'minimizedFixedHeaderContainer' : ''}  ${template === 1 && "dark-background2"}`} >
-                <Col>
-                  <div className="logoContainer"
+            <Container >
+              <div className={`fixedHeaderContainer2`} >
+                <div className="logoContainer"
+                  onClick={() => navigate('/')} >
+                  <a href="#" className={`logoMain minimizedlogoMain`}></a>
+                </div>
 
-                    onClick={() => navigate('/')} >
-                    <a href="#" className={`logoMain ${scrolling ? 'minimizedlogoMain' : ''}`}></a>
+                <div className='info'>
+                  <div className="position">
+
+                    <LocationOnIcon className='position-icon' />
+                    {location
+                      ? location?.coords.label
+                      : t('no_location_detected')}
+
                   </div>
-                </Col>
+                  <button onClick={handleUserCart} className="account">
 
-                <Col>
-                  {/* login register buttons  */}
-                  {!logged_in ? (
-                    <>
-                      <div className="appBar">
-                        <button
-                          onClick={() => navigate('/register')}
-                          className={`LoadingButton ${scrolling ? 'minimizedLoadingButton' : ''}`}
-                        >
-                          {t('signup')}
-                        </button>
-                        <button
-                          onClick={() => navigate('/login')}
-                          className={`LoadingButton ${scrolling ? 'minimizedLoadingButton' : ''}`}
-                        >
-                          {t('login')}
-                        </button>
-                      </div>
-                    </>
-                  ) : <>
-                    <div className="appBar">
-                      <button
-                        onClick={onLogoutHandler}
-                        className={`LoadingButton ${scrolling ? 'minimizedLoadingButton' : ''}`}
-                      >
-                        {t('profile.deconnecter')}
-                      </button>
-                    </div>
-                  </>
-                  }
-                </Col>
+                    <PermIdentityOutlinedIcon className='account-icon' />
+                  </button>
 
-              </Row>
+                  <button className="search">
+                    <Search className='search-icon' />
+                  </button>
 
-              <Row className={`headerContainer  ${template === 1 && "bg-transparent"}`}>
+                  <button onClick={handleCart} className="cart-item">
+                    <ShoppingCartOutlinedIcon className='cart-icon' />
+                    {cartItems.length}
+                  </button>
+
+                </div>
+              </div>
+              {
+                showCart && (
+                  <div className={`cart-container`}>
+                    <Cart items={cartItems} closeButton={handleCart} />
+                  </div>
+                )
+              }
+
+              {
+                showProfile && user && (<div className={`cart-container`}>
+                  <UserCart firstName={user.firstname} lastName={user.lastname} closeButton={handleUserCart} />
+                </div>
+                )
+              }
+              <Row className={`headerContainer `}>
                 <Col className='col-12 col-sm-7'>
                   <div className="headerAppBar2">
                     <div className="headerMessage">
-                      <p className="headerMessageSyle1" > Nous &nbsp;
+                      <p className="headerMessageSyle1" > {t('header.nous')} &nbsp;
                         <span className="headerMessageSyle2">
-                          livrons
+                          {t('header.livrons')}
                         </span>
                       </p>
-                      <p className="headerMessageSyle1"> plus que de la &nbsp;
+                      <p className="headerMessageSyle1"> {t('header.plus')} &nbsp;
                         <span className="headerMessageSyle2">
-                          nourriture
+                          {t('header.nourriture')}
                         </span> .
                       </p>
                     </div>
@@ -213,7 +207,7 @@ const Header = () => {
           </>
         ) : (
           <>
-            <div className={`fixedHeaderContainer2 ${template === 1 && "dark-background2"}`} >
+            <div className={`fixedHeaderContainer2`} >
               <div className="logoContainer"
                 onClick={() => navigate('/')} >
                 <a href="#" className={`logoMain minimizedlogoMain`}></a>
@@ -246,14 +240,14 @@ const Header = () => {
             </div>
             {
               showCart && (
-                <div className={`cart-container  ${template === 1 && "dark-background2"}`}>
+                <div className={`cart-container`}>
                   <Cart items={cartItems} closeButton={handleCart} />
                 </div>
               )
             }
 
             {
-              showProfile && user && (<div className={`cart-container ${template === 1 && "dark-background2"}`}>
+              showProfile && user && (<div className={`cart-container`}>
                 <UserCart firstName={user.firstname} lastName={user.lastname} closeButton={handleUserCart} />
               </div>
               )
@@ -268,3 +262,46 @@ const Header = () => {
 
 export default Header;
 
+
+
+{/* <Row className={`fixedHeaderContainer ${scrolling ? 'minimizedFixedHeaderContainer' : ''}`} >
+<Col>
+  <div className="logoContainer"
+
+    onClick={() => navigate('/')} >
+    <a href="#" className={`logoMain ${scrolling ? 'minimizedlogoMain' : ''}`}></a>
+  </div>
+</Col>
+
+<Col>
+  {!logged_in ? (
+    <>
+      <div className="appBar">
+        <button
+          onClick={() => navigate('/register')}
+          className={`LoadingButton ${scrolling ? 'minimizedLoadingButton' : ''}`}
+        >
+          {t('signup')}
+        </button>
+        <button
+          onClick={() => navigate('/login')}
+          className={`LoadingButton ${scrolling ? 'minimizedLoadingButton' : ''}`}
+        >
+          {t('login')}
+        </button>
+      </div>
+    </>
+  ) : <>
+    <div className="appBar">
+      <button
+        onClick={onLogoutHandler}
+        className={`LoadingButton ${scrolling ? 'minimizedLoadingButton' : ''}`}
+      >
+        {t('profile.deconnecter')}
+      </button>
+    </div>
+  </>
+  }
+</Col>
+
+</Row> */}
