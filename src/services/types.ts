@@ -91,6 +91,7 @@ export interface Product {
   }];
   position: number;
   price: number;
+  quantity?: number;
 }
 
 export interface Restaurant {

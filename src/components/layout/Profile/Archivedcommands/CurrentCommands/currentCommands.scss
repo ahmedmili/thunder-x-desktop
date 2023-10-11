@@ -173,13 +173,30 @@
                             justify-content: space-between;
                             align-items: center;
 
-                            .product-name {
-                                color: #958E8E;
-                                font-family: Poppins;
-                                font-size: 12px;
-                                font-style: normal;
-                                font-weight: 400;
-                                line-height: normal;
+                            .product-info {
+                                display: flex;
+                                gap: 5px;
+
+                                .product-name,
+                                .product-qt {
+                                    color: #958E8E;
+                                    font-family: Poppins;
+                                    font-size: 12px;
+                                    font-style: normal;
+                                    font-weight: 400;
+                                    line-height: normal;
+                                }
+
+                                .product-qt {
+                                    background-color: #36b8b65b;
+                                    border: solid 1px #1f9492;
+                                    padding: 0 5px;
+                                    border-radius: 15px;
+                                    display: flex;
+                                    justify-content: center;
+                                    align-items: center;
+
+                                }
                             }
 
                             .product-value {
