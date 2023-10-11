@@ -121,9 +121,12 @@ const SupplierCard: React.FC<SupplierCard> = ({ data, favors = false, className 
                             </p>
                             {/* delivery Price */}
                             <p className={supplierStyle.price}>
-                                {t('deliveryPrice')}
                                 <span>
-                                    {" " + data.delivery_price + " DT"}
+
+                                    {t('deliveryPrice')}
+                                    <span>
+                                        {" " + data.delivery_price + " DT"}
+                                    </span>
                                 </span>
                                 {/* time lable */}
                                 {data.medium_time && (

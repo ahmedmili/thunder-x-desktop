@@ -120,17 +120,21 @@
           .price {
             margin-bottom: 0;
             color: $light_Gray;
-            font-size: 13px;
+            font-size: 12px;
             font-weight: 600;
             display: flex;
             justify-content: space-between;
 
             span {
-              margin-bottom: 0;
-              color: #FBC000;
-              font-size: 10px;
               display: flex;
-              align-items: center;
+
+              span {
+                margin-bottom: 0;
+                color: #FBC000;
+                font-size: 10px;
+                display: flex;
+                align-items: center;
+              }
             }
 
             .restaurantTime {
@@ -226,10 +230,12 @@
 
             .price {
               font-size: 6px;
-              ;
 
               span {
-                font-size: 6px;
+
+                span {
+                  font-size: 6px;
+                }
               }
             }
 
@@ -265,10 +271,11 @@
 
             .price {
               font-size: 6px;
-              ;
 
               span {
-                font-size: 6px;
+                span {
+                  font-size: 6px;
+                }
               }
             }
 
@@ -309,8 +316,11 @@
               font-size: 4px;
 
               span {
-                margin: 0;
-                font-size: 4px;
+
+                span {
+                  margin: 0;
+                  font-size: 4px;
+                }
               }
             }
 
