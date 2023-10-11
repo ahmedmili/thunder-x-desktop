@@ -1,9 +1,4 @@
-import React, { useEffect, useState } from "react";
-import { Restaurant } from "../../services/types";
-import { Typography, Box } from "@mui/material";
-import { useTranslation } from "react-i18next";
-import recommandedStyle from "./recommendedRestaurants.module.scss";
-import SupplierCard from "../supplierCard/SupplierCard";
+import { Box, Typography } from "@mui/material";
 import {
   ButtonBack,
   ButtonNext,
@@ -11,11 +6,15 @@ import {
   Slide,
   Slider,
 } from "pure-react-carousel";
-import { Container, Row, Col } from "react-bootstrap";
+import React, { useEffect, useState } from "react";
+import { Col, Container, Row } from "react-bootstrap";
+import { useTranslation } from "react-i18next";
+import { Restaurant } from "../../services/types";
+import SupplierCard from "../supplierCard/SupplierCard";
+import recommandedStyle from "./recommendedRestaurants.module.scss";
 
 import KeyboardDoubleArrowLeftIcon from "@mui/icons-material/KeyboardDoubleArrowLeft";
 import KeyboardDoubleArrowRightIcon from "@mui/icons-material/KeyboardDoubleArrowRight";
-import { useAppSelector } from "../../Redux/store";
 
 interface Props {
   listType: string;
@@ -27,12 +26,6 @@ const RestaurantList: React.FC<Props> = ({ restaurants, listType }) => {
 
   const [restaurantsList, setRestaurantsList] = useState(restaurants);
 
-  const theme = useAppSelector(state => state.home.theme)
-  const [template, setTemplate] = useState<number>(theme)
-
-  useEffect(() => {
-    setTemplate(theme)
-  }, [theme])
 
   useEffect(() => {
     setRestaurantsList(restaurants);
@@ -65,7 +58,7 @@ const RestaurantList: React.FC<Props> = ({ restaurants, listType }) => {
   return (
     <div className={recommandedStyle.recommandedContainer}>
       {
-        <Container className={recommandedStyle.container + ` ${!displayNormal && recommandedStyle.uniqueContainer} ${template === 1 && 'dark-background2'}`}>
+        <Container fluid className={recommandedStyle.container + ` ${!displayNormal && recommandedStyle.uniqueContainer} `}>
           <Row>
             {listType == "recommanded" && (
               <h2 className={recommandedStyle.recaommandedTitle}>

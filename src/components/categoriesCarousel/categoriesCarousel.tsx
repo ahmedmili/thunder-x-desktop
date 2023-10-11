@@ -1,19 +1,20 @@
-import React, { useEffect, useState } from 'react';
 import { Box, Typography } from '@mui/material';
+import React, { useEffect, useState } from 'react';
 
 import KeyboardDoubleArrowLeftIcon from '@mui/icons-material/KeyboardDoubleArrowLeft';
 import KeyboardDoubleArrowRightIcon from '@mui/icons-material/KeyboardDoubleArrowRight';
 
-import { CarouselProvider, Slider, Slide, ButtonBack, ButtonNext } from 'pure-react-carousel';
+import { ButtonBack, ButtonNext, CarouselProvider, Slide, Slider } from 'pure-react-carousel';
 import 'pure-react-carousel/dist/react-carousel.es.css';
-import './categoriesCarousel.scss';
-import { Container, Row, Col } from 'react-bootstrap';
-import { useAppSelector } from '../../Redux/store';
-import { useNavigate, useLocation } from 'react-router-dom';
-import { localStorageService } from '../../services/localStorageService';
-import { supplierServices } from '../../services/api/suppliers.api';
+import { Col, Container, Row } from 'react-bootstrap';
 import { useDispatch } from 'react-redux';
+import { useLocation, useNavigate } from 'react-router-dom';
 import { setfilterRestaurants } from '../../Redux/slices/restaurantSlice';
+import { useAppSelector } from '../../Redux/store';
+import { supplierServices } from '../../services/api/suppliers.api';
+import { localStorageService } from '../../services/localStorageService';
+import './categoriesCarousel.scss';
+import { useTranslation } from 'react-i18next';
 
 interface Category {
   id: number;
@@ -33,17 +34,11 @@ const CategoryCarousel: React.FC<CategoryCarouselProps> = ({
   onCategorySelect,
 }) => {
 
-  const theme = useAppSelector(state => state.home.theme)
-  const [template, setTemplate] = useState<number>(theme)
-
-  useEffect(() => {
-    setTemplate(theme)
-  }, [theme])
-
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const cats = useAppSelector((state) => state.home.data.categories)
   const navLocation = useLocation();
+  const { t } = useTranslation();
   const [categories, setCategories] = useState(cats.filter(category => category.description !== "Promo"));
 
   const [selectedCategories, setSelectedCategories] = useState("");
@@ -75,7 +70,7 @@ const CategoryCarousel: React.FC<CategoryCarouselProps> = ({
   }
 
   const handleCategoryClick = (categoryName: string) => {
-    const updatedCategories = categories.map((category, index) => ({
+    const updatedCategories = categories.map((category) => ({
       ...category,
       image: category.image,
       selected: category.name === categoryName ? !category.selected : false,
@@ -130,9 +125,9 @@ const CategoryCarousel: React.FC<CategoryCarouselProps> = ({
 
   return (
     // <Container className={`container ${template === 1 && "dark-background2"}`} >
-    <Container className={`container ${template === 1 && "bg-transparent"}`} >
+    <Container className={`container`} >
       <Row>
-        <p className='carousal-cat-title'>Qu’est ce qu’on vous apporte ? {selectedCategories}</p>
+        <p className='carousal-cat-title'>{t('home.categorie')} {selectedCategories}</p>
       </Row>
       <Row>
         <Col >
@@ -151,7 +146,7 @@ const CategoryCarousel: React.FC<CategoryCarouselProps> = ({
               <Row>
                 <Col >
                   <Slider>
-                    {categories.map((category, index) => (
+                    {categories.map((category) => (
 
                       <Slide className='carousel-slide' key={category.id} index={category.id - 1}>
                         <Box
