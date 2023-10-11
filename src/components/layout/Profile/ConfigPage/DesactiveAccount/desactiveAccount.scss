@@ -1,0 +1,227 @@
+@import '../../../../../colors';
+
+.desactive-account-section {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    gap: 25px;
+
+    .desactive-header-cover {
+        width: 100%;
+        height: 298px;
+        background-position: center;
+        background-repeat: no-repeat;
+        background-size: cover;
+        border-radius: 25px;
+    }
+
+    .desactive-body {
+        background-color: white;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        gap: 40px;
+
+        .desactive-title {
+            color: #484848;
+            font-family: Poppins;
+            font-size: 20px;
+            font-style: normal;
+            font-weight: 600;
+            line-height: normal;
+        }
+
+        .desactive-warn {
+            color: #484848;
+            font-family: Poppins;
+            font-size: 15px;
+            font-style: normal;
+            font-weight: 400;
+            line-height: normal;
+        }
+
+        .desactive-avis-container {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            justify-content: center;
+            align-items: center;
+            // grid-template-rows: 1fr 1fr;
+            gap: 27px;
+            row-gap: 15px;
+
+            .avi-content {
+                display: flex;
+                align-items: start;
+                gap: 8px;
+                position: relative;
+                padding-left: 30px;
+
+                input[type='checkbox'] {
+                    display: none;
+                }
+
+
+                label::before {
+                    content: "";
+                    display: inline-block;
+                    width: 20px;
+                    height: 20px;
+                    background-color: #24A6A4;
+                    border-color: #24A6A4;
+                    border-radius: 4px;
+                    position: absolute;
+                    left: 0;
+                    top: 2px;
+                }
+
+                input[type="checkbox"]:checked+label::before {
+                    content: "\2713";
+
+                    background-color: #007bff;
+                    border-color: #007bff;
+                    color: #fff;
+                    font-size: 16px;
+                    display: flex;
+                    align-items: center;
+                    justify-content: center;
+                }
+
+                label {
+                    color: #484848;
+                    font-family: Poppins;
+                    font-size: 15px;
+                    font-style: normal;
+                    font-weight: 400;
+                    line-height: normal;
+
+                    &:hover {
+                        cursor: pointer;
+                    }
+                }
+            }
+
+        }
+
+        .desactive-rate-container {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 40px;
+
+            .desactive-rate-btn {
+                border-radius: 5px;
+                border: 1px solid #24A6A4;
+                background-color: #8ACDCC;
+                color: #484848;
+                font-family: Poppins;
+                font-size: 15px;
+                font-style: normal;
+                font-weight: 400;
+                line-height: normal;
+                margin: 0;
+                width: 43px;
+                height: 39px;
+
+                &.active {
+                    background-color: #2bc5c3;
+                }
+            }
+        }
+
+        .desactive-buttons {
+            display: flex;
+            justify-content: center;
+            gap: 50px;
+            width: 100%;
+
+            button {
+                background-color: transparent;
+                border: none;
+                border-radius: 50px;
+                color: #FFF;
+                font-family: Poppins;
+                font-size: 18px;
+                font-style: normal;
+                font-weight: 600;
+                line-height: normal;
+                height: 58px;
+
+                &.cancle-btn {
+                    flex: 1;
+                    border: 2px solid #24A6A4;
+                    color: #484848;
+                }
+
+                &.submit-btn {
+                    flex: 1;
+                    background: #FBC000;
+                }
+
+
+            }
+        }
+    }
+
+}
+
+@media screen and (max-width :992px) {
+    .desactive-account-section {
+        .desactive-header-cover {
+            height: 152px;
+        }
+
+        .desactive-body {
+            gap: 10px;
+
+            .desactive-title {
+                font-size: 15px;
+            }
+
+            .desactive-warn {
+                font-size: 12 px;
+            }
+
+            .desactive-avis-container {
+                .avi-content {
+                    label {
+                        font-size: 10px;
+                    }
+                }
+            }
+
+            .desactive-rate-container {
+                gap: 10px;
+            }
+
+            .desactive-buttons {
+                gap: 10px;
+
+                button {
+                    font-size: 10px;
+                }
+            }
+
+        }
+    }
+}
+
+@media screen and (max-width :786px) {
+    .desactive-account-section {
+        .desactive-header-cover {
+            height: 119px;
+        }
+
+        .desactive-body {
+
+            .desactive-avis-container {
+                display: flex;
+                flex-direction: column;
+                justify-content: start;
+                align-items: start;
+                gap: 0px;
+                row-gap: 11px;
+            }
+        }
+    }
+}
