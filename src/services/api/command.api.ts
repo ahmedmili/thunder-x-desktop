@@ -33,9 +33,9 @@ async function removecommand(command_id: number) {
         throw error;
     }
 }
-async function signalerCommand(problemFrom: string, problem: string, command_id: number) {
+async function signalerCommand(problem: string, command_id: number) {
     const formData = new FormData();
-    formData.append("problem_from", problemFrom)
+    formData.append("problem_from", 'CLIENT')
     formData.append("problem", problem)
     formData.append("command_id", command_id.toString())
     try {
