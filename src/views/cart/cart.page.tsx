@@ -5,42 +5,40 @@ import {
   removeItem,
   setCodePromo,
   setComment,
-  setDeliveryOption,
   setDeliveryPrice,
-  setSupplier,
+  setSupplier
 } from "../../Redux/slices/cart/cartSlice";
-import { Cart } from "../../components/cart/cart";
 
 import PaymentIcon from '@mui/icons-material/Payment';
-import PayCashSVG from '../../assets/panier/pay-cash.svg'
+import PayCashSVG from '../../assets/panier/pay-cash.svg';
 
-import bagPaperShoppingIcn from '../../assets/panier/bag-paper-shopping-icn.png'
-import dinnerFurnitureIcn from '../../assets/panier/dinner-furniture-icn.png'
-import scooterTransportIcn from '../../assets/panier/scooter-transport-icn.png'
-import empty from '../../assets/panier/empty.png'
+import bagPaperShoppingIcn from '../../assets/panier/bag-paper-shopping-icn.png';
+import dinnerFurnitureIcn from '../../assets/panier/dinner-furniture-icn.png';
+import empty from '../../assets/panier/empty.png';
+import scooterTransportIcn from '../../assets/panier/scooter-transport-icn.png';
 
-import { RootState, useAppDispatch, useAppSelector } from "../../Redux/store";
-import KeyboardArrowUpOutlinedIcon from '@mui/icons-material/KeyboardArrowUpOutlined';
 import KeyboardArrowDownOutlinedIcon from '@mui/icons-material/KeyboardArrowDownOutlined';
+import KeyboardArrowUpOutlinedIcon from '@mui/icons-material/KeyboardArrowUpOutlined';
+import { RootState, useAppDispatch, useAppSelector } from "../../Redux/store";
 
+import 'react-clock/dist/Clock.css';
 import TimePicker from 'react-time-picker';
 import 'react-time-picker/dist/TimePicker.css';
-import 'react-clock/dist/Clock.css';
 
+import { useTranslation } from "react-i18next";
+import { useNavigate } from "react-router-dom";
+import { toast } from "react-toastify";
 import * as z from "zod";
 import { logout } from "../../Redux/slices/userSlice";
 import { FoodItem } from "../../services/types";
-import { toast } from "react-toastify";
-import { useTranslation } from "react-i18next";
-import { useNavigate, useLocation } from "react-router-dom";
 
-import "./cart.page.scss";
-import { cartService } from "../../services/api/cart.api";
-import { localStorageService } from "../../services/localStorageService";
 import { Col, Container, Row } from "react-bootstrap";
-import { supplierServices } from "../../services/api/suppliers.api";
-import { adressService } from "../../services/api/adress.api";
 import PaymentPopup from "../../components/Popups/payment/PaymentPopup";
+import { adressService } from "../../services/api/adress.api";
+import { cartService } from "../../services/api/cart.api";
+import { supplierServices } from "../../services/api/suppliers.api";
+import { localStorageService } from "../../services/localStorageService";
+import "./cart.page.scss";
 
 const CartPage: React.FC = () => {
   const { t } = useTranslation();
@@ -152,7 +150,8 @@ const CartPage: React.FC = () => {
         <img src={`${item.product.image[0] ? item.product.image[0].path : ""}`} alt="product image" />
         <div className="info-text">
           <span className="title">{item.product.name}</span>
-          <span className="description">{item.product.description}</span>
+          <span className="description" dangerouslySetInnerHTML={{ __html: item.product.description }}></span>
+
         </div>
       </td>
       <td className="sous-total">

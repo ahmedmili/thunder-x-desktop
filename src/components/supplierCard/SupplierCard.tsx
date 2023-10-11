@@ -1,17 +1,17 @@
 
 
-import React, { useEffect, useState } from 'react'
+import React, { useState } from 'react';
 
-import supplierStyle from './SupplierCard.module.scss'
-import { Box, Card, CardContent, CardMedia, Grid, Typography } from '@mui/material';
-import { Link } from 'react-router-dom';
 import { DiscountRounded, Star } from '@mui/icons-material';
-import { Restaurant } from '../../services/types';
-import missingImage from '../../assets/missingImage.png';
-import { useTranslation } from 'react-i18next';
-import FavoriteBorderIcon from '@mui/icons-material/FavoriteBorder';
 import FavoriteIcon from '@mui/icons-material/Favorite';
+import FavoriteBorderIcon from '@mui/icons-material/FavoriteBorder';
+import { Box, Card, CardContent, CardMedia } from '@mui/material';
+import { useTranslation } from 'react-i18next';
+import { Link } from 'react-router-dom';
+import missingImage from '../../assets/missingImage.png';
 import { userService } from '../../services/api/user.api';
+import { Restaurant } from '../../services/types';
+import supplierStyle from './SupplierCard.module.scss';
 
 interface SupplierCard {
     data: Restaurant,
