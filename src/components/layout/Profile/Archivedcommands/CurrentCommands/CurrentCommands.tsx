@@ -23,7 +23,6 @@ import preparatinD from "../../../../../assets/profile/ArchivedCommands/preparat
 import traitementD from "../../../../../assets/profile/ArchivedCommands/traitement-D.svg";
 import { Product } from '../../../../../services/types';
 import CommandsFooter from '../Footer/Footer';
-import eventEmitter from "../../../../../services/thunderEventsService";
 
 interface CommandsListProps {
     data: any
@@ -47,10 +46,9 @@ const Command: React.FC<CommandProps> = ({ removeCommand, data }) => {
     const [total, setTotal] = useState<number>(0)
     const { t } = useTranslation()
 
-    const calculeDate = () => {
+    const calculeData = () => {
         let total = 0;
         const products = data.products;
-        console.log('data', data)
         for (let index = 0; index < products.length; index++) {
             const product: Product = products[index]
             const price = product.price
@@ -62,7 +60,7 @@ const Command: React.FC<CommandProps> = ({ removeCommand, data }) => {
         setTotal(total)
     }
     useEffect(() => {
-        calculeDate()
+        calculeData()
     }, [data])
 
     return (
@@ -75,12 +73,12 @@ const Command: React.FC<CommandProps> = ({ removeCommand, data }) => {
 
             <div className='sous-total'>
                 <span>{t('profile.commands.sousTotal')}</span>
-                <span>{total}</span>
+                <span className='left-price'>{total} Dt</span>
             </div>
 
             <div className='sous-total'>
                 <span>Frais de livraison</span>
-                <span>{data.delivery_price}</span>
+                <span className='left-price'>{data.delivery_price} DT</span>
             </div>
             <ul>
                 {(data.products && data.products.length > 0) &&
@@ -92,7 +90,7 @@ const Command: React.FC<CommandProps> = ({ removeCommand, data }) => {
                                         <span className='product-name'>{product.name}</span>
                                         <span className='product-qt'>X{product.quantity}</span>
                                     </div>
-                                    <span className='product-value'>{product.price * product.quantity}</span>
+                                    <span className='product-value'>{product.price * product.quantity} DT</span>
                                 </div>
                             </li>
                         )

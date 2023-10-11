@@ -160,6 +160,10 @@
                     color: #898787;
                     font-size: 14px;
                     font-weight: 500;
+
+                    .left-price {
+                        margin-right: 18px;
+                    }
                 }
 
                 ul {
@@ -172,6 +176,8 @@
                             display: flex;
                             justify-content: space-between;
                             align-items: center;
+
+
 
                             .product-info {
                                 display: flex;
@@ -206,6 +212,8 @@
                                 font-style: normal;
                                 font-weight: 500;
                                 line-height: normal;
+                                margin-right: 18px;
+
                             }
                         }
                     }
