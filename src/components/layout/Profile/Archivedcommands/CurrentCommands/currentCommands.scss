@@ -433,7 +433,7 @@
             justify-content: space-between;
             align-items: center;
             position: relative;
-            width: 85%;
+            width: 100%;
             margin: 37px auto 31px auto;
 
             .start-position {
@@ -443,7 +443,6 @@
                 justify-content: center;
                 align-items: center;
                 z-index: 5;
-                // gap: 12px;
 
                 .position-icon {
                     background-position: center;

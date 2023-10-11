@@ -32,6 +32,14 @@
   "profile.mesConfig.politiques": "Politiques de confidentialité",
   "profile.mesConfig.theme": "Sélectionner le théme",
   "profile.mesConfig.deleteAccount": "Supprimer mon compte",
+  "profile.commands.signal.question": "Vous avez un problème qui concerne votre commande ?",
+  "profile.commands.signal.message": "Veuillez nous faire parvenir votre problème",
+  "profile.commands.signal.placeholder": "Saisir votre problème ici",
+
+  "profile.commands.traitement": "En cours de traitement",
+  "profile.commands.prépaartion": "En cours de prépaartion",
+  "profile.commands.livraison": "En cours de livraison",
+
   "profile.commands.PENDING": "En attente de livraison",
   "profile.commands.VERIFY": "Vérifié par le fournisseur",
   "profile.commands.ASSIGNED": "Conducteur en route vers le fournisseur",

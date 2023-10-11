@@ -133,10 +133,11 @@ const CurrentCommands: React.FC<CommandsListProps> = ({ removeCommand, goToPasse
     }, [take_away_date])
 
     const getProgressDescription = (cycle: string): { message: string, status: number } => {
+        console.log(cycle)
         switch (cycle) {
             case 'PENDING':
                 return {
-                    message: t('profile.commands.PENDING'),
+                    message: t('profile.commands.traitement'),
                     status: 1
                 };
             case 'VERIFY':
@@ -146,22 +147,22 @@ const CurrentCommands: React.FC<CommandsListProps> = ({ removeCommand, goToPasse
                 };
             case 'AUTHORIZED':
                 return {
-                    message: t('profile.commands.Aboutassigned'),
+                    message: t('profile.commands.prépaartion'),
                     status: 3
                 };
             case 'PRE_ASSIGN_ADMIN':
                 return {
-                    message: t('profile.commands.Aboutassigned'),
+                    message: t('profile.commands.prépaartion'),
                     status: 4
                 };
             case 'ASSIGNED':
                 return {
-                    message: t('profile.commands.ASSIGNED'),
+                    message: t('profile.commands.prépaartion'),
                     status: 5
                 };
             case 'INPROGRESS':
                 return {
-                    message: t('profile.commands.INPROGRESS'),
+                    message: t('profile.commands.livraison'),
                     status: 6
                 };
             default:
@@ -219,13 +220,13 @@ const CurrentCommands: React.FC<CommandsListProps> = ({ removeCommand, goToPasse
                         <div className='command-graph'>
                             <div className='time-line'></div>
                             <img src={status === 1 ? traitementA : traitementD} alt="traitement logo" className='traitement-logo' />
-                            <img src={(status <= 4 && status > 1) ? preparatinA : preparatinD} alt="preparation logo" className='preparation-logo' />
+                            <img src={(status <= 5 && status > 1) ? preparatinA : preparatinD} alt="preparation logo" className='preparation-logo' />
                             {
                                 isDelevery === 1 ? (
-                                    <img src={(status === 6 || status === 5) ? delivA : delivD} alt="deliv logo" className='deliv-logo' />
+                                    <img src={(status === 6) ? delivA : delivD} alt="deliv logo" className='deliv-logo' />
 
                                 ) : (
-                                    <img src={(status === 6 || status === 5) ? doneA : doneD} alt="deliv logo" className='deliv-logo' />
+                                    <img src={(status === 6) ? doneA : doneD} alt="deliv logo" className='deliv-logo' />
 
                                 )
                             }
