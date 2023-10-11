@@ -24,15 +24,12 @@ import { Cart } from '../cart/cart';
 
 const Header = () => {
 
-  const theme = useAppSelector((state) => state.home.theme)
   const msg_notifs = useAppSelector((state) => state.messanger.unReadedMessages)
-  const [template, setTemplate] = useState<number>(theme)
 
   const logged_in = localStorageService.getUserToken() !== null;
   const userItem = localStorageService.getUser();
 
   const user = userItem ? JSON.parse(userItem) : null;
-  const firstname = user ? user.firstname : null;
 
   const cartItems = useAppSelector((state) => state.cart.items);
   const location = useAppSelector((state) => state.location.position);
@@ -58,9 +55,6 @@ const Header = () => {
     }
   };
 
-  useEffect(() => {
-    setTemplate(theme)
-  }, [theme])
 
   useEffect(() => {
     setNotifsQts(msg_notifs)
@@ -120,62 +114,64 @@ const Header = () => {
 
               </div>
             </div>
-            <Container className={template === 1 ? "bg-transparent" : ""} style={{ marginTop: template === 1 ? 0 : "10px" }} >
-              <Row className={`fixedHeaderContainer ${scrolling ? 'minimizedFixedHeaderContainer' : ''}  ${template === 1 && "dark-background2"}`} >
-                <Col>
-                  <div className="logoContainer"
+            <Container >
+              <div className={`fixedHeaderContainer2`} >
+                <div className="logoContainer"
+                  onClick={() => navigate('/')} >
+                  <a href="#" className={`logoMain minimizedlogoMain`}></a>
+                </div>
 
-                    onClick={() => navigate('/')} >
-                    <a href="#" className={`logoMain ${scrolling ? 'minimizedlogoMain' : ''}`}></a>
+                <div className='info'>
+                  <div className="position">
+
+                    <LocationOnIcon className='position-icon' />
+                    {location
+                      ? location?.coords.label
+                      : t('no_location_detected')}
+
                   </div>
-                </Col>
+                  <button onClick={handleUserCart} className="account">
 
-                <Col>
-                  {/* login register buttons  */}
-                  {!logged_in ? (
-                    <>
-                      <div className="appBar">
-                        <button
-                          onClick={() => navigate('/register')}
-                          className={`LoadingButton ${scrolling ? 'minimizedLoadingButton' : ''}`}
-                        >
-                          {t('signup')}
-                        </button>
-                        <button
-                          onClick={() => navigate('/login')}
-                          className={`LoadingButton ${scrolling ? 'minimizedLoadingButton' : ''}`}
-                        >
-                          {t('login')}
-                        </button>
-                      </div>
-                    </>
-                  ) : <>
-                    <div className="appBar">
-                      <button
-                        onClick={onLogoutHandler}
-                        className={`LoadingButton ${scrolling ? 'minimizedLoadingButton' : ''}`}
-                      >
-                        {t('profile.deconnecter')}
-                      </button>
-                    </div>
-                  </>
-                  }
-                </Col>
+                    <PermIdentityOutlinedIcon className='account-icon' />
+                  </button>
 
-              </Row>
+                  <button className="search">
+                    <Search className='search-icon' />
+                  </button>
 
-              <Row className={`headerContainer  ${template === 1 && "bg-transparent"}`}>
+                  <button onClick={handleCart} className="cart-item">
+                    <ShoppingCartOutlinedIcon className='cart-icon' />
+                    {cartItems.length}
+                  </button>
+
+                </div>
+              </div>
+              {
+                showCart && (
+                  <div className={`cart-container`}>
+                    <Cart items={cartItems} closeButton={handleCart} />
+                  </div>
+                )
+              }
+
+              {
+                showProfile && user && (<div className={`cart-container`}>
+                  <UserCart firstName={user.firstname} lastName={user.lastname} closeButton={handleUserCart} />
+                </div>
+                )
+              }
+              <Row className={`headerContainer `}>
                 <Col className='col-12 col-sm-7'>
                   <div className="headerAppBar2">
                     <div className="headerMessage">
-                      <p className="headerMessageSyle1" > Nous &nbsp;
+                      <p className="headerMessageSyle1" > {t('header.nous')} &nbsp;
                         <span className="headerMessageSyle2">
-                          livrons
+                          {t('header.livrons')}
                         </span>
                       </p>
-                      <p className="headerMessageSyle1"> plus que de la &nbsp;
+                      <p className="headerMessageSyle1"> {t('header.plus')} &nbsp;
                         <span className="headerMessageSyle2">
-                          nourriture
+                          {t('header.nourriture')}
                         </span> .
                       </p>
                     </div>
@@ -218,7 +214,7 @@ const Header = () => {
           </>
         ) : (
           <>
-            <div className={`fixedHeaderContainer2 ${template === 1 && "dark-background2"}`} >
+            <div className={`fixedHeaderContainer2`} >
               <div className="logoContainer"
                 onClick={() => navigate('/')} >
                 <a href="#" className={`logoMain minimizedlogoMain`}></a>
@@ -258,14 +254,14 @@ const Header = () => {
             </div>
             {
               showCart && (
-                <div className={`cart-container  ${template === 1 && "dark-background2"}`}>
+                <div className={`cart-container`}>
                   <Cart items={cartItems} closeButton={handleCart} />
                 </div>
               )
             }
 
             {
-              showProfile && user && (<div className={`cart-container ${template === 1 && "dark-background2"}`}>
+              showProfile && user && (<div className={`cart-container`}>
                 <UserCart firstName={user.firstname} lastName={user.lastname} closeButton={handleUserCart} />
               </div>
               )
@@ -279,4 +275,5 @@ const Header = () => {
 };
 
 export default Header;
+
 

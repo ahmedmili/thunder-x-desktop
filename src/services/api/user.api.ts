@@ -140,12 +140,21 @@ async function gifts() {
   }
 }
 
-async function deleteAccount() {
+async function deleteAccount(formData: any) {
   try {
     const response = await api.delete(
-      `deleteClient/${localStorage.getItem('userId')}`, {
-    }
-
+      `deleteClient/${localStorage.getItem('userId')}`, formData
+    );
+    const { status, data } = response;
+    return { status, data };
+  } catch (error) {
+    throw error;
+  }
+}
+async function desactivateAccount(formData: any) {
+  try {
+    const response = await api.post(
+      `status_user`, formData
     );
     const { status, data } = response;
     return { status, data };
@@ -185,6 +194,7 @@ async function createmessage(message: string) {
     throw error;
   }
 }
+
 
 interface Rating {
   command_id: number,
@@ -247,6 +257,7 @@ export const userService = {
   deletefavorite,
   getClientFavorits,
   gifts,
+  desactivateAccount,
   deleteAccount,
   fetchMessages,
   createmessage,
