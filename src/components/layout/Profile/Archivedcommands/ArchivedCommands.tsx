@@ -1,9 +1,10 @@
-import React, { useEffect, useState } from 'react'
+import { useState } from 'react'
 import CoverImage from '../../../.../../../assets/profile/ArchivedCommands/cover.svg'
-import './archivedCommands.scss'
 import CommandsList from './CommandsList/CommandsList'
+import './archivedCommands.scss'
 function ArchivedCommands() {
 
+ 
     const [nav, setNav] = useState<number>(1)
 
     const handleNav = (i: number) => {

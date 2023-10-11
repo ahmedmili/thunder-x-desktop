@@ -1,22 +1,18 @@
-import React, { useEffect, useMemo, useState } from 'react'
+import React, { useEffect, useMemo, useState } from 'react';
 
-import "./commandsList.scss"
 import KeyboardArrowUpOutlinedIcon from '@mui/icons-material/KeyboardArrowUpOutlined';
-import OldCommands from '../OldCommands/OldCommands';
 import { commandService } from '../../../../../services/api/command.api';
-import CurrentCommands from '../CurrentCommands/CurrentCommands';
-import { useAppSelector } from '../../../../../Redux/store';
 import { userService } from '../../../../../services/api/user.api';
+import CurrentCommands from '../CurrentCommands/CurrentCommands';
+import OldCommands from '../OldCommands/OldCommands';
+import "./commandsList.scss";
+import eventEmitter from '../../../../../services/thunderEventsService';
 interface CommandsListProps {
     type?: string;
     goToPassedCommands: any;
 }
 
 const CommandsList: React.FC<CommandsListProps> = ({ type = "old", goToPassedCommands }) => {
-
-
-    const theme = useAppSelector((state) => state.home.theme)
-    const [template, setTemplate] = useState<number>(theme)
 
     const [commands, setCommands] = useState<any>([])
     const [selectedCommand, setSelectedCommand] = useState<number>(-1)
@@ -65,6 +61,12 @@ const CommandsList: React.FC<CommandsListProps> = ({ type = "old", goToPassedCom
     useMemo(() => {
         getClientFeedback()
     }, [])
+    useEffect(() => {
+        eventEmitter.on('COMMAND_UPDATED', () => { getCurrentCommands() })
+        return () => {
+            eventEmitter.off('COMMAND_UPDATED', () => { getCurrentCommands() })
+        }
+    }, [])
 
     return (
 
@@ -74,7 +76,7 @@ const CommandsList: React.FC<CommandsListProps> = ({ type = "old", goToPassedCom
 
                     return (
                         <React.Fragment key={index}>
-                            <div className={`command-header  ${selectedCommand === index ? "active-header" : ""} ${(template === 1 && selectedCommand !== index) && "dark-background2"}`} key={index} onClick={() => handleSelectCommand(index)}>
+                            <div className={`command-header  ${selectedCommand === index ? "active-header" : ""}`} key={index} onClick={() => handleSelectCommand(index)}>
                                 <span >
                                     Commande N°{command.id}
                                 </span>

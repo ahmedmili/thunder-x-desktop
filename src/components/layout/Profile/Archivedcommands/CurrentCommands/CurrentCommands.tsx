@@ -17,13 +17,13 @@ import preparatinA from "../../../../../assets/profile/ArchivedCommands/preparat
 import traitementA from "../../../../../assets/profile/ArchivedCommands/traitement-A.svg";
 
 import { useTranslation } from 'react-i18next';
-import { useAppSelector } from '../../../../../Redux/store';
 import delivD from "../../../../../assets/profile/ArchivedCommands/deliv-D.svg";
 import doneD from "../../../../../assets/profile/ArchivedCommands/done-D.svg";
 import preparatinD from "../../../../../assets/profile/ArchivedCommands/preparatin-D.svg";
 import traitementD from "../../../../../assets/profile/ArchivedCommands/traitement-D.svg";
-import CommandsFooter from '../Footer/Footer';
 import { Product } from '../../../../../services/types';
+import CommandsFooter from '../Footer/Footer';
+import eventEmitter from "../../../../../services/thunderEventsService";
 
 interface CommandsListProps {
     data: any
@@ -53,23 +53,18 @@ const Command: React.FC<CommandProps> = ({ removeCommand, data }) => {
         console.log('data', data)
         for (let index = 0; index < products.length; index++) {
             const product: Product = products[index]
-            // console.log('product', product)
             const price = product.price
-            // console.log('price', product.price)
             const quantity = product.quantity
-            // console.log('quantity', product.quantity)
             const result = quantity! * price
-            console.log('result = ' + result + " : quantity " + quantity + "* price" + price)
             total = total + result
 
         }
-        console.log('total', total)
         setTotal(total)
     }
     useEffect(() => {
-        // console.log(data)
         calculeDate()
     }, [data])
+   
     return (
         <div className='command-product-container'>
             <p className='title'> {t('profile.commands.command')}</p>
