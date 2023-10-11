@@ -64,7 +64,7 @@ const Command: React.FC<CommandProps> = ({ removeCommand, data }) => {
     useEffect(() => {
         calculeDate()
     }, [data])
-   
+
     return (
         <div className='command-product-container'>
             <p className='title'> {t('profile.commands.command')}</p>
@@ -142,7 +142,7 @@ const CurrentCommands: React.FC<CommandsListProps> = ({ removeCommand, goToPasse
                 };
             case 'VERIFY':
                 return {
-                    message: t('profile.commands.VERIFY'),
+                    message: t('profile.commands.traitement'),
                     status: 2
                 };
             case 'AUTHORIZED':
@@ -219,8 +219,8 @@ const CurrentCommands: React.FC<CommandsListProps> = ({ removeCommand, goToPasse
                         <p className="description">{t('profile.commands.sousMessage')}</p>
                         <div className='command-graph'>
                             <div className='time-line'></div>
-                            <img src={status === 1 ? traitementA : traitementD} alt="traitement logo" className='traitement-logo' />
-                            <img src={(status <= 5 && status > 1) ? preparatinA : preparatinD} alt="preparation logo" className='preparation-logo' />
+                            <img src={(status === 1 || status === 2) ? traitementA : traitementD} alt="traitement logo" className='traitement-logo' />
+                            <img src={(status <= 5 && status > 2) ? preparatinA : preparatinD} alt="preparation logo" className='preparation-logo' />
                             {
                                 isDelevery === 1 ? (
                                     <img src={(status === 6) ? delivA : delivD} alt="deliv logo" className='deliv-logo' />
@@ -235,7 +235,7 @@ const CurrentCommands: React.FC<CommandsListProps> = ({ removeCommand, goToPasse
                     </div>
                     <div className='command-list-product'>
                         {
-                            (status === 1) && <Command removeCommand={removeCommand} data={commanddata.data} />
+                            (status === 1 || status === 2) && <Command removeCommand={removeCommand} data={commanddata.data} />
                         }
                     </div>
                     <div className='deliv-info-section'>
@@ -243,7 +243,7 @@ const CurrentCommands: React.FC<CommandsListProps> = ({ removeCommand, goToPasse
                             isDelevery === 1 ? (
                                 <>
                                     {
-                                        (status <= 4 && status > 1) && (
+                                        (status <= 4 && status > 2) && (
                                             <>
 
                                                 <div className='no-deliv-assigned'>
@@ -274,7 +274,7 @@ const CurrentCommands: React.FC<CommandsListProps> = ({ removeCommand, goToPasse
                                         )
                                     }
                                     {
-                                        (status <= 5 && status > 1) && (
+                                        (status <= 5 && status > 2) && (
 
                                             <div className='position'>
                                                 <div className='start-position'>
