@@ -54,14 +54,25 @@
             align-items: start;
             justify-content: start;
             gap: 10px;
+            padding-top: 5px;
 
             .problem-question,
             .problem-msg {
                 color: #484848;
                 font-family: Poppins;
-                font-size: 20px;
+                font-size: 17px;
                 font-style: normal;
                 font-weight: 500;
+                line-height: normal;
+                margin: 0;
+            }
+
+            .problem-title {
+                color: #24A6A4;
+                font-family: Poppins;
+                font-size: 24px;
+                font-style: normal;
+                font-weight: 700;
                 line-height: normal;
                 margin: 0;
             }

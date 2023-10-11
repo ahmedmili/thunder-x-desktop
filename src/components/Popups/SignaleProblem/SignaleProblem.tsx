@@ -25,7 +25,8 @@ const SignaleProblem: React.FC<Props> = ({ command_id, close, action }) => {
             <div className="dignale-problem-box">
                 <button className="dignale-problem-close" onClick={close} >X</button>
                 <div className="messages-container">
-                    <h3 className="problem-question">{t('profile.commands.signal.question')} {command_id} ?</h3>
+                    <h1 className="problem-title">{t('profile.commands.signal.title')}</h1>
+                    <h3 className="problem-question">{t('profile.commands.signal.question')} N° {command_id} ?</h3>
                     <p className="problem-msg">{t('profile.commands.signal.message')}</p>
                 </div>
 
