@@ -205,8 +205,8 @@ const CartPage: React.FC = () => {
   ) => {
     try {
       const options: any[] = cartItems.flatMap((item) => item.options);
-      const optionsIds = options.map((opt) => (
-        { option_id: opt[0].id }
+      const optionsList = options.map((opt) => (
+        { ...opt[0] }
       )
       )
       var year = takeAwayDate.getFullYear();
@@ -231,7 +231,7 @@ const CartPage: React.FC = () => {
           id: item.product.id,
           supplier_id: item.supplier_data.supplier_id,
           qte: item.quantity, // set the quantity to the item's quantity
-          options: optionsIds
+          options: optionsList
         })),
         lat: userPosition?.coords.latitude,
         lng: userPosition?.coords.longitude,
@@ -248,28 +248,43 @@ const CartPage: React.FC = () => {
 
         // validate the order object against the schema
         orderSchema.parse(order);
-        const userToken = localStorageService.getUserToken();
-        if (!userToken) {
-          dispatch(logout());
-          return;
+        try {
+          const userToken = localStorageService.getUserToken();
+          if (!userToken) {
+            dispatch(logout());
+            return;
+          }
+        } catch (error) {
+          throw error
         }
+
         if (Number(minCost) > total) {
           toast.warn("You have not reached the minimum cost.")
         } else if (isClosed === 0) {
           toast.warn("This restaurant is currently closed, please complete your order later.")
         } else {
-          const { status, data } = await cartService.createOrder(order);
-          if (status === 200) {
-            dispatch(clearCart());
-            toast.success("Order submitted successfully", data);
-            dispatch(setDeliveryPrice(0));
-            dispatch(setComment(""));
-            dispatch(setCodePromo(""));
-            dispatch(setSupplier(null));
-            setPopupType('command_success')
-            handlePopup()
-          } else {
-            toast.warn("something went wrong")
+
+          // console.log("cartItems", cartItems)
+          // console.log("options", options)
+          console.log("optionsIds", optionsList)
+          console.log("order", order)
+          try {
+            const { status, data } = await cartService.createOrder(order);
+            if (status === 200) {
+              dispatch(clearCart());
+              toast.success("Order submitted successfully", data);
+              dispatch(setDeliveryPrice(0));
+              dispatch(setComment(""));
+              dispatch(setCodePromo(""));
+              dispatch(setSupplier(null));
+              setPopupType('command_success')
+              handlePopup()
+            } else {
+              toast.warn("something went wrong")
+            }
+          } catch (error) {
+
+            throw error
           }
         }
 
@@ -553,7 +568,6 @@ const CartPage: React.FC = () => {
     check && getSousTotal()
     getDistance()
     getExtraSupplierInfo()
-
   }, [])
 
   // calc total for each changement 
