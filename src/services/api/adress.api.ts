@@ -12,19 +12,13 @@ async function getAdressByid(id: number) {
 
 async function getDistance(formData: any) {
     try {
-        const response = await api.post("getdistance/", formData);
+        const response = await api.post("getdistance", formData);
         const { status, data } = response;
         return { status, data };
     } catch (error) {
         throw error;
     }
 }
-
-
-
-// getDistance(formData: any) {
-//     return this.http.post(`${this.url}/getdistance`,formData, { observe: 'response' });
-//   }
 
 export const adressService = {
     getAdressByid,

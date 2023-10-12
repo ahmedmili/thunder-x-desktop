@@ -5,42 +5,40 @@ import {
   removeItem,
   setCodePromo,
   setComment,
-  setDeliveryOption,
   setDeliveryPrice,
-  setSupplier,
+  setSupplier
 } from "../../Redux/slices/cart/cartSlice";
-import { Cart } from "../../components/cart/cart";
 
 import PaymentIcon from '@mui/icons-material/Payment';
-import PayCashSVG from '../../assets/panier/pay-cash.svg'
+import PayCashSVG from '../../assets/panier/pay-cash.svg';
 
-import bagPaperShoppingIcn from '../../assets/panier/bag-paper-shopping-icn.png'
-import dinnerFurnitureIcn from '../../assets/panier/dinner-furniture-icn.png'
-import scooterTransportIcn from '../../assets/panier/scooter-transport-icn.png'
-import empty from '../../assets/panier/empty.png'
+import bagPaperShoppingIcn from '../../assets/panier/bag-paper-shopping-icn.png';
+import dinnerFurnitureIcn from '../../assets/panier/dinner-furniture-icn.png';
+import empty from '../../assets/panier/empty.png';
+import scooterTransportIcn from '../../assets/panier/scooter-transport-icn.png';
 
-import { RootState, useAppDispatch, useAppSelector } from "../../Redux/store";
-import KeyboardArrowUpOutlinedIcon from '@mui/icons-material/KeyboardArrowUpOutlined';
 import KeyboardArrowDownOutlinedIcon from '@mui/icons-material/KeyboardArrowDownOutlined';
+import KeyboardArrowUpOutlinedIcon from '@mui/icons-material/KeyboardArrowUpOutlined';
+import { RootState, useAppDispatch, useAppSelector } from "../../Redux/store";
 
+import 'react-clock/dist/Clock.css';
 import TimePicker from 'react-time-picker';
 import 'react-time-picker/dist/TimePicker.css';
-import 'react-clock/dist/Clock.css';
 
+import { useTranslation } from "react-i18next";
+import { useNavigate } from "react-router-dom";
+import { toast } from "react-toastify";
 import * as z from "zod";
 import { logout } from "../../Redux/slices/userSlice";
 import { FoodItem } from "../../services/types";
-import { toast } from "react-toastify";
-import { useTranslation } from "react-i18next";
-import { useNavigate, useLocation } from "react-router-dom";
 
-import "./cart.page.scss";
-import { cartService } from "../../services/api/cart.api";
-import { localStorageService } from "../../services/localStorageService";
 import { Col, Container, Row } from "react-bootstrap";
-import { supplierServices } from "../../services/api/suppliers.api";
-import { adressService } from "../../services/api/adress.api";
 import PaymentPopup from "../../components/Popups/payment/PaymentPopup";
+import { adressService } from "../../services/api/adress.api";
+import { cartService } from "../../services/api/cart.api";
+import { supplierServices } from "../../services/api/suppliers.api";
+import { localStorageService } from "../../services/localStorageService";
+import "./cart.page.scss";
 
 const CartPage: React.FC = () => {
   const { t } = useTranslation();
@@ -204,11 +202,6 @@ const CartPage: React.FC = () => {
     deliveryPrice: number
   ) => {
     try {
-      const options: any[] = cartItems.flatMap((item) => item.options);
-      const optionsList = options.map((opt) => (
-        { ...opt[0] }
-      )
-      )
       var year = takeAwayDate.getFullYear();
       var month = (takeAwayDate.getMonth() + 1).toString().padStart(2, '0'); // Zero-padding month
       var day = takeAwayDate.getDate().toString().padStart(2, '0'); // Zero-padding day
@@ -227,11 +220,12 @@ const CartPage: React.FC = () => {
         applied_bonus: applied_bonus,
         total_price: total,
         promo_code: promo,
-        products: cartItems.map((item) => ({
+        products: cartItems.flatMap((item) => ({
           id: item.product.id,
           supplier_id: item.supplier_data.supplier_id,
           qte: item.quantity, // set the quantity to the item's quantity
-          options: optionsList
+          options: item.options.map((op: any) => op[0]),
+          total: item.total,
         })),
         lat: userPosition?.coords.latitude,
         lng: userPosition?.coords.longitude,
@@ -266,8 +260,9 @@ const CartPage: React.FC = () => {
 
           // console.log("cartItems", cartItems)
           // console.log("options", options)
-          console.log("optionsIds", optionsList)
-          console.log("order", order)
+          // console.log("optionsIds", optionsList)
+          // console.log("order", order)
+          // console.log("products", order.products)
           try {
             const { status, data } = await cartService.createOrder(order);
             if (status === 200) {
@@ -392,6 +387,7 @@ const CartPage: React.FC = () => {
   //  get promos list 
   const getPromo = async () => {
     const { status, data } = await cartService.getAllPromoCodes()
+
     const list = data.data.filter((item: any) => {
       item.nbr_commands > 0
     })
