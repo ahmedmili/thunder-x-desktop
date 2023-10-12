@@ -23,6 +23,8 @@ import preparatinD from "../../../../../assets/profile/ArchivedCommands/preparat
 import traitementD from "../../../../../assets/profile/ArchivedCommands/traitement-D.svg";
 import { Product } from '../../../../../services/types';
 import CommandsFooter from '../Footer/Footer';
+import SignaleProblem from '../../../../Popups/SignaleProblem/SignaleProblem';
+import { commandService } from '../../../../../services/api/command.api';
 
 interface CommandsListProps {
     data: any
@@ -120,7 +122,19 @@ const CurrentCommands: React.FC<CommandsListProps> = ({ removeCommand, goToPasse
     const [messsage, setMessage] = useState<string>('')
     const [time, setTime] = useState<string>('')
     const [date, setDate] = useState<string>('')
+    const [problemPopup, setProblemPopup] = useState<boolean>(false)
 
+    const handleProblemPopup = () => {
+        setProblemPopup(current => !current)
+    }
+    const submitProblem = async (problem: string) => {
+        try {
+            const response = await commandService.signalerCommand(problem, data.id)
+            response.data.success === true && handleProblemPopup()
+        } catch (error) {
+            throw error
+        }
+    }
     useEffect(() => {
         if (take_away_date != null) {
             const [datePart, timePart] = take_away_date.split(' ');
@@ -328,13 +342,18 @@ const CurrentCommands: React.FC<CommandsListProps> = ({ removeCommand, goToPasse
                         status >= 5 && (
                             <div className='buttons'>
                                 <button className="recue" onClick={goToPassedCommands} >{t('profile.commands.recue')}  </button>
-                                <button className="problem">{t('profile.commands.problem')}</button>
+                                <button className="problem" onClick={handleProblemPopup}>{t('profile.commands.problem')}</button>
                             </div>
                         )
                     }
                     <CommandsFooter />
                 </main >
             </div >
+
+            {
+                problemPopup &&
+                <SignaleProblem command_id={data.id} action={submitProblem} close={handleProblemPopup} />
+            }
         </>
 
     )
