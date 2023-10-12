@@ -67,4 +67,55 @@
         }
     }
 
+    .prev-next-buttons {
+        width: 100%;
+        display: flex;
+        justify-content: space-between;
+
+        .next-page-button {
+            display: flex;
+            justify-content: end;
+            align-items: center;
+            padding-right: 15px;
+
+            button {
+                all: unset;
+
+                &:hover {
+                    cursor: pointer;
+                }
+
+                .next-page-icon {
+                    color: #24A6A4;
+                    width: 53px;
+                    height: 52px;
+                    font-size: 22px;
+                }
+            }
+        }
+
+        .prev-page-button {
+            display: flex;
+            justify-content: start;
+            align-items: center;
+
+            button {
+                all: unset;
+
+                &:hover {
+                    cursor: pointer;
+                }
+
+                .prev-page-icon {
+                    color: #24a6a4;
+                    width: 53px;
+                    height: 52px;
+                    font-size: 22px;
+                    transform: rotate(180deg);
+
+                }
+
+            }
+        }
+    }
 }

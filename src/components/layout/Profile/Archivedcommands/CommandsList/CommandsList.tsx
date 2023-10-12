@@ -1,4 +1,5 @@
 import React, { useEffect, useMemo, useState } from 'react';
+import ArrowRightAltIcon from '@mui/icons-material/ArrowRightAlt';
 
 import KeyboardArrowUpOutlinedIcon from '@mui/icons-material/KeyboardArrowUpOutlined';
 import { commandService } from '../../../../../services/api/command.api';
@@ -17,9 +18,15 @@ interface CommandsListProps {
 const CommandsList: React.FC<CommandsListProps> = ({ type = "old", goToPassedCommands, handlenav }) => {
 
     const [commands, setCommands] = useState<any>([])
+    const [displayedContent, setDisplayedContent] = useState<any[]>([]);
     const [selectedCommand, setSelectedCommand] = useState<number>(-1)
     const [feedbacksList, setFeedbacksList] = useState<number[]>([])
+    const [totalPages, setTotalPages] = useState<number>(0);
+    const [currentPage, setCurrentPage] = useState<number>(1);
     const [loading, setLoading] = useState<boolean>(false)
+
+    const itemsPerPage = 7;
+
     const getClientFeedback = async () => {
         const { status, data } = await userService.getClientFeedback()
         if (data.success) {
@@ -43,20 +50,27 @@ const CommandsList: React.FC<CommandsListProps> = ({ type = "old", goToPassedCom
     }
     const getPassedCommands = async () => {
         setLoading((current) => current = true)
+        setCurrentPage(1)
         const { status, data } = await commandService.passedCommands()
         const commands = data.data
         data.success && setLoading((current) => current = false)
         type === "old" && data.success && setCommands(commands)
+
     }
     const getCurrentCommands = async () => {
         setLoading((current) => current = true)
+        setCurrentPage(1)
         const { status, data } = await commandService.myCommands()
         const commands = data.data
         data.success && setLoading((current) => current = false);
         type === "current" && data.success && setCommands(commands)
+
     }
     useEffect(() => {
         setSelectedCommand(-1)
+        const totalPages = Math.ceil(commands.length / itemsPerPage)
+        setTotalPages(totalPages)
+        handleContent()
     }, [commands])
 
     useMemo(() => {
@@ -77,6 +91,25 @@ const CommandsList: React.FC<CommandsListProps> = ({ type = "old", goToPassedCom
         }
     }, [])
 
+    const handleContent = () => {
+        const startIndex = (currentPage - 1) * itemsPerPage;
+        const endIndex = startIndex + itemsPerPage;
+        const displayedContent = commands.slice(startIndex, endIndex)
+        setDisplayedContent(displayedContent)
+    }
+
+    const nextPage = () => {
+        setCurrentPage(currentPage + 1);
+        setSelectedCommand(-1)
+    }
+    const prevPage = () => {
+        setCurrentPage(currentPage - 1);
+        setSelectedCommand(-1)
+    }
+
+    useEffect(() => {
+        handleContent()
+    }, [currentPage])
 
     return (
         <>
@@ -86,7 +119,7 @@ const CommandsList: React.FC<CommandsListProps> = ({ type = "old", goToPassedCom
                 ) : (
                     <>
                         <section className='commands-List' >
-                            {commands.length > 0 && commands.map((command: any, index: number) => {
+                            {displayedContent.length > 0 && displayedContent.map((command: any, index: number) => {
 
                                 return (
                                     <React.Fragment key={index}>
@@ -107,9 +140,30 @@ const CommandsList: React.FC<CommandsListProps> = ({ type = "old", goToPassedCom
                                         </div>
                                         {(selectedCommand === index && type === "old") && <OldCommands feedbacksList={feedbacksList} data={command} />}
                                         {(selectedCommand === index && type === "current") && <CurrentCommands goToPassedCommands={goToPassedCommands} removeCommand={HandleRemove} data={command} />}
+
                                     </React.Fragment>
                                 )
                             })}
+                            <div className="prev-next-buttons">
+                                {/* prev button */}
+                                <span className="prev-page-button">
+                                    {!(currentPage === 1) &&
+                                        <button onClick={prevPage}>
+                                            <ArrowRightAltIcon className="prev-page-icon" />
+                                        </button>
+                                    }
+                                </span>
+                                {/* next button  */}
+                                <span className="next-page-button">
+                                    {!(currentPage === totalPages) &&
+                                        <button onClick={nextPage}>
+                                            <ArrowRightAltIcon className="next-page-icon" />
+                                        </button>
+                                    }
+                                </span>
+
+
+                            </div>
                         </section>
                     </>
                 )

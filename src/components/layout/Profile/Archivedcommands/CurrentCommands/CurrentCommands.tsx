@@ -145,7 +145,6 @@ const CurrentCommands: React.FC<CommandsListProps> = ({ removeCommand, goToPasse
     }, [take_away_date])
 
     const getProgressDescription = (cycle: string): { message: string, status: number } => {
-        console.log(cycle)
         switch (cycle) {
             case 'PENDING':
                 return {
