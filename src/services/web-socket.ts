@@ -29,7 +29,7 @@ var options = {
 };
 
 const channelListener = () => {
-  const addMessage = useAddMessage
+  // const addMessage = useAddMessage
   const pusher = new Pusher(import.meta.env.VITE_ECHO_KEY, options);
   const echo = new Echo(options);
   // console.log("WebSocket URL:", echo.connector.options);
@@ -43,9 +43,10 @@ const channelListener = () => {
       case 'NEW_ADMIN_MESSAGE':
         eventEmitter.emit('NEW_ADMIN_MESSAGE', data.message);
         break;
-      case 'HOME_DATA_CHANGED':
-        break;
-      case 'COMMAND_UPDATED':
+        case 'HOME_DATA_CHANGED':
+          break;
+          case 'COMMAND_UPDATED':
+        eventEmitter.emit('COMMAND_UPDATED', data.message);
         break;
       case 'BONUS_UPDATED':
         break;
