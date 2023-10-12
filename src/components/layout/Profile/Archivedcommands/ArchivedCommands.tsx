@@ -4,11 +4,16 @@ import CommandsList from './CommandsList/CommandsList'
 import './archivedCommands.scss'
 function ArchivedCommands() {
 
- 
+
     const [nav, setNav] = useState<number>(1)
+    const [loading, setLoading] = useState<boolean>(false)
+
+    const handleLoading = () => {
+        setLoading((current) => !current)
+    }
 
     const handleNav = (i: number) => {
-        setNav(i)
+        loading && setNav(i)
     }
 
     const goToPassedCommands = () => {
@@ -33,7 +38,7 @@ function ArchivedCommands() {
 
             </header>
             <main className='commands-list-container'>
-                <CommandsList goToPassedCommands={goToPassedCommands} type={nav === 1 ? "old" : "current"} />
+                <CommandsList handlenav={handleLoading} goToPassedCommands={goToPassedCommands} type={nav === 1 ? "old" : "current"} />
             </main>
         </div>
     )
