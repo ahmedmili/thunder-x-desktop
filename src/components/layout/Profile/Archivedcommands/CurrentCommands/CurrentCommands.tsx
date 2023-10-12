@@ -21,10 +21,10 @@ import delivD from "../../../../../assets/profile/ArchivedCommands/deliv-D.svg";
 import doneD from "../../../../../assets/profile/ArchivedCommands/done-D.svg";
 import preparatinD from "../../../../../assets/profile/ArchivedCommands/preparatin-D.svg";
 import traitementD from "../../../../../assets/profile/ArchivedCommands/traitement-D.svg";
-import { Product } from '../../../../../services/types';
-import CommandsFooter from '../Footer/Footer';
-import SignaleProblem from '../../../../Popups/SignaleProblem/SignaleProblem';
 import { commandService } from '../../../../../services/api/command.api';
+import { Product } from '../../../../../services/types';
+import SignaleProblem from '../../../../Popups/SignaleProblem/SignaleProblem';
+import CommandsFooter from '../Footer/Footer';
 
 interface CommandsListProps {
     data: any
@@ -257,7 +257,6 @@ const CurrentCommands: React.FC<CommandsListProps> = ({ removeCommand, goToPasse
                                     {
                                         (status <= 4 && status > 2) && (
                                             <>
-
                                                 <div className='no-deliv-assigned'>
                                                     <div className='img'></div>
                                                     <div className='delivery-info'>

@@ -11,6 +11,16 @@
     }
 }
 
+@keyframes loading {
+    0% {
+        background-position: 200% 0;
+    }
+
+    100% {
+        background-position: -200% 0;
+    }
+}
+
 .current-commands-container {
     width: 100%;
     display: flex;
@@ -298,6 +308,19 @@
                     border-radius: 25px;
                     background: rgb(255, 255, 255);
                     background: linear-gradient(171deg, rgba(255, 255, 255, 1) 0%, rgba(233, 233, 233, 1) 96%, rgba(255, 255, 255, 1) 100%);
+
+                    &::before {
+                        content: '';
+                        border-radius: 25px;
+                        display: block;
+                        width: 100%;
+                        height: 100%;
+                        padding-bottom: 56.25%;
+                        /* Aspect ratio for a 16:9 image */
+                        background: linear-gradient(90deg, #f2f2f2 25%, #e8e8e8 50%, #f2f2f2 75%);
+                        background-size: 200% 100%;
+                        animation: loading 2.5s infinite;
+                    }
                 }
 
                 .delivery-info {
@@ -320,6 +343,17 @@
                         height: 8px;
                         border-radius: 25px;
                         background: #958E8E;
+
+                        &::before {
+                            content: '';
+                            border-radius: 25px;
+                            display: block;
+                            width: 100%;
+                            height: 100%;
+                            background: linear-gradient(90deg, #bbb3b3 25%, #b9b8b8 50%, #d4baba 75%);
+                            background-size: 200% 100%;
+                            animation: loading 2.5s infinite;
+                        }
                     }
 
                     .rate {
@@ -330,6 +364,17 @@
 
                         .rate-icon {
                             color: $orange_color;
+
+                            &::before {
+                                content: '';
+                                border-radius: 25px;
+                                display: block;
+                                width: 100%;
+                                height: 100%;
+                                background: linear-gradient(90deg, $orange_color 25%, #e8e8e8 50%, #f2f2f2 75%);
+                                background-size: 200% 100%;
+                                animation: loading 4s infinite;
+                            }
                         }
 
                         .orange-box {
@@ -337,13 +382,23 @@
                             height: 6px;
                             border-radius: 25px;
                             background: rgba(251, 195, 1, 0.51);
+
+                            &::before {
+                                content: '';
+                                border-radius: 25px;
+                                display: block;
+                                width: 100%;
+                                height: 100%;
+                                background: linear-gradient(90deg, rgba(251, 195, 1, 0.51) 25%, #e8e8e8 50%, #f2f2f2 75%);
+                                background-size: 200% 100%;
+                                animation: loading 4s infinite;
+                            }
                         }
 
                     }
                 }
             }
 
-            // background-color: #24A6A4;
             .buttons {
 
                 .lieu-button {
