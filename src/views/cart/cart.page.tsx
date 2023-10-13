@@ -263,7 +263,6 @@ const CartPage: React.FC = () => {
         } else if (isClosed === 0) {
           toast.warn("This restaurant is currently closed, please complete your order later.")
         } else {
-
           try {
             const { status, data } = await cartService.createOrder(order);
             if (status === 200) {
@@ -557,6 +556,7 @@ const CartPage: React.FC = () => {
     const deliveryPrice = cartItems.length > 0 ? Number(cartItems[0].supplier_data.delivery_price) + extraDeliveryCost : 0
     setDelivPrice(deliveryPrice)
   }
+  
   useEffect(() => {
     switch (selectedOption) {
       case 1:
@@ -597,7 +597,6 @@ const CartPage: React.FC = () => {
     check && getSousTotal()
     getUser()
     getDistance()
-    // getExtraSupplierInfo()
   }, [])
 
   // calc total for each changement 
