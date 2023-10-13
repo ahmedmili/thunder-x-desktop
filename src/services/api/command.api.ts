@@ -49,6 +49,22 @@ async function signalerCommand(problem: string, command_id: number) {
         throw error;
     }
 }
+async function isdelivery(supplier_id: number) {
+
+    const formData = {
+        supplier_id: supplier_id,
+        service: 'take_away'
+    }
+    try {
+        const response = await api.post("supplier/isdelivery", formData);
+        const { status, data } = response;
+        const take_away = data.data.ok
+        return take_away;
+    } catch (error) {
+        throw error;
+    }
+}
+
 async function validatecommand(command_id: number) {
 
     try {
@@ -69,4 +85,5 @@ export const commandService = {
     removecommand,
     signalerCommand,
     validatecommand,
+    isdelivery,
 };

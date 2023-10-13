@@ -6,7 +6,7 @@ import {
   setCodePromo,
   setComment,
   setDeliveryPrice,
-  setSupplier
+  setSupplier,
 } from "../../Redux/slices/cart/cartSlice";
 
 import PaymentIcon from '@mui/icons-material/Payment';
@@ -33,22 +33,23 @@ import { logout } from "../../Redux/slices/userSlice";
 import { FoodItem } from "../../services/types";
 
 import { Col, Container, Row } from "react-bootstrap";
+import WarnPopup from "../../components/Popups/WarnPopup/WarnPopup";
 import PaymentPopup from "../../components/Popups/payment/PaymentPopup";
 import { adressService } from "../../services/api/adress.api";
 import { cartService } from "../../services/api/cart.api";
+import { commandService } from "../../services/api/command.api";
 import { supplierServices } from "../../services/api/suppliers.api";
 import { localStorageService } from "../../services/localStorageService";
 import "./cart.page.scss";
+import { userService } from "../../services/api/user.api";
 
 const CartPage: React.FC = () => {
   const { t } = useTranslation();
 
   // redux state vars
-  const theme = useAppSelector(state => state.home.theme)
-  const [template, setTemplate] = useState<number>(theme)
   const supplier = useAppSelector((state: RootState) => state.cart.supplier);
   const deliveryPrice = useAppSelector((state: RootState) => state.cart.deliveryPrice);
-  const cartItems = useAppSelector((state: RootState) => state.cart.items);
+  var cartItems = useAppSelector((state: RootState) => state.cart.items);
   const userPosition = useAppSelector((state) => state.location.position);
   const deliveryOption = useAppSelector((state: RootState) => state.cart.deliveryOption);
   const isAuthenticated = useAppSelector((state) => state.user.isAuthenticated);
@@ -71,6 +72,7 @@ const CartPage: React.FC = () => {
 
   const [popupType, setPopupType] = React.useState<string>("");
   const [showPopup, setShowPopup] = React.useState<boolean>(false);
+  const [showServicePopup, setShowServicePopup] = React.useState<boolean>(false);
 
   // promo vars
   const [promo, setPromo] = React.useState<string>("");
@@ -80,7 +82,7 @@ const CartPage: React.FC = () => {
   const [promoReduction, setPromoReduction] = useState<number>(0)
 
   // bonus vars
-  const [bonus, setbonus] = useState<number>(Number(supplier ? supplier.bonus : 0))
+  const [bonus, setbonus] = useState<number>(0)
   const [appliedBonus, setAppliedBonus] = useState<number>(0)
   const [bonusApplied, setBonusApplied] = useState<boolean>(false)
   const [limitReachedBonus, setLimitReachedBonus] = useState<boolean>(false)
@@ -92,15 +94,16 @@ const CartPage: React.FC = () => {
   const [giftId, setMaxGiftId] = useState<number>(0)
   const [giftAmmount, setGiftAmmount] = useState<number>(0)
   const [limitReachedGift, setLimitReachedGift] = useState<boolean>(false)
-
+  const [discountValue, setDiscountValue] = useState<number>(0)
 
   // take away plan vars
   const command_type = deliveryOption === "delivery" ? 3 : 1;
   const [selectedOption, setSelectedOption] = useState<number>(command_type);
 
   var extraDeliveryCost = 0;
-  var max_distance: any = 5;
-  var distance = 0;
+  var max_distance: number = 5;
+  var distance: number = 0;
+  var discount = 0
 
   var take_away_plan = 'default';
   const [takeAwayDate, setTakeAwayDate] = useState(new Date());
@@ -141,9 +144,7 @@ const CartPage: React.FC = () => {
         );
       }
     };
-    useEffect(() => {
-      setTemplate(theme)
-    }, [theme])
+
 
     return <>
       <td className="image-container">
@@ -208,9 +209,7 @@ const CartPage: React.FC = () => {
       var hours = takeAwayDate.getHours().toString().padStart(2, '0'); // Zero-padding hours
       var minutes = takeAwayDate.getMinutes().toString().padStart(2, '0'); // Zero-padding minutes
       var seconds = "00"; // Assuming you don't have seconds information
-
       var formattedDate = year + '-' + month + '-' + day + ' ' + hours + ':' + minutes + ':' + seconds;
-
       const order = {
         addresse_id: 1,
         supplier_id: supplier,
@@ -225,7 +224,11 @@ const CartPage: React.FC = () => {
           supplier_id: item.supplier_data.supplier_id,
           qte: item.quantity, // set the quantity to the item's quantity
           options: item.options.map((op: any) => op[0]),
+          computed_value: item.product.computed_value,
           total: item.total,
+          discount_value: item.product.discount_value,
+          cost: item.product.cost,
+          old_value: item.product.old_value,
         })),
         lat: userPosition?.coords.latitude,
         lng: userPosition?.coords.longitude,
@@ -237,9 +240,11 @@ const CartPage: React.FC = () => {
         phone: phoneNumber,
         name: name,
         comment: aComment,
+        has_gift: has_gift,
+        gift_ammount: giftAmmount,
+        gift_id: giftId,
       };
       if (isAuthenticated) {
-
         // validate the order object against the schema
         orderSchema.parse(order);
         try {
@@ -258,20 +263,10 @@ const CartPage: React.FC = () => {
           toast.warn("This restaurant is currently closed, please complete your order later.")
         } else {
 
-          // console.log("cartItems", cartItems)
-          // console.log("options", options)
-          // console.log("optionsIds", optionsList)
-          // console.log("order", order)
-          // console.log("products", order.products)
           try {
             const { status, data } = await cartService.createOrder(order);
             if (status === 200) {
-              dispatch(clearCart());
-              toast.success("Order submitted successfully", data);
-              dispatch(setDeliveryPrice(0));
-              dispatch(setComment(""));
-              dispatch(setCodePromo(""));
-              dispatch(setSupplier(null));
+              dropOrder()
               setPopupType('command_success')
               handlePopup()
             } else {
@@ -291,6 +286,13 @@ const CartPage: React.FC = () => {
       toast.error("Failed to submit order. Please try again.", error.message);
     }
   };
+  const getUser = async () => {
+    const user_id = localStorageService.getUserId()
+    const response = await userService.getUser(user_id!)
+    const data = response.data.data.client;
+    const bonus = data.bonus
+    setbonus(bonus)
+  }
 
   const handlePopup = () => {
     setShowPopup(!showPopup)
@@ -304,10 +306,27 @@ const CartPage: React.FC = () => {
   };
 
   // handle deliv program state changes
-  const handleOptionChange = (event: any) => {
-    setSelectedOption(parseInt(event.target.value));
+  const handleOptionChange = async (value: number) => {
+    if (value === 3) {
+      setSelectedOption(value);
+    } else {
+      const take_away = await commandService.isdelivery(supplier.id)
+      take_away === 1 ? setSelectedOption(value) : handleServicePopup();
+    }
   };
 
+  const handleServicePopup = () => {
+    setShowServicePopup((current) => !current)
+  }
+
+  // remove order
+  const dropOrder = () => {
+    dispatch(clearCart());
+    dispatch(setDeliveryPrice(0));
+    dispatch(setComment(""));
+    dispatch(setCodePromo(""));
+    dispatch(setSupplier(null));
+  }
   //  get gifts
   const getclientGift = async () => {
     let body = { supplier_id: cartItems[0].supplier_data.supplier_id };
@@ -483,17 +502,42 @@ const CartPage: React.FC = () => {
 
   //  calc total befor reduction (gift / promo / bonus ...)
   const getSousTotal = () => {
+
+    let cartItems2 = [...cartItems];
+    cartItems.forEach((item: any, index: number) => {
+      let sub_total_final = item.total;
+      if (item.product.computed_value.discount_value && item.product.computed_value.discount_value > 0) {
+        sub_total_final = item.total - ((item.total * item.product.computed_value.discount_value) / 100)
+        discount += ((item.total * item.product.computed_value.discount_value) / 100)
+      }
+
+      cartItems2[index] = {
+        ...cartItems2[index],
+        product: {
+          ...item.product,
+          cost: sub_total_final,
+          old_value: item.total,
+          discount_value: item.product.computed_value.discount_value,
+        },
+      }
+    })
+    setDiscountValue(discount)
+    cartItems = cartItems2;
     let sum = 0;
-    cartItems.forEach((item: FoodItem) => sum = sum + item.total);
+
+    cartItems.forEach((item: FoodItem) => sum = sum + (item.total));
     setSousTotal(sum);
   }
 
   // calc total function
   const calcTotal = () => {
     setTotal(
-      ((sousTotal - (appliedBonus / 1000)) + extraDeliveryCost + Number(cartItems[0].supplier_data.delivery_price) - promoReduction)
-    )
+      ((sousTotal - (appliedBonus / 1000)) + extraDeliveryCost + Number(cartItems[0].supplier_data.delivery_price) - promoReduction) - discount)
   }
+
+  useEffect(() => {
+    getSousTotal()
+  }, [cartItems])
 
   // get supplier request
   const getSupplierById = async () => {
@@ -508,7 +552,7 @@ const CartPage: React.FC = () => {
     let obj = {
       supplier_id: supplier.id,
       lat: userPosition?.coords.latitude,
-      lng: userPosition?.coords.longitude,
+      long: userPosition?.coords.longitude,
     };
     adressService.getDistance(obj).then(res => {
       res.data.data.code == 200 ? distance = res.data.data.distance : distance = 0
@@ -523,6 +567,7 @@ const CartPage: React.FC = () => {
 
     }
   }
+
 
 
   useEffect(() => {
@@ -564,6 +609,7 @@ const CartPage: React.FC = () => {
     check && getSousTotal()
     getDistance()
     getExtraSupplierInfo()
+    getUser()
   }, [])
 
   // calc total for each changement 
@@ -586,7 +632,7 @@ const CartPage: React.FC = () => {
             <Row>
               <Col>
                 <main>
-                  <div className={`product-detail-container ${template === 1 && 'dark-background2'}`}>
+                  <div className={`product-detail-container`}>
                     <table>
                       <thead>
                         <td className="header-name">
@@ -699,19 +745,19 @@ const CartPage: React.FC = () => {
 
                     <div className="deliv-details">
                       <div className={`select ${selectedOption == 1 ? "selected" : ""}`}  >
-                        <img className="icon1" src={dinnerFurnitureIcn} alt="sur place icon" onClick={() => setSelectedOption(1)} />
-                        <input type="radio" value="1" id='domicile' name='type' checked={selectedOption === 1} onChange={handleOptionChange} />
-                        <label htmlFor="domicile">{t('cartPage.surPalce')}</label>
+                        <img className="icon1" src={dinnerFurnitureIcn} alt="sur place icon" onClick={() => handleOptionChange(1)} />
+                        <input type="radio" value="1" id='domicile' name='type' checked={selectedOption === 1} />
+                        <label htmlFor="domicile"  >{t('cartPage.surPalce')}</label>
                       </div>
                       <div className={`select ${selectedOption == 2 ? "selected" : ""}`}  >
-                        <img className="icon2" src={bagPaperShoppingIcn} alt="a emporter icon" onClick={() => setSelectedOption(2)} />
+                        <img className="icon2" src={bagPaperShoppingIcn} alt="a emporter icon" onClick={() => handleOptionChange(2)} />
 
-                        <input type="radio" value="2" id='travail' name='type' checked={selectedOption === 2} onChange={handleOptionChange} />
+                        <input type="radio" value="2" id='travail' name='type' checked={selectedOption === 2} />
                         <label htmlFor="travail">{t('cartPage.emporter')}</label>
                       </div>
                       <div className={`select ${selectedOption == 3 ? "selected" : ""}`}  >
-                        <img className="icon3" src={scooterTransportIcn} alt="Livraison icon" onClick={() => setSelectedOption(3)} />
-                        <input type="radio" value="3" id='autre' name='type' checked={selectedOption === 3} onChange={handleOptionChange} />
+                        <img className="icon3" src={scooterTransportIcn} alt="Livraison icon" onClick={() => handleOptionChange(3)} />
+                        <input type="radio" value="3" id='autre' name='type' checked={selectedOption === 3} />
                         <label htmlFor="autre">{t('cartPage.delivery')}</label>
                       </div>
                     </div>
@@ -799,7 +845,7 @@ const CartPage: React.FC = () => {
 
                   <div className="summair-container">
                     <span>{t('cartPage.total')}</span>
-                    <div className={`info ${template === 1 && "dark-background2"}`}>
+                    <div className={`info`}>
                       <div className="sous-total">
                         <span className="title">{t('profile.commands.sousTotal')}</span>
                         <span className="value">{sousTotal.toFixed(2)} DT</span>
@@ -819,6 +865,14 @@ const CartPage: React.FC = () => {
                             <div className="panie-row">
                               <span>{t('cartPage.Coupon')}</span>
                               <span> - {(promoReduction).toFixed(2)} DT</span>
+                            </div>
+                          )
+                        }
+                        {
+                          discountValue > 0 && (
+                            <div className="panie-row">
+                              <span>discount value</span>
+                              <span> - {(discountValue).toFixed(2)} DT</span>
                             </div>
                           )
                         }
@@ -854,6 +908,11 @@ const CartPage: React.FC = () => {
               showPopup && (
 
                 <PaymentPopup close={handlePopup} type={popupType} />
+              )
+            }
+            {
+              showServicePopup && (
+                <WarnPopup message="Ce service n'est pas disponible dans votre ville" closeButtonText="continuer" confirmButtonText="Supprimer La Command" close={handleServicePopup} accept={dropOrder} />
               )
             }
 
