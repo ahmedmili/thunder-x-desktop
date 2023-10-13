@@ -1,27 +1,29 @@
-import React, { useEffect, useState } from 'react'
-import { parse, format } from 'date-fns';
+import { format, parse } from 'date-fns';
 import { fr } from 'date-fns/locale';
+import React, { useEffect, useState } from 'react';
 
-import "./currentCommands.scss"
+import "./currentCommands.scss";
 
 import StarIcon from '@mui/icons-material/Star';
 
-import positionIcon from "../../../../../assets/profile/ArchivedCommands/position.svg"
-import positionIconBlue from "../../../../../assets/profile/ArchivedCommands/position_blue.svg"
-import destinationIcon from "../../../../../assets/profile/ArchivedCommands/destination.svg"
+import destinationIcon from "../../../../../assets/profile/ArchivedCommands/destination.svg";
+import positionIcon from "../../../../../assets/profile/ArchivedCommands/position.svg";
+import positionIconBlue from "../../../../../assets/profile/ArchivedCommands/position_blue.svg";
 
-import defaultImage from "../../../../../assets/profile/ArchivedCommands/default.jpg"
-import delivA from "../../../../../assets/profile/ArchivedCommands/deliv-A.svg"
-import traitementA from "../../../../../assets/profile/ArchivedCommands/traitement-A.svg"
-import preparatinA from "../../../../../assets/profile/ArchivedCommands/preparatin-A.svg"
-import doneA from "../../../../../assets/profile/ArchivedCommands/done-A.svg"
+import defaultImage from "../../../../../assets/profile/ArchivedCommands/default.jpg";
+import delivA from "../../../../../assets/profile/ArchivedCommands/deliv-A.svg";
+import doneA from "../../../../../assets/profile/ArchivedCommands/done-A.svg";
+import preparatinA from "../../../../../assets/profile/ArchivedCommands/preparatin-A.svg";
+import traitementA from "../../../../../assets/profile/ArchivedCommands/traitement-A.svg";
 
-import delivD from "../../../../../assets/profile/ArchivedCommands/deliv-D.svg"
-import traitementD from "../../../../../assets/profile/ArchivedCommands/traitement-D.svg"
-import preparatinD from "../../../../../assets/profile/ArchivedCommands/preparatin-D.svg"
-import doneD from "../../../../../assets/profile/ArchivedCommands/done-D.svg"
-import { useAppSelector } from '../../../../../Redux/store'
 import { useTranslation } from 'react-i18next';
+import delivD from "../../../../../assets/profile/ArchivedCommands/deliv-D.svg";
+import doneD from "../../../../../assets/profile/ArchivedCommands/done-D.svg";
+import preparatinD from "../../../../../assets/profile/ArchivedCommands/preparatin-D.svg";
+import traitementD from "../../../../../assets/profile/ArchivedCommands/traitement-D.svg";
+import { commandService } from '../../../../../services/api/command.api';
+import { Product } from '../../../../../services/types';
+import SignaleProblem from '../../../../Popups/SignaleProblem/SignaleProblem';
 import CommandsFooter from '../Footer/Footer';
 
 interface CommandsListProps {
@@ -43,7 +45,25 @@ interface CommandProps {
 }
 
 const Command: React.FC<CommandProps> = ({ removeCommand, data }) => {
+    const [total, setTotal] = useState<number>(0)
     const { t } = useTranslation()
+
+    const calculeData = () => {
+        let total = 0;
+        const products = data.products;
+        for (let index = 0; index < products.length; index++) {
+            const product: Product = products[index]
+            const price = product.price
+            const quantity = product.quantity
+            const result = quantity! * price
+            total = total + result
+
+        }
+        setTotal(total)
+    }
+    useEffect(() => {
+        calculeData()
+    }, [data])
 
     return (
         <div className='command-product-container'>
@@ -52,19 +72,27 @@ const Command: React.FC<CommandProps> = ({ removeCommand, data }) => {
                 <span>{t('cartPage.total')}</span>
                 <span className='total-value'>{data.total_price}</span>
             </div>
+
             <div className='sous-total'>
                 <span>{t('profile.commands.sousTotal')}</span>
-                <span>{data.total_price}</span>
+                <span className='left-price'>{total} Dt</span>
             </div>
 
+            <div className='sous-total'>
+                <span>Frais de livraison</span>
+                <span className='left-price'>{data.delivery_price} DT</span>
+            </div>
             <ul>
                 {(data.products && data.products.length > 0) &&
                     data.products.map((product: any, index: number) => {
                         return (
                             <li key={index}>
                                 <div className='product'>
-                                    <span className='product-name'>{product.name}</span>
-                                    <span className='product-value'>{product.price}</span>
+                                    <div className='product-info'>
+                                        <span className='product-name'>{product.name}</span>
+                                        <span className='product-qt'>X{product.quantity}</span>
+                                    </div>
+                                    <span className='product-value'>{product.price * product.quantity} DT</span>
                                 </div>
                             </li>
                         )
@@ -81,7 +109,6 @@ const Command: React.FC<CommandProps> = ({ removeCommand, data }) => {
 const CurrentCommands: React.FC<CommandsListProps> = ({ removeCommand, goToPassedCommands, data }) => {
 
     const { t } = useTranslation()
-    const theme = useAppSelector((state) => state.home.theme)
     const supplier = data.supplier
     const delivery = data.delivery
     const cycle = data.cycle
@@ -92,11 +119,22 @@ const CurrentCommands: React.FC<CommandsListProps> = ({ removeCommand, goToPasse
     const position = supplier.street + " " + supplier.region + " " + supplier.city
     const [status, setStatus] = useState<number>(0)
 
-    const [template, setTemplate] = useState<number>(theme)
     const [messsage, setMessage] = useState<string>('')
     const [time, setTime] = useState<string>('')
     const [date, setDate] = useState<string>('')
+    const [problemPopup, setProblemPopup] = useState<boolean>(false)
 
+    const handleProblemPopup = () => {
+        setProblemPopup(current => !current)
+    }
+    const submitProblem = async (problem: string) => {
+        try {
+            const response = await commandService.signalerCommand(problem, data.id)
+            response.data.success === true && handleProblemPopup()
+        } catch (error) {
+            throw error
+        }
+    }
     useEffect(() => {
         if (take_away_date != null) {
             const [datePart, timePart] = take_away_date.split(' ');
@@ -107,35 +145,36 @@ const CurrentCommands: React.FC<CommandsListProps> = ({ removeCommand, goToPasse
     }, [take_away_date])
 
     const getProgressDescription = (cycle: string): { message: string, status: number } => {
+        console.log(cycle)
         switch (cycle) {
             case 'PENDING':
                 return {
-                    message: t('profile.commands.PENDING'),
+                    message: t('profile.commands.traitement'),
                     status: 1
                 };
             case 'VERIFY':
                 return {
-                    message: t('profile.commands.VERIFY'),
+                    message: t('profile.commands.traitement'),
                     status: 2
                 };
             case 'AUTHORIZED':
                 return {
-                    message: t('profile.commands.Aboutassigned'),
+                    message: t('profile.commands.prépaartion'),
                     status: 3
                 };
             case 'PRE_ASSIGN_ADMIN':
                 return {
-                    message: t('profile.commands.Aboutassigned'),
+                    message: t('profile.commands.prépaartion'),
                     status: 4
                 };
             case 'ASSIGNED':
                 return {
-                    message: t('profile.commands.ASSIGNED'),
+                    message: t('profile.commands.prépaartion'),
                     status: 5
                 };
             case 'INPROGRESS':
                 return {
-                    message: t('profile.commands.INPROGRESS'),
+                    message: t('profile.commands.livraison'),
                     status: 6
                 };
             default:
@@ -160,11 +199,6 @@ const CurrentCommands: React.FC<CommandsListProps> = ({ removeCommand, goToPasse
         setMessage(message)
     }, [])
 
-    useEffect(() => {
-        setTemplate(theme)
-    }, [theme])
-
-
     const commanddata: CommandProps = {
         removeCommand: removeCommand,
         data: {
@@ -182,7 +216,7 @@ const CurrentCommands: React.FC<CommandsListProps> = ({ removeCommand, goToPasse
                 <header className={` current-command-header `}>
                     <img src={supplier.images[1].path} alt="supplier background" />
                 </header>
-                <main className={`current-command-main ${template === 1 ? 'dark-background2' : ""} `}>
+                <main className={`current-command-main `}>
                     <div className='supplier-info'>
                         <img src={supplier.images[0].path} alt="supplier logo" />
                         <div className='name-rate'>
@@ -197,14 +231,14 @@ const CurrentCommands: React.FC<CommandsListProps> = ({ removeCommand, goToPasse
                         <p className="description">{t('profile.commands.sousMessage')}</p>
                         <div className='command-graph'>
                             <div className='time-line'></div>
-                            <img src={status === 1 ? traitementA : traitementD} alt="traitement logo" className='traitement-logo' />
-                            <img src={(status <= 4 && status > 1) ? preparatinA : preparatinD} alt="preparation logo" className='preparation-logo' />
+                            <img src={(status === 1 || status === 2) ? traitementA : traitementD} alt="traitement logo" className='traitement-logo' />
+                            <img src={(status <= 5 && status > 2) ? preparatinA : preparatinD} alt="preparation logo" className='preparation-logo' />
                             {
                                 isDelevery === 1 ? (
-                                    <img src={(status === 6 || status === 5) ? delivA : delivD} alt="deliv logo" className='deliv-logo' />
+                                    <img src={(status === 6) ? delivA : delivD} alt="deliv logo" className='deliv-logo' />
 
                                 ) : (
-                                    <img src={(status === 6 || status === 5) ? doneA : doneD} alt="deliv logo" className='deliv-logo' />
+                                    <img src={(status === 6) ? doneA : doneD} alt="deliv logo" className='deliv-logo' />
 
                                 )
                             }
@@ -213,7 +247,7 @@ const CurrentCommands: React.FC<CommandsListProps> = ({ removeCommand, goToPasse
                     </div>
                     <div className='command-list-product'>
                         {
-                            (status === 1) && <Command removeCommand={removeCommand} data={commanddata.data} />
+                            (status === 1 || status === 2) && <Command removeCommand={removeCommand} data={commanddata.data} />
                         }
                     </div>
                     <div className='deliv-info-section'>
@@ -221,9 +255,8 @@ const CurrentCommands: React.FC<CommandsListProps> = ({ removeCommand, goToPasse
                             isDelevery === 1 ? (
                                 <>
                                     {
-                                        (status <= 4 && status > 1) && (
+                                        (status <= 4 && status > 2) && (
                                             <>
-
                                                 <div className='no-deliv-assigned'>
                                                     <div className='img'></div>
                                                     <div className='delivery-info'>
@@ -252,7 +285,7 @@ const CurrentCommands: React.FC<CommandsListProps> = ({ removeCommand, goToPasse
                                         )
                                     }
                                     {
-                                        (status <= 5 && status > 1) && (
+                                        (status <= 5 && status > 2) && (
 
                                             <div className='position'>
                                                 <div className='start-position'>
@@ -308,13 +341,18 @@ const CurrentCommands: React.FC<CommandsListProps> = ({ removeCommand, goToPasse
                         status >= 5 && (
                             <div className='buttons'>
                                 <button className="recue" onClick={goToPassedCommands} >{t('profile.commands.recue')}  </button>
-                                <button className="problem">{t('profile.commands.problem')}</button>
+                                <button className="problem" onClick={handleProblemPopup}>{t('profile.commands.problem')}</button>
                             </div>
                         )
                     }
                     <CommandsFooter />
                 </main >
             </div >
+
+            {
+                problemPopup &&
+                <SignaleProblem command_id={data.id} action={submitProblem} close={handleProblemPopup} />
+            }
         </>
 
     )
