@@ -161,8 +161,6 @@ const CommandsList: React.FC<CommandsListProps> = ({ type = "old", goToPassedCom
                                         </button>
                                     }
                                 </span>
-
-
                             </div>
                         </section>
                     </>
