@@ -68,6 +68,7 @@ const CartPage: React.FC = () => {
 
   const [sousTotal, setSousTotal] = useState<number>(0)
   const [total, setTotal] = useState<number>(0)
+  const [delivPrice, setDelivPrice] = useState<number>(0)
   const [aComment, setAComment] = React.useState<string>(comment ? comment : "");
 
   const [popupType, setPopupType] = React.useState<string>("");
@@ -531,45 +532,31 @@ const CartPage: React.FC = () => {
 
   // calc total function
   const calcTotal = () => {
+    console.log(extraDeliveryCost)
     setTotal(
-      ((sousTotal - (appliedBonus / 1000)) + extraDeliveryCost + Number(cartItems[0].supplier_data.delivery_price) - promoReduction) - discount)
+      ((sousTotal + delivPrice) - ((appliedBonus / 1000) + promoReduction + discount)))
   }
-
-  useEffect(() => {
-    getSousTotal()
-  }, [cartItems])
-
   // get supplier request
   const getSupplierById = async () => {
     const { status, data } = await supplierServices.getSupplierById(supplier.id)
-    max_distance = data?.max_distance;
+    max_distance = data.data?.max_distance;
     minCost = data?.data.min_cost;
     isClosed = data?.status;
   }
 
   // get distance 
-  const getDistance = () => {
+  const getDistance = async () => {
     let obj = {
       supplier_id: supplier.id,
       lat: userPosition?.coords.latitude,
       long: userPosition?.coords.longitude,
     };
-    adressService.getDistance(obj).then(res => {
-      res.data.data.code == 200 ? distance = res.data.data.distance : distance = 0
-    })
+    const res = await adressService.getDistance(obj)
+    res.data.code == 200 ? distance = res.data.data.distance : distance = 0
+    extraDeliveryCost = (distance - max_distance) > 0 ? Math.ceil(distance - max_distance) : 0
+    const deliveryPrice = cartItems.length > 0 ? Number(cartItems[0].supplier_data.delivery_price) + extraDeliveryCost : 0
+    setDelivPrice(deliveryPrice)
   }
-  // calc extra cost
-  const getExtraSupplierInfo = () => {
-    let extra_cost = localStorage.getItem('extra_delivery_cost') ?? 0;
-    if (Number(extra_cost) > 0) {
-    } else {
-      extraDeliveryCost = (distance - max_distance) > 0 ? (distance - max_distance) : 0
-
-    }
-  }
-
-
-
   useEffect(() => {
     switch (selectedOption) {
       case 1:
@@ -594,6 +581,7 @@ const CartPage: React.FC = () => {
   }, [selectedOption])
 
   useEffect(() => {
+    getSousTotal()
     localStorageService.setCart(cartItems);
     if (cartItems.length == 0) {
       dispatch(setSupplier(null));
@@ -607,16 +595,16 @@ const CartPage: React.FC = () => {
     isAuthenticated && getclientGift();
     check && getSupplierById()
     check && getSousTotal()
-    getDistance()
-    getExtraSupplierInfo()
     getUser()
+    getDistance()
+    // getExtraSupplierInfo()
   }, [])
 
   // calc total for each changement 
   useEffect(() => {
     let check = supplier && cartItems.length > 0
     check && calcTotal()
-  }, [sousTotal, appliedBonus, promoReduction])
+  }, [sousTotal, appliedBonus, promoReduction, delivPrice])
 
   return (
     <>
@@ -878,7 +866,7 @@ const CartPage: React.FC = () => {
                         }
                         <div className="panie-row">
                           <span>{t('supplier.delivPrice')}</span>
-                          <span>{cartItems.length > 0 ? cartItems[0].supplier_data.delivery_price : 0} DT</span>
+                          <span>{delivPrice} DT</span>
                         </div>
                         <div className="panie-row"></div>
                       </div>
