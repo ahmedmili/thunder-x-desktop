@@ -215,6 +215,9 @@
   "cart.payment.toPayment": "Go to Payment",
   "cart.payment.noCommands": "You have not placed any orders yet",
   "cart.payment.iCommand": "Order",
+  "cart.payment.payment": "Payment",
+  "repasGratuit": "Free Meal",
+
   "faq.header": "Frequently Asked Questions",
   "faq.questions": [
     {

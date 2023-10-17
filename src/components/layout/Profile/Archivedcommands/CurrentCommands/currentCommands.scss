@@ -164,7 +164,8 @@
                     }
                 }
 
-                .sous-total {
+                .sous-total,
+                .deliv-price {
                     display: flex;
                     justify-content: space-between;
                     color: #898787;
@@ -176,12 +177,17 @@
                     }
                 }
 
+                .deliv-price {
+                    margin: 10px 0;
+                }
+
                 ul {
                     list-style: none;
                     margin: 0;
                     padding: 0;
 
                     li {
+                        margin: 2px 0;
                         .product {
                             display: flex;
                             justify-content: space-between;
@@ -190,7 +196,9 @@
 
 
                             .product-info {
+                                min-width: 100px;
                                 display: flex;
+                                justify-content: space-between;
                                 gap: 5px;
 
                                 .product-name,
@@ -211,6 +219,7 @@
                                     display: flex;
                                     justify-content: center;
                                     align-items: center;
+                                    min-width: 30px;
 
                                 }
                             }
@@ -226,6 +235,78 @@
 
                             }
                         }
+                    }
+                }
+
+
+                .bonus,
+                .repas,
+                .payment-methode,
+                .promo {
+
+                    color: #898787;
+                    font-family: Poppins;
+                    font-size: 14px;
+                    font-style: normal;
+                    font-weight: 500;
+                    line-height: normal;
+                    width: 100%;
+                    display: flex;
+                    align-items: center;
+                    justify-content: start;
+                    gap: 12.5px;
+
+                    .left-price {
+                        margin-right: 18px;
+                        margin-left: auto;
+                    }
+                }
+
+                .payment-methode {
+                    &::before {
+                        content: "";
+                        background-image: url(/src/assets/profile/ArchivedCommands/cash.svg);
+                        height: 14px;
+                        width: 24px;
+                        background-position: center;
+                        background-repeat: no-repeat;
+                        background-size: contain;
+                    }
+                }
+
+                .bonus {
+                    &::before {
+                        content: "";
+                        background-image: url(/src/assets/profile/ArchivedCommands/gift.svg);
+                        height: 14px;
+                        width: 24px;
+                        background-position: center;
+                        background-repeat: no-repeat;
+                        background-size: contain;
+                    }
+                }
+
+                .repas {
+                    &::before {
+                        content: "";
+                        background-image: url(/src/assets/profile/ArchivedCommands/free.svg);
+                        height: 14px;
+                        width: 24px;
+                        background-position: center;
+                        background-repeat: no-repeat;
+                        background-size: contain;
+                    }
+                }
+
+                .promo {
+                    &::before {
+                        content: "";
+                        background-image: url(/src/assets/profile/ArchivedCommands/promo.svg);
+                        height: 14px;
+                        width: 24px;
+                        background-position: center;
+                        background-repeat: no-repeat;
+                        background-size: contain;
                     }
                 }
 

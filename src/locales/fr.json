@@ -216,6 +216,8 @@
   "cart.payment.toPayment": "Passer au paiement",
   "cart.payment.noCommands": "Vous n’avez passé aucune commande pour le moment",
   "cart.payment.iCommand": "Je commande",
+  "cart.payment.payment": "Paiement",
+  "repasGratuit": "Repas Gratuit",
   "faq.title": "Foire Aux Questions",
   "faq.questions": [
     {
