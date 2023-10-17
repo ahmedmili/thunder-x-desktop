@@ -402,7 +402,7 @@ const CurrentCommands: React.FC<CommandsListProps> = ({ removeCommand, goToPasse
                     {
                         status == 6 && (
                             <div className='buttons'>
-                                <button className="recue" onClick={goToPassedCommands} >{t('profile.commands.recue')}  </button>
+                                {/* <button className="recue" onClick={goToPassedCommands} >{t('profile.commands.recue')}  </button> */}
                                 <button className="problem" onClick={handleProblemPopup}>{t('profile.commands.problem')}</button>
                             </div>
                         )

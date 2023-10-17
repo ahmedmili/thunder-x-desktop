@@ -31,7 +31,6 @@
     position: relative;
     margin-bottom: 50px;
 
-    // create margin left 
     .title,
     .total,
     .sous-total,
@@ -39,7 +38,8 @@
     .product,
     .payment-methode,
     .description,
-    .command-graph {
+    .command-graph,
+    .deliv-assigned {
         margin-left: 30px;
     }
 
@@ -90,7 +90,7 @@
 
         .command-info {
             width: 85%;
-            margin: 52px auto 20px;
+            margin: 22px auto 20px;
 
             p {
                 font-family: Poppins;
