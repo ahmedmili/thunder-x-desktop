@@ -57,6 +57,8 @@
   "profile.commands.sousTotal": "Sous-total",
   "profile.commands.annuler": "Annuler la comamnde",
   "profile.commands.sousMessage": "La commande est en attente d’acceptation de la part du restaurant",
+  "profile.commands.sousMessage2": "La commande est en cours de prépaartion",
+  "profile.commands.sousMessage3": "La commande livré dans 15 minutes",
   "profile.commands.command": "Commande",
   "profile.commands.avis": "Donner votre avis",
   "profile.fidelite.title": "Espace de fidélité",

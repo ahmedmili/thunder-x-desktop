@@ -59,6 +59,8 @@
   "profile.commands.sousTotal": "المجموع الجزئي",
   "profile.commands.annuler": "إلغاء الطلب",
   "profile.commands.sousMessage": "الطلب في انتظار موافقة المطعم",
+  "profile.commands.sousMessage2": "الطلب قيد التحضير",
+  "profile.commands.sousMessage3": "الطلب سيتم توصيله في 15 دقيقة",
   "profile.commands.command": "الطلب ",
   "profile.commands.avis": "إعطاء رأيك",
   "profile.commands.signal.title": "الإبلاغ عن مشكلة ",

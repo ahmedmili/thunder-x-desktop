@@ -31,6 +31,18 @@
     position: relative;
     margin-bottom: 50px;
 
+    // create margin left 
+    .title,
+    .total,
+    .sous-total,
+    .deliv-price,
+    .product,
+    .payment-methode,
+    .description,
+    .command-graph {
+        margin-left: 30px;
+    }
+
     .current-command-header {
         width: 100%;
         height: 400px;
@@ -78,8 +90,7 @@
 
         .command-info {
             width: 85%;
-            margin-top: 52px;
-            margin: 52px auto;
+            margin: 52px auto 20px;
 
             p {
                 font-family: Poppins;
@@ -108,7 +119,7 @@
                 width: 100%;
                 display: flex;
                 position: relative;
-                margin-top: 28px;
+                margin: 28px;
 
                 img {
                     z-index: 1;
@@ -132,6 +143,9 @@
                 flex-direction: column;
                 gap: 5px;
 
+
+
+
                 .title {
                     color: #24A6A4;
                     font-family: Poppins;
@@ -139,11 +153,13 @@
                     font-style: normal;
                     font-weight: 600;
                     line-height: normal;
+                    margin-bottom: 0;
                 }
 
                 .total {
                     display: flex;
                     justify-content: space-between;
+                    align-items: center;
                     color: #898787;
                     font-family: Poppins;
                     font-size: 16px;
@@ -177,10 +193,6 @@
                     }
                 }
 
-                .deliv-price {
-                    margin: 10px 0;
-                }
-
                 ul {
                     list-style: none;
                     margin: 0;
@@ -188,6 +200,7 @@
 
                     li {
                         margin: 2px 0;
+
                         .product {
                             display: flex;
                             justify-content: space-between;
@@ -196,10 +209,9 @@
 
 
                             .product-info {
-                                min-width: 100px;
                                 display: flex;
                                 justify-content: space-between;
-                                gap: 5px;
+                                width: 33%;
 
                                 .product-name,
                                 .product-qt {
@@ -263,6 +275,8 @@
                 }
 
                 .payment-methode {
+                    margin-top: 5px;
+
                     &::before {
                         content: "";
                         background-image: url(/src/assets/profile/ArchivedCommands/cash.svg);
@@ -375,6 +389,12 @@
                         font-weight: 500;
                         line-height: normal;
                         margin: 0;
+
+                        .rate-icon {
+                            color: $orange_color;
+                            width: 20px;
+                            height: 20px;
+                        }
                     }
                 }
 
@@ -440,11 +460,54 @@
                     .rate {
                         display: flex;
                         align-items: center;
-
                         margin-top: 0;
+
+                        .rate {
+                            display: flex;
+                            align-items: center;
+                            margin-top: 0;
+
+                            .rate-icon {
+                                color: $orange_color;
+                                width: 20px;
+                                height: 20px;
+
+                                &::before {
+                                    content: '';
+                                    border-radius: 25px;
+                                    display: block;
+                                    width: 100%;
+                                    height: 100%;
+                                    background: linear-gradient(90deg, $orange_color 25%, #e8e8e8 50%, #f2f2f2 75%);
+                                    background-size: 200% 100%;
+                                    animation: loading 4s infinite;
+                                }
+                            }
+
+                            .orange-box {
+                                width: 32px;
+                                height: 10px;
+                                border-radius: 25px;
+                                background: rgba(251, 195, 1, 0.51);
+
+                                &::before {
+                                    content: '';
+                                    border-radius: 25px;
+                                    display: block;
+                                    width: 100%;
+                                    height: 100%;
+                                    background: linear-gradient(90deg, rgba(251, 195, 1, 0.51) 25%, #e8e8e8 50%, #f2f2f2 75%);
+                                    background-size: 200% 100%;
+                                    animation: loading 4s infinite;
+                                }
+                            }
+
+                        }
 
                         .rate-icon {
                             color: $orange_color;
+                            width: 20px;
+                            height: 20px;
 
                             &::before {
                                 content: '';
@@ -460,7 +523,7 @@
 
                         .orange-box {
                             width: 32px;
-                            height: 6px;
+                            height: 10px;
                             border-radius: 25px;
                             background: rgba(251, 195, 1, 0.51);
 

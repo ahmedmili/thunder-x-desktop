@@ -55,6 +55,8 @@
   "profile.commands.sousTotal": "Sub-total",
   "profile.commands.annuler": "Cancel Command",
   "profile.commands.sousMessage": "The order is pending acceptance by the restaurant",
+  "profile.commands.sousMessage2": "The order is being prepared",
+  "profile.commands.sousMessage3": "The order will be delivered in 15 minutes",
   "profile.commands.command": "Order",
   "profile.commands.avis": "Feedback",
   "profile.commands.signal.title": "Report a Problem ",
