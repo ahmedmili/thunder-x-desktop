@@ -49,7 +49,6 @@ const CommandsList: React.FC<CommandsListProps> = ({ type = "old", goToPassedCom
         type === "old" && data.success && setCommands(commands)
     }
     const getCurrentCommands = async () => {
-        console.log('updated commands')
         setLoading((current) => current = true)
         const { status, data } = await commandService.myCommands()
         const commands = data.data
@@ -58,7 +57,6 @@ const CommandsList: React.FC<CommandsListProps> = ({ type = "old", goToPassedCom
     }
     
     const updateCurrentCommands = async () => {
-        console.log('updated commands')
         setLoading((current) => current = true)
         const { status, data } = await commandService.myCommands()
         const commands = data.data

@@ -714,8 +714,9 @@
                 width: 75%;
                 height: 0px;
                 border: #FBC000 dashed 2px;
-                top: 20px;
-                left: 70px;
+                top: 17px;
+                left: 50%;
+                transform: translateX(-50%);
             }
 
 
@@ -761,6 +762,22 @@
         }
     }
 
+}
+
+@media screen and (min-width:1500px) {
+    .current-commands-container {
+        .current-command-main {
+            .position {
+                .time-line {
+                    width: 75%;
+                    height: 0px;
+                    top: 20px;
+                    left: 50%;
+                    transform: translateX(-50%);
+                }
+            }
+        }
+    }
 }
 
 @media only screen and (max-width:1200px) {

@@ -247,7 +247,6 @@ const CurrentCommands: React.FC<CommandsListProps> = ({ removeCommand, goToPasse
         const { message, status } = getProgressDescription(cycle)
         setStatus(status)
         setMessage(message)
-        console.log(data)
     }, [])
 
     const commanddata: CommandProps = {
