@@ -55,6 +55,15 @@ const CommandsList: React.FC<CommandsListProps> = ({ type = "old", goToPassedCom
         data.success && setLoading((current) => current = false);
         type === "current" && data.success && setCommands(commands)
     }
+    
+    const updateCurrentCommands = async () => {
+        setLoading((current) => current = true)
+        const { status, data } = await commandService.myCommands()
+        const commands = data.data
+        data.success && setLoading((current) => current = false);
+        data.success && setCommands(commands)
+    }
+
     useEffect(() => {
         setSelectedCommand(-1)
     }, [commands])
@@ -71,9 +80,9 @@ const CommandsList: React.FC<CommandsListProps> = ({ type = "old", goToPassedCom
         handlenav()
     }, [loading])
     useEffect(() => {
-        eventEmitter.on('COMMAND_UPDATED', () => { getCurrentCommands() })
+        eventEmitter.on('COMMAND_UPDATED', () => { updateCurrentCommands() })
         return () => {
-            eventEmitter.off('COMMAND_UPDATED', () => { getCurrentCommands() })
+            eventEmitter.off('COMMAND_UPDATED', () => { updateCurrentCommands() })
         }
     }, [])
 

@@ -59,6 +59,7 @@ const Menu: React.FC<MenuProps> = () => {
     try {
 
       const { status, data } = await supplierServices.getSupplierById(Number(id!))
+
       setDisplayedRestaurant(data.data)
 
     } catch (error) {
@@ -200,6 +201,10 @@ const Menu: React.FC<MenuProps> = () => {
     </>
   }
 
+  useEffect(() => {
+    console.log("displayedRestaurant", displayedRestaurant)
+    console.log(displayedRestaurant?.service_price)
+  }, [displayedRestaurant])
   return (
     <>
       <Container fluid className={`supplier-page-header`} >
@@ -219,7 +224,7 @@ const Menu: React.FC<MenuProps> = () => {
             <div className="info-container">
               <div className="left-side">
                 <div className='name'>{displayedRestaurant?.name}</div>
-                <div className='price'>{t("supplier.delivPrice")} <span className='price-value'> {displayedRestaurant?.service_price} dt</span></div>
+                <div className='price'>{t("supplier.delivPrice")} <span className='price-value'> {displayedRestaurant?.delivery_price} dt</span></div>
               </div>
 
               <div className="right-side">

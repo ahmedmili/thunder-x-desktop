@@ -1,21 +1,21 @@
 
 
-import React, { useEffect, useState } from 'react'
+import React, { useState } from 'react';
 
-import supplierStyle from './SupplierCard.module.scss'
-import { Box, Card, CardContent, CardMedia, Grid, Typography } from '@mui/material';
-import { Link } from 'react-router-dom';
 import { DiscountRounded, Star } from '@mui/icons-material';
-import { Restaurant } from '../../services/types';
-import missingImage from '../../assets/missingImage.png';
-import { useTranslation } from 'react-i18next';
-import FavoriteBorderIcon from '@mui/icons-material/FavoriteBorder';
 import FavoriteIcon from '@mui/icons-material/Favorite';
+import FavoriteBorderIcon from '@mui/icons-material/FavoriteBorder';
+import { Box, Card, CardContent, CardMedia } from '@mui/material';
+import { useTranslation } from 'react-i18next';
+import { Link } from 'react-router-dom';
+import missingImage from '../../assets/missingImage.png';
 import { userService } from '../../services/api/user.api';
+import { Restaurant } from '../../services/types';
+import supplierStyle from './SupplierCard.module.scss';
 
 interface SupplierCard {
     data: Restaurant,
-    favors?: boolean  ,
+    favors?: boolean,
     className?: string
 }
 
@@ -105,53 +105,43 @@ const SupplierCard: React.FC<SupplierCard> = ({ data, favors = false, className 
 
                                     {getTruncatedName(data.name)}
                                 </abbr>
+                                <Star className={supplierStyle.starIcon} />
                             </p>
                             {/* option take_away & delivery */}
                             <p className={supplierStyle.option} >
                                 {
-                                    data.delivery === 1 && ("delivery")
+                                    data.delivery === 1 && t('cartPage.delivery')
                                 }
                                 {
                                     data.delivery === 1 && data.take_away === 1 && (" / ")
                                 }
                                 {
-                                    data.take_away === 1 && ("Home")
+                                    data.take_away === 1 && t("home2")
                                 }
                             </p>
                             {/* delivery Price */}
                             <p className={supplierStyle.price}>
-                                {t('deliveryPrice')}
                                 <span>
-                                    {" " + data.delivery_price + " DT"}
+
+                                    {t('deliveryPrice')}
+                                    <span>
+                                        {" " + data.delivery_price + " DT"}
+                                    </span>
                                 </span>
+                                {/* time lable */}
+                                {data.medium_time && (
+                                    <Box
+                                        className={supplierStyle.restaurantTime}>
+
+                                        <p>
+                                            {`${data.medium_time - 10}mins - ${data.medium_time + 10
+                                                }mins`}
+
+                                        </p>
+                                    </Box>
+                                )}
                             </p>
                         </div>
-
-                        <div className={supplierStyle.rightSide}>
-
-                            {/* rating lable */}
-                            <Box className={supplierStyle.ratingBox} style={data.star ? { visibility: 'visible' } : { visibility: 'hidden' }} >
-                                <Star className={supplierStyle.starIcon} />
-                                <Typography>
-                                    {data.star && data.star}
-                                </Typography>
-                            </Box>
-                            {/* time lable */}
-                            {data.medium_time && (
-                                <Box
-                                    className={supplierStyle.restaurantTime}>
-
-                                    <p>
-                                        {`${data.medium_time - 10}mins - ${data.medium_time + 10
-                                            }mins`}
-
-                                    </p>
-                                </Box>
-                            )}
-
-
-                        </div>
-
                     </CardContent>
                 </Card>
             </Link>
