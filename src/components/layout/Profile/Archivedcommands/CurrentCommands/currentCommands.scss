@@ -681,6 +681,8 @@
                     line-height: normal;
                     margin: 0;
                     height: 29px;
+                    width: 100%;
+
                 }
             }
 
@@ -757,6 +759,7 @@
                 font-style: normal;
                 font-weight: 700;
                 line-height: normal;
+                margin-top: 10px;
             }
 
         }
@@ -800,6 +803,12 @@
                     .cancel-btn {
                         width: 257px;
                     }
+                }
+            }
+
+            .start-position {
+                .position-text {
+                    width: 228%;
                 }
             }
         }

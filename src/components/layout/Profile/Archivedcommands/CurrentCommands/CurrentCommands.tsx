@@ -77,12 +77,12 @@ const Command: React.FC<CommandProps> = ({ removeCommand, data }) => {
             {/* total */}
             <div className='total'>
                 <span>{t('cartPage.total')}</span>
-                <span className='total-value'>{data.total_price}</span>
+                <span className='total-value'>{data.total_price} DT</span>
             </div>
             {/* sous Total */}
             <div className='sous-total'>
                 <span>{t('profile.commands.sousTotal')}</span>
-                <span className='left-price'>{total} Dt</span>
+                <span className='left-price'>{total.toFixed(2)} DT</span>
             </div>
             {/* deliv price */}
             <div className='deliv-price'>
@@ -347,7 +347,7 @@ const CurrentCommands: React.FC<CommandsListProps> = ({ removeCommand, goToPasse
                                         )
                                     }
                                     {
-                                        (status <= 5 && status > 2) && (
+                                        (status <= 6 && status > 2) && (
 
                                             <div className='position'>
                                                 <div className='start-position'>
@@ -398,7 +398,6 @@ const CurrentCommands: React.FC<CommandsListProps> = ({ removeCommand, goToPasse
                         }
 
                     </div>
-
                     {
                         status == 6 && (
                             <div className='buttons'>
@@ -407,7 +406,7 @@ const CurrentCommands: React.FC<CommandsListProps> = ({ removeCommand, goToPasse
                             </div>
                         )
                     }
-                    <CommandsFooter />
+                    {status != 6 && <CommandsFooter />}
                 </main >
             </div >
 
