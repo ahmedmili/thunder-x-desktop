@@ -142,7 +142,7 @@ const Command: React.FC<CommandProps> = ({ removeCommand, data }) => {
                 data.total_price_coupon > 0 && (
                     <div className='promo'>
                         <span>Code promo</span>
-                        <span className='left-price'>-{(data.total_price_coupon / 1000).toFixed(2)} dt</span>
+                        <span className='left-price'>-{(data.total_price_coupon).toFixed(2)} dt</span>
                     </div>
                 )
             }

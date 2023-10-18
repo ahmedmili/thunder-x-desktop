@@ -38,6 +38,7 @@
     .product,
     .payment-methode,
     .description,
+    .promo,
     .command-graph,
     .deliv-assigned {
         margin-left: 30px;
@@ -786,7 +787,7 @@
 @media only screen and (max-width:1200px) {
     .current-commands-container {
         .current-command-main {
-            top: -67px;
+            top: -184px;
             left: 37px;
         }
     }
@@ -795,7 +796,7 @@
 @media only screen and (max-width:900px) {
     .current-commands-container {
         .current-command-main {
-            top: -52px;
+            top: -289px;
             left: 23px;
 
             .command-list-product {
