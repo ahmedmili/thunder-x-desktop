@@ -66,6 +66,7 @@ const Command: React.FC<CommandProps> = ({ removeCommand, data }) => {
         }
         setTotal(total)
     }
+
     useEffect(() => {
         calculeData()
     }, [data])
@@ -77,7 +78,7 @@ const Command: React.FC<CommandProps> = ({ removeCommand, data }) => {
             {/* total */}
             <div className='total'>
                 <span>{t('cartPage.total')}</span>
-                <span className='total-value'>{data.total_price} DT</span>
+                <span className='total-value'>{data.total_price - data.total_price_coupon} DT</span>
             </div>
             {/* sous Total */}
             <div className='sous-total'>
