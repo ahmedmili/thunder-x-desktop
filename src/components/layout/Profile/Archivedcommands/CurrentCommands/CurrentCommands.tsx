@@ -44,7 +44,11 @@ interface CommandProps {
         gift_ammount: number,
         total_price_coupon: number,
         mode_pay: number,
-
+        coupon: {
+            type: string,
+            value: number,
+            delivery_fixed: number,
+        },
     }
 
 }
@@ -78,7 +82,7 @@ const Command: React.FC<CommandProps> = ({ removeCommand, data }) => {
             {/* total */}
             <div className='total'>
                 <span>{t('cartPage.total')}</span>
-                <span className='total-value'>{data.total_price - data.total_price_coupon} DT</span>
+                <span className='total-value'>{(data.total_price - data.total_price_coupon).toFixed(2)} DT</span>
             </div>
             {/* sous Total */}
             <div className='sous-total'>
@@ -88,7 +92,7 @@ const Command: React.FC<CommandProps> = ({ removeCommand, data }) => {
             {/* deliv price */}
             <div className='deliv-price'>
                 <span>Frais de livraison</span>
-                <span className='left-price'>{data.delivery_price} DT</span>
+                <span className='left-price'>{data.coupon.delivery_fixed === 1 ? data.delivery_price : (data.delivery_price - data.total_price_coupon).toFixed(2)} DT</span>
             </div>
             {/* products discriptions */}
             <ul>
@@ -261,6 +265,7 @@ const CurrentCommands: React.FC<CommandsListProps> = ({ removeCommand, goToPasse
             gift_ammount: Number(data.gift_ammount),
             total_price_coupon: Number(data.total_price_coupon),
             mode_pay: data.mode_pay,
+            coupon: data.coupon,
         }
 
     }

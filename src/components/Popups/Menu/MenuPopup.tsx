@@ -1,26 +1,24 @@
 import React, { RefObject, Suspense, useEffect, useReducer, useRef, useState } from "react";
 
-import './menuPopup.scss'
+import './menuPopup.scss';
 
-import ShoppingCartOutlinedIcon from '@mui/icons-material/ShoppingCartOutlined';
-import KeyboardArrowUpOutlinedIcon from '@mui/icons-material/KeyboardArrowUpOutlined';
-import KeyboardArrowDownOutlinedIcon from '@mui/icons-material/KeyboardArrowDownOutlined';
 import ArrowRightAltIcon from '@mui/icons-material/ArrowRightAlt';
-import { Add as AddIcon, Star } from '@mui/icons-material';
+import KeyboardArrowDownOutlinedIcon from '@mui/icons-material/KeyboardArrowDownOutlined';
+import KeyboardArrowUpOutlinedIcon from '@mui/icons-material/KeyboardArrowUpOutlined';
+import ShoppingCartOutlinedIcon from '@mui/icons-material/ShoppingCartOutlined';
 
-import { Button, CircularProgress } from '@mui/material';
+import { CircularProgress } from '@mui/material';
 
 
-import { useNavigate } from "react-router";
-import { FoodItem, Option, Restaurant } from "../../../services/types";
 import { useTranslation } from "react-i18next";
-import { useAppDispatch, useAppSelector } from "../../../Redux/store";
 import { useSelector } from "react-redux";
-import { RootState } from "../../../Redux/slices";
-import { productService } from "../../../services/api/product.api";
-import { addItem, setDeliveryPrice, setSupplier } from "../../../Redux/slices/cart/cartSlice";
-import { localStorageService } from "../../../services/localStorageService";
 import { toast } from "react-toastify";
+import { RootState } from "../../../Redux/slices";
+import { addItem, setDeliveryPrice, setSupplier } from "../../../Redux/slices/cart/cartSlice";
+import { useAppDispatch, useAppSelector } from "../../../Redux/store";
+import { productService } from "../../../services/api/product.api";
+import { localStorageService } from "../../../services/localStorageService";
+import { Option } from "../../../services/types";
 
 interface Props {
     restaurant: any;
@@ -112,7 +110,6 @@ const MenuPopup: React.FC<Props> = ({ close, restaurant }) => {
     const getProduct = async () => {
         try {
             const { status, data } = await productService.getProduct(selectedMenuItem?.id);
-            // console.log(status.ok)
             if (status === 200) {
                 setIsLoading(false)
                 setProduct(data.data.product);
@@ -375,7 +372,6 @@ const MenuPopup: React.FC<Props> = ({ close, restaurant }) => {
 
         let optionsCount: number = allContent.length;
         totalPages = Math.ceil(optionsCount / itemsPerPage)
-        console.log(totalPages)
         const startIndex = (currentPage - 1) * itemsPerPage;
         const endIndex = startIndex + itemsPerPage;
         const displayedContent = allContent.slice(startIndex, endIndex)

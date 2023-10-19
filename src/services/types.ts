@@ -25,6 +25,7 @@ export interface FoodItem {
   quantity: number;
   total: number;
   unitePrice: number;
+
 }
 
 export interface Option {
@@ -72,6 +73,15 @@ export interface Product {
   discount_source: string;
   discount_type: string;
   discount_value: number;
+  computed_value?: {
+    available: number;
+    description: string;
+    discount_price: number;
+    discount_source: string;
+    discount_type: string;
+    discount_value: number;
+    id: number;
+  }
   image: [{
     id: number;
     created_at: string | null;
@@ -92,6 +102,8 @@ export interface Product {
   position: number;
   price: number;
   quantity?: number;
+  old_value?: number;
+  cost?: number;
 }
 
 export interface Restaurant {

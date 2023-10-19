@@ -64,7 +64,7 @@ const Messanger: React.FC<MessangerProps> = ({ className }) => {
             try {
                 await dispatch(fetchMessages());
             } catch (error) {
-                console.error(error);
+                throw error
             }
         };
 

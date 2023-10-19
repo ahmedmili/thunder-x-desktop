@@ -10,7 +10,7 @@ interface CartState {
   supplierMismatch: FoodItem | null;
   supplier: any | null;
   deliveryPrice: number;
-  
+
 }
 
 const initialState: CartState = {
@@ -74,14 +74,9 @@ const cartSlice = createSlice({
       const updatedItems = state.items.filter(
         (item) => item.product.id !== idToRemove
       );
-      // if (index !== -1) {
-      //   state.items.splice(index, 1);
-      //   localStorageService.setCart(state.items.splice(index, 1))
-        state.items = updatedItems ;
-        localStorageService.setCart(updatedItems)
-      // }
+      state.items = updatedItems;
+      localStorageService.setCart(updatedItems)
     },
-
     setDeliveryOption: (
       state,
       action: PayloadAction<'delivery' | 'pickup' | 'surplace'>
