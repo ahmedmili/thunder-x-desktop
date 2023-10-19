@@ -459,7 +459,7 @@ const CartPage: React.FC = () => {
   }
   // calc promo value
   const CalculatePromoPrice = () => {
-    var promoReduction
+    var promoReduction;
     if (Object.keys(selectedCoupon).length > 0) {
 
       const initDeliveryPrice = cartItems.length > 0 ? Number(cartItems[0].supplier_data.delivery_price) + extraDeliveryCost : 0
@@ -645,7 +645,7 @@ const CartPage: React.FC = () => {
                       </thead>
                       <tbody>
                         {
-                          cartItems.map((item, index) => {
+                          cartItems.map((item:any, index:number) => {
                             return (
                               <>
                                 <tr key={index} className="ariticle-info-container">
@@ -683,7 +683,7 @@ const CartPage: React.FC = () => {
                                     <button key={index} className="promo-button" onClick={() => {
                                       selectCoupon(promo)
                                     }}>
-                                      {promo.code_coupon}
+                                      {promo.title}
                                     </button>
                                   )
 
