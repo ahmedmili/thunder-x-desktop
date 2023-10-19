@@ -40,6 +40,11 @@ interface CommandProps {
         total_price: number,
         delivery_price: number
         command_id: number,
+        bonus: number,
+        gift_ammount: number,
+        total_price_coupon: number,
+        mode_pay: number,
+
     }
 
 }
@@ -61,27 +66,31 @@ const Command: React.FC<CommandProps> = ({ removeCommand, data }) => {
         }
         setTotal(total)
     }
+
     useEffect(() => {
         calculeData()
     }, [data])
 
     return (
         <div className='command-product-container'>
-            <p className='title'> {t('profile.commands.command')}</p>
+            <h3 className='title'> {t('profile.commands.command')}</h3>
+
+            {/* total */}
             <div className='total'>
                 <span>{t('cartPage.total')}</span>
-                <span className='total-value'>{data.total_price}</span>
+                <span className='total-value'>{data.total_price - data.total_price_coupon} DT</span>
             </div>
-
+            {/* sous Total */}
             <div className='sous-total'>
                 <span>{t('profile.commands.sousTotal')}</span>
-                <span className='left-price'>{total} Dt</span>
+                <span className='left-price'>{total.toFixed(2)} DT</span>
             </div>
-
-            <div className='sous-total'>
+            {/* deliv price */}
+            <div className='deliv-price'>
                 <span>Frais de livraison</span>
                 <span className='left-price'>{data.delivery_price} DT</span>
             </div>
+            {/* products discriptions */}
             <ul>
                 {(data.products && data.products.length > 0) &&
                     data.products.map((product: any, index: number) => {
@@ -92,7 +101,7 @@ const Command: React.FC<CommandProps> = ({ removeCommand, data }) => {
                                         <span className='product-name'>{product.name}</span>
                                         <span className='product-qt'>X{product.quantity}</span>
                                     </div>
-                                    <span className='product-value'>{product.price * product.quantity} DT</span>
+                                    <span className='product-value'>{(product.price * product.quantity).toFixed(2)} DT</span>
                                 </div>
                             </li>
                         )
@@ -100,6 +109,44 @@ const Command: React.FC<CommandProps> = ({ removeCommand, data }) => {
                 }
             </ul>
             <hr />
+
+            <h3 className='title'>{t('cart.payment.payment')}</h3>
+            {/* payment methode */}
+
+            <div className='payment-methode'>
+
+                <span>
+                    {data.mode_pay === 1 ? t('cartPage.espece') : t('cartPage.bankPay')}
+                </span>
+            </div>
+            {/* bonus discount */}
+            {
+                (data.bonus > 0) && (
+                    <div className='bonus'>
+                        <span>Bonus</span>
+                        <span className='left-price'>-{(data.bonus / 1000).toFixed(2)} dt</span>
+                    </div>
+                )
+            }
+            {/* gift discount */}
+            {
+                data.gift_ammount > 0 && (
+                    <div className='repas'>
+                        <span>{t('repasGratuit')}</span>
+                        <span className='left-price'>-{(data.gift_ammount / 1000).toFixed(2)} dt</span>
+                    </div>
+                )
+            }
+            {/* code promo discount */}
+            {
+                data.total_price_coupon > 0 && (
+                    <div className='promo'>
+                        <span>Code promo</span>
+                        <span className='left-price'>-{(data.total_price_coupon).toFixed(2)} dt</span>
+                    </div>
+                )
+            }
+            {/* deliv price */}
             <button className='cancel-btn' onClick={() => removeCommand(data.command_id)}>{t('profile.commands.annuler')}</button>
         </div>
     )
@@ -166,6 +213,11 @@ const CurrentCommands: React.FC<CommandsListProps> = ({ removeCommand, goToPasse
                     message: t('profile.commands.prépaartion'),
                     status: 4
                 };
+            case 'PRE_ASSIGN':
+                return {
+                    message: t('profile.commands.prépaartion'),
+                    status: 4
+                };
             case 'ASSIGNED':
                 return {
                     message: t('profile.commands.prépaartion'),
@@ -204,7 +256,11 @@ const CurrentCommands: React.FC<CommandsListProps> = ({ removeCommand, goToPasse
             command_id: data.id,
             delivery_price: data.delivery_price,
             products: data.products,
-            total_price: data.total_price
+            total_price: data.total_price,
+            bonus: data.bonus,
+            gift_ammount: Number(data.gift_ammount),
+            total_price_coupon: Number(data.total_price_coupon),
+            mode_pay: data.mode_pay,
         }
 
     }
@@ -220,14 +276,22 @@ const CurrentCommands: React.FC<CommandsListProps> = ({ removeCommand, goToPasse
                         <img src={supplier.images[0].path} alt="supplier logo" />
                         <div className='name-rate'>
                             <p className='supplier-name'>{supplier.name}</p>
-                            {(supplier.star && supplier.star > 0) && <p className='supplier-rates'><StarIcon className='rate-icon' /> {supplier.star}</p>}
+                            {(supplier.star && supplier.star > 0) && <p className='supplier-rates'><StarIcon className='rate-icon' /> {supplier.star.toFixed(1)}</p>}
                         </div>
 
                     </div>
 
                     <div className='command-info'>
                         <p className="title">{messsage}</p>
-                        <p className="description">{t('profile.commands.sousMessage')}</p>
+                        {
+                            status <= 2 && <p className="description">{t('profile.commands.sousMessage')}</p>
+                        }
+                        {
+                            status > 2 && status < 6 && <p className="description">{t('profile.commands.sousMessage2')}</p>
+                        }
+                        {
+                            status == 6 && <p className="description">{t('profile.commands.sousMessage3')}</p>
+                        }
                         <div className='command-graph'>
                             <div className='time-line'></div>
                             <img src={(status === 1 || status === 2) ? traitementA : traitementD} alt="traitement logo" className='traitement-logo' />
@@ -276,7 +340,7 @@ const CurrentCommands: React.FC<CommandsListProps> = ({ removeCommand, goToPasse
                                                     <div className='delivery-info'>
                                                         <p className="title">{t('profile.commands.votreLiv')}</p>
                                                         <p className="name">{(delivery && delivery.name) ? delivery.name : "Med Fendri"}</p>
-                                                        <p className="rate"><StarIcon /> {(delivery && delivery.star && delivery.star > 0) ? delivery.star : ""}</p>
+                                                        <p className="rate"><StarIcon className='rate-icon' /> {(delivery && delivery.star && delivery.star > 0) ? delivery.star : ""}</p>
                                                     </div>
                                                 </div>
                                                 <hr />
@@ -284,7 +348,7 @@ const CurrentCommands: React.FC<CommandsListProps> = ({ removeCommand, goToPasse
                                         )
                                     }
                                     {
-                                        (status <= 5 && status > 2) && (
+                                        (status <= 6 && status > 2) && (
 
                                             <div className='position'>
                                                 <div className='start-position'>
@@ -311,7 +375,7 @@ const CurrentCommands: React.FC<CommandsListProps> = ({ removeCommand, goToPasse
                                     <div className="buttons">
                                         <button className='lieu-button' onClick={openGoogleMap}> <span className='position-icon' style={{ backgroundImage: `url(${positionIconBlue})` }}></span> {t('profile.commands.lieu')}</button>
                                         {
-                                            status >= 5 && (
+                                            status == 6 && (
 
                                                 <button className='recup-btn'>{t('profile.commands.recupere')}</button>
                                             )
@@ -335,16 +399,15 @@ const CurrentCommands: React.FC<CommandsListProps> = ({ removeCommand, goToPasse
                         }
 
                     </div>
-
                     {
-                        status >= 5 && (
+                        status == 6 && (
                             <div className='buttons'>
-                                <button className="recue" onClick={goToPassedCommands} >{t('profile.commands.recue')}  </button>
+                                {/* <button className="recue" onClick={goToPassedCommands} >{t('profile.commands.recue')}  </button> */}
                                 <button className="problem" onClick={handleProblemPopup}>{t('profile.commands.problem')}</button>
                             </div>
                         )
                     }
-                    <CommandsFooter />
+                    {status != 6 && <CommandsFooter />}
                 </main >
             </div >
 

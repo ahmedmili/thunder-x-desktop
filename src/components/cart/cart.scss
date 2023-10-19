@@ -26,6 +26,7 @@
 
 .cart-main {
   width: 98%;
+  height: 60vh;
   border-radius: 15px;
   padding: 20px 20px;
   overflow-y: scroll;
@@ -483,6 +484,13 @@
         font-size: 16px;
       }
     }
+  }
+
+}
+@media only screen and (max-height: 680px) {
+
+  .cart-main {
+    height: 80vh;
   }
 
 }

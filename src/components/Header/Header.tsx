@@ -181,10 +181,10 @@ const Header = () => {
                     <Box className="headerLocalisationMessageContainer" onClick={() => dispatch({ type: "SET_SHOW", payload: true })}>
                       <a href="#" >
                         <span className="localisationIcon" >
-                          <PinDropIcon />
+                          <PinDropIcon className="pin-icon" />
                         </span>
                         {location
-                          ? location?.coords.label + " ! " + t('clickToChange')
+                          ? location?.coords.label
                           : t('no_location_detected')}
                       </a>
                     </Box>

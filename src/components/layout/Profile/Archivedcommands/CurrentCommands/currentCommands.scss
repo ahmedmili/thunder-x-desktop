@@ -31,6 +31,19 @@
     position: relative;
     margin-bottom: 50px;
 
+    .title,
+    .total,
+    .sous-total,
+    .deliv-price,
+    .product,
+    .payment-methode,
+    .description,
+    .promo,
+    .command-graph,
+    .deliv-assigned {
+        margin-left: 30px;
+    }
+
     .current-command-header {
         width: 100%;
         height: 400px;
@@ -78,8 +91,7 @@
 
         .command-info {
             width: 85%;
-            margin-top: 52px;
-            margin: 52px auto;
+            margin: 22px auto 20px;
 
             p {
                 font-family: Poppins;
@@ -108,7 +120,7 @@
                 width: 100%;
                 display: flex;
                 position: relative;
-                margin-top: 28px;
+                margin: 28px;
 
                 img {
                     z-index: 1;
@@ -132,6 +144,9 @@
                 flex-direction: column;
                 gap: 5px;
 
+
+
+
                 .title {
                     color: #24A6A4;
                     font-family: Poppins;
@@ -139,11 +154,13 @@
                     font-style: normal;
                     font-weight: 600;
                     line-height: normal;
+                    margin-bottom: 0;
                 }
 
                 .total {
                     display: flex;
                     justify-content: space-between;
+                    align-items: center;
                     color: #898787;
                     font-family: Poppins;
                     font-size: 16px;
@@ -164,7 +181,8 @@
                     }
                 }
 
-                .sous-total {
+                .sous-total,
+                .deliv-price {
                     display: flex;
                     justify-content: space-between;
                     color: #898787;
@@ -182,6 +200,8 @@
                     padding: 0;
 
                     li {
+                        margin: 2px 0;
+
                         .product {
                             display: flex;
                             justify-content: space-between;
@@ -191,7 +211,8 @@
 
                             .product-info {
                                 display: flex;
-                                gap: 5px;
+                                justify-content: space-between;
+                                width: 33%;
 
                                 .product-name,
                                 .product-qt {
@@ -211,6 +232,7 @@
                                     display: flex;
                                     justify-content: center;
                                     align-items: center;
+                                    min-width: 30px;
 
                                 }
                             }
@@ -226,6 +248,80 @@
 
                             }
                         }
+                    }
+                }
+
+
+                .bonus,
+                .repas,
+                .payment-methode,
+                .promo {
+
+                    color: #898787;
+                    font-family: Poppins;
+                    font-size: 14px;
+                    font-style: normal;
+                    font-weight: 500;
+                    line-height: normal;
+                    width: 100%;
+                    display: flex;
+                    align-items: center;
+                    justify-content: start;
+                    gap: 12.5px;
+
+                    .left-price {
+                        margin-right: 18px;
+                        margin-left: auto;
+                    }
+                }
+
+                .payment-methode {
+                    margin-top: 5px;
+
+                    &::before {
+                        content: "";
+                        background-image: url(/src/assets/profile/ArchivedCommands/cash.svg);
+                        height: 14px;
+                        width: 24px;
+                        background-position: center;
+                        background-repeat: no-repeat;
+                        background-size: contain;
+                    }
+                }
+
+                .bonus {
+                    &::before {
+                        content: "";
+                        background-image: url(/src/assets/profile/ArchivedCommands/gift.svg);
+                        height: 14px;
+                        width: 24px;
+                        background-position: center;
+                        background-repeat: no-repeat;
+                        background-size: contain;
+                    }
+                }
+
+                .repas {
+                    &::before {
+                        content: "";
+                        background-image: url(/src/assets/profile/ArchivedCommands/free.svg);
+                        height: 14px;
+                        width: 24px;
+                        background-position: center;
+                        background-repeat: no-repeat;
+                        background-size: contain;
+                    }
+                }
+
+                .promo {
+                    &::before {
+                        content: "";
+                        background-image: url(/src/assets/profile/ArchivedCommands/promo.svg);
+                        height: 14px;
+                        width: 24px;
+                        background-position: center;
+                        background-repeat: no-repeat;
+                        background-size: contain;
                     }
                 }
 
@@ -294,6 +390,12 @@
                         font-weight: 500;
                         line-height: normal;
                         margin: 0;
+
+                        .rate-icon {
+                            color: $orange_color;
+                            width: 20px;
+                            height: 20px;
+                        }
                     }
                 }
 
@@ -359,11 +461,54 @@
                     .rate {
                         display: flex;
                         align-items: center;
-
                         margin-top: 0;
+
+                        .rate {
+                            display: flex;
+                            align-items: center;
+                            margin-top: 0;
+
+                            .rate-icon {
+                                color: $orange_color;
+                                width: 20px;
+                                height: 20px;
+
+                                &::before {
+                                    content: '';
+                                    border-radius: 25px;
+                                    display: block;
+                                    width: 100%;
+                                    height: 100%;
+                                    background: linear-gradient(90deg, $orange_color 25%, #e8e8e8 50%, #f2f2f2 75%);
+                                    background-size: 200% 100%;
+                                    animation: loading 4s infinite;
+                                }
+                            }
+
+                            .orange-box {
+                                width: 32px;
+                                height: 10px;
+                                border-radius: 25px;
+                                background: rgba(251, 195, 1, 0.51);
+
+                                &::before {
+                                    content: '';
+                                    border-radius: 25px;
+                                    display: block;
+                                    width: 100%;
+                                    height: 100%;
+                                    background: linear-gradient(90deg, rgba(251, 195, 1, 0.51) 25%, #e8e8e8 50%, #f2f2f2 75%);
+                                    background-size: 200% 100%;
+                                    animation: loading 4s infinite;
+                                }
+                            }
+
+                        }
 
                         .rate-icon {
                             color: $orange_color;
+                            width: 20px;
+                            height: 20px;
 
                             &::before {
                                 content: '';
@@ -379,7 +524,7 @@
 
                         .orange-box {
                             width: 32px;
-                            height: 6px;
+                            height: 10px;
                             border-radius: 25px;
                             background: rgba(251, 195, 1, 0.51);
 
@@ -537,6 +682,8 @@
                     line-height: normal;
                     margin: 0;
                     height: 29px;
+                    width: 100%;
+
                 }
             }
 
@@ -570,8 +717,9 @@
                 width: 75%;
                 height: 0px;
                 border: #FBC000 dashed 2px;
-                top: 20px;
-                left: 70px;
+                top: 17px;
+                left: 50%;
+                transform: translateX(-50%);
             }
 
 
@@ -612,6 +760,7 @@
                 font-style: normal;
                 font-weight: 700;
                 line-height: normal;
+                margin-top: 10px;
             }
 
         }
@@ -619,10 +768,26 @@
 
 }
 
+@media screen and (min-width:1500px) {
+    .current-commands-container {
+        .current-command-main {
+            .position {
+                .time-line {
+                    width: 75%;
+                    height: 0px;
+                    top: 20px;
+                    left: 50%;
+                    transform: translateX(-50%);
+                }
+            }
+        }
+    }
+}
+
 @media only screen and (max-width:1200px) {
     .current-commands-container {
         .current-command-main {
-            top: -67px;
+            top: -184px;
             left: 37px;
         }
     }
@@ -631,7 +796,7 @@
 @media only screen and (max-width:900px) {
     .current-commands-container {
         .current-command-main {
-            top: -52px;
+            top: -289px;
             left: 23px;
 
             .command-list-product {
@@ -639,6 +804,12 @@
                     .cancel-btn {
                         width: 257px;
                     }
+                }
+            }
+
+            .start-position {
+                .position-text {
+                    width: 228%;
                 }
             }
         }

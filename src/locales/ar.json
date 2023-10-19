@@ -11,6 +11,7 @@
   "header.livrons": "توصيل",
   "header.plus": "أكثر من مجرد",
   "header.nourriture": "طعام",
+  "home.categorie": "ماذا يمكننا أن نحضر لك؟",
   "Enregistrer": "تسجيل",
   "Envoyer": "إرسال",
   "profile.mesConfig.modifAccount": "تعديل الحساب",
@@ -58,6 +59,8 @@
   "profile.commands.sousTotal": "المجموع الجزئي",
   "profile.commands.annuler": "إلغاء الطلب",
   "profile.commands.sousMessage": "الطلب في انتظار موافقة المطعم",
+  "profile.commands.sousMessage2": "الطلب قيد التحضير",
+  "profile.commands.sousMessage3": "الطلب سيتم توصيله في 15 دقيقة",
   "profile.commands.command": "الطلب ",
   "profile.commands.avis": "إعطاء رأيك",
   "profile.commands.signal.title": "الإبلاغ عن مشكلة ",
@@ -97,10 +100,11 @@
   "emailAddress": "عنوان البريد الإلكتروني",
   "password": "كلمة المرور",
   "noAccount": "لا تمتلك حسابًا؟",
+  "noResult": "لا توجد نتائج",
   "createOne": "أنشئ واحدًا",
   "home": "الصفحة الرئيسية",
   "clickToChange": "انقر للتغيير",
-  "no_location_detected": "لم يتم الكشف عن موقعك! انقر للاختيار",
+  "no_location_detected": "أدخل عنوان تسليمك",
   "search_placeholder": "ما الذي تريد تسليمه؟",
   "recommended_restaurants": "المطاعم الموصى بها",
   "welcome": "مرحبًا،",
@@ -193,5 +197,7 @@
   "cart.payment.checkCart": "شاهد السلة",
   "cart.payment.toPayment": "الانتقال إلى الدفع",
   "cart.payment.noCommands": "لم تحصل على أي طلب في الوقت الحالي.",
-  "cart.payment.iCommand": "أطلب"
+  "cart.payment.iCommand": "أطلب",
+  "cart.payment.payment": "الدفع",
+  "repasGratuit": "وجبة مجانية"
 }

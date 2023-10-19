@@ -15,6 +15,7 @@ import Trie from "./components/trie/Trie";
 import Cle from "./components/cle/Cle";
 import PriceSlide from "./components/priceSlider/PriceSlide";
 import SearchProduit from "./components/produitSearch/ProduitSearch";
+import { useTranslation } from "react-i18next";
 
 function FilterPage() {
 
@@ -28,7 +29,7 @@ function FilterPage() {
     const categories = useSelector(categoriesHomeSelector);
     const itemsPerPage = 8
     const totalPages = Math.ceil(allRestaurantsList.length / itemsPerPage);
-
+    const { t } = useTranslation()
     useEffect(() => {
         setOriginCategories(categories)
     }, [categories])
@@ -61,7 +62,7 @@ function FilterPage() {
     const renderPaginationButtons = () => {
         const buttons = [];
         buttons.push(
-            <a onClick={handleBackClick} >
+            <a key={'01'} onClick={handleBackClick} >
                 <ArrowBackIosIcon className="icon" />
             </a>
         );
@@ -77,7 +78,7 @@ function FilterPage() {
             );
         }
         buttons.push(
-            <a onClick={handleNextClick} >
+            <a key={0} onClick={handleNextClick} >
                 <ArrowForwardIosIcon className="icon" />
             </a>
         );
@@ -214,7 +215,7 @@ function FilterPage() {
                             ) : (
                                 <div className="not-found-container">
                                     <div className="no-data-text">
-                                        Aucun résultat.
+                                        {t('noResult')}.
                                     </div>
                                     <div className="not-found-img">
                                     </div>

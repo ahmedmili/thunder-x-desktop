@@ -6,7 +6,7 @@ import {
   setCodePromo,
   setComment,
   setDeliveryPrice,
-  setSupplier,
+  setSupplier
 } from "../../Redux/slices/cart/cartSlice";
 
 import PaymentIcon from '@mui/icons-material/Payment';
@@ -152,7 +152,8 @@ const CartPage: React.FC = () => {
         <img src={`${item.product.image[0] ? item.product.image[0].path : ""}`} alt="product image" />
         <div className="info-text">
           <span className="title">{item.product.name}</span>
-          <span className="description">{item.product.description}</span>
+          <span className="description" dangerouslySetInnerHTML={{ __html: item.product.description }}></span>
+
         </div>
       </td>
       <td className="sous-total">
