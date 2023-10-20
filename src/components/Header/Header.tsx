@@ -120,6 +120,24 @@ const Header = () => {
                   onClick={() => navigate('/')} >
                   <a href="#" className={`logoMain minimizedlogoMain`}></a>
                 </div>
+                {!logged_in ? (
+                  <div className="header-buttons">
+                    <div
+                      onClick={() => navigate('/register')}
+                      className='LoadingButton'
+                    >
+                      {t('signup')}
+                    </div>
+                    <div
+                      onClick={() => navigate('/login')}
+                      className='LoadingButton'
+                    >
+                      {t('login')}
+                    </div>
+                  </div>
+                ) : <>
+                </>
+                }
 
                 <div className='info'>
                   <div className="position">
@@ -212,6 +230,7 @@ const Header = () => {
             </Container>
 
           </>
+
         ) : (
           <>
             <div className={`fixedHeaderContainer2`} >
@@ -219,6 +238,25 @@ const Header = () => {
                 onClick={() => navigate('/')} >
                 <a href="#" className={`logoMain minimizedlogoMain`}></a>
               </div>
+
+              {!logged_in ? (
+                <div className="header-buttons">
+                  <div
+                    onClick={() => navigate('/register')}
+                    className='LoadingButton'
+                  >
+                    {t('signup')}
+                  </div>
+                  <div
+                    onClick={() => navigate('/login')}
+                    className='LoadingButton'
+                  >
+                    {t('login')}
+                  </div>
+                </div>
+              ) : <>
+              </>
+              }
 
               <div className='info'>
                 <div className="position">
@@ -229,21 +267,27 @@ const Header = () => {
                     : t('no_location_detected')}
 
                 </div>
-                <button onClick={handleUserCart} className="account">
-                  {
-                    notifsQts > 0 && (
-                      <div className="notif-number-container">
-                        {notifsQts}
-                      </div>
-                    )
+                {
+                  logged_in && (
+                    <>
+                      <button onClick={handleUserCart} className="account">
+                        {
+                          notifsQts > 0 && (
+                            <div className="notif-number-container">
+                              {notifsQts}
+                            </div>
+                          )
 
-                  }
-                  <PermIdentityOutlinedIcon className='account-icon' />
-                </button>
+                        }
+                        <PermIdentityOutlinedIcon className='account-icon' />
+                      </button>
 
-                <button className="search">
-                  <Search className='search-icon' />
-                </button>
+                      <button className="search">
+                        <Search className='search-icon' />
+                      </button>
+                    </>
+                  )
+                }
 
                 <button onClick={handleCart} className="cart-item">
                   <ShoppingCartOutlinedIcon className='cart-icon' />

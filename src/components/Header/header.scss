@@ -201,6 +201,34 @@
     z-index: 1001;
     box-shadow: 0px 0px 10px 0px rgba(0, 0, 0, 0.75);
 
+    .header-buttons {
+        display: flex;
+        align-items: center;
+        justify-content: end;
+        gap: 5px;
+
+        .LoadingButton {
+            padding: 0.4rem;
+            background-color: $primary_color;
+            border-radius: 20px;
+            border-width: 0;
+            color: $white_001;
+            font-weight: 500;
+            width: 141px;
+            height: 40px;
+            text-align: center;
+            font-size: 18px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+
+            &:hover {
+                background-color: $primary_color_001;
+                transform: translateY(-2px);
+            }
+        }
+    }
+
     .logoContainer {
         cursor: pointer;
 
@@ -217,7 +245,7 @@
     }
 
     .info {
-        width: 50%;
+        // width: 50%;
         height: 80%;
         display: flex;
         justify-content: end;
@@ -404,7 +432,7 @@
         }
 
         .info {
-            width: 60%;
+            // width: 60%;
             height: 80%;
             gap: 10px;
 

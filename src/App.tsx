@@ -231,7 +231,11 @@ function App() {
             <Route index element={<HomePage />} />
             <Route path="/supplier-store/:id/*" element={<Menu />} />
             {/* <Route path="/product" element={<MenuOptions />} /> */}
-            <Route path="/cart" element={<CartPage />} />
+            <Route element={<ProtectedRoute children={undefined} />}>
+
+              <Route path="/cart" element={<CartPage />} />
+            </Route>
+
             <Route path="/search" element={<FilterPage />} />
             {/* Private Route */}
             <Route path="track-order" element={<OrderTrackingPage />} />
