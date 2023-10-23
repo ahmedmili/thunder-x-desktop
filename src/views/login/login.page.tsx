@@ -1,25 +1,26 @@
-import * as Yup from "yup";
-import InputForm from "../../components/Input-form/InputForm";
-import { useAppDispatch } from "../../Redux/store";
-import { useState } from "react";
 import { FormikHelpers } from "formik";
+import { useState } from "react";
+import * as Yup from "yup";
+import { useAppDispatch } from "../../Redux/store";
+import Apple from "../../assets/icons/Apple";
+import Facebook from "../../assets/icons/Facebook";
+import Google from "../../assets/icons/Google";
+import InputForm from "../../components/Input-form/InputForm";
+import ButtonConnect from "../../components/button-connect/ButtonConnect";
 import CardPage from "../../components/card-page/CardPage";
+import CheckboxForm from "../../components/checkbox-form/CheckboxForm";
+import LinkConnect from "../../components/link-connect/LinkConnect";
+import Or from "../../components/or/Or";
 import PicturesList from "../../components/picture-list/PicturesList";
 import { FormValues, generateForm } from "../../utils/formUtils";
-import CheckboxForm from "../../components/checkbox-form/CheckboxForm";
-import Or from "../../components/or/Or";
-import ButtonConnect from "../../components/button-connect/ButtonConnect";
-import Facebook from "../../assets/icons/Facebook";
-import Apple from "../../assets/icons/Apple";
-import Google from "../../assets/icons/Google";
-import LinkConnect from "../../components/link-connect/LinkConnect";
 
-import { Link, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 
+import { toast } from "react-toastify";
+import { setUser } from "../../Redux/slices/userSlice";
 import { userService } from "../../services/api/user.api";
 import { localStorageService } from "../../services/localStorageService";
-import { setUser } from "../../Redux/slices/userSlice";
-import { toast } from "react-toastify";
+// import { OldSocialLogin as SocialLogin } from "react-social-login";
 
 const LoginPage = () => {
   const [showPassword, setShowPassword] = useState(false);
@@ -64,8 +65,8 @@ const LoginPage = () => {
       .label("Password"),
   });
 
-  
-  const onSubmitHandler = async (values:any) => {
+
+  const onSubmitHandler = async (values: any) => {
     try {
       const { token, user } = await userService.loginUser(values);
       localStorageService.setUserCredentials(user, token);
@@ -116,9 +117,10 @@ const LoginPage = () => {
       })}
       <div style={{ display: "flex", flexDirection: "column", gap: "1rem" }}>
         <Or>Or</Or>
-        <ButtonConnect icon={<Apple />} text="Continue avec Apple" />
-        <ButtonConnect icon={<Google />} text="Continue avec Google" />
-        <ButtonConnect icon={<Facebook />} text="Continue avec Facebook" />
+        <ButtonConnect provider="apple" icon={<Apple />} text="Continue avec Apple" />
+        <ButtonConnect provider='google' icon={<Google />} text="Continue avec Google" />
+        <ButtonConnect provider="fcb" icon={<Facebook />} text="Continue avec Facebook" />
+        <ButtonConnect provider="logout"  text="logout" />
         <LinkConnect />
       </div>
     </CardPage>
