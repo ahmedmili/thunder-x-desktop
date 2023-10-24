@@ -39,9 +39,9 @@ import { adressService } from "../../services/api/adress.api";
 import { cartService } from "../../services/api/cart.api";
 import { commandService } from "../../services/api/command.api";
 import { supplierServices } from "../../services/api/suppliers.api";
+import { userService } from "../../services/api/user.api";
 import { localStorageService } from "../../services/localStorageService";
 import "./cart.page.scss";
-import { userService } from "../../services/api/user.api";
 
 const CartPage: React.FC = () => {
   const { t } = useTranslation();

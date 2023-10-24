@@ -124,6 +124,7 @@
             font-weight: 600;
             display: flex;
             justify-content: space-between;
+            align-items: center;
 
             span {
               display: flex;
@@ -203,6 +204,42 @@
   }
 }
 
+@media only screen and (max-width: 978px) {
+  .supplierCard {
+
+    .restaurantLink {
+      .card {
+        .contentContainer {
+          .leftSide {
+            justify-content: space-around;
+
+            .price {
+              font-size: 9px;
+
+              span {
+                font-size: 9px;
+              }
+
+              p {
+
+                font-size: 7px;
+              }
+
+              .restaurantTime {
+                p {
+
+                  font-size: 7px;
+                }
+              }
+            }
+          }
+
+        }
+      }
+    }
+  }
+}
+
 @media only screen and (max-width: 767px) {
   .supplierCard {
     .restaurantLink {
@@ -225,11 +262,22 @@
             .name {
               font-size: 10px;
               max-height: 200px;
-              max-width: 100px;
+
+              .starIcon {
+                font-size: 1.2rem;
+              }
             }
 
             .price {
               font-size: 6px;
+
+              .restaurantTime {
+                p {
+
+                  font-size: 5px;
+                }
+
+              }
 
               span {
 
@@ -270,8 +318,6 @@
             }
 
             .price {
-              font-size: 6px;
-
               span {
                 span {
                   font-size: 6px;

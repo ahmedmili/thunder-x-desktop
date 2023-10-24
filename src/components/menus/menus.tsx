@@ -213,10 +213,6 @@ const Menu: React.FC<MenuProps> = () => {
           )}
     </>
   }
-
-  useEffect(() => {
-    console.log("displayedRestaurant", displayedRestaurant)
-  }, [displayedRestaurant])
   return (
     <>
       <Container fluid className={`supplier-page-header`} >

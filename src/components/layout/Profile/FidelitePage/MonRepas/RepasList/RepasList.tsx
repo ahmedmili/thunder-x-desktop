@@ -37,7 +37,6 @@ const RepasList: React.FC<RepasListProps> = () => {
                     return (
                         <>
                             <div className={`repas-header  ${selectedCommand === index ? "active-header" : ""}`} key={index} onClick={() => handleSelectCommand(index)}>
-                                <img src={supplier.images[0].path} alt="suppier image" />
                                 <span >
                                     {supplier.name}
                                 </span>

@@ -17,6 +17,7 @@
     position: fixed;
     top: 0;
     right: 0;
+    z-index: 999;
 }
 
 .menu-popup-container {
@@ -138,7 +139,6 @@
                 padding-right: 60px;
 
                 .menu-options-header {
-                    // border-top: solid 1px #D9D9D9;
 
                     display: flex;
                     justify-content: space-between;
@@ -208,7 +208,7 @@
                         }
 
                         .custom-checkbox {
-                            display: inline-block;
+                            display: inline;
                             width: 20px;
                             height: 20px;
                             background-color: #FBC301;
@@ -501,11 +501,13 @@
     .menu-popup-container {
 
         .popup-box {
+            height: 525px;
 
             .modal-content-options {
                 margin-right: 60px;
-                height: 633px;
-
+                height: 475px;
+                padding-top: 11px;
+                flex: 1.1;
                 .options-info {
                     .menu-title {
                         max-width: 388px;
@@ -528,8 +530,7 @@
                     margin-bottom: 10px;
 
                     .menu-options-header {
-                        padding: 0;
-                        margin-bottom: 5px;
+                        // margin-bottom: 5px;
 
                         .option-name {
                             width: 140px;

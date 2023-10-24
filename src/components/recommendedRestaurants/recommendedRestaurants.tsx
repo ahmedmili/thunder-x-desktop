@@ -80,7 +80,7 @@ const RestaurantList: React.FC<Props> = ({ restaurants, listType }) => {
 
           <div
             className={
-              displayNormal ? recommandedStyle.bouble : recommandedStyle.unique
+              displayNormal ? recommandedStyle.double : recommandedStyle.unique
             }
           ></div>
           <CarouselProvider
@@ -92,6 +92,8 @@ const RestaurantList: React.FC<Props> = ({ restaurants, listType }) => {
                 : restaurantsList.length
             }
             visibleSlides={3}
+            // visibleSlides={window.innerWidth > 768 ? 3 : 2}
+
             step={3}
             infinite={true}
             className={recommandedStyle.carouselProvider}

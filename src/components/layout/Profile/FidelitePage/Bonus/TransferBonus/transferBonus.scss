@@ -50,7 +50,7 @@
         .phone-devision {
             display: flex;
             align-items: center;
-            justify-content: start;
+            justify-content: space-between;
             gap: 40px;
 
             label {
@@ -123,6 +123,56 @@
                 font-weight: 400;
                 line-height: normal;
                 margin: 0;
+            }
+        }
+    }
+}
+
+@media only screen and (max-width : 1200px) {
+    .transfer-bonus-container {
+        main {
+            .phone-devision {
+                flex-direction: column;
+                align-items: start;
+                justify-content: space-between;
+                gap: 15px;
+
+                input[type=text] {
+                    width: 80%;
+
+                }
+            }
+        }
+    }
+}
+
+@media only screen and (max-width : 991px) {
+    .fidelite-container {
+        main {
+            padding: 32px 36px;
+        }
+    }
+}
+
+@media only screen and (max-width : 768px) {
+    .fidelite-container {
+        main {
+
+            p {
+                font-size: 12px;
+            }
+
+            .phone-devision {
+                label {
+                    font-size: 12px;
+                }
+
+                .input[type=text] {
+                    font-size: 12px;
+                    &::placeholder {
+                        font-size: 12px;
+                    }
+                }
             }
         }
     }

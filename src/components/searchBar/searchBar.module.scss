@@ -6,24 +6,32 @@
   border-radius: 25px;
   width: 342.96px;
   padding: 0 19px;
-  .icons{
+  min-height: 29px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+
+  .icons {
     font-size: 10px;
     color: white;
   }
-  .iconBackgorund{
+
+  .iconBackgorund {
     background-color: white;
     border-radius: 50%;
     color: $primary_color;
     padding: 2px;
   }
+
   form {
     display: flex;
     justify-content: space-between;
     align-items: center;
+
     .headerSearchBar {
       color: white;
       border-radius: 25px;
-      
+
       input {
         width: 254px;
         border-radius: 25px;
@@ -81,19 +89,22 @@
 
 @media only screen and (max-width: 992px) {
   .searchContainer {
-    width: 201px;
+    width: 309px;
     padding: 5px 10px;
+
     form {
       .headerSearchBar {
-        width: 100px;
+        width: 309px;
         margin: 0;
+
         input {
-          padding: 0px;
-          font-size: 8.5px;
+          padding: 0 10px;
+          font-size: 14px;
         }
       }
     }
-    .icons .bi-search{
+
+    .icons .bi-search {
       font-size: 10px;
     }
   }
@@ -101,13 +112,15 @@
 
 @media only screen and (max-width: 768px) {
   .searchContainer {
-    width: 177px;;
+    width: 177px;
+    ;
 
     form {
       .headerSearchBar {
         width: 94px;
         margin: 0;
-        input  {
+
+        input {
           padding: 0px;
           font-size: 7px;
         }
@@ -118,15 +131,18 @@
 
 @media only screen and (max-width: 576px) {
   .searchContainer {
-    padding :0 5px;
+    padding: 0 5px;
     width: 120px;
-    .icon{
+
+    .icon {
       font-size: 8px;
     }
-    .icons{
+
+    .icons {
       color: white;
     }
-    .iconBackgorund{
+
+    .iconBackgorund {
       background-color: white;
       border-radius: 50%;
       color: $primary_color;
@@ -136,11 +152,12 @@
       justify-content: center;
       align-items: center;
     }
-    
+
     form {
       .headerSearchBar {
         width: 79px;
         margin: 0 0 3px 0;
+
         input {
           padding: 0px;
           font-size: 6px;

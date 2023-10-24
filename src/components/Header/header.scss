@@ -207,11 +207,11 @@
         .logoMain {
             background-repeat: no-repeat;
             display: inline-block;
-            background-image: url("/src/assets/icon.png");
+            background-image: url(/src/assets/thunder-logo.png);
             background-position: center;
-            background-size: cover;
-            width: 31.81px;
-            height: 51px;
+            background-size: contain;
+            width: 131px;
+            height: 47px;
             margin-left: 20px;
         }
     }
@@ -404,7 +404,7 @@
 
         .logoContainer {
             .logoMain {
-                width: 31.81px;
+                width: 73.81px;
                 height: 39px;
             }
         }
@@ -452,6 +452,7 @@
     }
 
     .headerContainer {
+        margin-top: -32px;
 
         .imageBuilder {
             width: 255px;
@@ -472,7 +473,7 @@
                 padding: 0 8px;
 
                 a {
-                    font-size: 8.5px;
+                    font-size: 13.5px;
 
                     .localisationIcon {
                         top: -2px;
@@ -488,7 +489,10 @@
 @media only screen and (max-width: 768px) {
 
     .fixedHeaderContainer2 {
+
         .info {
+            width: 73%;
+
             .position {
                 font-size: 12px;
                 gap: 7px;
