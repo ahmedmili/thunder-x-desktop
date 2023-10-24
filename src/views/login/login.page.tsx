@@ -120,7 +120,6 @@ const LoginPage = () => {
         <ButtonConnect provider="apple" icon={<Apple />} text="Continue avec Apple" />
         <ButtonConnect provider='google' icon={<Google />} text="Continue avec Google" />
         <ButtonConnect provider="fcb" icon={<Facebook />} text="Continue avec Facebook" />
-        <ButtonConnect provider="logout"  text="logout" />
         <LinkConnect />
       </div>
     </CardPage>
