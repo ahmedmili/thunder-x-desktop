@@ -129,6 +129,8 @@ const Menu: React.FC<MenuProps> = () => {
     handleFilter()
   }, [selectedOption])
 
+
+
   const Product = () => {
     return <>
       {
@@ -169,7 +171,7 @@ const Menu: React.FC<MenuProps> = () => {
                     />
                   ) : (
                     <div className='epmty-pagination'>
-                      
+
                     </div>
                   )
                   }
@@ -193,7 +195,13 @@ const Menu: React.FC<MenuProps> = () => {
                               <AddIcon className="product-button-icon" />
                             </button>
                           </div>
-                          <img src={product.image[0]?.path} alt='product photo' className="product-image" />
+                          <img src={
+                            product.image[0]?.path ?
+                              product.image[0]?.path :
+                              displayedRestaurant?.images[0].pivot.type === "principal" ?
+                                displayedRestaurant?.images[0].path :
+                                displayedRestaurant?.images[1].path
+                          } alt='product photo' className="product-image" />
                         </div>
                       ))}
                     </div>
@@ -208,7 +216,6 @@ const Menu: React.FC<MenuProps> = () => {
 
   useEffect(() => {
     console.log("displayedRestaurant", displayedRestaurant)
-    console.log(displayedRestaurant?.service_price)
   }, [displayedRestaurant])
   return (
     <>
@@ -248,7 +255,7 @@ const Menu: React.FC<MenuProps> = () => {
         <Row className={`main-row`}>
           <div className={`supplier-page-side-bar`}>
             <div className={`pub-contained`}>
-              <img className='supplier-logo' src={displayedRestaurant?.images[1].path} alt="" />
+              <img className='supplier-logo' src={displayedRestaurant?.images[0].pivot.type === "principal" ? displayedRestaurant?.images[0].path : displayedRestaurant?.images[1].path} alt="" />
               <div className={`pub-posts`}>
                 <img className='insta-img' src={instaposter} alt=" insta img posts" />
                 <img className='insta-img' src={instaposter} alt=" insta img posts" />
