@@ -158,7 +158,7 @@ const Menu: React.FC<MenuProps> = () => {
                       {menuItemProducts.length} choix
                     </span>
                   </div>
-                  {menuItemProducts.length > productsPerPage && (
+                  {menuItemProducts.length > productsPerPage ? (
                     <Pagination
                       style={{ marginTop: '1rem' }}
                       count={Math.ceil(menuItemProducts.length / productsPerPage)}
@@ -167,7 +167,12 @@ const Menu: React.FC<MenuProps> = () => {
                         handlePaginationClick(page, menuItemId)
                       }
                     />
-                  )}
+                  ) : (
+                    <div className='epmty-pagination'>
+                      
+                    </div>
+                  )
+                  }
 
                   <div className='product-container'>
                     <div className="product-grid">

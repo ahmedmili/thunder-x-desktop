@@ -173,8 +173,6 @@
                     width: 182px;
                     height: 182px;
                     margin: 29px 0 91px 0;
-                    border-radius: 50px;
-
                 }
 
                 .pub-posts {
@@ -200,7 +198,7 @@
         }
 
         .main-container {
-            background-color: white ;
+            background-color: white;
             max-width: 681px;
             height: 1046px;
             border-radius: 25px;
@@ -220,16 +218,13 @@
 
             .filers {
                 width: 100%;
-                height: 170px;
+                height: 143px;
                 overflow-y: auto;
                 gap: 20px;
                 display: flex;
-                flex-wrap: wrap;
-                justify-content: center;
+                justify-content: start;
                 align-items: center;
-                gap: 29px;
-
-                margin-top: 87px;
+                margin-left: 10px;
 
                 .select {
                     cursor: pointer;
@@ -300,6 +295,12 @@
                         line-height: normal;
 
                     }
+                }
+
+                .epmty-pagination {
+                    height: 32px;
+                    width: 100%;
+
                 }
 
                 .product-container {
@@ -416,7 +417,8 @@
                                         border-radius: 50%;
                                         background-color: $primary_color;
                                     }
-                                    &:hover{
+
+                                    &:hover {
                                         cursor: pointer;
                                     }
                                 }
@@ -879,18 +881,19 @@
                             .product-card {
                                 .info-container {
                                     padding-top: 0;
+
                                     .product-title {
                                         font-size: 11px;
                                         margin: 0;
                                         height: 20px;
                                     }
-                                    
+
                                     .product-price {
                                         height: 15px;
                                         font-size: 11px;
                                         margin: 0;
                                     }
-                                    
+
                                     .product-description {
                                         margin: 0;
                                         font-size: 10px;
@@ -1037,4 +1040,3 @@
         }
     }
 }
-
