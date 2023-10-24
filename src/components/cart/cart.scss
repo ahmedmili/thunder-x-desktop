@@ -28,7 +28,7 @@
   width: 98%;
   height: 60vh;
   border-radius: 15px;
-  padding: 20px 20px;
+  padding: 0px 20px 15px 20px;
   overflow-y: scroll;
   max-height: 601px;
   margin-right: 5px;
@@ -70,6 +70,7 @@
       font-style: normal;
       font-weight: 500;
       line-height: normal;
+      margin-bottom: 5px;
     }
 
     .supplier-name {
@@ -130,7 +131,7 @@
       }
 
       .product-info {
-        margin: 0 auto 0 43px;
+        margin: 0 auto 0 20px;
 
         .name {
           color: $dark_Gray;
@@ -199,7 +200,7 @@
         width: 71px;
         height: 41.621px;
         display: flex;
-        margin: 0 180px 0 auto;
+        margin: 0 131px 0 auto;
 
         .count-buttons {
           display: flex;
@@ -348,6 +349,50 @@
   }
 }
 
+@media only screen and (max-width: 768px) {
+  .cart-main {
+    padding: 7px 20px;
+
+    .article-provider {
+      .head {
+        .product-info {
+          margin: 0px auto 0 10px;
+
+          .name {
+            font-size: 15px;
+          }
+
+          .unit-total {
+            font-size: 13px;
+          }
+        }
+
+        .remove-btn {
+          width: 34px;
+          height: 28px;
+          font-size: 18px;
+          display: flex;
+          justify-content: center;
+          align-items: center;
+        }
+      }
+
+      .foot {
+        .count-container {
+          margin: 0 61px 0 auto;
+        }
+      }
+    }
+
+    .cart-btns {
+      button {
+        height: 40px;
+        font-size: 20px;
+      }
+    }
+  }
+}
+
 @media only screen and (max-width: 600px) {
 
 
@@ -487,6 +532,7 @@
   }
 
 }
+
 @media only screen and (max-height: 680px) {
 
   .cart-main {

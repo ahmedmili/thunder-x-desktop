@@ -186,7 +186,7 @@
 
 
 .fixedHeaderContainer2 {
-    background-color: $white_001;
+    background-color: #fffefe;
     height: 75px;
     position: fixed;
     top: 0;
@@ -196,7 +196,7 @@
     display: flex;
     justify-content: space-between;
     align-items: center;
-    padding: 0 10px;
+    padding: 0 18px 0 10px;
     border-radius: 0px 0px 20px 20px;
     z-index: 1001;
     box-shadow: 0px 0px 10px 0px rgba(0, 0, 0, 0.75);
@@ -241,6 +241,12 @@
                 font-size: 18px;
                 color: $primary_color;
             }
+        }
+
+        .account,
+        .search {
+            margin: 3px 0;
+
         }
 
         .account {
@@ -319,7 +325,7 @@
     position: fixed;
     top: 80px;
     right: 12vw;
-    width: 500px;
+    width: 408px;
     background-color: white;
     z-index: 999;
     border-radius: 15px;
@@ -411,7 +417,7 @@
             .position {
                 font-size: 16px;
                 gap: 7px;
-                width: 400px;
+                width: 242px;
             }
 
             .cart-item {
@@ -488,6 +494,12 @@
                 gap: 7px;
                 width: 400px;
             }
+
+            .cart-item {
+                font-size: 20px;
+                width: 185px;
+                height: 30px;
+            }
         }
     }
 
@@ -518,6 +530,10 @@
             }
         }
 
+    }
+
+    .cart-container {
+        width: 304px;
     }
 }
 
