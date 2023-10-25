@@ -171,9 +171,9 @@ const Register = () => {
       })}
       <div style={{ display: "flex", flexDirection: "column", gap: "1rem" }}>
         <Or>Or</Or>
-        <ButtonConnect icon={<Apple />} text="Continue avec Apple" />
-        <ButtonConnect icon={<Google />} text="Continue avec Google" />
-        <ButtonConnect icon={<Facebook />} text="Continue avec Facebook" />
+        <ButtonConnect provider="apple" icon={<Apple />} text="Continue avec Apple" />
+        <ButtonConnect provider="google" icon={<Google />} text="Continue avec Google" />
+        <ButtonConnect provider="fcb" icon={<Facebook />} text="Continue avec Facebook" />
         <LinkConnect />
       </div>
     </CardPage>
