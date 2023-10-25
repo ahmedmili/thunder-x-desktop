@@ -1,14 +1,14 @@
 import React, { useEffect, useMemo, useState } from 'react';
-import ArrowRightAltIcon from '@mui/icons-material/ArrowRightAlt';
 
 import KeyboardArrowUpOutlinedIcon from '@mui/icons-material/KeyboardArrowUpOutlined';
 import { commandService } from '../../../../../services/api/command.api';
 import { userService } from '../../../../../services/api/user.api';
 import eventEmitter from '../../../../../services/thunderEventsService';
+import Spinner from '../../../../spinner/Spinner';
 import CurrentCommands from '../CurrentCommands/CurrentCommands';
 import OldCommands from '../OldCommands/OldCommands';
+import ArrowIcon from './../../../../../assets/profile/leftArrow.svg';
 import "./commandsList.scss";
-import Spinner from '../../../../spinner/Spinner';
 interface CommandsListProps {
     type?: string;
     goToPassedCommands: () => void;
@@ -66,7 +66,7 @@ const CommandsList: React.FC<CommandsListProps> = ({ type = "old", goToPassedCom
         type === "current" && data.success && setCommands(commands)
 
     }
-    
+
     const updateCurrentCommands = async () => {
         setLoading((current) => current = true)
         const { status, data } = await commandService.myCommands()
@@ -153,24 +153,27 @@ const CommandsList: React.FC<CommandsListProps> = ({ type = "old", goToPassedCom
                                     </React.Fragment>
                                 )
                             })}
-                            <div className="prev-next-buttons">
-                                {/* prev button */}
-                                <span className="prev-page-button">
-                                    {!(currentPage === 1) &&
-                                        <button onClick={prevPage}>
-                                            <ArrowRightAltIcon className="prev-page-icon" />
-                                        </button>
-                                    }
-                                </span>
-                                {/* next button  */}
-                                <span className="next-page-button">
-                                    {!(currentPage === totalPages) &&
-                                        <button onClick={nextPage}>
-                                            <ArrowRightAltIcon className="next-page-icon" />
-                                        </button>
-                                    }
-                                </span>
-                            </div>
+                            {
+                                commands.length > itemsPerPage && (
+
+                                    <div className="prev-next-buttons">
+                                        {/* prev button */}
+                                        <span className="prev-page-button">
+                                            {!(currentPage === 1) &&
+                                                <button onClick={prevPage} style={{ backgroundImage: `url(${ArrowIcon})` }}>
+                                                </button>
+                                            }
+                                        </span>
+                                        {/* next button  */}
+                                        <span className="next-page-button">
+                                            {!(currentPage === totalPages) &&
+                                                <button onClick={nextPage} style={{ backgroundImage: `url(${ArrowIcon})` }}>
+                                                </button>
+                                            }
+                                        </span>
+                                    </div>
+                                )
+                            }
                         </section>
                     </>
                 )

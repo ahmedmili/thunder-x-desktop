@@ -91,7 +91,7 @@ const Command: React.FC<CommandProps> = ({ removeCommand, data }) => {
             </div>
             {/* deliv price */}
             <div className='deliv-price'>
-                <span>Frais de livraison</span>
+                <span>{t('supplier.delivPrice')}</span>
                 <span className='left-price'>{data.coupon.delivery_fixed === 1 ? data.delivery_price : (data.delivery_price - data.total_price_coupon).toFixed(2)} DT</span>
             </div>
             {/* products discriptions */}
@@ -407,7 +407,6 @@ const CurrentCommands: React.FC<CommandsListProps> = ({ removeCommand, goToPasse
                     {
                         status == 6 && (
                             <div className='buttons'>
-                                {/* <button className="recue" onClick={goToPassedCommands} >{t('profile.commands.recue')}  </button> */}
                                 <button className="problem" onClick={handleProblemPopup}>{t('profile.commands.problem')}</button>
                             </div>
                         )

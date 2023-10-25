@@ -22,6 +22,7 @@
     width: 351px;
     transition: all 1s ease-in-out;
     border-radius: 25px;
+
     .sideBar-header {
         width: 351px;
         height: 380px;
@@ -62,7 +63,8 @@
 
             .icons {
                 display: flex;
-                justify-content: space-around;
+                justify-content: center;
+                gap: 17px;
 
                 .icon {
                     border-radius: 50%;
