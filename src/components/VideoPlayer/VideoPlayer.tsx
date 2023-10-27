@@ -14,8 +14,6 @@ const VideoPlayer: React.FC<VideoPlayerProps> = ({ videoSrc, cover }) => {
         const video = videoRef.current;
 
         if (video) {
-            console.log("isPlaying", isPlaying)
-            console.log("video.paused", video.paused)
             if (!isPlaying) {
                 video.controls = true;
                 video.play();

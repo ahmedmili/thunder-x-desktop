@@ -94,7 +94,6 @@
         }
 
         .btn {
-          all: unset;
           display: flex;
           background-color: white;
           text-align: center;
@@ -226,7 +225,7 @@
   }
 }
 
-@media only screen and (max-width: 575px) {
+@media only screen and (max-width: 660px) {
 
   .recommandedContainer {
     font-size: 1rem;

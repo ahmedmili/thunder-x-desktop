@@ -185,7 +185,7 @@ const CartPage: React.FC = () => {
         </span>
       </td>
       <td>
-        <button type="button" onClick={handleRemoveItemFromCart}>X</button>
+        <button type="button" className="remove-btn" onClick={handleRemoveItemFromCart}>X</button>
       </td>
     </>
   }

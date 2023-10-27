@@ -93,12 +93,6 @@
             padding-right: 15px;
 
             button {
-                all: unset;
-
-                &:hover {
-                    cursor: pointer;
-                }
-
                 .next-page-icon {
                     color: $Ocean_Teal;
                     width: 53px;

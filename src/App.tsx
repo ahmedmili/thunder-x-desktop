@@ -224,7 +224,6 @@ function App() {
           <HomeSkeleton />
           <Footer />
         </>
-        // <CircularProgress style={{ alignSelf: "center" }} />
       }>
         <Routes>
           <Route path="/" element={<Layout />}>

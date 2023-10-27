@@ -25,7 +25,6 @@ interface ProductProps {
 }
 
 const Product: React.FC<ProductProps> = ({ data }) => {
-    console.log('data.description', data.description)
     return (
         <div className='old-commands-product-container'>
             <img src={data.img} alt="product image" />

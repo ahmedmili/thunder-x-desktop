@@ -109,12 +109,13 @@ const Header = () => {
       {
         (routerLocation.pathname == "/" || routerLocation.pathname == "/search") ? (
           <>
+          
+            <Container >
             <div className="head1">
               <div className="demiCercle">
 
               </div>
             </div>
-            <Container >
               <div className={`fixedHeaderContainer2`} >
                 <div className="logoContainer"
                   onClick={() => navigate('/')} >

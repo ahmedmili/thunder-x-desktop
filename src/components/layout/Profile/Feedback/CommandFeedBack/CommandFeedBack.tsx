@@ -58,10 +58,10 @@ const CommandFeedBack: React.FC<CommandFeedBackProps> = ({ avis, handleAvis, han
             if (avis) {
                 setAvisList(avis)
             } else {
-                console.log("Language not found in JSON data");
+                console.error("Language not found in JSON data");
             }
         } else {
-            console.log("Language not found in localStorage");
+            console.error("Language not found in localStorage");
         }
     }, [])
 

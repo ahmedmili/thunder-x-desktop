@@ -4,7 +4,8 @@
 
   background-color: $primary_color;
   border-radius: 25px;
-  width: 342.96px;
+  // width: 342.96px;
+  width: 64%;
   padding: 0 19px;
   min-height: 29px;
   display: flex;
@@ -12,9 +13,14 @@
   justify-content: space-between;
 
   .icons {
-    font-size: 10px;
     color: white;
+
+    .icon {
+      font-size: 19px;
+
+    }
   }
+
 
   .iconBackgorund {
     background-color: white;
@@ -27,10 +33,12 @@
     display: flex;
     justify-content: space-between;
     align-items: center;
+    width: 100%;
 
     .headerSearchBar {
       color: white;
       border-radius: 25px;
+      width: 80%;
 
       input {
         width: 254px;
@@ -40,14 +48,16 @@
         color: white;
         border: none;
         font-size: 18px;
+        width: 100%;
+
 
         &:focus {
           outline: none;
-          /* Remove the outline when focused */
         }
 
         &::placeholder {
           color: white;
+          text-align: center;
         }
       }
 
@@ -89,12 +99,12 @@
 
 @media only screen and (max-width: 992px) {
   .searchContainer {
-    width: 309px;
+    width: 77%;
+
     padding: 5px 10px;
 
     form {
       .headerSearchBar {
-        width: 309px;
         margin: 0;
 
         input {
@@ -104,7 +114,7 @@
       }
     }
 
-    .icons .bi-search {
+    .bi-search {
       font-size: 10px;
     }
   }
@@ -112,17 +122,18 @@
 
 @media only screen and (max-width: 768px) {
   .searchContainer {
-    width: 177px;
-    ;
-
+    .icons{
+      .icon{
+        font-size: 13px;
+      }
+    }
     form {
       .headerSearchBar {
-        width: 94px;
         margin: 0;
 
         input {
           padding: 0px;
-          font-size: 7px;
+          font-size: 11px;
         }
       }
     }
@@ -138,15 +149,10 @@
       font-size: 8px;
     }
 
-    .icons {
-      color: white;
-    }
-
     .iconBackgorund {
       background-color: white;
       border-radius: 50%;
       color: $primary_color;
-      // padding: 0;
       height: 10px;
       display: flex;
       justify-content: center;
@@ -155,7 +161,6 @@
 
     form {
       .headerSearchBar {
-        width: 79px;
         margin: 0 0 3px 0;
 
         input {

@@ -263,12 +263,6 @@
                         padding-right: 15px;
 
                         button {
-                            all: unset;
-
-                            &:hover {
-                                cursor: pointer;
-                            }
-
                             .next-page-icon {
                                 color: #24A6A4;
                                 width: 53px;
@@ -284,12 +278,6 @@
                         align-items: center;
 
                         button {
-                            all: unset;
-
-                            &:hover {
-                                cursor: pointer;
-                            }
-
                             .prev-page-icon {
                                 color: #24a6a4;
                                 width: 53px;
@@ -319,7 +307,6 @@
         gap: 25px;
 
         .add-to-cart-button {
-            all: unset;
             width: 220.193px;
             height: 74px;
             border-radius: 55px;
@@ -331,10 +318,6 @@
             font-style: normal;
             font-weight: 600;
             line-height: normal;
-
-            &:hover {
-                cursor: pointer;
-            }
 
             .cart-icon {
                 width: 34.624px;
@@ -359,7 +342,6 @@
                 gap: 20px;
 
                 button {
-                    all: unset;
 
                     .count-more,
                     .count-less {
@@ -508,6 +490,7 @@
                 height: 475px;
                 padding-top: 11px;
                 flex: 1.1;
+
                 .options-info {
                     .menu-title {
                         max-width: 388px;

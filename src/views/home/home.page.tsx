@@ -81,7 +81,7 @@ const HomePage = () => {
 
   return (
     <>
-      <Container maxWidth="lg" className={`containerr ${template === 1 && "dark-background"}`}>
+      <Container  className={`containerr ${template === 1 && "dark-background"}`}>
         {isLoading ? (
           <HomeSkeleton />
         ) : (

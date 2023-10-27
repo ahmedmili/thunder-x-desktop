@@ -84,7 +84,6 @@ const OrderTrackingPage: React.FC = () => {
 
   const handleCommandClick = (command: any) => {
     dispatch(setSelectedCommand(command));
-    console.log('selectedCommand', selectedCommand);
   };
   const getProgressDescription = (cycle: string) => {
     switch (cycle) {

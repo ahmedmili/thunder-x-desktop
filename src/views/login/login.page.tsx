@@ -102,7 +102,6 @@ const LoginPage = () => {
     { setSubmitting, resetForm }: FormikHelpers<FormValues>
   ) => {
     onSubmitHandler(values);
-    // console.log(values);
   };
   return (
     <CardPage icon="" text="" title="Se connecter" image={<PicturesList />}>

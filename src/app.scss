@@ -97,6 +97,21 @@ img {
 .dark-background2 {
   background-color: $dark_001 !important;
 }
+
 .bg-transparent {
   background-color: transparent !important;
+}
+
+button {
+  background-color: transparent;
+  border: none;
+  text-align: center;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  &:hover {
+    cursor: pointer;
+    opacity: 0.8;
+  }
 }
