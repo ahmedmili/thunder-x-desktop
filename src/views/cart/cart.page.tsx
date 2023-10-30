@@ -42,6 +42,7 @@ import { supplierServices } from "../../services/api/suppliers.api";
 import { userService } from "../../services/api/user.api";
 import { localStorageService } from "../../services/localStorageService";
 import "./cart.page.scss";
+import { LocationService } from "../../services/api/Location.api";
 
 const CartPage: React.FC = () => {
   const { t } = useTranslation();
@@ -253,6 +254,22 @@ const CartPage: React.FC = () => {
           const userToken = localStorageService.getUserToken();
           if (!userToken) {
             dispatch(logout());
+            navigator.geolocation.getCurrentPosition(
+              (position: any) => {
+                const { latitude, longitude } = position.coords;
+                LocationService.geoCode(latitude, longitude).then(data => {
+                  dispatch({
+                    type: "SET_LOCATION",
+                    payload: {
+                      ...data
+                    },
+                  });
+                });
+              },
+              (error: GeolocationPositionError) => {
+                toast.error(error.message)
+              }
+            );
             return;
           }
         } catch (error) {
@@ -645,7 +662,7 @@ const CartPage: React.FC = () => {
                       </thead>
                       <tbody>
                         {
-                          cartItems.map((item:any, index:number) => {
+                          cartItems.map((item: any, index: number) => {
                             return (
                               <>
                                 <tr key={index} className="ariticle-info-container">

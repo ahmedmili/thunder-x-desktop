@@ -167,7 +167,7 @@
 
               background-color: $orange_color;
               font-weight: 600;
-              padding: 0;
+              padding: 3px 0 0;
             }
 
             .quantite {
@@ -276,8 +276,13 @@
 
       .promos-list {
         width: 100%;
-        display: flex;
-        flex-wrap: wrap;
+
+        ul {
+          padding-left: 5px;
+          display: flex;
+          flex-wrap: wrap;
+
+        }
 
         .promo-button {
           background-color: $orange_color;

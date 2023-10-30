@@ -21,6 +21,8 @@ import { Search } from '@mui/icons-material';
 import { useLocation } from 'react-router-dom';
 import { UserCart } from '../UserCart/UserCart';
 import { Cart } from '../cart/cart';
+import { LocationService } from "../../services/api/Location.api";
+import { Position } from "../../services/types";
 
 const Header = () => {
 
@@ -73,6 +75,23 @@ const Header = () => {
   const onLogoutHandler = async () => {
     try {
       dispatch(logout());
+      navigator.geolocation.getCurrentPosition(
+        (position: any) => {
+          const { latitude, longitude } = position.coords;
+          LocationService.geoCode(latitude, longitude).then(data => {
+            dispatch({
+              type: "SET_LOCATION",
+              payload: {
+                ...data
+              },
+            });
+          });
+        },
+        (error: GeolocationPositionError) => {
+          toast.error(error.message)
+        }
+      );
+
       navigate("/");
     } catch (error: any) {
       if (Array.isArray(error.data.error)) {
@@ -109,13 +128,13 @@ const Header = () => {
       {
         (routerLocation.pathname == "/" || routerLocation.pathname == "/search") ? (
           <>
-          
-            <Container >
-            <div className="head1">
-              <div className="demiCercle">
 
+            <Container >
+              <div className="head1">
+                <div className="demiCercle">
+
+                </div>
               </div>
-            </div>
               <div className={`fixedHeaderContainer2`} >
                 <div className="logoContainer"
                   onClick={() => navigate('/')} >

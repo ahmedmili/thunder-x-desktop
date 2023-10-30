@@ -2,6 +2,8 @@ import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 import { IUser } from "../../services/types";
 import { localStorageService } from "../../services/localStorageService";
 import { boolean } from "zod";
+import { LocationService } from "../../services/api/Location.api";
+import { useDispatch } from "react-redux";
 
 interface IUserState {
   user: IUser | null;

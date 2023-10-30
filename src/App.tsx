@@ -82,6 +82,7 @@ function App() {
   }, [updateHomeData]);
 
   const getClientFavors = async () => {
+
     const { status, data } = await userService.getClientFavorits()
     var favs: any = []
     data.success && data.data.map((i: Restaurant) => {
@@ -190,6 +191,23 @@ function App() {
     }
     if (!_isAuthenticated) {
       dispatch(logout());
+      navigator.geolocation.getCurrentPosition(
+        (position: Position) => {
+          const { latitude, longitude } = position.coords;
+          LocationService.geoCode(latitude, longitude).then(data => {
+            dispatch({
+              type: "SET_LOCATION",
+              payload: {
+                ...data
+              },
+            });
+          });
+        },
+        (error: GeolocationPositionError) => {
+          toast.error(error.message)
+        }
+      );
+
     }
   }, [])
 
@@ -199,6 +217,8 @@ function App() {
   }
   // webSocket create instance
   useEffect(() => {
+    let isLoggedIn = localStorageService.getUserToken();
+    if (!isLoggedIn) return
     channelListener()
     eventEmitter.on('NEW_ADMIN_MESSAGE', newMessage);
     return () => {
