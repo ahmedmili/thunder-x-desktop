@@ -77,7 +77,7 @@ export const Cart: React.FC<CartProps> = ({ items, closeButton }) => {
         {/* Use the props here */}
         <div className='head'>
           <div className="image-container">
-            <img src={`${props.image ? props.image : ""}`} alt="product image" className='product-image' />
+            <img src={`${props.image ? props.image : ""}`} loading="lazy" alt="product image" className='product-image' />
           </div>
           <div className="product-info">
             <div className='name'>{props.name}</div>
@@ -225,7 +225,7 @@ export const Cart: React.FC<CartProps> = ({ items, closeButton }) => {
               </button>
             </section>
             <section className='empty-cart-main'>
-              <img src={empty} alt="empty cart" />
+              <img loading="lazy" src={empty} alt="empty cart" />
               <p>{t('cart.payment.noCommands')}</p>
               <button className='emptyButton' onClick={() => {
                 closeButton()

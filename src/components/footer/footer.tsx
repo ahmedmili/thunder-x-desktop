@@ -40,7 +40,7 @@ const Footer: React.FC<FooterProps> = () => {
       <Row className="bodyRow">
         {/* logo section */}
         <Col className="footerLogoCol" >
-          <img className="webifyIcon" src={icon} alt="webify-icon" />
+          <img  loading="lazy" className="webifyIcon" src={icon} alt="webify-icon" />
         </Col>
         {/* contact numbers sections */}
         <Col className={"footerContacteTelCol"}>
@@ -98,7 +98,7 @@ const Footer: React.FC<FooterProps> = () => {
                     >
                       {images.map((item: any, index: number) => (
                         <div key={index} className="bottom-to-top-scroll-carousel-item">
-                          <img src={item.image} alt="" />
+                          <img  loading="lazy" src={item.image} alt="item image" />
                         </div>
                       ))}
                     </div>

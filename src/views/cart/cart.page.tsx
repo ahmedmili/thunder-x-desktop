@@ -35,6 +35,7 @@ import { FoodItem } from "../../services/types";
 import { Col, Container, Row } from "react-bootstrap";
 import WarnPopup from "../../components/Popups/WarnPopup/WarnPopup";
 import PaymentPopup from "../../components/Popups/payment/PaymentPopup";
+import { LocationService } from "../../services/api/Location.api";
 import { adressService } from "../../services/api/adress.api";
 import { cartService } from "../../services/api/cart.api";
 import { commandService } from "../../services/api/command.api";
@@ -42,7 +43,6 @@ import { supplierServices } from "../../services/api/suppliers.api";
 import { userService } from "../../services/api/user.api";
 import { localStorageService } from "../../services/localStorageService";
 import "./cart.page.scss";
-import { LocationService } from "../../services/api/Location.api";
 
 const CartPage: React.FC = () => {
   const { t } = useTranslation();
@@ -150,7 +150,7 @@ const CartPage: React.FC = () => {
 
     return <>
       <td className="image-container">
-        <img src={`${item.product.image[0] ? item.product.image[0].path : ""}`} alt="product image" />
+        <img loading="lazy" src={`${item.product.image[0] ? item.product.image[0].path : ""}`} alt="product image" />
         <div className="info-text">
           <span className="title">{item.product.name}</span>
           <span className="description" dangerouslySetInnerHTML={{ __html: item.product.description }}></span>
@@ -636,7 +636,7 @@ const CartPage: React.FC = () => {
           <Container className="cart-page-container" fluid>
             <Row className="header">
               <div className="image-container">
-                <img src={supplier ? supplier.images[0].path : ""} alt="supplier image" className="background-image" />
+                <img loading="lazy" src={supplier ? supplier.images[0].path : ""} alt="supplier image" className="background-image" />
                 <span>{t('cartPage.monPanier')}</span>
               </div>
             </Row>
@@ -740,7 +740,7 @@ const CartPage: React.FC = () => {
                     <div className="paiment-container">
                       <span className="title">{t('cartPage.payMode')}</span>
                       <div className="method">
-                        <img className="icon" src={PayCashSVG} alt="My SVG" />
+                        <img loading="lazy" className="icon" src={PayCashSVG} alt="My SVG" />
                         <label htmlFor="espece">{t('cartPage.espece')}</label>
                         <input className="form-check-input" type="radio" name="pay" id="espece" checked={payMode === 1} onClick={() => setPayMode(1)} />
                       </div>
@@ -756,18 +756,18 @@ const CartPage: React.FC = () => {
 
                     <div className="deliv-details">
                       <div className={`select ${selectedOption == 1 ? "selected" : ""}`}  >
-                        <img className="icon1" src={dinnerFurnitureIcn} alt="sur place icon" onClick={() => handleOptionChange(1)} />
+                        <img loading="lazy" className="icon1" src={dinnerFurnitureIcn} alt="sur place icon" onClick={() => handleOptionChange(1)} />
                         <input type="radio" value="1" id='domicile' name='type' checked={selectedOption === 1} />
                         <label htmlFor="domicile"  >{t('cartPage.surPalce')}</label>
                       </div>
                       <div className={`select ${selectedOption == 2 ? "selected" : ""}`}  >
-                        <img className="icon2" src={bagPaperShoppingIcn} alt="a emporter icon" onClick={() => handleOptionChange(2)} />
+                        <img loading="lazy" className="icon2" src={bagPaperShoppingIcn} alt="a emporter icon" onClick={() => handleOptionChange(2)} />
 
                         <input type="radio" value="2" id='travail' name='type' checked={selectedOption === 2} />
                         <label htmlFor="travail">{t('cartPage.emporter')}</label>
                       </div>
                       <div className={`select ${selectedOption == 3 ? "selected" : ""}`}  >
-                        <img className="icon3" src={scooterTransportIcn} alt="Livraison icon" onClick={() => handleOptionChange(3)} />
+                        <img loading="lazy" className="icon3" src={scooterTransportIcn} alt="Livraison icon" onClick={() => handleOptionChange(3)} />
                         <input type="radio" value="3" id='autre' name='type' checked={selectedOption === 3} />
                         <label htmlFor="autre">{t('cartPage.delivery')}</label>
                       </div>
@@ -939,7 +939,7 @@ const CartPage: React.FC = () => {
                     </div>
                     <p>Votre panier est actuellement vide.</p>
                   </div>
-                  <img src={empty} alt=" not command items" />
+                  <img loading="lazy" src={empty} alt=" not command items" />
                   <button className="emptyButton" onClick={() => navigate('/', { replace: true })}>
                     {t('cart.payment.iCommand')}
                   </button>

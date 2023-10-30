@@ -27,7 +27,7 @@ interface ProductProps {
 const Product: React.FC<ProductProps> = ({ data }) => {
     return (
         <div className='old-commands-product-container'>
-            <img src={data.img} alt="product image" />
+            <img loading="lazy" src={data.img} alt="product image" />
             <div className='product-info' >
                 <p className='name'> {data.name}</p>
                 <p className='qt'> X{data.qt}</p>
@@ -94,7 +94,7 @@ const OldCommands: React.FC<CommandsListProps> = ({ data, feedbacksList }) => {
                             <span className='devider'></span>
                             <div className='command-info'>
                                 <div className='start'>
-                                    <img src={PositionIcon} alt="Supplier position" />
+                                    <img loading="lazy" src={PositionIcon} alt="Supplier position" />
                                     <div className="info">
                                         <p className="supplier-name">{supplier.name}</p>
                                         <p className="supplier-position">{position}</p>
@@ -104,11 +104,11 @@ const OldCommands: React.FC<CommandsListProps> = ({ data, feedbacksList }) => {
                                     delivery && (
                                         <>
                                             <div className='delay'>
-                                                <img className='time-icon' src={TimeIcon} alt="time icon" />
+                                                <img loading="lazy" className='time-icon' src={TimeIcon} alt="time icon" />
                                                 <span className='meduim-time'>{supplier.medium_time}<span>min</span> </span>
                                             </div>
                                             <div className='end'>
-                                                <img src={DestinationIcon} alt="Client position" />
+                                                <img loading="lazy" src={DestinationIcon} alt="Client position" />
                                                 <div className="info">
                                                     <p className="deliv-type">{t("home2")}</p>
                                                     <p className="supplier-position">{data.to_adresse}</p>

@@ -22,7 +22,7 @@ export const ApplicationAd = () => {
         <Container className={` ${addsStyles.applicationAdsMainContainer} ${template === 1 && "dark-background2"} `}>
             <Row>
                 <Col>
-                    <img className={addsStyles.applicationAdsImg} src={phone_icn} alt="phone app" />
+                    <img className={addsStyles.applicationAdsImg} loading='lazy' src={phone_icn} alt="phone app" />
                 </Col>
             </Row>
             <Row className={addsStyles.applicationAdsDesignContainer} >
@@ -43,10 +43,10 @@ export const ApplicationAd = () => {
                                 <p className={addsStyles.info3P1}>Téléchargez</p>
                                 <p className={addsStyles.info3P2} > notre Application mobile</p>
                                 <div className={addsStyles.socialBoxs}>
-                                    <img src={app_store} alt="app_store" />
+                                    <img src={app_store} loading='lazy' alt="app_store" />
                                 </div>
                                 <div className={addsStyles.socialBoxs}>
-                                    <img src={google_play} alt="google_play" />
+                                    <img src={google_play} loading='lazy' alt="google_play" />
                                 </div>
                             </div>
                         </div>
