@@ -1,6 +1,10 @@
 import { ReactNode } from "react";
-import styles from "./buttonconnect.module.scss";
+import { useDispatch } from "react-redux";
+import { useNavigate } from "react-router";
+import { setUser } from "../../Redux/slices/userSlice";
 import { userService } from "../../services/api/user.api";
+import { localStorageService } from "../../services/localStorageService";
+import styles from "./buttonconnect.module.scss";
 type ButtonConnectProps = {
   icon?: ReactNode;
   text: string;
@@ -9,14 +13,29 @@ type ButtonConnectProps = {
 
 
 const ButtonConnect = ({ icon, text, provider }: ButtonConnectProps) => {
+  const dispatch = useDispatch();
+  const navigate = useNavigate()
+  const login = (token: string, user: any) => {
+    localStorageService.setUserCredentials(user, token);
+    dispatch(setUser(user));
+    navigate("/"); // Redirect to the home page
+  }
+  const firebaseLogin = async () => {
 
-  const firebaseLogin = () => {
     switch (provider) {
       case 'google':
-        userService.signInWithGoogle();
+        userService.signInWithGoogle().then((res) => {
+          const token = res?.data.data.token
+          const user = res?.data.data.user
+          login(token, user)
+        });
         break;
       case 'fcb':
-        userService.signInWithFacebook();
+        userService.signInWithFacebook().then((res) => {
+          const token = res?.data.data.token
+          const user = res?.data.data.user
+          token && login(token, user)
+        });
         break;
       default:
         userService.firebaseSignOut();

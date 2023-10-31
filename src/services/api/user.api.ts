@@ -1,7 +1,6 @@
 import { localStorageService } from '../localStorageService';
 import { api } from './../axiosApi';
 
-import { FirebaseError } from 'firebase/app';
 import { FacebookAuthProvider, GoogleAuthProvider, signInWithPopup } from 'firebase/auth';
 import { auth } from '../firebase';
 interface loginValues {
@@ -41,15 +40,39 @@ const signInWithGoogle = async () => {
 
     const { user } = await signInWithPopup(auth, provider)
     const userToken = await user.getIdToken();
-    const userTokenResult = await user.getIdTokenResult();
     if (userToken) {
       const { status, data } = await loginBySocial("google", userToken)
-      if (data.status === 'success') return { status, data }
+      if (data.success === true) {
+        return { status, data }
+      }
     }
   } catch (error) {
     throw error
   }
 }
+
+const signInWithFacebook = async () => {
+  const provider = new FacebookAuthProvider();
+  provider.setCustomParameters({
+    'auth_type': 'reauthenticate'
+  });
+
+  try {
+    const result = await signInWithPopup(auth, provider);
+    const user = result.user;
+    const userToken = await user.getIdToken();
+    if (userToken) {
+      const { status, data } = await loginBySocial("facebookNew", userToken)
+      if (data.success === true) return { status, data }
+    }
+  } catch (error: any) {
+    if (error.code === 'auth/cancelled-popup-request') {
+      alert('Facebook login popup was canceled. Please try again.');
+    } else {
+      throw error
+    }
+  }
+};
 
 const checkAuthProvider = () => {
   const user = auth.currentUser;
@@ -65,30 +88,6 @@ const checkAuthProvider = () => {
     }
   }
 }
-
-const signInWithFacebook = async () => {
-  const provider = new FacebookAuthProvider();
-  provider.setCustomParameters({
-    'auth_type': 'reauthenticate'
-  });
-
-  try {
-    const result = await signInWithPopup(auth, provider);
-    // The user is now signed in with Facebook.
-    const user = result.user;
-    const userToken = await user.getIdToken();
-    if (userToken) {
-      const { status, data } = await loginBySocial("google", userToken)
-      if (data.status === 'success') return { status, data }
-    }
-  } catch (error: any) {
-    if (error.code === 'auth/cancelled-popup-request') {
-      alert('Facebook login popup was canceled. Please try again.');
-    } else {
-      throw error
-    }
-  }
-};
 
 async function loginBySocial(provider: string, token: string, fcm = null) {
   try {
