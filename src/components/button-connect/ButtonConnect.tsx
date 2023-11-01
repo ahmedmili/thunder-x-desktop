@@ -27,7 +27,10 @@ const ButtonConnect = ({ icon, text, provider }: ButtonConnectProps) => {
         userService.signInWithGoogle().then((res) => {
           const token = res?.data.data.token
           const user = res?.data.data.user
-          login(token, user)
+          console.log(res)
+          token && login(token, user)
+        }).catch((e) => {
+          console.log(e)
         });
         break;
       case 'fcb':
@@ -35,7 +38,9 @@ const ButtonConnect = ({ icon, text, provider }: ButtonConnectProps) => {
           const token = res?.data.data.token
           const user = res?.data.data.user
           token && login(token, user)
-        });
+        }).catch((e) => {
+          console.log(e)
+        });;
         break;
       default:
         userService.firebaseSignOut();

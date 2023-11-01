@@ -16,6 +16,7 @@ import { FormValues, generateForm } from "../../utils/formUtils";
 
 import { useNavigate } from "react-router-dom";
 
+import { useTranslation } from "react-i18next";
 import { toast } from "react-toastify";
 import { setUser } from "../../Redux/slices/userSlice";
 import { userService } from "../../services/api/user.api";
@@ -28,6 +29,7 @@ const LoginPage = () => {
   const dispatch = useAppDispatch();
   const navigate = useNavigate();
 
+  const { t } = useTranslation()
   const fields = [
     {
       type: "email",
@@ -120,7 +122,7 @@ const LoginPage = () => {
         <ButtonConnect provider="apple" icon={<Apple />} text="Continue avec Apple" />
         <ButtonConnect provider='google' icon={<Google />} text="Continue avec Google" />
         <ButtonConnect provider="fcb" icon={<Facebook />} text="Continue avec Facebook" />
-        <LinkConnect />
+        <LinkConnect to="/register" label={t('haventAcc')} clickTitle={t('signup')} />
       </div>
     </CardPage>
   );
