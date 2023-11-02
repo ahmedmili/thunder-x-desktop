@@ -1,20 +1,20 @@
 
-import './politiques.scss';
+import { useEffect, useState } from 'react';
 import thunderLogo from '../../../../../assets/icon.png';
 import LeftArrow from '../../../../../assets/profile/leftArrow.svg';
 import RigthArrow from '../../../../../assets/profile/rigthArrow.svg';
 import legalsData from './Politiques.json';
-import { useEffect, useState } from 'react';
+import './politiques.scss';
 
 interface legalProps {
   bodyText: string[],
 }
 
-const LegalCart: React.FC<legalProps> = ({bodyText }) => {
+const LegalCart: React.FC<legalProps> = ({ bodyText }) => {
 
   return (<>
     <div className="legal-cart">
-      
+
       <p className='body' >{bodyText}</p>
     </div>
   </>)
@@ -78,7 +78,7 @@ const Politiques = () => {
           {!(currentPage === 1) &&
             <div className="nav-page-button">
               <button onClick={prevPage}>
-                <img src={LeftArrow} alt="prev button" />
+                <img loading="lazy" src={LeftArrow} alt="prev button" />
               </button>
             </div>
           }
@@ -86,7 +86,7 @@ const Politiques = () => {
           {!(currentPage === totalPages) &&
             <div className="nav-page-button">
               <button onClick={nextPage}>
-                <img src={RigthArrow} alt="prev button" />
+                <img loading="lazy" src={RigthArrow} alt="prev button" />
 
               </button>
             </div>

@@ -32,7 +32,6 @@ const channelListener = () => {
   // const addMessage = useAddMessage
   const pusher = new Pusher(import.meta.env.VITE_ECHO_KEY, options);
   const echo = new Echo(options);
-  // console.log("WebSocket URL:", echo.connector.options);
   const computeEvents = (data: any) => {
 
     switch (data.type_event) {

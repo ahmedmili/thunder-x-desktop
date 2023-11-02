@@ -91,7 +91,7 @@ const Annonces = () => {
                 {!(currentPage === 1) &&
                   <div className="nav-page-button">
                     <button onClick={prevPage}>
-                      <img src={LeftArrow} alt="prev button" />
+                      <img  loading="lazy" src={LeftArrow} alt="prev button" />
                     </button>
                   </div>
                 }
@@ -99,7 +99,7 @@ const Annonces = () => {
                 {(!(currentPage === totalPages) && (currentPage + 1 <= totalPages)) &&
                   <div className="nav-page-button">
                     <button onClick={nextPage}>
-                      <img src={RigthArrow} alt="prev button" />
+                      <img  loading="lazy" src={RigthArrow} alt="prev button" />
 
                     </button>
                   </div>

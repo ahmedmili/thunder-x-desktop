@@ -112,6 +112,8 @@ export const homeLoadingSelector = (state: RootState) => state.home.loading;
 var favorsList: number[] = []
 // Action
 const getClientFavors = async () => {
+  let isLoggedIn = localStorageService.getUserToken();
+  if (!isLoggedIn) return 
   const { status, data } = await userService.getClientFavorits()
   var favs: any = []
   data.success && data.data.map((i: Restaurant) => {

@@ -48,7 +48,6 @@
     }
 
     .close-btn {
-      all: unset;
       display: flex;
       justify-content: center;
       align-items: center;
@@ -65,7 +64,7 @@
   }
 
   main {
-    margin-top: 40px;
+    margin-top: 26px;
     padding-bottom: 15px;
 
     .link-list {
@@ -122,6 +121,18 @@
   }
 
 
+}
+
+@media only screen and (max-width: 768px) {
+  .profile-cart-main {
+    main {
+      .info-list {
+        ul {
+          padding-left: 28px;
+        }
+      }
+    }
+  }
 }
 
 @media only screen and (max-width: 600px) {

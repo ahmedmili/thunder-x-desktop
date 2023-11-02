@@ -1,12 +1,11 @@
 
-import './legale.scss';
+import { useEffect, useState } from 'react';
 import thunderLogo from '../../../../../assets/icon.png';
 import LeftArrow from '../../../../../assets/profile/leftArrow.svg';
 import RigthArrow from '../../../../../assets/profile/rigthArrow.svg';
+import './legale.scss';
 import legalsData from './legals.json';
-import { useEffect, useState } from 'react';
 
-import ArrowRightAltIcon from '@mui/icons-material/ArrowRightAlt';
 import { useTranslation } from 'react-i18next';
 import { useAppSelector } from '../../../../../Redux/store';
 
@@ -22,7 +21,7 @@ const LegalCart: React.FC<legalProps> = ({ title, bodyText }) => {
     <div className="legal-cart">
       <p className='title'>{title}</p>
       {
-        bodyText.map((text:string,index:number)=> <p key={index} className='body' >{text}</p> )
+        bodyText.map((text: string, index: number) => <p key={index} className='body' >{text}</p>)
       }
     </div>
   </>)
@@ -96,7 +95,7 @@ const Legale = () => {
           {!(currentPage === 1) &&
             <div className="nav-page-button">
               <button onClick={prevPage}>
-                <img src={LeftArrow} alt="prev button" />
+                <img loading="lazy" src={LeftArrow} alt="prev button" />
               </button>
             </div>
           }
@@ -104,7 +103,7 @@ const Legale = () => {
           {!(currentPage === totalPages) &&
             <div className="nav-page-button">
               <button onClick={nextPage}>
-                <img src={RigthArrow} alt="prev button" />
+                <img loading="lazy" src={RigthArrow} alt="prev button" />
 
               </button>
             </div>

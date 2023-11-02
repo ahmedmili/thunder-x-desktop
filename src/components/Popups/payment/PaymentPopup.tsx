@@ -50,7 +50,7 @@ const PaymentPopup: React.FC<Props> = ({ close, type }) => {
         }>
             <div className="popup-box">
                 <p style={{ color: title_color }}>{popup_title}</p>
-                <img src={popup_image} alt="echec payment" />
+                <img loading="lazy" src={popup_image} alt="echec payment" />
                 <p>{popup_msg}</p>
             </div>
         </div>

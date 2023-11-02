@@ -1,8 +1,7 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
-import { IUser } from "../../services/types";
-import { localStorageService } from "../../services/localStorageService";
-import { boolean } from "zod";
 import { userService } from "../../services/api/user.api";
+import { localStorageService } from "../../services/localStorageService";
+import { IUser } from "../../services/types";
 
 interface IUserState {
   user: IUser | null;

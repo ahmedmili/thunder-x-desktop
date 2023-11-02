@@ -106,7 +106,6 @@ const MenuPopup: React.FC<Props> = ({ close, restaurant }) => {
     const selectedMenuItem = useAppSelector((state) => state.restaurant.product);
 
 
-
     const getProduct = async () => {
         try {
             const { status, data } = await productService.getProduct(selectedMenuItem?.id);
@@ -415,7 +414,14 @@ const MenuPopup: React.FC<Props> = ({ close, restaurant }) => {
                 <div className="menu-popup-container">
                     <div className="popup-box">
                         <div className="modal-content-image"
-                            style={{ backgroundImage: `url(${selectedMenuItem?.image[0]?.path})`, }}>
+                            style={{
+                                backgroundImage: `url(${selectedMenuItem?.image[0] ?
+                                    selectedMenuItem?.image[0]?.path :
+                                    restaurant?.images[0]?.pivot.type === "principal" ?
+                                        restaurant?.images[0]?.path :
+                                        restaurant?.images[1]?.path
+                                    })`,
+                            }}>
                         </div>
                         <div className="modal-content-options">
                             <div className="options-info">
@@ -443,10 +449,10 @@ const MenuPopup: React.FC<Props> = ({ close, restaurant }) => {
                                         <>
                                             {
                                                 <>
-                                                    {displayedContent.length > 0 && displayedContent.map((options, index) => {
-                                                        return (
-                                                            <>
-                                                                <>
+                                                    {
+                                                        displayedContent.length > 0 && displayedContent.map((options, index) => {
+                                                            return (
+                                                                <React.Fragment key={index}>
                                                                     <div className='menu-options-header'>
                                                                         <div className="option-name">Choisissez votre {Object.keys(options)[0]}</div>
                                                                         {
@@ -469,7 +475,7 @@ const MenuPopup: React.FC<Props> = ({ close, restaurant }) => {
                                                                     </div>
                                                                     <form>
                                                                         {state[Object.keys(options)[0]].map((option: any, index: number) => (
-                                                                            <div key={index} className="options-list">
+                                                                            <div key={option.id} className="options-list">
                                                                                 <div className="checkBox">
                                                                                     <input type='checkbox' name={option.id} id={option.id} value={option.id || ''} onChange={(e) => selectOption(Object.keys(options)[0], index, e)} checked={option?.checked}>
                                                                                     </input>
@@ -484,10 +490,10 @@ const MenuPopup: React.FC<Props> = ({ close, restaurant }) => {
                                                                     <div className="devider">
 
                                                                     </div>
-                                                                </>
 
-                                                            </>)
-                                                    })
+                                                                </React.Fragment>
+                                                            )
+                                                        })
                                                     }
 
                                                     <div className="prev-next-buttons">

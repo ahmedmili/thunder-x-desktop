@@ -1,24 +1,3 @@
-import React, { useCallback, useEffect, useState } from 'react';
-import {
-  Container,
-  Box,
-  Typography,
-  Card,
-  CircularProgress,
-  List,
-  ListItem,
-  ListItemText,
-  Grid,
-} from '@mui/material';
-import eventEmitter from '../../services/thunderEventsService';
-import {
-  setCommands,
-  setSelectedLocation,
-  setSelectedCommand,
-} from '../../Redux/slices/commandsSlice';
-import './track.css';
-import { useTranslation } from 'react-i18next';
-import livreur from '../../assets/livreur-img-1.png';
 import {
   BuildRounded,
   DriveEtaRounded,
@@ -27,9 +6,30 @@ import {
   Phone,
   ShoppingCartRounded,
 } from '@mui/icons-material';
+import {
+  Box,
+  Card,
+  CircularProgress,
+  Container,
+  Grid,
+  List,
+  ListItem,
+  ListItemText,
+  Typography,
+} from '@mui/material';
 import axios from 'axios';
-import MapComponent from '../../components/mapComponent/mapComponent';
+import React, { useCallback, useEffect } from 'react';
+import { useTranslation } from 'react-i18next';
+import {
+  setCommands,
+  setSelectedCommand,
+  setSelectedLocation,
+} from '../../Redux/slices/commandsSlice';
 import { useAppDispatch, useAppSelector } from '../../Redux/store';
+import livreur from '../../assets/livreur-img-1.png';
+import MapComponent from '../../components/mapComponent/mapComponent';
+import eventEmitter from '../../services/thunderEventsService';
+import './track.css';
 
 const ApiEndpoint = import.meta.env.VITE_SERVER_ENDPOINT;
 const API_URL = `${ApiEndpoint}/mycommands`;
@@ -84,7 +84,6 @@ const OrderTrackingPage: React.FC = () => {
 
   const handleCommandClick = (command: any) => {
     dispatch(setSelectedCommand(command));
-    console.log('selectedCommand', selectedCommand);
   };
   const getProgressDescription = (cycle: string) => {
     switch (cycle) {
@@ -148,6 +147,7 @@ const OrderTrackingPage: React.FC = () => {
                 <Box className='card-header'>
                   <Box className='header-left'>
                     <img
+                      loading="lazy"
                       src={livreur}
                       alt='Delivery Person'
                       className='header-image'
@@ -240,7 +240,7 @@ const OrderTrackingPage: React.FC = () => {
                     {selectedCommand.cycle ? (
 
                       <Box className='custom-box-inner-selected'>
-                        
+
                         {/* PENDING  waitingForDriver*/}
                         <Box className='custom-box-inner-selected-cart'>
                           <Box className={`custom-box-inner-selected-cart-box ${selectedCommand.cycle ? '' : 'pending'}`}>

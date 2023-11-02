@@ -9,6 +9,8 @@ import Cover from '../../../../../assets/profile/desactive-cover.png';
 import { userService } from '../../../../../services/api/user.api';
 import ConfirmPopup from '../../../../Popups/ConfirmPopup/ConfirmPopup';
 import './desactiveAccount.scss';
+import { Position } from '../../../../../services/types';
+import { LocationService } from '../../../../../services/api/Location.api';
 
 interface DesactiveAccountProps {
   type: string
@@ -61,6 +63,22 @@ const DesactiveAccount: React.FC<DesactiveAccountProps> = ({ type }) => {
         localStorage.clear();
         localStorage.setItem('lang', lang!);
         dispatch(logout())
+        navigator.geolocation.getCurrentPosition(
+          (position: any) => {
+            const { latitude, longitude } = position.coords;
+            LocationService.geoCode(latitude, longitude).then(data => {
+              dispatch({
+                type: "SET_LOCATION",
+                payload: {
+                  ...data
+                },
+              });
+            });
+          },
+          (error: GeolocationPositionError) => {
+            toast.error(error.message)
+          }
+        );
         navigate('/')
       }
       else {

@@ -141,7 +141,6 @@ function MenuOptions() {
 
     useEffect(() => {
         getProduct();
-        console.log(restaurant)
     }, []);
 
     useEffect(() => {

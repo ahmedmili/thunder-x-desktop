@@ -27,6 +27,8 @@ import ArchiveW from '../../../../assets/profile/white/Archive.svg'
 import EspaceW from '../../../../assets/profile/white/Espace.svg'
 import DiscuterW from '../../../../assets/profile/white/Discuter.svg'
 import FavorsW from '../../../../assets/profile/white/Favors.svg'
+import { LocationService } from '../../../../services/api/Location.api';
+import { toast } from 'react-toastify';
 
 
 const SideBar = () => {
@@ -142,6 +144,22 @@ const SideBar = () => {
             <li>
               <Link to={'/'} className={`disconnect`} onClick={(e) => {
                 dispatch(logout())
+                navigator.geolocation.getCurrentPosition(
+                  (position: any) => {
+                    const { latitude, longitude } = position.coords;
+                    LocationService.geoCode(latitude, longitude).then(data => {
+                      dispatch({
+                        type: "SET_LOCATION",
+                        payload: {
+                          ...data
+                        },
+                      });
+                    });
+                  },
+                  (error: GeolocationPositionError) => {
+                    toast.error(error.message)
+                  }
+                );
               }}>
                 <span className='profile-list-icon' style={{ backgroundImage: `url(${Deconnecter})` }}></span>
                 {t('profile.deconnecter')}

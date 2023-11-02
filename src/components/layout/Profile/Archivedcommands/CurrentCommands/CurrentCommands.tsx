@@ -91,7 +91,7 @@ const Command: React.FC<CommandProps> = ({ removeCommand, data }) => {
             </div>
             {/* deliv price */}
             <div className='deliv-price'>
-                <span>Frais de livraison</span>
+                <span>{t('supplier.delivPrice')}</span>
                 <span className='left-price'>{data.coupon.delivery_fixed === 1 ? data.delivery_price : (data.delivery_price - data.total_price_coupon).toFixed(2)} DT</span>
             </div>
             {/* products discriptions */}
@@ -274,11 +274,11 @@ const CurrentCommands: React.FC<CommandsListProps> = ({ removeCommand, goToPasse
         <>
             <div className="current-commands-container">
                 <header className={` current-command-header `}>
-                    <img src={supplier.images[1].path} alt="supplier background" />
+                    <img src={supplier.images[1].path} loading="lazy" alt="supplier background" />
                 </header>
                 <main className={`current-command-main `}>
                     <div className='supplier-info'>
-                        <img src={supplier.images[0].path} alt="supplier logo" />
+                        <img src={supplier.images[0].path} loading="lazy" alt="supplier logo" />
                         <div className='name-rate'>
                             <p className='supplier-name'>{supplier.name}</p>
                             {(supplier.star && supplier.star > 0) && <p className='supplier-rates'><StarIcon className='rate-icon' /> {supplier.star.toFixed(1)}</p>}
@@ -299,14 +299,14 @@ const CurrentCommands: React.FC<CommandsListProps> = ({ removeCommand, goToPasse
                         }
                         <div className='command-graph'>
                             <div className='time-line'></div>
-                            <img src={(status === 1 || status === 2) ? traitementA : traitementD} alt="traitement logo" className='traitement-logo' />
-                            <img src={(status <= 5 && status > 2) ? preparatinA : preparatinD} alt="preparation logo" className='preparation-logo' />
+                            <img loading="lazy" src={(status === 1 || status === 2) ? traitementA : traitementD} alt="traitement logo" className='traitement-logo' />
+                            <img loading="lazy" src={(status <= 5 && status > 2) ? preparatinA : preparatinD} alt="preparation logo" className='preparation-logo' />
                             {
                                 isDelevery === 1 ? (
-                                    <img src={(status === 6) ? delivA : delivD} alt="deliv logo" className='deliv-logo' />
+                                    <img loading="lazy" src={(status === 6) ? delivA : delivD} alt="deliv logo" className='deliv-logo' />
 
                                 ) : (
-                                    <img src={(status === 6) ? doneA : doneD} alt="deliv logo" className='deliv-logo' />
+                                    <img loading="lazy" src={(status === 6) ? doneA : doneD} alt="deliv logo" className='deliv-logo' />
 
                                 )
                             }
@@ -341,7 +341,7 @@ const CurrentCommands: React.FC<CommandsListProps> = ({ removeCommand, goToPasse
                                         (status >= 5) && (
                                             <>
                                                 <div className='deliv-assigned'>
-                                                    <img src={(delivery && delivery.image.path) ? delivery.image.path : defaultImage} alt="supplier image" />
+                                                    <img loading="lazy" src={(delivery && delivery.image.path) ? delivery.image.path : defaultImage} alt="supplier image" />
                                                     <div className='delivery-info'>
                                                         <p className="title">{t('profile.commands.votreLiv')}</p>
                                                         <p className="name">{(delivery && delivery.name) ? delivery.name : "Med Fendri"}</p>
@@ -407,7 +407,6 @@ const CurrentCommands: React.FC<CommandsListProps> = ({ removeCommand, goToPasse
                     {
                         status == 6 && (
                             <div className='buttons'>
-                                {/* <button className="recue" onClick={goToPassedCommands} >{t('profile.commands.recue')}  </button> */}
                                 <button className="problem" onClick={handleProblemPopup}>{t('profile.commands.problem')}</button>
                             </div>
                         )
