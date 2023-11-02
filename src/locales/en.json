@@ -108,6 +108,7 @@
   "lastName": "Last name",
   "confirmPassword": "Confirm password",
   "haveAcc": "Already have an account?",
+  "haventAcc": "You don't have an account?",
   "connectHere": "Log in here",
   "need_account": "Need an account?",
   "signup_url_here": "Sign up here",
@@ -129,6 +130,7 @@
   "welcome": "Welcome, ",
   "signup": "Sign Up",
   "login": "Login",
+  "login2": "login",
   "livraison": "Delivery",
   "emporter": "Pick up",
   "noSuggestions": "Nothing to suggest",
@@ -219,7 +221,6 @@
   "cart.payment.iCommand": "Order",
   "cart.payment.payment": "Payment",
   "repasGratuit": "Free Meal",
-
   "faq.header": "Frequently Asked Questions",
   "faq.questions": [
     {
