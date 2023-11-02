@@ -9,7 +9,7 @@ export const AdsCarousel = (props: any) => {
     const handleImageClick = (ad: any) => {
         const supplier_id = ad.supplier ? ad.supplier.id : null;
         const supplier_name = ad.supplier ? ad.supplier.name : null;
-        supplier_id ? navigate(`/restaurant/ ${supplier_id}-${supplier_name}`) : () => { return 0 }
+        supplier_id ? navigate(`/restaurant/ ${supplier_id}-${supplier_name}/tous`) : () => { return 0 }
     }
 
     return (

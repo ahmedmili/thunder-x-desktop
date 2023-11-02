@@ -42,9 +42,32 @@ const Menu: React.FC<MenuProps> = () => {
   const [showOptionsPopup, setShowOptionsPopup] = useState(false);
   const [filtreddMenuData, setFiltreddMenuData] = useState<MenuData[]>([]);
   const [displayedRestaurant, setDisplayedRestaurant] = useState<any>();
-  const { id, search } = useParams<{ id: string, search?: string }>();
+  const { id, search, productId } = useParams<{ id: string, search?: string, productId?: string }>();
   const [selectedOption, setSelectedOption] = useState(search ? search : "tous");
   const idNumber = id?.split('-')[0];
+
+  useEffect(() => {
+
+    (productId != null) && navigate(`/product/${productId}`);
+    if (search == null || search == "") {
+      let locationArray = location.pathname.split('/')
+      locationArray[3] = 'tous'
+      console.log(locationArray.join('/'))
+      const newUrl = `${locationArray.join('/')}`
+      navigate(newUrl, { replace: true })
+    }
+
+  }, [])
+
+  const handleUrlProductId = (id: number) => {
+    const locationPath = location.pathname;
+    if (Number(productId) != id) {
+      let locationArray = locationPath.split("/");
+      locationArray[4] = id.toString();
+      const newURL = locationArray.join("/");
+      navigate(newURL, { replace: true });
+    }
+  }
 
   const handlePopup = () => {
     setShowOptionsPopup(!showOptionsPopup)
@@ -103,6 +126,7 @@ const Menu: React.FC<MenuProps> = () => {
 
   // close options
   const handleChooseOptions = (selectedMenuItem: any | null) => {
+    showOptionsPopup === false && handleUrlProductId(selectedMenuItem.id)
     dispatch(setProduct(selectedMenuItem))
     handlePopup()
   };

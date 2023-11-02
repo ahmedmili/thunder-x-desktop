@@ -230,8 +230,8 @@ function App() {
         <Routes>
           <Route path="/" element={<Layout />}>
             <Route index element={<HomePage />} />
-            <Route path="/restaurant/:id/:search?/*" element={<Menu />} />
-            <Route path="/product" element={<MenuOptions />} />
+            <Route path="/restaurant/:id/:search?/:productId?" element={<Menu />} />
+            <Route path="/product/:id?" element={<MenuOptions />} />
             <Route path="/cart" element={<CartPage />} />
             <Route path="/search" element={<FilterPage />} />
             {/* Private Route */}
