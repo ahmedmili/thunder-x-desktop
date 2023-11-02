@@ -28,7 +28,7 @@
   width: 98%;
   height: 60vh;
   border-radius: 15px;
-  padding: 20px 20px;
+  padding: 0px 20px 15px 20px;
   overflow-y: scroll;
   max-height: 601px;
   margin-right: 5px;
@@ -52,7 +52,6 @@
     justify-content: space-between;
 
     .close-btn {
-      all: unset;
       color: $orange_color;
       width: 19px;
       height: 19px;
@@ -70,6 +69,7 @@
       font-style: normal;
       font-weight: 500;
       line-height: normal;
+      margin-bottom: 5px;
     }
 
     .supplier-name {
@@ -130,7 +130,8 @@
       }
 
       .product-info {
-        margin: 0 auto 0 43px;
+        margin: 0 auto 0 20px;
+        width: 50%;
 
         .name {
           color: $dark_Gray;
@@ -161,7 +162,6 @@
       }
 
       .remove-btn {
-        all: unset;
         width: 34px;
         height: 34px;
         background-color: $orange_color;
@@ -199,7 +199,7 @@
         width: 71px;
         height: 41.621px;
         display: flex;
-        margin: 0 180px 0 auto;
+        margin: 0 131px 0 auto;
 
         .count-buttons {
           display: flex;
@@ -210,8 +210,6 @@
           gap: 5px;
 
           button {
-            all: unset;
-
             .count-more,
             .count-less {
               width: 14px;
@@ -281,7 +279,6 @@
     margin-top: 20px;
 
     button {
-      all: unset;
       height: 55px;
       text-align: center;
       font-family: Poppins;
@@ -328,7 +325,6 @@
     }
 
     .emptyButton {
-      all: unset;
       border-radius: 55px;
       background-color: $orange_color;
       min-width: 271px;
@@ -343,6 +339,50 @@
 
       &:hover {
         cursor: pointer;
+      }
+    }
+  }
+}
+
+@media only screen and (max-width: 768px) {
+  .cart-main {
+    padding: 7px 20px;
+
+    .article-provider {
+      .head {
+        .product-info {
+          margin: 0px auto 0 10px;
+
+          .name {
+            font-size: 15px;
+          }
+
+          .unit-total {
+            font-size: 13px;
+          }
+        }
+
+        .remove-btn {
+          width: 34px;
+          height: 28px;
+          font-size: 18px;
+          display: flex;
+          justify-content: center;
+          align-items: center;
+        }
+      }
+
+      .foot {
+        .count-container {
+          margin: 0 61px 0 auto;
+        }
+      }
+    }
+
+    .cart-btns {
+      button {
+        height: 40px;
+        font-size: 20px;
       }
     }
   }
@@ -447,7 +487,6 @@
             gap: 0;
 
             button {
-              all: unset;
               margin-right: 10px;
 
               .count-more,
@@ -487,6 +526,7 @@
   }
 
 }
+
 @media only screen and (max-height: 680px) {
 
   .cart-main {

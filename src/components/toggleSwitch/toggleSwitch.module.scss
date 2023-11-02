@@ -93,6 +93,33 @@
       }
     }
   }
+
+  @media only screen and (max-width:768px) {
+    .SwitchesContainer {
+      padding: 0;
+      width: 21rem;
+
+      .SwitchWrapper {
+
+        width: 107.361px;
+      }
+
+      .SwitchLabel {
+        padding: 3px;
+        font-size: 11px;
+      }
+
+      .SwitchWrapper {
+        .Switch {
+
+          .SwitchText {
+            padding: 5px;
+            font-size: 11px;
+          }
+        }
+      }
+    }
+  }
   @media only screen and (max-width: 576px) {
     .SwitchesContainer {
       width: 10rem;

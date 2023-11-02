@@ -71,7 +71,7 @@
         }
 
         .restaurantImage {
-          object-fit: cover;
+          // object-fit: cover;
           height: 100%;
         }
 
@@ -124,9 +124,15 @@
             font-weight: 600;
             display: flex;
             justify-content: space-between;
+            align-items: center;
+            // max-height: 20px;
+            // text-wrap: nowrap;
+            flex-wrap: wrap;
 
             span {
               display: flex;
+              max-height: 20px;
+              text-wrap: nowrap;
 
               span {
                 margin-bottom: 0;
@@ -155,6 +161,8 @@
                 font-size: 9px;
                 font-style: normal;
                 font-weight: 600;
+                max-height: 20px;
+                text-wrap: nowrap;
               }
             }
           }
@@ -203,6 +211,42 @@
   }
 }
 
+@media only screen and (max-width: 978px) {
+  .supplierCard {
+
+    .restaurantLink {
+      .card {
+        .contentContainer {
+          .leftSide {
+            justify-content: space-around;
+
+            .price {
+              font-size: 9px;
+
+              span {
+                font-size: 9px;
+              }
+
+              p {
+
+                font-size: 7px;
+              }
+
+              .restaurantTime {
+                p {
+
+                  font-size: 7px;
+                }
+              }
+            }
+          }
+
+        }
+      }
+    }
+  }
+}
+
 @media only screen and (max-width: 767px) {
   .supplierCard {
     .restaurantLink {
@@ -225,11 +269,22 @@
             .name {
               font-size: 10px;
               max-height: 200px;
-              max-width: 100px;
+
+              .starIcon {
+                font-size: 1.2rem;
+              }
             }
 
             .price {
               font-size: 6px;
+
+              .restaurantTime {
+                p {
+
+                  font-size: 5px;
+                }
+
+              }
 
               span {
 
@@ -250,7 +305,7 @@
   }
 }
 
-@media only screen and (max-width: 575px) {
+@media only screen and (max-width: 660px) {
   .supplierCard {
     .restaurantLink {
       .card {
@@ -270,8 +325,6 @@
             }
 
             .price {
-              font-size: 6px;
-
               span {
                 span {
                   font-size: 6px;

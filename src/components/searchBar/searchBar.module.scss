@@ -4,26 +4,42 @@
 
   background-color: $primary_color;
   border-radius: 25px;
-  width: 342.96px;
+  // width: 342.96px;
+  width: 64%;
   padding: 0 19px;
-  .icons{
-    font-size: 10px;
+  min-height: 29px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+
+  .icons {
     color: white;
+
+    .icon {
+      font-size: 19px;
+
+    }
   }
-  .iconBackgorund{
+
+
+  .iconBackgorund {
     background-color: white;
     border-radius: 50%;
     color: $primary_color;
     padding: 2px;
   }
+
   form {
     display: flex;
     justify-content: space-between;
     align-items: center;
+    width: 100%;
+
     .headerSearchBar {
       color: white;
       border-radius: 25px;
-      
+      width: 80%;
+
       input {
         width: 254px;
         border-radius: 25px;
@@ -32,14 +48,16 @@
         color: white;
         border: none;
         font-size: 18px;
+        width: 100%;
+
 
         &:focus {
           outline: none;
-          /* Remove the outline when focused */
         }
 
         &::placeholder {
           color: white;
+          text-align: center;
         }
       }
 
@@ -81,19 +99,22 @@
 
 @media only screen and (max-width: 992px) {
   .searchContainer {
-    width: 201px;
+    width: 77%;
+
     padding: 5px 10px;
+
     form {
       .headerSearchBar {
-        width: 100px;
         margin: 0;
+
         input {
-          padding: 0px;
-          font-size: 8.5px;
+          padding: 0 10px;
+          font-size: 14px;
         }
       }
     }
-    .icons .bi-search{
+
+    .bi-search {
       font-size: 10px;
     }
   }
@@ -101,15 +122,18 @@
 
 @media only screen and (max-width: 768px) {
   .searchContainer {
-    width: 177px;;
-
+    .icons{
+      .icon{
+        font-size: 13px;
+      }
+    }
     form {
       .headerSearchBar {
-        width: 94px;
         margin: 0;
-        input  {
+
+        input {
           padding: 0px;
-          font-size: 7px;
+          font-size: 11px;
         }
       }
     }
@@ -118,29 +142,27 @@
 
 @media only screen and (max-width: 576px) {
   .searchContainer {
-    padding :0 5px;
+    padding: 0 5px;
     width: 120px;
-    .icon{
+
+    .icon {
       font-size: 8px;
     }
-    .icons{
-      color: white;
-    }
-    .iconBackgorund{
+
+    .iconBackgorund {
       background-color: white;
       border-radius: 50%;
       color: $primary_color;
-      // padding: 0;
       height: 10px;
       display: flex;
       justify-content: center;
       align-items: center;
     }
-    
+
     form {
       .headerSearchBar {
-        width: 79px;
         margin: 0 0 3px 0;
+
         input {
           padding: 0px;
           font-size: 6px;

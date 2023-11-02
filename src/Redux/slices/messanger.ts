@@ -110,7 +110,6 @@ export const fetchMessages = () => async (dispatch: AppDispatch) => {
       }
       difference <= 86400000 && messagesArray.push(message)
     })
-    console.log(messagesArray)
     dispatch(getMessagesSuccess(messagesArray));
     return data
   } catch (error) {

@@ -1,17 +1,17 @@
+import { changeItemQuantity, removeItem } from '../../Redux/slices/cart/cartSlice'; // Change import statement to changeItemQuantity
 import { useAppDispatch, useAppSelector } from '../../Redux/store';
-import { removeItem, changeItemQuantity } from '../../Redux/slices/cart/cartSlice'; // Change import statement to changeItemQuantity
 
-import { FoodItem } from '../../services/types';
 import React, { useEffect, useState } from 'react';
+import { FoodItem } from '../../services/types';
 
-import KeyboardArrowUpOutlinedIcon from '@mui/icons-material/KeyboardArrowUpOutlined';
 import KeyboardArrowDownOutlinedIcon from '@mui/icons-material/KeyboardArrowDownOutlined';
-import empty from '../../assets/panier/empty.png'
+import KeyboardArrowUpOutlinedIcon from '@mui/icons-material/KeyboardArrowUpOutlined';
+import empty from '../../assets/panier/empty.png';
 
-import './cart.scss'
+import { useTranslation } from 'react-i18next';
 import { useNavigate } from 'react-router-dom';
 import PaymentPopup from '../Popups/payment/PaymentPopup';
-import { useTranslation } from 'react-i18next';
+import './cart.scss';
 interface CartProps {
   items: FoodItem[];
   closeButton: any
@@ -35,16 +35,12 @@ export const Cart: React.FC<CartProps> = ({ items, closeButton }) => {
   const [showPopup, setShowPopup] = useState<boolean>(false)
 
 
-  const theme = useAppSelector(state => state.home.theme)
   const location = useAppSelector(state => state.location.position)
-  const [template, setTemplate] = useState<number>(theme)
 
   const dispatch = useAppDispatch();
   const navigate = useNavigate()
   const { t } = useTranslation()
-  useEffect(() => {
-    setTemplate(theme)
-  }, [theme])
+
 
   useEffect(() => {
     setLocationName("" + location?.coords.label)
@@ -81,7 +77,7 @@ export const Cart: React.FC<CartProps> = ({ items, closeButton }) => {
         {/* Use the props here */}
         <div className='head'>
           <div className="image-container">
-            <img src={`${props.image ? props.image : ""}`} alt="product image" className='product-image' />
+            <img src={`${props.image ? props.image : ""}`} loading="lazy" alt="product image" className='product-image' />
           </div>
           <div className="product-info">
             <div className='name'>{props.name}</div>
@@ -129,7 +125,7 @@ export const Cart: React.FC<CartProps> = ({ items, closeButton }) => {
   }, [items])
 
   return (
-    <div className={`cart-main ${template === 1 && "dark-text"}`}>
+    <div className={`cart-main`}>
 
       {
         items.length > 0 ? (
@@ -229,7 +225,7 @@ export const Cart: React.FC<CartProps> = ({ items, closeButton }) => {
               </button>
             </section>
             <section className='empty-cart-main'>
-              <img src={empty} alt="empty cart" />
+              <img loading="lazy" src={empty} alt="empty cart" />
               <p>{t('cart.payment.noCommands')}</p>
               <button className='emptyButton' onClick={() => {
                 closeButton()

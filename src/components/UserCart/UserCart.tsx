@@ -22,6 +22,8 @@ import { localStorageService } from '../../services/localStorageService';
 import { Link } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import { setProfilePage } from '../../Redux/slices/home';
+import { LocationService } from '../../services/api/Location.api';
+import { toast } from 'react-toastify';
 interface CartProps {
   closeButton: any,
   lastName?: string,
@@ -166,6 +168,34 @@ export const UserCart: React.FC<CartProps> = ({ firstName = "", lastName = "", c
                     </div>
                   </li>
                 </ul>
+              </div>
+
+              <div className="disconnect">
+                <div className='link-list'>
+                  <div className='profile-list-icon' style={{ backgroundImage: `url(${Deconnecter})` }}></div>
+                  <Link to={'/'} onClick={() => {
+                    dispatch(logout())
+                    navigator.geolocation.getCurrentPosition(
+                      (position: any) => {
+                        const { latitude, longitude } = position.coords;
+                        LocationService.geoCode(latitude, longitude).then(data => {
+                          dispatch({
+                            type: "SET_LOCATION",
+                            payload: {
+                              ...data
+                            },
+                          });
+                        });
+                      },
+                      (error: GeolocationPositionError) => {
+                        toast.error(error.message)
+                      }
+                    );
+
+                  }
+
+                  }>{t("profile.deconnecter")}</Link>
+                </div>
               </div>
             </>
           )

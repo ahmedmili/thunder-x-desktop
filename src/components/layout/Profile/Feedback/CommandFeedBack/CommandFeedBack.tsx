@@ -1,15 +1,15 @@
 
 import { useEffect, useState } from 'react'
-import './commandFeedBack.scss'
+import { useTranslation } from 'react-i18next'
 import ActiveStar from "../../../../../assets/profile/feedback/command-feedback/active-star.svg"
 import EmptyStar from "../../../../../assets/profile/feedback/command-feedback/empty-star.svg"
-import SmileTresMauvais from "../../../../../assets/profile/feedback/command-feedback/smile-tres-mauvais.png"
-import SmileMauvais from "../../../../../assets/profile/feedback/command-feedback/smile-mauvais.png"
-import SmileOk from "../../../../../assets/profile/feedback/command-feedback/smile-ok.png"
 import SmileBien from "../../../../../assets/profile/feedback/command-feedback/smile-bien.png"
 import SmileIncroyable from "../../../../../assets/profile/feedback/command-feedback/smile-incroyable.png"
-import DelivAvis from "./CommandAvis.json";
-import { useTranslation } from 'react-i18next'
+import SmileMauvais from "../../../../../assets/profile/feedback/command-feedback/smile-mauvais.png"
+import SmileOk from "../../../../../assets/profile/feedback/command-feedback/smile-ok.png"
+import SmileTresMauvais from "../../../../../assets/profile/feedback/command-feedback/smile-tres-mauvais.png"
+import DelivAvis from "./CommandAvis.json"
+import './commandFeedBack.scss'
 
 
 
@@ -58,10 +58,10 @@ const CommandFeedBack: React.FC<CommandFeedBackProps> = ({ avis, handleAvis, han
             if (avis) {
                 setAvisList(avis)
             } else {
-                console.log("Language not found in JSON data");
+                console.error("Language not found in JSON data");
             }
         } else {
-            console.log("Language not found in localStorage");
+            console.error("Language not found in localStorage");
         }
     }, [])
 
@@ -73,35 +73,35 @@ const CommandFeedBack: React.FC<CommandFeedBackProps> = ({ avis, handleAvis, han
 
                     <div className='command-avis-container'>
                         <div className='avis-image-container'>
-                            <img className={`command-rate-smile ${avis === 1 ? "active" : ""}`} src={SmileTresMauvais} alt=" tres mauvais" onClick={() => handleAvis(1)} />
+                            <img loading="lazy" className={`command-rate-smile ${avis === 1 ? "active" : ""}`} src={SmileTresMauvais} alt=" tres mauvais" onClick={() => handleAvis(1)} />
                         </div>
                         <p className='command-avis-label'>Très mauvais !</p>
                     </div>
 
                     <div className='command-avis-container'>
                         <div className='avis-image-container'>
-                            <img className={`command-rate-smile ${avis === 2 ? "active" : ""}`} src={SmileMauvais} alt="mauvais" onClick={() => handleAvis(2)} />
+                            <img loading="lazy" className={`command-rate-smile ${avis === 2 ? "active" : ""}`} src={SmileMauvais} alt="mauvais" onClick={() => handleAvis(2)} />
                         </div>
                         <p className='command-avis-label'>Mauvais !</p>
                     </div>
 
                     <div className='command-avis-container'>
                         <div className='avis-image-container'>
-                            <img className={`command-rate-smile ${avis === 5 ? "active" : ""}`} src={SmileIncroyable} alt="incroyable" onClick={() => handleAvis(5)} />
+                            <img loading="lazy" className={`command-rate-smile ${avis === 5 ? "active" : ""}`} src={SmileIncroyable} alt="incroyable" onClick={() => handleAvis(5)} />
                         </div>
                         <p className='command-avis-label'>Incroyable !</p>
                     </div>
 
                     <div className='command-avis-container'>
                         <div className='avis-image-container'>
-                            <img className={`command-rate-smile ${avis === 3 ? "active" : ""}`} src={SmileOk} alt="ok" onClick={() => handleAvis(3)} />
+                            <img loading="lazy" className={`command-rate-smile ${avis === 3 ? "active" : ""}`} src={SmileOk} alt="ok" onClick={() => handleAvis(3)} />
                         </div>
                         <p className='command-avis-label'>OK !</p>
                     </div>
 
                     <div className='command-avis-container'>
                         <div className='avis-image-container'>
-                            <img className={`command-rate-smile ${avis === 4 ? "active" : ""}`} src={SmileBien} alt="bien" onClick={() => handleAvis(4)} />
+                            <img loading="lazy" className={`command-rate-smile ${avis === 4 ? "active" : ""}`} src={SmileBien} alt="bien" onClick={() => handleAvis(4)} />
                         </div>
                         <p className='command-avis-label'>Bien !</p>
                     </div>
@@ -109,23 +109,23 @@ const CommandFeedBack: React.FC<CommandFeedBackProps> = ({ avis, handleAvis, han
 
                 <div className='command-feedback-star-container'>
                     <div className={`avis-star-img-container ${avis === 1 ? "active-star" : ""}`}>
-                        <img src={avis >= 1 ? ActiveStar : EmptyStar} alt="star icon" onClick={() => handleAvis(1)} />
+                        <img loading="lazy" src={avis >= 1 ? ActiveStar : EmptyStar} alt="star icon" onClick={() => handleAvis(1)} />
                     </div>
 
                     <div className={`avis-star-img-container ${avis === 2 ? "active-star" : ""}`}>
-                        <img src={avis >= 2 ? ActiveStar : EmptyStar} alt="star icon" onClick={() => handleAvis(2)} />
+                        <img loading="lazy" src={avis >= 2 ? ActiveStar : EmptyStar} alt="star icon" onClick={() => handleAvis(2)} />
                     </div>
 
                     <div className={`avis-star-img-container ${avis === 3 ? "active-star" : ""}`}>
-                        <img src={avis >= 3 ? ActiveStar : EmptyStar} alt="star icon" onClick={() => handleAvis(3)} />
+                        <img loading="lazy" src={avis >= 3 ? ActiveStar : EmptyStar} alt="star icon" onClick={() => handleAvis(3)} />
                     </div>
 
                     <div className={`avis-star-img-container ${avis === 4 ? "active-star" : ""}`}>
-                        <img src={avis >= 4 ? ActiveStar : EmptyStar} alt="star icon" onClick={() => handleAvis(4)} />
+                        <img loading="lazy" src={avis >= 4 ? ActiveStar : EmptyStar} alt="star icon" onClick={() => handleAvis(4)} />
                     </div>
 
                     <div className={`avis-star-img-container ${avis === 5 ? "active-star" : ""}`}>
-                        <img src={avis === 5 ? ActiveStar : EmptyStar} alt="star icon" onClick={() => handleAvis(5)} />
+                        <img loading="lazy" src={avis === 5 ? ActiveStar : EmptyStar} alt="star icon" onClick={() => handleAvis(5)} />
                     </div>
                 </div>
 

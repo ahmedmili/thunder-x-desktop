@@ -1,14 +1,13 @@
-import React, { useEffect, useState } from 'react'
+import React from 'react'
 
-import "./oldCommands.scss"
-import PositionIcon from "../../../../../assets/profile/ArchivedCommands/position.svg"
-import DestinationIcon from "../../../../../assets/profile/ArchivedCommands/destination.svg"
-import TimeIcon from "../../../../../assets/profile/ArchivedCommands/time.svg"
-import DefaultImg from "../../../../../assets/profile/ArchivedCommands/default.jpg"
+import { Star } from '@mui/icons-material'
 import { useTranslation } from 'react-i18next'
-import { useAppSelector } from '../../../../../Redux/store'
-import { Star } from '@mui/icons-material';
 import { useNavigate } from 'react-router-dom'
+import DefaultImg from "../../../../../assets/profile/ArchivedCommands/default.jpg"
+import DestinationIcon from "../../../../../assets/profile/ArchivedCommands/destination.svg"
+import PositionIcon from "../../../../../assets/profile/ArchivedCommands/position.svg"
+import TimeIcon from "../../../../../assets/profile/ArchivedCommands/time.svg"
+import "./oldCommands.scss"
 
 interface CommandsListProps {
     data: any,
@@ -28,12 +27,15 @@ interface ProductProps {
 const Product: React.FC<ProductProps> = ({ data }) => {
     return (
         <div className='old-commands-product-container'>
-            <img src={data.img} alt="product image" />
+            <img loading="lazy" src={data.img} alt="product image" />
             <div className='product-info' >
                 <p className='name'> {data.name}</p>
                 <p className='qt'> X{data.qt}</p>
-                <p className='description' dangerouslySetInnerHTML={{ __html: data.description }} />
-                <p className='price'> {data.price}</p>
+                {
+                    data.description &&
+                    <p className='description' dangerouslySetInnerHTML={{ __html: data.description }} />
+                }
+                <p className='price'> {data.price.toFixed(2)} DT</p>
             </div>
 
         </div>
@@ -56,11 +58,6 @@ const OldCommands: React.FC<CommandsListProps> = ({ data, feedbacksList }) => {
         navigate(`/profile/Feedback/${command_id}`)
     }
 
-    useEffect(() => {
-        console.log(feedbacksList)
-        console.log(data)
-    }, [])
-
     return (
         <React.Fragment>
             {
@@ -70,7 +67,15 @@ const OldCommands: React.FC<CommandsListProps> = ({ data, feedbacksList }) => {
                         <div className='old-command-info-container'>
                             <div className='supplier-info'>
                                 <div className='logo' >
-                                    <div className='logo-img' style={{ backgroundImage: `url(${supplier.images[0].path.length > 0 ? supplier.images[0].path : DefaultImg})` }}></div>
+                                    <div className='logo-img' style={{
+                                        backgroundImage: `url(${supplier.images[0].path.length == 0 ?
+                                            DefaultImg :
+                                            supplier.images[0]?.pivot.type === "principal" ?
+                                                supplier.images[0].path :
+                                                supplier.images[1].path
+
+                                            }
+                                         )` }}></div>
                                     <div className="name-rate">
                                         <span className='supplier-name'>{supplier.name}</span>
                                         {
@@ -89,7 +94,7 @@ const OldCommands: React.FC<CommandsListProps> = ({ data, feedbacksList }) => {
                             <span className='devider'></span>
                             <div className='command-info'>
                                 <div className='start'>
-                                    <img src={PositionIcon} alt="Supplier position" />
+                                    <img loading="lazy" src={PositionIcon} alt="Supplier position" />
                                     <div className="info">
                                         <p className="supplier-name">{supplier.name}</p>
                                         <p className="supplier-position">{position}</p>
@@ -99,11 +104,11 @@ const OldCommands: React.FC<CommandsListProps> = ({ data, feedbacksList }) => {
                                     delivery && (
                                         <>
                                             <div className='delay'>
-                                                <img className='time-icon' src={TimeIcon} alt="time icon" />
+                                                <img loading="lazy" className='time-icon' src={TimeIcon} alt="time icon" />
                                                 <span className='meduim-time'>{supplier.medium_time}<span>min</span> </span>
                                             </div>
                                             <div className='end'>
-                                                <img src={DestinationIcon} alt="Client position" />
+                                                <img loading="lazy" src={DestinationIcon} alt="Client position" />
                                                 <div className="info">
                                                     <p className="deliv-type">{t("home2")}</p>
                                                     <p className="supplier-position">{data.to_adresse}</p>
@@ -125,7 +130,14 @@ const OldCommands: React.FC<CommandsListProps> = ({ data, feedbacksList }) => {
                                                 <div className="name-rate">
                                                     <span className='supplier-Title'>{t("profile.commands.votreLiv")}</span>
                                                     <span className='supplier-name'>{delivery.name}</span>
-                                                    <span className='supplier-rates'> <Star className='star-icon' /> {(delivery.star && delivery.star > 0) ? delivery.star : "no rates"}</span>
+                                                    <span className='supplier-rates'>
+                                                        {
+                                                            (delivery.star && delivery.star > 0) &&
+                                                            <>
+                                                                <Star className='star-icon' />{delivery.star}
+                                                            </>
+                                                        }
+                                                    </span>
                                                 </div>
                                             </div>
                                         </div>
@@ -141,7 +153,10 @@ const OldCommands: React.FC<CommandsListProps> = ({ data, feedbacksList }) => {
                                 products.map((product: any, index: number) => {
                                     const productData: ProductProps = {
                                         data: {
-                                            img: product.computed_value ? product.computed_value.image[0].path : '',
+                                            img: product.computed_value ? product.computed_value.image[0].path :
+                                                supplier.images[0]?.pivot.type === "principal" ?
+                                                    supplier.images[0].path :
+                                                    supplier.images[1].path,
                                             name: product.name,
                                             description: product.computed_value.description,
                                             qt: product.quantity,
@@ -157,7 +172,7 @@ const OldCommands: React.FC<CommandsListProps> = ({ data, feedbacksList }) => {
                             )
                         }
                         <footer className='command-footer'>
-                            <p>{data.total_price}Dt</p>
+                            <p>{Number(data.total_price).toFixed(2)} Dt</p>
                             {
                                 feedbacksList.some(feedback => feedback === data.id) ? (
                                     <>

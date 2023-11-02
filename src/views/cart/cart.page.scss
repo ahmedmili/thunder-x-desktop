@@ -112,6 +112,7 @@
                 display: flex;
                 flex-direction: column;
                 align-items: start;
+                max-width: 104px;
                 gap: 2px;
 
                 .title {
@@ -121,6 +122,8 @@
                   font-style: normal;
                   font-weight: 600;
                   line-height: 20px;
+                  margin-top: 45px;
+                  text-align: start;
                 }
 
                 .description {
@@ -142,15 +145,13 @@
               img {
                 width: 66px;
                 height: 94px;
-                margin-top: 10px;
+                margin-top: 45px;
               }
             }
 
             button {
-              all: unset;
               width: 34px;
               height: 34px;
-              background-color: $orange_color;
               color: white;
               border-radius: 50%;
               font-size: 15px;
@@ -160,10 +161,13 @@
               text-align: center;
               margin-right: 5px;
               margin-left: 5px;
+            }
 
-              &:hover {
-                cursor: pointer;
-              }
+            .remove-btn {
+
+              background-color: $orange_color;
+              font-weight: 600;
+              padding: 3px 0 0;
             }
 
             .quantite {
@@ -188,7 +192,6 @@
                   gap: 5px;
 
                   button {
-                    all: unset;
 
                     .count-more,
                     .count-less {
@@ -273,11 +276,15 @@
 
       .promos-list {
         width: 100%;
-        display: flex;
-        flex-wrap: wrap;
+
+        ul {
+          padding-left: 5px;
+          display: flex;
+          flex-wrap: wrap;
+
+        }
 
         .promo-button {
-          all: unset;
           background-color: $orange_color;
           color: $dark_Gray;
           font-size: 15px;
@@ -310,7 +317,6 @@
         justify-content: center;
 
         .button {
-          all: unset;
           width: 173px;
           height: 43px;
           text-align: center;
@@ -380,7 +386,6 @@
         }
 
         .button {
-          all: unset;
           width: 173px;
           height: 43px;
           text-align: center;
@@ -633,7 +638,6 @@
       gap: 57px;
 
       button {
-        all: unset;
         width: 246px;
         height: 43px;
         display: flex;
@@ -777,9 +781,7 @@
           align-items: center;
 
           button {
-            all: unset;
             width: 216px;
-            ;
             height: 43px;
             text-align: center;
             border-radius: 55px;
@@ -843,7 +845,6 @@
   }
 
   .emptyButton {
-    all: unset;
     border-radius: 55px;
     background-color: $orange_color;
     width: 271px;

@@ -79,7 +79,6 @@ $svg_location_icon : url('../../../assets/location.svg');
                 button {
                     position: absolute;
                     z-index: 99;
-
                     background-color: $orange_color;
                     display: flex;
                     justify-content: center;
@@ -94,7 +93,9 @@ $svg_location_icon : url('../../../assets/location.svg');
                     right: -40px;
                     padding-left: 5px;
                     transition: all ease-in-out 0.5s;
-
+                    &:hover{
+                        opacity: 1;
+                    }
                     .icon {
                         margin: 0px;
                         background-image: $svg_location_icon;

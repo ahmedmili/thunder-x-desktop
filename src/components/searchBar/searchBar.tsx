@@ -1,17 +1,17 @@
 
-import React, { useState, useCallback } from "react";
-import SearchIcon from '@mui/icons-material/Search';
 import ArrowForwardIcon from '@mui/icons-material/ArrowForward';
-import searchStyle from "./searchBar.module.scss";
-import { localStorageService } from "../../services/localStorageService"
-import { supplierServices } from "../../services/api/suppliers.api"
+import SearchIcon from '@mui/icons-material/Search';
+import React, { useCallback, useState } from "react";
+import { useDispatch } from "react-redux";
+import { useLocation, useNavigate } from "react-router-dom";
 import {
   setDistanceFilter,
   setSearchQuery,
   setfilterRestaurants,
 } from "../../Redux/slices/restaurantSlice";
-import { useDispatch } from "react-redux";
-import { useNavigate, useLocation } from "react-router-dom"
+import { supplierServices } from "../../services/api/suppliers.api";
+import { localStorageService } from "../../services/localStorageService";
+import searchStyle from "./searchBar.module.scss";
 interface Props {
   placeholder: string;
 }

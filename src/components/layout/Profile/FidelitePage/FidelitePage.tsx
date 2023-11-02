@@ -1,11 +1,11 @@
-import React, { useEffect, useState } from 'react'
-import CoverImage from '../../../.../../../assets/profile/ArchivedCommands/cover.svg'
-import CoverImage2 from '../../../.../../../assets/profile/ArchivedCommands/cover.svg'
-import './fidelitePage.scss'
-import RepasList from './MonRepas/RepasList/RepasList'
-import RepasFooter from './MonRepas/Footer/Footer'
+import { useState } from 'react'
 import { useTranslation } from 'react-i18next'
+import CoverImage2 from '../../../.../../../assets/profile/espace_fedele1.jpg'
+import CoverImage from '../../../.../../../assets/profile/espace_fedele2.jpg'
 import Bonus from './Bonus/Bonus'
+import RepasFooter from './MonRepas/Footer/Footer'
+import RepasList from './MonRepas/RepasList/RepasList'
+import './fidelitePage.scss'
 
 function FidelitePage() {
 

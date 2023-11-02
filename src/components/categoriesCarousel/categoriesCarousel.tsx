@@ -7,6 +7,7 @@ import KeyboardDoubleArrowRightIcon from '@mui/icons-material/KeyboardDoubleArro
 import { ButtonBack, ButtonNext, CarouselProvider, Slide, Slider } from 'pure-react-carousel';
 import 'pure-react-carousel/dist/react-carousel.es.css';
 import { Col, Container, Row } from 'react-bootstrap';
+import { useTranslation } from 'react-i18next';
 import { useDispatch } from 'react-redux';
 import { useLocation, useNavigate } from 'react-router-dom';
 import { setfilterRestaurants } from '../../Redux/slices/restaurantSlice';
@@ -14,7 +15,6 @@ import { useAppSelector } from '../../Redux/store';
 import { supplierServices } from '../../services/api/suppliers.api';
 import { localStorageService } from '../../services/localStorageService';
 import './categoriesCarousel.scss';
-import { useTranslation } from 'react-i18next';
 
 interface Category {
   id: number;
@@ -124,8 +124,7 @@ const CategoryCarousel: React.FC<CategoryCarouselProps> = ({
   };
 
   return (
-    // <Container className={`container ${template === 1 && "dark-background2"}`} >
-    <Container className={`container`} >
+    <Container  >
       <Row>
         <p className='carousal-cat-title'>{t('home.categorie')} {selectedCategories}</p>
       </Row>
@@ -178,21 +177,15 @@ const CategoryCarousel: React.FC<CategoryCarouselProps> = ({
                   </Slider>
                 </Col>
               </Row>
+              <div className='categories-list-buttons-container'>
+                <ButtonBack className='btn'>
+                  <KeyboardDoubleArrowLeftIcon className=' slider-button-icon' />
+                </ButtonBack>
+                <ButtonNext className='btn btn-default'>
+                  <KeyboardDoubleArrowRightIcon className=' slider-button-icon' />
+                </ButtonNext>
 
-              <Row>
-                <Col>
-                  <div className='categories-list-buttons-container'>
-                    <ButtonBack className='btn'>
-                      <KeyboardDoubleArrowLeftIcon className=' slider-button-icon' />
-                    </ButtonBack>
-                    <ButtonNext className='btn btn-default'>
-                      <KeyboardDoubleArrowRightIcon className=' slider-button-icon' />
-                    </ButtonNext>
-
-                  </div>
-                </Col>
-
-              </Row>
+              </div>
 
             </CarouselProvider>
 

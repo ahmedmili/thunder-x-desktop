@@ -17,6 +17,7 @@
     position: fixed;
     top: 0;
     right: 0;
+    z-index: 999;
 }
 
 .menu-popup-container {
@@ -138,7 +139,6 @@
                 padding-right: 60px;
 
                 .menu-options-header {
-                    // border-top: solid 1px #D9D9D9;
 
                     display: flex;
                     justify-content: space-between;
@@ -208,7 +208,7 @@
                         }
 
                         .custom-checkbox {
-                            display: inline-block;
+                            display: inline;
                             width: 20px;
                             height: 20px;
                             background-color: #FBC301;
@@ -263,12 +263,6 @@
                         padding-right: 15px;
 
                         button {
-                            all: unset;
-
-                            &:hover {
-                                cursor: pointer;
-                            }
-
                             .next-page-icon {
                                 color: #24A6A4;
                                 width: 53px;
@@ -284,12 +278,6 @@
                         align-items: center;
 
                         button {
-                            all: unset;
-
-                            &:hover {
-                                cursor: pointer;
-                            }
-
                             .prev-page-icon {
                                 color: #24a6a4;
                                 width: 53px;
@@ -319,7 +307,6 @@
         gap: 25px;
 
         .add-to-cart-button {
-            all: unset;
             width: 220.193px;
             height: 74px;
             border-radius: 55px;
@@ -331,10 +318,6 @@
             font-style: normal;
             font-weight: 600;
             line-height: normal;
-
-            &:hover {
-                cursor: pointer;
-            }
 
             .cart-icon {
                 width: 34.624px;
@@ -359,7 +342,6 @@
                 gap: 20px;
 
                 button {
-                    all: unset;
 
                     .count-more,
                     .count-less {
@@ -501,10 +483,13 @@
     .menu-popup-container {
 
         .popup-box {
+            height: 525px;
 
             .modal-content-options {
                 margin-right: 60px;
-                height: 633px;
+                height: 475px;
+                padding-top: 11px;
+                flex: 1.1;
 
                 .options-info {
                     .menu-title {
@@ -528,8 +513,7 @@
                     margin-bottom: 10px;
 
                     .menu-options-header {
-                        padding: 0;
-                        margin-bottom: 5px;
+                        // margin-bottom: 5px;
 
                         .option-name {
                             width: 140px;

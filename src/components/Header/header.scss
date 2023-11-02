@@ -21,17 +21,21 @@
 }
 
 .head1 {
-    position: relative;
+    position: absolute;
+    overflow: hidden;
+    top: 78px;
+    width: 132px;
+    height: 432px;
+    left: 0;
 
     .demiCercle {
         position: absolute;
-        top: 80px;
         left: -491px;
         z-index: 20;
         width: 532px;
         height: 432px;
         border-radius: 500px;
-        background: linear-gradient(180deg, $orange_color 0%, $orange_color 100%);
+        background: linear-gradient(180deg, #FBC000 0%, #FBC000 100%);
     }
 }
 
@@ -94,32 +98,35 @@
     }
 }
 
+.headerAppBar2 {
+    margin-left: 80px;
 
-.headerMessage {
-    margin-top: 2px;
-    display: flex;
-    flex-direction: column;
+    .headerMessage {
+        margin-top: 2px;
+        display: flex;
+        flex-direction: column;
 
-    .headerMessageSyle1 {
-        margin: 3px 0 0 0;
-        display: inline;
-        color: $dark_Gray;
-        font-family: Poppins;
-        font-size: 40px;
-        ;
-        font-style: normal;
-        font-weight: 700;
-        line-height: normal;
-    }
+        .headerMessageSyle1 {
+            margin: 3px 0 0 0;
+            display: inline;
+            color: $dark_Gray;
+            font-family: Poppins;
+            font-size: 40px;
+            ;
+            font-style: normal;
+            font-weight: 700;
+            line-height: normal;
+        }
 
-    .headerMessageSyle2 {
-        display: inline;
-        color: $primary_color;
-        font-family: Poppins;
-        font-size: 40px;
-        font-style: normal;
-        font-weight: 700;
-        line-height: normal;
+        .headerMessageSyle2 {
+            display: inline;
+            color: $primary_color;
+            font-family: Poppins;
+            font-size: 40px;
+            font-style: normal;
+            font-weight: 700;
+            line-height: normal;
+        }
     }
 }
 
@@ -164,9 +171,11 @@
 }
 
 .imageBuilder {
+
     background-image: url(/src/assets/home/images.png);
-    background-size: 100% 100%;
+    background-size: contain;
     background-repeat: no-repeat;
+    background-position: center;
     width: 438px;
     height: 310px;
 }
@@ -188,7 +197,7 @@
 
 
 .fixedHeaderContainer2 {
-    background-color: $white_001;
+    background-color: #fffefe;
     height: 75px;
     position: fixed;
     top: 0;
@@ -198,7 +207,7 @@
     display: flex;
     justify-content: space-between;
     align-items: center;
-    padding: 0 10px;
+    padding: 0 18px 0 10px;
     border-radius: 0px 0px 20px 20px;
     z-index: 1001;
     box-shadow: 0px 0px 10px 0px rgba(0, 0, 0, 0.75);
@@ -245,11 +254,11 @@
         .logoMain {
             background-repeat: no-repeat;
             display: inline-block;
-            background-image: url("/src/assets/icon.png");
+            background-image: url(/src/assets/thunder-logo.png);
             background-position: center;
-            background-size: cover;
-            width: 31.81px;
-            height: 51px;
+            background-size: contain;
+            width: 131px;
+            height: 47px;
             margin-left: 20px;
         }
     }
@@ -281,8 +290,13 @@
             }
         }
 
+        .account,
+        .search {
+            margin: 3px 0;
+
+        }
+
         .account {
-            all: unset;
             color: $primary_color;
             position: relative;
 
@@ -316,7 +330,6 @@
         }
 
         .search {
-            all: unset;
             color: $primary_color;
 
             &:hover {
@@ -330,7 +343,6 @@
         }
 
         .cart-item {
-            all: unset;
             display: flex;
             justify-content: center;
             align-items: center;
@@ -363,7 +375,7 @@
     position: fixed;
     top: 80px;
     right: 12vw;
-    width: 500px;
+    width: 408px;
     background-color: white;
     z-index: 999;
     border-radius: 15px;
@@ -376,8 +388,8 @@
 @media only screen and (max-width:1200px) {
     .head1 {
         .demiCercle {
-            top: 73px;
-            left: -469px;
+            top: 22px;
+            left: -493px;
         }
     }
 
@@ -394,7 +406,6 @@
     }
 
     .headerContainer {
-        margin-top: 70px;
 
         .headerAppBar2 {
             .headerMessage {
@@ -444,7 +455,7 @@
 
         .logoContainer {
             .logoMain {
-                width: 31.81px;
+                width: 73.81px;
                 height: 39px;
             }
         }
@@ -487,14 +498,15 @@
 
     .head1 {
         .demiCercle {
-            width: 200px;
-            height: 200px;
-            top: 114px;
-            left: -167px;
+            width: 232px;
+            height: 242px;
+            top: 39px;
+            left: -179px;
         }
     }
 
     .headerContainer {
+        margin-top: -32px;
 
         .imageBuilder {
             width: 255px;
@@ -503,6 +515,8 @@
 
 
         .headerAppBar2 {
+            margin-left: 44px;
+
             .headerMessage {
 
                 .headerMessageSyle1,
@@ -512,10 +526,10 @@
             }
 
             .headerLocalisationMessageContainer {
-                padding: 0 8px;
+                padding: 5px 8px;
 
                 a {
-                    font-size: 8.5px;
+                    font-size: 13.5px;
 
                     .localisationIcon {
                         top: -2px;
@@ -531,6 +545,7 @@
 @media only screen and (max-width: 768px) {
 
     .fixedHeaderContainer2 {
+
         .info {
             .cart-item {
                 width: 66px;
@@ -552,6 +567,20 @@
                     height: 35px;
                 }
             }
+
+            .cart-item {
+                font-size: 20px;
+                height: 34px;
+            }
+        }
+    }
+
+    .head1 {
+        .demiCercle {
+            width: 232px;
+            height: 242px;
+            top: 39px;
+            left: -170px;
         }
     }
 
@@ -562,6 +591,8 @@
         }
 
         .headerAppBar2 {
+            margin-left: 13px;
+
             .headerMessage {
 
                 .headerMessageSyle1,
@@ -572,7 +603,7 @@
 
             .headerLocalisationMessageContainer {
                 a {
-                    font-size: 7px;
+                    font-size: 11px;
 
                     .localisationIcon {
                         top: -2px;
@@ -582,6 +613,10 @@
             }
         }
 
+    }
+
+    .cart-container {
+        width: 304px;
     }
 }
 
@@ -604,16 +639,6 @@
         width: 273px;
     }
 
-    .head1 {
-        .demiCercle {
-            top: 106px;
-            left: -169px;
-            height: 200px;
-            width: 200px;
-        }
-    }
-
-
     .fixedHeaderContainer {
         .appBar {
             .LoadingButton {
@@ -635,8 +660,8 @@
         .imageBuilderContainer {
             display: flex;
             justify-content: center;
-
             align-items: center;
+            overflow: hidden;
 
             .imageBuilder {
                 background-position: center center;

@@ -3,6 +3,7 @@ import { logout } from "../Redux/slices/userSlice";
 import { toast, ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { useAppDispatch } from "../Redux/store";
+import { LocationService } from "./api/Location.api";
 
 const ApiEndpoint = import.meta.env.VITE_SERVER_ENDPOINT;
 const withValidUserCheck = (WrappedComponent: React.FC) => {
@@ -30,6 +31,22 @@ const withValidUserCheck = (WrappedComponent: React.FC) => {
               const errorData = await response.json();
               toast.error(errorData.message || "An error occurred");
               dispatch(logout());
+              navigator.geolocation.getCurrentPosition(
+                (position: any) => {
+                  const { latitude, longitude } = position.coords;
+                  LocationService.geoCode(latitude, longitude).then(data => {
+                    dispatch({
+                      type: "SET_LOCATION",
+                      payload: {
+                        ...data
+                      },
+                    });
+                  });
+                },
+                (error: GeolocationPositionError) => {
+                  toast.error(error.message)
+                }
+              );
             }
           } catch (error) {
             console.error(
@@ -38,9 +55,41 @@ const withValidUserCheck = (WrappedComponent: React.FC) => {
             );
             toast.error("An error occurred while checking user validity");
             dispatch(logout());
+            navigator.geolocation.getCurrentPosition(
+              (position: any) => {
+                const { latitude, longitude } = position.coords;
+                LocationService.geoCode(latitude, longitude).then(data => {
+                  dispatch({
+                    type: "SET_LOCATION",
+                    payload: {
+                      ...data
+                    },
+                  });
+                });
+              },
+              (error: GeolocationPositionError) => {
+                toast.error(error.message)
+              }
+            );
           }
         } else {
           dispatch(logout());
+          navigator.geolocation.getCurrentPosition(
+            (position: any) => {
+              const { latitude, longitude } = position.coords;
+              LocationService.geoCode(latitude, longitude).then(data => {
+                dispatch({
+                  type: "SET_LOCATION",
+                  payload: {
+                    ...data
+                  },
+                });
+              });
+            },
+            (error: GeolocationPositionError) => {
+              toast.error(error.message)
+            }
+          );
         }
       };
 

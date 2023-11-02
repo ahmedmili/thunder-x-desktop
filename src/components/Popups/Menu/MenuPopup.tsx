@@ -105,10 +105,6 @@ const MenuPopup: React.FC<Props> = ({ close, restaurant }) => {
     const cartItems = useAppSelector((state) => state.cart.items);
     const selectedMenuItem = useAppSelector((state) => state.restaurant.product);
 
-
-    useEffect(() => {
-        console.log(selectedMenuItem)
-    }, [selectedMenuItem])
     const getProduct = async () => {
         try {
             const { status, data } = await productService.getProduct(selectedMenuItem?.id);
@@ -416,7 +412,14 @@ const MenuPopup: React.FC<Props> = ({ close, restaurant }) => {
                 <div className="menu-popup-container">
                     <div className="popup-box">
                         <div className="modal-content-image"
-                            style={{ backgroundImage: `url(${selectedMenuItem?.image[0]?.path})`, }}>
+                            style={{
+                                backgroundImage: `url(${selectedMenuItem?.image[0] ?
+                                    selectedMenuItem?.image[0]?.path :
+                                    restaurant?.images[0]?.pivot.type === "principal" ?
+                                        restaurant?.images[0]?.path :
+                                        restaurant?.images[1]?.path
+                                    })`,
+                            }}>
                         </div>
                         <div className="modal-content-options">
                             <div className="options-info">

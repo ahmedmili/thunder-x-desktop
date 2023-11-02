@@ -30,7 +30,7 @@
         justify-content: space-between;
         align-items: center;
         padding: 0 28px;
-        transition: background-color 100ms;
+        transition: background-color 0.5s;
 
         span {
             color: #958E8E;
@@ -47,19 +47,17 @@
             width: 25px;
             height: 25px;
             rotate: 90deg;
+            transition: rotate 0.5s ease;
 
-        }
-
-        .active {
-
-            .icon {
-                rotate: 180deg;
-            }
         }
     }
 
     .active-header {
         background-color: #5DBDBC;
+
+        .icon {
+            rotate: 180deg;
+        }
 
         span,
         .icon {
@@ -70,51 +68,34 @@
     .prev-next-buttons {
         width: 100%;
         display: flex;
-        justify-content: space-between;
+        justify-content: end;
+        margin-top: 27px;
+
+        .next-page-button,
+        .prev-page-button {
+            display: flex;
+            justify-content: start;
+            align-items: center;
+            padding-right: 15px;
+
+            button {
+                width: 28px;
+                height: 28px;
+                background-position: center;
+                background-repeat: no-repeat;
+                background-color: transparent;
+                border: none;
+                background-size: cover;
+            }
+        }
 
         .next-page-button {
             display: flex;
             justify-content: end;
             align-items: center;
-            padding-right: 15px;
 
             button {
-                all: unset;
-
-                &:hover {
-                    cursor: pointer;
-                }
-
-                .next-page-icon {
-                    color: #24A6A4;
-                    width: 53px;
-                    height: 52px;
-                    font-size: 22px;
-                }
-            }
-        }
-
-        .prev-page-button {
-            display: flex;
-            justify-content: start;
-            align-items: center;
-
-            button {
-                all: unset;
-
-                &:hover {
-                    cursor: pointer;
-                }
-
-                .prev-page-icon {
-                    color: #24a6a4;
-                    width: 53px;
-                    height: 52px;
-                    font-size: 22px;
-                    transform: rotate(180deg);
-
-                }
-
+                transform: rotate(180deg);
             }
         }
     }

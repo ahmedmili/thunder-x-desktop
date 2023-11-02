@@ -44,7 +44,6 @@ const ForgotPasswordPage = () => {
     values: FormValues,
     { setSubmitting, resetForm }: FormikHelpers<FormValues>
   ) => {
-    console.log(values);
   };
   return (
     <CardPage

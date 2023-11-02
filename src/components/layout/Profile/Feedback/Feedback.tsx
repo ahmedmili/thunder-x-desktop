@@ -1,10 +1,10 @@
-import React, { useEffect, useState } from 'react'
-import './feedback.scss'
+import { useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
-import DelivFeedBack from './DelivFeedBack/DelivFeedBack';
 import CommandFeedBack from './CommandFeedBack/CommandFeedBack';
+import DelivFeedBack from './DelivFeedBack/DelivFeedBack';
+import './feedback.scss';
 
-import FeedBackBanner from '../../../../assets/profile/feedback/banner.png'
+import FeedBackBanner from '../../../../assets/profile/feedback/banner.png';
 import { userService } from '../../../../services/api/user.api';
 
 function Feedback() {
@@ -71,7 +71,7 @@ function Feedback() {
         <div className='feedback-page-main-container'>
             <p className='feedback-page-title' >Donner votre feedback</p>
             <div className='images-header' >
-                <img className='feedback-banner' src={FeedBackBanner} alt="feedback banner" />
+                <img loading="lazy" className='feedback-banner' src={FeedBackBanner} alt="feedback banner" />
                 <div className='feedback-satifait'>
                     <p className='feedback-question'>Est ce que vous étiez satisfait de votre commande ?</p>
                     <div className='question-option' onClick={() => setSatis(1)}>

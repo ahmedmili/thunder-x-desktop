@@ -158,6 +158,8 @@ const Menu: React.FC<MenuProps> = () => {
     handleFilter()
   }, [selectedOption, menuData])
 
+
+
   const Product = () => {
     return <>
       {
@@ -187,7 +189,7 @@ const Menu: React.FC<MenuProps> = () => {
                       {menuItemProducts.length} choix
                     </span>
                   </div>
-                  {menuItemProducts.length > productsPerPage && (
+                  {menuItemProducts.length > productsPerPage ? (
                     <Pagination
                       style={{ marginTop: '1rem' }}
                       count={Math.ceil(menuItemProducts.length / productsPerPage)}
@@ -196,7 +198,12 @@ const Menu: React.FC<MenuProps> = () => {
                         handlePaginationClick(page, menuItemId)
                       }
                     />
-                  )}
+                  ) : (
+                    <div className='epmty-pagination'>
+
+                    </div>
+                  )
+                  }
 
                   <div className='product-container'>
                     <div className="product-grid">
@@ -217,7 +224,13 @@ const Menu: React.FC<MenuProps> = () => {
                               <AddIcon className="product-button-icon" />
                             </button>
                           </div>
-                          <img src={product.image[0]?.path} alt='product photo' className="product-image" />
+                          <img loading="lazy" src={
+                            product.image[0]?.path ?
+                              product.image[0]?.path :
+                              displayedRestaurant?.images[0].pivot.type === "principal" ?
+                                displayedRestaurant?.images[0].path :
+                                displayedRestaurant?.images[1].path
+                          } alt='product photo' className="product-image" />
                         </div>
                       ))}
                     </div>
@@ -229,13 +242,12 @@ const Menu: React.FC<MenuProps> = () => {
           )}
     </>
   }
-
   return (
     <>
       <Container fluid className={`supplier-page-header`} >
         <Row>
           <div className="background-container">
-            <img src={displayedRestaurant?.images[0].path} alt="restaurant image" className="background" />
+            <img loading="lazy" src={displayedRestaurant?.images[0].path} alt="restaurant image" className="background" />
             <div className="open-time">
               <span>{t("supplier.opentime")} {displayedRestaurant?.closetime}</span>
             </div>
@@ -268,10 +280,10 @@ const Menu: React.FC<MenuProps> = () => {
         <Row className={`main-row`}>
           <div className={`supplier-page-side-bar`}>
             <div className={`pub-contained`}>
-              <img className='supplier-logo' src={displayedRestaurant?.images[1].path} alt="" />
+              <img loading="lazy" className='supplier-logo' src={displayedRestaurant?.images[0].pivot.type === "principal" ? displayedRestaurant?.images[0].path : displayedRestaurant?.images[1].path} alt="" />
               <div className={`pub-posts`}>
-                <img className='insta-img' src={instaposter} alt=" insta img posts" />
-                <img className='insta-img' src={instaposter} alt=" insta img posts" />
+                <img loading="lazy" className='insta-img' src={instaposter} alt=" insta img posts" />
+                <img loading="lazy" className='insta-img' src={instaposter} alt=" insta img posts" />
               </div>
             </div>
           </div>
