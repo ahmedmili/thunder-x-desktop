@@ -1,23 +1,26 @@
-import * as Yup from "yup";
 import { FormikHelpers } from "formik";
+import { useEffect, useState } from "react";
+import { useTranslation } from "react-i18next";
+import { useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
-import InputForm from "../components/Input-form/InputForm";
-import Or from "../components/or/Or";
-import ButtonConnect from "../components/button-connect/ButtonConnect";
-import Apple from "../assets/icons/Apple";
-import Google from "../assets/icons/Google";
-import Facebook from "../assets/icons/Facebook";
-import LinkConnect from "../components/link-connect/LinkConnect";
-import CardPage from "../components/card-page/CardPage";
+import * as Yup from "yup";
+import { fetchHomeData, isDeliveryHomeSelector } from "../Redux/slices/home";
 import { createUser, usersErrors, usersLoding } from "../Redux/slices/users";
 import { useAppDispatch, useAppSelector } from "../Redux/store";
-import { useSelector } from "react-redux";
-import { FormValues, generateForm } from "../utils/formUtils";
-import { useEffect, useState } from "react";
+import Apple from "../assets/icons/Apple";
+import Facebook from "../assets/icons/Facebook";
+import Google from "../assets/icons/Google";
+import InputForm from "../components/Input-form/InputForm";
+import ButtonConnect from "../components/button-connect/ButtonConnect";
+import CardPage from "../components/card-page/CardPage";
+import LinkConnect from "../components/link-connect/LinkConnect";
+import Or from "../components/or/Or";
 import PicturesList from "../components/picture-list/PicturesList";
-import { fetchHomeData, isDeliveryHomeSelector } from "../Redux/slices/home";
+import { FormValues, generateForm } from "../utils/formUtils";
 
 const Register = () => {
+  const { t } = useTranslation()
+
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
   const ontoggleShowPassword = () => {
@@ -171,10 +174,10 @@ const Register = () => {
       })}
       <div style={{ display: "flex", flexDirection: "column", gap: "1rem" }}>
         <Or>Or</Or>
-        <ButtonConnect icon={<Apple />} text="Continue avec Apple" />
-        <ButtonConnect icon={<Google />} text="Continue avec Google" />
-        <ButtonConnect icon={<Facebook />} text="Continue avec Facebook" />
-        <LinkConnect />
+        <ButtonConnect provider="apple" icon={<Apple />} text="Continue avec Apple" />
+        <ButtonConnect provider="google" icon={<Google />} text="Continue avec Google" />
+        <ButtonConnect provider="fcb" icon={<Facebook />} text="Continue avec Facebook" />
+        <LinkConnect to="/login" label={t('haveAcc')} clickTitle={t('login2')} />
       </div>
     </CardPage>
   );

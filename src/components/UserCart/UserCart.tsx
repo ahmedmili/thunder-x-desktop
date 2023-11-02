@@ -26,19 +26,19 @@ import { LocationService } from '../../services/api/Location.api';
 import { toast } from 'react-toastify';
 interface CartProps {
   closeButton: any,
-  lastName: string,
-  firstName: string,
+  lastName?: string,
+  firstName?: string,
 }
 
 
-export const UserCart: React.FC<CartProps> = ({ firstName, lastName, closeButton }) => {
+export const UserCart: React.FC<CartProps> = ({ firstName = "", lastName = "", closeButton }) => {
 
   const { t } = useTranslation()
   const dispatch = useAppDispatch();
   const currentPage = useAppSelector(state => state.home.profilePage)
-  const theme = useAppSelector((state) => state.home.theme)
-  const [template, setTemplate] = useState<number>(theme)
+
   const msg_notifs = useAppSelector((state) => state.messanger.unReadedMessages)
+  const logged_in = localStorageService.getUserToken() !== null;
 
   const userItem = localStorageService.getUser();
   const user = userItem ? JSON.parse(userItem) : null;
@@ -49,118 +49,157 @@ export const UserCart: React.FC<CartProps> = ({ firstName, lastName, closeButton
   }
 
   useEffect(() => {
-    setTemplate(theme)
-  }, [theme])
-
-  useEffect(() => {
-    setDiscuterNotifActive(msg_notifs > 0 ? true : false)
+    logged_in && setDiscuterNotifActive(msg_notifs > 0 ? true : false)
   }, [msg_notifs])
 
   return (
-    <div className={`profile-cart-main ${template === 1 && "dark-background2"}`}>
-      <header>
-        <div className='profile-info'>
-          <img src={profile_img} alt="profile photo" />
-          <p className='welcome-msg'>
-            {t('welcome')} !
-          </p>
-          {
-            user && (
-              <p className='full-name'>
-                {firstName} {lastName}
-              </p>
+    <div className={`profile-cart-main`}>
+      {
+        logged_in &&
+        (
 
-            )
-          }
-        </div>
-        <button onClick={closeButton} className="close-btn">
-          X
-        </button>
-      </header>
+          <header>
+            <div className='profile-info'>
+              <img src={profile_img} alt="profile photo" />
+              <p className='welcome-msg'>
+                {t('welcome')} !
+              </p>
+              {
+                user && (
+                  <p className='full-name'>
+                    {firstName} {lastName}
+                  </p>
+
+                )
+              }
+            </div>
+            <button onClick={closeButton} className="close-btn">
+              X
+            </button>
+          </header>
+        )
+
+      }
 
       <main>
-        <div className='info-list'>
-          <ul>
-            <li>
-              <div className='link-list'>
-                <div className='profile-list-icon' style={{ backgroundImage: `url(${Accueil})` }}></div>
-                <Link onClick={() => handleSelect(1)} to={'/'}>{t("home")}</Link>
-              </div>
-            </li>
-
-            <li>
-              <div className='link-list'>
-                <div className='profile-list-icon' style={{ backgroundImage: `url(${Offres})` }}></div>
-                <Link onClick={() => handleSelect(2)} to={'/profile/annonces'}>{t("profile.mesOffres")}</Link>
-              </div>
-            </li>
-            <li>
-              <div className='link-list'>
-                <div className='profile-list-icon' style={{ backgroundImage: `url(${Config})` }}></div>
-                <Link onClick={() => handleSelect(3)} to={'/profile'}>{t("profile.mesConfig")}</Link>
-              </div>
-            </li>
-            <li>
-              <div className='link-list'>
-                <div className='profile-list-icon' style={{ backgroundImage: `url(${Archive})` }}></div>
-                <Link onClick={() => handleSelect(4)} to={'/profile/archivedCommands'}>{t("profile.commands")}</Link>
-              </div>
-            </li>
-            <li>
-
-              <div className='link-list'>
-                <div className='profile-list-icon' style={{ backgroundImage: `url(${Espace})` }}></div>
-                <Link onClick={() => handleSelect(5)} to={'/profile'}>{t("profile.espaceFidel")}</Link>
-              </div>
-
-            </li>
-            <li>
-              <div className='link-list'>
-                <div className='profile-list-icon' style={{ backgroundImage: `url(${Discuter})` }}></div>
-                <Link onClick={() => handleSelect(6)} to={'/profile/discuter'}>{t("profile.discuter")}</Link>
-                {
-                  discuterNotifActive && (
-                    <div className='notif-indicator'>
+        {
+          logged_in ? (
+            <>
+              <div className='info-list'>
+                <ul>
+                  <li>
+                    <div className='link-list'>
+                      <div className='profile-list-icon' style={{ backgroundImage: `url(${Accueil})` }}></div>
+                      <Link onClick={() => handleSelect(1)} to={'/'}>{t("home")}</Link>
                     </div>
-                  )
-                }
+                  </li>
+
+                  <li>
+                    <div className='link-list'>
+                      <div className='profile-list-icon' style={{ backgroundImage: `url(${Offres})` }}></div>
+                      <Link onClick={() => handleSelect(2)} to={'/profile/annonces'}>{t("profile.mesOffres")}</Link>
+                    </div>
+                  </li>
+                  <li>
+                    <div className='link-list'>
+                      <div className='profile-list-icon' style={{ backgroundImage: `url(${Config})` }}></div>
+                      <Link onClick={() => handleSelect(3)} to={'/profile'}>{t("profile.mesConfig")}</Link>
+                    </div>
+                  </li>
+                  <li>
+                    <div className='link-list'>
+                      <div className='profile-list-icon' style={{ backgroundImage: `url(${Archive})` }}></div>
+                      <Link onClick={() => handleSelect(4)} to={'/profile/archivedCommands'}>{t("profile.commands")}</Link>
+                    </div>
+                  </li>
+                  <li>
+
+                    <div className='link-list'>
+                      <div className='profile-list-icon' style={{ backgroundImage: `url(${Espace})` }}></div>
+                      <Link onClick={() => handleSelect(5)} to={'/profile'}>{t("profile.espaceFidel")}</Link>
+                    </div>
+
+                  </li>
+                  <li>
+                    <div className='link-list'>
+                      <div className='profile-list-icon' style={{ backgroundImage: `url(${Discuter})` }}></div>
+                      <Link onClick={() => handleSelect(6)} to={'/profile/discuter'}>{t("profile.discuter")}</Link>
+                      {
+                        discuterNotifActive && (
+                          <div className='notif-indicator'>
+                          </div>
+                        )
+                      }
+                    </div>
+                  </li>
+                  <li>
+                    <div className='link-list'>
+                      <div className='profile-list-icon' style={{ backgroundImage: `url(${Favors})` }}></div>
+                      <Link onClick={() => handleSelect(7)} to={'/profile/Favors'}>{t("profile.favors")}</Link>
+                    </div>
+                  </li>
+                </ul>
               </div>
-            </li>
-            <li>
-              <div className='link-list'>
-                <div className='profile-list-icon' style={{ backgroundImage: `url(${Favors})` }}></div>
-                <Link onClick={() => handleSelect(7)} to={'/profile/Favors'}>{t("profile.favors")}</Link>
+              <div className="disconnect">
+                <div className='link-list'>
+                  <div className='profile-list-icon' style={{ backgroundImage: `url(${Deconnecter})` }}></div>
+                  <Link to={'/'} onClick={() => dispatch(logout())}>{t("profile.deconnecter")}</Link>
+                </div>
               </div>
-            </li>
-          </ul>
-        </div>
-        <div className="disconnect">
-          <div className='link-list'>
-            <div className='profile-list-icon' style={{ backgroundImage: `url(${Deconnecter})` }}></div>
-            <Link to={'/'} onClick={() => {
-              dispatch(logout())
-              navigator.geolocation.getCurrentPosition(
-                (position: any) => {
-                  const { latitude, longitude } = position.coords;
-                  LocationService.geoCode(latitude, longitude).then(data => {
-                    dispatch({
-                      type: "SET_LOCATION",
-                      payload: {
-                        ...data
+            </>
+          ) : (
+            <>
+              <div className='info-list'>
+                <ul style={{
+                  border: "0",
+                  padding: "0",
+                  margin: "0",
+                }}>
+                  <li>
+                    <div className='link-list'>
+                      {/* <div className='profile-list-icon' style={{ backgroundImage: `url(${Accueil})` }}></div> */}
+                      <Link to={'/login'}>{t("login")}</Link>
+                    </div>
+                  </li>
+                  <li>
+                    <div className='link-list'>
+                      {/* <div className='profile-list-icon' style={{ backgroundImage: `url(${Accueil})` }}></div> */}
+                      <Link to={'/register'}>{t("signup")}</Link>
+                    </div>
+                  </li>
+                </ul>
+              </div>
+
+              <div className="disconnect">
+                <div className='link-list'>
+                  <div className='profile-list-icon' style={{ backgroundImage: `url(${Deconnecter})` }}></div>
+                  <Link to={'/'} onClick={() => {
+                    dispatch(logout())
+                    navigator.geolocation.getCurrentPosition(
+                      (position: any) => {
+                        const { latitude, longitude } = position.coords;
+                        LocationService.geoCode(latitude, longitude).then(data => {
+                          dispatch({
+                            type: "SET_LOCATION",
+                            payload: {
+                              ...data
+                            },
+                          });
+                        });
                       },
-                    });
-                  });
-                },
-                (error: GeolocationPositionError) => {
-                  toast.error(error.message)
-                }
-              );
+                      (error: GeolocationPositionError) => {
+                        toast.error(error.message)
+                      }
+                    );
 
-            }
+                  }
 
-            }>{t("profile.deconnecter")}</Link>
-          </div>
-        </div>
+                  }>{t("profile.deconnecter")}</Link>
+                </div>
+              </div>
+            </>
+          )
+        }
       </main>
     </div>
   );
