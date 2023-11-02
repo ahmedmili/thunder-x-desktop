@@ -1,5 +1,8 @@
 import { localStorageService } from '../localStorageService';
 import { api } from './../axiosApi';
+
+import { FacebookAuthProvider, GoogleAuthProvider, signInWithPopup } from 'firebase/auth';
+import { auth } from '../firebase';
 interface loginValues {
   email: string,
   password: string,
@@ -28,6 +31,75 @@ async function loginUser(values: loginValues) {
   } catch (error) {
     throw error;
   }
+}
+
+const signInWithGoogle = async () => {
+  try {
+    const provider = new GoogleAuthProvider();
+    provider.setCustomParameters({ prompt: 'select_account' });
+
+    const { user } = await signInWithPopup(auth, provider)
+    const userToken = await user.getIdToken();
+    if (userToken) {
+      const { status, data } = await loginBySocial("google", userToken)
+      if (data.success === true) {
+        return { status, data }
+      }
+    }
+  } catch (error) {
+    throw error
+  }
+}
+
+const signInWithFacebook = async () => {
+  const provider = new FacebookAuthProvider();
+  provider.setCustomParameters({
+    'auth_type': 'reauthenticate'
+  });
+
+  try {
+    const result = await signInWithPopup(auth, provider);
+    const user = result.user;
+    const userToken = await user.getIdToken();
+    if (userToken) {
+      const { status, data } = await loginBySocial("facebookNew", userToken)
+      if (data.success === true) return { status, data }
+    }
+  } catch (error: any) {
+    if (error.code === 'auth/cancelled-popup-request') {
+      alert('Facebook login popup was canceled. Please try again.');
+    } else {
+      throw error
+    }
+  }
+};
+
+const checkAuthProvider = () => {
+  const user = auth.currentUser;
+  if (user) {
+    const firebaseOAuthProviders = ['google.com', 'facebook.com', /* Add other Firebase-supported providers */];
+
+    const providerData = user.providerData;
+    const usedFirebaseOAuth = providerData.some(provider => firebaseOAuthProviders.includes(provider.providerId));
+    if (usedFirebaseOAuth) {
+      return true
+    } else {
+      return false
+    }
+  }
+}
+
+async function loginBySocial(provider: string, token: string, fcm = null) {
+  try {
+    const { status, data } = await api.post("social/signin", { provider, token, fcm })
+    return { status, data };
+  } catch (error) {
+    throw error;
+  }
+}
+
+const firebaseSignOut = () => {
+  auth.signOut()
 }
 
 async function registerUser(values: registerValues) {
@@ -249,6 +321,10 @@ async function getClientFeedback() {
 
 export const userService = {
   loginUser,
+  signInWithGoogle,
+  signInWithFacebook,
+  firebaseSignOut,
+  checkAuthProvider,
   registerUser,
   getUser,
   updatePassword,
