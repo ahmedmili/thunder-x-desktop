@@ -5,7 +5,7 @@ import {
 } from '@mui/material';
 import React, { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import { useParams } from 'react-router-dom';
+import { useLocation, useNavigate, useParams } from 'react-router-dom';
 import {
   clearCart,
   clearSupplierMismatch,
@@ -31,18 +31,20 @@ const Menu: React.FC<MenuProps> = () => {
 
   const { t } = useTranslation();
   const dispatch = useAppDispatch();
-
+  const navigate = useNavigate();
+  const location = useLocation();
   const [menuData, setMenuData] = useState<MenuData[]>([]);
-  const { id } = useParams<{ id: string }>();
   const [loading, setLoading] = useState(true);
   const [currentPage, setCurrentPage] = useState<{ [key: string]: number }>({});
   const productsPerPage = 4;
 
   const [showMismatchModal, setShowMismatchModal] = useState(false);
   const [showOptionsPopup, setShowOptionsPopup] = useState(false);
-  const [selectedOption, setSelectedOption] = useState("tous");
   const [filtreddMenuData, setFiltreddMenuData] = useState<MenuData[]>([]);
   const [displayedRestaurant, setDisplayedRestaurant] = useState<any>();
+  const { id, search } = useParams<{ id: string, search?: string }>();
+  const [selectedOption, setSelectedOption] = useState(search ? search : "tous");
+  const idNumber = id?.split('-')[0];
 
   const handlePopup = () => {
     setShowOptionsPopup(!showOptionsPopup)
@@ -58,7 +60,7 @@ const Menu: React.FC<MenuProps> = () => {
   const getSupplierById = async () => {
     try {
 
-      const { status, data } = await supplierServices.getSupplierById(Number(id!))
+      const { status, data } = await supplierServices.getSupplierById(Number(idNumber!))
 
       setDisplayedRestaurant(data.data)
 
@@ -68,12 +70,13 @@ const Menu: React.FC<MenuProps> = () => {
   }
   useEffect(() => {
     getSupplierById()
+    handleFilter()
   }, [])
 
   // initialize menue 
   useEffect(() => {
     const getMenu = async () => {
-      const { status, data } = await productService.getMenu(id);
+      const { status, data } = await productService.getMenu(idNumber);
       if (status === 200) {
         setMenuData(data.data);
         setFiltreddMenuData(data.data)
@@ -81,7 +84,7 @@ const Menu: React.FC<MenuProps> = () => {
       setLoading(false);
     };
     getMenu();
-  }, [id]);
+  }, [idNumber]);
 
 
   // close miss matching
@@ -111,6 +114,8 @@ const Menu: React.FC<MenuProps> = () => {
       : name;
   };
   const handleOptionChange = (event: any) => {
+    const updatedURL = `/restaurant/${id}/${event.target.value}`;
+    navigate(updatedURL, { replace: true });
     setSelectedOption(event.target.value);
   };
 
@@ -127,7 +132,7 @@ const Menu: React.FC<MenuProps> = () => {
   }
   useEffect(() => {
     handleFilter()
-  }, [selectedOption])
+  }, [selectedOption, menuData])
 
   const Product = () => {
     return <>
@@ -201,10 +206,6 @@ const Menu: React.FC<MenuProps> = () => {
     </>
   }
 
-  useEffect(() => {
-    console.log("displayedRestaurant", displayedRestaurant)
-    console.log(displayedRestaurant?.service_price)
-  }, [displayedRestaurant])
   return (
     <>
       <Container fluid className={`supplier-page-header`} >

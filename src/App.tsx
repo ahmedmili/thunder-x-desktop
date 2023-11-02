@@ -31,6 +31,7 @@ import { Message, Restaurant } from "./services/types";
 import channelListener from "./services/web-socket";
 
 import HomeSkeleton from "./views/home/skeleton/HomeSkeleton";
+import MenuOptions from "./components/menus/menuOptions/MenuOptions";
 //lazy loading components
 const Header = lazy(() => import("./components/Header/Header"));
 const Footer = lazy(() => import("./components/footer/footer"));
@@ -229,8 +230,8 @@ function App() {
         <Routes>
           <Route path="/" element={<Layout />}>
             <Route index element={<HomePage />} />
-            <Route path="/supplier-store/:id/*" element={<Menu />} />
-            {/* <Route path="/product" element={<MenuOptions />} /> */}
+            <Route path="/restaurant/:id/:search?/*" element={<Menu />} />
+            <Route path="/product" element={<MenuOptions />} />
             <Route path="/cart" element={<CartPage />} />
             <Route path="/search" element={<FilterPage />} />
             {/* Private Route */}

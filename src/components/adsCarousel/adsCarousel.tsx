@@ -8,7 +8,8 @@ export const AdsCarousel = (props: any) => {
 
     const handleImageClick = (ad: any) => {
         const supplier_id = ad.supplier ? ad.supplier.id : null;
-        supplier_id ? navigate("/supplier-store/" + supplier_id) : console.log('no supplier for this pub ')
+        const supplier_name = ad.supplier ? ad.supplier.name : null;
+        supplier_id ? navigate(`/restaurant/ ${supplier_id}-${supplier_name}`) : () => { return 0 }
     }
 
     return (
@@ -37,10 +38,6 @@ export const AdsCarousel = (props: any) => {
                                     </>
                                 ) :
                                     (
-                                        // <video aria-expanded autoPlay width={400} height={300}>
-                                        //     <source src={ad.image} type="video/mp4" />
-                                        //     Your browser does not support the video tag.
-                                        // </video>
                                         <VideoPlayer videoSrc={ad.image} cover={ad.cover} />
                                     )
                             }

@@ -44,7 +44,6 @@ const SupplierCard: React.FC<SupplierCard> = ({ data, favors = false, className 
         const response = await userService.deletefavorite(data.id)
         response.data.success && setFav(false)
     }
-
     return (
         <div className={`${supplierStyle.supplierCard} ${className}`}>
             {/* favors icons */}
@@ -61,7 +60,7 @@ const SupplierCard: React.FC<SupplierCard> = ({ data, favors = false, className 
             <Link
                 className={supplierStyle.restaurantLink}
                 to={{
-                    pathname: `/supplier-store/${data.id}`,
+                    pathname: `/restaurant/${data.id}-${data.name}`,
                 }}
                 state={{ restaurant: data }}
             >
