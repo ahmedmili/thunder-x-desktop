@@ -19,10 +19,9 @@ import Switches from "../toggleSwitch/toggleSwitch";
 
 import { Search } from '@mui/icons-material';
 import { useLocation } from 'react-router-dom';
+import { LocationService } from "../../services/api/Location.api";
 import { UserCart } from '../UserCart/UserCart';
 import { Cart } from '../cart/cart';
-import { LocationService } from "../../services/api/Location.api";
-import { Position } from "../../services/types";
 
 const Header = () => {
 
@@ -299,10 +298,6 @@ const Header = () => {
 
                         }
                         <PermIdentityOutlinedIcon className='account-icon' />
-                      </button>
-
-                      <button className="search">
-                        <Search className='search-icon' />
                       </button>
                     </>
                   )
