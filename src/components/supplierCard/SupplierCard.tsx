@@ -60,7 +60,7 @@ const SupplierCard: React.FC<SupplierCard> = ({ data, favors = false, className 
             <Link
                 className={supplierStyle.restaurantLink}
                 to={{
-                    pathname: `/restaurant/${data.id}-${data.name}/tous`,
+                    pathname: `/restaurant/${data.id}-${data.name}/All/`,
                 }}
                 state={{ restaurant: data }}
             >

@@ -17,7 +17,7 @@ const TemponsGrid: React.FC<TemponsListProps> = ({ ammount }) => {
 
     useEffect(() => {
         let tampArray = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
-        for (let index = 0; index < 4; index++) {
+        for (let index = 0; index < ammount; index++) {
             tampArray[index] = 1;
         }
         setTampons(tampArray)

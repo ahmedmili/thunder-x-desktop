@@ -53,7 +53,7 @@ const UnauthorizePage = lazy(
   () => import("./views/unauthorize/unauthorize.page")
 );
 const CartPage = lazy(() => import("./views/cart/cart.page"));
-const OrderTrackingPage = lazy(() => import("./views/track/trackorder.page"));
+// const OrderTrackingPage = lazy(() => import("./views/track/trackorder.page"));
 const ConfirmNumberPage = lazy(() => import("./views/ConfirmNumberPage"));
 const WelcomePage = lazy(() => import("./views/WelcomePage"));
 const ForgotPasswordPage = lazy(() => import("./views/ForgotPasswordPage"));
@@ -237,6 +237,10 @@ function App() {
       // Redirect to the same route with a '/' at the end
       navigate(`${pathname}/`, { replace: true });
     }
+    // window.scrollTo({
+    //   top: 0,
+    //   behavior: 'smooth'
+    // });
   }, [navLocation, Navigate]);
 
   return (

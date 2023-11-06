@@ -78,7 +78,10 @@ const HomePage = () => {
 
       <div className={`xxl-12 ${homeStyle.homePageContainer}`}>
         {isLoading ? (
-          <HomeSkeleton />
+          <div className={homeStyle.homeSkeletonContainer}>
+
+            <HomeSkeleton />
+          </div>
         ) : (
           <>
             {/* categories list */}
@@ -87,7 +90,7 @@ const HomePage = () => {
                 onCategorySelect={handleCategorySelect}
               />
             ) : (
-              <div className="skeleton-container">
+              <div className={homeStyle.homePageContainer}>
                 <Skeleton count={12} className="loading-skeleton" />
                 <Skeleton count={12} className="loading-skeleton" />
                 <Skeleton count={12} className="loading-skeleton" />

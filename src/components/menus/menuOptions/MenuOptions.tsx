@@ -3,7 +3,7 @@ import { Button } from '@mui/material';
 import { RefObject, useEffect, useReducer, useRef, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useSelector } from 'react-redux';
-import { useLocation, useParams } from 'react-router-dom';
+import { useParams } from 'react-router-dom';
 import { toast } from 'react-toastify';
 import { RootState } from '../../../Redux/slices';
 import { addItem, setDeliveryPrice, setSupplier } from '../../../Redux/slices/cart/cartSlice';
@@ -102,7 +102,6 @@ function MenuOptions() {
     const getProduct = async () => {
         try {
             const { status, data } = await productService.getProduct(Number(id));
-            // console.log('product', data.data)
             if (status === 200) {
                 setSupplierId(data.data.product.menu[0].supplier_id);
                 setProduct(data.data.product);
@@ -375,7 +374,7 @@ function MenuOptions() {
         <div className="menue-options-container" onClick={(e) => e.stopPropagation()}>
             <div className="modal-content-image">
                 <div className="modal-content-image-inner"
-                    style={{ backgroundImage: `url(${product.image ? product.image[0].path : ""})`, }}>
+                    style={{ backgroundImage: `url(${(product.image?.length > 0) ? product.image[0].path : productSupplier?.images[0].path})`, }}>
                 </div>
             </div>
             <div className="modal-content-options">

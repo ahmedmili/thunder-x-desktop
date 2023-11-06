@@ -252,10 +252,8 @@ const Header = () => {
                 onClick={() => navigate('/')} >
                 <a href="#" className={`logoMain minimizedlogoMain`}></a>
               </div>
-
-
+              
               <div className='info'>
-
                 <div className="position">
 
                   <LocationOnIcon className='position-icon' />
@@ -264,31 +262,16 @@ const Header = () => {
                     : t('no_location_detected')}
 
                 </div>
-                {
-                  logged_in && (
-                    <>
-                      <button onClick={handleUserCart} className="account">
-                        {
-                          notifsQts > 0 && (
-                            <div className="notif-number-container">
-                              {notifsQts}
-                            </div>
-                          )
 
-                        }
-                        <PermIdentityOutlinedIcon className='account-icon' />
-                      </button>
-                    </>
-                  )
-                }
+                <button onClick={handleUserCart} className={`account ${!logged_in && 'loggedin-account'}`}  >
+                  <PermIdentityOutlinedIcon className='account-icon' />
+                </button>
 
                 <button onClick={handleCart} className="cart-item">
                   <ShoppingCartOutlinedIcon className='cart-icon' />
                   {cartItems.length}
                 </button>
-                <button onClick={handleUserCart} className={`account ${!logged_in && 'loggedin-account'}`}  >
-                  <PermIdentityOutlinedIcon className='account-icon' />
-                </button>
+
                 {!logged_in && (
                   <div className="header-buttons">
                     <div
