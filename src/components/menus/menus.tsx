@@ -43,7 +43,7 @@ const Menu: React.FC<MenuProps> = () => {
   const [filtreddMenuData, setFiltreddMenuData] = useState<MenuData[]>([]);
   const [displayedRestaurant, setDisplayedRestaurant] = useState<any>();
   const { id, search, productId } = useParams<{ id: string, search?: string, productId?: string }>();
-  const [selectedOption, setSelectedOption] = useState(search ? search : "tous");
+  const [selectedOption, setSelectedOption] = useState(search ? search : "All");
   const idNumber = id?.split('-')[0];
 
   useEffect(() => {
@@ -51,13 +51,22 @@ const Menu: React.FC<MenuProps> = () => {
     (productId != null) && navigate(`/product/${productId}`);
     if (search == null || search == "") {
       let locationArray = location.pathname.split('/')
-      locationArray[3] = 'tous'
-      console.log(locationArray.join('/'))
+      locationArray[3] = 'All'
       const newUrl = `${locationArray.join('/')}`
       navigate(newUrl, { replace: true })
     }
 
   }, [])
+
+  useEffect(() => {
+    const { pathname } = location;
+
+    // Check if the path doesn't end with '/'
+    if (!pathname.endsWith('/') && pathname !== '/') {
+      // Redirect to the same route with a '/' at the end
+      navigate(`${pathname}/`);
+    }
+  }, [location, navigate]);
 
   const handleUrlProductId = (id: number) => {
     const locationPath = location.pathname;
@@ -144,7 +153,7 @@ const Menu: React.FC<MenuProps> = () => {
   };
 
   const handleFilter = () => {
-    if (selectedOption === "tous") {
+    if (selectedOption === "All") {
       setFiltreddMenuData(menuData)
     }
     else {
@@ -293,9 +302,9 @@ const Menu: React.FC<MenuProps> = () => {
               {
                 menuData.length != 0 && (
                   <>
-                    <div className={`select ${selectedOption == "tous" ? "selected" : ""}`}  >
-                      <input type="radio" value="tous" id='tous' name='type' checked={selectedOption === "1"} onChange={handleOptionChange} />
-                      <label htmlFor="tous">{t('supplier.allProducts')}</label>
+                    <div className={`select ${selectedOption == "All" ? "selected" : ""}`}  >
+                      <input type="radio" value="All" id='All' name='type' checked={selectedOption === "1"} onChange={handleOptionChange} />
+                      <label htmlFor="All">{t('supplier.allProducts')}</label>
                     </div>
                     {
                       menuData.map((data, index) => {

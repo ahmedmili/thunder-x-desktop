@@ -1,28 +1,26 @@
+import "laravel-echo/dist/echo";
+import React from "react";
 import Skeleton from "react-loading-skeleton";
 import "react-loading-skeleton/dist/skeleton.css";
-import React from "react";
-import { Restaurant } from "../../services/types";
-import RestaurantList from "../../components/recommendedRestaurants/recommendedRestaurants";
-import "laravel-echo/dist/echo";
-import "./home.page.module.scss";
 import { AdsCarousel } from "../../components/adsCarousel/adsCarousel";
 import { ApplicationAd } from "../../components/applicationAd/ApplicationAd";
 import { FooterNewsLeter } from "../../components/footerNewsLeter/FooterNewsLetter";
+import RestaurantList from "../../components/recommendedRestaurants/recommendedRestaurants";
+import { Restaurant } from "../../services/types";
+import homeStyle from "./home.page.module.scss";
 
-// const googleMapKey = import.meta.env.VITE_GOOGLE_MAPS_API_KEY;
-import { Container } from "@mui/material";
 
-import { useAppSelector } from "../../Redux/store";
-import { useEffect, useState } from "react";
-import CategoryCarousel from "../../components/categoriesCarousel/categoriesCarousel";
 import "laravel-echo/dist/echo";
+import { useEffect, useState } from "react";
+import { useSelector } from "react-redux";
 import {
   adsHomeSelector,
   categoriesHomeSelector,
   homeLoadingSelector,
   recommendedHomeSelector,
 } from "../../Redux/slices/home";
-import { useSelector } from "react-redux";
+import { useAppSelector } from "../../Redux/store";
+import CategoryCarousel from "../../components/categoriesCarousel/categoriesCarousel";
 import HomeSkeleton from "./skeleton/HomeSkeleton";
 
 const HomePage = () => {
@@ -31,8 +29,6 @@ const HomePage = () => {
   const categories = useSelector(categoriesHomeSelector);
   const recommanded = useSelector(recommendedHomeSelector);
   const isLoading = useSelector(homeLoadingSelector);
-  const theme = useAppSelector((state) => state.home.theme)
-  const [template, setTemplate] = useState<number>(theme)
 
   const restaurantsList = useAppSelector(
     (state) => state.restaurant.restaurants
@@ -43,9 +39,7 @@ const HomePage = () => {
     []
   );
 
-  useEffect(() => {
-    setTemplate(theme)
-  }, [theme])
+
 
   const handleCategorySelect = (category: string) => {
     if (selectedCategory === category) {
@@ -81,7 +75,8 @@ const HomePage = () => {
 
   return (
     <>
-      <Container  className={`containerr ${template === 1 && "dark-background"}`}>
+
+      <div className={`xxl-12 ${homeStyle.homePageContainer}`}>
         {isLoading ? (
           <HomeSkeleton />
         ) : (
@@ -138,7 +133,7 @@ const HomePage = () => {
             )}
           </>
         )}
-      </Container>
+      </div>
       <FooterNewsLeter />
     </>
   );
