@@ -22,7 +22,7 @@ import { Option } from "../../../services/types";
 
 interface Props {
     restaurant: any;
-    close: any;
+    close: () => void;
     isOpen: boolean
 }
 
@@ -447,48 +447,45 @@ const MenuPopup: React.FC<Props> = ({ close, restaurant }) => {
                                         <>
                                             {displayedContent.length > 0 && displayedContent.map((options, index) => {
                                                 return (
-                                                    <>
-                                                        <>
-                                                            <div className='menu-options-header'>
-                                                                <div className="option-name">Choisissez votre {Object.keys(options)[0]}</div>
-                                                                {
+                                                    <React.Fragment key={index}>
+                                                        <div className="devider">
+                                                        </div>
+                                                        <div className='menu-options-header'>
+                                                            <div className="option-name">Choisissez votre {Object.keys(options)[0]}</div>
+                                                            {
 
-                                                                    Object.keys(options)[0] === "packet" && <div className="option-obligatoir">Obligatoire</div>
-                                                                }
+                                                                Object.keys(options)[0] === "packet" && <div className="option-obligatoir">Obligatoire</div>
+                                                            }
 
-                                                                {
-                                                                    Object.keys(options)[0] === "sauce" && state.sauce_max?.max > 0 && <div className="option-max">{"MAX " + state.sauce_max?.max}</div>
-                                                                }
-                                                                {
-                                                                    Object.keys(options)[0] === "viande" && state.viande_max?.max > 0 && <div className="option-max">{"MAX " + state.viande_max?.max}</div>
-                                                                }
-                                                                {
-                                                                    Object.keys(options)[0] === "extra" && state.extra_max?.max > 0 && <div className="option-max">{"MAX " + state.extra_max?.max}</div>
-                                                                }
-                                                                {
-                                                                    Object.keys(options)[0] === "supplement" && state.supplement_max?.max > 0 && <div className="option-max">{"MAX " + state.supplement_max?.max}</div>
-                                                                }
-                                                            </div>
-                                                            <form>
-                                                                {state[Object.keys(options)[0]].map((option: any, index: number) => (
-                                                                    <div key={index} className="options-list">
-                                                                        <div className="checkBox">
-                                                                            <input type='checkbox' name={option.id} id={option.id} value={option.id || ''} onChange={(e) => selectOption(Object.keys(options)[0], index, e)} checked={option?.checked}>
-                                                                            </input>
-                                                                            <div className="custom-checkbox"></div>
-                                                                            <label htmlFor={option.id}>{option.name} </label>
-                                                                        </div>
-                                                                        <span className='option-price'>{option.price} DT</span>
+                                                            {
+                                                                Object.keys(options)[0] === "sauce" && state.sauce_max?.max > 0 && <div className="option-max">{"MAX " + state.sauce_max?.max}</div>
+                                                            }
+                                                            {
+                                                                Object.keys(options)[0] === "viande" && state.viande_max?.max > 0 && <div className="option-max">{"MAX " + state.viande_max?.max}</div>
+                                                            }
+                                                            {
+                                                                Object.keys(options)[0] === "extra" && state.extra_max?.max > 0 && <div className="option-max">{"MAX " + state.extra_max?.max}</div>
+                                                            }
+                                                            {
+                                                                Object.keys(options)[0] === "supplement" && state.supplement_max?.max > 0 && <div className="option-max">{"MAX " + state.supplement_max?.max}</div>
+                                                            }
+                                                        </div>
+
+                                                        <form>
+                                                            {state[Object.keys(options)[0]].map((option: any, index: number) => (
+                                                                <div key={index} className="options-list">
+                                                                    <div className="checkBox">
+                                                                        <input type='checkbox' name={option.id} id={option.id} value={option.id || ''} onChange={(e) => selectOption(Object.keys(options)[0], index, e)} checked={option?.checked}>
+                                                                        </input>
+                                                                        <div className="custom-checkbox"></div>
+                                                                        <label htmlFor={option.id}>{option.name} </label>
                                                                     </div>
-                                                                ))}
-                                                            </form>
+                                                                    <span className='option-price'>{option.price} DT</span>
+                                                                </div>
+                                                            ))}
+                                                        </form>
 
-                                                            <div className="devider">
-
-                                                            </div>
-                                                        </>
-
-                                                    </>)
+                                                    </React.Fragment>)
                                             })
                                             }
 

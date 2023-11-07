@@ -46,28 +46,39 @@ const Menu: React.FC<MenuProps> = () => {
   const [selectedOption, setSelectedOption] = useState(search ? search : "All");
   const idNumber = id?.split('-')[0];
 
+
+  /*
+  *
+  * url handling part
+  *
+  */
+
+  // redirect if the url taped again
   useEffect(() => {
 
-    (productId != null) && navigate(`/product/${productId}`);
-    if (search == null || search == "") {
-      let locationArray = location.pathname.split('/')
-      locationArray[3] = 'All'
-      const newUrl = `${locationArray.join('/')}`
-      navigate(newUrl, { replace: true })
+    if (productId != null) {
+      let locationArray = location.pathname.split('/');
+      locationArray[1] = "product";
+      const newUrl = locationArray.join("/");
+      navigate(`${newUrl}`);
+    } else {
+      if (search == null || search == "") {
+        let locationArray = location.pathname.split('/')
+        locationArray[3] = 'All'
+        const newUrl = `${locationArray.join('/')}`
+        navigate(newUrl, { replace: true })
+      }
     }
-
   }, [])
-
+  // assure '/' in the end of url
   useEffect(() => {
     const { pathname } = location;
-
-    // Check if the path doesn't end with '/'
     if (!pathname.endsWith('/') && pathname !== '/') {
-      // Redirect to the same route with a '/' at the end
       navigate(`${pathname}/`);
     }
   }, [location, navigate]);
 
+  // add product id into url
   const handleUrlProductId = (id: number) => {
     const locationPath = location.pathname;
     if (Number(productId) != id) {

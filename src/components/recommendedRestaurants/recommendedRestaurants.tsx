@@ -15,6 +15,7 @@ import recommandedStyle from "./recommendedRestaurants.module.scss";
 
 import KeyboardDoubleArrowLeftIcon from "@mui/icons-material/KeyboardDoubleArrowLeft";
 import KeyboardDoubleArrowRightIcon from "@mui/icons-material/KeyboardDoubleArrowRight";
+import useMediaQuery from "../../utils/useMediaQuery";
 
 interface Props {
   listType: string;
@@ -25,6 +26,7 @@ const RestaurantList: React.FC<Props> = ({ restaurants, listType }) => {
   const { t } = useTranslation();
 
   const [restaurantsList, setRestaurantsList] = useState(restaurants);
+  const [displayNormalSlideHeight, setDisplayNormalSlideHeight] = useState<number>(0);
 
 
   useEffect(() => {
@@ -54,6 +56,7 @@ const RestaurantList: React.FC<Props> = ({ restaurants, listType }) => {
     firstMiddle = restaurantsList.slice(0, middleIndex);
     lastMiddle = restaurantsList.slice(middleIndex);
   }
+  const isLargeScreen = useMediaQuery('(min-width : 1400px)');
 
   return (
     <div className={recommandedStyle.recommandedContainer}>
@@ -85,15 +88,14 @@ const RestaurantList: React.FC<Props> = ({ restaurants, listType }) => {
           ></div>
           <CarouselProvider
             naturalSlideWidth={100}
-            naturalSlideHeight={displayNormal ? 200 : 350}
+            naturalSlideHeight={
+              !displayNormal ? 350 : isLargeScreen ? 130 : 167}
             totalSlides={
               displayNormal
                 ? restaurantsList.length / 2 + 1
                 : restaurantsList.length
             }
             visibleSlides={3}
-            // visibleSlides={window.innerWidth > 768 ? 3 : 2}
-
             step={3}
             infinite={true}
             className={recommandedStyle.carouselProvider}

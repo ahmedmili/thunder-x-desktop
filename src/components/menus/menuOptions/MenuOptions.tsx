@@ -3,7 +3,7 @@ import { Button } from '@mui/material';
 import { RefObject, useEffect, useReducer, useRef, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useSelector } from 'react-redux';
-import { useParams } from 'react-router-dom';
+import { useLocation, useParams } from 'react-router-dom';
 import { toast } from 'react-toastify';
 import { RootState } from '../../../Redux/slices';
 import { addItem, setDeliveryPrice, setSupplier } from '../../../Redux/slices/cart/cartSlice';
@@ -77,7 +77,7 @@ const reducer = (state: any, action: any) => {
 function MenuOptions() {
 
     const { t } = useTranslation();
-    const { id } = useParams<{ id: string }>();
+    const { productId } = useParams<{ productId: string }>();
     const packRef: RefObject<HTMLFormElement> = useRef(null);
     const [allContent, setAllContent] = useState<any[]>([]);
     const [productCount, setProductCount] = useState<number>(1);
@@ -87,21 +87,34 @@ function MenuOptions() {
     const [state, dispatch] = useReducer(reducer, initialState);
 
     const usedispatch = useAppDispatch();
-
+    const location = useLocation();
     const { items } = useSelector((state: RootState) => state.cart);
     const cartItems = useAppSelector((state) => state.cart.items);
+
+    /*
+     *
+     * url handling part
+     *
+     */
+    useEffect(() => {
+        let locationArray = location.pathname.split('/');
+        locationArray[1] = "restaurant";
+        const newUrl = locationArray.join("/");
+        window.history.pushState({}, '', newUrl);
+    }, [])
 
     const getSupplier = async (id: number) => {
         const { status, data } = await supplierServices.getSupplierById(id)
         status === 200 && setProductSupplier(data.data)
     }
+
     useEffect(() => {
         supplierId != 0 && getSupplier(supplierId)
     }, [supplierId])
 
     const getProduct = async () => {
         try {
-            const { status, data } = await productService.getProduct(Number(id));
+            const { status, data } = await productService.getProduct(Number(productId));
             if (status === 200) {
                 setSupplierId(data.data.product.menu[0].supplier_id);
                 setProduct(data.data.product);

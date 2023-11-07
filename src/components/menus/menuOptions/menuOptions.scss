@@ -30,6 +30,7 @@
     .modal-content-options {
         flex: 2;
         overflow: auto;
+        min-height: 100vh;
 
         .options-info {
             .menu-title {
@@ -282,12 +283,15 @@
                 height: 60px;
                 font-size: 16px;
             }
+
             .count-container {
                 width: 200px;
                 height: 60px;
-                .count-buttons{
+
+                .count-buttons {
                     gap: 2px;
                 }
+
                 input[type=number] {
                     padding: 0;
                     font-size: 18px;
