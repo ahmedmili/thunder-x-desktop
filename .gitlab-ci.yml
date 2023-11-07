@@ -12,7 +12,7 @@ deploy-staging:
     - cd $CI_PROJECT_DIR
     - pwd
     - cp -r ./* /var/www/html/thunder-website2
-    - cp -r -f ./src/environment/environment.staging.tsx /var/www/html/webifyWebsite/src/environment/environment.tsx
+    - cp -r -f /var/www/html/thunderweb.env /var/www/html/thunder-website2/.env
     - cd /var/www/html/thunder-website2
     - yarn
     - export CI=false
