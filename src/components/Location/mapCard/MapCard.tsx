@@ -4,7 +4,7 @@ import { useEffect, useRef, useState } from 'react';
 import './mapCard.scss'
 import { LocationService } from '../../../services/api/Location.api';
 import { useAppDispatch, useAppSelector } from '../../../Redux/store';
-import { toast } from 'react-toastify';
+// import { toast } from 'react-toastify';
 
 import { localStorageService } from '../../../services/localStorageService';
 import { useNavigate } from "react-router-dom"
@@ -57,7 +57,7 @@ function MapCard() {
         setSubmitting(false);
         let emptyIntitule = values.intitule === "";
         if (emptyIntitule) {
-            toast.warn(t('adress.intitule_message'))
+            // toast.warn(t('adress.intitule_message'))
             dispatch({ type: "SET_SHOW", payload: false })
         } else {
             try {
@@ -76,7 +76,7 @@ function MapCard() {
                         };
                         const resp = await LocationService.addaddresse(data);
                         let message = resp.data.message;
-                        toast.success(message);
+                        // toast.success(message);
                         resp.data.code === 200 && dispatch({ type: "SET_SHOW", payload: false })
 
                     }
@@ -153,7 +153,7 @@ function MapCard() {
                 });
             },
             (error: GeolocationPositionError) => {
-                toast.error(error.message);
+                // toast.error(error.message);
             }
         );
     };

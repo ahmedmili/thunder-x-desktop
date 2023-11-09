@@ -1,11 +1,10 @@
-import { Action, createSlice, PayloadAction } from "@reduxjs/toolkit";
-import { stat } from "fs";
+import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 import { RootState } from ".";
 import { api } from "../../services/axiosApi";
+import { localStorageService } from "../../services/localStorageService";
 import { User } from "../../services/types";
 import { FormValues } from "../../utils/formUtils";
-import { AppDispatch, AppThunk } from "../store";
-import { localStorageService } from "../../services/localStorageService";
+import { AppDispatch } from "../store";
 
 export type UsersState = {
   loading: boolean;

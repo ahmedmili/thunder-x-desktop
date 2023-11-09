@@ -7,7 +7,7 @@ import FormInput from "../components/FormInput/FormInput";
 import { useEffect } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import { LoadingButton as _LoadingButton } from "@mui/lab";
-import { toast } from "react-toastify";
+// import { toast } from "react-toastify";
 //import { useVerifyEmailMutation } from "../services/authApi";
 
 const LoadingButton = styled(_LoadingButton)`

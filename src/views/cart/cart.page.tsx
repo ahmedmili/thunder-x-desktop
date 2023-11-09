@@ -27,7 +27,7 @@ import 'react-time-picker/dist/TimePicker.css';
 
 import { useTranslation } from "react-i18next";
 import { useNavigate } from "react-router-dom";
-import { toast } from "react-toastify";
+// import { toast } from "react-toastify";
 import * as z from "zod";
 import { logout } from "../../Redux/slices/userSlice";
 import { FoodItem } from "../../services/types";
@@ -267,7 +267,7 @@ const CartPage: React.FC = () => {
                 });
               },
               (error: GeolocationPositionError) => {
-                toast.error(error.message)
+                // toast.error(error.message)
               }
             );
             return;
@@ -277,9 +277,9 @@ const CartPage: React.FC = () => {
         }
 
         if (Number(minCost) > total) {
-          toast.warn("You have not reached the minimum cost.")
+          // toast.warn("You have not reached the minimum cost.")
         } else if (isClosed === 0) {
-          toast.warn("This restaurant is currently closed, please complete your order later.")
+          // toast.warn("This restaurant is currently closed, please complete your order later.")
         } else {
           try {
             const { status, data } = await cartService.createOrder(order);
@@ -288,7 +288,7 @@ const CartPage: React.FC = () => {
               setPopupType('command_success')
               handlePopup()
             } else {
-              toast.warn("something went wrong")
+              // toast.warn("something went wrong")
             }
           } catch (error) {
 
@@ -298,10 +298,10 @@ const CartPage: React.FC = () => {
 
       } else {
         navigate("/login");
-        toast.warn("You need to be logged in to make an order!");
+        // toast.warn("You need to be logged in to make an order!");
       }
     } catch (error: any) {
-      toast.error("Failed to submit order. Please try again.", error.message);
+      // toast.error("Failed to submit order. Please try again.", error.message);
     }
   };
   const getUser = async () => {
@@ -434,16 +434,16 @@ const CartPage: React.FC = () => {
       formData.append('code_coupon', promo)
       cartService.getPromoCode(formData).then((res) => {
         if (res.status === 422) {
-          toast.error("code promo invalid")
+          // toast.error("code promo invalid")
           return 0
         }
         if (res.data.code && res.data.code === 200) {
           if (res.data.success) {
-            toast.success("valide code")
+            // toast.success("valide code")
             CalculatePromoPrice();
             return 0;
           } else {
-            toast.error("code promo invalid")
+            // toast.error("code promo invalid")
             return 0
           }
         }

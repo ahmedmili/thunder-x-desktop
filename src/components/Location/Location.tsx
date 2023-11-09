@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useCallback } from "react";
-import "react-toastify/dist/ReactToastify.css";
+// import "react-toastify/dist/ReactToastify.css";
 import { useAppDispatch } from "../../Redux/store";
 import { adressService } from "../../services/api/adress.api";
 import { useTranslation } from "react-i18next";

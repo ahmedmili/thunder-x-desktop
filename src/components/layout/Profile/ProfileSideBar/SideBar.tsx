@@ -28,7 +28,7 @@ import EspaceW from '../../../../assets/profile/white/Espace.svg'
 import DiscuterW from '../../../../assets/profile/white/Discuter.svg'
 import FavorsW from '../../../../assets/profile/white/Favors.svg'
 import { LocationService } from '../../../../services/api/Location.api';
-import { toast } from 'react-toastify';
+// import { toast } from 'react-toastify';
 
 
 const SideBar = () => {
@@ -157,7 +157,7 @@ const SideBar = () => {
                     });
                   },
                   (error: GeolocationPositionError) => {
-                    toast.error(error.message)
+                    // toast.error(error.message)
                   }
                 );
               }}>

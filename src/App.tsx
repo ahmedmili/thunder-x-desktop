@@ -1,6 +1,7 @@
+// "use client";
 import { CssBaseline } from "@mui/material";
 import "bootstrap/dist/css/bootstrap.min.css";
-import { Suspense, lazy, useCallback, useEffect, useState } from "react";
+import { Suspense, lazy, startTransition, useCallback, useEffect, useState } from "react";
 import { Navigate, Outlet, Route, Routes } from "react-router-dom";
 import { ToastContainer, toast } from "react-toastify";
 import Layout from "./components/layout/layout";
@@ -31,6 +32,7 @@ import { Message, Restaurant } from "./services/types";
 import channelListener from "./services/web-socket";
 
 import HomeSkeleton from "./views/home/skeleton/HomeSkeleton";
+import Spinner from "./components/spinner/Spinner";
 //lazy loading components
 const Header = lazy(() => import("./components/Header/Header"));
 const Footer = lazy(() => import("./components/footer/footer"));
@@ -113,8 +115,16 @@ function App() {
 
   useEffect(() => {
     let isLoggedIn = localStorageService.getUserToken();
-    isLoggedIn?.length! > 0 && getClientFavors();
-    isLoggedIn?.length! > 0 && getSupplierData();
+    isLoggedIn?.length! > 0 &&
+      startTransition(() => {
+        // Your data fetching code here
+        getClientFavors();
+      });
+    isLoggedIn?.length! > 0 &&
+      startTransition(() => {
+        // Your data fetching code here
+        getSupplierData();
+      });
   }, [updateTrigger]);
 
   // get home data 
@@ -213,7 +223,10 @@ function App() {
 
   // handle recive admin message
   const newMessage = async (message: Message) => {
-    dispatch(addMessangerSuccess(message))
+    startTransition(() => {
+      // Your data fetching code here
+      dispatch(addMessangerSuccess(message))
+    });
   }
   // webSocket create instance
   useEffect(() => {
@@ -234,17 +247,21 @@ function App() {
     setTemplate(theme)
   }, [theme])
 
+
   return (
     <div className={`${template === 1 && "dark-background"}`}>
       <CssBaseline />
       <ToastContainer />
       <Suspense fallback={
-        <>
-          <Header />
-          <HomeSkeleton />
-          <Footer />
-        </>
-      }>
+        <center>
+          {/* <Header /> */}
+          {/* <HomeSkeleton /> */}
+          {/* <Footer /> */}
+          {/* loading */}
+          <Spinner name="Loading" />
+        </center>
+      }
+      >
         <Routes>
           <Route path="/" element={<Layout />}>
             <Route index element={<HomePage />} />

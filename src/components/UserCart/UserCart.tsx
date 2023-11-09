@@ -23,7 +23,7 @@ import { Link } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import { setProfilePage } from '../../Redux/slices/home';
 import { LocationService } from '../../services/api/Location.api';
-import { toast } from 'react-toastify';
+// import { toast } from 'react-toastify';
 interface CartProps {
   closeButton: any,
   lastName?: string,
@@ -188,7 +188,7 @@ export const UserCart: React.FC<CartProps> = ({ firstName = "", lastName = "", c
                         });
                       },
                       (error: GeolocationPositionError) => {
-                        toast.error(error.message)
+                        // toast.error(error.message)
                       }
                     );
 

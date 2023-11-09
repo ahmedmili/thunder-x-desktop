@@ -1,4 +1,4 @@
-import { toast } from "react-toastify";
+// import { toast } from "react-toastify";
 import { api } from "../axiosApi";
 
 const googleMapKey = import.meta.env.VITE_GOOGLE_MAPS_API_KEY;
@@ -23,7 +23,7 @@ const geoCode = async (latitude: any, longitude: any) => {
             return dispatchData; // Return the data within the async function
 
         } catch (err: any) {
-            toast.error(err.message);
+            // toast.error(err.message);
         }
     }
 

@@ -2,7 +2,7 @@
 import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useNavigate } from 'react-router';
-import { toast } from 'react-toastify';
+// import { toast } from 'react-toastify';
 import { logout } from '../../../../../Redux/slices/userSlice';
 import { useAppDispatch } from '../../../../../Redux/store';
 import Cover from '../../../../../assets/profile/desactive-cover.png';
@@ -76,13 +76,13 @@ const DesactiveAccount: React.FC<DesactiveAccountProps> = ({ type }) => {
             });
           },
           (error: GeolocationPositionError) => {
-            toast.error(error.message)
+            // toast.error(error.message)
           }
         );
         navigate('/')
       }
       else {
-        toast.error('un probléme')
+        // toast.error('un probléme')
       }
     } catch (error) {
       throw error
@@ -106,7 +106,7 @@ const DesactiveAccount: React.FC<DesactiveAccountProps> = ({ type }) => {
         navigate('/')
       }
       else {
-        toast.error('un probléme')
+        // toast.error('un probléme')
       }
     } catch (error) {
       throw error

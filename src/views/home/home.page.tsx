@@ -1,28 +1,28 @@
+// import "laravel-echo/dist/echo";
+import React from "react";
 import Skeleton from "react-loading-skeleton";
 import "react-loading-skeleton/dist/skeleton.css";
-import React from "react";
-import { Restaurant } from "../../services/types";
-import RestaurantList from "../../components/recommendedRestaurants/recommendedRestaurants";
-import "laravel-echo/dist/echo";
-import "./home.page.module.scss";
 import { AdsCarousel } from "../../components/adsCarousel/adsCarousel";
 import { ApplicationAd } from "../../components/applicationAd/ApplicationAd";
 import { FooterNewsLeter } from "../../components/footerNewsLeter/FooterNewsLetter";
+import RestaurantList from "../../components/recommendedRestaurants/recommendedRestaurants";
+import { Restaurant } from "../../services/types";
+import "./home.page.module.scss";
 
 // const googleMapKey = import.meta.env.VITE_GOOGLE_MAPS_API_KEY;
 import { Container } from "@mui/material";
 
-import { useAppSelector } from "../../Redux/store";
+// import "laravel-echo/dist/echo";
 import { useEffect, useState } from "react";
-import CategoryCarousel from "../../components/categoriesCarousel/categoriesCarousel";
-import "laravel-echo/dist/echo";
+import { useSelector } from "react-redux";
 import {
   adsHomeSelector,
   categoriesHomeSelector,
   homeLoadingSelector,
   recommendedHomeSelector,
 } from "../../Redux/slices/home";
-import { useSelector } from "react-redux";
+import { useAppSelector } from "../../Redux/store";
+import CategoryCarousel from "../../components/categoriesCarousel/categoriesCarousel";
 import HomeSkeleton from "./skeleton/HomeSkeleton";
 
 const HomePage = () => {

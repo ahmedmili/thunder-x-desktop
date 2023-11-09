@@ -63,7 +63,9 @@ const Header = () => {
 
   useEffect(() => {
     // Attach the scroll event listener when the component mounts
-    window.addEventListener('scroll', handleScroll);
+    if (typeof window != 'undefined') {
+      window.addEventListener('scroll', handleScroll);
+    }
 
     // Clean up the event listener when the component unmounts
     return () => {
@@ -71,48 +73,48 @@ const Header = () => {
     };
   }, []);
 
-  const onLogoutHandler = async () => {
-    try {
-      dispatch(logout());
-      navigator.geolocation.getCurrentPosition(
-        (position: any) => {
-          const { latitude, longitude } = position.coords;
-          LocationService.geoCode(latitude, longitude).then(data => {
-            dispatch({
-              type: "SET_LOCATION",
-              payload: {
-                ...data
-              },
-            });
-          });
-        },
-        (error: GeolocationPositionError) => {
-          toast.error(error.message)
-        }
-      );
+  // const onLogoutHandler = async () => {
+  //   try {
+  //     dispatch(logout());
+  //     navigator.geolocation.getCurrentPosition(
+  //       (position: any) => {
+  //         const { latitude, longitude } = position.coords;
+  //         LocationService.geoCode(latitude, longitude).then(data => {
+  //           dispatch({
+  //             type: "SET_LOCATION",
+  //             payload: {
+  //               ...data
+  //             },
+  //           });
+  //         });
+  //       },
+  //       (error: GeolocationPositionError) => {
+  //         toast.error(error.message)
+  //       }
+  //     );
 
-      navigate("/");
-    } catch (error: any) {
-      if (Array.isArray(error.data.error)) {
-        error.data.error.forEach((el: any) =>
-          toast.error(el.message, {
-            position: "top-right",
-          })
-        );
-      } else {
-        toast.error(error.data.message, {
-          position: "top-right",
-        });
-      }
-    }
-  };
+  //     navigate("/");
+  //   } catch (error: any) {
+  //     if (Array.isArray(error.data.error)) {
+  //       error.data.error.forEach((el: any) =>
+  //         toast.error(el.message, {
+  //           position: "top-right",
+  //         })
+  //       );
+  //     } else {
+  //       toast.error(error.data.message, {
+  //         position: "top-right",
+  //       });
+  //     }
+  //   }
+  // };
 
-  const handleCart = async () => {
+  const handleCart = () => {
     showProfile && setShowProfile(false)
     setShowCart(!showCart);
   };
 
-  const handleUserCart = async () => {
+  const handleUserCart = () => {
     if (user) {
       showCart && setShowCart(false);
       setShowProfile(!showProfile);

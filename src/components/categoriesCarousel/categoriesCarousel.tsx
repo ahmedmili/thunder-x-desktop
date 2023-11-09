@@ -120,7 +120,12 @@ const CategoryCarousel: React.FC<CategoryCarouselProps> = ({
 
   // Helper function to calculate the number of visible slides based on screen width
   const calculateVisibleSlides = () => {
-    return window.innerWidth >= 700 ? 3 : 2;
+    if (typeof window != 'undefined'){
+
+      return window.innerWidth >= 700 ? 3 : 2;
+    }else {
+      return 3
+    }
   };
 
   return (

@@ -12,7 +12,7 @@ import { CircularProgress } from '@mui/material';
 
 import { useTranslation } from "react-i18next";
 import { useSelector } from "react-redux";
-import { toast } from "react-toastify";
+// import { toast } from "react-toastify";
 import { RootState } from "../../../Redux/slices";
 import { addItem, setDeliveryPrice, setSupplier } from "../../../Redux/slices/cart/cartSlice";
 import { useAppDispatch, useAppSelector } from "../../../Redux/store";
@@ -315,12 +315,12 @@ const MenuPopup: React.FC<Props> = ({ close, restaurant }) => {
         };
 
         if (items.length > 0 && items[0].supplier_data.supplier_id !== obj.supplier_data.supplier_id) {
-            toast.warn("you have already selected items", {
-                position: toast.POSITION.TOP_CENTER, // Change the position
-            });
+            // toast.warn("you have already selected items", {
+            //     position: toast.POSITION.TOP_CENTER, // Change the position
+            // });
             return;
         }
-        toast.success("item added ")
+        // toast.success("item added ")
         usedispatch(setDeliveryPrice(restaurant.delivery_price));
         usedispatch(setSupplier(restaurant));
         localStorageService.setSupplier(restaurant);

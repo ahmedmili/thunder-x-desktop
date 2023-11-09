@@ -10,7 +10,7 @@ import { RootState } from '../../../Redux/slices';
 import { addItem, setDeliveryPrice, setSupplier } from '../../../Redux/slices/cart/cartSlice';
 import { localStorageService } from '../../../services/localStorageService';
 import { productService } from '../../../services/api/product.api';
-import { toast } from 'react-toastify';
+// import { toast } from 'react-toastify';
 
 import ShoppingCartOutlinedIcon from '@mui/icons-material/ShoppingCartOutlined';
 import KeyboardArrowUpOutlinedIcon from '@mui/icons-material/KeyboardArrowUpOutlined';
@@ -338,7 +338,7 @@ function MenuOptions() {
         };
 
         if (items.length > 0 && items[0].supplier_data.supplier_id !== obj.supplier_data.supplier_id) {
-            toast.warn("you have allready selected items")
+            // toast.warn("you have allready selected items")
             return;
         }
         usedispatch(setDeliveryPrice(restaurant.delivery_price));

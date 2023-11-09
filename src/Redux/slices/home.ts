@@ -1,10 +1,10 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 import { RootState } from ".";
-import { api } from "../../services/axiosApi";
-import { AppDispatch } from "../store";
-import { localStorageService } from "../../services/localStorageService";
 import { userService } from "../../services/api/user.api";
+import { api } from "../../services/axiosApi";
+import { localStorageService } from "../../services/localStorageService";
 import { Restaurant } from "../../services/types";
+import { AppDispatch } from "../store";
 
 type HomeDataProps = {
   ads: any;
@@ -113,7 +113,7 @@ var favorsList: number[] = []
 // Action
 const getClientFavors = async () => {
   let isLoggedIn = localStorageService.getUserToken();
-  if (!isLoggedIn) return 
+  if (!isLoggedIn) return
   const { status, data } = await userService.getClientFavorits()
   var favs: any = []
   data.success && data.data.map((i: Restaurant) => {
