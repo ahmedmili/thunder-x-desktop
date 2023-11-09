@@ -88,9 +88,21 @@ const Menu: React.FC<MenuProps> = () => {
       navigate(newURL, { replace: true });
     }
   }
+  const removeUrlProductId = () => {
+    const locationPath = location.pathname;
+
+    let locationArray = locationPath.split("/");
+    // locationArray.pop();
+    let newArray = locationArray.slice(0, -2)
+    const newURL = newArray.join("/");
+    console.log("newArray", newArray)
+    navigate(newURL, { replace: true });
+
+  }
 
   const handlePopup = () => {
     setShowOptionsPopup(!showOptionsPopup)
+    showOptionsPopup && removeUrlProductId()
   }
 
   const handlePaginationClick = (pageNumber: number, menuItemId: number) => {
