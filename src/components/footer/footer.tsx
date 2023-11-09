@@ -41,6 +41,7 @@ const Footer: React.FC<FooterProps> = () => {
         <>
         </>
       }
+      
     >
 
       <Container fluid className={`footerContainer ${template === 1 && 'dark-background2'}`}>

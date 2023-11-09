@@ -25,16 +25,15 @@ import { LocationService } from "../../services/api/Location.api";
 import { Position } from "../../services/types";
 
 const Header = () => {
-  const isServer = typeof window != "undefined"
-  const msg_notifs = !isServer ? useAppSelector((state) => state.messanger.unReadedMessages) : 0;
+  const msg_notifs = useAppSelector((state) => state.messanger.unReadedMessages);
   const logged_in = localStorageService.getUserToken() !== null;
-  const userItem = !isServer ? localStorageService.getUser() : null;
+  const userItem = localStorageService.getUser();
 
   const user = userItem ? JSON.parse(userItem) : null;
 
-  const cartItems = !isServer ? useAppSelector((state) => state.cart.items) : [];
-  const location = !isServer ? useAppSelector((state) => state.location.position) : null;
-  const showMapState = !isServer ? useAppSelector((state) => state.location.showMap) : null;
+  const cartItems = useAppSelector((state) => state.cart.items);
+  const location = useAppSelector((state) => state.location.position);
+  const showMapState = useAppSelector((state) => state.location.showMap);
 
   const [showCart, setShowCart] = useState<boolean>(false); // Add state variable for showing/hiding the cart
   const [showProfile, setShowProfile] = useState<boolean>(false); // Add state variable for showing/hiding the cart
