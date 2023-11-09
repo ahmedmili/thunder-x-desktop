@@ -45,7 +45,7 @@ const Map: React.FC<MapProps> = ({ className }) => {
 
   useEffect(() => {
     // Function to disable scrolling
-    const disableScroll = (e:any) => {
+    const disableScroll = (e: any) => {
       e.preventDefault();
     };
 
@@ -65,7 +65,7 @@ const Map: React.FC<MapProps> = ({ className }) => {
       let res = await adressService.getAdressByid(JSON.parse(userItem!).id);
       setClientAdressTable(res.data.data);
     };
-    userItem != null && fetchData() ;
+    userItem != null && fetchData();
   }, []);
 
   const userItem = localStorageService.getUser();
@@ -101,7 +101,7 @@ const Map: React.FC<MapProps> = ({ className }) => {
     return (
       <>
         <div className="form">
-          <h1>Ajouter un adress de livraison</h1>
+          <h1>{t('adress.add')}</h1>
           {/*  map location button */}
           <button type="button" onClick={() => setSearchType("card")}>
             {t("adress.cartSelect")}{" "}
@@ -140,7 +140,7 @@ const Map: React.FC<MapProps> = ({ className }) => {
           <>
             {/* <center>
             </center> */}
-            <p className="saved-adresses-title">Lieux enregistré</p>
+            <p className="saved-adresses-title">{t('adress.savedAdress')}</p>
             <div className="adresses-container">
 
               {filtredPositions.map((element) => (
@@ -161,7 +161,7 @@ const Map: React.FC<MapProps> = ({ className }) => {
           <div className="Text-container">
 
             <h6 style={{ display: userItem ? "inline" : "none" }}>
-              no saved adress to display
+              {t('adress.noAdress')}
             </h6>
           </div>
         )
@@ -230,7 +230,7 @@ const Map: React.FC<MapProps> = ({ className }) => {
             <SearchIcon className='icon' />
           </span>
         </div>
-        {loading && <div>Loading...</div>}
+        {loading && <div>{t('loading')}...</div>}
         {
           suggestions.length > 0 && (
             <ul>

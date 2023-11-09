@@ -19,10 +19,9 @@ import Switches from "../toggleSwitch/toggleSwitch";
 
 import { Search } from '@mui/icons-material';
 import { useLocation } from 'react-router-dom';
+import { LocationService } from "../../services/api/Location.api";
 import { UserCart } from '../UserCart/UserCart';
 import { Cart } from '../cart/cart';
-import { LocationService } from "../../services/api/Location.api";
-import { Position } from "../../services/types";
 
 const Header = () => {
 
@@ -125,10 +124,10 @@ const Header = () => {
     <>
 
       {
-        (routerLocation.pathname == "/" || routerLocation.pathname == "/search") ? (
+        (routerLocation.pathname == "/" || routerLocation.pathname.includes("/search/")) ? (
           <>
 
-            <Container >
+            <Container className="xxl-12" >
               <div className="head1">
                 <div className="demiCercle">
 
@@ -153,10 +152,6 @@ const Header = () => {
                   <button onClick={handleUserCart} className={`account ${!logged_in && 'loggedin-account'}`}  >
                     <PermIdentityOutlinedIcon className='account-icon' />
                   </button>
-
-                  {/* <button className="search">
-                    <Search className='search-icon' />
-                  </button> */}
 
                   <button onClick={handleCart} className="cart-item">
                     <ShoppingCartOutlinedIcon className='cart-icon' />
@@ -197,7 +192,7 @@ const Header = () => {
                 </div>
                 )
               }
-              <Row className={`headerContainer `}>
+              <Row className={`headerContainer row-xxl-12`}>
                 <Col className='col-12 col-sm-7'>
                   <div className="headerAppBar2">
                     <div className="headerMessage">
@@ -257,26 +252,7 @@ const Header = () => {
                 onClick={() => navigate('/')} >
                 <a href="#" className={`logoMain minimizedlogoMain`}></a>
               </div>
-
-              {!logged_in ? (
-                <div className="header-buttons">
-                  <div
-                    onClick={() => navigate('/register')}
-                    className='LoadingButton'
-                  >
-                    {t('signup')}
-                  </div>
-                  <div
-                    onClick={() => navigate('/login')}
-                    className='LoadingButton'
-                  >
-                    {t('login')}
-                  </div>
-                </div>
-              ) : <>
-              </>
-              }
-
+              
               <div className='info'>
                 <div className="position">
 
@@ -286,33 +262,32 @@ const Header = () => {
                     : t('no_location_detected')}
 
                 </div>
-                {
-                  logged_in && (
-                    <>
-                      <button onClick={handleUserCart} className="account">
-                        {
-                          notifsQts > 0 && (
-                            <div className="notif-number-container">
-                              {notifsQts}
-                            </div>
-                          )
 
-                        }
-                        <PermIdentityOutlinedIcon className='account-icon' />
-                      </button>
-
-                      <button className="search">
-                        <Search className='search-icon' />
-                      </button>
-                    </>
-                  )
-                }
+                <button onClick={handleUserCart} className={`account ${!logged_in && 'loggedin-account'}`}  >
+                  <PermIdentityOutlinedIcon className='account-icon' />
+                </button>
 
                 <button onClick={handleCart} className="cart-item">
                   <ShoppingCartOutlinedIcon className='cart-icon' />
                   {cartItems.length}
                 </button>
 
+                {!logged_in && (
+                  <div className="header-buttons">
+                    <div
+                      onClick={() => navigate('/register')}
+                      className='LoadingButton header-signup'
+                    >
+                      {t('signup')}
+                    </div>
+                    <div
+                      onClick={() => navigate('/login')}
+                      className='LoadingButton '
+                    >
+                      {t('login')}
+                    </div>
+                  </div>
+                )}
               </div>
             </div>
             {

@@ -42,7 +42,7 @@ const RepasList: React.FC<RepasListProps> = () => {
                                 </span>
                                 <KeyboardArrowUpOutlinedIcon className={` icon ${selectedCommand === index ? 'active' : ""}`} />
                             </div>
-                            {(selectedCommand === index) && <TemponsGrid ammount={gifts.ammount} />}
+                            {(selectedCommand === index) && <TemponsGrid ammount={gift.ammount} />}
                         </>
                     )
                 })}

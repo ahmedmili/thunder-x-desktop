@@ -8,7 +8,7 @@
   .container {
     background-color: white;
     position: relative;
-    padding: 25px;
+    // padding: 25px;
     top: 0;
     justify-content: center;
     margin-bottom: 10px;
@@ -78,7 +78,7 @@
 
       .recommandedListButtonsContainer {
 
-        width: 110%;
+        width: 107%;
         height: 50px;
         display: flex;
         justify-content: space-between;
@@ -127,6 +127,7 @@
 
   }
 }
+
 
 
 @media only screen and (max-width: 1200px) {

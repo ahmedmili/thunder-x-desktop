@@ -68,8 +68,9 @@ const SearchBar: React.FC<Props> = ({ placeholder }) => {
         try {
           supplierServices.searchSupplierByArticle(data).then((resp) => {
             dispatch(setfilterRestaurants(resp.data.data.suppliers))
+            !navLocation.pathname.includes("/search/") && navigate("/search/searchTerm=" + searchTerm);
+            navLocation.pathname.includes("/search/") && navigate("/search/searchTerm=" + searchTerm, { replace: true });
             setSearchTerm("")
-            navLocation.pathname != "/search" && navigate(`/search`);
           })
         } catch (e) {
           throw e

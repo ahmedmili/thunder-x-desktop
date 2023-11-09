@@ -22,7 +22,7 @@ import { Option } from "../../../services/types";
 
 interface Props {
     restaurant: any;
-    close: any;
+    close: () => void;
     isOpen: boolean
 }
 
@@ -105,7 +105,6 @@ const MenuPopup: React.FC<Props> = ({ close, restaurant }) => {
     const cartItems = useAppSelector((state) => state.cart.items);
     const selectedMenuItem = useAppSelector((state) => state.restaurant.product);
 
-
     const getProduct = async () => {
         try {
             const { status, data } = await productService.getProduct(selectedMenuItem?.id);
@@ -160,7 +159,6 @@ const MenuPopup: React.FC<Props> = ({ close, restaurant }) => {
         let selectedPack = null;
         let unite_price = 0
         let sum = 0;
-
         if (state.packet.length > 0) {
             selectedPack = state.packet.find((item: any) => item.checked === true);
         }
@@ -447,81 +445,74 @@ const MenuPopup: React.FC<Props> = ({ close, restaurant }) => {
                                         </>
                                     ) : (
                                         <>
-                                            {
-                                                <>
-                                                    {
-                                                        displayedContent.length > 0 && displayedContent.map((options, index) => {
-                                                            return (
-                                                                <React.Fragment key={index}>
-                                                                    <div className='menu-options-header'>
-                                                                        <div className="option-name">Choisissez votre {Object.keys(options)[0]}</div>
-                                                                        {
+                                            {displayedContent.length > 0 && displayedContent.map((options, index) => {
+                                                return (
+                                                    <React.Fragment key={index}>
+                                                        <div className="devider">
+                                                        </div>
+                                                        <div className='menu-options-header'>
+                                                            <div className="option-name">Choisissez votre {Object.keys(options)[0]}</div>
+                                                            {
 
-                                                                            Object.keys(options)[0] === "packet" && <div className="option-obligatoir">Obligatoire</div>
-                                                                        }
-
-                                                                        {
-                                                                            Object.keys(options)[0] === "sauce" && state.sauce_max?.max > 0 && <div className="option-max">{"MAX " + state.sauce_max?.max}</div>
-                                                                        }
-                                                                        {
-                                                                            Object.keys(options)[0] === "viande" && state.viande_max?.max > 0 && <div className="option-max">{"MAX " + state.viande_max?.max}</div>
-                                                                        }
-                                                                        {
-                                                                            Object.keys(options)[0] === "extra" && state.extra_max?.max > 0 && <div className="option-max">{"MAX " + state.extra_max?.max}</div>
-                                                                        }
-                                                                        {
-                                                                            Object.keys(options)[0] === "supplement" && state.supplement_max?.max > 0 && <div className="option-max">{"MAX " + state.supplement_max?.max}</div>
-                                                                        }
-                                                                    </div>
-                                                                    <form>
-                                                                        {state[Object.keys(options)[0]].map((option: any, index: number) => (
-                                                                            <div key={option.id} className="options-list">
-                                                                                <div className="checkBox">
-                                                                                    <input type='checkbox' name={option.id} id={option.id} value={option.id || ''} onChange={(e) => selectOption(Object.keys(options)[0], index, e)} checked={option?.checked}>
-                                                                                    </input>
-                                                                                    <div className="custom-checkbox"></div>
-                                                                                    <label htmlFor={option.id}>{option.name} </label>
-                                                                                </div>
-                                                                                <span className='option-price'>{option.price} DT</span>
-                                                                            </div>
-                                                                        ))}
-                                                                    </form>
-
-                                                                    <div className="devider">
-
-                                                                    </div>
-
-                                                                </React.Fragment>
-                                                            )
-                                                        })
-                                                    }
-
-                                                    <div className="prev-next-buttons">
-                                                        {/* prev button */}
-                                                        <span className="prev-page-button">
-                                                            {!(currentPage === 1) &&
-                                                                <button onClick={prevPage}>
-                                                                    <ArrowRightAltIcon className="prev-page-icon" />
-                                                                </button>
+                                                                Object.keys(options)[0] === "packet" && <div className="option-obligatoir">Obligatoire</div>
                                                             }
-                                                        </span>
-                                                        {/* next button  */}
-                                                        <span className="next-page-button">
-                                                            {!(currentPage === totalPages) &&
-                                                                <button onClick={nextPage}>
-                                                                    <ArrowRightAltIcon className="next-page-icon" />
-                                                                </button>
+
+                                                            {
+                                                                Object.keys(options)[0] === "sauce" && state.sauce_max?.max > 0 && <div className="option-max">{"MAX " + state.sauce_max?.max}</div>
                                                             }
-                                                        </span>
+                                                            {
+                                                                Object.keys(options)[0] === "viande" && state.viande_max?.max > 0 && <div className="option-max">{"MAX " + state.viande_max?.max}</div>
+                                                            }
+                                                            {
+                                                                Object.keys(options)[0] === "extra" && state.extra_max?.max > 0 && <div className="option-max">{"MAX " + state.extra_max?.max}</div>
+                                                            }
+                                                            {
+                                                                Object.keys(options)[0] === "supplement" && state.supplement_max?.max > 0 && <div className="option-max">{"MAX " + state.supplement_max?.max}</div>
+                                                            }
+                                                        </div>
 
+                                                        <form>
+                                                            {state[Object.keys(options)[0]].map((option: any, index: number) => (
+                                                                <div key={index} className="options-list">
+                                                                    <div className="checkBox">
+                                                                        <input type='checkbox' name={option.id} id={option.id} value={option.id || ''} onChange={(e) => selectOption(Object.keys(options)[0], index, e)} checked={option?.checked}>
+                                                                        </input>
+                                                                        <div className="custom-checkbox"></div>
+                                                                        <label htmlFor={option.id}>{option.name} </label>
+                                                                    </div>
+                                                                    <span className='option-price'>{option.price} DT</span>
+                                                                </div>
+                                                            ))}
+                                                        </form>
 
-                                                    </div>
-                                                    {/* command buttons */}
-
-                                                </>
+                                                    </React.Fragment>)
+                                            })
                                             }
 
+                                            <div className="prev-next-buttons">
+                                                {/* prev button */}
+                                                <span className="prev-page-button">
+                                                    {!(currentPage === 1) &&
+                                                        <button onClick={prevPage}>
+                                                            <ArrowRightAltIcon className="prev-page-icon" />
+                                                        </button>
+                                                    }
+                                                </span>
+                                                {/* next button  */}
+                                                <span className="next-page-button">
+                                                    {!(currentPage === totalPages) &&
+                                                        <button onClick={nextPage}>
+                                                            <ArrowRightAltIcon className="next-page-icon" />
+                                                        </button>
+                                                    }
+                                                </span>
+
+
+                                            </div>
+                                            {/* command buttons */}
+
                                         </>
+
                                     )
 
 

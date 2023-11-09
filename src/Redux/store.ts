@@ -1,12 +1,11 @@
 import {
   Action,
   configureStore,
-  PayloadAction,
-  ThunkAction,
+  ThunkAction
 } from "@reduxjs/toolkit";
 import { TypedUseSelectorHook, useDispatch, useSelector } from "react-redux";
-import rootReducer from "./slices";
 import loggerMiddleware from "redux-logger";
+import rootReducer from "./slices";
 
 const store = configureStore({
   // Combine reducers for auth API, user API, and user state

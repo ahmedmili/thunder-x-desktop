@@ -107,8 +107,10 @@ const CategoryCarousel: React.FC<CategoryCarouselProps> = ({
           long: location!.longitude
         }
         supplierServices.searchSupplierBySubArticle(requestData).then((res: any) => {
-          dispatch(setfilterRestaurants(res.data.data.suppliers)) //
-          navLocation.pathname != "/search" && navigate(`/search`);
+          dispatch(setfilterRestaurants(res.data.data.suppliers))
+          !navLocation.pathname.includes("/search/") && navigate(`/search/category=` + categoryName);
+          navLocation.pathname.includes("/search/") && navigate(`/search/category=` + categoryName, { replace: true });
+
         })
       }
     }

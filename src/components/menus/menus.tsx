@@ -5,7 +5,7 @@ import {
 } from '@mui/material';
 import React, { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import { useParams } from 'react-router-dom';
+import { useLocation, useNavigate, useParams } from 'react-router-dom';
 import {
   clearCart,
   clearSupplierMismatch,
@@ -31,21 +31,78 @@ const Menu: React.FC<MenuProps> = () => {
 
   const { t } = useTranslation();
   const dispatch = useAppDispatch();
-
+  const navigate = useNavigate();
+  const location = useLocation();
   const [menuData, setMenuData] = useState<MenuData[]>([]);
-  const { id } = useParams<{ id: string }>();
   const [loading, setLoading] = useState(true);
   const [currentPage, setCurrentPage] = useState<{ [key: string]: number }>({});
   const productsPerPage = 4;
 
   const [showMismatchModal, setShowMismatchModal] = useState(false);
   const [showOptionsPopup, setShowOptionsPopup] = useState(false);
-  const [selectedOption, setSelectedOption] = useState("tous");
   const [filtreddMenuData, setFiltreddMenuData] = useState<MenuData[]>([]);
   const [displayedRestaurant, setDisplayedRestaurant] = useState<any>();
+  const { id, search, productId } = useParams<{ id: string, search?: string, productId?: string }>();
+  const [selectedOption, setSelectedOption] = useState(search ? search : "All");
+  const idNumber = id?.split('-')[0];
+
+
+  /*
+  *
+  * url handling part
+  *
+  */
+
+  // redirect if the url taped again
+  useEffect(() => {
+
+    if (productId != null) {
+      let locationArray = location.pathname.split('/');
+      locationArray[1] = "product";
+      const newUrl = locationArray.join("/");
+      navigate(`${newUrl}`);
+    } else {
+      if (search == null || search == "") {
+        let locationArray = location.pathname.split('/')
+        locationArray[3] = 'All'
+        const newUrl = `${locationArray.join('/')}`
+        navigate(newUrl, { replace: true })
+      }
+    }
+  }, [])
+  // assure '/' in the end of url
+  useEffect(() => {
+    const { pathname } = location;
+    if (!pathname.endsWith('/') && pathname !== '/') {
+      navigate(`${pathname}/`);
+    }
+  }, [location, navigate]);
+
+  // add product id into url
+  const handleUrlProductId = (id: number) => {
+    const locationPath = location.pathname;
+    if (Number(productId) != id) {
+      let locationArray = locationPath.split("/");
+      locationArray[4] = id.toString();
+      const newURL = locationArray.join("/");
+      navigate(newURL, { replace: true });
+    }
+  }
+  const removeUrlProductId = () => {
+    const locationPath = location.pathname;
+
+    let locationArray = locationPath.split("/");
+    // locationArray.pop();
+    let newArray = locationArray.slice(0, -2)
+    const newURL = newArray.join("/");
+    console.log("newArray", newArray)
+    navigate(newURL, { replace: true });
+
+  }
 
   const handlePopup = () => {
     setShowOptionsPopup(!showOptionsPopup)
+    showOptionsPopup && removeUrlProductId()
   }
 
   const handlePaginationClick = (pageNumber: number, menuItemId: number) => {
@@ -58,7 +115,7 @@ const Menu: React.FC<MenuProps> = () => {
   const getSupplierById = async () => {
     try {
 
-      const { status, data } = await supplierServices.getSupplierById(Number(id!))
+      const { status, data } = await supplierServices.getSupplierById(Number(idNumber!))
 
       setDisplayedRestaurant(data.data)
 
@@ -68,12 +125,13 @@ const Menu: React.FC<MenuProps> = () => {
   }
   useEffect(() => {
     getSupplierById()
+    handleFilter()
   }, [])
 
   // initialize menue 
   useEffect(() => {
     const getMenu = async () => {
-      const { status, data } = await productService.getMenu(id);
+      const { status, data } = await productService.getMenu(idNumber);
       if (status === 200) {
         setMenuData(data.data);
         setFiltreddMenuData(data.data)
@@ -81,7 +139,7 @@ const Menu: React.FC<MenuProps> = () => {
       setLoading(false);
     };
     getMenu();
-  }, [id]);
+  }, [idNumber]);
 
 
   // close miss matching
@@ -100,6 +158,7 @@ const Menu: React.FC<MenuProps> = () => {
 
   // close options
   const handleChooseOptions = (selectedMenuItem: any | null) => {
+    showOptionsPopup === false && handleUrlProductId(selectedMenuItem.id)
     dispatch(setProduct(selectedMenuItem))
     handlePopup()
   };
@@ -111,11 +170,13 @@ const Menu: React.FC<MenuProps> = () => {
       : name;
   };
   const handleOptionChange = (event: any) => {
+    const updatedURL = `/restaurant/${id}/${event.target.value}`;
+    navigate(updatedURL, { replace: true });
     setSelectedOption(event.target.value);
   };
 
   const handleFilter = () => {
-    if (selectedOption === "tous") {
+    if (selectedOption === "All") {
       setFiltreddMenuData(menuData)
     }
     else {
@@ -127,7 +188,7 @@ const Menu: React.FC<MenuProps> = () => {
   }
   useEffect(() => {
     handleFilter()
-  }, [selectedOption])
+  }, [selectedOption, menuData])
 
 
 
@@ -264,9 +325,9 @@ const Menu: React.FC<MenuProps> = () => {
               {
                 menuData.length != 0 && (
                   <>
-                    <div className={`select ${selectedOption == "tous" ? "selected" : ""}`}  >
-                      <input type="radio" value="tous" id='tous' name='type' checked={selectedOption === "1"} onChange={handleOptionChange} />
-                      <label htmlFor="tous">{t('supplier.allProducts')}</label>
+                    <div className={`select ${selectedOption == "All" ? "selected" : ""}`}  >
+                      <input type="radio" value="All" id='All' name='type' checked={selectedOption === "1"} onChange={handleOptionChange} />
+                      <label htmlFor="All">{t('supplier.allProducts')}</label>
                     </div>
                     {
                       menuData.map((data, index) => {
