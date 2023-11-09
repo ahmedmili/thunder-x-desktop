@@ -254,9 +254,9 @@ function App() {
       <ToastContainer />
       <Suspense fallback={
         <center>
-          {/* <Header /> */}
-          {/* <HomeSkeleton /> */}
-          {/* <Footer /> */}
+          <Header />
+          <HomeSkeleton />
+          <Footer />
           {/* loading */}
           <Spinner name="Loading" />
         </center>

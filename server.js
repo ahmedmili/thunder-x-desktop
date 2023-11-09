@@ -34,8 +34,6 @@ if (!isProduction) {
   app.use(base, sirv('./dist/client', { extensions: [] }))
 }
 
-// app.use(express.static(path.resolve(__dirname, './src')));
-
 // Serve HTML
 app.use('*', async (req, res) => {
   try {
@@ -58,8 +56,10 @@ app.use('*', async (req, res) => {
     const html = template
       .replace(`<!--app-head-->`, rendered.head ?? '')
       .replace(`<!--app-html-->`, rendered.html ?? '')
-
-    res.status(200).set(rendered.head).end(html)
+    setTimeout(
+      res.status(200).set(rendered.head).end(html)
+      , 1000
+    )
   } catch (e) {
     vite?.ssrFixStacktrace(e)
     console.log(e.stack)
