@@ -6,6 +6,7 @@ import { StaticRouter } from 'react-router-dom/server';
 import App from './App';
 import store from './Redux/store';
 import i18n from "./i18n";
+import "./app.scss"
 
 export function render(url: string) {
   const html = ReactDOMServer.renderToString(

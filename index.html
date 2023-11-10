@@ -4,13 +4,15 @@
 <head>
   <meta charset="UTF-8" />
   <!-- <link rel="icon" type="image/svg+xml" href="/assets/icon.svg" /> -->
+  <meta content="width=device-width,initial-scale=1,maximum-scale=10,minimum-scale=.25,user-scalable=yes"
+    name="viewport" />
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@100;200;300;400;500;600;700;800&display=swap"
     rel="stylesheet" />
   <link rel="icon" href="/src/assets/icon-old.png">
-  <meta name="viewport"
-    content="viewport-fit=cover, width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+  <!-- <meta name="viewport"
+    content="viewport-fit=cover, width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no" /> -->
   <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBjjL4bgjElugHK0rH1wSe0GD4gZfQWNKY&" async
     defer></script>
   <title>Thunder Express</title>
@@ -19,9 +21,9 @@
 </head>
 
 <body>
-  <noscript> you need to enable Javascript to run this app </noscript> 
-  <div id="root"> <!--app-html--></div>
-
+  <noscript> you need to enable Javascript to run this app </noscript>
+  <div style="display: none;"> <!--app-html--></div>
+  <div id="root"> </div>
   <script type="module" src="/src/entry-client.tsx"></script>
 </body>
 

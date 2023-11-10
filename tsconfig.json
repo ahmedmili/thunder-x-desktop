@@ -6,9 +6,7 @@
       "express",
       "googlemaps"
     ],
-    "typeRoots": [
-      "node_modules/@types"
-    ],
+    "typeRoots": ["./node_modules/@types", "./src/types"],
     "useDefineForClassFields": true,
     "lib": [
       "DOM",
@@ -33,11 +31,8 @@
     "noImplicitThis": true,
     "strictNullChecks": true
   },
-  "include": [
-    "src",
-    "src/.exemple.prerender.ts",
-    "server.ts"
-  ],
+  "include": ["src/**/*.ts", "src/**/*.d.ts", "src/**/*.tsx"],
+  "exclude": ["node_modules"],
   "references": [
     {
       "path": "./tsconfig.node.json"

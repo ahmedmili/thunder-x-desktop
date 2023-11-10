@@ -57,37 +57,51 @@ const getStyleSheets = async () => {
     return "";
   }
 };
+const getScripts = async () => {
+  try {
+    const assetpath = resolve("dist/client/assets");
+    const files = await fs.readdir(assetpath);
+    const cssAssets = files.filter(l => l.endsWith(".js"));
+    const allContent = [];
+    for (const asset of cssAssets) {
+      const content = await fs.readFile(path.join(assetpath, asset), "utf-8");
+      // <style type="text/css">${content}</style>
+      // <script type="module" src="/src/entry-client.tsx"></script>
+      allContent.push(`
+      <script type="module" src="${asset}" async> 
+      </script>
+      `);
+      // <script>
+      // ${content}
+      // </script>
+    }
+    return allContent.join("\n");
+  } catch (e) {
+    console.log("error js ", e)
+    return "";
+  }
+};
 
 
+const baseTemplate = await fs.readFile(isProduction ? resolve("dist/client/index.html") : resolve("index.html"), "utf-8");
+const productionBuildPath = path.join(__dirname, "dist/entry-server.js");
+const devBuildPath = path.join(__dirname, "src/entry-server.tsx");
+const buildModule = isProduction ? productionBuildPath : devBuildPath;
+const { render } = await vite.ssrLoadModule(buildModule);
+const stylesheets = getStyleSheets();
 
 // Serve HTML
 app.use('*', async (req, res) => {
   try {
     const url = req.originalUrl.replace(base, '')
-    let template
-    let render
-    if (!isProduction) {
-      // Always read fresh template in development
-      template = await fs.readFile('./index.html', 'utf-8')
-      template = await vite.transformIndexHtml(url, template)
-      render = (await vite.ssrLoadModule('/src/entry-server.tsx')).render
-    } else {
-      template = templateHtml
-      render = (await import('./dist/server/entry-server.js')).render
-    }
-
-    const rendered = await render(url)
-    const data = await axios.post('https://api.thunder.webify.pro/api/get_home_page_data', {
-      delivery: '0',
-      lat: '35.8491583',
-      long: '10.5858895'
-    })
-
-    const stylesheets = getStyleSheets();
+    const template = await vite.transformIndexHtml(url, baseTemplate);
     const cssAssets = await stylesheets;
+    const appHtml = await render(url);
+    const scripts = getScripts();
+    const jsAssets = await scripts;
     const html = template
-      .replace(`<!--app-head-->`, (rendered.head ?? "") + (cssAssets ?? ''))
-      .replace(`<!--app-html-->`, rendered.html)
+      .replace(`<!--app-head-->`, cssAssets )
+      .replace(`<!--app-html-->`, appHtml.html ?? "")
     // <script>window.__INITIAL_DATA__ = ${JSON.stringify(data.data)}</script>
     setTimeout(
       () =>
