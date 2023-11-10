@@ -1,11 +1,13 @@
-import fs from 'node:fs/promises'
-import express from 'express'
-import ReactDOMServer from "react-dom/server"
-import axios from 'axios'
+import axios from 'axios';
+import express from 'express';
+import fs from 'node:fs/promises';
+import path, { dirname } from "path";
+import { fileURLToPath } from "url";
+
 // Constants
-const isProduction = process.env.VITE_NODE_ENV === 'Production'
+const isProduction = process.env.VITE_NODE_ENV === 'production'
 const port = process.env.PORT || 8000
-const base = process.env.BASE || '/*'
+const base = process.env.BASE || '/'
 
 // Cached production assets
 const templateHtml = isProduction
@@ -34,6 +36,29 @@ if (!isProduction) {
   app.use(compression())
   app.use(base, sirv('./dist/client', { extensions: [] }))
 }
+// get styls
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = dirname(__filename);
+const resolve = (p) => path.resolve(__dirname, p);
+
+const getStyleSheets = async () => {
+  try {
+    const assetpath = resolve("dist/client/assets");
+    const files = await fs.readdir(assetpath);
+    const cssAssets = files.filter(l => l.endsWith(".css"));
+    const allContent = [];
+    for (const asset of cssAssets) {
+      const content = await fs.readFile(path.join(assetpath, asset), "utf-8");
+      allContent.push(`<style type="text/css">${content}</style>`);
+    }
+    return allContent.join("\n");
+  } catch (e) {
+    console.log("error css ", e)
+    return "";
+  }
+};
+
+
 
 // Serve HTML
 app.use('*', async (req, res) => {
@@ -57,14 +82,13 @@ app.use('*', async (req, res) => {
       lat: '35.8491583',
       long: '10.5858895'
     })
+
+    const stylesheets = getStyleSheets();
+    const cssAssets = await stylesheets;
     const html = template
-      .replace(`<!--app-head-->`, rendered.head ?? '')
-      .replace(`<div id="root"></div>`, `
-    <noscript> you need to enable Javascript to run this app </noscript> 
-      <div className="ssr-hidden" style="display: none;">${rendered.html}</div>
-      <div id="root"></div>
-      <script>window.__INITIAL_DATA__ = ${JSON.stringify(data.data)}</script>
-      `)
+      .replace(`<!--app-head-->`, (rendered.head ?? "") + (cssAssets ?? ''))
+      .replace(`<!--app-html-->`, rendered.html)
+    // <script>window.__INITIAL_DATA__ = ${JSON.stringify(data.data)}</script>
     setTimeout(
       () =>
         res.status(200).set({ 'Content-Type': 'text/html' }).end(html)
