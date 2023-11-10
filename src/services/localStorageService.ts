@@ -6,14 +6,13 @@ function getUserTheme() {
 }
 
 function setUserCredentials(user: any, token: string) {
-    if (typeof  window  !== 'undefined') {
-        localStorage.setItem('token', token);
-        localStorage.setItem('userId', user.id.toString());
-        localStorage.setItem('user', JSON.stringify(user));
-    }
+    localStorage.setItem('token', token);
+    localStorage.setItem('userId', user.id.toString());
+    localStorage.setItem('user', JSON.stringify(user));
+
 }
 function unsetUserCredentials() {
-    if (typeof window  !== 'undefined') {
+    if (typeof window !== 'undefined') {
 
         localStorage.removeItem('token');
         localStorage.removeItem('userId');
@@ -21,59 +20,48 @@ function unsetUserCredentials() {
     }
 }
 function setUserToken(token: string) {
-    if (typeof  window  !== 'undefined') {
-
-        localStorage.setItem('token', token)
-    }
+    localStorage.setItem('token', token)
 }
 function getUserToken() {
-    if (typeof  window  !== 'undefined') {
+    if (typeof window !== 'undefined') {
 
         return localStorage.getItem('token')
     } else return ""
 }
 function setUser(user: any) {
-    if (typeof  window  !== 'undefined') {
-
-        let userData = JSON.stringify(user)
-        return localStorage.setItem('user', userData)
-    } else return ""
+    let userData = JSON.stringify(user)
+    return localStorage.setItem('user', userData)
 }
 function getUser() {
-    if (typeof  window  !== 'undefined') {
+    if (typeof window !== 'undefined') {
 
         return localStorage.getItem('user')
     }
     else return ""
 }
 function getUserId() {
-    if (typeof  window  !== 'undefined') {
+    if (typeof window !== 'undefined') {
 
         return localStorage.getItem('userId')
 
     } else return ""
 }
 function setCurrentLocation(current_location: any) {
-    if (typeof  window  !== 'undefined') {
 
-        localStorage.setItem('current_location', JSON.stringify(current_location));
-    }
+    localStorage.setItem('current_location', JSON.stringify(current_location));
 }
 
 function getCurrentLocation() {
-    if (typeof  window  !== 'undefined') {
+    if (typeof window !== 'undefined') {
 
         return localStorage.getItem('current_location');
     } else return ""
 }
 function setCart(cart_items: any) {
-    if (typeof  window  !== 'undefined') {
-
-        localStorage.setItem('cart_items', JSON.stringify(cart_items));
-    }
+    localStorage.setItem('cart_items', JSON.stringify(cart_items));
 }
 function unsetCart() {
-    if (typeof  window  !== 'undefined') {
+    if (typeof window !== 'undefined') {
         localStorage.removeItem('cart_items');
     }
 }

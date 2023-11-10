@@ -164,11 +164,13 @@ function App() {
   // prepare default location 
   useEffect(() => {
     const location = localStorageService.getCurrentLocation();
-    if (!location) {
+    console.log("location ", location)
+    if (!location || location.length < 3) {
       navigator.geolocation.getCurrentPosition(
         (position: Position) => {
           const { latitude, longitude } = position.coords;
           LocationService.geoCode(latitude, longitude).then(data => {
+            console.log("data", data)
             dispatch({
               type: "SET_LOCATION",
               payload: {
