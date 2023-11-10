@@ -27,8 +27,9 @@
   background-repeat: no-repeat;
 
   .categorie-carousel {
-    margin-left: 15%;
-    max-width: 80%;
+    margin: 0 auto;
+    max-width: 848px;
+    padding-left: 39px;
 
     .carousel-slide {
       widows: 100px;
@@ -107,14 +108,20 @@
 
 @media only screen and (max-width:1200px) {
   .carousal-provider {
-
     background-size: 100% 100%;
+
+    .categorie-carousel {
+      max-width: 80%;
+      padding-left: 0;
+
+    }
   }
 }
 
 @media only screen and (min-width: 575px) and (max-width:767px) {
   .container {
     padding-bottom: 0;
+
     .carousal-cat-title {
       font-size: 22px;
     }
@@ -126,7 +133,6 @@
     background-size: 98% 62%;
 
     .categorie-carousel {
-      margin-left: 11%;
 
       .carousel-slide {
         width: calc(100% / 4);
@@ -157,7 +163,6 @@
     background-size: 99% 77%;
 
     .categorie-carousel {
-      margin-left: 11%;
 
       .carousel-slide {
         width: calc(100% / 5);
@@ -173,30 +178,6 @@
   }
 }
 
-// @media only screen and (min-width: 992px) and (max-width:1199px) {
-//   .carousal-provider {
-//     padding-top: 0;
-//     padding-bottom: 208px;
-//     background-size: 102% 83%;
-
-//     .categorie-carousel {
-//       margin-left: 11%;
-//       // max-width: 39%;
-
-//       .carousel-slide {
-//         width: calc(100% / 4);
-//         height: 150px;
-//       }
-
-//       .categories-list-buttons-container {
-//         width: 106%;
-//         top: 45%;
-//         left: -3%;
-//       }
-//     }
-//   }
-// }
-
 @media only screen and (max-width: 575px) {
 
   .container {
@@ -211,7 +192,6 @@
     background-size: 98% 62%;
 
     .categorie-carousel {
-      margin-left: 11%;
 
       .carousel-slide {
         width: calc(100% / 4);

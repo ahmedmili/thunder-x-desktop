@@ -1,11 +1,13 @@
 .vedio-player-container {
     position: relative;
+    height: 100%;
+    width: 100%;
 
     video {
         border-radius: 20px;
         margin: 0 3px;
         width: 95%;
-        height: 300px;
+        height: 100%;
         object-fit: cover;
         border: none;
 
@@ -19,7 +21,7 @@
         .video-time {
             position: absolute;
             bottom: 20px;
-            right: 33px;
+            right: 55px;
             font-size: 18px;
             font-weight: 400;
             color: white;
@@ -30,19 +32,24 @@
     }
 }
 
-@media only screen and (max-width :992px) {
-    .vedio-player-container {
-        video {
-            height: 177px;
-        }
 
+@media only screen and (max-width:1500px) {
+    .vedio-player-container {
         .video-controls {
             .video-time {
-                bottom: 20px;
+                right: 33px;
+            }
+        }
+    }
+}
+
+@media only screen and (max-width :992px) {
+    .vedio-player-container {
+        .video-controls {
+            .video-time {
                 right: 20px;
             }
         }
     }
-
 
 }

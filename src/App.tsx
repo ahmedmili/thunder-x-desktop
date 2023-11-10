@@ -2,8 +2,9 @@
 import { CssBaseline } from "@mui/material";
 import "bootstrap/dist/css/bootstrap.min.css";
 import { Suspense, lazy, startTransition, useCallback, useEffect, useState } from "react";
-import { Navigate, Outlet, Route, Routes } from "react-router-dom";
+import { Navigate, Outlet, Route, Routes, useLocation, useNavigate } from "react-router-dom";
 // import { ToastContainer, toast } from "react-toastify";
+
 import Layout from "./components/layout/layout";
 
 import { useAppDispatch, useAppSelector } from "./Redux/store";
@@ -31,6 +32,7 @@ import eventEmitter from "./services/thunderEventsService";
 import { Message, Restaurant } from "./services/types";
 import channelListener from "./services/web-socket";
 
+import MenuOptions from "./components/menus/menuOptions/MenuOptions";
 import HomeSkeleton from "./views/home/skeleton/HomeSkeleton";
 import Spinner from "./components/spinner/Spinner";
 //lazy loading components
@@ -54,7 +56,7 @@ const UnauthorizePage = lazy(
   () => import("./views/unauthorize/unauthorize.page")
 );
 const CartPage = lazy(() => import("./views/cart/cart.page"));
-const OrderTrackingPage = lazy(() => import("./views/track/trackorder.page"));
+// const OrderTrackingPage = lazy(() => import("./views/track/trackorder.page"));
 const ConfirmNumberPage = lazy(() => import("./views/ConfirmNumberPage"));
 const WelcomePage = lazy(() => import("./views/WelcomePage"));
 const ForgotPasswordPage = lazy(() => import("./views/ForgotPasswordPage"));
@@ -67,6 +69,8 @@ type Position = {
 };
 function App() {
   const dispatch = useAppDispatch();
+  const navLocation = useLocation()
+  const navigate = useNavigate()
 
   var favorsList: number[] = [];
   const location = useAppSelector((state) => state.location.position);
@@ -239,17 +243,23 @@ function App() {
     }
   }, [])
 
-
-
-  const theme = useAppSelector((state) => state.home.theme)
-  const [template, setTemplate] = useState<number>(theme)
+  // Enforce Trailing Slash 
   useEffect(() => {
-    setTemplate(theme)
-  }, [theme])
+    const { pathname } = navLocation;
+    // Check if the path doesn't end with '/'
+    if (!pathname.endsWith('/') && pathname !== '/') {
+      // Redirect to the same route with a '/' at the end
+      navigate(`${pathname}/`, { replace: true });
+    }
+    // window.scrollTo({
+    //   top: 0,
+    //   behavior: 'smooth'
+    // });
+  }, [navLocation, Navigate]);
 
 
   return (
-    <div className={`${template === 1 && "dark-background"}`}>
+    <>
       <CssBaseline />
       {/* <ToastContainer /> */}
       <Suspense fallback={
@@ -265,38 +275,34 @@ function App() {
         <Routes>
           <Route path="/" element={<Layout />}>
             <Route index element={<HomePage />} />
-            <Route path="/supplier-store/:id/*" element={<Menu />} />
-            {/* <Route path="/product" element={<MenuOptions />} /> */}
-            <Route element={<ProtectedRoute children={undefined} />}>
-
-              <Route path="/cart" element={<CartPage />} />
-            </Route>
-
-            <Route path="/search" element={<FilterPage />} />
+            <Route path="/restaurant/:id/:search?/:productId?/*" element={<Menu />} />
+            <Route path="/product/:id/:search?/:productId/*" element={<MenuOptions />} />
+            <Route path="/cart/*" element={<CartPage />} />
+            <Route path="/search/:search?/*" element={<FilterPage />} />
             {/* Private Route */}
-            <Route path="track-order" element={<OrderTrackingPage />} />
+            {/* <Route path="track-order/*" element={<OrderTrackingPage />} /> */}
           </Route>
           <Route element={<ProtectedRoute children={undefined} />}>
             <Route path="/profile" element={<Profile />}>
               <Route index element={<ConfigPage />} />
-              <Route path="/profile/annonces" element={<Annonces />} />
-              <Route path="/profile/archivedCommands" element={<ArchivedCommands />} />
-              <Route path="/profile/discuter" element={<Discuter />} />
-              <Route path="/profile/Favors" element={<Favors />} />
-              <Route path="/profile/Fidelite" element={<FidelitePage />} />
-              <Route path="/profile/Feedback/:command_id" element={<Feedback />} />
+              <Route path="/profile/annonces/" element={<Annonces />} />
+              <Route path="/profile/archivedCommands/" element={<ArchivedCommands />} />
+              <Route path="/profile/discuter/" element={<Discuter />} />
+              <Route path="/profile/Favors/" element={<Favors />} />
+              <Route path="/profile/Fidelite/" element={<FidelitePage />} />
+              <Route path="/profile/Feedback/:command_id/" element={<Feedback />} />
             </Route>
           </Route>
 
-          <Route path="unauthorized" element={<UnauthorizePage />} />
-          <Route path="login" element={<LoginPage />} />
-          <Route path="register" element={<RegisterPage />} />
-          <Route path="confirm" element={<ConfirmNumberPage />} />
-          <Route path="welcome" element={<WelcomePage />} />
-          <Route path="forgotpassword" element={<ForgotPasswordPage />} />
+          <Route path="unauthorized/*" element={<UnauthorizePage />} />
+          <Route path="login/*" element={<LoginPage />} />
+          <Route path="register/*" element={<RegisterPage />} />
+          <Route path="confirm/*" element={<ConfirmNumberPage />} />
+          <Route path="welcome/*" element={<WelcomePage />} />
+          <Route path="forgotpassword/*" element={<ForgotPasswordPage />} />
         </Routes>
       </Suspense>
-    </div>
+    </>
   );
 }
 

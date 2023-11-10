@@ -264,7 +264,6 @@
     }
 
     .info {
-        // width: 50%;
         height: 80%;
         display: flex;
         justify-content: end;
@@ -489,7 +488,7 @@
             .position {
                 font-size: 15px;
                 gap: 7px;
-                width: 400px;
+                width: 337px;
             }
 
 
@@ -547,6 +546,7 @@
     .fixedHeaderContainer2 {
 
         .info {
+            gap: 0px;
             .cart-item {
                 width: 66px;
                 height: 36px;
@@ -555,7 +555,7 @@
             .position {
                 font-size: 12px;
                 gap: 7px;
-                width: 271px;
+                width: 264px;
 
                 .position-icon {
                     font-size: 16px;

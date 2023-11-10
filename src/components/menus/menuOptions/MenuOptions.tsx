@@ -1,21 +1,22 @@
+import { Add as AddIcon } from '@mui/icons-material';
 import { Button } from '@mui/material';
-import './menuOptions.scss'
-import { Add as AddIcon, Star } from '@mui/icons-material';
-import { useEffect, useReducer, useState } from 'react';
+import { RefObject, useEffect, useReducer, useRef, useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import { useLocation } from 'react-router-dom';
 import { useSelector } from 'react-redux';
-import { useAppDispatch, useAppSelector } from '../../../Redux/store';
+import { useLocation, useParams } from 'react-router-dom';
+import { toast } from 'react-toastify';
 import { RootState } from '../../../Redux/slices';
 import { addItem, setDeliveryPrice, setSupplier } from '../../../Redux/slices/cart/cartSlice';
-import { localStorageService } from '../../../services/localStorageService';
+import { useAppDispatch, useAppSelector } from '../../../Redux/store';
 import { productService } from '../../../services/api/product.api';
 // import { toast } from 'react-toastify';
 
-import ShoppingCartOutlinedIcon from '@mui/icons-material/ShoppingCartOutlined';
-import KeyboardArrowUpOutlinedIcon from '@mui/icons-material/KeyboardArrowUpOutlined';
 import KeyboardArrowDownOutlinedIcon from '@mui/icons-material/KeyboardArrowDownOutlined';
-import { Option } from '../../../services/types';
+import KeyboardArrowUpOutlinedIcon from '@mui/icons-material/KeyboardArrowUpOutlined';
+import ShoppingCartOutlinedIcon from '@mui/icons-material/ShoppingCartOutlined';
+import { supplierServices } from '../../../services/api/suppliers.api';
+import { Option, Restaurant } from '../../../services/types';
+import { localStorageService } from '../../../services/localStorageService';
 
 // Define the initial state
 const initialState = {
@@ -76,24 +77,46 @@ const reducer = (state: any, action: any) => {
 function MenuOptions() {
 
     const { t } = useTranslation();
-
+    const { productId } = useParams<{ productId: string }>();
+    const packRef: RefObject<HTMLFormElement> = useRef(null);
+    const [allContent, setAllContent] = useState<any[]>([]);
     const [productCount, setProductCount] = useState<number>(1);
-    const [product, setProduct] = useState<any>([])
-
+    const [product, setProduct] = useState<any>({})
+    const [supplierId, setSupplierId] = useState<number>(0)
+    const [productSupplier, setProductSupplier] = useState<Restaurant>()
     const [state, dispatch] = useReducer(reducer, initialState);
 
     const usedispatch = useAppDispatch();
-
     const location = useLocation();
-    const restaurant = location.state.restaurant;
     const { items } = useSelector((state: RootState) => state.cart);
     const cartItems = useAppSelector((state) => state.cart.items);
-    const selectedMenuItem = useAppSelector((state) => state.restaurant.product);
+
+    /*
+     *
+     * url handling part
+     *
+     */
+    useEffect(() => {
+        let locationArray = location.pathname.split('/');
+        locationArray[1] = "restaurant";
+        const newUrl = locationArray.join("/");
+        window.history.pushState({}, '', newUrl);
+    }, [])
+
+    const getSupplier = async (id: number) => {
+        const { status, data } = await supplierServices.getSupplierById(id)
+        status === 200 && setProductSupplier(data.data)
+    }
+
+    useEffect(() => {
+        supplierId != 0 && getSupplier(supplierId)
+    }, [supplierId])
 
     const getProduct = async () => {
         try {
-            const { status, data } = await productService.getProduct(selectedMenuItem?.id);
+            const { status, data } = await productService.getProduct(Number(productId));
             if (status === 200) {
+                setSupplierId(data.data.product.menu[0].supplier_id);
                 setProduct(data.data.product);
 
                 let optionslist = data.data.product.options;
@@ -161,7 +184,6 @@ function MenuOptions() {
         let selectedPack = null;
         let unite_price = 0
         let sum = 0;
-
         if (state.packet.length > 0) {
             selectedPack = state.packet.find((item: any) => item.checked === true);
         }
@@ -209,83 +231,59 @@ function MenuOptions() {
         dispatch({ type: 'SET_UNITPRICE', payload: unite_price });
         dispatch({ type: 'SET_TOTAL', payload: unite_price * productCount })
     }
-    
-    const selectExtra = (index: number, event: any) => {
-        if (state.extra_max.max !== -1 && event.target.checked == true) {
-            let opts = [];
-            let extra = state.extra.filter((item: any) => item.checked === true)
-            extra.length > 0 && opts.push(extra);
-            if (opts.length >= state.extra_max.max) {
-                event.target.checked = false;
-                return true;
+
+    const selectOption = (type: string, index: number, event: any) => {
+        allContent.map((option) => {
+            if (Object.keys(option)[0] === type) {
+                const updatedOption = { ...option };
+                var max = -1;
+                switch (type) {
+                    case 'viande':
+                        max = state.viande_max.max
+                        break;
+
+                    case 'sauce':
+                        max = state.sauce_max.max
+                        break;
+
+                    case 'extra':
+                        max = state.extra_max.max
+                        break;
+                    case 'supplement':
+                        max = state.supplement_max.max
+                        break;
+
+                    default:
+                        break;
+                }
+                if (!((type == "pate") || (type == 'packet' || (type == 'free')))) {
+                    let ok = true;
+                    if (max !== -1 && event.target.checked == true) {
+                        let opts = [];
+                        let max_selected = updatedOption[type].filter((item: any) => item.checked === true)
+                        max_selected.legth > 0 && opts.push(max_selected);
+                        if (max_selected.length >= max) {
+                            event.target.checked = false;
+                            ok = false
+                        }
+                    }
+                    if (ok) {
+                        updatedOption[type][index].checked = event.target.checked;
+                    }
+                } else if ((type == "pate") || (type == 'packet')) {
+                    updatedOption[type].forEach((item: any) => item.checked = false);
+                    updatedOption[type][index].checked = event.target.checked;
+                } else {
+                    updatedOption[type][index].checked = event.target.checked;
+
+                }
+                return updatedOption; // Return the updated object
             }
-        }
-        state.extra[index].checked = event.target.checked;
-        calculateTotal();
-    }
 
-    const selectSauce = (index: number, event: any) => {
-        let ok = true;
-        if (state.sauce_max.max !== -1 && event.target.checked == true) {
-            let opts = [];
-            let sauce = state.sauce.filter((item: any) => item.checked === true)
-            sauce.legth > 0 && opts.push(sauce);
-            if (opts.length >= state.sauce_max.max) {
-                event.target.checked = false;
-                ok = false
-            }
-        }
-        if (ok) {
-            state.sauce[index].checked = event.target.checked;
-            calculateTotal();
-        }
-    }
+            return option; // Return unchanged objects
+        });
 
-    const selectViande = (index: number, event: any) => {
-        let ok = true;
-        if (state.viande_max.max !== -1 && event.target.checked == true) {
-            let opts = [];
-            let viande = state.viande.filter((item: any) => item.checked === true)
-            viande.legth > 0 && opts.push(viande);
-            if (opts.length >= state.viande_max.max) {
-                event.target.checked = false;
-                ok = false
-            }
-        }
-        if (ok) {
-            state.viande[index].checked = event.target.checked;
-            calculateTotal();
-        }
-    }
-
-    const selectSupp = (index: number, event: any) => {
-
-        if (state.supplement_max.max !== -1 && event.target.checked == true) {
-            let opts = [];
-            let suppls = state.supplement.filter((item: any) => item.checked === true)
-            suppls.length > 0 && opts.push(suppls);
-            if (opts.length >= state.supplement_max.max) {
-                event.target.checked = false;
-                return true;
-            }
-        }
-        state.supplement[index].checked = event.target.checked;
-        calculateTotal();
-    }
-
-    const selectFree = (index: number, event: any) => {
-        state.free[index].checked = event.target.checked;
-    }
-
-    const selectPack = (index: number, event: any) => {
-        state.packet?.forEach((item: any) => item.checked = false);
-        state.packet[index].checked = event.target.checked;
-        calculateTotal();
-    }
-
-    const selectPate = (index: number, event: any) => {
-        state.pate?.forEach((item: any) => item.checked = false);
-        state.pate[index].checked = event.target.checked;
+        // setDisplayedContent(newContent)
         calculateTotal();
     }
 
@@ -293,6 +291,31 @@ function MenuOptions() {
         if (type === "add") setProductCount((current) => current + 1)
         if ((type === "remove") && (productCount > 1)) setProductCount((current) => current - 1)
     }
+
+    useEffect(() => {
+        const allContent = []
+        state.packet.length > 0 && state.packet?.forEach((item: any) => item.checked = false)
+        state.free.length > 0 && state.free?.forEach((item: any) => item.checked = false);
+        state.extra.length > 0 && state.extra?.forEach((item: any) => item.checked = false);
+        state.supplement.length > 0 && state.supplement?.forEach((item: any) => item.checked = false);
+        state.pate.length > 0 && state.pate?.forEach((item: any) => item.checked = false);
+        state.viande.length > 0 && state.viande?.forEach((item: any) => item.checked = false);
+        state.sauce.length > 0 && state.sauce?.forEach((item: any) => item.checked = false);
+        state.packet.length > 0 && allContent.push({ packet: state.packet });
+        state.extra.length > 0 && allContent.push({ extra: state.extra });
+        state.supplement.length > 0 && allContent.push({ supplement: state.supplement });
+        state.pate.length > 0 && allContent.push({ pate: state.pate });
+        state.sauce.length > 0 && allContent.push({ sauce: state.sauce });
+        state.viande.length > 0 && allContent.push({ viande: state.viande });
+        state.free.length > 0 && allContent.push({ free: state.free });
+        setAllContent(allContent)
+        dispatch({ type: 'SET_TOTAL', payload: Number(product.default_price) })
+        dispatch({ type: 'SET_UNITPRICE', payload: Number(product.default_price) })
+        if (product.computed_value?.discount_value) {
+            dispatch({ type: 'SET_UNITPRICE', payload: state.unitPrice - (state.unitPrice * (product?.computed_value?.discount_value / 100)) })
+            dispatch({ type: 'SET_TOTAL', payload: state.total - (state.total * (product?.computed_value?.discount_value / 100)) })
+        }
+    }, [product])
 
     const addToCart = () => {
         let opts: Option[] = [];
@@ -318,34 +341,36 @@ function MenuOptions() {
         packs.length > 0 && opts.push(packs);
         if (state.packet.length > 0) {
             if (packs.length <= 0) {
-                window.scrollTo({ top: 10, behavior: 'smooth' });
+                packRef.current && packRef.current.scrollIntoView({ behavior: 'smooth' });
                 return false;
             }
         }
 
-        const obj = {
+        const obj: any = {
             product: product,
             options: opts,
             quantity: productCount,
             total: state.total,
             supplier_data: {
-                supplier_id: restaurant.id,
-                supplier_name: restaurant.name,
-                delivery_price: restaurant.delivery_price,
+                supplier_id: productSupplier!.id,
+                supplier_name: productSupplier!.name,
+                delivery_price: productSupplier!.delivery_price,
             },
             unitePrice: Number(state.unitPrice)
-
         };
 
         if (items.length > 0 && items[0].supplier_data.supplier_id !== obj.supplier_data.supplier_id) {
             // toast.warn("you have allready selected items")
             return;
         }
-        usedispatch(setDeliveryPrice(restaurant.delivery_price));
-        usedispatch(setSupplier(restaurant));
-        localStorageService.setSupplier(restaurant);
-        localStorageService.setBonus(restaurant.bonus);
+
+        toast.success("item added ")
+        usedispatch(setDeliveryPrice(productSupplier!.delivery_price));
+        usedispatch(setSupplier(productSupplier));
+        localStorageService.setSupplier(productSupplier);
+        // localStorageService.setBonus(productSupplier!.bonus);
         usedispatch(addItem(obj));
+        getProduct()
     }
 
     useEffect(() => {
@@ -360,20 +385,18 @@ function MenuOptions() {
         <div className="menue-options-container" onClick={(e) => e.stopPropagation()}>
             <div className="modal-content-image">
                 <div className="modal-content-image-inner"
-                    style={{ backgroundImage: `url(${selectedMenuItem?.image[0]?.path})`, }}>
+                    style={{ backgroundImage: `url(${(product.image?.length > 0) ? product.image[0].path : productSupplier?.images[0].path})`, }}>
                 </div>
             </div>
             <div className="modal-content-options">
                 <div className="options-info">
-                    <h5 className="menu-title">
-                        {selectedMenuItem?.name}
-                    </h5>
+
+                    <h5 className="menu-title" dangerouslySetInnerHTML={{ __html: product?.name }}></h5>
                     <h6 className='menu-price'>
-                        A partir de {selectedMenuItem?.price}
+                        A partir de {product.price}
                     </h6>
-                    <p className='menu-description'>
-                        {selectedMenuItem?.description}
-                    </p>
+                    <p className='menu-description' dangerouslySetInnerHTML={{ __html: product?.description }}></p>
+
                 </div>
                 {state.optionslist.length === 0 ? (
                     <>
@@ -394,208 +417,62 @@ function MenuOptions() {
                     </>
                 ) : (
                     <div className="menu-options">
-                        {/* pate options */}
-                        {state.pate.length > 0 && (
-                            <>
-                                <div className='menu-options-header'>
-                                    <div className="option-name">Choisissez votre pate</div>
-                                </div>
-                                <form>
-                                    {state.pate.map((option: any, index: number) => (
-                                        <div key={option.id} className="options-list">
-                                            <div className="checkBox">
-                                                <input type='checkbox' name={option.id} id={option.id} value={option.id || ''} onChange={(e) => selectPate(index, e)} checked={option?.checked}>
-                                                </input>
-                                                <div className="custom-checkbox"></div>
-                                                <label htmlFor={option.id}>{option.name} </label>
-                                            </div>
-                                            <span className='option-price'>{option.price} DT</span>
-                                        </div>
-                                    ))}
-                                </form>
-                            </>
-                        )}
-                        {/* packet options */}
-                        {state.packet.length > 0 && (
-                            <>
-                                <div className='menu-options-header'>
-                                    <div className="option-name">Choisissez votre packet</div>
-                                    <div className="option-obligatoir">Obligatoire</div>
-                                </div>
-                                <form>
-                                    {state.packet.map((option: any, index: number) => (
-                                        <div key={option.id} className="options-list">
-                                            <div className="checkBox">
-                                                <input type='checkbox'
-                                                    name={option.id}
-                                                    id={option.id}
-                                                    value={option.id || ''}
-                                                    onChange={(e) => selectPack(index, e)}
-                                                    checked={option?.checked}
-                                                >
-                                                </input>
-                                                <div className="custom-checkbox"></div>
-                                                <label htmlFor={option.id}>{option.name} </label>
-                                            </div>
-                                            <span className='option-price'>{option.price} DT</span>
-                                        </div>
-                                    ))}
-                                </form>
-                            </>
-                        )}
-                        {/* supplement options */}
-                        {state.supplement.length > 0 && (
-                            <>
-                                <div className='menu-options-header'>
-                                    <div className="option-name">Choisissez votre supplement</div>
-                                    {/* <div className="option-obligatoir">{"MAX " + state.supplement_max?.max}</div> */}
-                                </div>
-                                <form>
-                                    {state.supplement.map((option: any, index: number) => (
-                                        <div key={option.id} className="options-list">
-                                            <div className="checkBox">
-                                                <input type='checkbox'
-                                                    name={option.id}
-                                                    id={option.id}
-                                                    value={option.id || ''}
-                                                    checked={option?.checked}
-                                                    onChange={(e) => selectSupp(index, e)}
-                                                >
-                                                </input>
-                                                <div className="custom-checkbox"></div>
-                                                <label htmlFor={option.id}>{option.name} </label>
-                                            </div>
-                                            <span className='option-price'>{option.price} DT</span>
-                                        </div>
-                                    ))}
-                                </form>
-                            </>
-                        )}
-                        {/* sauce options */}
-                        {state.sauce.length > 0 && (
-                            <>
-                                <div className='menu-options-header'>
-                                    <div className="option-name">Choisissez votre sauce</div>
-                                    {
-                                        state.sauce_max?.max > 0 &&
-                                        <div className="option-max">{"MAX " + state.sauce_max?.max}</div>
+                        {
+                            state.optionslist.length === 0 ? (
+                                <>
+                                </>
+                            ) : (
+                                <>
+                                    {allContent.length > 0 && allContent.map((options, index) => {
+                                        return (
+                                            <>
+                                                <>
+                                                    <div className='menu-options-header'>
+                                                        <div className="option-name">Choisissez votre {Object.keys(options)[0]}</div>
+                                                        {
+
+                                                            Object.keys(options)[0] === "packet" && <div className="option-obligatoir">Obligatoire</div>
+                                                        }
+
+                                                        {
+                                                            Object.keys(options)[0] === "sauce" && state.sauce_max?.max > 0 && <div className="option-max">{"MAX " + state.sauce_max?.max}</div>
+                                                        }
+                                                        {
+                                                            Object.keys(options)[0] === "viande" && state.viande_max?.max > 0 && <div className="option-max">{"MAX " + state.viande_max?.max}</div>
+                                                        }
+                                                        {
+                                                            Object.keys(options)[0] === "extra" && state.extra_max?.max > 0 && <div className="option-max">{"MAX " + state.extra_max?.max}</div>
+                                                        }
+                                                        {
+                                                            Object.keys(options)[0] === "supplement" && state.supplement_max?.max > 0 && <div className="option-max">{"MAX " + state.supplement_max?.max}</div>
+                                                        }
+                                                    </div>
+                                                    <form>
+                                                        {state[Object.keys(options)[0]].map((option: any, index: number) => (
+                                                            <div key={index} className="options-list">
+                                                                <div className="checkBox">
+                                                                    <input type='checkbox' name={option.id} id={option.id} value={option.id || ''} onChange={(e) => selectOption(Object.keys(options)[0], index, e)} checked={option?.checked}>
+                                                                    </input>
+                                                                    <div className="custom-checkbox"></div>
+                                                                    <label htmlFor={option.id}>{option.name} </label>
+                                                                </div>
+                                                                <span className='option-price'>{option.price} DT</span>
+                                                            </div>
+                                                        ))}
+                                                    </form>
+
+                                                    <div className="devider">
+
+                                                    </div>
+                                                </>
+
+                                            </>)
+                                    })
                                     }
-                                </div>
-                                <form>
-                                    {state.sauce.map((option: any, index: number) => (
-                                        <div key={option.id} className="options-list">
-                                            <div className="checkBox">
-                                                <input type='checkbox'
-                                                    name={option.id}
-                                                    id={option.id}
-                                                    value={option.id || ''}
-                                                    checked={option?.checked}
-                                                    onChange={(e) => selectSauce(index, e)}
-                                                >
-                                                </input>
-                                                <div className="custom-checkbox"></div>
-                                                <label htmlFor={option.id}>{option.name} </label>
-                                            </div>
-                                            <span className='option-price'>{option.price} DT</span>
-                                        </div>
-                                    ))}
-                                </form>
-                            </>
-                        )}
-                        {/* viande options */}
-                        {state.viande.length > 0 && (
-                            <>
-                                <div className='menu-options-header'>
-                                    <div className="option-name">Choisissez votre viande</div>
-                                    {
-                                        state.viande_max?.max > 0 &&
-                                        <div className="option-max">{"MAX " + state.viande_max?.max}</div>
-                                    }
-                                </div>
-                                <form>
-                                    {state.viande.map((option: any, index: number) => (
-                                        <div key={option.id} className="options-list">
-                                            <div className="checkBox">
-                                                <input type='checkbox'
-                                                    name={option.id}
-                                                    id={option.id}
-                                                    value={option.id || ''}
-                                                    checked={option?.checked}
-                                                    onChange={(e) => selectViande(index, e)}
-                                                >
-                                                </input>
-                                                <div className="custom-checkbox"></div>
-                                                <label htmlFor={option.id}>{option.name} </label>
-                                            </div>
-                                            <span className='option-price'>{option.price} DT</span>
-                                        </div>
-                                    ))}
-                                </form>
-                            </>
-                        )}
-                        {/* extra options */}
-                        {state.extra.length > 0 && (
-                            <>
-                                <div className='menu-options-header'>
-                                    <div className="option-name">Choisissez votre extra</div>
-                                    {
-                                        state.extra_max?.max > 0 &&
-                                        <div className="option-max">{"MAX " + state.extra_max?.max}</div>
-                                    }
-                                </div>
-                                <form>
-                                    {state.extra.map((option: any, index: number) => (
-                                        <div key={option.id} className="options-list">
-                                            <div className="checkBox">
-                                                <input type='checkbox'
-                                                    name={option.id}
-                                                    id={option.id}
-                                                    value={option.id || ''}
-                                                    checked={option?.checked}
-                                                    onChange={(e) => selectExtra(index, e)}
+                                </>
+                            )
+                        }
 
-                                                >
-                                                </input>
-                                                <div className="custom-checkbox"></div>
-                                                <label htmlFor={option.id}>{option.name} </label>
-                                            </div>
-                                            <span className='option-price'>{option.price} DT</span>
-                                        </div>
-                                    ))}
-                                </form>
-                            </>
-                        )}
-                        {/* free options */}
-                        {state.free.length > 0 && (
-                            <>
-                                <div className='menu-options-header'>
-                                    <div className="option-name">Free</div>
-                                </div>
-
-                                <form>
-                                    {state.free.map((option: any, index: number) => (
-                                        <div key={option.id} className="options-list">
-                                            <div className="checkBox">
-
-                                                <input type='checkbox'
-                                                    name={option.id}
-                                                    id={option.id}
-                                                    value={option.id || ''}
-                                                    onChange={(e) => selectFree(index, e)}
-                                                    checked={option?.checked}
-
-                                                >
-                                                </input>
-                                                <div className="custom-checkbox"></div>
-                                                <label htmlFor={option.id}>{option.name} </label>
-                                            </div>
-                                            <span className='option-price'>{option.price} DT</span>
-
-                                        </div>
-                                    ))}
-                                </form>
-                            </>
-                        )}
                     </div >
                 )}
 
@@ -613,7 +490,9 @@ function MenuOptions() {
                         </div>
                     </div>
 
-                    <button className="add-to-cart-button" onClick={() => { addToCart() }}>
+                    <button className="add-to-cart-button" onClick={() => {
+                        addToCart()
+                    }}>
                         <ShoppingCartOutlinedIcon className='cart-icon' />
                         {t('add_to_cart')}
                     </button>
@@ -621,6 +500,7 @@ function MenuOptions() {
                 </div>
             </div>
         </div>
+
     )
 }
 

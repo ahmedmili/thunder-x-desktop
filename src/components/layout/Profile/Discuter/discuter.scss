@@ -105,6 +105,8 @@
                     padding: 13px 0;
                     height: 82px;
                     background-color: #2EB5B2;
+                    display: flex;
+                    flex-direction: column;
 
                     p {
                         display: flex;
@@ -204,7 +206,8 @@
                 .buttons {
                     button {
                         font-size: 13px;
-                        p{
+
+                        p {
                             margin: 0;
                         }
                     }

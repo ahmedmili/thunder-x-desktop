@@ -1,25 +1,18 @@
-import { Container, Row, Col } from 'react-bootstrap';
-import addsStyles from "./applicationAdd.module.scss"
+import { Col, Container, Row } from 'react-bootstrap';
+import addsStyles from "./applicationAdd.module.scss";
 
 
 import phone_icn from "../../assets/home/phone-icn.png";
 
 import app_store from "../../assets/home/app_store.png";
 import google_play from "../../assets/home/google_play.png";
-import { useAppSelector } from '../../Redux/store';
-import { useEffect, useState } from 'react';
 
 export const ApplicationAd = () => {
 
-    const theme = useAppSelector(state => state.home.theme)
-    const [template, setTemplate] = useState<number>(theme)
 
-    useEffect(() => {
-        setTemplate(theme)
-    }, [theme])
 
     return (
-        <Container className={` ${addsStyles.applicationAdsMainContainer} ${template === 1 && "dark-background2"} `}>
+        <Container className={` ${addsStyles.applicationAdsMainContainer}`}>
             <Row>
                 <Col>
                     <img className={addsStyles.applicationAdsImg} loading='lazy' src={phone_icn} alt="phone app" />

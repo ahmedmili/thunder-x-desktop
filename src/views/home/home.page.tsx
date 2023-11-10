@@ -7,10 +7,8 @@ import { ApplicationAd } from "../../components/applicationAd/ApplicationAd";
 import { FooterNewsLeter } from "../../components/footerNewsLeter/FooterNewsLetter";
 import RestaurantList from "../../components/recommendedRestaurants/recommendedRestaurants";
 import { Restaurant } from "../../services/types";
-import "./home.page.module.scss";
+import homeStyle from "./home.page.module.scss";
 
-// const googleMapKey = import.meta.env.VITE_GOOGLE_MAPS_API_KEY;
-import { Container } from "@mui/material";
 
 // import "laravel-echo/dist/echo";
 import { useEffect, useState } from "react";
@@ -31,8 +29,6 @@ const HomePage = () => {
   const categories = useSelector(categoriesHomeSelector);
   const recommanded = useSelector(recommendedHomeSelector);
   const isLoading = useSelector(homeLoadingSelector);
-  const theme = useAppSelector((state) => state.home.theme)
-  const [template, setTemplate] = useState<number>(theme)
 
   const restaurantsList = useAppSelector(
     (state) => state.restaurant.restaurants
@@ -43,9 +39,7 @@ const HomePage = () => {
     []
   );
 
-  useEffect(() => {
-    setTemplate(theme)
-  }, [theme])
+
 
   const handleCategorySelect = (category: string) => {
     if (selectedCategory === category) {
@@ -81,9 +75,13 @@ const HomePage = () => {
 
   return (
     <>
-      <Container  className={`containerr ${template === 1 && "dark-background"}`}>
+
+      <div className={`xxl-12 ${homeStyle.homePageContainer}`}>
         {isLoading ? (
-          <HomeSkeleton />
+          <div className={homeStyle.homeSkeletonContainer}>
+
+            <HomeSkeleton />
+          </div>
         ) : (
           <>
             {/* categories list */}
@@ -92,7 +90,7 @@ const HomePage = () => {
                 onCategorySelect={handleCategorySelect}
               />
             ) : (
-              <div className="skeleton-container">
+              <div className={homeStyle.homePageContainer}>
                 <Skeleton count={12} className="loading-skeleton" />
                 <Skeleton count={12} className="loading-skeleton" />
                 <Skeleton count={12} className="loading-skeleton" />
@@ -138,7 +136,7 @@ const HomePage = () => {
             )}
           </>
         )}
-      </Container>
+      </div>
       <FooterNewsLeter />
     </>
   );
