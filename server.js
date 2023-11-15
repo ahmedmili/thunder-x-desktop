@@ -99,15 +99,23 @@ const ssrHome = async () => {
     lat: 35.8466943,
   };
   const { data } = await axios.post('https://api.thunder.webify.pro/api/get_home_page_data', body);
-  // console.log(data)
   return data
 }
 
 const prepareTemplate = async (req, res) => {
   try {
-    // console.log(req.originalUrl)
-    const data = await ssrHome()
+    console.log(req.originalUrl)
+    var data
     const url = req.originalUrl
+    switch (url) {
+      case ('/'):
+        data = await ssrHome()
+        break;
+      default:
+        data = null
+        break;
+    }
+
     const template = await vite.transformIndexHtml(url, baseTemplate);
     const cssAssets = await stylesheets;
     const appHtml = await render(url, data.data);
