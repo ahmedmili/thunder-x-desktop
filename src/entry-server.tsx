@@ -8,14 +8,15 @@ import store from './Redux/store';
 import i18n from "./i18n";
 import "./app.scss"
 
-export function render(url: string) {
+export function render(url: string, initialData?: any) {
+  // console.warn("initialData.recommended", initialData.recommended)
   const html = ReactDOMServer.renderToString(
     <Provider store={store}>
       <GoogleOAuthProvider clientId="766339492046-2vqen18b95q35487bvqgj5n3f4lse9rq.apps.googleusercontent.com">
         <I18nextProvider i18n={i18n}>
           <StaticRouter location={url} >
 
-            <App />
+            <App initialData={initialData} />
           </StaticRouter>
         </I18nextProvider>
       </GoogleOAuthProvider>

@@ -1,4 +1,4 @@
-"use client";
+// "use client";
 import { CssBaseline } from "@mui/material";
 import "bootstrap/dist/css/bootstrap.min.css";
 import { Suspense, lazy, startTransition, useCallback, useEffect, useState } from "react";
@@ -29,7 +29,7 @@ import { supplierServices } from "./services/api/suppliers.api";
 import { userService } from "./services/api/user.api";
 import { localStorageService } from "./services/localStorageService";
 import eventEmitter from "./services/thunderEventsService";
-import { Message, Restaurant } from "./services/types";
+import { AppProps, Message, Restaurant } from "./services/types";
 import channelListener from "./services/web-socket";
 
 import MenuOptions from "./components/menus/menuOptions/MenuOptions";
@@ -67,7 +67,8 @@ type Position = {
     longitude: number;
   };
 };
-function App() {
+
+function App({ initialData }: AppProps) {
   const dispatch = useAppDispatch();
   const navLocation = useLocation()
   const navigate = useNavigate()
@@ -81,6 +82,11 @@ function App() {
   }, []);
 
   useEffect(() => {
+    initialData && console.log("initialData", initialData)
+  }, [initialData])
+
+  useEffect(() => {
+
     eventEmitter.on("homeDataChanged", updateHomeData);
     return () => {
       eventEmitter.off("homeDataChanged", updateHomeData);
@@ -264,19 +270,22 @@ function App() {
     <>
       <CssBaseline />
       {/* <ToastContainer /> */}
-      <Suspense fallback={
-        <center>
-          <Header />
+      <Suspense fallback={(typeof window != "undefined") ?
+        <>
+          {/* <Header />
           <HomeSkeleton />
-          <Footer />
+          <Footer /> */}
           {/* loading */}
+        </>
+        :
+        <>
           <Spinner name="Loading" />
-        </center>
+        </>
       }
       >
         <Routes>
           <Route path="/" element={<Layout />}>
-            <Route index element={<HomePage />} />
+            <Route index element={<HomePage initialData={initialData} />} />
             <Route path="/restaurant/:id/:search?/:productId?/*" element={<Menu />} />
             <Route path="/product/:id/:search?/:productId/*" element={<MenuOptions />} />
             <Route path="/cart/*" element={<CartPage />} />

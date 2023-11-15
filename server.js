@@ -91,29 +91,40 @@ const { render } = await vite.ssrLoadModule(buildModule);
 const stylesheets = getStyleSheets();
 
 // Serve HTML
-app.use('*', async (req, res) => {
+
+const ssrHome = async () => {
+  const body = {
+    delivery: 1,
+    long: 10.6088898,
+    lat: 35.8466943,
+  };
+  const { data } = await axios.post('https://api.thunder.webify.pro/api/get_home_page_data', body);
+  // console.log(data)
+  return data
+}
+
+const prepareTemplate = async (req, res) => {
   try {
-    const url = req.originalUrl.replace(base, '')
+    // console.log(req.originalUrl)
+    const data = await ssrHome()
+    const url = req.originalUrl
     const template = await vite.transformIndexHtml(url, baseTemplate);
     const cssAssets = await stylesheets;
-    const appHtml = await render(url);
+    const appHtml = await render(url, data.data);
     const scripts = getScripts();
     const jsAssets = await scripts;
     const html = template
-      .replace(`<!--app-head-->`, cssAssets )
+      .replace(`<!--app-head-->`, cssAssets)
       .replace(`<!--app-html-->`, appHtml.html ?? "")
-    // <script>window.__INITIAL_DATA__ = ${JSON.stringify(data.data)}</script>
-    setTimeout(
-      () =>
-        res.status(200).set({ 'Content-Type': 'text/html' }).end(html)
-      , 700
-    )
+    res.status(200).set({ 'Content-Type': 'text/html' }).end(html)
   } catch (e) {
     vite?.ssrFixStacktrace(e)
     console.log(e.stack)
     res.status(500).end(e.stack)
   }
-})
+}
+
+app.use('*', (req, res) => prepareTemplate(req, res))
 
 // Start http server
 app.listen(port, () => {

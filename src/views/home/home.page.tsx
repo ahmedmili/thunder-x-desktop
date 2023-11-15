@@ -6,7 +6,7 @@ import { AdsCarousel } from "../../components/adsCarousel/adsCarousel";
 import { ApplicationAd } from "../../components/applicationAd/ApplicationAd";
 import { FooterNewsLeter } from "../../components/footerNewsLeter/FooterNewsLetter";
 import RestaurantList from "../../components/recommendedRestaurants/recommendedRestaurants";
-import { Restaurant } from "../../services/types";
+import { AppProps, Restaurant } from "../../services/types";
 import homeStyle from "./home.page.module.scss";
 
 
@@ -23,21 +23,19 @@ import { useAppSelector } from "../../Redux/store";
 import CategoryCarousel from "../../components/categoriesCarousel/categoriesCarousel";
 import HomeSkeleton from "./skeleton/HomeSkeleton";
 
-const HomePage = () => {
 
-  const ads = useSelector(adsHomeSelector);
-  const categories = useSelector(categoriesHomeSelector);
-  const recommanded = useSelector(recommendedHomeSelector);
-  const isLoading = useSelector(homeLoadingSelector);
 
-  const restaurantsList = useAppSelector(
-    (state) => state.restaurant.restaurants
-  );
+const HomePage = ({ initialData }: AppProps) => {
+
+  const ads = initialData ? initialData.ads : useSelector(adsHomeSelector);
+  const categories = initialData ? initialData.categories : useSelector(categoriesHomeSelector);
+  const recommanded = initialData ? initialData.recommended : useSelector(recommendedHomeSelector);
+  const isLoading = initialData ? false : useSelector(homeLoadingSelector);
+
+  const restaurantsList = useAppSelector((state) => state.restaurant.restaurants);
 
   const [selectedCategory, setSelectedCategory] = useState<string>("");
-  const [filteredRestaurants, setFilteredRestaurants] = useState<Restaurant[]>(
-    []
-  );
+  const [filteredRestaurants, setFilteredRestaurants] = useState<Restaurant[]>([]);
 
 
 
@@ -87,6 +85,7 @@ const HomePage = () => {
             {/* categories list */}
             {categories ? (
               <CategoryCarousel
+                ssrCategories={categories}
                 onCategorySelect={handleCategorySelect}
               />
             ) : (
@@ -137,6 +136,7 @@ const HomePage = () => {
           </>
         )}
       </div>
+
       <FooterNewsLeter />
     </>
   );

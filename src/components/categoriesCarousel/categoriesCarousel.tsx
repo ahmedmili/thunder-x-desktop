@@ -28,15 +28,16 @@ interface Category {
 }
 interface CategoryCarouselProps {
   onCategorySelect: (category: string) => void;
+  ssrCategories?: any;
 }
 
 const CategoryCarousel: React.FC<CategoryCarouselProps> = ({
-  onCategorySelect,
+  onCategorySelect, ssrCategories
 }) => {
 
   const navigate = useNavigate();
   const dispatch = useDispatch();
-  const cats = useAppSelector((state) => state.home.data.categories)
+  const cats = ssrCategories ? ssrCategories : useAppSelector((state) => state.home.data.categories)
   const navLocation = useLocation();
   const { t } = useTranslation();
   const [categories, setCategories] = useState(cats.filter(category => category.description !== "Promo"));
@@ -122,10 +123,10 @@ const CategoryCarousel: React.FC<CategoryCarouselProps> = ({
 
   // Helper function to calculate the number of visible slides based on screen width
   const calculateVisibleSlides = () => {
-    if (typeof window != 'undefined'){
+    if (typeof window != 'undefined') {
 
       return window.innerWidth >= 700 ? 3 : 2;
-    }else {
+    } else {
       return 3
     }
   };
