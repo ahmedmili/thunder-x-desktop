@@ -81,9 +81,8 @@ function App({ initialData }: AppProps) {
     setUpdateTrigger((prev) => !prev);
   }, []);
 
-  useEffect(() => {
-    initialData && console.log("initialData", initialData)
-  }, [initialData])
+  
+  // console.log("menuResponse", initialData.menuResponse.data)
 
   useEffect(() => {
 
@@ -170,13 +169,11 @@ function App({ initialData }: AppProps) {
   // prepare default location 
   useEffect(() => {
     const location = localStorageService.getCurrentLocation();
-    console.log("location ", location)
     if (!location || location.length < 3) {
       navigator.geolocation.getCurrentPosition(
         (position: Position) => {
           const { latitude, longitude } = position.coords;
           LocationService.geoCode(latitude, longitude).then(data => {
-            console.log("data", data)
             dispatch({
               type: "SET_LOCATION",
               payload: {
@@ -286,8 +283,8 @@ function App({ initialData }: AppProps) {
         <Routes>
           <Route path="/" element={<Layout />}>
             <Route index element={<HomePage initialData={initialData} />} />
-            <Route path="/restaurant/:id/:search?/:productId?/*" element={<Menu />} />
-            <Route path="/product/:id/:search?/:productId/*" element={<MenuOptions />} />
+            <Route path="/restaurant/:id/:search?/:productId?/*" element={<Menu initialData={initialData} />} />
+            <Route path="/product/:id/:search?/:productId/*" element={<MenuOptions initialData={initialData} />} />
             <Route path="/cart/*" element={<CartPage />} />
             <Route path="/search/:search?/*" element={<FilterPage />} />
             {/* Private Route */}

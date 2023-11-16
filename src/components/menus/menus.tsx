@@ -15,7 +15,7 @@ import {
 import { setProduct } from "../../Redux/slices/restaurantSlice";
 import { useAppDispatch } from '../../Redux/store';
 import { productService } from '../../services/api/product.api';
-import { MenuData } from '../../services/types';
+import { AppProps, MenuData } from '../../services/types';
 import MismatchModal from '../mismatchModal/mismatchModal';
 
 import { Container, Row } from 'react-bootstrap';
@@ -24,24 +24,21 @@ import { supplierServices } from '../../services/api/suppliers.api';
 import MenuPopup from '../Popups/Menu/MenuPopup';
 import './menus.scss';
 
-interface MenuProps { }
 
-
-const Menu: React.FC<MenuProps> = () => {
-
+const Menu: React.FC<AppProps> = ({ initialData }) => {
   const { t } = useTranslation();
   const dispatch = useAppDispatch();
   const navigate = useNavigate();
   const location = useLocation();
-  const [menuData, setMenuData] = useState<MenuData[]>([]);
-  const [loading, setLoading] = useState(true);
+  const [loading, setLoading] = useState((typeof window != 'undefined') ? true : false);
   const [currentPage, setCurrentPage] = useState<{ [key: string]: number }>({});
   const productsPerPage = 4;
 
   const [showMismatchModal, setShowMismatchModal] = useState(false);
   const [showOptionsPopup, setShowOptionsPopup] = useState(false);
-  const [filtreddMenuData, setFiltreddMenuData] = useState<MenuData[]>([]);
-  const [displayedRestaurant, setDisplayedRestaurant] = useState<any>();
+  const [menuData, setMenuData] = useState<MenuData[]>((typeof window != 'undefined') ? [] : initialData?.menuResponse.data);
+  const [filtreddMenuData, setFiltreddMenuData] = useState<MenuData[]>((typeof window != 'undefined') ? [] : initialData?.menuResponse.data);
+  const [displayedRestaurant, setDisplayedRestaurant] = useState<any>((typeof window != 'undefined') ? null : initialData?.supplierResponse.data);
   const { id, search, productId } = useParams<{ id: string, search?: string, productId?: string }>();
   const [selectedOption, setSelectedOption] = useState(search ? search : "All");
   const idNumber = id?.split('-')[0];
@@ -94,7 +91,6 @@ const Menu: React.FC<MenuProps> = () => {
     let locationArray = locationPath.split("/");
     let newArray = locationArray.slice(0, -2)
     const newURL = newArray.join("/");
-    console.log("newArray", newArray)
     navigate(newURL, { replace: true });
 
   }
@@ -112,9 +108,13 @@ const Menu: React.FC<MenuProps> = () => {
   };
 
   const getSupplierById = async () => {
+    let data: any;
     try {
-
-      const { status, data } = await supplierServices.getSupplierById(Number(idNumber!))
+      if (typeof window != "undefined") {
+        data = await supplierServices.getSupplierById(Number(idNumber!))
+        data = data.data
+      }
+      else data = initialData.supplierResponse
 
       setDisplayedRestaurant(data.data)
 
@@ -122,21 +122,37 @@ const Menu: React.FC<MenuProps> = () => {
       throw error
     }
   }
+  const getMenu = async () => {
+    var data: any;
+    try {
+      if (typeof window != "undefined") {
+        data = await productService.getMenu(idNumber)
+        if (data.status === 200) {
+          data = data.data
+          setMenuData(data.data);
+          setFiltreddMenuData(data.data)
+        }
+      }
+      else {
+        data = initialData.menuResponse.data
+        setMenuData(data);
+        setFiltreddMenuData(data)
+      }
+    } catch (error) {
+      throw error
+    }
+    setLoading(false);
+
+  };
+
   useEffect(() => {
     getSupplierById()
+    getMenu()
     handleFilter()
   }, [])
 
   // initialize menue 
   useEffect(() => {
-    const getMenu = async () => {
-      const { status, data } = await productService.getMenu(idNumber);
-      if (status === 200) {
-        setMenuData(data.data);
-        setFiltreddMenuData(data.data)
-      }
-      setLoading(false);
-    };
     getMenu();
   }, [idNumber]);
 

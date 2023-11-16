@@ -8,6 +8,7 @@ import { fileURLToPath } from "url";
 const isProduction = process.env.VITE_NODE_ENV === 'production'
 const port = process.env.PORT || 8000
 const base = process.env.BASE || '/'
+const apiUrl = 'https://api.thunder.webify.pro/api/'
 
 // Cached production assets
 const templateHtml = isProduction
@@ -65,15 +66,11 @@ const getScripts = async () => {
     const allContent = [];
     for (const asset of cssAssets) {
       const content = await fs.readFile(path.join(assetpath, asset), "utf-8");
-      // <style type="text/css">${content}</style>
-      // <script type="module" src="/src/entry-client.tsx"></script>
       allContent.push(`
       <script type="module" src="${asset}" async> 
       </script>
       `);
-      // <script>
-      // ${content}
-      // </script>
+
     }
     return allContent.join("\n");
   } catch (e) {
@@ -98,27 +95,70 @@ const ssrHome = async () => {
     long: 10.6088898,
     lat: 35.8466943,
   };
-  const { data } = await axios.post('https://api.thunder.webify.pro/api/get_home_page_data', body);
-  return data
+  const { status, data } = await axios.post(apiUrl + 'get_home_page_data', body);
+  return { status, data }
+}
+
+
+async function getSupplierById(supplierId) {
+  try {
+    const response = await axios.get(apiUrl + "getSupplierById/" + supplierId);
+    const { status, data } = response;
+    return { status, data };
+  } catch (error) {
+    console.error('Error', error);
+    throw error;
+  }
+}
+
+async function getMenu(supplier_id) {
+  try {
+    if (supplier_id === undefined) {
+      return { status: undefined, data: undefined };
+    }
+    const response = await axios.post(
+      apiUrl + "getmenu", { supplier_id: supplier_id },
+    );
+    const { status, data } = response;
+    return { status, data };
+  } catch (error) {
+    console.error('Error', error);
+    throw error;
+  }
 }
 
 const prepareTemplate = async (req, res) => {
   try {
-    console.log(req.originalUrl)
     var data
     const url = req.originalUrl
-    switch (url) {
-      case ('/'):
-        data = await ssrHome()
+    switch (true) {
+      case (req.originalUrl === '/'):
+        var response = await ssrHome()
+        data = response.data
+        break;
+      case (req.originalUrl.includes('/restaurant/')):
+        let url = req.originalUrl
+        let supplierData = url.split("/")[2]
+        let supplier_id = supplierData.split('-')[0]
+
+        var supplierResponse = await getSupplierById(supplier_id)
+        var menuResponse = await getMenu(supplier_id)
+        data = {
+          status: 200,
+          data: {
+            supplierResponse: supplierResponse.data,
+            menuResponse: menuResponse.data,
+          }
+        }
+
         break;
       default:
-        data = null
         break;
     }
 
     const template = await vite.transformIndexHtml(url, baseTemplate);
     const cssAssets = await stylesheets;
-    const appHtml = await render(url, data.data);
+    const appHtml = await render(url, data && data.data);
     const scripts = getScripts();
     const jsAssets = await scripts;
     const html = template
