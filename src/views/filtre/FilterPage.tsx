@@ -262,7 +262,7 @@ function FilterPage() {
     return (
         <>
             <Container fluid className="filter-page-container">
-                <Row>
+                {/* <Row> */}
                     {/* categories list */}
                     {originCategories ? (
                         <CategoriesCarousel
@@ -275,7 +275,7 @@ function FilterPage() {
                             <Skeleton count={12} className="loading-skeleton" />
                         </div>
                     )}
-                </Row>
+                {/* </Row> */}
                 <Row>
                     <Col className="col-4 filter-side-bar">
                         <div className="filter-categories-container">

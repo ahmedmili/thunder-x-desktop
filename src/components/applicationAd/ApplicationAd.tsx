@@ -2,7 +2,7 @@ import { Col, Container, Row } from 'react-bootstrap';
 import addsStyles from "./applicationAdd.module.scss";
 
 
-import phone_icn from "../../assets/home/phone-icn.png";
+import phone_icn from "../../assets/home/phone.png";
 
 import app_store from "../../assets/home/app_store.png";
 import google_play from "../../assets/home/google_play.png";
@@ -12,14 +12,12 @@ export const ApplicationAd = () => {
 
 
     return (
-        <Container className={` ${addsStyles.applicationAdsMainContainer}`}>
-            <Row>
-                <Col>
+        <Container className={` ${addsStyles.applicationAdsMainContainer}`}>            
+            <Row className={addsStyles.applicationAdsDesignContainer} >
+                <Col sm={4} className={'text-center'}>
                     <img className={addsStyles.applicationAdsImg} loading='lazy' src={phone_icn} alt="phone app" />
                 </Col>
-            </Row>
-            <Row className={addsStyles.applicationAdsDesignContainer} >
-                <Col className='d-flex justify-content-center'>
+                <Col sm={8}>
                     <div className={addsStyles.applicationAdsInfo}>
                         <div className={addsStyles.infoContainer}>
 
@@ -46,9 +44,6 @@ export const ApplicationAd = () => {
                     </div>
                 </Col>
             </Row>
-
-
-
         </Container>
     )
 }

@@ -38,33 +38,27 @@ const Switches = () => {
           onChange={handleSwitchToggle}
         />
 
-        <label className={toggleStyle.SwitchLabel} htmlFor='switchLivraison'>
-          <DeliveryDiningIcon className={toggleStyle.SwitchTextIcon} />
+        <label className={toggleStyle.SwitchLabel+' '+ toggleStyle.emporter} htmlFor='switchLivraison'>
+          {/* <DeliveryDiningIcon className={toggleStyle.SwitchTextIcon} /> */}
           {t('livraison')}
         </label>
-
         <label className={toggleStyle.SwitchLabel} htmlFor='switchEmporter'>
-          <DeckIcon className={toggleStyle.SwitchTextIcon} />
+          {/* <DeckIcon className={toggleStyle.SwitchTextIcon} /> */}
           {t('emporter')}
         </label>
-
         <div className={toggleStyle.SwitchWrapper}
           style={{
             transform: isDelivery ? 'translateX(0%)' : 'translateX(100%)',
           }}>
-
           <div className={toggleStyle.Switch}>
-            <div className={toggleStyle.SwitchText} style={{ opacity: isDelivery ? 1 : 0 }}>
-              <DeliveryDiningIcon className={toggleStyle.SwitchTextIcon} />
+            <div className={toggleStyle.SwitchText +' '+ toggleStyle.emporter} style={{ opacity: isDelivery ? 1 : 0 }}>
+              {/* <DeliveryDiningIcon className={toggleStyle.SwitchTextIcon} /> */}
               {t('livraison')}
             </div>
-            <div className={toggleStyle.SwitchText}style={{ opacity: isDelivery ? 0 : 1 }}>
-
-              <DeckIcon className={toggleStyle.SwitchTextIcon} />
+            <div className={toggleStyle.SwitchText} style={{ opacity: isDelivery ? 0 : 1 }}>
+              {/* <DeckIcon className={toggleStyle.SwitchTextIcon} /> */}
               {t('emporter')}
             </div>
-
-
           </div>
         </div>
       </div>
