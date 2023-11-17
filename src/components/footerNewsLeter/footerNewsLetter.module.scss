@@ -1,24 +1,20 @@
 @import '../../colors';
 
 .newsLetterContainer {
-    background-image: url(/src/assets/news_letter_bg.png);
     background-repeat: no-repeat;
     background-size: 100% 100%;
-    background-color: linear-gradient(180deg, rgba(36, 166, 164, 0.58) 34.28%, rgba(36, 166, 164, 0.17) 114.13%);
+    background-color: transparent;
     height: 95px;
     display: flex;
     padding: 0;
 
     .newsLetterRow {
-        background: linear-gradient(180deg, rgba(36, 166, 164, 0.58) 0%, rgba(36, 166, 164, 0.17) 100%);
         width: 100%;
         margin: 0;
         position: relative;
-
-
         .textContainer {
-            padding-left: 5%;
-            display: flex;
+            // padding-left: 5%;
+            display: flex;            
             justify-content: center;
             align-items: start;
             flex-direction: column;
@@ -66,19 +62,22 @@
                 font-size: 6px;
                 padding-left: 12%;
                 background: transparent;
+                font-family: Poppins;
             }
 
             button {
                 height: 100%;
                 font-size: 4px;
                 width: 100%;
-                border-radius: 50px;
+                border-radius: 0 50px 50px 0;
                 background-color: #FBC000;
                 text-align: center;
                 display: flex;
                 justify-content: center;
                 align-items: center;
                 padding: 0px 3px;
+                color: white;
+                font-family: Poppins;
 
                 .iconContainer {
                     // height: 10px;
@@ -102,7 +101,10 @@
         }
     }
 }
-
+.newsLetterBackground{
+    background: url(/src/assets/home/bg.png);
+    background-size: cover;
+}
 
 @media only screen and (min-width: 576px) {
 
@@ -112,7 +114,7 @@
         .newsLetterRow {
 
             .textContainer {
-                padding-left: 8%;
+                // padding-left: 8%;
 
                 .firstPara {
                     width: 233px;
@@ -164,7 +166,7 @@
         .newsLetterRow {
 
             .textContainer {
-                padding-left: 11%;
+                // padding-left: 11%;
 
                 .firstPara {
                     width: 293px;
@@ -214,7 +216,7 @@
 
         .newsLetterRow {
             .textContainer {
-                padding-left: 4%;
+                // padding-left: 4%;
 
                 .firstPara {
                     height: 49px;
@@ -259,7 +261,7 @@
         .newsLetterRow {
 
             .textContainer {
-                padding-left: 10%;
+                // padding-left: 10%;
 
                 .firstPara {
                     width: 596px;

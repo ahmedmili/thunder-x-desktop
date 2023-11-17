@@ -1,69 +1,58 @@
 @import '../../colors';
 
 .searchContainer {
-
   background-color: $primary_color;
   border-radius: 25px;
-  // width: 342.96px;
   width: 64%;
-  padding: 0 19px;
-  min-height: 29px;
+  padding: 5px;
+  min-height: 51px;
   display: flex;
   align-items: center;
   justify-content: space-between;
-
   .icons {
     color: white;
-
     .icon {
-      font-size: 19px;
-
+      font-size: 30px;
+      margin-left: 5px;
     }
   }
-
-
   .iconBackgorund {
+    width: 42px;
+    height: 42px;
+    background-image: url(/src/assets/icons/arrow.svg);
     background-color: white;
     border-radius: 50%;
-    color: $primary_color;
-    padding: 2px;
+    background-repeat: no-repeat;
+    background-position: center;
   }
-
   form {
     display: flex;
     justify-content: space-between;
     align-items: center;
     width: 100%;
-
     .headerSearchBar {
       color: white;
       border-radius: 25px;
       width: 80%;
-
       input {
-        width: 254px;
         border-radius: 25px;
         padding: 5px;
         background-color: transparent;
         color: white;
         border: none;
-        font-size: 18px;
+        font-size: 17px;
         width: 100%;
-
-
+        font-family: Poppins;
         &:focus {
           outline: none;
         }
-
         &::placeholder {
           color: white;
           text-align: center;
         }
       }
-
       button {
         border-radius: 25px;
-
         background-color: transparent;
         color: white;
         border: none;
@@ -77,8 +66,6 @@
         font-size: 20px;
         position: relative;
       }
-
-
       .filters {
         border-radius: 25px;
         display: flex;
@@ -94,32 +81,25 @@
       }
     }
   }
-
 }
-
 @media only screen and (max-width: 992px) {
   .searchContainer {
     width: 77%;
-
     padding: 5px 10px;
-
     form {
       .headerSearchBar {
         margin: 0;
-
         input {
           padding: 0 10px;
           font-size: 14px;
         }
       }
     }
-
     .bi-search {
       font-size: 10px;
     }
   }
 }
-
 @media only screen and (max-width: 768px) {
   .searchContainer {
     .icons{
@@ -144,11 +124,9 @@
   .searchContainer {
     padding: 0 5px;
     width: 120px;
-
     .icon {
-      font-size: 8px;
+      font-size: 8px;     
     }
-
     .iconBackgorund {
       background-color: white;
       border-radius: 50%;
@@ -158,11 +136,9 @@
       justify-content: center;
       align-items: center;
     }
-
     form {
       .headerSearchBar {
         margin: 0 0 3px 0;
-
         input {
           padding: 0px;
           font-size: 6px;

@@ -3,16 +3,15 @@
 $svg_location_icon : url('../../../assets/location.svg');
 
 .container-map {
-
-    padding: 53px 63px 0 63px;
-    min-height: 608px;
+    padding: 0;
+    min-height: 510px;
     overflow-y: scroll;
+    overflow-x: hidden;
     scrollbar-width: thin;
     width: 100%;
     border-radius: 0.5rem;
     display: flex;
     justify-content: center;
-
     &::-webkit-scrollbar-thumb {
         background-color: transparent;
     }
@@ -22,7 +21,8 @@ $svg_location_icon : url('../../../assets/location.svg');
     }
 
     .map-container {
-        height: 588px;
+        // height: 588px;
+        margin-top: 37px;
         width: 100%;
         display: flex;
         flex-direction: column;
@@ -41,12 +41,12 @@ $svg_location_icon : url('../../../assets/location.svg');
 
         .map-and-button {
             position: relative;
-            height: 70%;
+            height: 400px;
             width: 100%;
             display: flex;
             justify-content: center;
             gap: 20px;
-
+            padding-right: 37px;
             .location-indicator {
                 border-radius: 15px;
                 background: $Ocean_Teal;
@@ -99,12 +99,13 @@ $svg_location_icon : url('../../../assets/location.svg');
                     .icon {
                         margin: 0px;
                         background-image: $svg_location_icon;
-                        background-size: cover;
+                        background-size: 45px;
                         background-position: 50%;
                         border: none;
                         height: 70px;
                         width: 300px;
                         transition: all ease-in-out 0.5s;
+                        background-repeat: no-repeat;
                     }
 
                     p {
@@ -116,12 +117,13 @@ $svg_location_icon : url('../../../assets/location.svg');
                         white-space: nowrap;
                         text-overflow: ellipsis;
                         font-family: Poppins;
-                        font-size: 16px;
+                        font-size: 14px;
                         font-style: normal;
                         font-weight: 600;
-                        line-height: normal;
                         margin: 0;
                         transition: all ease-in-out 0.5s;
+                        line-height: 2.2;
+                        text-align: start;
                     }
 
                     &:hover {
@@ -144,11 +146,11 @@ $svg_location_icon : url('../../../assets/location.svg');
         .location-form-title {
             border-radius: 15px;
             background: $Ocean_Teal;
-
             padding: 15px;
             width: 85%;
             margin: 0 auto;
-
+            margin-bottom: 15px;
+            position: relative;
             h1 {
                 font-size: 1.5rem;
                 margin: 0;
@@ -164,6 +166,27 @@ $svg_location_icon : url('../../../assets/location.svg');
                 line-height: normal;
 
             }
+            .edit-button {
+                position: absolute;
+                width: 41px;
+                height: 40px;
+                border-radius: 5px 0px 0px 5px;
+                border: none;
+                display: flex;
+                justify-content: center;
+                align-items: center;
+                top: 4px;
+                right: -45px;
+                background: #FBC000;
+                .edit-icon {
+                    width: 17px;
+                    height: 17px;
+                    background-image: url("data:image/svg+xml,%3Csvg width='17' height='17' viewBox='0 0 17 17' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M0.000499059 15.9875C0.000499059 15.8378 0.000499059 15.6993 0.000499059 15.5613C0.000499059 14.3473 -0.00237552 13.1333 0.0056733 11.9193C0.00624822 11.8269 0.0551161 11.7106 0.124681 11.6459C2.81299 9.14516 5.50589 6.64975 8.1988 4.15328C8.41899 3.94891 8.53685 3.94891 8.75819 4.15328C10.1207 5.41027 11.4827 6.66727 12.8441 7.92532C13.0534 8.11855 13.0522 8.23161 12.8389 8.42802C10.1299 10.9187 7.42094 13.4093 4.70848 15.8967C4.64984 15.9504 4.55153 15.9955 4.47104 15.996C3.01191 16.0018 1.55335 15.9997 0.0942103 15.9992C0.0729384 15.9987 0.0522415 15.9939 0.000499059 15.9875Z' fill='white'/%3E%3Cpath d='M16 3.89382C15.9868 4.3519 15.8541 4.7738 15.532 5.10731C14.9491 5.71061 14.3513 6.30013 13.7558 6.89137C13.6059 7.04005 13.4589 7.03545 13.305 6.88162C11.9085 5.48904 10.5124 4.09531 9.11873 2.69986C8.95909 2.54028 8.96081 2.39505 9.1216 2.23375C9.69299 1.65915 10.258 1.07709 10.8449 0.518568C11.5754 -0.176 12.6653 -0.172556 13.39 0.527178C14.0969 1.20969 14.7855 1.91057 15.4763 2.60973C15.8249 2.96218 15.9868 3.39787 16 3.89382Z' fill='white'/%3E%3Cpath d='M12.9856 16.9995C11.9062 16.9995 10.8263 17.0011 9.74689 16.9986C9.23954 16.9974 8.89738 16.6893 9.0279 16.3613C9.11491 16.1436 9.39063 16.0017 9.74395 16.0009C10.6176 15.9992 11.4918 16.0004 12.3654 16.0004C13.6652 16.0004 14.965 15.9992 16.2649 16.0013C16.6541 16.0017 16.9545 16.1886 16.9956 16.4446C17.0356 16.6952 16.7975 16.932 16.4424 16.987C16.3578 17.0003 16.2672 16.999 16.1796 16.999C15.115 16.9999 14.0503 16.9995 12.9856 16.9995Z' fill='white'/%3E%3C/svg%3E%0A");
+                    background-size: contain;
+                    background-position: center;
+                    background-repeat: no-repeat;
+                }
+            }
         }
 
         h2 {
@@ -172,6 +195,10 @@ $svg_location_icon : url('../../../assets/location.svg');
             text-align: center;
             display: flex;
             justify-content: center;
+            color: #484848;
+            font-family: Poppins;
+            font-size: 22px;
+            font-weight: 600;           
         }
 
         form {
@@ -225,15 +252,16 @@ $svg_location_icon : url('../../../assets/location.svg');
                 padding: 0 25px;
                 width: 85%;
                 display: flex;
-                justify-content: space-around;
+                justify-content: center;
+                gap: 10px;
 
                 .select {
                     cursor: pointer;
                     background-color: white;
                     border: 1px solid $Ocean_Teal;
                     border-radius: 50px;
-                    width: 158px;
-                    height: 49px;
+                    width: 100px;
+                    height: 27px;
                     display: flex;
                     justify-content: center;
                     align-items: center;
@@ -245,7 +273,7 @@ $svg_location_icon : url('../../../assets/location.svg');
                         cursor: pointer;
                         color: $dark_Gray;
                         font-family: Poppins;
-                        font-size: 16px;
+                        font-size: 14px;
                         font-style: normal;
                         font-weight: 400;
                         line-height: normal;
@@ -272,7 +300,7 @@ $svg_location_icon : url('../../../assets/location.svg');
 
             .default {
                 padding: 0 15px;
-                width: 75%;
+                width: 88%;
                 display: flex;
                 gap: 10px;
                 justify-content: start;
@@ -282,7 +310,7 @@ $svg_location_icon : url('../../../assets/location.svg');
 
                     color: #484848;
                     font-family: Poppins;
-                    font-size: 20px;
+                    font-size: 14px;
                     font-style: normal;
                     font-weight: 500;
                     line-height: normal;
@@ -306,7 +334,7 @@ $svg_location_icon : url('../../../assets/location.svg');
 
                     .checkmark {
                         position: absolute;
-                        top: 7px;
+                        top: 2px;
                         left: 0;
                         width: 16px;
                         height: 16px;
@@ -323,28 +351,40 @@ $svg_location_icon : url('../../../assets/location.svg');
         .map-continue-btn {
             width: 100%;
             display: flex;
-            justify-content: center;
+            justify-content: end;
             margin-top: 14px;
             min-height: 49px;
             .submit-cart {
                 font-family: Poppins;
-                font-size: 18px;
+                font-size: 15px;
                 font-style: normal;
                 font-weight: 600;
                 line-height: normal;
                 color: white;
                 background-color: $orange_color;
-                width: 279px;
-                height: 49px;
+                width: 150px;
+                height: 40px;
                 border: none;
-                border-radius: 20px;
+                border-radius: 50px;
                 margin-bottom: 10px;
+                margin-right: 42px;
+                &.close{
+                    margin-right: 52px;
+                }
             }
         }
     }
 }
-
-
+.error{
+    color: #FF0000;
+    font-family: Poppins;
+    font-size: 12px;
+    font-weight: 500;
+    line-height: 18px;
+    letter-spacing: 0em;
+    margin-top: 15px;
+    margin-left: 10px;
+}
 @media only screen and (max-width :768px) {
 
     .container-map {

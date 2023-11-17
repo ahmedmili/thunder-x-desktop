@@ -1,8 +1,8 @@
 import { Box, Typography } from '@mui/material';
 import React, { useEffect, useState } from 'react';
 
-import KeyboardDoubleArrowLeftIcon from '@mui/icons-material/KeyboardDoubleArrowLeft';
-import KeyboardDoubleArrowRightIcon from '@mui/icons-material/KeyboardDoubleArrowRight';
+import ArrowBackIosIcon from '@mui/icons-material/ArrowBackIos';
+import ArrowForwardIosIcon from '@mui/icons-material/ArrowForwardIos';
 
 import { ButtonBack, ButtonNext, CarouselProvider, Slide, Slider } from 'pure-react-carousel';
 import 'pure-react-carousel/dist/react-carousel.es.css';
@@ -122,7 +122,23 @@ const CategoryCarousel: React.FC<CategoryCarouselProps> = ({
 
   // Helper function to calculate the number of visible slides based on screen width
   const calculateVisibleSlides = () => {
-    return window.innerWidth >= 700 ? 3 : 2;
+    const width = window.innerWidth;
+    let items = 2;
+     switch (true) {
+      case width >= 1200:
+         items =  4;
+        break;
+      case width >= 768 && width < 1200:
+        items =  3;
+        break;
+      case width < 768:
+        items =  2;
+        break;
+      default:
+        items =  1;
+        break;
+    }
+    return items;
   };
 
   return (
@@ -181,23 +197,17 @@ const CategoryCarousel: React.FC<CategoryCarouselProps> = ({
               </Row>
               <div className='categories-list-buttons-container'>
                 <ButtonBack className='btn'>
-                  <KeyboardDoubleArrowLeftIcon className=' slider-button-icon' />
+                  <ArrowBackIosIcon className=' slider-button-icon' />
                 </ButtonBack>
                 <ButtonNext className='btn btn-default'>
-                  <KeyboardDoubleArrowRightIcon className=' slider-button-icon' />
+                  <ArrowForwardIosIcon className=' slider-button-icon' />
                 </ButtonNext>
-
               </div>
-
             </CarouselProvider>
-
           </div>
-
         </Col>
       </Row>
-
     </Container>
-
   );
 };
 
