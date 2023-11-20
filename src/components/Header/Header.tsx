@@ -269,7 +269,8 @@ const Header = () => {
                 </div>
 
                 <button onClick={handleUserCart} className={`account ${!logged_in && 'loggedin-account'}`}  >
-                  <PermIdentityOutlinedIcon className='account-icon' />
+                  {/* <PermIdentityOutlinedIcon className='account-icon' /> */}
+                  <span className='account-icon'></span>
                 </button>
 
                 <button onClick={handleCart} className="cart-item">
