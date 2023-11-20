@@ -735,7 +735,7 @@
     .summair-container {
       max-width: 382px;
       // height: 482px;
-      height: 360px;
+      height: fit-content;
       border-radius: 15px;
       border: 1px solid $orange_color;
       display: flex;
@@ -756,7 +756,7 @@
 
       .info {
         width: 341px;
-        height: 391px;
+        // height: 391px;
         border-radius: 15px;
         background: $Off-White;
         padding: 22px;
