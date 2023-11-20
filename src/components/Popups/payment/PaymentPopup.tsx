@@ -2,11 +2,12 @@ import React, { useEffect } from "react";
 
 import './paymentPopup.scss'
 
-import Command_vailde from "../../../assets/payment/Command_vailde.svg"
-import Payment_valide from "../../../assets/payment/Payment_valide.svg"
-import Payment_echec from "../../../assets/payment/Payment_echec.svg"
+import Command_vailde from "../../../assets/payment/command-success.png"
+import Payment_valide from "../../../assets/payment/payment-success.png"
+import Payment_echec from "../../../assets/payment/payment-not-success.png"
 import { useNavigate } from "react-router";
 import { useTranslation } from "react-i18next";
+import CloseIcon from '@mui/icons-material/Close';
 interface Props {
     type: string;
     close: any
@@ -24,7 +25,7 @@ const PaymentPopup: React.FC<Props> = ({ close, type }) => {
             popup_title = t('popup.payment.invalidePayment');
             title_color = '#FBC000'
             popup_image = Payment_echec;
-            popup_msg = t('popup.payment.invalidePayment.msg');;
+            popup_msg = t('popup.payment.invalidePayment.msg');
             break;
         case "command_success":
             popup_title = t('popup.payment.valideCommand');
@@ -49,7 +50,14 @@ const PaymentPopup: React.FC<Props> = ({ close, type }) => {
         }
         }>
             <div className="popup-box">
-                <p style={{ color: title_color }}>{popup_title}</p>
+                <button className="close-btn" onClick={() => {
+                    close()
+                    type !== "error" && navigate("/", { replace: true })
+                }
+                }>
+                <CloseIcon className='close-icon'></CloseIcon>
+                </button>
+                <p className="title" style={{ color: title_color }}>{popup_title}</p>
                 <img loading="lazy" src={popup_image} alt="echec payment" />
                 <p>{popup_msg}</p>
             </div>

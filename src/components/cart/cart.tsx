@@ -12,6 +12,7 @@ import { useTranslation } from 'react-i18next';
 import { useNavigate } from 'react-router-dom';
 import PaymentPopup from '../Popups/payment/PaymentPopup';
 import './cart.scss';
+import CloseIcon from '@mui/icons-material/Close';
 interface CartProps {
   items: FoodItem[];
   closeButton: any
@@ -86,7 +87,7 @@ export const Cart: React.FC<CartProps> = ({ items, closeButton }) => {
 
           </div>
           <button className="remove-btn" onClick={handleRemoveItemFromCart}>
-            X
+            <CloseIcon className='close-icon'></CloseIcon>
           </button>
         </div>
         <div className='foot'>
@@ -137,7 +138,7 @@ export const Cart: React.FC<CartProps> = ({ items, closeButton }) => {
                 <p className='position'>{t("cart.payment.delivTo")} {": " + locationName}</p>
               </div>
               <button className="close-btn" onClick={closeButton}>
-                X
+                <CloseIcon className='close-icon'></CloseIcon>
               </button>
             </section>
             <div className='sous-total'>
@@ -221,7 +222,7 @@ export const Cart: React.FC<CartProps> = ({ items, closeButton }) => {
                 <span className='title'> {t('cart.payment.yourCommand')}</span>
               </div>
               <button className="close-btn" onClick={closeButton}>
-                X
+                <CloseIcon className='close-icon'></CloseIcon>
               </button>
             </section>
             <section className='empty-cart-main'>

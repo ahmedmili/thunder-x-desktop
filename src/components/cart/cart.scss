@@ -26,11 +26,11 @@
 
 .cart-main {
   width: 98%;
-  height: 60vh;
+  height: 68vh;
   border-radius: 15px;
   padding: 0px 20px 15px 20px;
   overflow-y: scroll;
-  max-height: 601px;
+  max-height: 631px;
   margin-right: 5px;
   animation: cart-animation 0.3s linear;
 
@@ -59,6 +59,9 @@
 
       &:hover {
         cursor: pointer;
+      }
+      .close-icon{
+        font-size: 28px;
       }
     }
 
@@ -140,6 +143,9 @@
           font-style: normal;
           font-weight: 600;
           line-height: 20px;
+          white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
         }
 
         .unit-total {
@@ -151,7 +157,7 @@
           line-height: 20px;
         }
 
-        .descriptin {
+        .description {
           color: $dark_Gray;
           font-family: Poppins;
           font-size: 15px;
@@ -162,16 +168,21 @@
       }
 
       .remove-btn {
-        width: 34px;
-        height: 34px;
+        width: 30px;
+        height: 30px;
         background-color: $orange_color;
         border-radius: 50%;
         font-size: 20px;
         color: white;
         text-align: center;
-
+        display: flex;
+        align-items: center;
+        justify-content: center;
         &:hover {
           cursor: pointer;
+        }
+        .close-icon{
+          font-size: 18px;
         }
       }
     }
@@ -191,7 +202,6 @@
         display: flex;
         align-items: center;
       }
-
       .count-container {
         position: relative;
         border: 1px solid $orange_color;
@@ -199,16 +209,17 @@
         width: 71px;
         height: 41.621px;
         display: flex;
+        background-color: white;
+        justify-content: space-between;
+        padding: 5px 15px;
         margin: 0 131px 0 auto;
-
         .count-buttons {
           display: flex;
           justify-content: center;
           align-items: center;
           flex-direction: column;
-
+          width: 6px;
           gap: 5px;
-
           button {
             .count-more,
             .count-less {
@@ -218,8 +229,6 @@
             }
           }
         }
-
-
         input[type="number"] {
           width: 70%;
           outline: none;
@@ -227,11 +236,11 @@
           border: none;
           color: $light_Gray;
           font-family: Poppins;
-          font-size: 20px;
+          font-size: 18px;
           font-style: normal;
           font-weight: 600;
           line-height: normal;
-          text-align: center;
+          text-align: start;
           appearance: none;
           /* Remove default styling */
           -webkit-appearance: none;
@@ -247,15 +256,13 @@
           -webkit-appearance: none;
           margin: 0;
         }
-      }
+      }      
     }
-
   }
-
   .price-resume {
     border-top: #E8E8E8 1px solid;
-    margin-top: 10px;
-    padding-top: 10px;
+    margin-top: 18px;
+    padding-top: 18px;
 
     .info-text {
       display: flex;
@@ -267,7 +274,10 @@
         font-size: 15px;
         font-style: normal;
         font-weight: 600;
-        line-height: normal;
+        line-height: normal;      
+      }
+      &:not(:last-child){
+        margin-bottom: 6px;
       }
     }
   }
@@ -282,11 +292,11 @@
       height: 55px;
       text-align: center;
       font-family: Poppins;
-      font-size: 20px;
+      font-size: 18px;
       font-style: normal;
-      font-weight: 600;
+      font-weight: 500;
       line-height: normal;
-      border-radius: 55px;
+      border-radius: 50px;
       border: 1px solid $orange_color;
 
       &:hover {
