@@ -101,11 +101,11 @@ const HomePage = ({ initialData }: AppProps) => {
             )}
             {/* promo list */}
 
-            {restaurantsList.length > 0 ? (
+            {recommanded.length > 0 ? (
               <div className="home-resto-container">
                 <RestaurantList
                   listType="discount"
-                  restaurants={restaurantsList}
+                  restaurants={recommanded}
                 />
               </div>
             ) : (

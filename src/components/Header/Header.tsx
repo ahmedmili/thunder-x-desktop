@@ -22,6 +22,10 @@ import { useLocation } from 'react-router-dom';
 import { LocationService } from "../../services/api/Location.api";
 import { UserCart } from '../UserCart/UserCart';
 import { Cart } from '../cart/cart';
+import { useSelector } from "react-redux";
+import {
+  regionHomeSelector
+} from "../../Redux/slices/home";
 
 const Header = () => {
   const msg_notifs = useAppSelector((state) => state.messanger.unReadedMessages);
@@ -43,8 +47,8 @@ const Header = () => {
   const navigate = useNavigate();
   const routerLocation = useLocation();
   const { t } = useTranslation();
-
-
+  const region :any  = useSelector(regionHomeSelector);
+  
   const handleScroll = () => {
     // Check if the user has scrolled down more than a certain threshold
     if (typeof window != 'undefined') {
@@ -62,18 +66,59 @@ const Header = () => {
   }, [msg_notifs])
 
   useEffect(() => {
-    // Attach the scroll event listener when the component mounts
     if (typeof window != 'undefined') {
       window.addEventListener('scroll', handleScroll);
     }
-
-    // Clean up the event listener when the component unmounts
     return () => {
       window.removeEventListener('scroll', handleScroll);
     };
   }, []);
 
-  const handleCart = () => {
+  useEffect(() => {
+    if (region === false) {
+      dispatch({ type: "SET_SHOW", payload: true })
+    }
+  }, [region]); 
+  const onLogoutHandler = async () => {
+    try {
+      dispatch(logout());
+      navigator.geolocation.getCurrentPosition(
+        (position: any) => {
+          const { latitude, longitude } = position.coords;
+          LocationService.geoCode(latitude, longitude).then(data => {
+            dispatch({
+              type: "SET_LOCATION",
+              payload: {
+                ...data
+              },
+            });
+          });
+        },
+        (error: GeolocationPositionError) => {
+          // toast.error(error.message)
+          console.log(error.message, "error.message1");
+        }
+      );
+
+      navigate("/");
+    } catch (error: any) {
+      if (Array.isArray(error.data.error)) {
+        error.data.error.forEach((el: any) =>
+          // toast.error(el.message, {
+          //   position: "top-right",
+          // })
+          console.log(el.message, "error.message1")
+        );
+      } else {
+        // toast.error(error.data.message, {
+        //   position: "top-right",
+        // });
+        console.log(error.message, "error.message1")
+      }
+    }
+  };
+
+  const handleCart = async () => {
     showProfile && setShowProfile(false)
     setShowCart(!showCart);
   };
@@ -92,15 +137,14 @@ const Header = () => {
 
       {
         (routerLocation.pathname == "/" || routerLocation.pathname.includes("/search/")) ? (
-          <>
-
-            <Container className="xxl-12" >
+          <div className="overflow-hidden">
+            <Container className="xxl-12 header" >
               <div className="head1">
                 <div className="demiCercle">
 
                 </div>
               </div>
-              <div className={`fixedHeaderContainer2`} >
+              <div className={`fixedHeaderContainer2 ${scrolling ? 'scroll' : ''}`} >
                 <div className="logoContainer"
                   onClick={() => navigate('/')} >
                   <a href="#" className={`logoMain minimizedlogoMain`}></a>
@@ -108,26 +152,21 @@ const Header = () => {
 
                 <div className='info'>
                   <div className="position">
-
                     <LocationOnIcon className='position-icon' />
                     {location
                       ? location?.coords.label
                       : t('no_location_detected')}
 
                   </div>
-
-                  <button onClick={handleUserCart} className={`account ${!logged_in && 'loggedin-account'}`}  >
-                    <PermIdentityOutlinedIcon className='account-icon' />
-                  </button>
-
-                  {/* <button className="search">
-                    <Search className='search-icon' />
-                  </button> */}
-
                   <button onClick={handleCart} className="cart-item">
-                    <ShoppingCartOutlinedIcon className='cart-icon' />
-                    {cartItems != null && cartItems.length}
+                    {/* <ShoppingCartOutlinedIcon className='cart-icon' /> */}
+                    <span className='cart-icon'></span>
+                    {cartItems.length}
                   </button>
+                  <button onClick={handleUserCart} className={`account ${!logged_in && 'loggedin-account'}`}  >
+                    {/* <PermIdentityOutlinedIcon className='account-icon' /> */}
+                    <span className='account-icon'></span>
+                  </button>                  
 
                   {!logged_in && (
                     <div className="header-buttons">
@@ -184,7 +223,7 @@ const Header = () => {
                     <Box className="headerLocalisationMessageContainer" onClick={() => dispatch({ type: "SET_SHOW", payload: true })}>
                       <a href="#" >
                         <span className="localisationIcon" >
-                          <PinDropIcon className="pin-icon" />
+                          {/* <PinDropIcon className="pin-icon" /> */}
                         </span>
                         {location
                           ? location?.coords.label
@@ -204,8 +243,7 @@ const Header = () => {
               {/*  Thunder logo section  */}
               {showMapState && (
                 <div
-                  className="mapOverPlay"
-                  onClick={() => dispatch({ type: "SET_SHOW", payload: false })}>
+                  className="mapOverPlay">
                   <div
                     onClick={(e) => e.stopPropagation()}>
                     <Map />
@@ -214,7 +252,7 @@ const Header = () => {
               )}
             </Container>
 
-          </>
+          </div>
 
         ) : (
           <>
@@ -235,11 +273,13 @@ const Header = () => {
                 </div>
 
                 <button onClick={handleUserCart} className={`account ${!logged_in && 'loggedin-account'}`}  >
-                  <PermIdentityOutlinedIcon className='account-icon' />
+                  {/* <PermIdentityOutlinedIcon className='account-icon' /> */}
+                  <span className='account-icon'></span>
                 </button>
 
                 <button onClick={handleCart} className="cart-item">
-                  <ShoppingCartOutlinedIcon className='cart-icon' />
+                  {/* <ShoppingCartOutlinedIcon className='cart-icon' /> */}
+                  <span className='cart-icon'></span>
                   {cartItems.length}
                 </button>
 

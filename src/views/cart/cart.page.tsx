@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { MouseEventHandler, useEffect, useState } from "react";
 import {
   changeItemQuantity,
   clearCart,
@@ -11,6 +11,7 @@ import {
 
 import PaymentIcon from '@mui/icons-material/Payment';
 import PayCashSVG from '../../assets/panier/pay-cash.svg';
+import CartSVG from '../../assets/panier/cart.svg';
 
 import bagPaperShoppingIcn from '../../assets/panier/bag-paper-shopping-icn.png';
 import dinnerFurnitureIcn from '../../assets/panier/dinner-furniture-icn.png';
@@ -43,6 +44,7 @@ import { supplierServices } from "../../services/api/suppliers.api";
 import { userService } from "../../services/api/user.api";
 import { localStorageService } from "../../services/localStorageService";
 import "./cart.page.scss";
+import CloseIcon from '@mui/icons-material/Close';
 
 const CartPage: React.FC = () => {
   const { t } = useTranslation();
@@ -97,6 +99,7 @@ const CartPage: React.FC = () => {
   const [giftAmmount, setGiftAmmount] = useState<number>(0)
   const [limitReachedGift, setLimitReachedGift] = useState<boolean>(false)
   const [discountValue, setDiscountValue] = useState<number>(0)
+  const [currentStep, setCurrentStep] = useState<number>(1);
 
   // take away plan vars
   const command_type = deliveryOption === "delivery" ? 3 : 1;
@@ -112,6 +115,7 @@ const CartPage: React.FC = () => {
 
   var minCost: any;
   var isClosed: any;
+
 
   const dispatch = useAppDispatch();
   const navigate = useNavigate();
@@ -149,15 +153,16 @@ const CartPage: React.FC = () => {
 
 
     return <>
-      <td className="image-container">
-        <img loading="lazy" src={`${item.product.image[0] ? item.product.image[0].path : ""}`} alt="product image" />
-        <div className="info-text">
-          <span className="title">{item.product.name}</span>
-          <span className="description" dangerouslySetInnerHTML={{ __html: item.product.description }}></span>
-
+      <td>
+        <div className="image-container">
+          <img loading="lazy" src={`${item.product.image[0] ? item.product.image[0].path : ""}`} alt="product image" />
+          <div className="info-text">
+            <span className="title">{item.product.name}</span>
+            <span className="description" dangerouslySetInnerHTML={{ __html: item.product.description }}></span>
+          </div>
         </div>
       </td>
-      <td className="sous-total">
+      <td className="total-price">
         <span >{item.unitePrice.toFixed(2)} DT</span>
       </td>
 
@@ -186,7 +191,9 @@ const CartPage: React.FC = () => {
         </span>
       </td>
       <td>
-        <button type="button" className="remove-btn" onClick={handleRemoveItemFromCart}>X</button>
+        <button type="button" className="remove-btn" onClick={handleRemoveItemFromCart}>
+          <CloseIcon className='close-icon'></CloseIcon>
+        </button>
       </td>
     </>
   }
@@ -627,294 +634,293 @@ const CartPage: React.FC = () => {
   useEffect(() => {
     let check = supplier && cartItems.length > 0
     check && calcTotal()
-  }, [sousTotal, appliedBonus, promoReduction, delivPrice])
+  }, [sousTotal, appliedBonus, promoReduction, delivPrice]);
 
+  const goNextStep: MouseEventHandler<HTMLButtonElement> = ((event) => {
+    setCurrentStep(2);     
+  });
+  const goPrevStep: MouseEventHandler<HTMLButtonElement> = ((event) => {
+   setCurrentStep(1); 
+  });
   return (
     <>
       {
         cartItems.length > 0 && supplier ? (
-          <Container className="cart-page-container" fluid>
-            <Row className="header">
-              <div className="image-container">
-                <img loading="lazy" src={supplier ? supplier.images[0].path : ""} alt="supplier image" className="background-image" />
-                <span>{t('cartPage.monPanier')}</span>
-              </div>
-            </Row>
-            <Row>
-              <Col>
-                <main>
-                  <div className={`product-detail-container`}>
-                    <table>
-                      <thead>
-                        <td className="header-name">
-                          {t('cartPage.product')}
-                        </td>
-                        <td>
-                          {t('orderTrackingPage.price')}
-                        </td>
-                        <td>
-                          {t('cartPage.Quantite')}
-                        </td>
-                        <td >
-                          {t('profile.commands.sousTotal')}
-                        </td>
-                        <td>   </td>
-                      </thead>
-                      <tbody>
-                        {
-                          cartItems.map((item: any, index: number) => {
-                            return (
+          <div className="cart-page-container">
+            <Container fluid>
+              <Row className="header">
+                <div className="image-container">
+                  <img loading="lazy" src={supplier ? supplier.images[0].path : ""} alt="supplier image" className="background-image" />
+                  <span>{t('cartPage.monPanier')}</span>
+                </div>
+              </Row>
+            </Container>
+            <Container>
+              <Row>
+                <Col>
+                {currentStep == 2 && (<button className="btn-back" onClick={goPrevStep}>Retour</button>)}
+                  <main>                    
+                    <div className={`product-detail-container`}>
+                      {currentStep == 1 && (<>
+                      <table>
+                        <thead>
+                          <td className="header-name">
+                            {t('cartPage.product')}
+                          </td>
+                          <td>
+                            {t('orderTrackingPage.price')}
+                          </td>
+                          <td>
+                            {t('cartPage.Quantite')}
+                          </td>
+                          <td >
+                            {t('profile.commands.sousTotal')}
+                          </td>
+                          <td>   </td>
+                        </thead>
+                        <tbody>
+                          {
+                            cartItems.map((item: any, index: number) => {
+                              return (
+                                <>
+                                  <tr key={index} className="ariticle-info-container">
+                                    <ArticleProvider item={item} />
+                                  </tr>
+                                </>)
+                            })
+                          }
+                        </tbody>
+                      </table>
+                      <div className="devider">
+                      </div>
+                      <div className="commentaire-section">
+                        <span>{t('cartPage.commentaire')}</span>
+                        <textarea name="commentaire" id="commentaire" cols={30} rows={10} value={aComment} onChange={(e) => handleCommentChange(e.target.value)} ></textarea>
+                      </div>
+                      {/* {
+                      has_gift && (
+                        <>
+                        </>
+                      )
+                    } */}
+                      <div className="devider">
+                      </div>
+                      <div className="promos-list">
+                        <ul>
+                          {
+                            promosList.length !== 0 && (
                               <>
-                                <tr key={index} className="ariticle-info-container">
-                                  <ArticleProvider item={item} />
-                                </tr>
-                              </>)
-                          })
-                        }
-                      </tbody>
-                    </table>
-                    <div className="devider">
-                    </div>
+                                {
+                                  promosList.map((promo: any, index: number) => {
+                                    return (
+                                      <button key={index} className="promo-button" onClick={() => {
+                                        selectCoupon(promo)
+                                      }}>
+                                        {promo.title}
+                                      </button>
+                                    )
 
-                    <div className="commentaire-section">
-                      <span>{t('cartPage.commentaire')}</span>
-                      <textarea name="commentaire" id="commentaire" cols={30} rows={10} value={aComment} onChange={(e) => handleCommentChange(e.target.value)} ></textarea>
-                    </div>
-                    {/* {
-                    has_gift && (
-                      <>
-                      </>
-                    )
-                  } */}
-                    <div className="devider">
-                    </div>
+                                  })
+                                }
+                              </>
+                            )
+                          }
+                        </ul>
+                      </div>
+                        <div className="promo-container">
+                          <input type="text" name="code_promo" id="code_promo" placeholder="Code promo" value={promo} onChange={(e) => handlePromoChange(e.target.value)} />
+                          <button disabled={!couponExiste} className={(couponExiste) ? "button" : "button disabled"} onClick={checkPromoCode}>
+                            {t('cartPage.appliquer')}
+                          </button>
+                        </div>
+                        <div className="devider">
+                        </div>
+                        <div className="bonus">
+                          <span>{t('cartPage.bonus')} : {bonus.toFixed(2)} pts</span>
+                          <button className={(bonus < 5000 || appliedBonus || limitReachedBonus) ? "button disabled" : "button"} disabled={bonus < 5000} onClick={() => applyBonus()}>
+                            {t('cartPage.appliquer')}
+                          </button>
+                        </div>
+                        <ul>
+                          <li>
+                            <p className="bonus-message">{t('cartPage.bonusMsg')}</p>
+                          </li>
+                        </ul>
+                        <div className="buttons">
+                          <button className="commander" onClick={goNextStep} >
+                            Suivant
+                          </button>
+                        </div>
+                      </>)}
+                      {currentStep == 2 && (<div className="card-paiment">   
+                        <div className="paiment-container">
+                          <span className="title">{t('cartPage.payMode')}</span>
+                          <div className="method">
+                            <img loading="lazy" className="icon" src={PayCashSVG} alt="My SVG" />
+                            <label htmlFor="espece">{t('cartPage.espece')}</label>
+                            <input className="form-check-input" type="radio" name="pay" id="espece" checked={payMode === 1} onClick={() => setPayMode(1)} />
+                          </div>
+                          <div className="method">
+                            <img loading="lazy" className="cart" src={CartSVG} alt="My SVG" />
+                            <label htmlFor="bnc-cart">{t('cartPage.bankPay')}</label>
+                            <input className="form-check-input" type="radio" name="pay" id="bnc-cart" checked={payMode === 2} onClick={() => setPayMode(2)} />
+                          </div>
+                        </div>
+                        <div className="devider">
+                        </div>
+                        <div className="deliv-details">
+                          <div className={`select ${selectedOption == 1 ? "selected" : ""}`}  >
+                            <img loading="lazy" className="icon1" src={dinnerFurnitureIcn} alt="sur place icon" onClick={() => handleOptionChange(1)} />
+                            <input type="radio" value="1" id='domicile' name='type' checked={selectedOption === 1} />
+                            <label htmlFor="domicile"  >{t('cartPage.surPalce')}</label>
+                          </div>
+                          <div className={`select ${selectedOption == 2 ? "selected" : ""}`}  >
+                            <img loading="lazy" className="icon2" src={bagPaperShoppingIcn} alt="a emporter icon" onClick={() => handleOptionChange(2)} />
 
-                    <div className="promos-list">
-                      <ul>
+                            <input type="radio" value="2" id='travail' name='type' checked={selectedOption === 2} />
+                            <label htmlFor="travail">{t('cartPage.emporter')}</label>
+                          </div>
+                          <div className={`select ${selectedOption == 3 ? "selected" : ""}`}  >
+                            <img loading="lazy" className="icon3" src={scooterTransportIcn} alt="Livraison icon" onClick={() => handleOptionChange(3)} />
+                            <input type="radio" value="3" id='autre' name='type' checked={selectedOption === 3} />
+                            <label htmlFor="autre">{t('cartPage.delivery')}</label>
+                          </div>
+                        </div>
                         {
-                          promosList.length !== 0 && (
+                          selectedOption == 2 && (
                             <>
-                              {
-                                promosList.map((promo: any, index: number) => {
-                                  return (
-                                    <button key={index} className="promo-button" onClick={() => {
-                                      selectCoupon(promo)
-                                    }}>
-                                      {promo.title}
-                                    </button>
-                                  )
+                              <TimePicker
+                                className="time-picker"
+                                onChange={(newTime) => {
+                                  // Parse the selected time and create a Date object
+                                  if (newTime !== null) {
+                                    const [hours, minutes] = newTime.split(':');
+                                    const selectedDate = new Date();
+                                    selectedDate.setHours(parseInt(hours, 10));
+                                    selectedDate.setMinutes(parseInt(minutes, 10));
+                                    const formattedTime = selectedDate.toLocaleString('en-US', {
+                                      hour: 'numeric',
+                                      minute: 'numeric',
+                                      month: 'numeric',
+                                      day: 'numeric',
+                                      year: 'numeric',
+                                    });
+                                    const parsedDate = new Date(formattedTime);
+                                    setTakeAwayDate(parsedDate);
+                                  }
+                                }}
+                                value={takeAwayDate}
+                                format="h:m a"
+                                disableClock={true}
+                              />
 
-                                })
-                              }
                             </>
                           )
                         }
-                      </ul>
-                    </div>
-                    <div className="promo-container">
-                      <input type="text" name="code_promo" id="code_promo" placeholder="Code promo" value={promo} onChange={(e) => handlePromoChange(e.target.value)} />
-                      <button disabled={!couponExiste} className={(couponExiste) ? "button" : "button disabled"} onClick={checkPromoCode}>
-                        {t('cartPage.appliquer')}
-                      </button>
-                    </div>
+                        <div className="deliv-to">
+                          <span className="title">{t('cartPage.delivto')}</span>
+                          <div className="info-container">
+                            <label htmlFor="client-name">{t('cartPage.client')} : </label>
+                            <input type="text" name="client-name" value={name} placeholder="Client Name" onChange={(e) => setName(e.target.value)} />
+                          </div>
 
-                    <div className="devider">
-                    </div>
+                          <div className="info-container">
+                            <label htmlFor="client-name">{t('cartPage.phoneNumber2')}</label>
+                            <input type="text" name="" value={phoneNumber} placeholder="phone number" onChange={(e) => setPhoneNumber(e.target.value)} />
+                          </div>
+                          <div className="adress">
+                            <p className="title" style={{ margin: 0 }} >
+                              {t('profile.mesConfig.delivAdress')} :
+                            </p>
+                            <p className="adress-text">
+                              {userPosition?.coords.label}
+                            </p>
+                          </div>
 
-                    <div className="bonus">
-                      <span>{t('cartPage.bonus')} : {bonus.toFixed(2)} pts</span>
-
-                      <button className={(bonus < 5000 || appliedBonus || limitReachedBonus) ? "button disabled" : "button"} disabled={bonus < 5000} onClick={() => applyBonus()}>
-                        {t('cartPage.appliquer')}
-                      </button>
-                    </div>
-                    <ul>
-                      <li>
-                        <p className="bonus-message">{t('cartPage.bonusMsg')}</p>
-                      </li>
-                    </ul>
-
-                    <div className="devider">
-                    </div>
-
-                    <div className="paiment-container">
-                      <span className="title">{t('cartPage.payMode')}</span>
-                      <div className="method">
-                        <img loading="lazy" className="icon" src={PayCashSVG} alt="My SVG" />
-                        <label htmlFor="espece">{t('cartPage.espece')}</label>
-                        <input className="form-check-input" type="radio" name="pay" id="espece" checked={payMode === 1} onClick={() => setPayMode(1)} />
-                      </div>
-                      <div className="method">
-                        <PaymentIcon className="icon" />
-                        <label htmlFor="bnc-cart">{t('cartPage.bankPay')}</label>
-                        <input className="form-check-input" type="radio" name="pay" id="bnc-cart" checked={payMode === 2} onClick={() => setPayMode(2)} />
-                      </div>
-                    </div>
-
-                    <div className="devider">
-                    </div>
-
-                    <div className="deliv-details">
-                      <div className={`select ${selectedOption == 1 ? "selected" : ""}`}  >
-                        <img loading="lazy" className="icon1" src={dinnerFurnitureIcn} alt="sur place icon" onClick={() => handleOptionChange(1)} />
-                        <input type="radio" value="1" id='domicile' name='type' checked={selectedOption === 1} />
-                        <label htmlFor="domicile"  >{t('cartPage.surPalce')}</label>
-                      </div>
-                      <div className={`select ${selectedOption == 2 ? "selected" : ""}`}  >
-                        <img loading="lazy" className="icon2" src={bagPaperShoppingIcn} alt="a emporter icon" onClick={() => handleOptionChange(2)} />
-
-                        <input type="radio" value="2" id='travail' name='type' checked={selectedOption === 2} />
-                        <label htmlFor="travail">{t('cartPage.emporter')}</label>
-                      </div>
-                      <div className={`select ${selectedOption == 3 ? "selected" : ""}`}  >
-                        <img loading="lazy" className="icon3" src={scooterTransportIcn} alt="Livraison icon" onClick={() => handleOptionChange(3)} />
-                        <input type="radio" value="3" id='autre' name='type' checked={selectedOption === 3} />
-                        <label htmlFor="autre">{t('cartPage.delivery')}</label>
-                      </div>
-                    </div>
-
-                    {
-                      selectedOption == 2 && (
-                        <>
-                          <TimePicker
-                            className="time-picker"
-                            onChange={(newTime) => {
-                              // Parse the selected time and create a Date object
-                              if (newTime !== null) {
-                                const [hours, minutes] = newTime.split(':');
-                                const selectedDate = new Date();
-                                selectedDate.setHours(parseInt(hours, 10));
-                                selectedDate.setMinutes(parseInt(minutes, 10));
-                                const formattedTime = selectedDate.toLocaleString('en-US', {
-                                  hour: 'numeric',
-                                  minute: 'numeric',
-                                  month: 'numeric',
-                                  day: 'numeric',
-                                  year: 'numeric',
-                                });
-                                const parsedDate = new Date(formattedTime);
-                                setTakeAwayDate(parsedDate);
+                          <div className="buttons">
+                            <button className="continue" onClick={() => navigate('/', { replace: true })}>
+                              {t('cartPage.continueAchats')}
+                            </button>
+                            <button className="commander"
+                              onClick={() =>
+                                submitOrder(
+                                  cartItems,
+                                  deliveryOption,
+                                  name,
+                                  phoneNumber,
+                                  aComment,
+                                  total,
+                                  appliedBonus,
+                                  dispatch,
+                                  userPosition,
+                                  supplier.id,
+                                  deliveryPrice
+                                )
                               }
-                            }}
-                            value={takeAwayDate}
-                            format="h:m a"
-                            disableClock={true}
-                          />
+                            >
+                              {t('cartPage.commander')}
+                            </button>
+                          </div>
 
-                        </>
-                      )
-                    }
-
-                    <div className="deliv-to">
-                      <span className="title">{t('cartPage.delivto')}</span>
-                      <div className="info-container">
-                        <label htmlFor="client-name">{t('cartPage.client')} : </label>
-                        <input type="text" name="client-name" value={name} placeholder="Client Name" onChange={(e) => setName(e.target.value)} />
-                      </div>
-
-                      <div className="info-container">
-                        <label htmlFor="client-name">{t('cartPage.phoneNumber2')}</label>
-                        <input type="text" name="" value={phoneNumber} placeholder="phone number" onChange={(e) => setPhoneNumber(e.target.value)} />
-                      </div>
-                      <div className="adress">
-                        <p className="title" style={{ margin: 0 }} >
-                          {t('profile.mesConfig.delivAdress')} :
-                        </p>
-                        <p className="adress-text">
-                          {userPosition?.coords.label}
-                        </p>
-                      </div>
-
-                      <div className="buttons">
-                        <button className="continue" onClick={() => navigate('/', { replace: true })}>
-                          {t('cartPage.continueAchats')}
-                        </button>
-                        <button className="commander"
-                          onClick={() =>
-                            submitOrder(
-                              cartItems,
-                              deliveryOption,
-                              name,
-                              phoneNumber,
-                              aComment,
-                              total,
-                              appliedBonus,
-                              dispatch,
-                              userPosition,
-                              supplier.id,
-                              deliveryPrice
+                        </div>
+                      </div>)}
+                    </div>
+                    <div className="summair-container">
+                      <span>{t('cartPage.total')}</span>
+                      <div className={`info`}>
+                        <div className="sous-total">
+                          <span className="title">{t('profile.commands.sousTotal')}</span>
+                          <span className="value">{sousTotal.toFixed(2)} DT</span>
+                        </div>
+                        <div className="panier">
+                          <span>{t('cartPage.yourCart')}</span>
+                          {appliedBonus > 0 &&
+                            (
+                              <div className="panie-row">
+                                <span>{t('cartPage.bonus')}</span>
+                                <span> - {(appliedBonus / 1000).toFixed(2)} DT</span>
+                              </div>
                             )
                           }
-                        >
-                          {t('cartPage.commander')}
-                        </button>
-                      </div>
-
-                    </div>
-
-                  </div>
-
-                  <div className="summair-container">
-                    <span>{t('cartPage.total')}</span>
-                    <div className={`info`}>
-                      <div className="sous-total">
-                        <span className="title">{t('profile.commands.sousTotal')}</span>
-                        <span className="value">{sousTotal.toFixed(2)} DT</span>
-                      </div>
-                      <div className="panier">
-                        <span>{t('cartPage.yourCart')}</span>
-                        {appliedBonus > 0 &&
-                          (
-                            <div className="panie-row">
-                              <span>{t('cartPage.bonus')}</span>
-                              <span> - {(appliedBonus / 1000).toFixed(2)} DT</span>
-                            </div>
-                          )
-                        }
-                        {
-                          promoReduction > 0 && (
-                            <div className="panie-row">
-                              <span>{t('cartPage.Coupon')}</span>
-                              <span> - {(promoReduction).toFixed(2)} DT</span>
-                            </div>
-                          )
-                        }
-                        {
-                          discountValue > 0 && (
-                            <div className="panie-row">
-                              <span>discount value</span>
-                              <span> - {(discountValue).toFixed(2)} DT</span>
-                            </div>
-                          )
-                        }
-                        <div className="panie-row">
-                          <span>{t('supplier.delivPrice')}</span>
-                          <span>{delivPrice} DT</span>
-                        </div>
-                        <div className="panie-row"></div>
-                      </div>
-
-                      <div className="a-payer">
-                        <span className="title">A payer</span>
-                        <span className="value">{total.toFixed(2)} DT</span>
-                      </div>
-                      <div className="button-container">
-                        <button type="button"
-                          onClick={
-                            () => {
-                              setPopupType("error")
-                              handlePopup()
-                            }
+                          {
+                            promoReduction > 0 && (
+                              <div className="panie-row">
+                                <span>{t('cartPage.Coupon')}</span>
+                                <span> - {(promoReduction).toFixed(2)} DT</span>
+                              </div>
+                            )
                           }
-                        >
-                          {t('cartPage.paymentContinue')}
-                        </button>
+                          {
+                            discountValue > 0 && (
+                              <div className="panie-row">
+                                <span>discount value</span>
+                                <span> - {(discountValue).toFixed(2)} DT</span>
+                              </div>
+                            )
+                          }
+                          <div className="panie-row">
+                            <span>{t('supplier.delivPrice')}</span>
+                            <span>{delivPrice} DT</span>
+                          </div>
+                          <div className="panie-row"></div>
+                        </div>
+
+                        <div className="a-payer">
+                          <span className="title">A payer</span>
+                          <span className="value">{total.toFixed(2)} DT</span>
+                        </div>
+                        {/* <div className="button-container">
+                          <button type="button"
+                            onClick={goNextStep}>
+                            {t('cartPage.paymentContinue')}
+                          </button>
+                        </div> */}
                       </div>
                     </div>
-                  </div>
-                </main>
-              </Col>
-            </Row>
+                  </main>
+                </Col>
+              </Row>
+            </Container>
             {
               showPopup && (
 
@@ -926,8 +932,7 @@ const CartPage: React.FC = () => {
                 <WarnPopup message="Ce service n'est pas disponible dans votre ville" closeButtonText="continuer" confirmButtonText="Supprimer La Command" close={handleServicePopup} accept={dropOrder} />
               )
             }
-
-          </Container>
+          </div>
         ) : (
           <Container>
             <Row>

@@ -7,7 +7,7 @@
     .image-container {
       height: 300px;
       position: relative;
-      padding: 0;
+      padding: 0;    
 
 
       img {
@@ -31,15 +31,28 @@
       }
     }
   }
-
+  .btn-back{
+    color: #484848;
+    font-family: Poppins;
+    font-size: 14px;
+    font-style: normal;
+    font-weight: 500;
+    line-height: normal;
+    padding-left: 15px;
+    background-repeat: no-repeat;
+    background-position: left center;
+    background-size: 7px;
+    margin-bottom: 12px;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='7' height='10' viewBox='0 0 7 10' fill='none'%3E%3Cpath d='M7 8.825L2.67341 5L7 1.175L5.66802 0L1.25645e-09 5L5.66802 10L7 8.825Z' fill='%23484848'/%3E%3C/svg%3E");
+  }
   main {
     display: flex;
-    justify-content: center;
+    justify-content: space-between;
     gap: 61px;
     padding: 10px 0 129px 0;
-
+    position: relative;    
     .product-detail-container {
-      max-width: 632px;
+      // max-width: 632px;
       // height: 618px;
       // overflow-y: scroll;
       border-radius: 15px;
@@ -48,6 +61,7 @@
       align-items: center;
       background: $Off-White;
       padding-bottom: 15px;
+      width: 100%;
 
       &::-webkit-scrollbar {
         width: 0rem;
@@ -60,22 +74,37 @@
       &::-webkit-scrollbar-thumb {
         background-color: transparent;
       }
-
+      .card-paiment{
+        padding: 36px 43px;
+        width: 100%;
+      }
       table {
         width: 100%;
-
+        z-index: 1;
         thead {
           height: 53px;
           border-radius: 15px;
-          background-color: $orange_color;
-
+          // background-color: $orange_color;
+          position: relative;
+          z-index: 0;
+          &:after{
+            content: "";
+            width: 100%;
+            height: 100%;
+            background-color: #FBC000;
+            position: absolute;
+            left: 0;
+            top: 0;
+            z-index: -1;
+            border-radius: 15px 15px 0px 0px;
+          }
           td {
             text-align: center;
             color: #FFF;
             font-family: Poppins;
-            font-size: 18px;
+            font-size: 16px;
             font-style: normal;
-            font-weight: 600;
+            font-weight: 500;
             line-height: normal;
 
           }
@@ -91,30 +120,33 @@
             text-align: center;
           }
 
-          .ariticle-info-container {
-
+          .ariticle-info-container {            
+            .image-container{
+              margin-top: 25px;
+              margin-bottom: 25px;  
+            }          
             .sous-total {
               color: $Ocean_Teal;
               font-family: Poppins;
               font-size: 15px;
               font-style: normal;
-              font-weight: 700;
+              font-weight: 600;
               line-height: normal;
             }
-
             .image-container {
               display: flex;
               align-items: center;
               justify-content: center;
               gap: 15px;
+              padding-left: 21px;
 
               .info-text {
                 display: flex;
                 flex-direction: column;
                 align-items: start;
-                max-width: 104px;
+                // max-width: 104px;
                 gap: 2px;
-
+                width: calc(100% - 115px);
                 .title {
                   color: $dark_Gray;
                   font-family: Poppins;
@@ -122,18 +154,23 @@
                   font-style: normal;
                   font-weight: 600;
                   line-height: 20px;
-                  margin-top: 45px;
+                  // margin-top: 45px;
                   text-align: start;
+                  white-space: nowrap;
+                  overflow: hidden;
+                  text-overflow: ellipsis;
+                  width: 100%;
                 }
 
                 .description {
-                  width: 99px;
+                  // width: 99px;
                   color: $dark_Gray;
                   font-family: Poppins;
-                  font-size: 15px;
+                  font-size: 14px;
                   font-style: normal;
                   font-weight: 400;
                   line-height: 20px;
+                  text-align: start;
 
                   p {
                     margin: 0;
@@ -143,12 +180,12 @@
               }
 
               img {
-                width: 66px;
-                height: 94px;
-                margin-top: 45px;
+                width: 69px;
+                height: 61.517px;
+                // margin-top: 45px;
+                object-fit: cover;
               }
             }
-
             button {
               width: 34px;
               height: 34px;
@@ -162,14 +199,14 @@
               margin-right: 5px;
               margin-left: 5px;
             }
-
             .remove-btn {
-
               background-color: $orange_color;
               font-weight: 600;
-              padding: 3px 0 0;
+              padding: 0;
+              .close-icon{
+                font-size: 18px;
+              }
             }
-
             .quantite {
               display: flex;
               justify-content: center;
@@ -182,17 +219,17 @@
                 width: 71px;
                 height: 41.621px;
                 display: flex;
-
+                background-color: white;
+                justify-content: space-between;
+                padding: 5px 15px;
                 .count-buttons {
                   display: flex;
                   justify-content: center;
                   align-items: center;
                   flex-direction: column;
-
+                  width: 6px;
                   gap: 5px;
-
                   button {
-
                     .count-more,
                     .count-less {
                       width: 14px;
@@ -210,11 +247,11 @@
                   border: none;
                   color: $light_Gray;
                   font-family: Poppins;
-                  font-size: 20px;
+                  font-size: 18px;
                   font-style: normal;
                   font-weight: 600;
                   line-height: normal;
-                  text-align: center;
+                  text-align: start;
                   appearance: none;
                   /* Remove default styling */
                   -webkit-appearance: none;
@@ -232,12 +269,23 @@
                 }
               }
             }
+            .total-price{
+              color: $Ocean_Teal;
+              font-family: Poppins;
+              font-size: 15px;
+              font-style: normal;
+              font-weight: 700;
+              line-height: normal;
+            }
+            td:first-child{
+              width: 35%;
+            }
           }
         }
       }
 
       .devider {
-        width: 95%;
+        width: 100%;
         height: 2px;
         margin-top: 10px;
         background-color: white;
@@ -282,14 +330,13 @@
           padding: 0 11px 0 5px;
           display: flex;
           flex-wrap: wrap;
-
+          justify-content: center;
         }
 
         .promo-button {
           background-color: $orange_color;
-          color: $dark_Gray;
+          color: white;
           font-size: 15px;
-          font-weight: 600;
           min-width: 100px;
           height: 40px;
           text-align: center;
@@ -432,7 +479,7 @@
       gap: 37px;
       margin-bottom: 50px;
       width: 100%;
-      padding: 0 27px;
+      // padding: 0 27px;
 
       .title {
         color: $orange_color;
@@ -441,7 +488,7 @@
         font-style: normal;
         font-weight: 600;
         line-height: normal;
-        margin-top: 35px;
+        // margin-top: 35px;
       }
 
       .method {
@@ -464,13 +511,22 @@
         }
 
         .icon {
-          width: 30px;
-          height: 30px;
+          width: 27px;
           color: $Ocean_Teal;
+        }
+        .cart{
+          width: 26px;
+          color: $Ocean_Teal;
+
         }
 
         .form-check-input[type="radio"] {
-          font-size: 15px;
+          font-size: 20px;
+          background-color: transparent;
+          border: 2px solid #D9D9D9;
+          &:focus{
+            box-shadow: none;
+          }
         }
 
         .form-check-input[type="radio"]:checked~.form-check-label {
@@ -478,8 +534,14 @@
         }
 
         .form-check-input[type="radio"]:checked {
-          background-color: $Ocean_Teal ;
-          border-color: $Ocean_Teal;
+          background-color: transparent;
+          border-color: #8AC8C7;
+          background-size: 12px;
+          background-position: center;
+          --bs-form-check-bg-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 12 12' fill='none'%3E%3Ccircle cx='6' cy='6' r='6' fill='%232EB5B2'/%3E%3C/svg%3E");
+          &:focus{
+            box-shadow: none;
+          }
         }
       }
 
@@ -488,7 +550,7 @@
     .deliv-details {
       display: flex;
       justify-content: space-between;
-      padding: 15px 66px 15px 62px;
+      padding: 15px 0 15px 0;
       width: 100%;
 
       .select {
@@ -576,7 +638,7 @@
       flex-direction: column;
       justify-content: space-between;
       gap: 15px;
-      padding: 0 25px;
+      // padding: 0 25px;
       margin-top: 60px;
       margin-bottom: 20px;
 
@@ -630,6 +692,7 @@
           color: $light_Gray;
           background-color: transparent;
           text-align: center;
+          outline: none;
         }
       }
     }
@@ -671,7 +734,8 @@
 
     .summair-container {
       max-width: 382px;
-      height: 482px;
+      // height: 482px;
+      height: fit-content;
       border-radius: 15px;
       border: 1px solid $orange_color;
       display: flex;
@@ -692,7 +756,7 @@
 
       .info {
         width: 341px;
-        height: 391px;
+        // height: 391px;
         border-radius: 15px;
         background: $Off-White;
         padding: 22px;
@@ -981,7 +1045,7 @@
 
                   input[type="number"] {
                     width: 70%;
-                    font-size: 20px;
+                    font-size: 18px;
                   }
                 }
               }

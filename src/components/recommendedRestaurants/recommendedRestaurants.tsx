@@ -13,9 +13,8 @@ import { Restaurant } from "../../services/types";
 import SupplierCard from "../supplierCard/SupplierCard";
 import recommandedStyle from "./recommendedRestaurants.module.scss";
 
-import KeyboardDoubleArrowLeftIcon from "@mui/icons-material/KeyboardDoubleArrowLeft";
-import KeyboardDoubleArrowRightIcon from "@mui/icons-material/KeyboardDoubleArrowRight";
-import useMediaQuery from "../../utils/useMediaQuery";
+import ArrowBackIosIcon from '@mui/icons-material/ArrowBackIos';
+import ArrowForwardIosIcon from '@mui/icons-material/ArrowForwardIos'; import useMediaQuery from "../../utils/useMediaQuery";
 
 interface Props {
   listType: string;
@@ -59,9 +58,9 @@ const RestaurantList: React.FC<Props> = ({ restaurants, listType }) => {
   const isLargeScreen = (typeof window !== "undefined") ? useMediaQuery('(min-width : 1400px)') : false;
 
   return (
-    <div className={recommandedStyle.recommandedContainer}>
+    <div className={`${recommandedStyle.recommandedContainer}  ${listType=="discount" ? recommandedStyle.discount : ''}`}>
       {
-        <Container fluid className={recommandedStyle.container + ` ${!displayNormal && recommandedStyle.uniqueContainer} `}>
+        <Container className={recommandedStyle.container + ` ${!displayNormal && recommandedStyle.uniqueContainer} `}>
           <Row>
             {listType == "recommanded" && (
               <h2 className={recommandedStyle.recaommandedTitle}>
@@ -147,14 +146,14 @@ const RestaurantList: React.FC<Props> = ({ restaurants, listType }) => {
             <Row className={` ${recommandedStyle.recommandedListButtonsContainer} ${!displayNormal ? recommandedStyle.uniqueButtons + "" : " test"}`}>
               <Col>
                 <ButtonBack className={recommandedStyle.btn}>
-                  <KeyboardDoubleArrowLeftIcon
+                  <ArrowBackIosIcon
                     className={recommandedStyle.sliderButtonIcon}
                   />
                 </ButtonBack>
               </Col>
               <Col className={recommandedStyle.rightBtn}>
                 <ButtonNext className={recommandedStyle.btn}>
-                  <KeyboardDoubleArrowRightIcon
+                  <ArrowForwardIosIcon
                     className={recommandedStyle.sliderButtonIcon}
                   />
                 </ButtonNext>

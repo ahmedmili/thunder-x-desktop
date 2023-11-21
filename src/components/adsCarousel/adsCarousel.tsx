@@ -13,7 +13,7 @@ export const AdsCarousel = (props: any) => {
     }
 
     return (
-        <div className={`carousal-ads-container`}>
+        <div className={`container carousal-ads-container`}>
             <CarouselProvider className='carousel-ads'
                 naturalSlideWidth={350}
                 naturalSlideHeight={250}

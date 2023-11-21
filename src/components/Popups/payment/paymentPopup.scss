@@ -38,5 +38,29 @@
         line-height: normal;
         width: 395px;
         height: 61px;
+        &.title{
+            font-family: Poppins;
+            font-size: 30px;
+            font-style: normal;
+            font-weight: 700;
+            line-height: normal;
+        }
+    }
+    img{
+      width: 30%;
+    }
+    .close-btn {
+      color: $orange_color;
+      width: 19px;
+      height: 19px;
+      font-size: 19px;
+      margin-left: auto;
+      margin-right: 20%;
+      &:hover {
+        cursor: pointer;
+      }
+      .close-icon{
+        font-size: 29px;
+      }
     }
 }

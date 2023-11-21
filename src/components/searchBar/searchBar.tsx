@@ -108,7 +108,7 @@ const SearchBar: React.FC<Props> = ({ placeholder }) => {
             />
           </div>
           <span className={`${searchStyle.icons} ${searchStyle.iconBackgorund}  `}>
-            <ArrowForwardIcon className={searchStyle.icon} />
+            {/* <ArrowForwardIcon className={searchStyle.icon} /> */}
           </span>
         </form>
       </div>

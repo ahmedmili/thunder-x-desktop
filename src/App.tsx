@@ -183,7 +183,7 @@ function App({ initialData }: AppProps) {
           });
         },
         (error: GeolocationPositionError) => {
-          // toast.error(error.message)
+          dispatch({ type: "SET_SHOW", payload: true })
         }
       );
     }
@@ -210,24 +210,27 @@ function App({ initialData }: AppProps) {
     }
     if (!_isAuthenticated) {
       dispatch(logout());
-      navigator.geolocation.getCurrentPosition(
-        (position: Position) => {
-          const { latitude, longitude } = position.coords;
-          LocationService.geoCode(latitude, longitude).then(data => {
-            dispatch({
-              type: "SET_LOCATION",
-              payload: {
-                ...data
-              },
-            });
-          });
-        },
-        (error: GeolocationPositionError) => {
-          // toast.error(error.message)
-        }
-      );
-
+       const location = localStorageService.getCurrentLocation();
+        if (!location) {
+          navigator.geolocation.getCurrentPosition(
+            (position: Position) => {
+              const { latitude, longitude } = position.coords;
+              LocationService.geoCode(latitude, longitude).then(data => {
+                dispatch({
+                  type: "SET_LOCATION",
+                  payload: {
+                    ...data
+                  },
+                });
+              });
+            },
+            (error: GeolocationPositionError) => {
+              dispatch({ type: "SET_SHOW", payload: true })
+            }
+        );
+      }
     }
+    
   }, [])
 
   // handle recive admin message

@@ -25,7 +25,7 @@
 
 .footerContainer {
     height: 363px;
-    width: 100vw;
+    width: 100%;
     background-color: $Off-White;
 
     .bodyRow {
@@ -35,19 +35,15 @@
         display: flex;
 
         .demi-cerlce-container {
-            overflow: hidden;
             position: absolute;
-            top: -11px;
-            right: 0px;
-            height: 384.415px;
-            width: 2vw;
-
+            overflow: hidden;
+            top: -27px;
+            right: 0;
+            width: 103px;
             .demi-cercle {
-                position: absolute;
-                top: -71px;
-                left: 0;
-                width: 532px;
-                height: 502.415px;
+                z-index: 20;
+                height: 390.35px;
+                width: 417.35px;
                 border-radius: 500px;
                 background: linear-gradient(180deg, #FBC000 0%, #FBC000 100%);
             }

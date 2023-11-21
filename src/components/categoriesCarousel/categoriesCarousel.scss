@@ -20,43 +20,50 @@
 
 .carousal-provider {
   padding-top: 16px;
-  padding-bottom: 213px;
-  height: 150px;
-  background-size: 104% 100%;
-  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='1200' height='281' viewBox='0 0 1241 281' fill='%2324A6A4' fill-opacity='0.74'%3E%3Cpath d='M0 148.737C0 117.418 24.089 91.3674 55.3123 88.9205L1176.31 1.06948C1211.19 -1.66385 1241 25.9012 1241 60.8861V221C1241 254.137 1214.14 281 1181 281H60C26.8629 281 0 254.137 0 221V148.737Z'/%3E%3C/svg%3E");
-  background-repeat: no-repeat;
-
+  // padding-bottom: 213px;
+  height: 300px;
+  margin-bottom: 48px;
+  position: relative;
+  z-index: 0;
   .categorie-carousel {
     margin: 0 auto;
-    max-width: 848px;
-    padding-left: 39px;
-
+    max-width: 900px;
+    // padding-left: 39px;
     .carousel-slide {
       widows: 100px;
-      height: 100px;
-
+      height: 239px;
       .category-box {
-        background-color: $white_001;
+        background-color: #F7F7F7;
         cursor: pointer;
         text-align: center;
         padding: 15px;
-        border-radius: 15px;
-        margin: 5px;
-        box-shadow: 1px 2px 4px 2px rgba(0, 0, 0, 0.09);
+        border-radius: 40px;
+        margin: 5px 15px;
+        // box-shadow: 1px 2px 4px 2px rgba(0, 0, 0, 0.09);
         transition: background-color 0.5s;
         transition: box-shadow 0.5s;
-
+        height: 226px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        flex-direction: column;
+        gap: 20px;
+        transition: box-shadow 0.3s ease-in-out;
         &.selected {
           border: 2px solid $primary_color;
           background-color: white;
           box-shadow: 1px 2px 4px 2px rgba(0, 0, 0, 0.17);
         }
-
-        img {
-          width: 50px;
-          height: 50px;
+        &:hover {
+          cursor: pointer;
+          border: 2px solid $primary_color;
+          background-color: white;
+          box-shadow: 1px 2px 4px 2px rgba(0, 0, 0, 0.17);
         }
-
+        img {
+          width: auto;
+          height: 96px;
+        }
         .category-name {
           font-family: 'Poppins';
           font-style: normal;
@@ -67,7 +74,6 @@
         }
       }
     }
-
     .categories-list-buttons-container {
       width: 108%;
       height: 50px;
@@ -77,35 +83,52 @@
       position: absolute;
       top: 45%;
       left: -4%;
-
-
-
+      // z-index: -1;
       .btn {
         display: flex;
         text-align: center;
         border-radius: 50%;
-        justify-content: center;
-
-        &:hover {
-          background-color: $light_beige;
+        justify-content: center;       
+        &:active{
+          border: none !important;
         }
       }
-
       .slider-button-icon {
         color: white;
         font-weight: 400;
         font-size: 2.2rem;
-
         &:hover {
-          color: $light_Gray;
+          color: $light_beige;;
         }
       }
     }
+    >.row>.col{
+      z-index: 9;
+    }
+  }
+  &::before{
+    content: '';
+    height: 100%;
+    width: 100%;
+    background-size: 100%;
+    background-repeat: no-repeat;
+    background-image: url(/src/assets/icons/shape.svg);
+    display: block;
+    position: absolute;
+    left: 0;
+    top: 48px;
+    border-radius: 50px;
+    background-position: top;
+    z-index: -1;
   }
 }
 
 
-
+@media (max-width: 1399.98px) { 
+  .carousal-provider {
+    margin-bottom: 0;
+  }
+}  
 @media only screen and (max-width:1200px) {
   .carousal-provider {
     background-size: 100% 100%;
@@ -136,7 +159,7 @@
 
       .carousel-slide {
         width: calc(100% / 4);
-        height: 110px;
+        height: 239px;
 
         .category-box {
           .category-name {
@@ -166,7 +189,7 @@
 
       .carousel-slide {
         width: calc(100% / 5);
-        height: 100px;
+        height: 239px;
       }
 
       .categories-list-buttons-container {
@@ -195,7 +218,7 @@
 
       .carousel-slide {
         width: calc(100% / 4);
-        height: 90px;
+        height: 239px;
 
         .category-box {
           img {
@@ -230,7 +253,7 @@
         .category-box {
           img {
             width: 25px;
-            height: 23px;
+            height: 239px;
           }
         }
       }

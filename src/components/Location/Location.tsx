@@ -1,9 +1,11 @@
 import React, { useState, useEffect, useCallback } from "react";
-// import "react-toastify/dist/ReactToastify.css";
-import { useAppDispatch } from "../../Redux/store";
+import { Col, Container, Row, Badge, Stack } from "react-bootstrap";
+import "react-toastify/dist/ReactToastify.css";
 import { adressService } from "../../services/api/adress.api";
 import { useTranslation } from "react-i18next";
 import "./Location.scss";
+import { useSelector } from "react-redux";
+import { useAppDispatch, useAppSelector } from '../../Redux/store';
 
 
 import HomeLocation from '../../assets/home-location.svg'
@@ -14,7 +16,12 @@ import NearMeOutlinedIcon from "@mui/icons-material/NearMeOutlined";
 import { localStorageService } from "../../services/localStorageService";
 import { LocationService } from "../../services/api/Location.api";
 import MapCard from "./mapCard/MapCard";
-import SearchIcon from "../../assets/icons/SearchIcon";
+import CloseIcon from "../../assets/icons/closeIcon";
+import { CancelPresentation } from "@mui/icons-material";
+import {
+  regionHomeSelector,
+  homeLoadingSelector
+} from "../../Redux/slices/home";
 
 declare global {
   interface Window {
@@ -42,6 +49,10 @@ const Map: React.FC<MapProps> = ({ className }) => {
   const [clientAdressTable, setClientAdressTable] = useState([]);
   const dispatch = useAppDispatch();
   const [searchType, setSearchType] = useState("");
+  const region = useSelector(regionHomeSelector);
+  const location = localStorageService.getCurrentLocation()
+  const isLoading = useSelector(homeLoadingSelector);
+  
 
   useEffect(() => {
     // Function to disable scrolling
@@ -63,30 +74,44 @@ const Map: React.FC<MapProps> = ({ className }) => {
     const userItem = localStorageService.getUser();
     const fetchData = async () => {
       let res = await adressService.getAdressByid(JSON.parse(userItem!).id);
-      setClientAdressTable(res.data.data);
+      setClientAdressTable(res.data.data);     
     };
     userItem != null && fetchData();
   }, []);
 
   const userItem = localStorageService.getUser();
+  const cancel = () => {   
+    if (searchType === "") {
+      const location = localStorageService.getCurrentLocation()
+      if (location) {        
+        if (region) {
+          dispatch({ type: "SET_SHOW", payload: false })
+        }
+        else {
+          console.log("zone not available");
+        }
+      }      
+      else {
+        console.log("you dont have location");
+      }
+    }
+    else{
+      setSearchType("")
+    }
+  };
   return (
     <>
       <div className={`location-container ${className ? className : ""}`}>
         <div className="cancel-icon-container">
           <ClearRoundedIcon
-            onClick={() => searchType === "" ? dispatch({ type: "SET_SHOW", payload: false }) : setSearchType("")}
+            onClick={cancel}
             className="cancel-icon"
           ></ClearRoundedIcon>
-        </div>
-
-        {
-          searchType == '' ? <Options /> : <MapCard />
-
-        }
+        </div>        
+        <Options />         
       </div>
     </>
   )
-
   function Options() {
     const [selectedOption, setSelectedOption] = useState<number>(1);
 
@@ -99,81 +124,87 @@ const Map: React.FC<MapProps> = ({ className }) => {
     })
 
     return (
-      <>
-        <div className="form">
-          <h1>{t('adress.add')}</h1>
-          {/*  map location button */}
-          <button type="button" onClick={() => setSearchType("card")}>
-            {t("adress.cartSelect")}{" "}
-            <NearMeOutlinedIcon></NearMeOutlinedIcon>
-          </button>
-
-          {/*  search location input */}
-          <div className="adresses_container">
-            <AutocompleteInput />
-          </div>
-        </div>
-
-        <div style={{ display: userItem ? "inline" : "none" }} className="Text-container">
-          <p>{t("adress.message1")}</p>
-          <p>{t("adress.message2")}</p>
-        </div>
-
-        <div className="location-filtre">
-          <div className={`select ${selectedOption == 1 ? "selected" : ""}`}  >
-            <input type="radio" value="1" id='domicile' name='type' checked={selectedOption === 1} onChange={handleOptionChange} />
-            <label htmlFor="domicile">{t("domicile")}</label>
-          </div>
-          <div className={`select ${selectedOption == 2 ? "selected" : ""}`}  >
-            <input type="radio" value="2" id='travail' name='type' checked={selectedOption === 2} onChange={handleOptionChange} />
-            <label htmlFor="travail"> {t("tavail")}</label>
-          </div>
-          <div className={`select ${selectedOption == 3 ? "selected" : ""}`}  >
-            <input type="radio" value="3" id='autre' name='type' checked={selectedOption === 3} onChange={handleOptionChange} />
-            <label htmlFor="autre">{t("autre")}</label>
-          </div>
-
-        </div>
-
-
-        {filtredPositions.length > 0 ? (
-          <>
-            {/* <center>
-            </center> */}
-            <p className="saved-adresses-title">{t('adress.savedAdress')}</p>
-            <div className="adresses-container">
-
-              {filtredPositions.map((element) => (
-                <>
-                  <AdressComponent
-                    type={element["label"]}
-                    street={element["street"]}
-                    region={element["region"]}
-                    long={element["long"]}
-                    lat={element["lat"]}
-                  ></AdressComponent>
-                </>
-              ))}
+      <Container>
+         <h1 className="text-center">{t('adress.add')}</h1>
+        <Row>
+          <Col className='col-5'>
+            <div className="form">             
+              {/*  map location button */}
+              {/* <button type="button" onClick={() => setSearchType("card")}>
+                {t("adress.cartSelect")}{" "}
+                <NearMeOutlinedIcon></NearMeOutlinedIcon>
+              </button> */}
+              {/*  search location input */}
+              <label>Adresse de livraison</label>
+              <div className="adresses_container">
+                <AutocompleteInput />
+              </div>
             </div>
-          </>
+            {/* <div style={{ display: userItem ? "inline" : "none" }} className="Text-container">
+              <p>{t("adress.message1")}</p>
+              <p>{t("adress.message2")}</p>
+            </div> */}            
+            {clientAdressTable.length > 0 &&
+              <>
+                <p className="saved-adresses-title">{t('adress.savedAdress')}</p>
+                <div className="location-filtre">
+                  <div className={`select ${selectedOption == 1 ? "selected" : ""}`}  >
+                    <input type="radio" value="1" id='domicile' name='type' checked={selectedOption === 1} onChange={handleOptionChange} />
+                    <label htmlFor="domicile">{t("domicile")}</label>
+                  </div>
+                  <div className={`select ${selectedOption == 2 ? "selected" : ""}`}  >
+                    <input type="radio" value="2" id='travail' name='type' checked={selectedOption === 2} onChange={handleOptionChange} />
+                    <label htmlFor="travail"> {t("tavail")}</label>
+                  </div>
+                  <div className={`select ${selectedOption == 3 ? "selected" : ""}`}  >
+                    <input type="radio" value="3" id='autre' name='type' checked={selectedOption === 3} onChange={handleOptionChange} />
+                    <label htmlFor="autre">{t("autre")}</label>
+                  </div>
+                </div> 
+              </>
+            }
+            {filtredPositions.length > 0 ? (
+              <>
+                {/* <center>
+                </center> */}                
+                <div className="adresses-container">
 
-        ) : (
-          <div className="Text-container">
+                  {filtredPositions.map((element) => (
+                    <>
+                      <AdressComponent
+                        type={element["label"]}
+                        street={element["street"]}
+                        region={element["region"]}
+                        long={element["long"]}
+                        lat={element["lat"]}
+                      ></AdressComponent>
+                    </>
+                  ))}
+                </div>
+              </>
 
-            <h6 style={{ display: userItem ? "inline" : "none" }}>
-              {t('adress.noAdress')}
-            </h6>
-          </div>
-        )
+            ) : (
+              <div className="Text-container">
 
-        }
-      </>
+                <h6 style={{ display: userItem ? "inline" : "none" }}>
+                  {t('adress.noAdress')}
+                </h6>
+              </div>
+            )
+                }
+          </Col>
+          <Col className='col-7'>
+            <MapCard cancel={cancel}/>
+          </Col>
+        </Row>
+      </Container>
     )
   }
   function AutocompleteInput() {
     const [inputValue, setInputValue] = useState<string>('');
     const [suggestions, setSuggestions] = useState([]);
     const [loading, setLoading] = useState<boolean>(false);
+    const location :any = useAppSelector((state) => state.location.position);
 
     function handleOnClick(suggestion: any) {
 
@@ -187,7 +218,7 @@ const Map: React.FC<MapProps> = ({ className }) => {
           },
         },
       });
-      setSearchType("card")
+      // setSearchType("card")
     }
 
     useEffect(() => {
@@ -216,6 +247,9 @@ const Map: React.FC<MapProps> = ({ className }) => {
     const handleInputChange = (event: any) => {
       setInputValue(event.target.value);
     };
+    const clearInput = () => {
+      setInputValue("");
+    }
 
     return (
       <div className="location-search-input-container">
@@ -226,11 +260,11 @@ const Map: React.FC<MapProps> = ({ className }) => {
             onChange={handleInputChange}
             placeholder={`${t("adress.searchWithAdress")} . . .`}
           />
-          <span className="icon">
-            <SearchIcon className='icon' />
+          <span className="icon" onClick={clearInput}>
+            { inputValue && <CloseIcon className='icon'/>}
           </span>
         </div>
-        {loading && <div>{t('loading')}...</div>}
+        {(loading || isLoading) && <div>{t('loading')}...</div>}
         {
           suggestions.length > 0 && (
             <ul>
@@ -240,6 +274,30 @@ const Map: React.FC<MapProps> = ({ className }) => {
                 </li>
               ))}
             </ul>
+          )
+        }
+        {
+          !loading && !suggestions.length && location && !region && !isLoading &&  (
+            <div className="error">
+              {location?.coords.label}, n'est malheureusement pas incluse dans notre
+              zone de livraison. Veuillez sélectionner une autre adresse
+            </div>
+          )
+        }
+        {
+          location && !region && !isLoading &&
+          (
+          <>
+            <div className="store-img"></div>
+            <div className="stores-container">
+                <h2>Disponible à :</h2>
+                <Stack direction="horizontal" gap={2}>
+                  <Badge pill  className="store-badge">Sousse</Badge>
+                  <Badge pill   className="store-badge">Monastir</Badge>
+                  <Badge pill  className="store-badge">Mahdia</Badge>
+                </Stack>
+            </div>
+          </>          
           )
         }
       </div>
@@ -274,9 +332,9 @@ const Map: React.FC<MapProps> = ({ className }) => {
               <div className="position-icon" style={{ backgroundImage: `url(${HomeLocation})` }} ></div>
               <span>{type}</span>
             </div>
-            <button className="edit-button">
+            {/* <button className="edit-button">
               <div className="edit-icon" style={{ backgroundImage: `url(${EditPen})` }} ></div>
-            </button>
+            </button> */}
           </div>
           <p className="position-name">
             {street}, <br /> {region}
