@@ -54,7 +54,7 @@ const getStyleSheets = async () => {
     }
     return allContent.join("\n");
   } catch (e) {
-    console.log("error css ", e)
+    console.error("error css ", e)
     return "";
   }
 };
@@ -74,7 +74,7 @@ const getScripts = async () => {
     }
     return allContent.join("\n");
   } catch (e) {
-    console.log("error js ", e)
+    console.error("error js ", e)
     return "";
   }
 };
@@ -127,19 +127,34 @@ async function getMenu(supplier_id) {
   }
 }
 
+async function getProduct(supplier_id) {
+  try {
+    if (supplier_id === undefined) {
+      return { status: undefined, data: undefined };
+    }
+    const response = await axios.get(
+      `${apiUrl}getProduct/${supplier_id}`,
+    );
+    const { status, data } = response;
+    return { status, data };
+  } catch (error) {
+    console.error('Error', error);
+    throw error;
+  }
+}
 const prepareTemplate = async (req, res) => {
   try {
     var data
-    const url = req.originalUrl
+    var url = req.originalUrl
     switch (true) {
       case (req.originalUrl === '/'):
         var response = await ssrHome()
         data = response.data
         break;
       case (req.originalUrl.includes('/restaurant/')):
-        let url = req.originalUrl
-        let supplierData = url.split("/")[2]
-        let supplier_id = supplierData.split('-')[0]
+        url = req.originalUrl
+        var supplierData = url.split("/")[2]
+        var supplier_id = supplierData.split('-')[0]
 
         var supplierResponse = await getSupplierById(supplier_id)
         var menuResponse = await getMenu(supplier_id)
@@ -150,7 +165,23 @@ const prepareTemplate = async (req, res) => {
             menuResponse: menuResponse.data,
           }
         }
+        break;
+      case (req.originalUrl.includes('/product/')):
+        url = req.originalUrl
+        supplierData = url.split("/")[2]
+        supplier_id = supplierData.split('-')[0]
+        let product_id = url.split('/')[4]
+        var supplierResponse = await getSupplierById(supplier_id)
 
+        // var menuResponse = await getMenu(supplier_id)
+        var productResponse = await getProduct(product_id)
+        data = {
+          status: 200,
+          data: {
+            supplierResponse: supplierResponse.data,
+            productResponse: productResponse.data,
+          }
+        }
         break;
       default:
         break;
@@ -159,6 +190,8 @@ const prepareTemplate = async (req, res) => {
     const template = await vite.transformIndexHtml(url, baseTemplate);
     const cssAssets = await stylesheets;
     const appHtml = await render(url, data && data.data);
+
+    // console.log("url", url)
     const scripts = getScripts();
     const jsAssets = await scripts;
     const html = template
@@ -167,7 +200,7 @@ const prepareTemplate = async (req, res) => {
     res.status(200).set({ 'Content-Type': 'text/html' }).end(html)
   } catch (e) {
     vite?.ssrFixStacktrace(e)
-    console.log(e.stack)
+    console.error(e.stack)
     res.status(500).end(e.stack)
   }
 }

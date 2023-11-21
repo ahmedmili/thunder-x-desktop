@@ -55,9 +55,15 @@ const Menu: React.FC<AppProps> = ({ initialData }) => {
 
     if (productId != null) {
       let locationArray = location.pathname.split('/');
-      locationArray[1] = "product";
-      const newUrl = locationArray.join("/");
-      navigate(`${newUrl}`);
+      // console.log('Url', location.pathname)
+      // console.log('locationArray', locationArray)
+      if (locationArray[1] !== "product") {
+
+        locationArray[1] = "product";
+        const newUrl = locationArray.join("/");
+        navigate(`${newUrl}`, { replace: true });
+        // window.location.reload();
+      }
     } else {
       if (search == null || search == "") {
         let locationArray = location.pathname.split('/')
@@ -67,6 +73,7 @@ const Menu: React.FC<AppProps> = ({ initialData }) => {
       }
     }
   }, [])
+
   // assure '/' in the end of url
   useEffect(() => {
     const { pathname } = location;

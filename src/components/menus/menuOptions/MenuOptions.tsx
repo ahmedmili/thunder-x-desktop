@@ -10,12 +10,13 @@ import { addItem, setDeliveryPrice, setSupplier } from '../../../Redux/slices/ca
 import { useAppDispatch, useAppSelector } from '../../../Redux/store';
 import { productService } from '../../../services/api/product.api';
 // import { toast } from 'react-toastify';
+import './menuOptions.scss'
 
 import KeyboardArrowDownOutlinedIcon from '@mui/icons-material/KeyboardArrowDownOutlined';
 import KeyboardArrowUpOutlinedIcon from '@mui/icons-material/KeyboardArrowUpOutlined';
 import ShoppingCartOutlinedIcon from '@mui/icons-material/ShoppingCartOutlined';
 import { supplierServices } from '../../../services/api/suppliers.api';
-import { Option, Restaurant } from '../../../services/types';
+import { AppProps, Option, Restaurant } from '../../../services/types';
 import { localStorageService } from '../../../services/localStorageService';
 
 // Define the initial state
@@ -74,14 +75,16 @@ const reducer = (state: any, action: any) => {
     }
 };
 
-function MenuOptions() {
+function MenuOptions({ initialData }: AppProps) {
+
+    // console.warn("initialData", initialData.productResponse.data.product)
 
     const { t } = useTranslation();
     const { productId } = useParams<{ productId: string }>();
     const packRef: RefObject<HTMLFormElement> = useRef(null);
-    const [allContent, setAllContent] = useState<any[]>([]);
+    const [allContent, setAllContent] = useState<any[]>(initialData ? initialData.productResponse.data.product : []);
     const [productCount, setProductCount] = useState<number>(1);
-    const [product, setProduct] = useState<any>({})
+    const [product, setProduct] = useState<any>(initialData ? initialData.productResponse.data.product : {})
     const [supplierId, setSupplierId] = useState<number>(0)
     const [productSupplier, setProductSupplier] = useState<Restaurant>()
     const [state, dispatch] = useReducer(reducer, initialState);
@@ -96,11 +99,13 @@ function MenuOptions() {
      * url handling part
      *
      */
+
     useEffect(() => {
         let locationArray = location.pathname.split('/');
         locationArray[1] = "restaurant";
         const newUrl = locationArray.join("/");
         window.history.pushState({}, '', newUrl);
+        // console.log('initialData',initialData)
     }, [])
 
     const getSupplier = async (id: number) => {
@@ -114,47 +119,90 @@ function MenuOptions() {
 
     const getProduct = async () => {
         try {
-            const { status, data } = await productService.getProduct(Number(productId));
-            if (status === 200) {
-                setSupplierId(data.data.product.menu[0].supplier_id);
-                setProduct(data.data.product);
+            if ((typeof window != "undefined")) {
 
-                let optionslist = data.data.product.options;
-                dispatch({ type: 'SET_OPTIONS', payload: optionslist })
+                const { status, data } = await productService.getProduct(Number(productId));
+                if (status === 200) {
+                    setSupplierId(data.data.product.menu[0].supplier_id);
+                    setProduct(data.data.product);
 
-                let packet = data.data.product.options.filter((option: any) => option.type === 'pack');
-                dispatch({ type: 'SET_PACKET', payload: packet })
+                    let optionslist = data.data.product.options;
+                    dispatch({ type: 'SET_OPTIONS', payload: optionslist })
 
-                let free = data.data.product.options.filter((option: any) => option.type === 'option');
-                dispatch({ type: 'SET_FREE', payload: free })
+                    let packet = data.data.product.options.filter((option: any) => option.type === 'pack');
+                    dispatch({ type: 'SET_PACKET', payload: packet })
 
-                let extra = data.data.product.options.filter((option: any) => option.type === 'extra');
-                dispatch({ type: 'SET_EXTRA', payload: extra })
+                    let free = data.data.product.options.filter((option: any) => option.type === 'option');
+                    dispatch({ type: 'SET_FREE', payload: free })
 
-                let pate = data.data.product.options.filter((option: any) => option.type === 'pate');
-                dispatch({ type: 'SET_PATE', payload: pate })
+                    let extra = data.data.product.options.filter((option: any) => option.type === 'extra');
+                    dispatch({ type: 'SET_EXTRA', payload: extra })
 
-                let sauce = data.data.product.options.filter((option: any) => option.type === 'sauce');
-                dispatch({ type: 'SET_SAUCE', payload: sauce })
+                    let pate = data.data.product.options.filter((option: any) => option.type === 'pate');
+                    dispatch({ type: 'SET_PATE', payload: pate })
 
-                let viande = data.data.product.options.filter((option: any) => option.type === 'viande');
-                dispatch({ type: 'SET_VIANDE', payload: viande })
+                    let sauce = data.data.product.options.filter((option: any) => option.type === 'sauce');
+                    dispatch({ type: 'SET_SAUCE', payload: sauce })
 
-                let supplement = data.data.product.options.filter((option: any) => option.type === 'supplement');
-                dispatch({ type: 'SET_SUPPLEMENT', payload: supplement })
+                    let viande = data.data.product.options.filter((option: any) => option.type === 'viande');
+                    dispatch({ type: 'SET_VIANDE', payload: viande })
 
-                let extra_max = data.data.product.options_max.filter((op: any) => op.type_option === 'extra')[0] ?? { max: -1 };
-                dispatch({ type: 'SET_EXTRA_MAX', payload: extra_max })
+                    let supplement = data.data.product.options.filter((option: any) => option.type === 'supplement');
+                    dispatch({ type: 'SET_SUPPLEMENT', payload: supplement })
 
-                let sauce_max = data.data.product.options_max.filter((op: any) => op.type_option === 'sauce')[0] ?? { max: -1 };
-                dispatch({ type: 'SET_SAUCE_MAX', payload: sauce_max })
+                    let extra_max = data.data.product.options_max.filter((op: any) => op.type_option === 'extra')[0] ?? { max: -1 };
+                    dispatch({ type: 'SET_EXTRA_MAX', payload: extra_max })
 
-                let supplement_max = data.data.product.options_max.filter((op: any) => op.type_option === 'supplement')[0] ?? { max: -1 };
-                dispatch({ type: 'SET_SUPPLEMENT_MAX', payload: supplement_max })
+                    let sauce_max = data.data.product.options_max.filter((op: any) => op.type_option === 'sauce')[0] ?? { max: -1 };
+                    dispatch({ type: 'SET_SAUCE_MAX', payload: sauce_max })
 
-                let viande_max = data.data.product.options_max.filter((op: any) => op.type_option === 'viande')[0] ?? { max: -1 };
-                dispatch({ type: 'SET_VIANDE_MAX', payload: viande_max })
+                    let supplement_max = data.data.product.options_max.filter((op: any) => op.type_option === 'supplement')[0] ?? { max: -1 };
+                    dispatch({ type: 'SET_SUPPLEMENT_MAX', payload: supplement_max })
 
+                    let viande_max = data.data.product.options_max.filter((op: any) => op.type_option === 'viande')[0] ?? { max: -1 };
+                    dispatch({ type: 'SET_VIANDE_MAX', payload: viande_max })
+
+
+                }
+            } else {
+                // setSupplierId(initialData.productResponse.data.product.menu[0].supplier_id);
+                // setProduct(initialData.productResponse.data.product);
+
+                // let optionslist = initialData.productResponse.data.product.options;
+                // dispatch({ type: 'SET_OPTIONS', payload: optionslist })
+
+                // let packet = initialData.productResponse.data.product.options.filter((option: any) => option.type === 'pack');
+                // dispatch({ type: 'SET_PACKET', payload: packet })
+
+                // let free = initialData.productResponse.data.product.options.filter((option: any) => option.type === 'option');
+                // dispatch({ type: 'SET_FREE', payload: free })
+
+                // let extra = initialData.productResponse.data.product.options.filter((option: any) => option.type === 'extra');
+                // dispatch({ type: 'SET_EXTRA', payload: extra })
+
+                // let pate = initialData.productResponse.data.product.options.filter((option: any) => option.type === 'pate');
+                // dispatch({ type: 'SET_PATE', payload: pate })
+
+                // let sauce = initialData.productResponse.data.product.options.filter((option: any) => option.type === 'sauce');
+                // dispatch({ type: 'SET_SAUCE', payload: sauce })
+
+                // let viande = initialData.productResponse.data.product.options.filter((option: any) => option.type === 'viande');
+                // dispatch({ type: 'SET_VIANDE', payload: viande })
+
+                // let supplement = initialData.productResponse.data.product.options.filter((option: any) => option.type === 'supplement');
+                // dispatch({ type: 'SET_SUPPLEMENT', payload: supplement })
+
+                // let extra_max = initialData.productResponse.data.product.options_max.filter((op: any) => op.type_option === 'extra')[0] ?? { max: -1 };
+                // dispatch({ type: 'SET_EXTRA_MAX', payload: extra_max })
+
+                // let sauce_max = initialData.productResponse.data.product.options_max.filter((op: any) => op.type_option === 'sauce')[0] ?? { max: -1 };
+                // dispatch({ type: 'SET_SAUCE_MAX', payload: sauce_max })
+
+                // let supplement_max = initialData.productResponse.data.product.options_max.filter((op: any) => op.type_option === 'supplement')[0] ?? { max: -1 };
+                // dispatch({ type: 'SET_SUPPLEMENT_MAX', payload: supplement_max })
+
+                // let viande_max = initialData.productResponse.data.product.options_max.filter((op: any) => op.type_option === 'viande')[0] ?? { max: -1 };
+                // dispatch({ type: 'SET_VIANDE_MAX', payload: viande_max })//initialData.productResponse.data.product
 
             }
         } catch (error: any) {
@@ -162,6 +210,50 @@ function MenuOptions() {
         }
     };
 
+    const getSsrProductData = () => {
+        if (typeof window != "undefined") return
+        else {
+            setSupplierId(initialData.productResponse.data.product.menu[0].supplier_id);
+            setProduct(initialData.productResponse.data.product);
+
+            let optionslist = initialData.productResponse.data.product.options;
+            dispatch({ type: 'SET_OPTIONS', payload: optionslist })
+
+            let packet = initialData.productResponse.data.product.options.filter((option: any) => option.type === 'pack');
+            dispatch({ type: 'SET_PACKET', payload: packet })
+
+            let free = initialData.productResponse.data.product.options.filter((option: any) => option.type === 'option');
+            dispatch({ type: 'SET_FREE', payload: free })
+
+            let extra = initialData.productResponse.data.product.options.filter((option: any) => option.type === 'extra');
+            dispatch({ type: 'SET_EXTRA', payload: extra })
+
+            let pate = initialData.productResponse.data.product.options.filter((option: any) => option.type === 'pate');
+            dispatch({ type: 'SET_PATE', payload: pate })
+
+            let sauce = initialData.productResponse.data.product.options.filter((option: any) => option.type === 'sauce');
+            dispatch({ type: 'SET_SAUCE', payload: sauce })
+
+            let viande = initialData.productResponse.data.product.options.filter((option: any) => option.type === 'viande');
+            dispatch({ type: 'SET_VIANDE', payload: viande })
+
+            let supplement = initialData.productResponse.data.product.options.filter((option: any) => option.type === 'supplement');
+            dispatch({ type: 'SET_SUPPLEMENT', payload: supplement })
+
+            let extra_max = initialData.productResponse.data.product.options_max.filter((op: any) => op.type_option === 'extra')[0] ?? { max: -1 };
+            dispatch({ type: 'SET_EXTRA_MAX', payload: extra_max })
+
+            let sauce_max = initialData.productResponse.data.product.options_max.filter((op: any) => op.type_option === 'sauce')[0] ?? { max: -1 };
+            dispatch({ type: 'SET_SAUCE_MAX', payload: sauce_max })
+
+            let supplement_max = initialData.productResponse.data.product.options_max.filter((op: any) => op.type_option === 'supplement')[0] ?? { max: -1 };
+            dispatch({ type: 'SET_SUPPLEMENT_MAX', payload: supplement_max })
+
+            let viande_max = initialData.productResponse.data.product.options_max.filter((op: any) => op.type_option === 'viande')[0] ?? { max: -1 };
+            dispatch({ type: 'SET_VIANDE_MAX', payload: viande_max })//initialData.productResponse.data.product
+        }
+    }
+    typeof window != "undefined" && getSsrProductData()
     useEffect(() => {
         getProduct();
     }, []);
