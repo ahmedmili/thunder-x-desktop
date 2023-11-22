@@ -58,27 +58,6 @@ const getStyleSheets = async () => {
     return "";
   }
 };
-const getScripts = async () => {
-  try {
-    const assetpath = resolve("dist/client/assets");
-    const files = await fs.readdir(assetpath);
-    const cssAssets = files.filter(l => l.endsWith(".js"));
-    const allContent = [];
-    for (const asset of cssAssets) {
-      const content = await fs.readFile(path.join(assetpath, asset), "utf-8");
-      allContent.push(`
-      <script type="module" src="${asset}" async> 
-      </script>
-      `);
-
-    }
-    return allContent.join("\n");
-  } catch (e) {
-    console.error("error js ", e)
-    return "";
-  }
-};
-
 
 const baseTemplate = await fs.readFile(isProduction ? resolve("dist/client/index.html") : resolve("index.html"), "utf-8");
 const productionBuildPath = path.join(__dirname, "dist/entry-server.js");
@@ -153,35 +132,40 @@ const prepareTemplate = async (req, res) => {
         break;
       case (req.originalUrl.includes('/restaurant/')):
         url = req.originalUrl
-        var supplierData = url.split("/")[2]
+        let testUrl = url.split('/')
+        var supplierData = testUrl[2]
         var supplier_id = supplierData.split('-')[0]
+        if (testUrl[4].length > 0) {
+          testUrl[5] = ""
+          supplierData = testUrl[2]
+          supplier_id = supplierData.split('-')[0]
+          testUrl[1] = "product"
+          url = testUrl.join("/")
+          let product_id = testUrl[4]
 
-        var supplierResponse = await getSupplierById(supplier_id)
-        var menuResponse = await getMenu(supplier_id)
-        data = {
-          status: 200,
-          data: {
-            supplierResponse: supplierResponse.data,
-            menuResponse: menuResponse.data,
+          var supplierResponse = await getSupplierById(supplier_id)
+          var productResponse = await getProduct(product_id)
+          data = {
+            status: 200,
+            data: {
+              supplierResponse: supplierResponse.data,
+              productResponse: productResponse.data,
+            }
+          }
+        } else {
+          var supplierResponse = await getSupplierById(supplier_id)
+          var menuResponse = await getMenu(supplier_id)
+          data = {
+            status: 200,
+            data: {
+              supplierResponse: supplierResponse.data,
+              menuResponse: menuResponse.data,
+            }
           }
         }
         break;
       case (req.originalUrl.includes('/product/')):
-        url = req.originalUrl
-        supplierData = url.split("/")[2]
-        supplier_id = supplierData.split('-')[0]
-        let product_id = url.split('/')[4]
-        var supplierResponse = await getSupplierById(supplier_id)
 
-        // var menuResponse = await getMenu(supplier_id)
-        var productResponse = await getProduct(product_id)
-        data = {
-          status: 200,
-          data: {
-            supplierResponse: supplierResponse.data,
-            productResponse: productResponse.data,
-          }
-        }
         break;
       default:
         break;
@@ -191,13 +175,12 @@ const prepareTemplate = async (req, res) => {
     const cssAssets = await stylesheets;
     const appHtml = await render(url, data && data.data);
 
-    // console.log("url", url)
-    const scripts = getScripts();
-    const jsAssets = await scripts;
+
     const html = template
       .replace(`<!--app-head-->`, cssAssets)
       .replace(`<!--app-html-->`, appHtml.html ?? "")
-    res.status(200).set({ 'Content-Type': 'text/html' }).end(html)
+
+      res.status(200).set({ 'Content-Type': 'text/html' }).end(html)
   } catch (e) {
     vite?.ssrFixStacktrace(e)
     console.error(e.stack)

@@ -1,6 +1,4 @@
-import { Add as AddIcon } from '@mui/icons-material';
-import { Button } from '@mui/material';
-import { RefObject, useEffect, useReducer, useRef, useState } from 'react';
+import React, { RefObject, useEffect, useReducer, useRef, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useSelector } from 'react-redux';
 import { useLocation, useParams } from 'react-router-dom';
@@ -10,14 +8,14 @@ import { addItem, setDeliveryPrice, setSupplier } from '../../../Redux/slices/ca
 import { useAppDispatch, useAppSelector } from '../../../Redux/store';
 import { productService } from '../../../services/api/product.api';
 // import { toast } from 'react-toastify';
-import './menuOptions.scss'
+import './menuOptions.scss';
 
 import KeyboardArrowDownOutlinedIcon from '@mui/icons-material/KeyboardArrowDownOutlined';
 import KeyboardArrowUpOutlinedIcon from '@mui/icons-material/KeyboardArrowUpOutlined';
 import ShoppingCartOutlinedIcon from '@mui/icons-material/ShoppingCartOutlined';
 import { supplierServices } from '../../../services/api/suppliers.api';
-import { AppProps, Option, Restaurant } from '../../../services/types';
 import { localStorageService } from '../../../services/localStorageService';
+import { AppProps, Option, Restaurant } from '../../../services/types';
 
 // Define the initial state
 const initialState = {
@@ -77,22 +75,21 @@ const reducer = (state: any, action: any) => {
 
 function MenuOptions({ initialData }: AppProps) {
 
-    // console.warn("initialData", initialData.productResponse.data.product)
-
     const { t } = useTranslation();
     const { productId } = useParams<{ productId: string }>();
     const packRef: RefObject<HTMLFormElement> = useRef(null);
-    const [allContent, setAllContent] = useState<any[]>(initialData ? initialData.productResponse.data.product : []);
     const [productCount, setProductCount] = useState<number>(1);
-    const [product, setProduct] = useState<any>(initialData ? initialData.productResponse.data.product : {})
-    const [supplierId, setSupplierId] = useState<number>(0)
-    const [productSupplier, setProductSupplier] = useState<Restaurant>()
+    const [allContent, setAllContent] = useState<any[]>(initialData ? initialData.productResponse?.data.product : []);
+    const [product, setProduct] = useState<any>(initialData ? initialData.productResponse?.data.product : {})
+    const [supplierId, setSupplierId] = useState<number>(initialData ? initialData.productResponse?.data.product.menu[0].supplier_id : 0)
+    const [productSupplier, setProductSupplier] = useState<Restaurant>(initialData ? initialData.supplierResponse?.data : null)
     const [state, dispatch] = useReducer(reducer, initialState);
 
     const usedispatch = useAppDispatch();
     const location = useLocation();
     const { items } = useSelector((state: RootState) => state.cart);
     const cartItems = useAppSelector((state) => state.cart.items);
+    var ssrState: any = {};
 
     /*
      *
@@ -105,7 +102,6 @@ function MenuOptions({ initialData }: AppProps) {
         locationArray[1] = "restaurant";
         const newUrl = locationArray.join("/");
         window.history.pushState({}, '', newUrl);
-        // console.log('initialData',initialData)
     }, [])
 
     const getSupplier = async (id: number) => {
@@ -165,44 +161,44 @@ function MenuOptions({ initialData }: AppProps) {
 
                 }
             } else {
-                // setSupplierId(initialData.productResponse.data.product.menu[0].supplier_id);
-                // setProduct(initialData.productResponse.data.product);
+                setSupplierId(initialData.productResponse?.data.product.menu[0].supplier_id);
+                setProduct(initialData.productResponse?.data.product);
 
-                // let optionslist = initialData.productResponse.data.product.options;
-                // dispatch({ type: 'SET_OPTIONS', payload: optionslist })
+                let optionslist = initialData.productResponse?.data.product.options;
+                dispatch({ type: 'SET_OPTIONS', payload: optionslist })
 
-                // let packet = initialData.productResponse.data.product.options.filter((option: any) => option.type === 'pack');
-                // dispatch({ type: 'SET_PACKET', payload: packet })
+                let packet = initialData.productResponse?.data.product.options.filter((option: any) => option.type === 'pack');
+                dispatch({ type: 'SET_PACKET', payload: packet })
 
-                // let free = initialData.productResponse.data.product.options.filter((option: any) => option.type === 'option');
-                // dispatch({ type: 'SET_FREE', payload: free })
+                let free = initialData.productResponse?.data.product.options.filter((option: any) => option.type === 'option');
+                dispatch({ type: 'SET_FREE', payload: free })
 
-                // let extra = initialData.productResponse.data.product.options.filter((option: any) => option.type === 'extra');
-                // dispatch({ type: 'SET_EXTRA', payload: extra })
+                let extra = initialData.productResponse?.data.product.options.filter((option: any) => option.type === 'extra');
+                dispatch({ type: 'SET_EXTRA', payload: extra })
 
-                // let pate = initialData.productResponse.data.product.options.filter((option: any) => option.type === 'pate');
-                // dispatch({ type: 'SET_PATE', payload: pate })
+                let pate = initialData.productResponse?.data.product.options.filter((option: any) => option.type === 'pate');
+                dispatch({ type: 'SET_PATE', payload: pate })
 
-                // let sauce = initialData.productResponse.data.product.options.filter((option: any) => option.type === 'sauce');
-                // dispatch({ type: 'SET_SAUCE', payload: sauce })
+                let sauce = initialData.productResponse?.data.product.options.filter((option: any) => option.type === 'sauce');
+                dispatch({ type: 'SET_SAUCE', payload: sauce })
 
-                // let viande = initialData.productResponse.data.product.options.filter((option: any) => option.type === 'viande');
-                // dispatch({ type: 'SET_VIANDE', payload: viande })
+                let viande = initialData.productResponse?.data.product.options.filter((option: any) => option.type === 'viande');
+                dispatch({ type: 'SET_VIANDE', payload: viande })
 
-                // let supplement = initialData.productResponse.data.product.options.filter((option: any) => option.type === 'supplement');
-                // dispatch({ type: 'SET_SUPPLEMENT', payload: supplement })
+                let supplement = initialData.productResponse?.data.product.options.filter((option: any) => option.type === 'supplement');
+                dispatch({ type: 'SET_SUPPLEMENT', payload: supplement })
 
-                // let extra_max = initialData.productResponse.data.product.options_max.filter((op: any) => op.type_option === 'extra')[0] ?? { max: -1 };
-                // dispatch({ type: 'SET_EXTRA_MAX', payload: extra_max })
+                let extra_max = initialData.productResponse?.data.product.options_max.filter((op: any) => op.type_option === 'extra')[0] ?? { max: -1 };
+                dispatch({ type: 'SET_EXTRA_MAX', payload: extra_max })
 
-                // let sauce_max = initialData.productResponse.data.product.options_max.filter((op: any) => op.type_option === 'sauce')[0] ?? { max: -1 };
-                // dispatch({ type: 'SET_SAUCE_MAX', payload: sauce_max })
+                let sauce_max = initialData.productResponse?.data.product.options_max.filter((op: any) => op.type_option === 'sauce')[0] ?? { max: -1 };
+                dispatch({ type: 'SET_SAUCE_MAX', payload: sauce_max })
 
-                // let supplement_max = initialData.productResponse.data.product.options_max.filter((op: any) => op.type_option === 'supplement')[0] ?? { max: -1 };
-                // dispatch({ type: 'SET_SUPPLEMENT_MAX', payload: supplement_max })
+                let supplement_max = initialData.productResponse?.data.product.options_max.filter((op: any) => op.type_option === 'supplement')[0] ?? { max: -1 };
+                dispatch({ type: 'SET_SUPPLEMENT_MAX', payload: supplement_max })
 
-                // let viande_max = initialData.productResponse.data.product.options_max.filter((op: any) => op.type_option === 'viande')[0] ?? { max: -1 };
-                // dispatch({ type: 'SET_VIANDE_MAX', payload: viande_max })//initialData.productResponse.data.product
+                let viande_max = initialData.productResponse?.data.product.options_max.filter((op: any) => op.type_option === 'viande')[0] ?? { max: -1 };
+                dispatch({ type: 'SET_VIANDE_MAX', payload: viande_max })
 
             }
         } catch (error: any) {
@@ -210,50 +206,6 @@ function MenuOptions({ initialData }: AppProps) {
         }
     };
 
-    const getSsrProductData = () => {
-        if (typeof window != "undefined") return
-        else {
-            setSupplierId(initialData.productResponse.data.product.menu[0].supplier_id);
-            setProduct(initialData.productResponse.data.product);
-
-            let optionslist = initialData.productResponse.data.product.options;
-            dispatch({ type: 'SET_OPTIONS', payload: optionslist })
-
-            let packet = initialData.productResponse.data.product.options.filter((option: any) => option.type === 'pack');
-            dispatch({ type: 'SET_PACKET', payload: packet })
-
-            let free = initialData.productResponse.data.product.options.filter((option: any) => option.type === 'option');
-            dispatch({ type: 'SET_FREE', payload: free })
-
-            let extra = initialData.productResponse.data.product.options.filter((option: any) => option.type === 'extra');
-            dispatch({ type: 'SET_EXTRA', payload: extra })
-
-            let pate = initialData.productResponse.data.product.options.filter((option: any) => option.type === 'pate');
-            dispatch({ type: 'SET_PATE', payload: pate })
-
-            let sauce = initialData.productResponse.data.product.options.filter((option: any) => option.type === 'sauce');
-            dispatch({ type: 'SET_SAUCE', payload: sauce })
-
-            let viande = initialData.productResponse.data.product.options.filter((option: any) => option.type === 'viande');
-            dispatch({ type: 'SET_VIANDE', payload: viande })
-
-            let supplement = initialData.productResponse.data.product.options.filter((option: any) => option.type === 'supplement');
-            dispatch({ type: 'SET_SUPPLEMENT', payload: supplement })
-
-            let extra_max = initialData.productResponse.data.product.options_max.filter((op: any) => op.type_option === 'extra')[0] ?? { max: -1 };
-            dispatch({ type: 'SET_EXTRA_MAX', payload: extra_max })
-
-            let sauce_max = initialData.productResponse.data.product.options_max.filter((op: any) => op.type_option === 'sauce')[0] ?? { max: -1 };
-            dispatch({ type: 'SET_SAUCE_MAX', payload: sauce_max })
-
-            let supplement_max = initialData.productResponse.data.product.options_max.filter((op: any) => op.type_option === 'supplement')[0] ?? { max: -1 };
-            dispatch({ type: 'SET_SUPPLEMENT_MAX', payload: supplement_max })
-
-            let viande_max = initialData.productResponse.data.product.options_max.filter((op: any) => op.type_option === 'viande')[0] ?? { max: -1 };
-            dispatch({ type: 'SET_VIANDE_MAX', payload: viande_max })//initialData.productResponse.data.product
-        }
-    }
-    typeof window != "undefined" && getSsrProductData()
     useEffect(() => {
         getProduct();
     }, []);
@@ -401,6 +353,7 @@ function MenuOptions({ initialData }: AppProps) {
         state.viande.length > 0 && allContent.push({ viande: state.viande });
         state.free.length > 0 && allContent.push({ free: state.free });
         setAllContent(allContent)
+
         dispatch({ type: 'SET_TOTAL', payload: Number(product.default_price) })
         dispatch({ type: 'SET_UNITPRICE', payload: Number(product.default_price) })
         if (product.computed_value?.discount_value) {
@@ -490,83 +443,58 @@ function MenuOptions({ initialData }: AppProps) {
                     <p className='menu-description' dangerouslySetInnerHTML={{ __html: product?.description }}></p>
 
                 </div>
-                {state.optionslist.length === 0 ? (
-                    <>
-                        <h6 className="no-options-needed">
-                            {t('no_options_needed')}
-                        </h6>
+                <div className="menu-options">
+                    {
+                        state.optionslist.length === 0 ? (
+                            <>
+                            </>
+                        ) : allContent.map((options, index) => {
+                            return (
+                                <React.Fragment key={index}>
+                                    <div className='menu-options-header'>
+                                        <div className="option-name">Choisissez votre {Object.keys(options)[0]}</div>
+                                        {
 
-                        <Button
-                            variant='contained'
-                            color='primary'
-                            startIcon={<AddIcon />}
-                            className="add-to-cart-button"
-                            onClick={() => {
-                                addToCart()
-                            }}>
-                            {t('add_to_cart')}
-                        </Button>
-                    </>
-                ) : (
-                    <div className="menu-options">
-                        {
-                            state.optionslist.length === 0 ? (
-                                <>
-                                </>
-                            ) : (
-                                <>
-                                    {allContent.length > 0 && allContent.map((options, index) => {
-                                        return (
-                                            <>
-                                                <>
-                                                    <div className='menu-options-header'>
-                                                        <div className="option-name">Choisissez votre {Object.keys(options)[0]}</div>
-                                                        {
+                                            Object.keys(options)[0] === "packet" && <div className="option-obligatoir">Obligatoire</div>
+                                        }
 
-                                                            Object.keys(options)[0] === "packet" && <div className="option-obligatoir">Obligatoire</div>
-                                                        }
+                                        {
+                                            Object.keys(options)[0] === "sauce" && state.sauce_max?.max > 0 && <div className="option-max">{"MAX " + state.sauce_max?.max}</div>
+                                        }
+                                        {
+                                            Object.keys(options)[0] === "viande" && state.viande_max?.max > 0 && <div className="option-max">{"MAX " + state.viande_max?.max}</div>
+                                        }
+                                        {
+                                            Object.keys(options)[0] === "extra" && state.extra_max?.max > 0 && <div className="option-max">{"MAX " + state.extra_max?.max}</div>
+                                        }
+                                        {
+                                            Object.keys(options)[0] === "supplement" && state.supplement_max?.max > 0 && <div className="option-max">{"MAX " + state.supplement_max?.max}</div>
+                                        }
+                                    </div>
+                                    <form>
+                                        {state[Object.keys(options)[0]].map((option: any, index: number) => (
+                                            <div key={index} className="options-list">
+                                                <div className="checkBox">
+                                                    <input type='checkbox' name={option.id} id={option.id} value={option.id || ''} onChange={(e) => selectOption(Object.keys(options)[0], index, e)} checked={option?.checked}>
+                                                    </input>
+                                                    <div className="custom-checkbox"></div>
+                                                    <label htmlFor={option.id}>{option.name} </label>
+                                                </div>
+                                                <span className='option-price'>{option.price} DT</span>
+                                            </div>
+                                        ))}
+                                    </form>
 
-                                                        {
-                                                            Object.keys(options)[0] === "sauce" && state.sauce_max?.max > 0 && <div className="option-max">{"MAX " + state.sauce_max?.max}</div>
-                                                        }
-                                                        {
-                                                            Object.keys(options)[0] === "viande" && state.viande_max?.max > 0 && <div className="option-max">{"MAX " + state.viande_max?.max}</div>
-                                                        }
-                                                        {
-                                                            Object.keys(options)[0] === "extra" && state.extra_max?.max > 0 && <div className="option-max">{"MAX " + state.extra_max?.max}</div>
-                                                        }
-                                                        {
-                                                            Object.keys(options)[0] === "supplement" && state.supplement_max?.max > 0 && <div className="option-max">{"MAX " + state.supplement_max?.max}</div>
-                                                        }
-                                                    </div>
-                                                    <form>
-                                                        {state[Object.keys(options)[0]].map((option: any, index: number) => (
-                                                            <div key={index} className="options-list">
-                                                                <div className="checkBox">
-                                                                    <input type='checkbox' name={option.id} id={option.id} value={option.id || ''} onChange={(e) => selectOption(Object.keys(options)[0], index, e)} checked={option?.checked}>
-                                                                    </input>
-                                                                    <div className="custom-checkbox"></div>
-                                                                    <label htmlFor={option.id}>{option.name} </label>
-                                                                </div>
-                                                                <span className='option-price'>{option.price} DT</span>
-                                                            </div>
-                                                        ))}
-                                                    </form>
+                                    <div className="devider">
 
-                                                    <div className="devider">
+                                    </div>
+                                </React.Fragment>)
+                        })
+                    }
 
-                                                    </div>
-                                                </>
 
-                                            </>)
-                                    })
-                                    }
-                                </>
-                            )
-                        }
+                </div >
 
-                    </div >
-                )}
 
                 <div className="buttons">
                     <div className="count-container">

@@ -9,7 +9,7 @@ import i18n from "./i18n";
 import "./app.scss"
 
 export function render(url: string, initialData?: any) {
-  // console.warn("initialData productResponse", initialData.productResponse)
+
   const html = ReactDOMServer.renderToString(
     <Provider store={store}>
       <GoogleOAuthProvider clientId="766339492046-2vqen18b95q35487bvqgj5n3f4lse9rq.apps.googleusercontent.com">

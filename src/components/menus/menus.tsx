@@ -55,14 +55,11 @@ const Menu: React.FC<AppProps> = ({ initialData }) => {
 
     if (productId != null) {
       let locationArray = location.pathname.split('/');
-      // console.log('Url', location.pathname)
-      // console.log('locationArray', locationArray)
       if (locationArray[1] !== "product") {
 
         locationArray[1] = "product";
         const newUrl = locationArray.join("/");
-        navigate(`${newUrl}`, { replace: true });
-        // window.location.reload();
+        navigate(`${newUrl}`);
       }
     } else {
       if (search == null || search == "") {
