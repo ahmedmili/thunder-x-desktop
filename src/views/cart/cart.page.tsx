@@ -45,6 +45,10 @@ import { userService } from "../../services/api/user.api";
 import { localStorageService } from "../../services/localStorageService";
 import "./cart.page.scss";
 import CloseIcon from '@mui/icons-material/Close';
+import Accordion from '@mui/material/Accordion';
+import AccordionSummary from '@mui/material/AccordionSummary';
+import AccordionDetails from '@mui/material/AccordionDetails';
+import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 
 const CartPage: React.FC = () => {
   const { t } = useTranslation();
@@ -153,48 +157,51 @@ const CartPage: React.FC = () => {
 
 
     return <>
-      <td>
-        <div className="image-container">
-          <img loading="lazy" src={`${item.product.image[0] ? item.product.image[0].path : ""}`} alt="product image" />
-          <div className="info-text">
-            <span className="title">{item.product.name}</span>
+      <div className="supplier-name">
+        <span >{item.supplier_data.supplier_name}</span>
+      </div>
+      <div className="info-text">
+        <span className="title">{item.product.name}</span>
+        <Accordion className="link-accordion">
+          <AccordionSummary            
+            aria-controls="panel1a-content"
+            id="panel1a-header"
+          >
+            <p>Voir détail</p>
+          </AccordionSummary>
+          <AccordionDetails>
             <span className="description" dangerouslySetInnerHTML={{ __html: item.product.description }}></span>
-          </div>
-        </div>
-      </td>
-      <td className="total-price">
+          </AccordionDetails>
+        </Accordion>
+        {/* <span className="link">Voir détail</span> */}
+        {/* <span className="description" dangerouslySetInnerHTML={{ __html: item.product.description }}></span> */}
+      </div>
+      <div className="total-price">
         <span >{item.unitePrice.toFixed(2)} DT</span>
-      </td>
-
-      <td >
-        <div className="quantite">
-
-          <div className="count-container">
-            <input readOnly={true} type="number" name="product-count" id="product-count" value={count} />
-
-            <div className="count-buttons">
-              <button onClick={handleIncreaseQuantity} >
-                <KeyboardArrowUpOutlinedIcon className="count-more" />
-              </button>
-              <button onClick={handleDecreaseQuantity} >
-
-                <KeyboardArrowDownOutlinedIcon className="count-less" />
-              </button>
-            </div>
+      </div>
+      <div className="quantite">
+        <div className="count-container">
+          <input readOnly={true} type="number" name="product-count" id="product-count" value={count} />
+          <div className="count-buttons">
+            <button onClick={handleIncreaseQuantity} >
+              <KeyboardArrowUpOutlinedIcon className="count-more" />
+            </button>
+            <button onClick={handleDecreaseQuantity} >
+              <KeyboardArrowDownOutlinedIcon className="count-less" />
+            </button>
           </div>
         </div>
-      </td>
-
-      <td className="sous-total">
-        <span >
+      </div>
+      <div className="total-price">
+        <span>
           {item.total.toFixed(2)} DT
         </span>
-      </td>
-      <td>
+      </div>
+      <div>
         <button type="button" className="remove-btn" onClick={handleRemoveItemFromCart}>
           <CloseIcon className='close-icon'></CloseIcon>
         </button>
-      </td>
+      </div>
     </>
   }
 
@@ -631,7 +638,7 @@ const CartPage: React.FC = () => {
   }, [])
 
   // calc total for each changement 
-  useEffect(() => {
+  useEffect(() => { 
     let check = supplier && cartItems.length > 0
     check && calcTotal()
   }, [sousTotal, appliedBonus, promoReduction, delivPrice]);
@@ -657,26 +664,32 @@ const CartPage: React.FC = () => {
             </Container>
             <Container>
               <Row>
-                <Col>
-                {currentStep == 2 && (<button className="btn-back" onClick={goPrevStep}>Retour</button>)}
-                  <main>                    
+                <Col>                
+                  <main>  
                     <div className={`product-detail-container`}>
+                      {currentStep == 2 && (<button className="btn-back" onClick={goPrevStep}>Retour</button>)}
                       {currentStep == 1 && (<>
-                      <table>
+                        <div className="cart-items">
+                          <div className="cart-items__title">
+                             {t('cartPage.product')}
+                          </div>
+                           <ul className="cart-items__list" >
+                              {
+                                cartItems.map((item: any, index: number) => {
+                                  return (                                                
+                                    <li className="cart-items__list__product" key={index}>
+                                      <ArticleProvider item={item} />
+                                    </li>
+                                  )
+                                })
+                              }
+                            </ul>
+                        </div>
+                      {/* <table>
                         <thead>
-                          <td className="header-name">
+                          <td className="header-name" colSpan={5}>
                             {t('cartPage.product')}
-                          </td>
-                          <td>
-                            {t('orderTrackingPage.price')}
-                          </td>
-                          <td>
-                            {t('cartPage.Quantite')}
-                          </td>
-                          <td >
-                            {t('profile.commands.sousTotal')}
-                          </td>
-                          <td>   </td>
+                          </td>                     
                         </thead>
                         <tbody>
                           {
@@ -690,12 +703,12 @@ const CartPage: React.FC = () => {
                             })
                           }
                         </tbody>
-                      </table>
+                      </table> */}
                       <div className="devider">
                       </div>
                       <div className="commentaire-section">
                         <span>{t('cartPage.commentaire')}</span>
-                        <textarea name="commentaire" id="commentaire" cols={30} rows={10} value={aComment} onChange={(e) => handleCommentChange(e.target.value)} ></textarea>
+                        <textarea name="commentaire" id="commentaire" cols={30} rows={10} value={aComment} onChange={(e) => handleCommentChange(e.target.value)} placeholder="Ex:sandwich"></textarea>
                       </div>
                       {/* {
                       has_gift && (
@@ -728,15 +741,17 @@ const CartPage: React.FC = () => {
                         </ul>
                       </div>
                         <div className="promo-container">
-                          <input type="text" name="code_promo" id="code_promo" placeholder="Code promo" value={promo} onChange={(e) => handlePromoChange(e.target.value)} />
+                          <span>Code promo</span>
+                          <textarea  name="code_promo" id="code_promo" placeholder="Code promo" value={promo} onChange={(e) => handlePromoChange(e.target.value)} ></textarea>
                           <button disabled={!couponExiste} className={(couponExiste) ? "button" : "button disabled"} onClick={checkPromoCode}>
                             {t('cartPage.appliquer')}
                           </button>
                         </div>
                         <div className="devider">
                         </div>
-                        <div className="bonus">
-                          <span>{t('cartPage.bonus')} : {bonus.toFixed(2)} pts</span>
+                        <div className="promo-container">
+                          <span>{t('cartPage.bonus')}</span>
+                          <textarea  name="bonus" id="bonus" placeholder="Bonnus" value={bonus.toFixed(2)+' pts'}></textarea>
                           <button className={(bonus < 5000 || appliedBonus || limitReachedBonus) ? "button disabled" : "button"} disabled={bonus < 5000} onClick={() => applyBonus()}>
                             {t('cartPage.appliquer')}
                           </button>
@@ -747,8 +762,11 @@ const CartPage: React.FC = () => {
                           </li>
                         </ul>
                         <div className="buttons">
+                          <button className="cancel">
+                            Annuler
+                          </button>
                           <button className="commander" onClick={goNextStep} >
-                            Suivant
+                            Continuer
                           </button>
                         </div>
                       </>)}
