@@ -9,9 +9,8 @@ import {
   setSupplier
 } from "../../Redux/slices/cart/cartSlice";
 
-import PaymentIcon from '@mui/icons-material/Payment';
-import PayCashSVG from '../../assets/panier/pay-cash.svg';
 import CartSVG from '../../assets/panier/cart.svg';
+import PayCashSVG from '../../assets/panier/pay-cash.svg';
 
 import bagPaperShoppingIcn from '../../assets/panier/bag-paper-shopping-icn.png';
 import dinnerFurnitureIcn from '../../assets/panier/dinner-furniture-icn.png';
@@ -33,7 +32,12 @@ import * as z from "zod";
 import { logout } from "../../Redux/slices/userSlice";
 import { FoodItem } from "../../services/types";
 
+import CloseIcon from '@mui/icons-material/Close';
+import Accordion from '@mui/material/Accordion';
+import AccordionDetails from '@mui/material/AccordionDetails';
+import AccordionSummary from '@mui/material/AccordionSummary';
 import { Col, Container, Row } from "react-bootstrap";
+import MessangerBtnIcon from '../../assets/profile/Discuter/messanger-btn.svg';
 import WarnPopup from "../../components/Popups/WarnPopup/WarnPopup";
 import PaymentPopup from "../../components/Popups/payment/PaymentPopup";
 import { LocationService } from "../../services/api/Location.api";
@@ -44,11 +48,7 @@ import { supplierServices } from "../../services/api/suppliers.api";
 import { userService } from "../../services/api/user.api";
 import { localStorageService } from "../../services/localStorageService";
 import "./cart.page.scss";
-import CloseIcon from '@mui/icons-material/Close';
-import Accordion from '@mui/material/Accordion';
-import AccordionSummary from '@mui/material/AccordionSummary';
-import AccordionDetails from '@mui/material/AccordionDetails';
-import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
+import Messanger from "../../components/Popups/Messanger/Messanger";
 
 const CartPage: React.FC = () => {
   const { t } = useTranslation();
@@ -124,6 +124,18 @@ const CartPage: React.FC = () => {
   const dispatch = useAppDispatch();
   const navigate = useNavigate();
 
+  // handle messanger
+  const unReadMessages = useAppSelector((state) => state.messanger.unReadedMessages)
+  const [messangerPopup, setMessangerPopup] = useState<boolean>(false)
+  const [unReadedQt, setUnReadedQt] = useState<number>(unReadMessages)
+  useEffect(() => {
+    setUnReadedQt(unReadMessages)
+  }, [unReadMessages])
+
+  const handleMessangerPopup = () => {
+    setMessangerPopup(!messangerPopup)
+  }
+
   // article component 
   interface Article {
     item: FoodItem,
@@ -162,7 +174,7 @@ const CartPage: React.FC = () => {
         <span className="title">{item.product.name}</span>
         {item.options.length ?
           (<Accordion className="link-accordion">
-            <AccordionSummary            
+            <AccordionSummary
               aria-controls="panel1a-content"
               id="panel1a-header"
             >
@@ -171,17 +183,17 @@ const CartPage: React.FC = () => {
             <AccordionDetails>
               {
                 item.options.map((i: any, index: number) => {
-                  return (   
-                  <>
+                  return (
+                    <>
                       <strong className="description description--title">{i[0].type}</strong>
                       <span className="description">
-                      {i.map((option:any, indexOption:number) => {
-                        return (
-                          <span>{option.name }</span>
-                        )
-                        })} 
-                    </span>
-                  </>                 
+                        {i.map((option: any, indexOption: number) => {
+                          return (
+                            <span>{option.name}</span>
+                          )
+                        })}
+                      </span>
+                    </>
                   )
                 })
               }
@@ -652,16 +664,16 @@ const CartPage: React.FC = () => {
   }, [])
 
   // calc total for each changement 
-  useEffect(() => { 
+  useEffect(() => {
     let check = supplier && cartItems.length > 0
     check && calcTotal()
   }, [sousTotal, appliedBonus, promoReduction, delivPrice]);
 
   const goNextStep: MouseEventHandler<HTMLButtonElement> = ((event) => {
-    setCurrentStep(2);     
+    setCurrentStep(2);
   });
   const goPrevStep: MouseEventHandler<HTMLButtonElement> = ((event) => {
-   setCurrentStep(1); 
+    setCurrentStep(1);
   });
   return (
     <>
@@ -678,28 +690,28 @@ const CartPage: React.FC = () => {
             </Container>
             <Container>
               <Row>
-                <Col>                
-                  <main>  
+                <Col>
+                  <main>
                     <div className={`product-detail-container`}>
                       {currentStep == 2 && (<button className="btn-back" onClick={goPrevStep}>Retour</button>)}
                       {currentStep == 1 && (<>
                         <div className="cart-items">
                           <div className="cart-items__title">
-                             {t('cartPage.product')}
+                            {t('cartPage.product')}
                           </div>
-                           <ul className="cart-items__list" >
-                              {
-                                cartItems.map((item: any, index: number) => {
-                                  return (                                                
-                                    <li className="cart-items__list__product" key={index}>
-                                      <ArticleProvider item={item} />
-                                    </li>
-                                  )
-                                })
-                              }
-                            </ul>
+                          <ul className="cart-items__list" >
+                            {
+                              cartItems.map((item: any, index: number) => {
+                                return (
+                                  <li className="cart-items__list__product" key={index}>
+                                    <ArticleProvider item={item} />
+                                  </li>
+                                )
+                              })
+                            }
+                          </ul>
                         </div>
-                      {/* <table>
+                        {/* <table>
                         <thead>
                           <td className="header-name" colSpan={5}>
                             {t('cartPage.product')}
@@ -718,45 +730,45 @@ const CartPage: React.FC = () => {
                           }
                         </tbody>
                       </table> */}
-                      <div className="devider">
-                      </div>
-                      <div className="commentaire-section">
-                        <span>{t('cartPage.commentaire')}</span>
-                        <textarea name="commentaire" id="commentaire" cols={30} rows={10} value={aComment} onChange={(e) => handleCommentChange(e.target.value)} placeholder="Ex:sandwich"></textarea>
-                      </div>
-                      {/* {
+                        <div className="devider">
+                        </div>
+                        <div className="commentaire-section">
+                          <span>{t('cartPage.commentaire')}</span>
+                          <textarea name="commentaire" id="commentaire" cols={30} rows={10} value={aComment} onChange={(e) => handleCommentChange(e.target.value)} placeholder="Ex:sandwich"></textarea>
+                        </div>
+                        {/* {
                       has_gift && (
                         <>
                         </>
                       )
                     } */}
-                      <div className="devider">
-                      </div>
-                      <div className="promos-list">
-                        <ul>
-                          {
-                            promosList.length !== 0 && (
-                              <>
-                                {
-                                  promosList.map((promo: any, index: number) => {
-                                    return (
-                                      <button key={index} className="promo-button" onClick={() => {
-                                        selectCoupon(promo)
-                                      }}>
-                                        {promo.title}
-                                      </button>
-                                    )
+                        <div className="devider">
+                        </div>
+                        <div className="promos-list">
+                          <ul>
+                            {
+                              promosList.length !== 0 && (
+                                <>
+                                  {
+                                    promosList.map((promo: any, index: number) => {
+                                      return (
+                                        <button key={index} className="promo-button" onClick={() => {
+                                          selectCoupon(promo)
+                                        }}>
+                                          {promo.title}
+                                        </button>
+                                      )
 
-                                  })
-                                }
-                              </>
-                            )
-                          }
-                        </ul>
-                      </div>
+                                    })
+                                  }
+                                </>
+                              )
+                            }
+                          </ul>
+                        </div>
                         <div className="promo-container">
                           <span>Code promo</span>
-                          <textarea  name="code_promo" id="code_promo" placeholder="Code promo" value={promo} onChange={(e) => handlePromoChange(e.target.value)} ></textarea>
+                          <textarea name="code_promo" id="code_promo" placeholder="Code promo" value={promo} onChange={(e) => handlePromoChange(e.target.value)} ></textarea>
                           <button disabled={!couponExiste} className={(couponExiste) ? "button" : "button disabled"} onClick={checkPromoCode}>
                             {t('cartPage.appliquer')}
                           </button>
@@ -765,7 +777,7 @@ const CartPage: React.FC = () => {
                         </div>
                         <div className="promo-container">
                           <span>{t('cartPage.bonus')}</span>
-                          <textarea  name="bonus" id="bonus" placeholder="Bonnus" value={bonus.toFixed(2)+' pts'}></textarea>
+                          <textarea name="bonus" id="bonus" placeholder="Bonnus" value={bonus.toFixed(2) + ' pts'}></textarea>
                           <button className={(bonus < 5000 || appliedBonus || limitReachedBonus) ? "button disabled" : "button"} disabled={bonus < 5000} onClick={() => applyBonus()}>
                             {t('cartPage.appliquer')}
                           </button>
@@ -784,7 +796,7 @@ const CartPage: React.FC = () => {
                           </button>
                         </div>
                       </>)}
-                      {currentStep == 2 && (<div className="card-paiment">   
+                      {currentStep == 2 && (<div className="card-paiment">
                         <div className="paiment-container">
                           <span className="title">{t('cartPage.payMode')}</span>
                           <div className="method">
@@ -949,9 +961,24 @@ const CartPage: React.FC = () => {
                         </div> */}
                       </div>
                     </div>
+                    <div className='bulles'>
+                      <button className='messanger-popup-btn' onClick={handleMessangerPopup} style={{ backgroundImage: `url(${MessangerBtnIcon})` }}>
+                        {unReadedQt > 0 && (
+                          <div className='messanger-bull-notif-icon'>
+                            {unReadedQt}
+                          </div>
+                        )}
+                      </button>
+                      {/* <button className='phone-popup-btn' onClick={handlePhonePopup} style={{ backgroundImage: `url(${PhoneBtnIcon})` }}></button> */}
+                    </div>
+
+                    {
+                      messangerPopup && <Messanger className="discuter-messanger-popup" close={handleMessangerPopup} />
+                    }
                   </main>
                 </Col>
               </Row>
+
             </Container>
             {
               showPopup && (
@@ -989,6 +1016,8 @@ const CartPage: React.FC = () => {
                 )
               }
             </Row>
+
+
           </Container>
         )
       }
