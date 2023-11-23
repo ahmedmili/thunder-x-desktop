@@ -19,13 +19,14 @@ import { MenuData } from '../../services/types';
 import MismatchModal from '../mismatchModal/mismatchModal';
 
 import { Container, Row } from 'react-bootstrap';
-import instaposter from "../../assets/food_instagram_story.png";
-import { supplierServices } from '../../services/api/suppliers.api';
-import MenuPopup from '../Popups/Menu/MenuPopup';
-import './menus.scss';
-import MessangerBtnIcon from '../../assets/profile/Discuter/messanger-btn.svg';
-import Messanger from '../Popups/Messanger/Messanger';
 import { fetchMessages } from '../../Redux/slices/messanger';
+import instaposter from "../../assets/food_instagram_story.png";
+import MessangerBtnIcon from '../../assets/profile/Discuter/messanger-btn.svg';
+import { supplierServices } from '../../services/api/suppliers.api';
+import { scrollToTop } from '../../utils/utils';
+import MenuPopup from '../Popups/Menu/MenuPopup';
+import Messanger from '../Popups/Messanger/Messanger';
+import './menus.scss';
 
 interface MenuProps { }
 
@@ -62,16 +63,18 @@ const Menu: React.FC<MenuProps> = () => {
   }
   useEffect(() => {
     fetchMessages()
-}, [])
+  }, [])
   /*
   *
   * url handling part
   *
   */
+  useEffect(() => {
+    scrollToTop()
+  }, [])
 
   // redirect if the url taped again
   useEffect(() => {
-
     if (productId != null) {
       let locationArray = location.pathname.split('/');
       locationArray[1] = "product";
@@ -85,6 +88,7 @@ const Menu: React.FC<MenuProps> = () => {
         navigate(newUrl, { replace: true })
       }
     }
+
   }, [])
   // assure '/' in the end of url
   useEffect(() => {

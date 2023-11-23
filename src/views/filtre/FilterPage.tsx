@@ -1,6 +1,6 @@
 import ArrowBackIosIcon from '@mui/icons-material/ArrowBackIos';
 import ArrowForwardIosIcon from '@mui/icons-material/ArrowForwardIos';
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { Col, Container, Row } from "react-bootstrap";
 import { useTranslation } from "react-i18next";
 import Skeleton from "react-loading-skeleton";
@@ -42,6 +42,7 @@ function FilterPage() {
     const { t } = useTranslation()
     const navigate = useNavigate();
     const dispatch = useDispatch();
+    const suppliersListRef = useRef(null);
 
 
     // handle messanger
@@ -59,6 +60,11 @@ function FilterPage() {
         fetchMessages()
     }, [])
     //
+    const scrollToTarget = (targetRef: any) => {
+       
+        targetRef.current && targetRef.current.scrollIntoView({ behavior: 'smooth', block: 'start', inline: 'nearest' });
+
+    };
 
     function handleTextSearch(searchTerm: string): void {
         const currentLocation = localStorageService.getCurrentLocation();
@@ -74,6 +80,7 @@ function FilterPage() {
                     supplierServices.searchSupplierByArticle(data).then((resp) => {
                         dispatch(setfilterRestaurants(resp.data.data.suppliers))
                         setIsLoading(false);
+                        suppliersListRef && scrollToTarget(suppliersListRef)
 
                     })
                 } catch (e) {
@@ -85,6 +92,7 @@ function FilterPage() {
         } else {
             // setErrorMessage("choisissez l\'emplacement s\'il vous plaît");
         }
+
 
         dispatch(setSearchQuery(searchTerm));
     }
@@ -118,12 +126,16 @@ function FilterPage() {
         supplierServices.searchSupplierBySubArticle(requestData).then((res: any) => {
             dispatch(setfilterRestaurants(res.data.data.suppliers))
             setIsLoading(false);
+            suppliersListRef && scrollToTarget(suppliersListRef)
+
         })
     }
 
     useEffect(() => {
         setOriginCategories(categories)
         categories && searchByUrl()
+        suppliersListRef && scrollToTarget(suppliersListRef)
+
     }, [categories])
 
     useEffect(() => {
@@ -148,6 +160,8 @@ function FilterPage() {
                     break;
             }
         } else {
+            suppliersListRef && scrollToTarget(suppliersListRef)
+
             setIsLoading(false)
         }
     }
@@ -156,21 +170,26 @@ function FilterPage() {
 
     useEffect(() => {
         setAllRestaurantsList(restaurantsList)
+        suppliersListRef && scrollToTarget(suppliersListRef)
+
     }, [restaurantsList])
 
 
     // navigation 
     const handleClick = (page: number) => {
         setCurrentPage(page);
+        suppliersListRef && scrollToTarget(suppliersListRef)
     };
     const handleBackClick = () => {
         if (currentPage != 1) {
             setCurrentPage(currentPage - 1);
+            suppliersListRef && scrollToTarget(suppliersListRef)
         }
     };
     const handleNextClick = () => {
         if (currentPage != totalPages) {
             setCurrentPage(currentPage + 1);
+            suppliersListRef && scrollToTarget(suppliersListRef)
         }
     };
 
@@ -315,7 +334,7 @@ function FilterPage() {
                         </div>
                     </Col>
 
-                    <Col className="display-main">
+                    <Col className="display-main" ref={suppliersListRef}>
                         {
                             allRestaurantsList.length > 0 && !isloading ? (
                                 <>
