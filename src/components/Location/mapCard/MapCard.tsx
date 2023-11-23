@@ -185,7 +185,7 @@ function MapCard(props: { cancel: MouseEventHandler<HTMLButtonElement> | undefin
                 <div className="map-container">
                     {
                     
-                        <div className={`${showForm == true ? 'd-none'  : ''}`}>
+                        <div className={`${showForm == true ? 'd-none'  : 'w-100'}`}>
                             {/* <p>{t('adress.takeAdressFromCart')}</p> */}
 
                             <div className='map-and-button'>

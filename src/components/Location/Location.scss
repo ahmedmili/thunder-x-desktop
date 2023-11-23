@@ -414,10 +414,19 @@
 }
 
 .profile-config-map {
-  width: 700px;
+  width:  100%;
   box-shadow: none;
   .cancel-icon-container {
     display: none;
+  }
+  h1.text-center{
+    display: none;
+  }
+  &.location-container{
+    z-index: 1;
+    .container{
+      max-height: max-content;
+    }
   }
 }
 
