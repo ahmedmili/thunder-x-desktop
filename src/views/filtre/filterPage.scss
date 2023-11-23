@@ -119,6 +119,52 @@
         }
     }
 
+    .bulles {
+        display: flex;
+        flex-direction: column;
+        position: fixed;
+        bottom: 100px;
+        right: 19px;
+        gap: 20px;
+        z-index: 1;
+
+        .messanger-popup-btn,
+        .phone-popup-btn {
+            width: 64px;
+            height: 64px;
+            background-position: center;
+            background-repeat: no-repeat;
+            background-size: cover;
+            background-color: transparent;
+            border: navajowhite;
+        }
+
+        .messanger-popup-btn {
+            position: relative;
+
+            .messanger-bull-notif-icon {
+                position: absolute;
+                right: 0;
+                top: 3px;
+                color: white;
+                background-color: #FBC000;
+                border-radius: 50%;
+                padding: 5px;
+                font-size: 11px;
+                margin: 0;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+            }
+        }
+
+    }
+
+    .discuter-messanger-popup {
+        bottom: 117px;
+        right: 55px;
+        z-index: 800;
+    }
 }
 
 

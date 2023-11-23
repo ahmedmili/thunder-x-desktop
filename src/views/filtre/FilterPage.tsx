@@ -22,6 +22,8 @@ import { supplierServices } from '../../services/api/suppliers.api';
 import { setSearchQuery, setfilterRestaurants } from '../../Redux/slices/restaurantSlice';
 import { useDispatch } from 'react-redux';
 import Spinner from '../../components/spinner/Spinner';
+import Messanger from '../../components/Popups/Messanger/Messanger';
+import MessangerBtnIcon from '../../assets/profile/Discuter/messanger-btn.svg';
 
 function FilterPage() {
     const restaurantsList = useAppSelector((state) => state.restaurant.filterRestaurants);
@@ -40,6 +42,18 @@ function FilterPage() {
     const navigate = useNavigate();
     const dispatch = useDispatch();
 
+
+    // handle messanger
+    const unReadMessages = useAppSelector((state) => state.messanger.unReadedMessages)
+    const [messangerPopup, setMessangerPopup] = useState<boolean>(false)
+    const [unReadedQt, setUnReadedQt] = useState<number>(unReadMessages)
+    useEffect(() => {
+        setUnReadedQt(unReadMessages)
+    }, [unReadMessages])
+
+    const handleMessangerPopup = () => {
+        setMessangerPopup(!messangerPopup)
+    }
 
     function handleTextSearch(searchTerm: string): void {
         const currentLocation = localStorageService.getCurrentLocation();
@@ -263,18 +277,18 @@ function FilterPage() {
         <>
             <Container fluid className="filter-page-container">
                 {/* <Row> */}
-                    {/* categories list */}
-                    {originCategories ? (
-                        <CategoriesCarousel
-                            onCategorySelect={() => { }}
-                        />
-                    ) : (
-                        <div className="skeleton-container">
-                            <Skeleton count={12} className="loading-skeleton" />
-                            <Skeleton count={12} className="loading-skeleton" />
-                            <Skeleton count={12} className="loading-skeleton" />
-                        </div>
-                    )}
+                {/* categories list */}
+                {originCategories ? (
+                    <CategoriesCarousel
+                        onCategorySelect={() => { }}
+                    />
+                ) : (
+                    <div className="skeleton-container">
+                        <Skeleton count={12} className="loading-skeleton" />
+                        <Skeleton count={12} className="loading-skeleton" />
+                        <Skeleton count={12} className="loading-skeleton" />
+                    </div>
+                )}
                 {/* </Row> */}
                 <Row>
                     <Col className="col-4 filter-side-bar">
@@ -323,6 +337,22 @@ function FilterPage() {
 
                     </Col>
                 </Row>
+
+                <div className='bulles'>
+                    <button className='messanger-popup-btn' onClick={handleMessangerPopup} style={{ backgroundImage: `url(${MessangerBtnIcon})` }}>
+                        {unReadedQt > 0 && (
+                            <div className='messanger-bull-notif-icon'>
+                                {unReadedQt}
+                            </div>
+                        )}
+                    </button>
+                    {/* <button className='phone-popup-btn' onClick={handlePhonePopup} style={{ backgroundImage: `url(${PhoneBtnIcon})` }}></button> */}
+                </div>
+
+                {
+                    messangerPopup && <Messanger className="discuter-messanger-popup" close={handleMessangerPopup} />
+                }
+
             </Container>
         </>
     )

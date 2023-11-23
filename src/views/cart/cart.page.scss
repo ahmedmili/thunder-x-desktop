@@ -127,10 +127,10 @@
           }
 
           .ariticle-info-container {
-            .image-container {
+            // .image-container {
               // margin-top: 25px;
               // margin-bottom: 25px;  
-            }
+            // }
 
             .sous-total {
               color: $Ocean_Teal;
@@ -1013,7 +1013,6 @@
       z-index: 10;
 
       main {
-        // flex-direction: column;
         display: inline-block;
         padding: 0;
 
