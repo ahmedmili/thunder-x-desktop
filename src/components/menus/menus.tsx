@@ -13,7 +13,7 @@ import {
   setSupplier,
 } from '../../Redux/slices/cart/cartSlice';
 import { setProduct } from "../../Redux/slices/restaurantSlice";
-import { useAppDispatch } from '../../Redux/store';
+import { useAppDispatch, useAppSelector } from '../../Redux/store';
 import { productService } from '../../services/api/product.api';
 import { MenuData } from '../../services/types';
 import MismatchModal from '../mismatchModal/mismatchModal';
@@ -23,6 +23,8 @@ import instaposter from "../../assets/food_instagram_story.png";
 import { supplierServices } from '../../services/api/suppliers.api';
 import MenuPopup from '../Popups/Menu/MenuPopup';
 import './menus.scss';
+import MessangerBtnIcon from '../../assets/profile/Discuter/messanger-btn.svg';
+import Messanger from '../Popups/Messanger/Messanger';
 
 interface MenuProps { }
 
@@ -46,7 +48,17 @@ const Menu: React.FC<MenuProps> = () => {
   const [selectedOption, setSelectedOption] = useState(search ? search : "All");
   const idNumber = id?.split('-')[0];
 
+  // handle messanger
+  const unReadMessages = useAppSelector((state) => state.messanger.unReadedMessages)
+  const [messangerPopup, setMessangerPopup] = useState<boolean>(false)
+  const [unReadedQt, setUnReadedQt] = useState<number>(unReadMessages)
+  useEffect(() => {
+    setUnReadedQt(unReadMessages)
+  }, [unReadMessages])
 
+  const handleMessangerPopup = () => {
+    setMessangerPopup(!messangerPopup)
+  }
   /*
   *
   * url handling part
@@ -350,6 +362,22 @@ const Menu: React.FC<MenuProps> = () => {
             <Product />
           </section>
         </Row>
+
+        <div className='bulles'>
+          <button className='messanger-popup-btn' onClick={handleMessangerPopup} style={{ backgroundImage: `url(${MessangerBtnIcon})` }}>
+            {unReadedQt > 0 && (
+              <div className='messanger-bull-notif-icon'>
+                {unReadedQt}
+              </div>
+            )}
+          </button>
+          {/* <button className='phone-popup-btn' onClick={handlePhonePopup} style={{ backgroundImage: `url(${PhoneBtnIcon})` }}></button> */}
+        </div>
+
+        {
+          messangerPopup && <Messanger className="discuter-messanger-popup" close={handleMessangerPopup} />
+        }
+
       </Container>
       {showMismatchModal && (
         <MismatchModal onClose={handleMismatchModalClose} />
