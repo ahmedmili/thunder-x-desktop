@@ -18,6 +18,9 @@ import ShoppingCartOutlinedIcon from '@mui/icons-material/ShoppingCartOutlined';
 import { supplierServices } from '../../../services/api/suppliers.api';
 import { Option, Restaurant } from '../../../services/types';
 
+import MessangerBtnIcon from '../../../assets/profile/Discuter/messanger-btn.svg';
+import Messanger from '../../Popups/Messanger/Messanger';
+
 // Define the initial state
 const initialState = {
     optionslist: [],
@@ -90,6 +93,20 @@ function MenuOptions() {
     const location = useLocation();
     const { items } = useSelector((state: RootState) => state.cart);
     const cartItems = useAppSelector((state) => state.cart.items);
+
+
+
+    // handle messanger
+    const unReadMessages = useAppSelector((state) => state.messanger.unReadedMessages)
+    const [messangerPopup, setMessangerPopup] = useState<boolean>(false)
+    const [unReadedQt, setUnReadedQt] = useState<number>(unReadMessages)
+    useEffect(() => {
+        setUnReadedQt(unReadMessages)
+    }, [unReadMessages])
+
+    const handleMessangerPopup = () => {
+        setMessangerPopup(!messangerPopup)
+    }
 
     /*
      *
@@ -501,6 +518,21 @@ function MenuOptions() {
 
                 </div>
             </div>
+
+            <div className='bulles'>
+                <button className='messanger-popup-btn' onClick={handleMessangerPopup} style={{ backgroundImage: `url(${MessangerBtnIcon})` }}>
+                    {unReadedQt > 0 && (
+                        <div className='messanger-bull-notif-icon'>
+                            {unReadedQt}
+                        </div>
+                    )}
+                </button>
+                {/* <button className='phone-popup-btn' onClick={handlePhonePopup} style={{ backgroundImage: `url(${PhoneBtnIcon})` }}></button> */}
+            </div>
+
+            {
+                messangerPopup && <Messanger className="discuter-messanger-popup" close={handleMessangerPopup} />
+            }
         </div>
 
     )
