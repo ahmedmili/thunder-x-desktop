@@ -5,7 +5,7 @@ import { logout } from '../../../../Redux/slices/userSlice';
 import { useTranslation } from 'react-i18next';
 import { setProfilePage } from '../../../../Redux/slices/home';
 import { localStorageService } from '../../../../services/localStorageService';
-import { Link } from 'react-router-dom';
+import { Link, useLocation } from 'react-router-dom';
 
 import profileImg from '../../../../assets/profile/profile_img.png'
 import phoneIcon from "../../../../assets/profile/phoneIcon.svg"
@@ -33,12 +33,9 @@ import { toast } from 'react-toastify';
 
 const SideBar = () => {
 
-  const theme = useAppSelector((state) => state.home.theme)
   const currentPage = useAppSelector(state => state.home.profilePage)
   const dispatch = useAppDispatch();
   const { t } = useTranslation()
-
-  const [template, setTemplate] = useState<number>(theme)
 
   const [fullName, setFullName] = useState<string>("")
   const [selectedNav, setSelectedNav] = useState<number>(currentPage)
@@ -46,14 +43,14 @@ const SideBar = () => {
   const user = userItem ? JSON.parse(userItem) : null;
   const [isDivVisible, setIsDivVisible] = useState(true);
 
-  useEffect(() => {
-    setFullName(`${user.firstname} ${user.lastname}`)
-  }, [user])
+  // const location = useLocation()
+
 
   // save path on refresh
   const pathSchema = ["/", "/profile/annonces", "/profile", "/profile/archivedCommands", "/profile/Fidelite", "/profile/discuter", "/profile/Favors"]
   useEffect(() => {
     const location = window.location.pathname
+    console.log("win location = ", location)
     setSelectedNav((pathSchema.indexOf(location) + 1))
   }, [currentPage])
 
@@ -78,12 +75,9 @@ const SideBar = () => {
     };
   }, []);
 
-  useEffect(() => {
-    setTemplate(theme)
-  }, [theme])
   return (
     <>
-      <div className={`side-bar ${isDivVisible ? "visible-bar" : ""} ${template === 1 ? 'dark-background2' : ""} `}>
+      <div className={`side-bar ${isDivVisible ? "visible-bar" : ""}`}>
         <header className='sideBar-header'>
           <div className="image" style={{ backgroundImage: `url(${profileImg})` }}></div>
           <div className='info'>

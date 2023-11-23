@@ -35,13 +35,18 @@ import HomeSkeleton from "./views/home/skeleton/HomeSkeleton";
 //lazy loading components
 const Header = lazy(() => import("./components/Header/Header"));
 const Footer = lazy(() => import("./components/footer/footer"));
-const Annonces = lazy(() => import("./components/layout/Profile/All_Annonces/All_Annonces"));
-const ArchivedCommands = lazy(() => import("./components/layout/Profile/Archivedcommands/ArchivedCommands"));
-const ConfigPage = lazy(() => import("./components/layout/Profile/ConfigPage/ConfigPage"));
-const Discuter = lazy(() => import("./components/layout/Profile/Discuter/Discuter"));
-const Favors = lazy(() => import("./components/layout/Profile/Favors/Favors"));
-const FidelitePage = lazy(() => import("./components/layout/Profile/FidelitePage/FidelitePage"));
-const Feedback = lazy(() => import("./components/layout/Profile/Feedback/Feedback"));
+
+
+import Annonces from "./components/layout/Profile/All_Annonces/All_Annonces";
+import ArchivedCommands from "./components/layout/Profile/Archivedcommands/ArchivedCommands";
+import ConfigPage from "./components/layout/Profile/ConfigPage/ConfigPage";
+import Discuter from "./components/layout/Profile/Discuter/Discuter";
+import Favors from "./components/layout/Profile/Favors/Favors";
+import FidelitePage from "./components/layout/Profile/FidelitePage/FidelitePage";
+import Feedback from "./components/layout/Profile/Feedback/Feedback";
+
+
+
 const Menu = lazy(() => import("./components/menus/menus"));
 //lazy loading pages
 const Profile = lazy(() => import("./components/layout/Profile/Profile"));
