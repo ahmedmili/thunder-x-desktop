@@ -24,6 +24,7 @@ import { useDispatch } from 'react-redux';
 import Spinner from '../../components/spinner/Spinner';
 import Messanger from '../../components/Popups/Messanger/Messanger';
 import MessangerBtnIcon from '../../assets/profile/Discuter/messanger-btn.svg';
+import { fetchMessages } from '../../Redux/slices/messanger';
 
 function FilterPage() {
     const restaurantsList = useAppSelector((state) => state.restaurant.filterRestaurants);
@@ -54,6 +55,10 @@ function FilterPage() {
     const handleMessangerPopup = () => {
         setMessangerPopup(!messangerPopup)
     }
+    useEffect(() => {
+        fetchMessages()
+    }, [])
+    //
 
     function handleTextSearch(searchTerm: string): void {
         const currentLocation = localStorageService.getCurrentLocation();

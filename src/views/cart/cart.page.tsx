@@ -49,6 +49,7 @@ import { userService } from "../../services/api/user.api";
 import { localStorageService } from "../../services/localStorageService";
 import "./cart.page.scss";
 import Messanger from "../../components/Popups/Messanger/Messanger";
+import { fetchMessages } from "../../Redux/slices/messanger";
 
 const CartPage: React.FC = () => {
   const { t } = useTranslation();
@@ -135,6 +136,9 @@ const CartPage: React.FC = () => {
   const handleMessangerPopup = () => {
     setMessangerPopup(!messangerPopup)
   }
+  useEffect(() => {
+    fetchMessages()
+}, [])
 
   // article component 
   interface Article {

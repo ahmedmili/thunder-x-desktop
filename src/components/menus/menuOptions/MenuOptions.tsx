@@ -20,6 +20,7 @@ import { Option, Restaurant } from '../../../services/types';
 
 import MessangerBtnIcon from '../../../assets/profile/Discuter/messanger-btn.svg';
 import Messanger from '../../Popups/Messanger/Messanger';
+import { fetchMessages } from '../../../Redux/slices/messanger';
 
 // Define the initial state
 const initialState = {
@@ -107,6 +108,9 @@ function MenuOptions() {
     const handleMessangerPopup = () => {
         setMessangerPopup(!messangerPopup)
     }
+    useEffect(() => {
+        fetchMessages()
+    }, [])
 
     /*
      *

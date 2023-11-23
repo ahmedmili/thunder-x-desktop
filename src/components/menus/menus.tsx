@@ -25,6 +25,7 @@ import MenuPopup from '../Popups/Menu/MenuPopup';
 import './menus.scss';
 import MessangerBtnIcon from '../../assets/profile/Discuter/messanger-btn.svg';
 import Messanger from '../Popups/Messanger/Messanger';
+import { fetchMessages } from '../../Redux/slices/messanger';
 
 interface MenuProps { }
 
@@ -59,6 +60,9 @@ const Menu: React.FC<MenuProps> = () => {
   const handleMessangerPopup = () => {
     setMessangerPopup(!messangerPopup)
   }
+  useEffect(() => {
+    fetchMessages()
+}, [])
   /*
   *
   * url handling part
@@ -107,7 +111,6 @@ const Menu: React.FC<MenuProps> = () => {
     // locationArray.pop();
     let newArray = locationArray.slice(0, -2)
     const newURL = newArray.join("/");
-    console.log("newArray", newArray)
     navigate(newURL, { replace: true });
 
   }
