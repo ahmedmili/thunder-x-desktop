@@ -154,27 +154,41 @@ const CartPage: React.FC = () => {
         );
       }
     };
-
-
     return <>
       <div className="supplier-name">
         <span >{item.supplier_data.supplier_name}</span>
       </div>
       <div className="info-text">
         <span className="title">{item.product.name}</span>
-        <Accordion className="link-accordion">
-          <AccordionSummary            
-            aria-controls="panel1a-content"
-            id="panel1a-header"
-          >
-            <p>Voir détail</p>
-          </AccordionSummary>
-          <AccordionDetails>
-            <span className="description" dangerouslySetInnerHTML={{ __html: item.product.description }}></span>
-          </AccordionDetails>
-        </Accordion>
-        {/* <span className="link">Voir détail</span> */}
-        {/* <span className="description" dangerouslySetInnerHTML={{ __html: item.product.description }}></span> */}
+        {item.options.length ?
+          (<Accordion className="link-accordion">
+            <AccordionSummary            
+              aria-controls="panel1a-content"
+              id="panel1a-header"
+            >
+              <p>Voir détail</p>
+            </AccordionSummary>
+            <AccordionDetails>
+              {
+                item.options.map((i: any, index: number) => {
+                  return (   
+                  <>
+                      <strong className="description description--title">{i[0].type}</strong>
+                      <span className="description">
+                      {i.map((option:any, indexOption:number) => {
+                        return (
+                          <span>{option.name }</span>
+                        )
+                        })} 
+                    </span>
+                  </>                 
+                  )
+                })
+              }
+              {/* <span className="description" dangerouslySetInnerHTML={{ __html: item.product.description }}></span> */}
+            </AccordionDetails>
+          </Accordion>)
+          : ""}
       </div>
       <div className="total-price">
         <span >{item.unitePrice.toFixed(2)} DT</span>
