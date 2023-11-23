@@ -1,7 +1,6 @@
 
-import ArrowForwardIcon from '@mui/icons-material/ArrowForward';
 import SearchIcon from '@mui/icons-material/Search';
-import React, { useCallback, useState } from "react";
+import React, { useCallback, useEffect, useState } from "react";
 import { useDispatch } from "react-redux";
 import { useLocation, useNavigate } from "react-router-dom";
 import {
@@ -25,7 +24,7 @@ const SearchBar: React.FC<Props> = ({ placeholder }) => {
   const [dfaultDistanceFilter, setDefaultDistanceFilter] = useState<number>(10);
   const [ratingFilter, setRatingFilter] = useState<number>(0);
   const [showFilters, setShowFilters] = useState(false); // Add state variable for showing/hiding filters
-
+  const location = useLocation()
   const toggleFilters = () => {
     setShowFilters(!showFilters); // Toggle the state of showFilters
   };
@@ -40,6 +39,13 @@ const SearchBar: React.FC<Props> = ({ placeholder }) => {
     // TODO Call API to get matching restaurants based on the search query and filters
     toggleFilters();
   }, []);
+
+
+  useEffect(() => {
+    const searchMethode = location.pathname.split('/')[2]?.split('=')[0]
+    const searchTerm = location.pathname.split('/')[2]?.split('=')[1]
+    searchMethode === 'searchTerm' && setSearchTerm(searchTerm)
+  }, [])
 
   const handleRatingFilterChange = (event: any) => {
     setRatingFilter(event.target.value as number);
@@ -70,7 +76,6 @@ const SearchBar: React.FC<Props> = ({ placeholder }) => {
             dispatch(setfilterRestaurants(resp.data.data.suppliers))
             !navLocation.pathname.includes("/search/") && navigate("/search/searchTerm=" + searchTerm);
             navLocation.pathname.includes("/search/") && navigate("/search/searchTerm=" + searchTerm, { replace: true });
-            setSearchTerm("")
           })
         } catch (e) {
           throw e
@@ -85,6 +90,9 @@ const SearchBar: React.FC<Props> = ({ placeholder }) => {
     dispatch(setSearchQuery(searchTerm));
   }
 
+  const deleteSearchText = () => {
+    setSearchTerm('')
+  }
   function onChangerText(value: string): void {
     setSearchTerm(value);
   }
@@ -101,14 +109,19 @@ const SearchBar: React.FC<Props> = ({ placeholder }) => {
               type="text"
               placeholder={placeholder}
               value={searchTerm}
-              // (keydown)="onKeyPress($event)
               onKeyDown={(event) => onSubmit(event)}
               onChange={(event) => onChangerText(event.target.value)}
               aria-label="Enter recherche term"
+
             />
+            {searchTerm.length > 0 && (
+              <span
+                className={searchStyle.deleteSearchTextButton}
+                onClick={() => deleteSearchText()}
+              >X</span>
+            )}
           </div>
-          <span className={`${searchStyle.icons} ${searchStyle.iconBackgorund}  `}>
-            {/* <ArrowForwardIcon className={searchStyle.icon} /> */}
+          <span onClick={handleTextSearch} className={`${searchStyle.icons} ${searchStyle.iconBackgorund}  `}>
           </span>
         </form>
       </div>
