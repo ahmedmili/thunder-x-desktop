@@ -5,26 +5,53 @@ import LeftArrow from '../../../../assets/profile/leftArrow.svg';
 import RigthArrow from '../../../../assets/profile/rigthArrow.svg';
 import { cartService } from '../../../../services/api/cart.api';
 import { supplierServices } from '../../../../services/api/suppliers.api';
-import { Announce, Coupon } from '../../../../services/types';
+import { Announce, Coupon, Product, Restaurant } from '../../../../services/types';
 import Spinner from '../../../spinner/Spinner';
 import './allAnnonces.scss';
 import moment from "moment";
 import { isInsideRegions } from '../../../../utils/utils';
 import { localStorageService } from '../../../../services/localStorageService';
+import { useNavigate } from 'react-router-dom';
+import copy from 'clipboard-copy';
 
 interface AnnonceProps {
   title: string,
   bodyText: string,
   time?: string,
-  startAt?: string
+  startAt?: string,
+  product?: Product,
+  supplier?: Restaurant
+  code_coupon?: string
 }
 
 
-const AnnonceCart: React.FC<AnnonceProps> = ({ title, bodyText, time, startAt }) => {
+const AnnonceCart: React.FC<AnnonceProps> = ({ title, bodyText, product, supplier, code_coupon, startAt }) => {
 
 
   const [formattedDate, setFormattedDate] = useState("");
   const { t } = useTranslation()
+  const navigate = useNavigate()
+
+  const goTo = () => {
+    if (product != null && supplier != null) {
+      const newUrl = `/product/${supplier.id}-${supplier.name.split(' ').join('-')}/All/${product.id}`;
+      navigate(newUrl)
+    } else if (supplier != null) {
+      const newUrl = `/restaurant/${supplier.id}-${supplier.name.split(' ').join('-')}/All/`;
+      navigate(newUrl)
+    }
+  }
+  const copyCode = (code_coupon: string) => {
+    copy(code_coupon)
+      .then(() => console.log("coppied"))
+      .catch((error) => console.error('Error copying to clipboard:', error));
+
+  }
+
+  const handleClick = () => {
+    goTo()
+    code_coupon && copyCode(code_coupon)
+  }
   useEffect(() => {
     if (startAt) {
       const currentDate = moment();
@@ -47,7 +74,7 @@ const AnnonceCart: React.FC<AnnonceProps> = ({ title, bodyText, time, startAt })
     }
   }, [startAt]);
   return (<>
-    <div className={`annonce-cart`} >
+    <div className={`annonce-cart`} onClick={handleClick} >
       <p className='title'>{title}</p>
       <p className='body' >{bodyText}</p>
       {/* {time && <p className='time' >{time}</p>} */}
@@ -68,8 +95,6 @@ const Annonces = () => {
   const [loading, setLoading] = useState<boolean>(false)
 
   const { t } = useTranslation()
-
-
 
   const handleContent = () => {
     const startIndex = (currentPage - 1) * itemsPerPage;
@@ -145,6 +170,9 @@ const Annonces = () => {
                         }
                         time={annonce.time ? annonce.time : null}
                         startAt={annonce.updated_at}
+                        product={annonce.time ? (annonce.product ? annonce.product : null) : null}
+                        supplier={annonce.time ? (annonce.supplier ? annonce.supplier : null) : null}
+                        code_coupon={annonce.code_coupon}
                       />
                     )
                   })
