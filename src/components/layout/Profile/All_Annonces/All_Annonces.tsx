@@ -9,6 +9,8 @@ import { Announce, Coupon } from '../../../../services/types';
 import Spinner from '../../../spinner/Spinner';
 import './allAnnonces.scss';
 import moment from "moment";
+import { isInsideRegions } from '../../../../utils/utils';
+import { localStorageService } from '../../../../services/localStorageService';
 
 interface AnnonceProps {
   title: string,
@@ -35,8 +37,6 @@ const AnnonceCart: React.FC<AnnonceProps> = ({ title, bodyText, time, startAt })
       } else if (monthsDifference >= 1) {
         result = t('monthAgo')
       } else if (diffWeeks >= 1) {
-        console.log("title", title)
-        console.log("diffWeeks", diffWeeks)
         result = `${diffWeeks} ${t("weeksAgo")}`
       } else if (daysDifference === 1) {
         result = t('dayAgo')
@@ -69,6 +69,8 @@ const Annonces = () => {
 
   const { t } = useTranslation()
 
+
+
   const handleContent = () => {
     const startIndex = (currentPage - 1) * itemsPerPage;
     const endIndex = startIndex + itemsPerPage;
@@ -87,7 +89,11 @@ const Annonces = () => {
   const getAllPromoCodes = async () => {
     const { status, data } = await cartService.getAllPromoCodes()
     if (status === 200) {
-      setAllPromoCodes(data.data)
+      const list = data.data;
+      const location = await localStorageService.getCurrentLocation()
+      let address = JSON.parse(location!).coords
+      let couponList = isInsideRegions(list, address.lat, address.long);
+      setAllPromoCodes(couponList)
       setLoading(false);
     }
   }
@@ -97,17 +103,12 @@ const Annonces = () => {
     getAllAnnonces()
     getAllPromoCodes()
   }, [])
-  useEffect(() => {
-    console.log("loading", loading)
-  }, [loading])
 
   useEffect(() => {
     let totalPages: number = 1;
     totalPages = Math.ceil((allAnnoncesData.length + AllPromoCodes.length) / itemsPerPage)
     setTotalPages(totalPages)
     handleContent()
-    console.log('allAnnoncesData', allAnnoncesData)
-    console.log('AllPromoCodes', AllPromoCodes)
   }, [allAnnoncesData, AllPromoCodes])
 
   useEffect(() => {
