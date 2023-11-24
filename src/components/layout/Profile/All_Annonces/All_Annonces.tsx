@@ -1,10 +1,12 @@
 
-import './allAnnonces.scss';
+import { useEffect, useState } from 'react';
+import { useTranslation } from 'react-i18next';
+import { useAppSelector } from '../../../../Redux/store';
 import LeftArrow from '../../../../assets/profile/leftArrow.svg';
 import RigthArrow from '../../../../assets/profile/rigthArrow.svg';
-import { useEffect, useState } from 'react';
 import { supplierServices } from '../../../../services/api/suppliers.api';
-import { useAppSelector } from '../../../../Redux/store';
+import Spinner from '../../../spinner/Spinner';
+import './allAnnonces.scss';
 
 interface AnnonceProps {
   title: string,
@@ -35,6 +37,7 @@ const Annonces = () => {
   const [displayedContent, setDisplayedContent] = useState<any[]>([]);
   const [allAnnoncesData, setAllAnnoncesData] = useState<any[]>([])
 
+  const { t } = useTranslation()
   const handleContent = () => {
     const startIndex = (currentPage - 1) * itemsPerPage;
     const endIndex = startIndex + itemsPerPage;
@@ -71,56 +74,54 @@ const Annonces = () => {
 
 
   return (
-    <>
-      <section className="annonces-section">
-        {
-          allAnnoncesData.length > 0 ? (
-            <>
-              <main>
-                {
-                  displayedContent.length > 0 && (
-                    displayedContent.map((annonce: any, index: number) => {
-                      return <AnnonceCart key={index} title={annonce.title} bodyText={annonce.description} />
-                    })
-                  )
+    <section className="annonces-section">
+      <h1>{t('profile.allAnnounces.message')}</h1>
 
-                }
-              </main>
-              <div className='buttons'>
-                {/* prev button */}
-                {!(currentPage === 1) &&
-                  <div className="nav-page-button">
-                    <button onClick={prevPage}>
-                      <img  loading="lazy" src={LeftArrow} alt="prev button" />
-                    </button>
-                  </div>
-                }
-                {/* next */}
-                {(!(currentPage === totalPages) && (currentPage + 1 <= totalPages)) &&
-                  <div className="nav-page-button">
-                    <button onClick={nextPage}>
-                      <img  loading="lazy" src={RigthArrow} alt="prev button" />
+      {
+        allAnnoncesData.length > 0 ? (
+          <>
+            <main>
+              {
+                displayedContent.length > 0 && (
+                  displayedContent.map((annonce: any, index: number) => {
+                    return <AnnonceCart key={index} title={annonce.title} bodyText={annonce.description} />
+                  })
+                )
 
-                    </button>
-                  </div>
-                }
+              }
+            </main>
+            <div className='buttons'>
+              {/* prev button */}
+              {!(currentPage === 1) &&
+                <div className="nav-page-button">
+                  <button onClick={prevPage}>
+                    <img loading="lazy" src={LeftArrow} alt="prev button" />
+                  </button>
+                </div>
+              }
+              {/* next */}
+              {(!(currentPage === totalPages) && (currentPage + 1 <= totalPages)) &&
+                <div className="nav-page-button">
+                  <button onClick={nextPage}>
+                    <img loading="lazy" src={RigthArrow} alt="prev button" />
 
-              </div>
-            </>
-          ) : (
-            <>
-              <center>
-                <span className='title'>
+                  </button>
+                </div>
+              }
+
+            </div>
+          </>
+        ) : (
+          <>
+            {/* <span className='title'>
                   no announces
-                </span>
-              </center>
-            </>
-          )
-        }
+                </span> */}
+            <Spinner name='' />
+          </>
+        )
+      }
 
-      </section>
-
-    </>
+    </section>
   );
 };
 

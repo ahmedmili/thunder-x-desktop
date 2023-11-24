@@ -44,8 +44,9 @@ const SideBar = () => {
   const user = userItem ? JSON.parse(userItem) : null;
   const [isDivVisible, setIsDivVisible] = useState(true);
 
-  // const location = useLocation()
-
+  useEffect(() => {
+    setFullName(`${user.firstname} ${user.lastname}`)
+  }, [user])
 
   // save path on refresh
   const pathSchema = ["/", "/profile/annonces/", "/profile/", "/profile/archivedCommands/", "/profile/Fidelite/", "/profile/discuter/", "/profile/Favors/"]
