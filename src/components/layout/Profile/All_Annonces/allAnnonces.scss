@@ -41,7 +41,7 @@
             border-radius: 25px;
             background: #FFF;
             box-shadow: 0px 4px 4px 0px rgba(0, 0, 0, 0.25);
-            padding: 21px 39px;
+            padding: 21px 16px 10px 39px;
             overflow-y: scroll;
 
             &::-webkit-scrollbar {
@@ -83,6 +83,14 @@
                 font-style: normal;
                 font-weight: 400;
                 line-height: normal;
+            }
+
+            .time {
+                text-align: end;
+                margin: 5px 0 0 0;
+                color: $primary_color;
+                font-weight: 300;
+                font-size: 14px;
             }
         }
 
