@@ -22,6 +22,8 @@ import {
 import { useAppSelector } from "../../Redux/store";
 import CategoryCarousel from "../../components/categoriesCarousel/categoriesCarousel";
 import HomeSkeleton from "./skeleton/HomeSkeleton";
+import Messanger from "../../components/Popups/Messanger/Messanger";
+import MessangerBtnIcon from '../../assets/profile/Discuter/messanger-btn.svg';
 
 const HomePage = () => {
 
@@ -29,10 +31,18 @@ const HomePage = () => {
   const categories = useSelector(categoriesHomeSelector);
   const recommanded = useSelector(recommendedHomeSelector);
   const isLoading = useSelector(homeLoadingSelector);
+  const [messangerPopup, setMessangerPopup] = useState<boolean>(false)
 
   const restaurantsList = useAppSelector(
     (state) => state.restaurant.restaurants
   );
+
+  const unReadMessages = useAppSelector((state) => state.messanger.unReadedMessages)
+  const [unReadedQt, setUnReadedQt] = useState<number>(unReadMessages)
+
+  useEffect(() => {
+    setUnReadedQt(unReadMessages)
+  }, [unReadMessages])
 
   const [selectedCategory, setSelectedCategory] = useState<string>("");
   const [filteredRestaurants, setFilteredRestaurants] = useState<Restaurant[]>(
@@ -67,6 +77,10 @@ const HomePage = () => {
       setFilteredRestaurants(filteredRestaurants.length > 0 ? filteredRestaurants : []);
     }
   };
+  const handleMessangerPopup = () => {
+    console.log('open messanger')
+    setMessangerPopup(!messangerPopup)
+  }
 
   useEffect(() => {
     handleCategorySelect("");
@@ -131,9 +145,27 @@ const HomePage = () => {
               <></>
             )}
 
+
             {!isLoading && ads && ads.HOME_3 && (
               <AdsCarousel data={ads.HOME_3} />
             )}
+
+            <div className={homeStyle.bulles}>
+              <button className={homeStyle.messangerPopupBtn} onClick={handleMessangerPopup} style={{ backgroundImage: `url(${MessangerBtnIcon})` }}>
+                {unReadedQt > 0 && (
+                  <div className={homeStyle.messangerBullNotifIcon}>
+                    {unReadedQt}
+                  </div>
+                )}
+              </button>
+              {/* <button className='phone-popup-btn' onClick={handlePhonePopup} style={{ backgroundImage: `url(${PhoneBtnIcon})` }}></button> */}
+            </div>
+            {
+              messangerPopup &&
+              <Messanger className={homeStyle.discuterMessangerPopup} close={handleMessangerPopup} />
+            }
+
+
           </>
         )}
       </div>

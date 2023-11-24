@@ -11,8 +11,8 @@ import { useTranslation } from 'react-i18next'
 import { addMessangerSuccess, fetchMessages, handleMessanger, initUnReadedMessage, messagesSelector } from '../../../Redux/slices/messanger'
 
 interface MessangerProps {
-    close: any,
-    className: string
+    close?: any,
+    className?: string
 }
 const Messanger: React.FC<MessangerProps> = ({ className }) => {
 
