@@ -8,11 +8,10 @@ import KeyboardArrowDownOutlinedIcon from '@mui/icons-material/KeyboardArrowDown
 import KeyboardArrowUpOutlinedIcon from '@mui/icons-material/KeyboardArrowUpOutlined';
 import empty from '../../assets/panier/empty.png';
 
+import CloseIcon from '@mui/icons-material/Close';
 import { useTranslation } from 'react-i18next';
 import { useNavigate } from 'react-router-dom';
-import PaymentPopup from '../Popups/payment/PaymentPopup';
 import './cart.scss';
-import CloseIcon from '@mui/icons-material/Close';
 interface CartProps {
   items: FoodItem[];
   closeButton: any
@@ -116,10 +115,7 @@ export const Cart: React.FC<CartProps> = ({ items, closeButton }) => {
     setSousTotal(sum);
   }
 
-  const handlePopupe = () => {
-    setShowPopup(!showPopup)
-    setPopupType("error")
-  }
+
 
   useEffect(() => {
     getSousTotal();
@@ -195,25 +191,7 @@ export const Cart: React.FC<CartProps> = ({ items, closeButton }) => {
               }>
                 {t('cart.payment.checkCart')}
               </button>
-              <button className='to-paiment'
-                onClick={
-                  () => {
-                    handlePopupe()
-                  }
-                }
-              >
-                {t("cart.payment.toPayment")}
-              </button>
             </section>
-
-            {
-              showPopup && (
-                <>
-                  <PaymentPopup type='error' close={handlePopupe} />
-                </>
-              )
-
-            }
           </>
         ) : (
           <>
