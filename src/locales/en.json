@@ -255,5 +255,10 @@
       "question": "Is there a minimum order amount for delivery?",
       "answer": "Yes, there is a minimum order amount for delivery. The amount varies by restaurant and location, but it will be displayed in the app when you select a restaurant."
     }
-  ]
+  ],
+  "mobile.menu.title": "Order in the application",
+"mobile.menu.description": "Enjoy special benefits at your favorite places and restaurants!",
+"mobile.menu.download_button": "Download the application",
+"mobile.menu.web_button": "Continue on the web"
+
 }
