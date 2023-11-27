@@ -56,45 +56,43 @@ const Politiques = () => {
 
 
   return (
-    <>
-      <section className="Politique-section">
-        <div className="logo-container">
 
-          <div className="logo-wrapper" style={{ backgroundImage: `url(${thunderLogo})` }}>
+    <section className="Politique-section">
+      <div className="logo-container">
+
+        <div className="logo-wrapper" style={{ backgroundImage: `url(${thunderLogo})` }}>
+        </div>
+      </div>
+      <main>
+        {
+          displayedContent.length > 0 && (
+            displayedContent.map((legal: any, index: number) => {
+              return <LegalCart key={index} bodyText={legal.body} />
+            })
+          )
+
+        }
+      </main>
+      <div className='buttons'>
+        {/* prev button */}
+        {!(currentPage === 1) &&
+          <div className="nav-page-button">
+            <button onClick={prevPage}>
+              <img loading="lazy" src={LeftArrow} alt="prev button" />
+            </button>
           </div>
-        </div>
-        <main>
-          {
-            displayedContent.length > 0 && (
-              displayedContent.map((legal: any, index: number) => {
-                return <LegalCart key={index} bodyText={legal.body} />
-              })
-            )
+        }
+        {/* next */}
+        {!(currentPage === totalPages) &&
+          <div className="nav-page-button">
+            <button onClick={nextPage}>
+              <img loading="lazy" src={RigthArrow} alt="prev button" />
 
-          }
-        </main>
-        <div className='buttons'>
-          {/* prev button */}
-          {!(currentPage === 1) &&
-            <div className="nav-page-button">
-              <button onClick={prevPage}>
-                <img loading="lazy" src={LeftArrow} alt="prev button" />
-              </button>
-            </div>
-          }
-          {/* next */}
-          {!(currentPage === totalPages) &&
-            <div className="nav-page-button">
-              <button onClick={nextPage}>
-                <img loading="lazy" src={RigthArrow} alt="prev button" />
-
-              </button>
-            </div>
-          }
-        </div>
-      </section>
-
-    </>
+            </button>
+          </div>
+        }
+      </div>
+    </section>
   );
 };
 
