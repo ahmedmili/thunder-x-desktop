@@ -1,29 +1,27 @@
 import { useAppDispatch, useAppSelector } from '../../Redux/store';
 
-import { FoodItem, User } from '../../services/types';
 import React, { useEffect, useState } from 'react';
 
 
 import { logout } from "../../Redux/slices/userSlice";
 
 
-import profile_img from '../../assets/profile/profile_img.png'
-import Accueil from '../../assets/profile/Accueil.svg'
-import Offres from '../../assets/profile/Offres.svg'
-import Config from '../../assets/profile/Config.svg'
-import Archive from '../../assets/profile/Archive.svg'
-import Espace from '../../assets/profile/Espace.svg'
-import Discuter from '../../assets/profile/Discuter.svg'
-import Favors from '../../assets/profile/Favors.svg'
-import Deconnecter from '../../assets/profile/Deconnecter.svg'
-import './userCart.scss'
-import { RootState } from '../../Redux/slices';
-import { localStorageService } from '../../services/localStorageService';
-import { Link } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
+import { Link } from 'react-router-dom';
+import { toast } from 'react-toastify';
 import { setProfilePage } from '../../Redux/slices/home';
+import Accueil from '../../assets/profile/Accueil.svg';
+import Archive from '../../assets/profile/Archive.svg';
+import Config from '../../assets/profile/Config.svg';
+import Deconnecter from '../../assets/profile/Deconnecter.svg';
+import Discuter from '../../assets/profile/Discuter.svg';
+import Espace from '../../assets/profile/Espace.svg';
+import Favors from '../../assets/profile/Favors.svg';
+import Offres from '../../assets/profile/Offres.svg';
+import profile_img from '../../assets/profile/profile_img.png';
 import { LocationService } from '../../services/api/Location.api';
-// import { toast } from 'react-toastify';
+import { localStorageService } from '../../services/localStorageService';
+import './userCart.scss';
 interface CartProps {
   closeButton: any,
   lastName?: string,
@@ -97,33 +95,33 @@ export const UserCart: React.FC<CartProps> = ({ firstName = "", lastName = "", c
                   <li>
                     <div className='link-list'>
                       <div className='profile-list-icon' style={{ backgroundImage: `url(${Offres})` }}></div>
-                      <Link onClick={() => handleSelect(2)} to={'/profile/annonces'}>{t("profile.mesOffres")}</Link>
+                      <Link onClick={() => handleSelect(2)} to={'/profile/annonces/'}>{t("profile.mesOffres")}</Link>
                     </div>
                   </li>
                   <li>
                     <div className='link-list'>
                       <div className='profile-list-icon' style={{ backgroundImage: `url(${Config})` }}></div>
-                      <Link onClick={() => handleSelect(3)} to={'/profile'}>{t("profile.mesConfig")}</Link>
+                      <Link onClick={() => handleSelect(3)} to={'/profile/'}>{t("profile.mesConfig")}</Link>
                     </div>
                   </li>
                   <li>
                     <div className='link-list'>
                       <div className='profile-list-icon' style={{ backgroundImage: `url(${Archive})` }}></div>
-                      <Link onClick={() => handleSelect(4)} to={'/profile/archivedCommands'}>{t("profile.commands")}</Link>
+                      <Link onClick={() => handleSelect(4)} to={'/profile/archivedCommands/'}>{t("profile.commands")}</Link>
                     </div>
                   </li>
                   <li>
 
                     <div className='link-list'>
                       <div className='profile-list-icon' style={{ backgroundImage: `url(${Espace})` }}></div>
-                      <Link onClick={() => handleSelect(5)} to={'/profile'}>{t("profile.espaceFidel")}</Link>
+                      <Link onClick={() => handleSelect(5)} to={'/profile/Fidelite/'}>{t("profile.espaceFidel")}</Link>
                     </div>
 
                   </li>
                   <li>
                     <div className='link-list'>
                       <div className='profile-list-icon' style={{ backgroundImage: `url(${Discuter})` }}></div>
-                      <Link onClick={() => handleSelect(6)} to={'/profile/discuter'}>{t("profile.discuter")}</Link>
+                      <Link onClick={() => handleSelect(6)} to={'/profile/discuter/'}>{t("profile.discuter")}</Link>
                       {
                         discuterNotifActive && (
                           <div className='notif-indicator'>
@@ -135,7 +133,7 @@ export const UserCart: React.FC<CartProps> = ({ firstName = "", lastName = "", c
                   <li>
                     <div className='link-list'>
                       <div className='profile-list-icon' style={{ backgroundImage: `url(${Favors})` }}></div>
-                      <Link onClick={() => handleSelect(7)} to={'/profile/Favors'}>{t("profile.favors")}</Link>
+                      <Link onClick={() => handleSelect(7)} to={'/profile/Favors/'}>{t("profile.favors")}</Link>
                     </div>
                   </li>
                 </ul>
@@ -157,13 +155,11 @@ export const UserCart: React.FC<CartProps> = ({ firstName = "", lastName = "", c
                 }}>
                   <li>
                     <div className='link-list'>
-                      {/* <div className='profile-list-icon' style={{ backgroundImage: `url(${Accueil})` }}></div> */}
                       <Link to={'/login'}>{t("login")}</Link>
                     </div>
                   </li>
                   <li>
                     <div className='link-list'>
-                      {/* <div className='profile-list-icon' style={{ backgroundImage: `url(${Accueil})` }}></div> */}
                       <Link to={'/register'}>{t("signup")}</Link>
                     </div>
                   </li>

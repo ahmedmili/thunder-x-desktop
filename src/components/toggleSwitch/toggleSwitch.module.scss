@@ -22,8 +22,7 @@
       color: white;
       font-size: 14px;
       font-family: Poppins;
-
-      &.emporter {
+      &.emporter{
         background-image: url(/src/assets/icons/delivery.svg);
         background-size: 16px;
         background-position: 0px;
@@ -32,7 +31,6 @@
         margin-left: 14px;
       }
     }
-
     .SwitchWrapper {
       position: absolute;
       top: 0px;
@@ -42,14 +40,12 @@
       width: 116px;
       z-index: 3;
       transition: transform 0.5s cubic-bezier(0.77, 0, 0.175, 1);
-
       .Switch {
         padding: 5px;
         border-radius: 3rem;
         background: #FBC000;
         height: 100%;
         width: 150px;
-
         .SwitchText {
           text-align: center;
           opacity: 0;
@@ -62,8 +58,7 @@
           left: 40px;
           font-size: 14px;
           font-family: Poppins;
-
-          &.emporter {
+          &.emporter{
             padding-left: 23px;
             background-image: url(/src/assets/icons/delivery.svg);
             background-size: 16px;
@@ -86,15 +81,12 @@
   @media only screen and (max-width:1200px) {
     .SwitchesContainer {
       padding: 3px;
-
       .SwitchWrapper {
         width: 107.361px;
       }
-
       .SwitchLabel {
         font-size: 14px;
       }
-
       .SwitchWrapper {
         .Switch {
           .SwitchText {
@@ -108,15 +100,12 @@
   @media only screen and (max-width:768px) {
     .SwitchesContainer {
       padding: 0;
-
       .SwitchWrapper {
         width: 107.361px;
       }
-
       .SwitchLabel {
         font-size: 11px;
       }
-
       .SwitchWrapper {
         .Switch {
           .SwitchText {
@@ -141,12 +130,10 @@
           }
         }
       }
-
       .SwitchLabel {
         padding: 0;
         font-size: 6px;
       }
-
       .SwitchTextIcon {
         margin-right: 2px;
         font-size: 8px;

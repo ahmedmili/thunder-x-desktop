@@ -15,6 +15,14 @@
   "Enregistrer": "تسجيل",
   "Envoyer": "إرسال",
   "loading": "تحميل",
+  "today": "اليوم",
+  "dayAgo": "قبل يوم واحد",
+  "monthAgo": "قبل شهر واحد",
+  "daysAgo": "أيام",
+  "weeksAgo": "منذ أسابيع",
+
+  "profile.allAnnounces.message": "عروضي وإعلاناتي",
+  "profile.coupon.message": "وفّر مع رموز الخصم في سلة التسوق الخاصة بك!",
   "profile.mesConfig.modifAccount": "تعديل الحساب",
   "profile.mesConfig.delivAdress": "عنوانات التسليم الخاصة بي",
   "profile.mesConfig.modifLong": "تغيير اللغة",
@@ -208,5 +216,10 @@
   "cart.payment.noCommands": "لم تحصل على أي طلب في الوقت الحالي.",
   "cart.payment.iCommand": "أطلب",
   "cart.payment.payment": "الدفع",
-  "repasGratuit": "وجبة مجانية"
+  "repasGratuit": "وجبة مجانية",
+  "mobile.menu.title": "اطلب في التطبيق",
+"mobile.menu.description": "استمتع بفوائد خاصة في أماكنك ومطاعمك المفضلة!",
+"mobile.menu.download_button": "تحميل التطبيق",
+"mobile.menu.web_button": "المتابعة على الويب"
+
 }

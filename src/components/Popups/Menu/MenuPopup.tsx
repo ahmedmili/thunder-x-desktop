@@ -477,7 +477,7 @@ const MenuPopup: React.FC<Props> = ({ close, restaurant }) => {
                                                                     <div className="checkBox">
                                                                         <input type='checkbox' name={option.id} id={option.id} value={option.id || ''} onChange={(e) => selectOption(Object.keys(options)[0], index, e)} checked={option?.checked}>
                                                                         </input>
-                                                                        <div className="custom-checkbox"></div>
+                                                                        <label htmlFor={option.id} className="custom-checkbox"></label>
                                                                         <label htmlFor={option.id}>{option.name} </label>
                                                                     </div>
                                                                     <span className='option-price'>{option.price} DT</span>

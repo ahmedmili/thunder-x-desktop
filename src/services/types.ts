@@ -68,6 +68,52 @@ export type Position = {
     label: string | null;
   };
 };
+export type Coupon = {
+  action: string;
+  apply_on: string;
+  client_id: number | null;
+  client_quantity: number | null;
+  clients: [];
+  code_coupon: string;
+  created_at: string | Date;
+  currency: null;
+  days: number;
+  deleted_at: null;
+  delivery_fixed: number;
+  description: string;
+  end_date: string;
+  extra_delivery_fixed: number;
+  frais_port: number;
+  id: number;
+  montant_min: number | null;
+  nbr_commands: number;
+  quantity: number;
+  regionsPromo: [];
+  start_date: string | Date;
+  status: number;
+  taxe: number | null;
+  title: string;
+  trigger: string;
+  type: string;
+  updated_at: string | Date;
+  value: number;
+};
+export type Announce = {
+  created_at: string | Date;
+  description: string;
+  end_date: string | Date;
+  id: number;
+  menu: MenuData | null;
+  notif_tentative: 0;
+  product: null;
+  read: string
+  start_date: string | Date;
+  status: string;
+  supplier: null;
+  time: string;
+  title: string;
+  updated_at: string | Date;
+};
 
 export interface Product {
   id: number;

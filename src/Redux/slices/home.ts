@@ -26,7 +26,7 @@ export type HomeDataState = {
 
 const initialState: HomeDataState = {
   theme: 0,
-  profilePage: 3,
+  profilePage: 0,
   data: {
     ads: {},
     categories: [],

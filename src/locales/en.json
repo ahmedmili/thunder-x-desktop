@@ -8,6 +8,12 @@
   "Verifier.phone": "Telephone number verification",
   "Annuler": "Cancel",
   "Envoyer": "Send",
+  "today": "Today",
+  "dayAgo": "1 day ago",
+  "monthAgo": "1 month ago",
+  "daysAgo": "days ago",
+  "weeksAgo": "weeks ago",
+
   "header.nous": "We",
   "header.livrons": "deliver",
   "header.plus": "more than just",
@@ -19,6 +25,8 @@
   "profile.mesConfig": "My settings",
   "profile.commands": "Archived commandes",
   "profile.espaceFidel": "Fidelity Space",
+  "profile.allAnnounces.message": "My offers & ads",
+  "profile.coupon.message": "Save with our promo codes in your cart !",
   "profile.discuter": "Talk to us!",
   "profile.discuter.aide": "Need help?",
   "profile.discuter.supportContact": "Contact customer support",
@@ -201,7 +209,6 @@
   "adress.currentPos": "Current location",
   "adress.takeAdressFromCart": "Indicate your address on the map",
   "adress.initLocation": "Initial Location",
-
   "supplier.opentime": "Open up to",
   "supplier.delivPrice": "Shipping costs:",
   "supplier.allProducts": "All products",
@@ -255,5 +262,10 @@
       "question": "Is there a minimum order amount for delivery?",
       "answer": "Yes, there is a minimum order amount for delivery. The amount varies by restaurant and location, but it will be displayed in the app when you select a restaurant."
     }
-  ]
+  ],
+  "mobile.menu.title": "Order in the application",
+"mobile.menu.description": "Enjoy special benefits at your favorite places and restaurants!",
+"mobile.menu.download_button": "Download the application",
+"mobile.menu.web_button": "Continue on the web"
+
 }

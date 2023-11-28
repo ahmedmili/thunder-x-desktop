@@ -1,6 +1,6 @@
 import ArrowBackIosIcon from '@mui/icons-material/ArrowBackIos';
 import ArrowForwardIosIcon from '@mui/icons-material/ArrowForwardIos';
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { Col, Container, Row } from "react-bootstrap";
 import { useTranslation } from "react-i18next";
 import Skeleton from "react-loading-skeleton";
@@ -22,6 +22,9 @@ import { supplierServices } from '../../services/api/suppliers.api';
 import { setSearchQuery, setfilterRestaurants } from '../../Redux/slices/restaurantSlice';
 import { useDispatch } from 'react-redux';
 import Spinner from '../../components/spinner/Spinner';
+import Messanger from '../../components/Popups/Messanger/Messanger';
+import MessangerBtnIcon from '../../assets/profile/Discuter/messanger-btn.svg';
+import { fetchMessages } from '../../Redux/slices/messanger';
 
 function FilterPage() {
     const restaurantsList = useAppSelector((state) => state.restaurant.filterRestaurants);
@@ -39,7 +42,29 @@ function FilterPage() {
     const { t } = useTranslation()
     const navigate = useNavigate();
     const dispatch = useDispatch();
+    const suppliersListRef = useRef(null);
 
+
+    // handle messanger
+    const unReadMessages = useAppSelector((state) => state.messanger.unReadedMessages)
+    const [messangerPopup, setMessangerPopup] = useState<boolean>(false)
+    const [unReadedQt, setUnReadedQt] = useState<number>(unReadMessages)
+    useEffect(() => {
+        setUnReadedQt(unReadMessages)
+    }, [unReadMessages])
+
+    const handleMessangerPopup = () => {
+        setMessangerPopup(!messangerPopup)
+    }
+    useEffect(() => {
+        fetchMessages()
+    }, [])
+    //
+    const scrollToTarget = (targetRef: any) => {
+       
+        targetRef.current && targetRef.current.scrollIntoView({ behavior: 'smooth', block: 'start', inline: 'nearest' });
+
+    };
 
     function handleTextSearch(searchTerm: string): void {
         const currentLocation = localStorageService.getCurrentLocation();
@@ -55,6 +80,7 @@ function FilterPage() {
                     supplierServices.searchSupplierByArticle(data).then((resp) => {
                         dispatch(setfilterRestaurants(resp.data.data.suppliers))
                         setIsLoading(false);
+                        suppliersListRef && scrollToTarget(suppliersListRef)
 
                     })
                 } catch (e) {
@@ -66,6 +92,7 @@ function FilterPage() {
         } else {
             // setErrorMessage("choisissez l\'emplacement s\'il vous plaît");
         }
+
 
         dispatch(setSearchQuery(searchTerm));
     }
@@ -99,12 +126,16 @@ function FilterPage() {
         supplierServices.searchSupplierBySubArticle(requestData).then((res: any) => {
             dispatch(setfilterRestaurants(res.data.data.suppliers))
             setIsLoading(false);
+            suppliersListRef && scrollToTarget(suppliersListRef)
+
         })
     }
 
     useEffect(() => {
         setOriginCategories(categories)
         categories && searchByUrl()
+        suppliersListRef && scrollToTarget(suppliersListRef)
+
     }, [categories])
 
     useEffect(() => {
@@ -129,6 +160,8 @@ function FilterPage() {
                     break;
             }
         } else {
+            suppliersListRef && scrollToTarget(suppliersListRef)
+
             setIsLoading(false)
         }
     }
@@ -137,21 +170,26 @@ function FilterPage() {
 
     useEffect(() => {
         setAllRestaurantsList(restaurantsList)
+        suppliersListRef && scrollToTarget(suppliersListRef)
+
     }, [restaurantsList])
 
 
     // navigation 
     const handleClick = (page: number) => {
         setCurrentPage(page);
+        suppliersListRef && scrollToTarget(suppliersListRef)
     };
     const handleBackClick = () => {
         if (currentPage != 1) {
             setCurrentPage(currentPage - 1);
+            suppliersListRef && scrollToTarget(suppliersListRef)
         }
     };
     const handleNextClick = () => {
         if (currentPage != totalPages) {
             setCurrentPage(currentPage + 1);
+            suppliersListRef && scrollToTarget(suppliersListRef)
         }
     };
 
@@ -263,18 +301,18 @@ function FilterPage() {
         <>
             <Container fluid className="filter-page-container">
                 {/* <Row> */}
-                    {/* categories list */}
-                    {originCategories ? (
-                        <CategoriesCarousel
-                            onCategorySelect={() => { }}
-                        />
-                    ) : (
-                        <div className="skeleton-container">
-                            <Skeleton count={12} className="loading-skeleton" />
-                            <Skeleton count={12} className="loading-skeleton" />
-                            <Skeleton count={12} className="loading-skeleton" />
-                        </div>
-                    )}
+                {/* categories list */}
+                {originCategories ? (
+                    <CategoriesCarousel
+                        onCategorySelect={() => { }}
+                    />
+                ) : (
+                    <div className="skeleton-container">
+                        <Skeleton count={12} className="loading-skeleton" />
+                        <Skeleton count={12} className="loading-skeleton" />
+                        <Skeleton count={12} className="loading-skeleton" />
+                    </div>
+                )}
                 {/* </Row> */}
                 <Row>
                     <Col className="col-4 filter-side-bar">
@@ -296,7 +334,7 @@ function FilterPage() {
                         </div>
                     </Col>
 
-                    <Col className="display-main">
+                    <Col className="display-main" ref={suppliersListRef}>
                         {
                             allRestaurantsList.length > 0 && !isloading ? (
                                 <>
@@ -323,6 +361,22 @@ function FilterPage() {
 
                     </Col>
                 </Row>
+
+                <div className='bulles'>
+                    <button className='messanger-popup-btn' onClick={handleMessangerPopup} style={{ backgroundImage: `url(${MessangerBtnIcon})` }}>
+                        {unReadedQt > 0 && (
+                            <div className='messanger-bull-notif-icon'>
+                                {unReadedQt}
+                            </div>
+                        )}
+                    </button>
+                    {/* <button className='phone-popup-btn' onClick={handlePhonePopup} style={{ backgroundImage: `url(${PhoneBtnIcon})` }}></button> */}
+                </div>
+
+                {
+                    messangerPopup && <Messanger className="discuter-messanger-popup" close={handleMessangerPopup} />
+                }
+
             </Container>
         </>
     )

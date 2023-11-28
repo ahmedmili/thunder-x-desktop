@@ -5,6 +5,7 @@ import { useAppDispatch, useAppSelector } from '../../../Redux/store';
 import { LocationService } from '../../../services/api/Location.api';
 // import { toast } from 'react-toastify';
 import './mapCard.scss';
+import EditPen from '../../../assets/edit-pen.svg'
 
 import { useTranslation } from 'react-i18next';
 import { localStorageService } from '../../../services/localStorageService';
@@ -15,8 +16,8 @@ import { ErrorMessage, Field, Form, Formik, FormikHelpers } from 'formik';
 import { useSelector } from "react-redux";
 import * as Yup from 'yup';
 import {
-    homeLoadingSelector,
-    regionHomeSelector
+  regionHomeSelector,
+  homeLoadingSelector
 } from "../../../Redux/slices/home";
 
 

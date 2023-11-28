@@ -13,10 +13,17 @@
   "home.categorie": "Qu’est ce qu’on vous apporte ?",
   "Enregistrer": "Enregistrer",
   "loading": "Chargement",
+  "today": "Aujourd'hui",
+  "dayAgo": "Il y a 1 jour",
+  "monthAgo": "Il y a 1 mois",
+  "daysAgo": "jours",
+  "weeksAgo": "semaines",
   "profile.mesOffres": "Mes offres &annonces",
   "profile.mesConfig": "Mes configurations",
   "profile.commands": "Archive commandes",
   "profile.espaceFidel": "Espace de fidelité",
+  "profile.allAnnounces.message": "Mes offres & annonces",
+  "profile.coupon.message": "Économisez avec nos codes promo dans votre panier !",
   "profile.discuter": "Discuter avec nous !",
   "profile.discuter.aide": "Besoin d’aide ?",
   "profile.discuter.supportContact": "Contactez le support client",
@@ -169,7 +176,7 @@
   "cartPage.phoneNumber": "Numéro de téléphone",
   "cartPage.phoneNumber2": "N° de téléphone :",
   "cartPage.client": "Client",
-  "cartPage.product": "Produit",
+  "cartPage.product": "Articles dans le panier",
   "cartPage.monPanier": "Mon Panier",
   "cartPage.delivto": "Livraison à",
   "cartPage.deliveryOptions.delivery": "Livraison",
@@ -256,5 +263,11 @@
       "question": "Y a-t-il un montant minimum de commande pour la livraison ?",
       "answer": "Oui, il y a un montant minimum de commande pour la livraison. Le montant varie en fonction du restaurant et de l'emplacement, mais il sera affiché dans l'application lorsque vous sélectionnerez un restaurant."
     }
-  ]
+  ],
+  "mobile.menu.title": "Commandez dans l’application",
+  "mobile.menu.description": "Bénéficiez d'avantages spéciaux dans vos lieux et restaurants favoris!",
+  "mobile.menu.download_button": "Télécharger l'application",
+  "mobile.menu.web_button": "Continuer sur le web"
+ 
+    
 }
