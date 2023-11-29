@@ -325,7 +325,8 @@ const MenuPopup: React.FC<Props> = ({ close, restaurant }) => {
         localStorageService.setBonus(restaurant.bonus);
         usedispatch(addItem(obj));
         getProduct()
-        setCurrentPage(1)
+        close()
+        // setCurrentPage(1)
     }
 
     // handle displayed content
