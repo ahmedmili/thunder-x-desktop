@@ -3,13 +3,22 @@ import { userService } from '../../../../../services/api/user.api';
 import './parainage.scss';
 // import TransferBonus from './TransferBonus/TransferBonus';
 import Childs from './Childs/Childs';
-import Invitaion from './Invitaion/Invitaion';
+import InviteBanner from './Invitaion/InviteBanner/InviteBanner';
 import Parent from './Parent/Parent';
+import InvitPage from './Invitaion/InvitPage/InvitPage';
 
 function Parainage() {
 
     const [parent, setParent] = useState<any>({})
     const [child, setChildren] = useState<any>({})
+    const [page, setPage] = useState<number>(2)
+    // useEffect(() => {
+    //     setPage(1)
+    // }, [])
+
+    const pageNavigateInterne = (page: number) => {
+        if (page >= 1) setPage(page)
+    }
 
     const getSponsorshipListParent = async () => {
         const { status, data } = await userService.getSponsorshipListParent()
@@ -31,9 +40,22 @@ function Parainage() {
 
     return (
         <div className='parainage-container'>
-            <Parent parent={parent} />
-            <Childs childs={child} />
-            <Invitaion />
+            {
+                page === 1 && (
+                    <>
+                        <Parent parent={parent} />
+                        <Childs childs={child} />
+                        <InviteBanner internNavigation={pageNavigateInterne} />
+                    </>
+                )
+            }
+            {
+                page === 2 && (
+                    <>
+                        <InvitPage internNavigation={pageNavigateInterne} />
+                    </>
+                )
+            }
         </div>
     )
 }
