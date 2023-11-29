@@ -27,7 +27,6 @@ const ButtonConnect = ({ icon, text, provider }: ButtonConnectProps) => {
         userService.signInWithGoogle().then((res) => {
           const token = res?.data.data.token
           const user = res?.data.data.user
-          console.log(res)
           token && login(token, user)
         }).catch((e) => {
           console.log(e)

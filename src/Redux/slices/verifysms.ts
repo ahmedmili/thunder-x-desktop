@@ -55,8 +55,7 @@ export const verifysmsAction = (code: any) => async (dispatch: AppDispatch) => {
   try {
     dispatch(startLoading());
     const idUser = localStorageService.getUserId()
-    const response = await api.get("verify/" + idUser + "?code="+code);
-    console.log(response.data)
+    const response = await api.get("verify/" + idUser + "?code=" + code);
     const { success, data } = response.data;
     if (success) {
       dispatch(verifysmsSuccess(data.code));

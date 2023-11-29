@@ -1,7 +1,6 @@
 import { useEffect, useState } from 'react';
 import { userService } from '../../../../../services/api/user.api';
 import './parainage.scss';
-// import TransferBonus from './TransferBonus/TransferBonus';
 import Childs from './Childs/Childs';
 import InviteBanner from './Invitaion/InviteBanner/InviteBanner';
 import Parent from './Parent/Parent';
@@ -11,10 +10,8 @@ function Parainage() {
 
     const [parent, setParent] = useState<any>({})
     const [child, setChildren] = useState<any>({})
-    const [page, setPage] = useState<number>(2)
-    // useEffect(() => {
-    //     setPage(1)
-    // }, [])
+    const [page, setPage] = useState<number>(1)
+
 
     const pageNavigateInterne = (page: number) => {
         if (page >= 1) setPage(page)

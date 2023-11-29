@@ -7,6 +7,7 @@ import SocialShare from '../../../../../../../assets/profile/socialShare.svg'
 import { useEffect, useState } from 'react';
 import { localStorageService } from '../../../../../../../services/localStorageService';
 import copy from 'clipboard-copy';
+import ShareSocialModal from '../../../../../../Popups/ShareSocial/ShareSocial';
 
 interface InvitPageProps {
     internNavigation: (page: number) => void,
@@ -16,6 +17,11 @@ interface InvitPageProps {
 function InvitPage({ internNavigation }: InvitPageProps) {
     const { t } = useTranslation()
     const [code, setCode] = useState<string>('')
+    const [OpenModal, setOpenModal] = useState<boolean>(false)
+
+    const handleModal = () => {
+        setOpenModal(!OpenModal)
+    }
     useEffect(() => {
         let user = localStorageService.getUser()
         if (user) {
@@ -27,8 +33,8 @@ function InvitPage({ internNavigation }: InvitPageProps) {
 
     const copyCode = () => {
         copy(code)
-            .then(() => console.log("coppied"))
-            .catch((error) => console.error('Error copying to clipboard:', error));
+            // .then(() => console.log("coppied"))
+            // .catch((error) => console.error('Error copying to clipboard:', error));
 
     }
 
@@ -51,10 +57,13 @@ function InvitPage({ internNavigation }: InvitPageProps) {
                 <p>Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard</p>
             </section>
 
-            <button className='social-share-button'>
+            <button onClick={handleModal} className='social-share-button'>
                 <span className='social-share-icon' style={{ backgroundImage: `url(${SocialShare})` }}></span>
                 Inviter maintenant
             </button>
+            {
+                OpenModal && <ShareSocialModal code={code} close={handleModal} />
+            }
         </main>
 
     )

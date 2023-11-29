@@ -19,8 +19,7 @@ function Parent({ parent }: CodeProps) {
     const [loading, setLoading] = useState<boolean>(false)
     const [messasge, setMessage] = useState<string>('')
     const [messageColor, setMessageColor] = useState<string>("2EB5B2")
-    const [points, setPoints] = useState<number>(0)
-    const [parents, setParents] = useState<any>({})
+  
 
     const showContent = () => {
         setShow(!show)
@@ -36,7 +35,6 @@ function Parent({ parent }: CodeProps) {
     const createSponsorship = async (value: string) => {
         setLoading(true)
         const { status, data } = await userService.createsponsorship(value);
-        console.log("response=", data)
         if (status == 422) {
             setMessage("Code non approuvé !")
             setMessageColor("#F00")
@@ -45,7 +43,6 @@ function Parent({ parent }: CodeProps) {
             if (data.success) {
                 setMessage("Code approuvé !")
                 setMessageColor("#2EB5B2")
-                setPoints(data.points)
                 setLoading(false)
             } else {
                 setMessage("Code non approuvé !")
@@ -61,11 +58,6 @@ function Parent({ parent }: CodeProps) {
         }
     }
 
-
-    useEffect(() => {
-        console.log(parent, "parent")
-        setParents(parent)
-    }, [parent])
 
     return (
         <main className='parainage-code-container'>
