@@ -1,4 +1,4 @@
-import { changeItemQuantity, removeItem } from '../../Redux/slices/cart/cartSlice'; // Change import statement to changeItemQuantity
+import { changeItemQuantity, removeItem, removeItemWithIndex } from '../../Redux/slices/cart/cartSlice'; // Change import statement to changeItemQuantity
 import { useAppDispatch, useAppSelector } from '../../Redux/store';
 
 import React, { useEffect, useState } from 'react';
@@ -24,7 +24,9 @@ interface Article {
   total: number;
   name: string;
   description: string;
-  count: number
+  count: number,
+  remove: () => void
+
 }
 
 
@@ -50,7 +52,7 @@ export const Cart: React.FC<CartProps> = ({ items, closeButton }) => {
     const [count, setCount] = useState<number>(props.count)
 
 
-    const handleRemoveItemFromCart = () => dispatch(removeItem({ id: props.id }));
+    // const handleRemoveItemFromCart = () => dispatch(removeItem({ id: props.id }));
 
     const handleIncreaseQuantity = () => {
       dispatch(
@@ -85,7 +87,7 @@ export const Cart: React.FC<CartProps> = ({ items, closeButton }) => {
             <div className="description" dangerouslySetInnerHTML={{ __html: props.description }}></div>
 
           </div>
-          <button className="remove-btn" onClick={handleRemoveItemFromCart}>
+          <button className="remove-btn" onClick={props.remove}>
             <CloseIcon className='close-icon'></CloseIcon>
           </button>
         </div>
@@ -121,6 +123,14 @@ export const Cart: React.FC<CartProps> = ({ items, closeButton }) => {
     getSousTotal();
   }, [items])
 
+
+  const removeItemsWithIndex = (i: number) => {
+    console.log("dropped item = ", i)
+    dispatch(removeItemWithIndex({ index: i }))
+  }
+
+
+
   return (
     <div className={`cart-main`}>
 
@@ -153,7 +163,8 @@ export const Cart: React.FC<CartProps> = ({ items, closeButton }) => {
                   total: item.total,
                   name: item.product.name,
                   description: item.product.description,
-                  count: item.quantity
+                  count: item.quantity,
+                  remove: () => removeItemsWithIndex(index)
                 }
                 return (
                   <div key={index}>
