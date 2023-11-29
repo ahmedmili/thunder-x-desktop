@@ -70,6 +70,11 @@
   "profile.commands.command": "Commande",
   "profile.commands.avis": "Donner votre avis",
   "profile.fidelite.Parrainage": "Parrainage",
+  "profile.fidelite.inviteNow": "Inviter maintenant",
+  "profile.fidelite.inviteFriends": "Invitez vos amis",
+  "profile.fidelite.invite2thunder": "Invitez des amis sur Thunder Express.",
+  "profile.fidelite.inviteStart": "Commencez à inviter des amis.",
+
   "profile.fidelite.CodeParrainage": "Code parrainage",
   "profile.fidelite.ListeParrainage": "Liste parrainage",
   "profile.fidelite.title": "Espace de fidélité",

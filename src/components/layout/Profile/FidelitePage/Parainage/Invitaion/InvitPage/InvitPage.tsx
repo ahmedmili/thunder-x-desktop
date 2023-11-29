@@ -17,7 +17,7 @@ interface InvitPageProps {
 function InvitPage({ internNavigation }: InvitPageProps) {
     const { t } = useTranslation()
     const [code, setCode] = useState<string>('')
-    const [OpenModal, setOpenModal] = useState<boolean>(true)
+    const [OpenModal, setOpenModal] = useState<boolean>(false)
 
     const handleModal = () => {
         setOpenModal(!OpenModal)
@@ -37,12 +37,12 @@ function InvitPage({ internNavigation }: InvitPageProps) {
 
     return (
         <main className='invit-page-container'>
-            <h3 className='P-title'>Parrainage</h3>
+            <h3 className='P-title'>{t('profile.fidelite.Parrainage')}</h3>
             <section className='money-image-container'>
                 <div className='money-img' style={{ backgroundImage: `url(${MoneyPack})` }} > </div>
             </section>
             <section className='copy-code-section' >
-                <h2 className='invite-Q'>Invitez vos amis ?</h2>
+                <h2 className='invite-Q'>{t('profile.fidelite.inviteFriends')} ?</h2>
                 <div className='code-input-container'>
                     <input type="text" maxLength={6} readOnly value={code} />
                     <button onClick={copyCode} className='copy-btn' ><span className='chaine-icon' style={{ backgroundImage: `url(${chaine})` }} ></span> Copier</button>
@@ -56,7 +56,7 @@ function InvitPage({ internNavigation }: InvitPageProps) {
 
             <button onClick={handleModal} className='social-share-button'>
                 <span className='social-share-icon' style={{ backgroundImage: `url(${SocialShare})` }}></span>
-                Inviter maintenant
+                {t('profile.fidelite.inviteNow')}
             </button>
             {
                 OpenModal && <ShareSocialModal code={code} close={handleModal} />

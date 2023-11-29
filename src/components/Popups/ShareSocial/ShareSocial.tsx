@@ -20,10 +20,9 @@ interface Props {
     close: () => void;
     code: string;
 }
-// FacebookShareButton
 
 const ShareSocialModal: React.FC<Props> = ({ code, close }) => {
-
+    const { t } = useTranslation()
     const handleOutsideClick = () => {
         close();
     };
@@ -38,7 +37,7 @@ const ShareSocialModal: React.FC<Props> = ({ code, close }) => {
             <div className="popup-overlay" onClick={handleOutsideClick}></div>
             <div className="share-social-popup-container">
                 <div onClick={close} className='close-btn'>X</div>
-                <h3 className="title">Inviter maintenant</h3>
+                <h3 className="title">{t("profile.fidelite.inviteNow")}</h3>
                 <section className="social-buttons-section">
                     <WhatsappShareButton className="button-box" url={`sharedContent`}>
                         <input type="button" value="" className="whatsApp" name="WhatsApp" style={{ backgroundImage: `url(${whatsup_img})` }} />

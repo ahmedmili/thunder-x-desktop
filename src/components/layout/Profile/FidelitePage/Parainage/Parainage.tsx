@@ -10,7 +10,7 @@ function Parainage() {
 
     const [parent, setParent] = useState<any>({})
     const [child, setChildren] = useState<any>({})
-    const [page, setPage] = useState<number>(2)
+    const [page, setPage] = useState<number>(1)
 
 
     const pageNavigateInterne = (page: number) => {

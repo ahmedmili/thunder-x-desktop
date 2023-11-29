@@ -72,6 +72,11 @@
   "profile.commands.signal.message": "Please let us know about your issue",
   "profile.commands.signal.placeholder": "Enter your issue here",
   "profile.fidelite.Parrainage": "sponsorship",
+  "profile.fidelite.inviteNow": "Invite now",
+  "profile.fidelite.invite2thunder": "Invite friends to Thunder Express.",
+  "profile.fidelite.inviteFriends": "Invite your friends",
+  "profile.fidelite.inviteStart": "Start inviting friends.",
+
   "profile.fidelite.ListeParrainage": "Sponsorship list",
   "profile.fidelite.CodeParrainage": "Sponsorship code",
   "profile.fidelite.title": "Loyalty Space",

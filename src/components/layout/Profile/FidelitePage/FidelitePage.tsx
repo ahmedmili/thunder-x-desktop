@@ -10,7 +10,7 @@ import Parainage from './Parainage/Parainage'
 
 function FidelitePage() {
 
-    const [nav, setNav] = useState<number>(3)
+    const [nav, setNav] = useState<number>(1)
     const { t } = useTranslation()
 
     const handleNav = (i: number) => {
