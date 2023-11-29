@@ -20,7 +20,9 @@
   "monthAgo": "قبل شهر واحد",
   "daysAgo": "أيام",
   "weeksAgo": "منذ أسابيع",
-
+  "profile.fidelite.Parrainage": "رعاية",
+  "profile.fidelite.CodeParrainage": "رمز الرعاية",
+  "profile.fidelite.ListeParrainage": "قائمة الرعاية",
   "profile.allAnnounces.message": "عروضي وإعلاناتي",
   "profile.coupon.message": "وفّر مع رموز الخصم في سلة التسوق الخاصة بك!",
   "profile.mesConfig.modifAccount": "تعديل الحساب",
@@ -218,8 +220,7 @@
   "cart.payment.payment": "الدفع",
   "repasGratuit": "وجبة مجانية",
   "mobile.menu.title": "اطلب في التطبيق",
-"mobile.menu.description": "استمتع بفوائد خاصة في أماكنك ومطاعمك المفضلة!",
-"mobile.menu.download_button": "تحميل التطبيق",
-"mobile.menu.web_button": "المتابعة على الويب"
-
+  "mobile.menu.description": "استمتع بفوائد خاصة في أماكنك ومطاعمك المفضلة!",
+  "mobile.menu.download_button": "تحميل التطبيق",
+  "mobile.menu.web_button": "المتابعة على الويب"
 }

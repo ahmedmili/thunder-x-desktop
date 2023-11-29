@@ -6,10 +6,11 @@ import Bonus from './Bonus/Bonus'
 import RepasFooter from './MonRepas/Footer/Footer'
 import RepasList from './MonRepas/RepasList/RepasList'
 import './fidelitePage.scss'
+import Parainage from './Parainage/Parainage'
 
 function FidelitePage() {
 
-    const [nav, setNav] = useState<number>(1)
+    const [nav, setNav] = useState<number>(3)
     const { t } = useTranslation()
 
     const handleNav = (i: number) => {
@@ -33,31 +34,42 @@ function FidelitePage() {
                         <li>
                             <span onClick={() => handleNav(2)} className={`list-item-text ${nav === 2 && "active"}`}>{t('profile.fidelite.myBonus')}</span>
                         </li>
+                        <li>
+                            <span onClick={() => handleNav(3)} className={`list-item-text ${nav === 3 && "active"}`}>{t('profile.fidelite.Parrainage')}</span>
+                        </li>
                     </ul>
                 </nav>
 
             </header>
-            <main>
-                {
-                    nav === 1 && (
-                        <>
-                            <RepasList />
-                            <RepasFooter Ftitle={t('profile.fidelite.footer.repas.title')} Fbody={t('profile.fidelite.footer.repas.body')} />
-                        </>
 
-                    )
-                }
-                {
-                    nav === 2 && (
-                        <>
-                            <Bonus />
-                            <RepasFooter Ftitle={t('profile.fidelite.footer.bonus.title')} Fbody={t('profile.fidelite.footer.bonus.body')} />
-                        </>
+            {
+                nav === 1 && (
+                    <main style={{ backgroundColor: "white" }}>
+                        <RepasList />
+                        <RepasFooter Ftitle={t('profile.fidelite.footer.repas.title')} Fbody={t('profile.fidelite.footer.repas.body')} />
+                    </main>
 
-                    )
-                }
-            </main>
-        </div>
+                )
+            }
+            {
+                nav === 2 && (
+
+                    <main style={{ backgroundColor: "white" }}>
+                        <Bonus />
+                        <RepasFooter Ftitle={t('profile.fidelite.footer.bonus.title')} Fbody={t('profile.fidelite.footer.bonus.body')} />
+                    </main>
+
+                )
+            }
+            {
+                nav === 3 && (
+                    <main>
+                        <Parainage />
+                    </main>
+
+                )
+            }
+        </div >
     )
 }
 

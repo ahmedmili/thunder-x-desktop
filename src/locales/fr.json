@@ -69,6 +69,9 @@
   "profile.commands.sousMessage3": "La commande livré dans 15 minutes",
   "profile.commands.command": "Commande",
   "profile.commands.avis": "Donner votre avis",
+  "profile.fidelite.Parrainage": "Parrainage",
+  "profile.fidelite.CodeParrainage": "Code parrainage",
+  "profile.fidelite.ListeParrainage": "Liste parrainage",
   "profile.fidelite.title": "Espace de fidélité",
   "profile.fidelite.freeRepas": "Mes repas gratuit",
   "profile.fidelite.myBonus": "Mes bonus",
@@ -268,6 +271,4 @@
   "mobile.menu.description": "Bénéficiez d'avantages spéciaux dans vos lieux et restaurants favoris!",
   "mobile.menu.download_button": "Télécharger l'application",
   "mobile.menu.web_button": "Continuer sur le web"
- 
-    
 }

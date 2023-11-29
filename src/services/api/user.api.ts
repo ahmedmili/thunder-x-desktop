@@ -318,6 +318,77 @@ async function getClientFeedback() {
     throw error;
   }
 }
+async function getSponsorshipListChildren() {
+  try {
+    const user_id = localStorageService.getUserId()
+
+    if (user_id === undefined) {
+      return { status: undefined, data: undefined };
+    } else {
+      const response = await api.post(
+        `sponsorship/children`
+      );
+      const { status, data } = response;
+      return { status, data };
+    }
+  } catch (error) {
+    throw error;
+  }
+}
+
+async function getSponsorshipListParent() {
+  try {
+    const user_id = localStorageService.getUserId()
+
+    if (user_id === undefined) {
+      return { status: undefined, data: undefined };
+    } else {
+      const response = await api.post(
+        `sponsorship/parent`
+      );
+      const { status, data } = response;
+      return { status, data };
+    }
+  } catch (error) {
+    throw error;
+  }
+}
+async function ativateSponsorship() {
+  try {
+    const user_id = localStorageService.getUserId()
+
+    if (user_id === undefined) {
+      return { status: undefined, data: undefined };
+    } else {
+      const response = await api.get(
+        `settings/ativate_sponsorship`
+      );
+      const { status, data } = response;
+      return { status, data };
+    }
+  } catch (error) {
+    throw error;
+  }
+}
+async function createsponsorship(value: string) {
+  try {
+    const user_id = localStorageService.getUserId()
+
+    if (user_id === undefined) {
+      return { status: undefined, data: undefined };
+    } else {
+
+      const response = await api.post(
+        `sponsorship/create`, { sponsorship: value }
+      );
+      const { status, data } = response;
+      if (response) return { status: 422, data: null };
+      else return { status, data };
+    }
+  } catch (error) {
+    return { status: 422, data: null }
+  }
+}
 
 export const userService = {
   loginUser,
@@ -339,4 +410,8 @@ export const userService = {
   createmessage,
   createDeliveryRating,
   getClientFeedback,
+  getSponsorshipListChildren,
+  getSponsorshipListParent,
+  ativateSponsorship,
+  createsponsorship,
 };
