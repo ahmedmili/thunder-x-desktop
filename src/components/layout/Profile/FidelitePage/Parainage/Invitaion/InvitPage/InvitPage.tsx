@@ -17,7 +17,7 @@ interface InvitPageProps {
 function InvitPage({ internNavigation }: InvitPageProps) {
     const { t } = useTranslation()
     const [code, setCode] = useState<string>('')
-    const [OpenModal, setOpenModal] = useState<boolean>(false)
+    const [OpenModal, setOpenModal] = useState<boolean>(true)
 
     const handleModal = () => {
         setOpenModal(!OpenModal)
@@ -33,9 +33,6 @@ function InvitPage({ internNavigation }: InvitPageProps) {
 
     const copyCode = () => {
         copy(code)
-            // .then(() => console.log("coppied"))
-            // .catch((error) => console.error('Error copying to clipboard:', error));
-
     }
 
     return (

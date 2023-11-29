@@ -9,11 +9,18 @@ import twitter_img from '../../../assets/Socials/twitter.png'
 import mail_img from '../../../assets/Socials/mail.png'
 import insta_img from '../../../assets/Socials/insta.png'
 import copy from 'clipboard-copy';
-
+import {
+    FacebookShareButton,
+    WhatsappShareButton,
+    TwitterShareButton,
+    MailruShareButton,
+    InstapaperShareButton
+} from "react-share"
 interface Props {
     close: () => void;
     code: string;
 }
+// FacebookShareButton
 
 const ShareSocialModal: React.FC<Props> = ({ code, close }) => {
 
@@ -22,8 +29,9 @@ const ShareSocialModal: React.FC<Props> = ({ code, close }) => {
     };
 
     const copyCode = () => {
-        copy(code)        
+        copy(code)
     }
+    const sharedContent = "https://mobile.thunder.webify.pro/#/client/wallet/parainnage"
     return (
 
         <>
@@ -32,26 +40,31 @@ const ShareSocialModal: React.FC<Props> = ({ code, close }) => {
                 <div onClick={close} className='close-btn'>X</div>
                 <h3 className="title">Inviter maintenant</h3>
                 <section className="social-buttons-section">
-                    <div className="button-box">
+                    <WhatsappShareButton className="button-box" url={`sharedContent`}>
                         <input type="button" value="" className="whatsApp" name="WhatsApp" style={{ backgroundImage: `url(${whatsup_img})` }} />
                         <label htmlFor="WhatsApp">WhatsApp</label>
-                    </div>
-                    <div className="button-box">
+                    </WhatsappShareButton>
+
+                    <FacebookShareButton className="button-box" url={sharedContent} hashtag={`#${code} `} >
                         <input type="button" value="" className="facebook" name="Facebook" style={{ backgroundImage: `url(${facebook_img})` }} />
                         <label htmlFor="Facebook">Facebook</label>
-                    </div>
-                    <div className="button-box">
+                    </FacebookShareButton>
+
+                    <TwitterShareButton className="button-box" url={sharedContent} >
                         <input type="button" value="" className="twitter" name="Twitter" style={{ backgroundImage: `url(${twitter_img})` }} />
                         <label htmlFor="Twitter">Twitter</label>
-                    </div>
-                    <div className="button-box">
+                    </TwitterShareButton>
+
+                    <MailruShareButton className="button-box" url={sharedContent} >
                         <input type="button" value="" className="email" name="Email" style={{ backgroundImage: `url(${mail_img})` }} />
                         <label htmlFor="Email">E-mail</label>
-                    </div>
-                    <div className="button-box">
+                    </MailruShareButton>
+
+                    <InstapaperShareButton url={sharedContent} className="button-box">
                         <input type="button" value="" className="instagram" name="Instagram" style={{ backgroundImage: `url(${insta_img})` }} />
                         <label htmlFor="Instagram">Instagram</label>
-                    </div>
+                    </InstapaperShareButton>
+
                 </section>
                 <section className="code-section">
                     <input type="text" maxLength={6} readOnly value={code} />

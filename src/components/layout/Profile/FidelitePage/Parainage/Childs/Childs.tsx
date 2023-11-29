@@ -54,6 +54,19 @@ function Childs({ childs }: ListProps) {
                     )
                 })
             }
+            {/* {show && childs && childs.length > 0 &&
+                <>
+                    <ListItem firstName='Mili' lastName={'Ahmed'} points={'1000'} />
+                    <ListItem firstName='Mili' lastName={'Ahmed'} points={'1000'} />
+                    <ListItem firstName='Mili' lastName={'Ahmed'} points={'1000'} />
+                    <ListItem firstName='Mili' lastName={'Ahmed'} points={'1000'} />
+                    <ListItem firstName='Mili' lastName={'Ahmed'} points={'1000'} />
+                    <ListItem firstName='Mili' lastName={'Ahmed'} points={'1000'} />
+                    <ListItem firstName='Mili' lastName={'Ahmed'} points={'1000'} />
+                    <ListItem firstName='Mili' lastName={'Ahmed'} points={'1000'} />
+                </>
+
+            } */}
         </main>
 
     )
