@@ -138,7 +138,7 @@ const CartPage: React.FC = () => {
   }
   useEffect(() => {
     fetchMessages()
-}, [])
+  }, [])
 
   // article component 
   interface Article {
@@ -170,6 +170,7 @@ const CartPage: React.FC = () => {
         );
       }
     };
+
     return <>
       <div className="supplier-name">
         <span >{item.supplier_data.supplier_name}</span>
@@ -193,7 +194,7 @@ const CartPage: React.FC = () => {
                       <span className="description">
                         {i.map((option: any, indexOption: number) => {
                           return (
-                            <span>{option.name}</span>
+                            <span key={indexOption}>{option.name}</span>
                           )
                         })}
                       </span>
@@ -201,7 +202,6 @@ const CartPage: React.FC = () => {
                   )
                 })
               }
-              {/* <span className="description" dangerouslySetInnerHTML={{ __html: item.product.description }}></span> */}
             </AccordionDetails>
           </Accordion>)
           : ""}
@@ -261,7 +261,7 @@ const CartPage: React.FC = () => {
         addresse_id: 1,
         supplier_id: supplier,
         extraDeliveryCost: extraDeliveryCost,
-        delivery_price: Math.round(deliveryPrice),
+        delivery_price: isDelevery == "delivery" ? Math.round(deliveryPrice) : 0,
         mode_pay: payMode,
         applied_bonus: applied_bonus,
         total_price: total,
@@ -370,9 +370,12 @@ const CartPage: React.FC = () => {
   // handle deliv program state changes
   const handleOptionChange = async (value: number) => {
     if (value === 3) {
-      setSelectedOption(value);
+      let delivery = supplier.delivery
+
+      delivery === 1 ? setSelectedOption(value) : handleServicePopup();
     } else {
-      const take_away = await commandService.isdelivery(supplier.id)
+      // const take_away = await commandService.isdelivery(supplier.id)
+      let take_away = supplier.take_away
       take_away === 1 ? setSelectedOption(value) : handleServicePopup();
     }
   };
@@ -667,6 +670,27 @@ const CartPage: React.FC = () => {
     getDistance()
   }, [])
 
+  /*
+   check if supplier support delivery | pickup | inside 
+  */
+  useEffect(() => {
+    let take_away = supplier.take_away
+    let delivery = supplier.delivery
+    if (delivery === 1 && take_away == 1) {
+      setIsDelevery("delivery")
+      setSelectedOption(3)
+    } else if (delivery === 1 && take_away == 0) {
+      setSelectedOption(3)
+      setIsDelevery("delivery")
+    } else if (delivery === 0 && take_away == 1) {
+      setSelectedOption(2)
+      setIsDelevery("pickup")
+    } else if (delivery === 0 && take_away == 0) {
+      setIsDelevery("surplace")
+      setSelectedOption(1)
+    }
+  }, [supplier])
+
   // calc total for each changement 
   useEffect(() => {
     let check = supplier && cartItems.length > 0
@@ -679,6 +703,7 @@ const CartPage: React.FC = () => {
   const goPrevStep: MouseEventHandler<HTMLButtonElement> = ((event) => {
     setCurrentStep(1);
   });
+
   return (
     <>
       {
@@ -715,25 +740,6 @@ const CartPage: React.FC = () => {
                             }
                           </ul>
                         </div>
-                        {/* <table>
-                        <thead>
-                          <td className="header-name" colSpan={5}>
-                            {t('cartPage.product')}
-                          </td>                     
-                        </thead>
-                        <tbody>
-                          {
-                            cartItems.map((item: any, index: number) => {
-                              return (
-                                <>
-                                  <tr key={index} className="ariticle-info-container">
-                                    <ArticleProvider item={item} />
-                                  </tr>
-                                </>)
-                            })
-                          }
-                        </tbody>
-                      </table> */}
                         <div className="devider">
                         </div>
                         <div className="commentaire-section">

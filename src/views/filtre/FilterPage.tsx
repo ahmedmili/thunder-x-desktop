@@ -179,7 +179,6 @@ function FilterPage() {
             });
         console.log("restaurantsList : ", restaurantsList)
         console.log("delivFilterList : ", delivFilterList)
-        // setAllRestaurantsList(restaurantsList);
         setAllRestaurantsList(delivFilterList);
         suppliersListRef && scrollToTarget(suppliersListRef);
 
