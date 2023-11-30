@@ -19,7 +19,7 @@ function Parent({ parent }: CodeProps) {
     const [loading, setLoading] = useState<boolean>(false)
     const [messasge, setMessage] = useState<string>('')
     const [messageColor, setMessageColor] = useState<string>("2EB5B2")
-  
+
 
     const showContent = () => {
         setShow(!show)
@@ -66,7 +66,7 @@ function Parent({ parent }: CodeProps) {
                 <KeyboardArrowUpOutlinedIcon className={` icon ${show ? 'active' : ''} `} />
             </header>
             {
-                show && !parent && (
+                show && (parent.firstname === undefined) && (
                     <section className='parainage-code-body'>
                         <div className='copier-code-btn-container' >
                             <button className='copier-code-btn' style={{ backgroundImage: `url(${Copie})` }} />
@@ -88,7 +88,7 @@ function Parent({ parent }: CodeProps) {
                 )
             }
             {
-                show && parent && (
+                show && (parent.firstname != undefined) && (
                     <section className='partnair-display-body'>
                         <div className='partner-logo' style={{ backgroundImage: `url(${Logo})` }}></div>
                         <p> {`${parent.firstname} ${parent.lastname}`}</p>
