@@ -353,11 +353,11 @@ async function getSponsorshipListParent() {
     throw error;
   }
 }
-async function ativateSponsorship() {
+async function getAtivateSponsorship() {
   try {
-    const user_id = localStorageService.getUserId()
+    const token = localStorageService.getUserToken()
 
-    if (user_id === undefined) {
+    if (token === undefined) {
       return { status: undefined, data: undefined };
     } else {
       const response = await api.get(
@@ -372,9 +372,10 @@ async function ativateSponsorship() {
 }
 async function createsponsorship(value: string) {
   try {
-    const user_id = localStorageService.getUserId()
+    const token = localStorageService.getUserToken()
 
-    if (user_id === undefined) {
+
+    if (token === undefined) {
       return { status: undefined, data: undefined };
     } else {
 
@@ -412,6 +413,6 @@ export const userService = {
   getClientFeedback,
   getSponsorshipListChildren,
   getSponsorshipListParent,
-  ativateSponsorship,
+  getAtivateSponsorship,
   createsponsorship,
 };
