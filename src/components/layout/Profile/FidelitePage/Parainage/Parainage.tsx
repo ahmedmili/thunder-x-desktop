@@ -5,6 +5,7 @@ import Childs from './Childs/Childs';
 import InviteBanner from './Invitaion/InviteBanner/InviteBanner';
 import Parent from './Parent/Parent';
 import InvitPage from './Invitaion/InvitPage/InvitPage';
+import { useNavigate } from 'react-router-dom';
 
 function Parainage() {
 
@@ -12,6 +13,45 @@ function Parainage() {
     const [child, setChildren] = useState<any>({})
     const [page, setPage] = useState<number>(1)
 
+
+    const navigate = useNavigate()
+
+    useEffect(() => {
+        const locationArray = location.pathname.split("/")
+        switch (Number(locationArray[4])) {
+            case 1:
+                setPage(1)
+                break;
+            case 2:
+                setPage(2)
+                break;
+            default:
+                setPage(1)
+                break;
+        }
+    }, [])
+    
+    useEffect(() => {
+        const locationArray = location.pathname.split("/")
+        var newUrl = location.pathname
+
+        switch (page) {
+            case 1:
+                locationArray[4] = "1"
+                newUrl = locationArray.join("/")
+                break;
+            case 2:
+                locationArray[4] = "2"
+                newUrl = locationArray.join("/")
+                break;
+            default:
+                locationArray[4] = "1"
+                newUrl = locationArray.join("/")
+                break;
+        }
+        navigate(newUrl, { replace: true })
+
+    }, [page])
 
     const pageNavigateInterne = (page: number) => {
         if (page >= 1) setPage(page)

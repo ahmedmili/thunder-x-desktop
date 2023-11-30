@@ -1,21 +1,67 @@
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import { useTranslation } from 'react-i18next'
+import { useLocation, useNavigate } from 'react-router-dom'
 import CoverImage2 from '../../../.../../../assets/profile/espace_fedele1.jpg'
 import CoverImage from '../../../.../../../assets/profile/espace_fedele2.jpg'
 import Bonus from './Bonus/Bonus'
 import RepasFooter from './MonRepas/Footer/Footer'
 import RepasList from './MonRepas/RepasList/RepasList'
-import './fidelitePage.scss'
 import Parainage from './Parainage/Parainage'
+import './fidelitePage.scss'
 
 function FidelitePage() {
 
-    const [nav, setNav] = useState<number>(1)
+    const [nav, setNav] = useState<number>(0)
     const { t } = useTranslation()
+    const location = useLocation()
+    const navigate = useNavigate()
 
     const handleNav = (i: number) => {
         setNav(i)
     }
+    useEffect(() => {
+        const locationArray = location.pathname.split("/")
+        var newUrl = location.pathname
+        switch (nav) {
+            case 1:
+                locationArray[3] = "repas"
+                locationArray.length = 4
+                newUrl = locationArray.join("/")
+                break;
+            case 2:
+                locationArray[3] = "bonus"
+                locationArray.length = 4
+                newUrl = locationArray.join("/")
+                break;
+            case 3:
+                locationArray[3] = "parainage"
+                newUrl = locationArray.join("/")
+                break;
+            default:
+                locationArray[3] = "repas"
+                newUrl = locationArray.join("/")
+                break;
+        }
+        navigate(newUrl, { replace: true })
+    }, [nav])
+
+    useEffect(() => {
+        const locationArray = location.pathname.split("/")
+        switch (locationArray[3]) {
+            case "repas":
+                setNav(1)
+                break;
+            case "bonus":
+                setNav(2)
+                break;
+            case "parainage":
+                setNav(3)
+                break;
+            default:
+                setNav(1)
+                break;
+        }
+    }, [])
 
     return (
         <div className='fidelite-container'>
