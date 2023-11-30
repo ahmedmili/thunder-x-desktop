@@ -137,7 +137,7 @@ function App() {
     }
     if (location?.coords) {
       dispatch(
-        fetchHomeData(deliv == true ? 0 : 1, location?.coords.longitude, location?.coords.latitude)
+        fetchHomeData(deliv == true ? 1 : 0, location?.coords.longitude, location?.coords.latitude)
       );
       let isLoggedIn = localStorageService.getUserToken();
       isLoggedIn?.length! > 0 && getSupplierData();

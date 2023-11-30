@@ -44,6 +44,10 @@ const HomePage = () => {
     setUnReadedQt(unReadMessages)
   }, [unReadMessages])
 
+  useEffect(() => {
+    console.log("recommanded = ", recommanded)
+  }, [recommanded])
+
   const [selectedCategory, setSelectedCategory] = useState<string>("");
   const [filteredRestaurants, setFilteredRestaurants] = useState<Restaurant[]>(
     []
