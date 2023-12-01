@@ -199,27 +199,27 @@ function App() {
     }
     if (!_isAuthenticated) {
       dispatch(logout());
-       const location = localStorageService.getCurrentLocation();
-        if (!location) {
-          navigator.geolocation.getCurrentPosition(
-            (position: Position) => {
-              const { latitude, longitude } = position.coords;
-              LocationService.geoCode(latitude, longitude).then(data => {
-                dispatch({
-                  type: "SET_LOCATION",
-                  payload: {
-                    ...data
-                  },
-                });
+      const location = localStorageService.getCurrentLocation();
+      if (!location) {
+        navigator.geolocation.getCurrentPosition(
+          (position: Position) => {
+            const { latitude, longitude } = position.coords;
+            LocationService.geoCode(latitude, longitude).then(data => {
+              dispatch({
+                type: "SET_LOCATION",
+                payload: {
+                  ...data
+                },
               });
-            },
-            (error: GeolocationPositionError) => {
-              dispatch({ type: "SET_SHOW", payload: true })
-            }
+            });
+          },
+          (error: GeolocationPositionError) => {
+            dispatch({ type: "SET_SHOW", payload: true })
+          }
         );
       }
     }
-    
+
   }, [])
 
   // handle recive admin message
@@ -279,7 +279,7 @@ function App() {
               <Route path="/profile/archivedCommands/" element={<ArchivedCommands />} />
               <Route path="/profile/discuter/" element={<Discuter />} />
               <Route path="/profile/Favors/" element={<Favors />} />
-              <Route path="/profile/Fidelite/" element={<FidelitePage />} />
+              <Route path="/profile/Fidelite/:section?/:page?/*" element={<FidelitePage />} />
               <Route path="/profile/Feedback/:command_id/" element={<Feedback />} />
             </Route>
           </Route>

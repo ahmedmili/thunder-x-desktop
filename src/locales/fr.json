@@ -18,6 +18,7 @@
   "monthAgo": "Il y a 1 mois",
   "daysAgo": "jours",
   "weeksAgo": "semaines",
+  "Copier": "Copier",
   "profile.mesOffres": "Mes offres &annonces",
   "profile.mesConfig": "Mes configurations",
   "profile.commands": "Archive commandes",
@@ -69,6 +70,17 @@
   "profile.commands.sousMessage3": "La commande livré dans 15 minutes",
   "profile.commands.command": "Commande",
   "profile.commands.avis": "Donner votre avis",
+  "profile.fidelite.Parrainage": "Parrainage",
+  "profile.fidelite.inviteNow": "Inviter maintenant",
+  "profile.fidelite.inviteFriends": "Invitez vos amis",
+  "profile.fidelite.invite2thunder": "Invitez des amis sur Thunder Express.",
+  "profile.fidelite.inviteStart": "Commencez à inviter des amis.",
+  "profile.fidelite.inviteStart.howTo.title": "Comment ça marche",
+  "profile.fidelite.inviteStart.howTo.description": "Invitez vos amis a utiliser votre code de parrainage pour profiter de points bonus sur leurs commands, De plus , vos amis recervont un avantage de 1000 points dès qu'ils utiliseront votre code promo",
+  "profile.fidelite.sponsorShipNotDisponible": "Notre systeme de parainage est actuellement désactivé.",
+  "profile.fidelite.CodeParrainage": "Code parrainage",
+  "profile.fidelite.EnterCode": "Entrer le code",
+  "profile.fidelite.ListeParrainage": "Liste parrainage",
   "profile.fidelite.title": "Espace de fidélité",
   "profile.fidelite.freeRepas": "Mes repas gratuit",
   "profile.fidelite.myBonus": "Mes bonus",
@@ -268,6 +280,4 @@
   "mobile.menu.description": "Bénéficiez d'avantages spéciaux dans vos lieux et restaurants favoris!",
   "mobile.menu.download_button": "Télécharger l'application",
   "mobile.menu.web_button": "Continuer sur le web"
- 
-    
 }

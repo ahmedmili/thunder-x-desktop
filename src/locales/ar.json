@@ -20,7 +20,20 @@
   "monthAgo": "قبل شهر واحد",
   "daysAgo": "أيام",
   "weeksAgo": "منذ أسابيع",
+  "Copier": "نسخ",
 
+  "profile.fidelite.Parrainage": "رعاية",
+  "profile.fidelite.inviteNow": "ادعو الآن",
+  "profile.fidelite.invite2thunder": "ادعوا الأصدقاء إلى تاندر إكسبريس",
+  "profile.fidelite.inviteFriends": "ادعوا أصدقائك",
+  "profile.fidelite.inviteStart": "ابدأ في دعوة الأصدقاء.",
+  "profile.fidelite.EnterCode": "أدخل الرمز",
+
+  "profile.fidelite.sponsorShipNotDisponible": ".نظام الإحالة لدينا معطل حاليًا",
+  "profile.fidelite.inviteStart.howTo.title": "كيف يعمل",
+  "profile.fidelite.inviteStart.howTo.description": "قم بدعوة أصدقائك لاستخدام رمز الإحالة الخاص بك للاستمتاع بنقاط إضافية على طلباتهم. علاوة على ذلك، سيحصل أصدقاؤك على ميزة قدرها 1000 نقطة فور استخدامهم لرمز العرض الخاص بك",
+  "profile.fidelite.CodeParrainage": "رمز الرعاية",
+  "profile.fidelite.ListeParrainage": "قائمة الرعاية",
   "profile.allAnnounces.message": "عروضي وإعلاناتي",
   "profile.coupon.message": "وفّر مع رموز الخصم في سلة التسوق الخاصة بك!",
   "profile.mesConfig.modifAccount": "تعديل الحساب",
@@ -218,8 +231,7 @@
   "cart.payment.payment": "الدفع",
   "repasGratuit": "وجبة مجانية",
   "mobile.menu.title": "اطلب في التطبيق",
-"mobile.menu.description": "استمتع بفوائد خاصة في أماكنك ومطاعمك المفضلة!",
-"mobile.menu.download_button": "تحميل التطبيق",
-"mobile.menu.web_button": "المتابعة على الويب"
-
+  "mobile.menu.description": "استمتع بفوائد خاصة في أماكنك ومطاعمك المفضلة!",
+  "mobile.menu.download_button": "تحميل التطبيق",
+  "mobile.menu.web_button": "المتابعة على الويب"
 }

@@ -149,7 +149,6 @@ export const fetchHomeData =
         data.recommended = suppliersList;
         if (success) {
           dispatch(getHomeDataSuccess(data));
-          console.log(data.region, 'from satte');
         } else {
           dispatch(getHomeDataError(response));
         }

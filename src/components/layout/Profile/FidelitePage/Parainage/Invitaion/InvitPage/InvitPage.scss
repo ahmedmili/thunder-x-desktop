@@ -1,0 +1,143 @@
+@import '../../../../../../../colors';
+
+.invit-page-container {
+
+    border-radius: 25px;
+    background: linear-gradient(350deg, #4792A1 -27.75%, #2DDAD7 141.2%);
+    height: 844px;
+
+    h3 {
+        color: #FFF;
+        font-family: Poppins;
+        font-size: 20px;
+        font-style: normal;
+        font-weight: 700;
+        line-height: normal;
+    }
+
+    .money-image-container {
+        width: 100%;
+        margin: 68px 0 68px 0;
+
+        .money-img {
+            background-position: center;
+            background-repeat: no-repeat;
+            background-size: cover;
+            width: 277px;
+            height: 182px;
+            margin: 0 auto;
+        }
+    }
+
+    .copy-code-section {
+        color: #FFF;
+        font-family: Poppins;
+        font-size: 20px;
+        font-style: normal;
+        font-weight: 700;
+        line-height: normal;
+        display: flex;
+        flex-direction: column;
+        gap: 19px;
+        margin-bottom: 74px;
+
+
+        .code-input-container {
+            display: flex;
+            background-color: white;
+            padding: 2px;
+            width: 272px;
+            border-radius: 25px;
+
+            input {
+                border-radius: 25px 0 0 25px;
+                text-align: center;
+                color: white;
+                font-size: 20px;
+                font-weight: 700;
+                background-color: $primary_color;
+                outline: none;
+                border: none;
+                width: 148px;
+            }
+
+            .copy-btn {
+                color: $primary_color;
+                font-family: Poppins;
+                font-size: 16px;
+                font-style: normal;
+                font-weight: 500;
+                line-height: normal;
+                display: flex;
+                justify-content: center;
+                align-items: center;
+                gap: 15px;
+
+                .chaine-icon {
+                    background-repeat: no-repeat;
+                    background-position: center;
+                    background-size: cover;
+                    width: 16.491px;
+                    height: 17.203px;
+                    margin-left: 18px;
+                }
+            }
+        }
+    }
+
+    .sponsorship-not-activated-message {
+        color: $orange_color ;
+        font-size: 14px;
+        font-weight: 400;
+        margin-bottom: 51px;
+    }
+
+    .notes-section {
+        display: flex;
+        flex-direction: column;
+        gap: 11px;
+        margin-bottom: 44px;
+
+        h2 {
+            color: #FFF;
+            font-family: Poppins;
+            font-size: 20px;
+            font-style: normal;
+            font-weight: 700;
+            line-height: normal;
+        }
+
+        p {
+            color: #FFF;
+            font-family: Poppins;
+            font-size: 16px;
+            font-style: normal;
+            font-weight: 500;
+            line-height: normal;
+        }
+    }
+
+    .social-share-button {
+        height: 67px;
+        border-radius: 20px;
+        background: #FBC000;
+        color: #FFF;
+        font-family: Poppins;
+        font-size: 20px;
+        font-style: normal;
+        font-weight: 500;
+        width: 100%;
+        display: flex;
+        justify-content: start;
+        gap: 75px;
+        padding-left: 62px;
+
+        .social-share-icon {
+            background-position: center;
+            background-repeat: no-repeat;
+            background-size: cover;
+            width: 21px;
+            height: 21px;
+        }
+    }
+}

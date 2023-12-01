@@ -13,7 +13,6 @@
   "monthAgo": "1 month ago",
   "daysAgo": "days ago",
   "weeksAgo": "weeks ago",
-
   "header.nous": "We",
   "header.livrons": "deliver",
   "header.plus": "more than just",
@@ -72,6 +71,18 @@
   "profile.commands.signal.question": "Do you have an issue related to your order ",
   "profile.commands.signal.message": "Please let us know about your issue",
   "profile.commands.signal.placeholder": "Enter your issue here",
+  "profile.fidelite.Parrainage": "sponsorship",
+  "profile.fidelite.inviteNow": "Invite now",
+  "profile.fidelite.invite2thunder": "Invite friends to Thunder Express.",
+  "profile.fidelite.inviteFriends": "Invite your friends",
+  "profile.fidelite.inviteStart": "Start inviting friends.",
+  "profile.fidelite.EnterCode": "Enter the code",
+  "profile.fidelite.sponsorShipNotDisponible": "Our referral system is currently deactivated.",
+  "profile.fidelite.inviteStart.howTo.title": "How does it work",
+  "profile.fidelite.inviteStart.howTo.description": "Invite your friends to use your referral code to enjoy bonus points on their orders. Moreover, your friends will receive an advantage of 1000 points as soon as they use your promo code",
+  "Copier": "Copy",
+  "profile.fidelite.ListeParrainage": "Sponsorship list",
+  "profile.fidelite.CodeParrainage": "Sponsorship code",
   "profile.fidelite.title": "Loyalty Space",
   "profile.fidelite.freeRepas": "My free meals",
   "profile.fidelite.myBonus": "My bonus",
@@ -264,8 +275,7 @@
     }
   ],
   "mobile.menu.title": "Order in the application",
-"mobile.menu.description": "Enjoy special benefits at your favorite places and restaurants!",
-"mobile.menu.download_button": "Download the application",
-"mobile.menu.web_button": "Continue on the web"
-
+  "mobile.menu.description": "Enjoy special benefits at your favorite places and restaurants!",
+  "mobile.menu.download_button": "Download the application",
+  "mobile.menu.web_button": "Continue on the web"
 }
