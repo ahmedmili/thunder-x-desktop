@@ -1,10 +1,9 @@
 import React from "react";
 
-import { useDispatch } from "react-redux";
 import { useNavigate } from "react-router";
-import { clearCart } from "../../../Redux/slices/cart/cartSlice";
 import { useAppSelector } from "../../../Redux/store";
 import './minCostError.scss';
+import { useTranslation } from "react-i18next";
 
 
 interface Props {
@@ -12,14 +11,10 @@ interface Props {
 }
 
 const MinCostError: React.FC<Props> = ({ close }) => {
-    const dispatch = useDispatch()
     const navigate = useNavigate()
     const supplier = useAppSelector((state) => state.cart.supplier)
+    const { t } = useTranslation()
 
-    const dropCurrentCommand = () => {
-        dispatch(clearCart())
-        close()
-    }
     const goToSupplier = () => {
         const supplier_id = supplier.id
         const supplier_name = supplier.name
@@ -38,11 +33,13 @@ const MinCostError: React.FC<Props> = ({ close }) => {
                 <div onClick={close} className="close-button">X</div>
 
                 <p className="message">
-                    Le total de votre commande est inférieur au montant minimal d’achat fixé à {supplier.min_cost}Dt par {supplier.name}. Veuillez ajouter autre article au panier.
+                    {
+                        ` ${t('Modal.minCostError.Message.section1')} ${supplier.min_cost} Dt ${t('Modal.minCostError.Message.by')} ${supplier.name}. ${t('Modal.minCostError.Message.section2')} `
+                    }
                 </p>
                 <div className="buttons">
-                    <button className="goto-supp-button" onClick={goToSupplier}>Continuer vos achats</button>
-                    <button className="delete-cmd-button" onClick={close}>Annuler</button>
+                    <button className="goto-supp-button" onClick={goToSupplier}>{t('Modal.minCostError.Continue')}</button>
+                    <button className="delete-cmd-button" onClick={close}>{t('Annuler')}</button>
                 </div>
             </div>
         </>

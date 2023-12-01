@@ -20,7 +20,15 @@
   "monthAgo": "قبل شهر واحد",
   "daysAgo": "أيام",
   "weeksAgo": "منذ أسابيع",
-
+  "Modal.finishCommand": "إكمال الطلب",
+  "Modal.finishCommand.message": ".يرجى إكمال طلبك لتتمكن من إجراء طلب جديد، وإلا قم بحذف الطلب غير المكتمل",
+  "Modal.finishCommand.finishOldCommande": "إكمال الطلب السابق",
+  "Modal.finishCommand.goBackToSupplier": "الوصول إلى نفس المورد مرة أخرى",
+  "Modal.finishCommand.dropOldCommand": "حذف الطلب السابق",
+  "Modal.minCostError.Continue": "متابعة التسوق",
+  "Modal.minCostError.Message.section1": "إجمالي طلبك أقل من الحد الأدنى للشراء المحدد بمبلغ",
+  "Modal.minCostError.Message.by": "من قبل",
+  "Modal.minCostError.Message.section2": ".يرجى إضافة عنصر آخر إلى السلة",
   "profile.allAnnounces.message": "عروضي وإعلاناتي",
   "profile.coupon.message": "وفّر مع رموز الخصم في سلة التسوق الخاصة بك!",
   "profile.mesConfig.modifAccount": "تعديل الحساب",
@@ -218,8 +226,7 @@
   "cart.payment.payment": "الدفع",
   "repasGratuit": "وجبة مجانية",
   "mobile.menu.title": "اطلب في التطبيق",
-"mobile.menu.description": "استمتع بفوائد خاصة في أماكنك ومطاعمك المفضلة!",
-"mobile.menu.download_button": "تحميل التطبيق",
-"mobile.menu.web_button": "المتابعة على الويب"
-
+  "mobile.menu.description": "استمتع بفوائد خاصة في أماكنك ومطاعمك المفضلة!",
+  "mobile.menu.download_button": "تحميل التطبيق",
+  "mobile.menu.web_button": "المتابعة على الويب"
 }

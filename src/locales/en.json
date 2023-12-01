@@ -13,7 +13,15 @@
   "monthAgo": "1 month ago",
   "daysAgo": "days ago",
   "weeksAgo": "weeks ago",
-
+  "Modal.finishCommand": "Finalize the order",
+  "Modal.finishCommand.message": "Please finalize your order to be able to place a new order, otherwise delete the unfinished order .",
+  "Modal.finishCommand.finishOldCommande": "Finalize the previous order",
+  "Modal.finishCommand.goBackToSupplier": "Reaccess the same supplier",
+  "Modal.finishCommand.dropOldCommand": "Delete the previous order",
+  "Modal.minCostError.Continue": "Continue shopping",
+  "Modal.minCostError.Message.section1": "The total of your order is below the minimum purchase amount set at",
+  "Modal.minCostError.Message.by": "by",
+  "Modal.minCostError.Message.section2": "Please add another item to the cart.",
   "header.nous": "We",
   "header.livrons": "deliver",
   "header.plus": "more than just",
@@ -264,8 +272,7 @@
     }
   ],
   "mobile.menu.title": "Order in the application",
-"mobile.menu.description": "Enjoy special benefits at your favorite places and restaurants!",
-"mobile.menu.download_button": "Download the application",
-"mobile.menu.web_button": "Continue on the web"
-
+  "mobile.menu.description": "Enjoy special benefits at your favorite places and restaurants!",
+  "mobile.menu.download_button": "Download the application",
+  "mobile.menu.web_button": "Continue on the web"
 }

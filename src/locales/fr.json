@@ -18,6 +18,16 @@
   "monthAgo": "Il y a 1 mois",
   "daysAgo": "jours",
   "weeksAgo": "semaines",
+  "Modal.finishCommand": "Finaliser de la commande",
+  "Modal.finishCommand.message": "Veuillez finaliser votre commande pour pouvoir commander à nouveau, sinon supprimer la commande non-finalisée .",
+  "Modal.finishCommand.finishOldCommande": "Finaliser la commande précédente",
+  "Modal.finishCommand.goBackToSupplier": "Réaccéder au même fournisseur",
+  "Modal.finishCommand.dropOldCommand": "Supprimer la commande précédente",
+  "Modal.minCostError.Continue": "Continuer vos achats",
+  "Modal.minCostError.Message.section1": "Le total de votre commande est inférieur au montant minimal d’achat fixé à",
+  "Modal.minCostError.Message.by": "par",
+  "Modal.minCostError.Message.section2": "Veuillez ajouter autre article au panier.",
+
   "profile.mesOffres": "Mes offres &annonces",
   "profile.mesConfig": "Mes configurations",
   "profile.commands": "Archive commandes",
@@ -268,6 +278,4 @@
   "mobile.menu.description": "Bénéficiez d'avantages spéciaux dans vos lieux et restaurants favoris!",
   "mobile.menu.download_button": "Télécharger l'application",
   "mobile.menu.web_button": "Continuer sur le web"
- 
-    
 }
