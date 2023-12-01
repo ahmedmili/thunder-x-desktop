@@ -61,6 +61,7 @@ const CartPage: React.FC = () => {
   const userPosition = useAppSelector((state) => state.location.position);
   const deliveryOption = useAppSelector((state: RootState) => state.cart.deliveryOption);
   const isAuthenticated = useAppSelector((state) => state.user.isAuthenticated);
+  // const searchByDeliv = useAppSelector((state) => state.homeData.isDelivery);
 
   const [isDelevery, setIsDelevery] = useState(deliveryOption)
   //local storege vars
@@ -690,6 +691,11 @@ const CartPage: React.FC = () => {
       setSelectedOption(1)
     }
   }, [supplier])
+
+  // useEffect(() => {
+  //   console.log("searchByDeliv : ", searchByDeliv)
+  //   searchByDeliv ? setSelectedOption(3) : setSelectedOption(2);
+  // }, [])
 
   // calc total for each changement 
   useEffect(() => {
