@@ -3,6 +3,7 @@ import {
   changeItemQuantity,
   clearCart,
   removeItem,
+  removeItemWithIndex,
   setCodePromo,
   setComment,
   setDeliveryPrice,
@@ -144,12 +145,14 @@ const CartPage: React.FC = () => {
   // article component 
   interface Article {
     item: FoodItem,
+    remove: () => void
   }
 
-  const ArticleProvider: React.FC<Article> = ({ item }) => {
+  const ArticleProvider: React.FC<Article> = ({ item, remove }) => {
     const [count, setCount] = useState<number>(item.quantity)
 
-    const handleRemoveItemFromCart = () => dispatch(removeItem({ id: item.product.id }));
+    // const handleRemoveItemFromCart = () => dispatch(removeItem({ id: item.product.id }));
+    // const handleRemoveItemFromCart = () => remove;
 
     const handleIncreaseQuantity = () => {
       dispatch(
@@ -229,12 +232,14 @@ const CartPage: React.FC = () => {
         </span>
       </div>
       <div>
-        <button type="button" className="remove-btn" onClick={handleRemoveItemFromCart}>
+        <button type="button" className="remove-btn" onClick={remove}>
           <CloseIcon className='close-icon'></CloseIcon>
         </button>
       </div>
     </>
   }
+
+
 
   // handle submit and command creation
   const submitOrder = async (
@@ -349,6 +354,7 @@ const CartPage: React.FC = () => {
       toast.error("Failed to submit order. Please try again.", error.message);
     }
   };
+
   const getUser = async () => {
     const user_id = localStorageService.getUserId()
     const response = await userService.getUser(user_id!)
@@ -706,9 +712,15 @@ const CartPage: React.FC = () => {
   const goNextStep: MouseEventHandler<HTMLButtonElement> = ((event) => {
     setCurrentStep(2);
   });
+
   const goPrevStep: MouseEventHandler<HTMLButtonElement> = ((event) => {
     setCurrentStep(1);
   });
+
+  const removeItemsWithIndex = (i: number) => {
+    console.log("dropped item = ", i)
+    dispatch(removeItemWithIndex({ index: i }))
+  }
 
   return (
     <>
@@ -739,7 +751,7 @@ const CartPage: React.FC = () => {
                               cartItems.map((item: any, index: number) => {
                                 return (
                                   <li className="cart-items__list__product" key={index}>
-                                    <ArticleProvider item={item} />
+                                    <ArticleProvider item={item} remove={() => removeItemsWithIndex(index)} />
                                   </li>
                                 )
                               })
