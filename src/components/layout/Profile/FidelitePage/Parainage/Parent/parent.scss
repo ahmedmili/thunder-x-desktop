@@ -74,6 +74,10 @@
                 line-height: normal;
                 color: black;
 
+                &:focus {
+                    outline: #24A6A4;
+                }
+
                 &::placeholder {
                     color: #958E8E;
                 }
@@ -100,6 +104,7 @@
         position: relative;
         margin: 20px 0;
         border-radius: 25px;
+
         .partner-logo {
             position: absolute;
             top: -10px;

@@ -19,7 +19,8 @@ function Parent({ parent }: CodeProps) {
     const [loading, setLoading] = useState<boolean>(false)
     const [messasge, setMessage] = useState<string>('')
     const [messageColor, setMessageColor] = useState<string>("2EB5B2")
-    const [code, setCode] = useState<string>("")
+    const [code, setCode] = useState<string>("");
+    const [disabled, setDisabled] = useState<boolean>(false);
 
 
 
@@ -39,29 +40,20 @@ function Parent({ parent }: CodeProps) {
         getCode(code)
     }, [code])
 
-    const createSponsorship = async (value: string) => {
+    const createSponsorship = async (value: string) => { //b55a43
         setLoading(true)
-        const { status, data } = await userService.createsponsorship(value);
-        if (status == 422) {
+        const response = await userService.createsponsorship(value);
+        if (response.data != null) {
+            const sponsoring_points = response.data.data.points
+            const message = `Code approuvé.  Nous sommes ravis de vous accorder ${sponsoring_points} points`
+            setMessage(message)
+            setDisabled(true)
+            setMessageColor("#2EB5B2")
+            setLoading(false)
+        } else {
             setMessage("Code non approuvé !")
             setMessageColor("#F00")
             setLoading(false)
-        } else if (status == 200) {
-            if (data.success) {
-                setMessage("Code approuvé !")
-                setMessageColor("#2EB5B2")
-                setLoading(false)
-            } else {
-                setMessage("Code non approuvé !")
-                setMessageColor("#F00")
-                setLoading(false)
-
-            }
-        } else if (!status) {
-            setMessage("Error !!")
-            setMessageColor("#F00")
-            setLoading(false)
-
         }
     }
 
@@ -77,11 +69,11 @@ function Parent({ parent }: CodeProps) {
                     <section className='parainage-code-body'>
                         <div className='copier-code-btn-container' >
                             <button className='copier-code-btn' style={{ backgroundImage: `url(${Copie})` }} />
-                            <span>Entrer le code</span>
+                            <span>{t('profile.fidelite.EnterCode')}</span>
                         </div>
                         <div className='code-input-container' >
                             <div>
-                                <input className='code-input' maxLength={6} type="text" placeholder='-' name='code-input' onChange={(event) => { setCode(event.target.value) }} />
+                                <input disabled={disabled} className='code-input' value={code} maxLength={6} type="text" placeholder='-' name='code-input' onChange={(event) => { setCode(event.target.value) }} />
                                 {
                                     loading && <Spinner name='' />
                                 }

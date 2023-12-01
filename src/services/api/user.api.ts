@@ -382,9 +382,11 @@ async function createsponsorship(value: string) {
       const response = await api.post(
         `sponsorship/create`, { sponsorship: value }
       );
-      const { status, data } = response;
-      if (response) return { status: 422, data: null };
-      else return { status, data };
+      if (!response) return { status: 422, data: null };
+      else {
+        const { status, data } = response;
+        return { status, data }
+      };
     }
   } catch (error) {
     return { status: 422, data: null }
