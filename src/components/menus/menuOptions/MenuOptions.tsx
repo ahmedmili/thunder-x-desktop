@@ -18,9 +18,9 @@ import ShoppingCartOutlinedIcon from '@mui/icons-material/ShoppingCartOutlined';
 import { supplierServices } from '../../../services/api/suppliers.api';
 import { Option, Restaurant } from '../../../services/types';
 
+import { fetchMessages } from '../../../Redux/slices/messanger';
 import MessangerBtnIcon from '../../../assets/profile/Discuter/messanger-btn.svg';
 import Messanger from '../../Popups/Messanger/Messanger';
-import { fetchMessages } from '../../../Redux/slices/messanger';
 import SameSupplierWarn from '../../Popups/SameSupplierWarn/SameSupplierWarn';
 
 // Define the initial state
@@ -545,7 +545,7 @@ function MenuOptions() {
                 messangerPopup && <Messanger className="discuter-messanger-popup" close={handleMessangerPopup} />
             }
             {
-                notSameError && <SameSupplierWarn finaliseCommand={() => { }} close={handleSameSupplierModal} />
+                notSameError && <SameSupplierWarn close={handleSameSupplierModal} />
             }
         </div>
 

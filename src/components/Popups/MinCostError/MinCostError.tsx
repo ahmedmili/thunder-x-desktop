@@ -4,17 +4,18 @@ import { useDispatch } from "react-redux";
 import { useNavigate } from "react-router";
 import { clearCart } from "../../../Redux/slices/cart/cartSlice";
 import { useAppSelector } from "../../../Redux/store";
-import './sameSupplierWarn.scss';
+import './minCostError.scss';
 
 
 interface Props {
     close: () => void;
 }
 
-const SameSupplierWarn: React.FC<Props> = ({ close }) => {
+const MinCostError: React.FC<Props> = ({ close }) => {
     const dispatch = useDispatch()
     const navigate = useNavigate()
     const supplier = useAppSelector((state) => state.cart.supplier)
+
     const dropCurrentCommand = () => {
         dispatch(clearCart())
         close()
@@ -27,29 +28,21 @@ const SameSupplierWarn: React.FC<Props> = ({ close }) => {
         navigate(new_url)
         close()
     }
-    const goToPanierPage = () => {
-        navigate('/cart/')
 
-    }
     return (
-
         <>
             <div className="popup-overlay" onClick={close}>
 
             </div>
-            <div className="not-same-popup-container">
+            <div className="min-cost-popup-container">
                 <div onClick={close} className="close-button">X</div>
 
-                <h3 className="title">
-                    Finaliser de la commande
-                </h3>
                 <p className="message">
-                    Veuillez finaliser votre commande pour pouvoir commander à nouveau, sinon supprimer la commande non-finalisée
+                    Le total de votre commande est inférieur au montant minimal d’achat fixé à {supplier.min_cost}Dt par {supplier.name}. Veuillez ajouter autre article au panier.
                 </p>
                 <div className="buttons">
-                    <button className="finaliser-button" onClick={goToPanierPage}>Finaliser la commande précédente</button>
-                    <button className="goto-supp-button" onClick={goToSupplier}>Réaccéder au même fournisseur</button>
-                    <button className="delete-cmd-button" onClick={dropCurrentCommand}>Supprimer la commande précédente</button>
+                    <button className="goto-supp-button" onClick={goToSupplier}>Continuer vos achats</button>
+                    <button className="delete-cmd-button" onClick={close}>Annuler</button>
                 </div>
             </div>
         </>
@@ -57,4 +50,4 @@ const SameSupplierWarn: React.FC<Props> = ({ close }) => {
     )
 }
 
-export default SameSupplierWarn
+export default MinCostError

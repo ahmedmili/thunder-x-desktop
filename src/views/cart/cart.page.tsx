@@ -51,6 +51,7 @@ import { localStorageService } from "../../services/localStorageService";
 import "./cart.page.scss";
 import Messanger from "../../components/Popups/Messanger/Messanger";
 import { fetchMessages } from "../../Redux/slices/messanger";
+import MinCostError from "../../components/Popups/MinCostError/MinCostError";
 
 const CartPage: React.FC = () => {
   const { t } = useTranslation();
@@ -118,9 +119,10 @@ const CartPage: React.FC = () => {
 
   var take_away_plan = 'default';
   const [takeAwayDate, setTakeAwayDate] = useState(new Date());
+  const [minCost, setMinCost] = useState<number>(0)
+  const [isClosed, setIsClosed] = useState<number>(1)
+  const [minCostError, setMinCostError] = useState<boolean>(false)
 
-  var minCost: any;
-  var isClosed: any;
 
 
   const dispatch = useAppDispatch();
@@ -326,7 +328,7 @@ const CartPage: React.FC = () => {
         }
 
         if (Number(minCost) > total) {
-          toast.warn("You have not reached the minimum cost.")
+          setMinCostError(true)
         } else if (isClosed === 0) {
           toast.warn("This restaurant is currently closed, please complete your order later.")
         } else {
@@ -340,7 +342,6 @@ const CartPage: React.FC = () => {
               toast.warn("something went wrong")
             }
           } catch (error) {
-
             throw error
           }
         }
@@ -613,9 +614,11 @@ const CartPage: React.FC = () => {
   const getSupplierById = async () => {
     const { status, data } = await supplierServices.getSupplierById(supplier.id)
     max_distance = data.data?.max_distance;
-    minCost = data?.data.min_cost;
-    isClosed = data?.status;
+    setMinCost(data?.data.min_cost);
+    setIsClosed(data?.status);
+
   }
+
 
   // get distance 
   const getDistance = async () => {
@@ -688,8 +691,11 @@ const CartPage: React.FC = () => {
   });
 
   const removeItemsWithIndex = (i: number) => {
-    console.log("dropped item = ", i)
     dispatch(removeItemWithIndex({ index: i }))
+  }
+
+  const handleMinCostModal = () => {
+    setMinCostError(!minCostError)
   }
 
   return (
@@ -995,7 +1001,9 @@ const CartPage: React.FC = () => {
                   </main>
                 </Col>
               </Row>
-
+              {
+                minCostError && <MinCostError close={handleMinCostModal} />
+              }
             </Container>
             {
               showPopup && (
