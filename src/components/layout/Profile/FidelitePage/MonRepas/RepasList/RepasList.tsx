@@ -1,10 +1,9 @@
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useState } from 'react';
 
-import "./repasList.scss"
 import KeyboardArrowUpOutlinedIcon from '@mui/icons-material/KeyboardArrowUpOutlined';
-import { useNavigate } from 'react-router-dom';
 import { userService } from '../../../../../../services/api/user.api';
 import TemponsGrid from '../Tompons/Tampons';
+import "./repasList.scss";
 
 interface RepasListProps {
 }
