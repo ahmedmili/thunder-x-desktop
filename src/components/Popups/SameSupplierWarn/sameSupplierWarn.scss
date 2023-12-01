@@ -89,9 +89,9 @@
     .buttons {
         display: flex;
         flex-direction: column;
+        align-items: center;
         gap: 17px;
         width: 100%;
-
         button {
             color: #FFF;
             font-family: Poppins;

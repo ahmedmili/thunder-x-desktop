@@ -18,20 +18,20 @@ const SameSupplierWarn: React.FC<Props> = ({ close }) => {
     const supplier = useAppSelector((state) => state.cart.supplier)
     const { t } = useTranslation()
     const dropCurrentCommand = () => {
-        dispatch(clearCart())
         close()
+        setTimeout(() => dispatch(clearCart()), 100)
     }
     const goToSupplier = () => {
         const supplier_id = supplier.id
         const supplier_name = supplier.name
         const supplier_full_url_data = `${supplier_id} ${supplier_name}`.split(' ').join('-');
         const new_url = `/restaurant/${supplier_full_url_data}/All/`
-        navigate(new_url)
         close()
+        setTimeout(() => navigate(new_url), 100)
     }
     const goToPanierPage = () => {
-        navigate('/cart/')
-
+        close()
+        setTimeout(() => navigate('/cart/'), 100)
     }
     return (
 
