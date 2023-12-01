@@ -59,7 +59,7 @@ function InvitPage({ internNavigation }: InvitPageProps) {
                             <h2 className='invite-Q'>{t('profile.fidelite.inviteFriends')} ?</h2>
                             <div className='code-input-container'>
                                 <input type="text" maxLength={6} readOnly value={code} />
-                                <button onClick={copyCode} className='copy-btn' ><span className='chaine-icon' style={{ backgroundImage: `url(${chaine})` }} ></span> Copier</button>
+                                <button onClick={copyCode} className='copy-btn' ><span className='chaine-icon' style={{ backgroundImage: `url(${chaine})` }} ></span> {t('Copier')}</button>
                             </div>
                         </section>
                     )
@@ -73,8 +73,8 @@ function InvitPage({ internNavigation }: InvitPageProps) {
             }
 
             <section className='notes-section'>
-                <h2>Comment ça marche</h2>
-                <p>Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard</p>
+                <h2>{t('profile.fidelite.inviteStart.howTo.title')}</h2>
+                <p>{t('profile.fidelite.inviteStart.howTo.description')}</p>
             </section>
 
             <button onClick={handleModal} className='social-share-button'>

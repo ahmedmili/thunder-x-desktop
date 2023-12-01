@@ -20,13 +20,16 @@
   "monthAgo": "قبل شهر واحد",
   "daysAgo": "أيام",
   "weeksAgo": "منذ أسابيع",
+  "Copier": "نسخ",
+
   "profile.fidelite.Parrainage": "رعاية",
   "profile.fidelite.inviteNow": "ادعو الآن",
   "profile.fidelite.invite2thunder": "ادعوا الأصدقاء إلى تاندر إكسبريس",
   "profile.fidelite.inviteFriends": "ادعوا أصدقائك",
   "profile.fidelite.inviteStart": "ابدأ في دعوة الأصدقاء.",
   "profile.fidelite.sponsorShipNotDisponible": ".نظام الإحالة لدينا معطل حاليًا",
-
+  "profile.fidelite.inviteStart.howTo.title": "كيف يعمل",
+  "profile.fidelite.inviteStart.howTo.description": "قم بدعوة أصدقائك لاستخدام رمز الإحالة الخاص بك للاستمتاع بنقاط إضافية على طلباتهم. علاوة على ذلك، سيحصل أصدقاؤك على ميزة قدرها 1000 نقطة فور استخدامهم لرمز العرض الخاص بك",
   "profile.fidelite.CodeParrainage": "رمز الرعاية",
   "profile.fidelite.ListeParrainage": "قائمة الرعاية",
   "profile.allAnnounces.message": "عروضي وإعلاناتي",

@@ -19,18 +19,25 @@ function Parent({ parent }: CodeProps) {
     const [loading, setLoading] = useState<boolean>(false)
     const [messasge, setMessage] = useState<string>('')
     const [messageColor, setMessageColor] = useState<string>("2EB5B2")
+    const [code, setCode] = useState<string>("")
+
 
 
     const showContent = () => {
         setShow(!show)
     }
 
-    const getCode = (e: any) => {
-        let targetCode = e.target.value
-        if (targetCode.length === 6) {
-            createSponsorship(targetCode)
+    const getCode = (code: string) => {
+        if (code.length === 6) {
+            createSponsorship(code)
+        } else {
+            setMessage('')
         }
     }
+
+    useEffect(() => {
+        getCode(code)
+    }, [code])
 
     const createSponsorship = async (value: string) => {
         setLoading(true)
@@ -74,7 +81,7 @@ function Parent({ parent }: CodeProps) {
                         </div>
                         <div className='code-input-container' >
                             <div>
-                                <input className='code-input' maxLength={6} type="text" placeholder='-' name='code-input' onChange={(event) => { getCode(event) }} />
+                                <input className='code-input' maxLength={6} type="text" placeholder='-' name='code-input' onChange={(event) => { setCode(event.target.value) }} />
                                 {
                                     loading && <Spinner name='' />
                                 }
