@@ -16,7 +16,6 @@ import { setProduct } from "../../Redux/slices/restaurantSlice";
 import { useAppDispatch, useAppSelector } from '../../Redux/store';
 import { productService } from '../../services/api/product.api';
 import { MenuData } from '../../services/types';
-import MismatchModal from '../mismatchModal/mismatchModal';
 
 import { Container, Row } from 'react-bootstrap';
 import { fetchMessages } from '../../Redux/slices/messanger';
@@ -27,6 +26,7 @@ import { scrollToTop } from '../../utils/utils';
 import MenuPopup from '../Popups/Menu/MenuPopup';
 import Messanger from '../Popups/Messanger/Messanger';
 import './menus.scss';
+import SameSupplierWarn from '../Popups/SameSupplierWarn/SameSupplierWarn';
 
 interface MenuProps { }
 
@@ -161,18 +161,12 @@ const Menu: React.FC<MenuProps> = () => {
   }, [idNumber]);
 
 
-  // close miss matching
-  const handleMismatchModalClose = (choice: string) => {
-    if (choice === 'continue') {
-      dispatch(clearSupplierMismatch());
-    } else if (choice === 'clear') {
-      dispatch(clearCart());
-      dispatch(clearSupplierMismatch());
-      dispatch(setSupplier(null));
-      dispatch(setDeliveryPrice(null));
-    }
 
-    setShowMismatchModal(false);
+  // open miss match
+  const handleMismatchModal = () => {
+    // handlePopup()
+    setShowOptionsPopup(false)
+    setShowMismatchModal(!showMismatchModal);
   };
 
   // close options
@@ -387,10 +381,10 @@ const Menu: React.FC<MenuProps> = () => {
 
       </Container>
       {showMismatchModal && (
-        <MismatchModal onClose={handleMismatchModalClose} />
+        <SameSupplierWarn close={handleMismatchModal} />
       )}
       {showOptionsPopup && (
-        <MenuPopup close={handlePopup} restaurant={displayedRestaurant} isOpen={showOptionsPopup} />
+        <MenuPopup openMissMatch={handleMismatchModal} close={handlePopup} restaurant={displayedRestaurant} isOpen={showOptionsPopup} />
       )}
 
     </>

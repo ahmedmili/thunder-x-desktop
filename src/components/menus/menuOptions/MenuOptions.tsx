@@ -18,9 +18,10 @@ import ShoppingCartOutlinedIcon from '@mui/icons-material/ShoppingCartOutlined';
 import { supplierServices } from '../../../services/api/suppliers.api';
 import { Option, Restaurant } from '../../../services/types';
 
+import { fetchMessages } from '../../../Redux/slices/messanger';
 import MessangerBtnIcon from '../../../assets/profile/Discuter/messanger-btn.svg';
 import Messanger from '../../Popups/Messanger/Messanger';
-import { fetchMessages } from '../../../Redux/slices/messanger';
+import SameSupplierWarn from '../../Popups/SameSupplierWarn/SameSupplierWarn';
 
 // Define the initial state
 const initialState = {
@@ -78,6 +79,7 @@ const reducer = (state: any, action: any) => {
     }
 };
 
+
 function MenuOptions() {
 
     const { t } = useTranslation();
@@ -95,7 +97,7 @@ function MenuOptions() {
     const { items } = useSelector((state: RootState) => state.cart);
     const cartItems = useAppSelector((state) => state.cart.items);
 
-
+    const [notSameError, setNotSameError] = useState<boolean>(false)
 
     // handle messanger
     const unReadMessages = useAppSelector((state) => state.messanger.unReadedMessages)
@@ -381,9 +383,10 @@ function MenuOptions() {
         };
 
         if (items.length > 0 && items[0].supplier_data.supplier_id !== obj.supplier_data.supplier_id) {
-            toast.warn("you have already selected items", {
-                position: toast.POSITION.TOP_CENTER, // Change the position
-            });
+            // toast.warn("you have already selected items", {
+            //     position: toast.POSITION.TOP_CENTER, // Change the position
+            // });
+            setNotSameError(true)
             return;
         }
 
@@ -403,6 +406,10 @@ function MenuOptions() {
     useEffect(() => {
         calculateTotal()
     }, [productCount])
+
+    const handleSameSupplierModal = () => {
+        setNotSameError(!notSameError)
+    }
 
     return (
         <div className="menue-options-container" onClick={(e) => e.stopPropagation()}>
@@ -536,6 +543,9 @@ function MenuOptions() {
 
             {
                 messangerPopup && <Messanger className="discuter-messanger-popup" close={handleMessangerPopup} />
+            }
+            {
+                notSameError && <SameSupplierWarn close={handleSameSupplierModal} />
             }
         </div>
 
