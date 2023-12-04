@@ -132,6 +132,10 @@
   "orderTrackingPage.driverOnTheWay": "Driver on the way to supplier",
   "orderTrackingPage.commandOnItsWay": "Command is on its way",
   "orderTrackingPage.noCommands": "You have no commands yet",
+  "orderTrackingPage.oldCommands": "My orders placed",
+  "orderTrackingPage.currentCommands": "Track my orders",
+  "orderTrackingPage.archivedCommands": "Order archives",
+
   "orderTrackingPage.price": "Price:",
   "createAccSubtitle": "Sign up and easily create your account",
   "createAcc": "Create your account",

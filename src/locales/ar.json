@@ -118,6 +118,10 @@
   "orderTrackingPage.command_is_on_its_way": "الطلب في طريقه",
   "orderTrackingPage.you_have_no_commands_yet": "ليس لديك أي طلبات بعد",
   "orderTrackingPage.price": "السعر:",
+  "orderTrackingPage.oldCommands": "طلباتي السابقة",
+  "orderTrackingPage.currentCommands": "تتبع طلباتي",
+  "orderTrackingPage.archivedCommands": "أرشيف الطلبات",
+
   "createAccSubtitle": "سجّل وانشئ حسابك بسهولة",
   "createAcc": "أنشئ حسابك",
   "firstName": "الاسم الأول",
