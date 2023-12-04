@@ -12,7 +12,7 @@ import "./commandsList.scss";
 interface CommandsListProps {
     type?: string;
     goToPassedCommands: () => void;
-    handlenav: () => void;
+    handlenav: (loading: boolean) => void;
 }
 
 const CommandsList: React.FC<CommandsListProps> = ({ type = "old", goToPassedCommands, handlenav }) => {
@@ -91,7 +91,7 @@ const CommandsList: React.FC<CommandsListProps> = ({ type = "old", goToPassedCom
         getClientFeedback()
     }, [])
     useEffect(() => {
-        handlenav()
+        handlenav(loading)
     }, [loading])
     useEffect(() => {
         eventEmitter.on('COMMAND_UPDATED', () => { updateCurrentCommands() })

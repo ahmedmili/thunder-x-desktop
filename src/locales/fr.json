@@ -128,6 +128,10 @@
   "orderTrackingPage.driverOnTheWay": "Livreur en route vers le fournisseur",
   "orderTrackingPage.commandOnItsWay": "La commande est en cours de livraison",
   "orderTrackingPage.noCommands": "Vous n'avez pas encore de commandes",
+  "orderTrackingPage.oldCommands": "Mes commandes passées",
+  "orderTrackingPage.currentCommands": "Suivi mes commandes",
+  "orderTrackingPage.archivedCommands": "Archives commandes",
+
   "orderTrackingPage.price": "Prix",
   "createAccSubtitle": "S’inscrire et créer facilement votre compte",
   "createAcc": "Créer votre compte",
