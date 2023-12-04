@@ -76,6 +76,8 @@
   "profile.commands.sousMessage3": "The order will be delivered in 15 minutes",
   "profile.commands.command": "Order",
   "profile.commands.avis": "Feedback",
+  "profile.commands.feedback.thanksMessage": "We thank you for your feedback regarding this order",
+
   "profile.commands.signal.title": "Report a Problem ",
   "profile.commands.signal.question": "Do you have an issue related to your order ",
   "profile.commands.signal.message": "Please let us know about your issue",

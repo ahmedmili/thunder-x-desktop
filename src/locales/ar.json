@@ -92,6 +92,8 @@
   "profile.commands.sousMessage3": "الطلب سيتم توصيله في 15 دقيقة",
   "profile.commands.command": "الطلب ",
   "profile.commands.avis": "إعطاء رأيك",
+  "profile.commands.feedback.thanksMessage": "نشكرك على ملاحظاتك بخصوص هذا الطلب",
+
   "profile.commands.signal.title": "الإبلاغ عن مشكلة ",
   "profile.commands.signal.question": "هل لديك مشكلة تتعلق بطلبك",
   "profile.commands.signal.message": "من فضلك، أخبرنا عن مشكلتك.",
