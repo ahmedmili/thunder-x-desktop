@@ -102,7 +102,7 @@ function FidelitePage() {
 
                     <main style={{ backgroundColor: "white" }}>
                         <Bonus />
-                        <RepasFooter Ftitle={t('profile.fidelite.footer.bonus.title')} Fbody={t('profile.fidelite.footer.bonus.body')} />
+                        {/* <RepasFooter Ftitle={t('profile.fidelite.footer.bonus.title')} Fbody={t('profile.fidelite.footer.bonus.body')} /> */}
                     </main>
 
                 )
