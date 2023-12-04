@@ -36,7 +36,6 @@ const ListItem = ({ firstName, lastName, points }: ListItemProps) => {
 function Childs({ childs }: ListProps) {
     const { t } = useTranslation()
     const [show, setShow] = useState<boolean>(false)
-
     const showContent = () => {
         setShow(!show)
     }
@@ -49,9 +48,22 @@ function Childs({ childs }: ListProps) {
             </header>
             {show && childs && childs.length > 0 &&
                 childs.map((child: any, index: number) => {
-                    return (
-                        <ListItem key={index} firstName={child.child.firstname} lastName={child.child.lastname} points={child.bonus} />
-                    )
+                    if (
+                        child.child &&
+                        child.bonus
+                    ) {
+                        return (
+                            <ListItem
+                                key={index}
+                                firstName={child.child.firstname}
+                                lastName={child.child.lastname}
+                                points={child.bonus}
+                            />
+                        );
+                    } else {
+                        // Handle the case where `child` doesn't have the expected properties
+                        return null; // or any other appropriate handling
+                    }
                 })
             }
         </main>

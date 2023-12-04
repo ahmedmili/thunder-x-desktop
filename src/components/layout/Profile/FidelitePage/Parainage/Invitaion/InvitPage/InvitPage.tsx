@@ -1,5 +1,5 @@
 import { useTranslation } from 'react-i18next';
-import './invitPage.scss';
+import './invitPagee.scss';
 
 import copy from 'clipboard-copy';
 import { useEffect, useState } from 'react';
