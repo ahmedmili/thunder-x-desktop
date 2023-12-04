@@ -52,16 +52,11 @@ const CommandFeedBack: React.FC<CommandFeedBackProps> = ({ avis, handleAvis, han
 
     useEffect(() => {
         const language = localStorage.getItem("i18nextLng");
-
-        if (language) {
-            const avis = DelivAvis[language as keyof typeof DelivAvis];
-            if (avis) {
-                setAvisList(avis)
-            } else {
-                console.error("Language not found in JSON data");
-            }
+        const avis = language ? DelivAvis[language as keyof typeof DelivAvis] : DelivAvis["fr"];
+        if (avis) {
+            setAvisList(avis)
         } else {
-            console.error("Language not found in localStorage");
+            console.error("Language not found in JSON data");
         }
     }, [])
 
