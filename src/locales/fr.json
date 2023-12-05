@@ -79,6 +79,8 @@
   "profile.commands.sousMessage3": "La commande livré dans 15 minutes",
   "profile.commands.command": "Commande",
   "profile.commands.avis": "Donner votre avis",
+  "profile.commands.feedback.thanksMessage": "On Vous remercie pour votre feedback concernant cette commande",
+
   "profile.fidelite.Parrainage": "Parrainage",
   "profile.fidelite.inviteNow": "Inviter maintenant",
   "profile.fidelite.inviteFriends": "Invitez vos amis",

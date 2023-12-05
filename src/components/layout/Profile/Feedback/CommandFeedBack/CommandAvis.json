@@ -4,7 +4,17 @@
         "Quantité peu généreuse",
         "La commande n’était pas conforme à ce que j’ai demandé"
     ],
+    "fr-FR": [
+        "J’ai pas pu suivre ma commande",
+        "Quantité peu généreuse",
+        "La commande n’était pas conforme à ce que j’ai demandé"
+    ],
     "en": [
+        "I couldn't track my order",
+        "Very small quantity",
+        "The order was not as requested"
+    ],
+    "en-US": [
         "I couldn't track my order",
         "Very small quantity",
         "The order was not as requested"

@@ -12,9 +12,10 @@ interface DelivFeedBackProps {
     avis: number
     handleAvis: any,
     handleCommentsLis: any
+    handleDiscrition: (description: string) => void
 }
 
-const DelivFeedBack: React.FC<DelivFeedBackProps> = ({ avis, handleAvis, handleCommentsLis }) => {
+const DelivFeedBack: React.FC<DelivFeedBackProps> = ({ avis, handleAvis, handleCommentsLis, handleDiscrition }) => {
 
     const { t } = useTranslation()
     const [delivProblem, setShowDelivProblem] = useState<boolean>(false)
@@ -48,14 +49,16 @@ const DelivFeedBack: React.FC<DelivFeedBackProps> = ({ avis, handleAvis, handleC
         const language = localStorage.getItem("i18nextLng");
 
         if (language) {
-            const avis = DelivAvis[language as keyof typeof DelivAvis];
-            if (avis) {
-                setAvisList(avis)
-            } else {
-                console.error("Language not found in JSON data");
-            }
+
+
         } else {
             console.error("Language not found in localStorage");
+        }
+        const avis = language ? DelivAvis[language as keyof typeof DelivAvis] : DelivAvis["fr"];
+        if (avis) {
+            setAvisList(avis)
+        } else {
+            console.error("Language not found in JSON data");
         }
     }, [])
     return (
@@ -92,6 +95,10 @@ const DelivFeedBack: React.FC<DelivFeedBackProps> = ({ avis, handleAvis, handleC
                     </div>
                 )
             }
+
+            <div className='description-container'>
+                <input type="text" onChange={(e) => handleDiscrition(e.target.value)} name="description" id="description" className='description' placeholder='Avez-vous des reflextions que vous souhaitez partager' />
+            </div>
 
         </>
     )

@@ -32,17 +32,17 @@ function ArchivedCommands() {
                 <nav>
                     <ul>
                         <li>
-                            <span onClick={() => handleNav(1)} className={`list-item-text ${nav === 1 && "active"}`} >{t('orderTrackingPage.oldCommands')}</span>
+                            <span onClick={() => handleNav(1)} className={`list-item-text ${nav === 1 && "active"}`}>{t('orderTrackingPage.currentCommands')}</span>
                         </li>
                         <li>
-                            <span onClick={() => handleNav(2)} className={`list-item-text ${nav === 2 && "active"}`}>{t('orderTrackingPage.currentCommands')}</span>
+                            <span onClick={() => handleNav(2)} className={`list-item-text ${nav === 2 && "active"}`} >{t('orderTrackingPage.oldCommands')}</span>
                         </li>
                     </ul>
                 </nav>
 
             </header>
             <main className='commands-list-container'>
-                <CommandsList handlenav={handleLoading} goToPassedCommands={goToPassedCommands} type={nav === 1 ? "old" : "current"} />
+                <CommandsList handlenav={handleLoading} goToPassedCommands={goToPassedCommands} type={nav === 2 ? "old" : "current"} />
             </main>
         </div>
     )
