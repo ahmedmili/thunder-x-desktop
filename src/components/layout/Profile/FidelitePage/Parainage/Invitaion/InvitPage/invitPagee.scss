@@ -13,6 +13,23 @@
         font-style: normal;
         font-weight: 700;
         line-height: normal;
+
+        .go-back-icon {
+            font-size: 26px;
+            font-weight: 700;
+
+        }
+    }
+
+    h3,
+    .go-back-icon {
+        transition: color 1s ease-in-out;
+    }
+
+    h3:hover,
+    .go-back-icon:hover {
+        cursor: pointer;
+        color: aliceblue;
     }
 
     .money-image-container {

@@ -9,6 +9,7 @@ import SocialShare from '../../../../../../../assets/profile/socialShare.svg';
 import { userService } from '../../../../../../../services/api/user.api';
 import { localStorageService } from '../../../../../../../services/localStorageService';
 import ShareSocialModal from '../../../../../../Popups/ShareSocial/ShareSocial';
+import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 
 interface InvitPageProps {
     internNavigation: (page: number) => void,
@@ -48,7 +49,7 @@ function InvitPage({ internNavigation }: InvitPageProps) {
 
     return (
         <main className='invit-page-container'>
-            <h3 className='P-title'>{t('profile.fidelite.Parrainage')}</h3>
+            <h3 className='P-title' onClick={() => internNavigation(1)} ><ArrowBackIcon className='go-back-icon'></ArrowBackIcon> {t('profile.fidelite.Parrainage')}</h3>
             <section className='money-image-container'>
                 <div className='money-img' style={{ backgroundImage: `url(${MoneyPack})` }} > </div>
             </section>
