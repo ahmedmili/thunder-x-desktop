@@ -9,6 +9,10 @@ import CurrentCommands from '../CurrentCommands/CurrentCommands';
 import OldCommands from '../OldCommands/OldCommands';
 import ArrowIcon from './../../../../../assets/profile/leftArrow.svg';
 import "./commandsList.scss";
+import empty from '../../../../../assets/panier/empty.png';
+
+import { useNavigate } from 'react-router';
+import { useTranslation } from 'react-i18next';
 interface CommandsListProps {
     type?: string;
     goToPassedCommands: () => void;
@@ -17,6 +21,9 @@ interface CommandsListProps {
 
 const CommandsList: React.FC<CommandsListProps> = ({ type = "old", goToPassedCommands, handlenav }) => {
 
+
+    const navigate = useNavigate();
+    const { t } = useTranslation();
     const [commands, setCommands] = useState<any>([])
     const [displayedContent, setDisplayedContent] = useState<any[]>([]);
     const [selectedCommand, setSelectedCommand] = useState<number>(-1)
@@ -127,54 +134,68 @@ const CommandsList: React.FC<CommandsListProps> = ({ type = "old", goToPassedCom
                     <Spinner name='test' borderColor='#24A6A4' />
                 ) : (
                     <>
-                        <section className='commands-List' >
-                            {displayedContent.length > 0 && displayedContent.map((command: any, index: number) => {
+                        {
+                            commands.length <= 0 ? (
+                                <section className='empty-cart-main'>
+                                    <img loading="lazy" src={empty} alt="empty cart" />
+                                    <p>{t('cart.payment.noCommands')}</p>
+                                    <button className='emptyButton' onClick={() => {
+                                        navigate('/')
+                                    }}>
+                                        {t('cart.payment.iCommand')}
+                                    </button>
+                                </section>
+                            ) : (
+                                <section className='commands-List' >
+                                    {displayedContent.length > 0 && displayedContent.map((command: any, index: number) => {
 
-                                return (
-                                    <React.Fragment key={index}>
-                                        <div className={`command-header  ${selectedCommand === index ? "active-header" : ""}`} key={index} onClick={() => handleSelectCommand(index)}>
-                                            <span >
-                                                Commande N°{command.id}
-                                            </span>
-                                            <span >
-                                                {command.client.name}
-                                            </span>
-                                            <span>
-                                                {command.to_adresse}
-                                            </span>
-                                            <span>
-                                                {command.created_at}
-                                            </span>
-                                            <KeyboardArrowUpOutlinedIcon className='icon' />
-                                        </div>
-                                        {(selectedCommand === index && type === "old") && <OldCommands feedbacksList={feedbacksList} data={command} />}
-                                        {(selectedCommand === index && type === "current") && <CurrentCommands goToPassedCommands={goToPassedCommands} removeCommand={HandleRemove} data={command} />}
+                                        return (
+                                            <React.Fragment key={index}>
+                                                <div className={`command-header  ${selectedCommand === index ? "active-header" : ""}`} key={index} onClick={() => handleSelectCommand(index)}>
+                                                    <span >
+                                                        Commande N°{command.id}
+                                                    </span>
+                                                    <span >
+                                                        {command.client.name}
+                                                    </span>
+                                                    <span>
+                                                        {command.to_adresse}
+                                                    </span>
+                                                    <span>
+                                                        {command.created_at}
+                                                    </span>
+                                                    <KeyboardArrowUpOutlinedIcon className='icon' />
+                                                </div>
+                                                {(selectedCommand === index && type === "old") && <OldCommands feedbacksList={feedbacksList} data={command} />}
+                                                {(selectedCommand === index && type === "current") && <CurrentCommands goToPassedCommands={goToPassedCommands} removeCommand={HandleRemove} data={command} />}
 
-                                    </React.Fragment>
-                                )
-                            })}
-                            {
-                                commands.length > itemsPerPage && (
+                                            </React.Fragment>
+                                        )
+                                    })}
+                                    {
+                                        commands.length > itemsPerPage && (
 
-                                    <div className="prev-next-buttons">
-                                        {/* prev button */}
-                                        <span className="prev-page-button">
-                                            {!(currentPage === 1) &&
-                                                <button onClick={prevPage} style={{ backgroundImage: `url(${ArrowIcon})` }}>
-                                                </button>
-                                            }
-                                        </span>
-                                        {/* next button  */}
-                                        <span className="next-page-button">
-                                            {!(currentPage === totalPages) &&
-                                                <button onClick={nextPage} style={{ backgroundImage: `url(${ArrowIcon})` }}>
-                                                </button>
-                                            }
-                                        </span>
-                                    </div>
-                                )
-                            }
-                        </section>
+                                            <div className="prev-next-buttons">
+                                                {/* prev button */}
+                                                <span className="prev-page-button">
+                                                    {!(currentPage === 1) &&
+                                                        <button onClick={prevPage} style={{ backgroundImage: `url(${ArrowIcon})` }}>
+                                                        </button>
+                                                    }
+                                                </span>
+                                                {/* next button  */}
+                                                <span className="next-page-button">
+                                                    {!(currentPage === totalPages) &&
+                                                        <button onClick={nextPage} style={{ backgroundImage: `url(${ArrowIcon})` }}>
+                                                        </button>
+                                                    }
+                                                </span>
+                                            </div>
+                                        )
+                                    }
+                                </section>
+                            )
+                        }
                     </>
                 )
             }
