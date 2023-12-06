@@ -88,6 +88,7 @@ const CartPage: React.FC = () => {
 
   // promo vars
   const [promo, setPromo] = React.useState<string>("");
+  const [promoApplied, setPromoApplied] = React.useState<boolean>(false);
   const [promosList, setPromosList] = useState<any>([])
   const [couponExiste, setCouponExiste] = React.useState<boolean>(false);
   const [selectedCoupon, setSelectedCoupon] = React.useState<any>(null);
@@ -152,9 +153,6 @@ const CartPage: React.FC = () => {
 
   const ArticleProvider: React.FC<Article> = ({ item, remove }) => {
     const [count, setCount] = useState<number>(item.quantity)
-
-    // const handleRemoveItemFromCart = () => dispatch(removeItem({ id: item.product.id }));
-    // const handleRemoveItemFromCart = () => remove;
 
     const handleIncreaseQuantity = () => {
       dispatch(
@@ -273,9 +271,9 @@ const CartPage: React.FC = () => {
       var year = takeAwayDate.getFullYear();
       var month = (takeAwayDate.getMonth() + 1).toString().padStart(2, '0');
       var day = takeAwayDate.getDate().toString().padStart(2, '0');
-      var hours = takeAwayDate.getHours().toString().padStart(2, '0'); 
-      var minutes = takeAwayDate.getMinutes().toString().padStart(2, '0'); 
-      var seconds = "00"; 
+      var hours = takeAwayDate.getHours().toString().padStart(2, '0');
+      var minutes = takeAwayDate.getMinutes().toString().padStart(2, '0');
+      var seconds = "00";
       var formattedDate = year + '-' + month + '-' + day + ' ' + hours + ':' + minutes + ':' + seconds;
       const order = {
         addresse_id: 1,
@@ -454,27 +452,33 @@ const CartPage: React.FC = () => {
     } else {
       sum = sousTotal;
     }
-    //  if the bonus exceeds 40000pts
-    if (bonus > 40000 && sum > 40) {
-      setAppliedBonus(40000);
-      setbonus((bonus) => bonus - 40000);
-    }
-    //   // if bonus exceeds the total amouunt
-    else if (bonus / 1000 > sum) {
-      setAppliedBonus(sum * 1000);
-      setbonus((bonus) => bonus - (sum * 1000));
-    }
-    // if the bonus less than the total amount
-    else {
-      setAppliedBonus(bonus);
-      setbonus(0);
-    }
-    setBonusApplied(true);
-    if (sum === (appliedBonus / 1000)) {
-      setLimitReachedBonus(true);
-    }
-    else {
+    if (appliedBonus > 0) { // if allready bonus used once
+      setbonus((bonus) => bonus + appliedBonus);
+      setAppliedBonus(0);
+      setBonusApplied(false);
       setLimitReachedBonus(false);
+
+    } else {
+      //  if the bonus exceeds 40000pts
+      if (bonus > 40000 && sum > 40) {
+        setAppliedBonus(40000);
+        setbonus((bonus) => bonus - 40000);
+
+      }
+      else if (bonus / 1000 > sum) {     // if bonus exceeds the total amouunt
+        setAppliedBonus(sum * 1000);
+        setbonus((bonus) => bonus - (sum * 1000));
+      } else {    // if the bonus less than the total amount
+        setAppliedBonus(bonus);
+        setbonus(0);
+      }
+      setBonusApplied(true);
+      if (sum === (appliedBonus / 1000)) {
+        setLimitReachedBonus(true);
+      }
+      else {
+        setLimitReachedBonus(false);
+      }
     }
   }
 
@@ -486,57 +490,45 @@ const CartPage: React.FC = () => {
 
   //  check promo validation
   const checkPromoCode = async () => {
-    if (promo.length >= 0) {
-      let formData = new FormData();
-      formData.append('code_coupon', promo)
-      cartService.getPromoCode(formData).then((res) => {
-        if (res.status === 422) {
-          toast.error("code promo invalid")
-          return 0
-        }
-        if (res.data.code && res.data.code === 200) {
-          if (res.data.success) {
-            toast.success("valide code")
-            CalculatePromoPrice();
-            return 0;
-          } else {
+    if (promoApplied) {
+      const initDeliveryPrice = cartItems.length > 0 ? Number(cartItems[0].supplier_data.delivery_price) + extraDeliveryCost : 0;
+      setDelivPrice(initDeliveryPrice)
+      setPromoApplied(false)
+      setPromoReduction(0)
+      selectCoupon(selectedCoupon)
+    } else {
+      if (promo.length >= 0) {
+        let formData = new FormData();
+        formData.append('code_coupon', promo)
+        cartService.getPromoCode(formData).then((res) => {
+          if (res.status === 422) {
             toast.error("code promo invalid")
             return 0
           }
-        }
-      })
+          if (res.data.code && res.data.code === 200) {
+            if (res.data.success) {
+              CalculatePromoPrice();
+              setPromoApplied(true)
+
+              return 0;
+            } else {
+              toast.error("code promo invalid")
+              return 0
+            }
+          }
+        })
+      }
     }
+
   }
 
-  // handle promo text state
-  const handlePromoChange = (code: string) => {
-    setPromo(code);
-    dispatch(setCodePromo(code));
-    setCouponExiste(true)
-    if (code.length <= 0) {
-      setCouponExiste(false)
-    }
-  };
-
-  // handle promo state from list 
-  const selectCoupon = (coupon: any) => {
-    //check if you're clicking on the same promo code
-    if (selectedCoupon !== coupon) {
-      setPromo(coupon.code_coupon);
-      setSelectedCoupon(coupon);
-      setCouponExiste(true)
-    } else {
-      setPromo('');
-      setSelectedCoupon(null)
-      setCouponExiste(false)
-    }
-  }
   // calc promo value
   const CalculatePromoPrice = () => {
     var promoReduction;
     if (Object.keys(selectedCoupon).length > 0) {
 
       const initDeliveryPrice = cartItems.length > 0 ? Number(cartItems[0].supplier_data.delivery_price) + extraDeliveryCost : 0
+
       if (selectedCoupon.apply_on === 'DELIVERY') {
         if (selectedCoupon.delivery_fixed != 1) {
           if (selectedCoupon.type === 'percentage') {
@@ -577,10 +569,35 @@ const CartPage: React.FC = () => {
         return 0;
       }
     }
+    setPromoApplied(false)
     promoReduction = 0;
     setPromoReduction(promoReduction)
     return 0;
   }
+  // handle promo text state
+  const handlePromoChange = (code: string) => {
+    setPromo(code);
+    dispatch(setCodePromo(code));
+    setCouponExiste(true)
+    if (code.length <= 0) {
+      setCouponExiste(false)
+    }
+  };
+
+  // handle promo state from list 
+  const selectCoupon = (coupon: any) => {
+    //check if you're clicking on the same promo code
+    if (selectedCoupon !== coupon) {
+      setPromo(coupon.code_coupon);
+      setSelectedCoupon(coupon);
+      setCouponExiste(true)
+    } else {
+      setPromo('');
+      setSelectedCoupon(null)
+      setCouponExiste(false)
+    }
+  }
+
 
   //  calc total befor reduction (gift / promo / bonus ...)
   const getSousTotal = () => {
@@ -805,8 +822,8 @@ const CartPage: React.FC = () => {
                         <div className="promo-container">
                           <span>Code promo</span>
                           <textarea name="code_promo" id="code_promo" placeholder="Code promo" value={promo} onChange={(e) => handlePromoChange(e.target.value)} ></textarea>
-                          <button disabled={!couponExiste} className={(couponExiste) ? "button" : "button disabled"} onClick={checkPromoCode}>
-                            {t('cartPage.appliquer')}
+                          <button disabled={!couponExiste} style={{ backgroundColor: `${promoApplied ? "red" : "#FBC000"}` }} className={(couponExiste) ? "button" : "button disabled"} onClick={checkPromoCode}>
+                            {promoApplied ? t('Annuler') : t('cartPage.appliquer')}
                           </button>
                         </div>
                         <div className="devider">
@@ -814,8 +831,8 @@ const CartPage: React.FC = () => {
                         <div className="promo-container">
                           <span>{t('cartPage.bonus')}</span>
                           <textarea name="bonus" id="bonus" placeholder="Bonnus" value={bonus.toFixed(2) + ' pts'}></textarea>
-                          <button className={(bonus < 5000 || appliedBonus || limitReachedBonus) ? "button disabled" : "button"} disabled={bonus < 5000} onClick={() => applyBonus()}>
-                            {t('cartPage.appliquer')}
+                          <button style={{ backgroundColor: `${appliedBonus > 0 ? "red" : '#FBC000'}` }} className={(bonus < 5000 || limitReachedBonus) ? "button disabled" : "button"} disabled={(bonus < 5000 || limitReachedBonus)} onClick={() => applyBonus()}>
+                            {appliedBonus > 0 ? t('Annuler') : t('cartPage.appliquer')}
                           </button>
                         </div>
                         <ul>
