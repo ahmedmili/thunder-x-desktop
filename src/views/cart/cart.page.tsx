@@ -257,13 +257,25 @@ const CartPage: React.FC = () => {
     supplier: number,
     deliveryPrice: number
   ) => {
+    let products = cartItems.flatMap((item) => ({
+      id: item.product.id,
+      supplier_id: item.supplier_data.supplier_id,
+      qte: item.quantity,
+      options: item.options.flatMap((op: any) => op),
+      computed_value: item.product.computed_value,
+      total: item.total,
+      discount_value: item.product.discount_value,
+      cost: item.product.cost,
+      old_value: item.product.old_value,
+    }))
+
     try {
       var year = takeAwayDate.getFullYear();
-      var month = (takeAwayDate.getMonth() + 1).toString().padStart(2, '0'); // Zero-padding month
-      var day = takeAwayDate.getDate().toString().padStart(2, '0'); // Zero-padding day
-      var hours = takeAwayDate.getHours().toString().padStart(2, '0'); // Zero-padding hours
-      var minutes = takeAwayDate.getMinutes().toString().padStart(2, '0'); // Zero-padding minutes
-      var seconds = "00"; // Assuming you don't have seconds information
+      var month = (takeAwayDate.getMonth() + 1).toString().padStart(2, '0');
+      var day = takeAwayDate.getDate().toString().padStart(2, '0');
+      var hours = takeAwayDate.getHours().toString().padStart(2, '0'); 
+      var minutes = takeAwayDate.getMinutes().toString().padStart(2, '0'); 
+      var seconds = "00"; 
       var formattedDate = year + '-' + month + '-' + day + ' ' + hours + ':' + minutes + ':' + seconds;
       const order = {
         addresse_id: 1,
@@ -274,17 +286,7 @@ const CartPage: React.FC = () => {
         applied_bonus: applied_bonus,
         total_price: total,
         promo_code: promo,
-        products: cartItems.flatMap((item) => ({
-          id: item.product.id,
-          supplier_id: item.supplier_data.supplier_id,
-          qte: item.quantity, // set the quantity to the item's quantity
-          options: item.options.map((op: any) => op[0]),
-          computed_value: item.product.computed_value,
-          total: item.total,
-          discount_value: item.product.discount_value,
-          cost: item.product.cost,
-          old_value: item.product.old_value,
-        })),
+        products: products,
         lat: userPosition?.coords.latitude,
         lng: userPosition?.coords.longitude,
         total_price_coupon: promoReduction,
@@ -299,8 +301,8 @@ const CartPage: React.FC = () => {
         gift_ammount: giftAmmount,
         gift_id: giftId,
       };
+
       if (isAuthenticated) {
-        // validate the order object against the schema
         orderSchema.parse(order);
         try {
           const userToken = localStorageService.getUserToken();
@@ -328,7 +330,7 @@ const CartPage: React.FC = () => {
           throw error
         }
 
-        if (Number(minCost) > total) {
+        if (Number(minCost) > sousTotal) {
           setMinCostError(true)
         } else if (isClosed === 0) {
           toast.warn("This restaurant is currently closed, please complete your order later.")

@@ -12,8 +12,9 @@
 
 .favors-main-container {
     width: 100%;
+    height: 100vh;
     animation: fadeIn 1s;
-
+    padding-bottom: 10px;
     .favors-header {
         margin-top: 150px;
         width: 100%;
