@@ -49,8 +49,6 @@ const HomePage = () => {
     []
   );
 
-
-
   const handleCategorySelect = (category: string) => {
     if (selectedCategory === category) {
       setSelectedCategory("");

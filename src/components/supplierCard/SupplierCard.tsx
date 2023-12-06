@@ -115,7 +115,7 @@ const SupplierCard: React.FC<SupplierCard> = ({ data, favors = false, className 
                                     data.delivery === 1 && data.take_away === 1 && (" / ")
                                 }
                                 {
-                                    data.take_away === 1 && t("home2")
+                                    data.take_away === 1 && t("emporter")
                                 }
                             </p>
                             {/* delivery Price */}
