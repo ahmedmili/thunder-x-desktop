@@ -3,13 +3,13 @@
 .profile-container {
     background-color: #F7F7F7;
     width: 100vw;
-    min-height: 100vh;
+    height: 100vh;
     display: flex;
     gap: 60px;
-    overflow-y: scroll;
+    overflow: scroll;
     transition: all 1s ease-in-out;
     padding-bottom: 70px;
-
+    padding-left: 371px;
     &::-webkit-scrollbar {
         width: 0;
     }

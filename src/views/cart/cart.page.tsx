@@ -327,7 +327,7 @@ const CartPage: React.FC = () => {
           throw error
         }
 
-        if (Number(minCost) > total) {
+        if (Number(minCost) > sousTotal ) {
           setMinCostError(true)
         } else if (isClosed === 0) {
           toast.warn("This restaurant is currently closed, please complete your order later.")
