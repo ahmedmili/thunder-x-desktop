@@ -35,8 +35,6 @@ const SupplierCard: React.FC<SupplierCard> = ({ data, favors = false, className 
 
     const MAX_NAME_LENGTH = 10;
 
-
-
     const getTruncatedName = (name: string) => {
         return name.length > MAX_NAME_LENGTH
             ? `${name.slice(0, MAX_NAME_LENGTH)}...`
@@ -112,14 +110,17 @@ const SupplierCard: React.FC<SupplierCard> = ({ data, favors = false, className 
 
                                     {getTruncatedName(data.name)}
                                 </abbr>
-                                {
-                                    data.star && data.star > 0 && (
-                                        <span className={supplierStyle.rate}>
+                                <span className={supplierStyle.rate}>
+                                    {
+                                        data.star && data.star > 0 && (
+                                            <>
                                                 {data.star}
-                                            <Star className={supplierStyle.starIcon} />
-                                        </span>
-                                    )
-                                }
+                                            </>
+                                        )
+                                    }
+                                    <Star className={supplierStyle.starIcon} />
+                                </span>
+                            
                             </p>
                             {/* option take_away & delivery */}
                             <p className={supplierStyle.option} >
