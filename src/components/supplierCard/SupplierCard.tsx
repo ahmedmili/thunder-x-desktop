@@ -112,7 +112,14 @@ const SupplierCard: React.FC<SupplierCard> = ({ data, favors = false, className 
 
                                     {getTruncatedName(data.name)}
                                 </abbr>
-                                <Star className={supplierStyle.starIcon} />
+                                {
+                                    data.star && data.star > 0 && (
+                                        <span className={supplierStyle.rate}>
+                                                {data.star}
+                                            <Star className={supplierStyle.starIcon} />
+                                        </span>
+                                    )
+                                }
                             </p>
                             {/* option take_away & delivery */}
                             <p className={supplierStyle.option} >

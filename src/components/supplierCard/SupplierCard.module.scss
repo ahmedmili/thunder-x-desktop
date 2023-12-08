@@ -111,9 +111,17 @@
               }
             }
 
-            .starIcon {
-              color: $orange_color;
-              font-size: 2.2rem;
+
+            .rate {
+              display: flex;
+              align-items: center;
+              justify-content: center;
+              
+              .starIcon {
+                color: $orange_color;
+                font-size: 2.2rem;
+              }
+
             }
           }
 
@@ -182,7 +190,7 @@
 }
 
 @media only screen and (min-width : 1400px) {
-  .supplierCard{
+  .supplierCard {
     width: 98%;
   }
 }
