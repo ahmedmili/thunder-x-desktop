@@ -25,7 +25,7 @@ const RestaurantList: React.FC<Props> = ({ restaurants, listType }) => {
   const { t } = useTranslation();
 
   const [restaurantsList, setRestaurantsList] = useState(restaurants);
-  const [displayNormalSlideHeight, setDisplayNormalSlideHeight] = useState<number>(0);
+  // const [displayNormalSlideHeight, setDisplayNormalSlideHeight] = useState<number>(0);
 
 
   useEffect(() => {
@@ -34,12 +34,10 @@ const RestaurantList: React.FC<Props> = ({ restaurants, listType }) => {
       list = restaurants.filter((rest: Restaurant) => {
         return rest.discount_title === null
       })
-      console.log("recommanded list :", list)
     } else {
       list = restaurants.filter((rest: Restaurant) => {
         return rest.discount_title !== null
       })
-      console.log("offre list :", list)
     }
     setRestaurantsList(list);
   }, [restaurants]);
