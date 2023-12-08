@@ -177,8 +177,7 @@ function FilterPage() {
             }) : restaurantsList.filter((res) => {
                 return res.take_away == 1
             });
-        console.log("restaurantsList : ", restaurantsList)
-        console.log("delivFilterList : ", delivFilterList)
+       
         setAllRestaurantsList(delivFilterList);
         suppliersListRef && scrollToTarget(suppliersListRef);
 

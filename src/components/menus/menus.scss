@@ -111,11 +111,35 @@
                 align-items: end;
                 gap: 20px;
 
-                .starIcon {
-                    width: 36px;
-                    height: 35px;
-                    color: $orange_color;
+                .rate-gouping {
+                    display: flex;
+                    align-items: center;
+                    justify-content: center;
+
+                    .star-number {
+                        color: $dark_Gray;
+                        font-size: 24px;
+                        font-weight: 700;
+
+                    }
+
+                    .starIcon {
+                        width: 36px;
+                        height: 35px;
+                        color: $orange_color;
+                    }
+
+                    .gift-icon {
+                        width: 23px;
+                        height: 29px;
+                        background-position: center;
+                        background-repeat: no-repeat;
+                        background-size: cover;
+                        color: #1F94A4;
+
+                    }
                 }
+
 
                 .time {
                     width: 190px;

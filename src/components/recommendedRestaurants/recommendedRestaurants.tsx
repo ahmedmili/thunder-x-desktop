@@ -25,11 +25,21 @@ const RestaurantList: React.FC<Props> = ({ restaurants, listType }) => {
   const { t } = useTranslation();
 
   const [restaurantsList, setRestaurantsList] = useState(restaurants);
-  const [displayNormalSlideHeight, setDisplayNormalSlideHeight] = useState<number>(0);
+  // const [displayNormalSlideHeight, setDisplayNormalSlideHeight] = useState<number>(0);
 
 
   useEffect(() => {
-    setRestaurantsList(restaurants);
+    let list: Restaurant[];
+    if (listType === "recommanded") {
+      list = restaurants.filter((rest: Restaurant) => {
+        return rest.discount_title === null
+      })
+    } else {
+      list = restaurants.filter((rest: Restaurant) => {
+        return rest.discount_title !== null
+      })
+    }
+    setRestaurantsList(list);
   }, [restaurants]);
 
   if (restaurants.length === 0 && listType == "recommanded") {
@@ -58,110 +68,114 @@ const RestaurantList: React.FC<Props> = ({ restaurants, listType }) => {
   const isLargeScreen = useMediaQuery('(min-width : 1400px)');
 
   return (
-    <div className={`${recommandedStyle.recommandedContainer}  ${listType=="discount" ? recommandedStyle.discount : ''}`}>
-      {
-        <Container className={recommandedStyle.container + ` ${!displayNormal && recommandedStyle.uniqueContainer} `}>
-          <Row>
-            {listType == "recommanded" && (
-              <h2 className={recommandedStyle.recaommandedTitle}>
-                {" "}
-                {t("recommendedForYou")}
-              </h2>
-            )}
-            {listType == "discount" && (
-              <Box className={recommandedStyle.discountTitleContainer}>
-                <h2>Jusqu'à 25 % de réduction - Offres de repas</h2>
-                <p>
-                  Besoin d'une pause de cuisine ou simplement envie de votre{" "}
-                  <br />
-                  restaurant préféré ?
-                </p>
-              </Box>
-            )}
-          </Row>
+    <div className={`${recommandedStyle.recommandedContainer}  ${listType == "discount" ? recommandedStyle.discount : ''}`}>
 
-          <div
-            className={
-              displayNormal ? recommandedStyle.double : recommandedStyle.unique
-            }
-          ></div>
-          <CarouselProvider
-            naturalSlideWidth={100}
-            naturalSlideHeight={
-              !displayNormal ? 350 : isLargeScreen ? 130 : 167}
-            totalSlides={
-              displayNormal
-                ? restaurantsList.length / 2 + 1
-                : restaurantsList.length
-            }
-            visibleSlides={3}
-            step={3}
-            infinite={true}
-            className={recommandedStyle.carouselProvider}
-          >
-            <Row>
-              <Col>
-                {(() => {
-                  const cart = [];
-                  for (
-                    let i = 0;
-                    i <
-                    (displayNormal
-                      ? restaurantsList.length / 2
-                      : restaurantsList.length);
-                    i++
-                  ) {
-                    cart.push(
-                      <div key={i}>
-                        {displayNormal ? (
-                          <>
-                            <Slide index={i} key={firstMiddle![i].id}>
-                              {firstMiddle![i] && (
-                                <SupplierCard data={firstMiddle![i]} />
-                              )}
-                              <br />
-                              {lastMiddle![i] && (
-                                <SupplierCard data={lastMiddle![i]} />
-                              )}
-                            </Slide>
-                          </>
-                        ) : (
-                          <div className={recommandedStyle.uniqueDivCard}>
+      <Container className={` ${recommandedStyle.container} ${!displayNormal && recommandedStyle.uniqueContainer} `}>
+        <Row>
+          {listType == "recommanded" && (
+            <h2 className={recommandedStyle.recaommandedTitle}>
+              {" "}
+              {t("recommendedForYou")}
+            </h2>
+          )}
+          {listType == "discount" && (
+            <Box className={recommandedStyle.discountTitleContainer}>
+              <h2>Jusqu'à 25 % de réduction - Offres de repas</h2>
+              <p>
+                Besoin d'une pause de cuisine ou simplement envie de votre{" "}
+                <br />
+                restaurant préféré ?
+              </p>
+            </Box>
+          )}
+        </Row>
+
+        <div
+          className={
+            displayNormal ? recommandedStyle.double : recommandedStyle.unique
+          }
+        ></div>
+        <CarouselProvider
+          naturalSlideWidth={100}
+          naturalSlideHeight={
+            !displayNormal ? isLargeScreen ? 70 : 90 : isLargeScreen ? 130 : 167}
+          totalSlides={
+            displayNormal
+              ? restaurantsList.length / 2 + 1
+              : restaurantsList.length
+          }
+          visibleSlides={3}
+          step={3}
+          infinite={true}
+          className={recommandedStyle.carouselProvider}
+        >
+          <Row>
+            <Col>
+              {(() => {
+                const cart = [];
+                for (
+                  let i = 0;
+                  i <
+                  (displayNormal
+                    ? restaurantsList.length / 2
+                    : restaurantsList.length);
+                  i++
+                ) {
+                  cart.push(
+                    // <div key={i}>
+                    <React.Fragment key={i}>
+                      {displayNormal ? (
+                        <>
+                          <Slide index={i} key={firstMiddle![i].id}>
+                            {firstMiddle![i] && (
+                              <SupplierCard data={firstMiddle![i]} />
+                            )}
+                            <br />
+                            {lastMiddle![i] && (
+                              <SupplierCard data={lastMiddle![i]} />
+                            )}
+                          </Slide>
+                        </>
+                      ) : (
+                        <div className={recommandedStyle.uniqueDivCard}>
+                          <Slide index={i} key={restaurantsList[i].id}>
                             <SupplierCard data={restaurantsList[i]} />
-                          </div>
-                        )}
-                      </div>
-                    );
-                  }
-                  // Generate a unique key for the Slider
-                  const sliderKey = 'uniqueSliderKey'; // Replace with your unique key
-                  return (
-                    <Slider key={sliderKey}>
-                      {cart}
-                    </Slider>
+                          </Slide>
+                        </div>
+                      )}
+                    </React.Fragment>
+                    // </div>
                   );
-                })()}
-              </Col>
-            </Row>
-            <Row className={` ${recommandedStyle.recommandedListButtonsContainer} ${!displayNormal ? recommandedStyle.uniqueButtons + "" : " test"}`}>
-              <Col>
-                <ButtonBack className={recommandedStyle.btn}>
-                  <ArrowBackIosIcon
-                    className={recommandedStyle.sliderButtonIcon}
-                  />
-                </ButtonBack>
-              </Col>
-              <Col className={recommandedStyle.rightBtn}>
-                <ButtonNext className={recommandedStyle.btn}>
-                  <ArrowForwardIosIcon
-                    className={recommandedStyle.sliderButtonIcon}
-                  />
-                </ButtonNext>
-              </Col>
-            </Row>
-          </CarouselProvider>
-        </Container>
-      }
+                }
+                // Generate a unique key for the Slider
+                const sliderKey = 'uniqueSliderKey'; // Replace with your unique key
+                return (
+                  <Slider key={sliderKey}>
+                    {cart}
+                  </Slider>
+                );
+              })()}
+            </Col>
+          </Row>
+          <Row className={` ${recommandedStyle.recommandedListButtonsContainer} ${!displayNormal ? recommandedStyle.uniqueButtons + "" : " test"}`}>
+            <Col>
+              <ButtonBack className={recommandedStyle.btn}>
+                <ArrowBackIosIcon
+                  className={recommandedStyle.sliderButtonIcon}
+                />
+              </ButtonBack>
+            </Col>
+            <Col className={recommandedStyle.rightBtn}>
+              <ButtonNext className={recommandedStyle.btn}>
+                <ArrowForwardIosIcon
+                  className={recommandedStyle.sliderButtonIcon}
+                />
+              </ButtonNext>
+            </Col>
+          </Row>
+        </CarouselProvider>
+      </Container>
+
     </div>
   );
 };

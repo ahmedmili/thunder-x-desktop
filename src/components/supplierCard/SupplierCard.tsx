@@ -1,6 +1,6 @@
 
 
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 
 import { DiscountRounded, Star } from '@mui/icons-material';
 import FavoriteIcon from '@mui/icons-material/Favorite';
@@ -23,6 +23,10 @@ const SupplierCard: React.FC<SupplierCard> = ({ data, favors = false, className 
     const { t } = useTranslation();
 
     const [fav, setFav] = useState<boolean>(data.favor !== undefined ? data.favor : favors);
+
+
+
+
     const getImageUrl = (restaurant: Restaurant) => {
         const image1 = restaurant.images.length > 0 ? restaurant.images[0] : null;
         const image2 = restaurant.images.length > 1 ? restaurant.images[1] : null;
@@ -69,16 +73,18 @@ const SupplierCard: React.FC<SupplierCard> = ({ data, favors = false, className 
 
                     <Box className={supplierStyle.imageContainer}>
                         {/* promo lable */}
-                        {(data.discount_title !== 'PROMO') && (data.discount_title !== undefined) && (data.discount_title !== null) && (
-                            <Box className={supplierStyle.discountBox}>
-                                <p>
-                                    <DiscountRounded
-                                        className={supplierStyle.discountIcon}
-                                    />{' '}
-                                    {`${data.discount_title}`}
-                                </p>
-                            </Box>
-                        )}
+                        {
+                            (data.discount_title && data.status === 1)
+                            && (
+                                <Box className={supplierStyle.discountBox}>
+                                    <p>
+                                        <DiscountRounded
+                                            className={supplierStyle.discountIcon}
+                                        />{' '}
+                                        {`${data.discount_title}`}
+                                    </p>
+                                </Box>
+                            )}
 
 
                         {/* card image */}
@@ -104,7 +110,17 @@ const SupplierCard: React.FC<SupplierCard> = ({ data, favors = false, className 
 
                                     {getTruncatedName(data.name)}
                                 </abbr>
-                                <Star className={supplierStyle.starIcon} />
+                                <span className={supplierStyle.rate}>
+                                    {
+                                        data.star && data.star > 0 && (
+                                            <>
+                                                {data.star}
+                                            </>
+                                        )
+                                    }
+                                    <Star className={supplierStyle.starIcon} />
+                                </span>
+                            
                             </p>
                             {/* option take_away & delivery */}
                             <p className={supplierStyle.option} >
@@ -119,27 +135,23 @@ const SupplierCard: React.FC<SupplierCard> = ({ data, favors = false, className 
                                 }
                             </p>
                             {/* delivery Price */}
-                            <p className={supplierStyle.price}>
+                            <div className={supplierStyle.price}>
                                 <span>
 
                                     {t('deliveryPrice')}
                                     <span>
-                                        {" " + data.delivery_price + " DT"}
+                                        {`${data.delivery_price}DT `}
                                     </span>
                                 </span>
                                 {/* time lable */}
                                 {data.medium_time && (
-                                    <Box
-                                        className={supplierStyle.restaurantTime}>
-
+                                    <Box className={supplierStyle.restaurantTime}>
                                         <p>
-                                            {`${data.medium_time - 10}mins - ${data.medium_time + 10
-                                                }mins`}
-
+                                            {`${data.medium_time - 10}mins - ${data.medium_time + 10}mins`}
                                         </p>
                                     </Box>
                                 )}
-                            </p>
+                            </div>
                         </div>
                     </CardContent>
                 </Card>

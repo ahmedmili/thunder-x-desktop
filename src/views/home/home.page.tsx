@@ -76,7 +76,6 @@ const HomePage = () => {
     }
   };
   const handleMessangerPopup = () => {
-    console.log('open messanger')
     setMessangerPopup(!messangerPopup)
   }
 

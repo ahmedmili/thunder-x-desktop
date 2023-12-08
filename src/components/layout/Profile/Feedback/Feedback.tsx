@@ -33,9 +33,7 @@ function Feedback() {
     const handleDescription = (description: string) => {
         setDescription(description)
     }
-    useEffect(() => {
-        console.log("description : ", description)
-    }, [description])
+
     const handleCommandAvis = (avis: number) => {
         setCommandAvis(avis)
     }

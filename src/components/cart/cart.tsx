@@ -125,7 +125,6 @@ export const Cart: React.FC<CartProps> = ({ items, closeButton }) => {
 
 
   const removeItemsWithIndex = (i: number) => {
-    console.log("dropped item = ", i)
     dispatch(removeItemWithIndex({ index: i }))
   }
 

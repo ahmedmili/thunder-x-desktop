@@ -203,6 +203,7 @@ export interface Restaurant {
   rating: number;
   plates: string[];
   favor?: boolean;
+  bonus?: number;
 }
 
 export interface Message {
