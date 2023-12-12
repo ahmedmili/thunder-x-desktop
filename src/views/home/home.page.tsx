@@ -26,14 +26,11 @@ import CategoryCarousel from "../../components/categoriesCarousel/categoriesCaro
 import HomeSkeleton from "./skeleton/HomeSkeleton";
 
 
-const ads = useSelector(adsHomeSelector);
-const categories = useSelector(categoriesHomeSelector);
-const recommanded = useSelector(recommendedHomeSelector);
-const isLoading = useSelector(homeLoadingSelector);
-const [messangerPopup, setMessangerPopup] = useState<boolean>(false)
 
 const HomePage = ({ initialData }: AppProps) => {
 
+
+  const [messangerPopup, setMessangerPopup] = useState<boolean>(false)
   const ads = initialData ? initialData.ads : useSelector(adsHomeSelector);
   const categories = initialData ? initialData.categories : useSelector(categoriesHomeSelector);
   const recommanded = initialData ? initialData.recommended : useSelector(recommendedHomeSelector);
@@ -41,12 +38,13 @@ const HomePage = ({ initialData }: AppProps) => {
 
   const restaurantsList = useAppSelector((state) => state.restaurant.restaurants);
 
-  const unReadMessages = useAppSelector((state) => state.messanger.unReadedMessages)
+  const unReadMessages = initialData ? 0 : useAppSelector((state) => state.messanger.unReadedMessages)
   const [unReadedQt, setUnReadedQt] = useState<number>(unReadMessages)
 
   useEffect(() => {
     setUnReadedQt(unReadMessages)
   }, [unReadMessages])
+
 
   const [selectedCategory, setSelectedCategory] = useState<string>("");
   const [filteredRestaurants, setFilteredRestaurants] = useState<Restaurant[]>([]);
@@ -155,7 +153,7 @@ const HomePage = ({ initialData }: AppProps) => {
 
             <div className={homeStyle.bulles}>
               <button className={homeStyle.messangerPopupBtn} onClick={handleMessangerPopup} style={{ backgroundImage: `url(${MessangerBtnIcon})` }}>
-                {unReadedQt > 0 && (
+                {unReadedQt > 0 && initialData && (
                   <div className={homeStyle.messangerBullNotifIcon}>
                     {unReadedQt}
                   </div>
