@@ -52,7 +52,7 @@
       border-radius: 60px;
       background: $Light_yellow;
       position: absolute;
-      top: 28%;
+      top: 183px;
     }
     .double {
       width: calc(100% + 100px);
@@ -66,8 +66,8 @@
     .carouselProvider {
       margin: 0 5%;
       .uniqueDivCard {
-        display: inline-block;
-        margin-left: 6px;
+        // display: inline-block;
+        // margin-left: 6px;
       }
       .recommandedListButtonsContainer {        
         .btn {
@@ -133,7 +133,7 @@
     .container {
       .unique {
         height: 143px;
-        top: 108px;
+        // top: 108px;
       }
 
       .double {

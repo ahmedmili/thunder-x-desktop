@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import CommandFeedBack from './CommandFeedBack/CommandFeedBack';
 import DelivFeedBack from './DelivFeedBack/DelivFeedBack';
@@ -18,6 +18,7 @@ function Feedback() {
 
     const [commandComments, setCommandComments] = useState<[]>([])
     const [delivComments, setDelivComments] = useState<[]>([])
+    const [description, setDescription] = useState<string>("")
 
     const handleDelivCommentsList = (array: []) => {
         setDelivComments(array)
@@ -29,6 +30,10 @@ function Feedback() {
     const handleDelivAvis = (avis: number) => {
         setDelivAvis(avis)
     }
+    const handleDescription = (description: string) => {
+        setDescription(description)
+    }
+
     const handleCommandAvis = (avis: number) => {
         setCommandAvis(avis)
     }
@@ -36,7 +41,8 @@ function Feedback() {
     interface Rating {
         command_id: number,
         command_rating: number,
-        delivery_rating: number
+        delivery_rating: number,
+        description: string,
         delivery_comment: [
             {
                 comment: string
@@ -56,6 +62,7 @@ function Feedback() {
             delivery_rating: delivAvis,
             delivery_comment: delivComments,
             command_comment: commandComments,
+            description: description,
         }
         try {
             const { status, data } = await userService.createDeliveryRating(formData)
@@ -88,7 +95,7 @@ function Feedback() {
             <div>
 
             </div>
-            <DelivFeedBack handleCommentsLis={handleDelivCommentsList} avis={delivAvis} handleAvis={handleDelivAvis} />
+            <DelivFeedBack handleDiscrition={handleDescription} handleCommentsLis={handleDelivCommentsList} avis={delivAvis} handleAvis={handleDelivAvis} />
             <button className='submit-avis' onClick={handleSubmit}>Terminer</button>
         </div>
     )

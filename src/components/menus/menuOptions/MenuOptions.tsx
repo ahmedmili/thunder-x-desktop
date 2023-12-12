@@ -17,9 +17,10 @@ import { supplierServices } from '../../../services/api/suppliers.api';
 import { localStorageService } from '../../../services/localStorageService';
 import { AppProps, Option, Restaurant } from '../../../services/types';
 
+import { fetchMessages } from '../../../Redux/slices/messanger';
 import MessangerBtnIcon from '../../../assets/profile/Discuter/messanger-btn.svg';
 import Messanger from '../../Popups/Messanger/Messanger';
-import { fetchMessages } from '../../../Redux/slices/messanger';
+import SameSupplierWarn from '../../Popups/SameSupplierWarn/SameSupplierWarn';
 
 // Define the initial state
 const initialState = {
@@ -95,7 +96,7 @@ function MenuOptions({ initialData }: AppProps) {
     const cartItems = useAppSelector((state) => state.cart.items);
     var ssrState: any = {};
 
-
+    const [notSameError, setNotSameError] = useState<boolean>(false)
 
     // handle messanger
     const unReadMessages = useAppSelector((state) => state.messanger.unReadedMessages)
@@ -426,7 +427,7 @@ function MenuOptions({ initialData }: AppProps) {
         };
 
         if (items.length > 0 && items[0].supplier_data.supplier_id !== obj.supplier_data.supplier_id) {
-            // toast.warn("you have allready selected items")
+            setNotSameError(true)
             return;
         }
 
@@ -446,6 +447,10 @@ function MenuOptions({ initialData }: AppProps) {
     useEffect(() => {
         calculateTotal()
     }, [productCount])
+
+    const handleSameSupplierModal = () => {
+        setNotSameError(!notSameError)
+    }
 
     return (
         <div className="menue-options-container" onClick={(e) => e.stopPropagation()}>
@@ -554,6 +559,9 @@ function MenuOptions({ initialData }: AppProps) {
 
             {
                 messangerPopup && <Messanger className="discuter-messanger-popup" close={handleMessangerPopup} />
+            }
+            {
+                notSameError && <SameSupplierWarn close={handleSameSupplierModal} />
             }
         </div>
 

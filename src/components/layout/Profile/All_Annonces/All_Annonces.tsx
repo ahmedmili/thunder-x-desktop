@@ -43,9 +43,6 @@ const AnnonceCart: React.FC<AnnonceProps> = ({ title, bodyText, product, supplie
   }
   const copyCode = (code_coupon: string) => {
     copy(code_coupon)
-      .then(() => console.log("coppied"))
-      .catch((error) => console.error('Error copying to clipboard:', error));
-
   }
 
   const handleClick = () => {

@@ -95,7 +95,6 @@ const Header = () => {
           });
         },
         (error: GeolocationPositionError) => {
-          // toast.error(error.message)
           console.log(error.message, "error.message1");
         }
       );
@@ -104,15 +103,11 @@ const Header = () => {
     } catch (error: any) {
       if (Array.isArray(error.data.error)) {
         error.data.error.forEach((el: any) =>
-          // toast.error(el.message, {
-          //   position: "top-right",
-          // })
+   
           console.log(el.message, "error.message1")
         );
       } else {
-        // toast.error(error.data.message, {
-        //   position: "top-right",
-        // });
+
         console.log(error.message, "error.message1")
       }
     }

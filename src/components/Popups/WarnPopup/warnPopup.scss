@@ -47,7 +47,7 @@
     animation: popup-animation 1s ease-in-out;
 
     .confirm-message {
-        color: #484848;
+        color: $dark_Gray;
         font-family: Poppins;
         font-size: 20px;
         font-style: normal;
@@ -74,7 +74,7 @@
         }
 
         .confirm-accept {
-            background: #FBC000;
+            background: $orange_color;
         }
 
         .confirm-refuse {

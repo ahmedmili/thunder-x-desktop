@@ -175,6 +175,7 @@ const CurrentCommands: React.FC<CommandsListProps> = ({ removeCommand, goToPasse
     const [date, setDate] = useState<string>('')
     const [problemPopup, setProblemPopup] = useState<boolean>(false)
 
+
     const handleProblemPopup = () => {
         setProblemPopup(current => !current)
     }
@@ -270,7 +271,7 @@ const CurrentCommands: React.FC<CommandsListProps> = ({ removeCommand, goToPasse
 
     }
     return (
-
+      
         <>
             <div className="current-commands-container">
                 <header className={` current-command-header `}>

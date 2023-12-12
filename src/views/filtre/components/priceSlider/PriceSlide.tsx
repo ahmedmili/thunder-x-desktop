@@ -1,7 +1,7 @@
 
 
-import { useState } from "react"
-import "./priceSlide.scss"
+import { useState } from "react";
+import "./priceSlide.scss";
 function PriceSlide() {
 
     const [rangeValue, setRangeValue] = useState(0)
@@ -33,7 +33,6 @@ function PriceSlide() {
     const handleRangeChange = (event:any) => {
         const newValue = event.target.value;
         setRangeValue(newValue);
-        console.log(newValue)
       };
     return (
         <div className="trie-filter-container">

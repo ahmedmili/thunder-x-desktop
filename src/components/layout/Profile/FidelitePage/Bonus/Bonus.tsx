@@ -10,7 +10,7 @@ function Bonus() {
 
     const [bonus, setBonus] = useState<number>(0)
     const getUser = async () => {
-        const user_id = await localStorageService.getUserId()
+        const user_id = localStorageService.getUserId()
         const { status, data } = await userService.getUser(user_id!)
         setBonus(data.data.client.bonus)
     }
@@ -28,7 +28,7 @@ function Bonus() {
                 <p>{t('profile.fidelite.bonus.yourBonus')}</p> <span>{bonus} {t('profile.fidelite.bonus.points')}</span>
             </main>
 
-            <TransferBonus ammount={bonus} />
+            {/* <TransferBonus ammount={bonus} /> */}
         </div>
     )
 }

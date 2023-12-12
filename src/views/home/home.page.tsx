@@ -49,8 +49,6 @@ const HomePage = ({ initialData }: AppProps) => {
   const [selectedCategory, setSelectedCategory] = useState<string>("");
   const [filteredRestaurants, setFilteredRestaurants] = useState<Restaurant[]>([]);
 
-
-
   const handleCategorySelect = (category: string) => {
     if (selectedCategory === category) {
       setSelectedCategory("");
@@ -78,7 +76,6 @@ const HomePage = ({ initialData }: AppProps) => {
     }
   };
   const handleMessangerPopup = () => {
-    console.log('open messanger')
     setMessangerPopup(!messangerPopup)
   }
 

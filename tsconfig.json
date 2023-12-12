@@ -3,7 +3,7 @@
     "target": "ESNext",
     "types": [
       "node",
-      "express",
+      // "express",
       "googlemaps"
     ],
     "typeRoots": ["./node_modules/@types", "./src/types"],

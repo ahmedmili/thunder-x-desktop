@@ -176,9 +176,9 @@ const OldCommands: React.FC<CommandsListProps> = ({ data, feedbacksList }) => {
                             {
                                 feedbacksList.some(feedback => feedback === data.id) ? (
                                     <>
-                                        {/* <p className=''>
-                                            On Vous remercie pour votre feedback concernant cette commande
-                                        </p> */}
+                                        <p className='allready-feedback'>
+                                            {t('profile.commands.feedback.thanksMessage')}
+                                        </p>
                                     </>
                                 ) : (
                                     <>

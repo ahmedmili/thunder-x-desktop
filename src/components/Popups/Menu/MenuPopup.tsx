@@ -23,6 +23,7 @@ import { Option } from "../../../services/types";
 interface Props {
     restaurant: any;
     close: () => void;
+    openMissMatch: () => void;
     isOpen: boolean
 }
 
@@ -83,7 +84,7 @@ const reducer = (state: any, action: any) => {
     }
 };
 
-const MenuPopup: React.FC<Props> = ({ close, restaurant }) => {
+const MenuPopup: React.FC<Props> = ({ close, openMissMatch, restaurant }) => {
 
     const { t } = useTranslation();
     const packRef: RefObject<HTMLFormElement> = useRef(null);
@@ -313,9 +314,7 @@ const MenuPopup: React.FC<Props> = ({ close, restaurant }) => {
         };
 
         if (items.length > 0 && items[0].supplier_data.supplier_id !== obj.supplier_data.supplier_id) {
-            // toast.warn("you have already selected items", {
-            //     position: toast.POSITION.TOP_CENTER, // Change the position
-            // });
+            openMissMatch()
             return;
         }
         // toast.success("item added ")
@@ -325,7 +324,8 @@ const MenuPopup: React.FC<Props> = ({ close, restaurant }) => {
         localStorageService.setBonus(restaurant.bonus);
         usedispatch(addItem(obj));
         getProduct()
-        setCurrentPage(1)
+        close()
+        // setCurrentPage(1)
     }
 
     // handle displayed content
@@ -548,6 +548,7 @@ const MenuPopup: React.FC<Props> = ({ close, restaurant }) => {
 
                     </div>
                 </div>
+
             </>
         </Suspense>
     )

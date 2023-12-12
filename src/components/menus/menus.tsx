@@ -6,17 +6,10 @@ import {
 import React, { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useLocation, useNavigate, useParams } from 'react-router-dom';
-import {
-  clearCart,
-  clearSupplierMismatch,
-  setDeliveryPrice,
-  setSupplier,
-} from '../../Redux/slices/cart/cartSlice';
 import { setProduct } from "../../Redux/slices/restaurantSlice";
 import { useAppDispatch, useAppSelector } from '../../Redux/store';
 import { productService } from '../../services/api/product.api';
 import { AppProps, MenuData } from '../../services/types';
-import MismatchModal from '../mismatchModal/mismatchModal';
 
 import { Container, Row } from 'react-bootstrap';
 import { fetchMessages } from '../../Redux/slices/messanger';
@@ -26,7 +19,11 @@ import { supplierServices } from '../../services/api/suppliers.api';
 import { scrollToTop } from '../../utils/utils';
 import MenuPopup from '../Popups/Menu/MenuPopup';
 import Messanger from '../Popups/Messanger/Messanger';
+import SameSupplierWarn from '../Popups/SameSupplierWarn/SameSupplierWarn';
 import './menus.scss';
+
+import ActiveGiftIcon from '../../assets/profile/ArchivedCommands/gift-active.png';
+import GiftIcon from '../../assets/profile/ArchivedCommands/gift.svg';
 
 
 const Menu: React.FC<AppProps> = ({ initialData }) => {
@@ -139,9 +136,7 @@ const Menu: React.FC<AppProps> = ({ initialData }) => {
         data = data.data
       }
       else data = initialData.supplierResponse
-
       setDisplayedRestaurant(data.data)
-
     } catch (error) {
       throw error
     }
@@ -181,18 +176,12 @@ const Menu: React.FC<AppProps> = ({ initialData }) => {
   }, [idNumber]);
 
 
-  // close miss matching
-  const handleMismatchModalClose = (choice: string) => {
-    if (choice === 'continue') {
-      dispatch(clearSupplierMismatch());
-    } else if (choice === 'clear') {
-      dispatch(clearCart());
-      dispatch(clearSupplierMismatch());
-      dispatch(setSupplier(null));
-      dispatch(setDeliveryPrice(null));
-    }
 
-    setShowMismatchModal(false);
+  // open miss match
+  const handleMismatchModal = () => {
+    // handlePopup()
+    setShowOptionsPopup(false)
+    setShowMismatchModal(!showMismatchModal);
   };
 
   // close options
@@ -336,7 +325,21 @@ const Menu: React.FC<AppProps> = ({ initialData }) => {
               </div>
 
               <div className="right-side">
-                <Star className='starIcon' style={displayedRestaurant?.star ? { visibility: 'visible' } : { visibility: 'hidden' }} />
+                <div className='rate-gouping'>
+                  {
+                    (displayedRestaurant?.star && (displayedRestaurant?.star > 0)) && (<span className='star-number'> {displayedRestaurant?.star}</span>)
+                  }
+                  <Star className='starIcon' style={{ visibility: 'visible' }} />
+
+                  {
+                    displayedRestaurant?.bonus ? (
+                      <div className='gift-icon' style={(displayedRestaurant?.bonus > 0) ? { backgroundImage: `url(${ActiveGiftIcon})` } : { backgroundImage: `url(${GiftIcon})` }}></div>
+                    ) : (
+                      <div className='gift-icon' style={{ backgroundImage: `url(${GiftIcon})` }}></div>
+                    )
+                  }
+                </div>
+
                 <div className='time'>
                   <p>
                     {`${displayedRestaurant?.medium_time - 10} - ${displayedRestaurant?.medium_time + 10
@@ -407,10 +410,10 @@ const Menu: React.FC<AppProps> = ({ initialData }) => {
 
       </Container>
       {showMismatchModal && (
-        <MismatchModal onClose={handleMismatchModalClose} />
+        <SameSupplierWarn close={handleMismatchModal} />
       )}
       {showOptionsPopup && (
-        <MenuPopup close={handlePopup} restaurant={displayedRestaurant} isOpen={showOptionsPopup} />
+        <MenuPopup openMissMatch={handleMismatchModal} close={handlePopup} restaurant={displayedRestaurant} isOpen={showOptionsPopup} />
       )}
 
     </>

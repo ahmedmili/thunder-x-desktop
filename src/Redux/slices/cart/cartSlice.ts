@@ -69,6 +69,11 @@ const cartSlice = createSlice({
       }
       localStorageService.setCart(state.items)
     },
+    removeItemWithIndex: (state, action: PayloadAction<{ index: number }>) => {
+      const indexToRemove = action.payload.index
+      state.items.splice(indexToRemove, 1);
+      localStorageService.setCart(state.items)
+    },
     removeItem: (state, action: PayloadAction<{ id: number }>) => {
       const idToRemove = action.payload.id
       const updatedItems = state.items.filter(
@@ -130,6 +135,7 @@ const cartSlice = createSlice({
 
 export const {
   setCartItems,
+  removeItemWithIndex,
   removeItem,
   setDeliveryOption,
   setComment,

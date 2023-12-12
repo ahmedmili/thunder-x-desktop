@@ -28,6 +28,7 @@ import { fetchMessages } from '../../Redux/slices/messanger';
 
 function FilterPage() {
     const restaurantsList = useAppSelector((state) => state.restaurant.filterRestaurants);
+    const isDeliv = useAppSelector((state) => state.homeData.isDelivery);
     const homeData = useAppSelector(adsHomeSelector);
     const [currentPage, setCurrentPage] = useState(1);
     const [ads, setAds] = useState<any[]>([]);
@@ -61,7 +62,7 @@ function FilterPage() {
     }, [])
     //
     const scrollToTarget = (targetRef: any) => {
-       
+
         targetRef.current && targetRef.current.scrollIntoView({ behavior: 'smooth', block: 'start', inline: 'nearest' });
 
     };
@@ -169,10 +170,18 @@ function FilterPage() {
 
 
     useEffect(() => {
-        setAllRestaurantsList(restaurantsList)
-        suppliersListRef && scrollToTarget(suppliersListRef)
 
-    }, [restaurantsList])
+        var delivFilterList = isDeliv == true ?
+            restaurantsList.filter((res) => {
+                return res.delivery == 1
+            }) : restaurantsList.filter((res) => {
+                return res.take_away == 1
+            });
+       
+        setAllRestaurantsList(delivFilterList);
+        suppliersListRef && scrollToTarget(suppliersListRef);
+
+    }, [restaurantsList, isDeliv])
 
 
     // navigation 

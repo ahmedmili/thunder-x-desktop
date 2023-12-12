@@ -1,0 +1,72 @@
+@import "../../../../../colors";
+
+.parainage-container {
+    display: flex;
+    flex-direction: column;
+    gap: 37px;
+
+    main {
+
+        .parainage-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            background: white;
+            border-radius: 25px;
+            height: 97px;
+            // padding: 29px 40px;
+
+            p {
+                color: #000;
+                font-family: Poppins;
+                font-size: 18px;
+                font-style: normal;
+                font-weight: 500;
+            }
+
+            .icon {
+                width: 49.177px;
+                height: 49.177px;
+                transform: rotate(90deg);
+                color: white;
+                background-color: $primary_color;
+                border-radius: 50%;
+                transition: transform 0.5s;
+
+                &:hover {
+                    cursor: pointer;
+                    opacity: .9;
+                }
+            }
+        }
+    }
+
+    .parainage-main {
+        display: flex;
+        gap: 5px;
+        align-items: center;
+        padding: 27px 0 46px 29px;
+
+        p {
+            margin: 0;
+            color: #484848;
+            font-family: Poppins;
+            font-size: 16px;
+            font-style: normal;
+            font-weight: 400;
+            line-height: normal;
+        }
+
+        span {
+            color: #FFF;
+            font-family: Poppins;
+            font-size: 14px;
+            font-style: normal;
+            font-weight: 500;
+            line-height: normal;
+            padding: 10px 39px;
+            border-radius: 21px;
+            background: #FBC000;
+        }
+    }
+}

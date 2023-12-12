@@ -115,6 +115,34 @@
     }
 }
 
+.description-container {
+    // background-color: white;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    .description {
+        width: 80%;
+        height: 60px;
+        color: #484848;
+        background-color: white;
+        font-size: 16px;
+        font-weight: 400;
+        border-radius: 25px;
+        text-align: center;
+        border: #8AC8C7 3px solid;
+
+        &:focus {
+            outline: none;
+        }
+
+        &:placeholder-shown {
+            font-weight: 700;
+        }
+
+    }
+}
+
 @media only screen and (max-width:900px) {
     .delivery-feedback {
         width: 52vw;

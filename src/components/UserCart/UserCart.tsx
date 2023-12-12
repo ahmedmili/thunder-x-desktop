@@ -114,7 +114,7 @@ export const UserCart: React.FC<CartProps> = ({ firstName = "", lastName = "", c
 
                     <div className='link-list'>
                       <div className='profile-list-icon' style={{ backgroundImage: `url(${Espace})` }}></div>
-                      <Link onClick={() => handleSelect(5)} to={'/profile/Fidelite/'}>{t("profile.espaceFidel")}</Link>
+                      <Link onClick={() => handleSelect(5)} to={'/profile/Fidelite/repas'}>{t("profile.espaceFidel")}</Link>
                     </div>
 
                   </li>
