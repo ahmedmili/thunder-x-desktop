@@ -45,7 +45,7 @@ const Menu: React.FC<MenuProps> = () => {
   const [displayedRestaurant, setDisplayedRestaurant] = useState<any>();
   const { id, search, productId } = useParams<{ id: string, search?: string, productId?: string }>();
   const [selectedOption, setSelectedOption] = useState<string>(search ? search : "All");
-  const [isOpen, setIsOpen] = useState<boolean>();
+  const [isOpen, setIsOpen] = useState<boolean>(true);
   const idNumber = id?.split('-')[0];
 
   // handle messanger
@@ -139,15 +139,20 @@ const Menu: React.FC<MenuProps> = () => {
       throw error
     }
   }
+
   const getSupplierIsOpen = async () => {
     const { status, data } = await supplierServices.getSupplierISoPENById(Number(idNumber!))
     data.data.is_open === 1 ? setIsOpen(true) : setIsOpen(false)
   }
 
-  // useEffect(() => {
-  //   isOpen && console.log("is open  = true")
-  // }, [isOpen])
-
+  const getMenu = async () => {
+    const { status, data } = await productService.getMenu(idNumber);
+    if (status === 200) {
+      setMenuData(data.data);
+      setFiltreddMenuData(data.data)
+    }
+    setLoading(false);
+  };
 
   useEffect(() => {
     getSupplierById()
@@ -157,18 +162,8 @@ const Menu: React.FC<MenuProps> = () => {
 
   // initialize menue 
   useEffect(() => {
-    const getMenu = async () => {
-      const { status, data } = await productService.getMenu(idNumber);
-      if (status === 200) {
-        setMenuData(data.data);
-        setFiltreddMenuData(data.data)
-      }
-      setLoading(false);
-    };
     getMenu();
   }, [idNumber]);
-
-
 
   // open miss match
   const handleMismatchModal = () => {
@@ -179,17 +174,21 @@ const Menu: React.FC<MenuProps> = () => {
 
   // close options
   const handleChooseOptions = (selectedMenuItem: any | null) => {
-    showOptionsPopup === false && handleUrlProductId(selectedMenuItem.id)
-    dispatch(setProduct(selectedMenuItem))
-    handlePopup()
+    if (isOpen) {
+      showOptionsPopup === false && handleUrlProductId(selectedMenuItem.id)
+      dispatch(setProduct(selectedMenuItem))
+      handlePopup()
+    } else {
+      console.log("closed supplier")
+    }
   };
-
 
   const getTruncatedName = (name: string, MAX_NAME_LENGTH: number) => {
     return name.length > MAX_NAME_LENGTH
       ? `${name.slice(0, MAX_NAME_LENGTH)}...`
       : name;
   };
+
   const handleOptionChange = (event: any) => {
     const updatedURL = `/restaurant/${id}/${event.target.value}`;
     navigate(updatedURL, { replace: true });
@@ -207,6 +206,7 @@ const Menu: React.FC<MenuProps> = () => {
       setFiltreddMenuData(filtredData)
     }
   }
+
   useEffect(() => {
     handleFilter()
   }, [selectedOption, menuData])
@@ -295,6 +295,7 @@ const Menu: React.FC<MenuProps> = () => {
           )}
     </>
   }
+
   return (
     <>
       <Container fluid className={`supplier-page-header`} >
@@ -320,33 +321,37 @@ const Menu: React.FC<MenuProps> = () => {
             <div className="info-container">
               <div className="left-side">
                 <div className='name'>{displayedRestaurant?.name}</div>
-                <div className='price'>{t("supplier.delivPrice")} <span className='price-value'> {displayedRestaurant?.delivery_price} dt</span></div>
+                {
+                  displayedRestaurant &&
+                  <div className='price'>{t("supplier.delivPrice")} <span className='price-value'> {displayedRestaurant?.delivery_price} dt</span></div>
+
+                }
               </div>
+              {displayedRestaurant &&
+                <div className="right-side">
+                  <div className='rate-gouping'>
+                    {
+                      (displayedRestaurant?.star && (displayedRestaurant?.star > 0)) && (<span className='star-number'> {displayedRestaurant?.star}</span>)
+                    }
+                    <Star className='starIcon' style={{ visibility: 'visible' }} />
 
-              <div className="right-side">
-                <div className='rate-gouping'>
-                  {
-                    (displayedRestaurant?.star && (displayedRestaurant?.star > 0)) && (<span className='star-number'> {displayedRestaurant?.star}</span>)
-                  }
-                  <Star className='starIcon' style={{ visibility: 'visible' }} />
+                    {
+                      displayedRestaurant?.bonus ? (
+                        <div className='gift-icon' style={(displayedRestaurant?.bonus > 0) ? { backgroundImage: `url(${ActiveGiftIcon})` } : { backgroundImage: `url(${GiftIcon})` }}></div>
+                      ) : (
+                        <div className='gift-icon' style={{ backgroundImage: `url(${GiftIcon})` }}></div>
+                      )
+                    }
+                  </div>
 
-                  {
-                    displayedRestaurant?.bonus ? (
-                      <div className='gift-icon' style={(displayedRestaurant?.bonus > 0) ? { backgroundImage: `url(${ActiveGiftIcon})` } : { backgroundImage: `url(${GiftIcon})` }}></div>
-                    ) : (
-                      <div className='gift-icon' style={{ backgroundImage: `url(${GiftIcon})` }}></div>
-                    )
-                  }
+                  <div className='time'>
+                    <p>
+                      {`${Number(displayedRestaurant?.medium_time) - 10}-${Number(displayedRestaurant?.medium_time + 10)}min`}
+                    </p>
+                  </div>
+
                 </div>
-
-                <div className='time'>
-                  <p>
-                    {`${displayedRestaurant?.medium_time - 10} - ${displayedRestaurant?.medium_time + 10
-                      } min`}
-
-                  </p>
-                </div>
-              </div>
+              }
             </div>
           </section>
         </Row>
