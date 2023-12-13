@@ -39,12 +39,13 @@ const Menu: React.FC<MenuProps> = () => {
   const [currentPage, setCurrentPage] = useState<{ [key: string]: number }>({});
   const productsPerPage = 4;
 
-  const [showMismatchModal, setShowMismatchModal] = useState(false);
-  const [showOptionsPopup, setShowOptionsPopup] = useState(false);
+  const [showMismatchModal, setShowMismatchModal] = useState<boolean>(false);
+  const [showOptionsPopup, setShowOptionsPopup] = useState<boolean>(false);
   const [filtreddMenuData, setFiltreddMenuData] = useState<MenuData[]>([]);
   const [displayedRestaurant, setDisplayedRestaurant] = useState<any>();
   const { id, search, productId } = useParams<{ id: string, search?: string, productId?: string }>();
-  const [selectedOption, setSelectedOption] = useState(search ? search : "All");
+  const [selectedOption, setSelectedOption] = useState<string>(search ? search : "All");
+  const [isOpen, setIsOpen] = useState<boolean>();
   const idNumber = id?.split('-')[0];
 
   // handle messanger
@@ -105,6 +106,7 @@ const Menu: React.FC<MenuProps> = () => {
       navigate(newURL, { replace: true });
     }
   }
+
   const removeUrlProductId = () => {
     const locationPath = location.pathname;
 
@@ -137,9 +139,20 @@ const Menu: React.FC<MenuProps> = () => {
       throw error
     }
   }
+  const getSupplierIsOpen = async () => {
+    const { status, data } = await supplierServices.getSupplierISoPENById(Number(idNumber!))
+    data.data.is_open === 1 ? setIsOpen(true) : setIsOpen(false)
+  }
+
+  // useEffect(() => {
+  //   isOpen && console.log("is open  = true")
+  // }, [isOpen])
+
+
   useEffect(() => {
     getSupplierById()
     handleFilter()
+    getSupplierIsOpen()
   }, [])
 
   // initialize menue 
@@ -288,8 +301,14 @@ const Menu: React.FC<MenuProps> = () => {
         <Row>
           <div className="background-container">
             <img loading="lazy" src={displayedRestaurant?.images[0].path} alt="restaurant image" className="background" />
-            <div className="open-time">
-              <span>{t("supplier.opentime")} {displayedRestaurant?.closetime}</span>
+            <div className={`open-time ${!isOpen && "closed-time"} `}>
+              {
+                isOpen ?
+                  <span>{t("supplier.opentime")} {displayedRestaurant?.closetime}</span>
+                  :
+                  <span>{t("closed")}</span>
+
+              }
             </div>
           </div>
         </Row>
