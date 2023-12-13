@@ -77,7 +77,6 @@
   "profile.commands.command": "Order",
   "profile.commands.avis": "Feedback",
   "profile.commands.feedback.thanksMessage": "We thank you for your feedback regarding this order",
-
   "profile.commands.signal.title": "Report a Problem ",
   "profile.commands.signal.question": "Do you have an issue related to your order ",
   "profile.commands.signal.message": "Please let us know about your issue",
@@ -135,7 +134,6 @@
   "orderTrackingPage.oldCommands": "My orders placed",
   "orderTrackingPage.currentCommands": "Track my orders",
   "orderTrackingPage.archivedCommands": "Order archives",
-
   "orderTrackingPage.price": "Price:",
   "createAccSubtitle": "Sign up and easily create your account",
   "createAcc": "Create your account",
@@ -189,6 +187,7 @@
   "cartPage.commander": "Order",
   "cartPage.Coupon": "Coupon",
   "cartPage.paymentContinue": "Payment Continue ",
+  "cartPage.empty": "Your cart is currently empty",
   "cartPage.continueAchats": "Continue my purchases",
   "cartPage.addComment": "Add a comment",
   "cartPage.name": "Name",
@@ -243,6 +242,7 @@
   "popup.payment.valideCommand": "Order validated!",
   "popup.payment.invalidePayment.msg": "Failed to pay, please try again",
   "popup.payment.validePayment.msg": "You will be alerted when the deliverer arrives near you.",
+  "popup.supplier.tryAgain": "this supplier is closed right now , please try again in another time !",
   "cart.payment.yourCommand": "Your Order",
   "cart.payment.delivto": "Delivery to",
   "cartPage.emporter": "To take",

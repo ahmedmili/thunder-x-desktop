@@ -24,6 +24,7 @@ import './menus.scss';
 
 import ActiveGiftIcon from '../../assets/profile/ArchivedCommands/gift-active.png';
 import GiftIcon from '../../assets/profile/ArchivedCommands/gift.svg';
+import ClosedSupplier from '../Popups/ClosedSupplier/ClosedSupplier';
 
 interface MenuProps { }
 
@@ -40,6 +41,7 @@ const Menu: React.FC<MenuProps> = () => {
   const productsPerPage = 4;
 
   const [showMismatchModal, setShowMismatchModal] = useState<boolean>(false);
+  const [showClosedWarnModal, setShowClosedWarnModal] = useState<boolean>(false);
   const [showOptionsPopup, setShowOptionsPopup] = useState<boolean>(false);
   const [filtreddMenuData, setFiltreddMenuData] = useState<MenuData[]>([]);
   const [displayedRestaurant, setDisplayedRestaurant] = useState<any>();
@@ -172,6 +174,12 @@ const Menu: React.FC<MenuProps> = () => {
     setShowMismatchModal(!showMismatchModal);
   };
 
+  // handle closed warn popup
+  const handleClosedWarnModal = () => {
+    setShowClosedWarnModal(!showClosedWarnModal);
+  };
+
+
   // close options
   const handleChooseOptions = (selectedMenuItem: any | null) => {
     if (isOpen) {
@@ -179,6 +187,7 @@ const Menu: React.FC<MenuProps> = () => {
       dispatch(setProduct(selectedMenuItem))
       handlePopup()
     } else {
+      handleClosedWarnModal()
       console.log("closed supplier")
     }
   };
@@ -418,6 +427,10 @@ const Menu: React.FC<MenuProps> = () => {
       )}
       {showOptionsPopup && (
         <MenuPopup openMissMatch={handleMismatchModal} close={handlePopup} restaurant={displayedRestaurant} isOpen={showOptionsPopup} />
+      )}
+
+      {showClosedWarnModal && (
+        <ClosedSupplier close={handleClosedWarnModal} closeButtonText={t("continuer")} confirmButtonText='ok' message={t('popup.supplier.tryAgain')} />
       )}
 
     </>

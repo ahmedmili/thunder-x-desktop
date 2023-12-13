@@ -170,6 +170,8 @@
   "cartPage.commander": "طلب",
   "cartPage.Coupon": "Coupon",
   "cartPage.paymentContinue": "اكمل الدفع",
+  "cartPage.empty": "سلة التسوق الخاصة بك فارغة حاليًا",
+
   "cartPage.continueAchats": "استمر في شراء",
   "cartPage.bankPay": "بواسطة بطاقة بنك",
   "cartPage.espece": "نقدا عند التسليم",
@@ -234,6 +236,8 @@
   "popup.payment.validePayment": "الدفع صحيح!",
   "popup.payment.valideCommand": "طلب صحيح",
   "popup.payment.invalidePayment.msg": "فشل الدفع، يرجى محاولة ثانية",
+  "popup.supplier.tryAgain": "هذا المورّد مغلق الآن، يرجى المحاولة مرة أخرى في وقت آخر !",
+
   "popup.payment.validePayment.msg": "سوف تلقى اشعارا عندما يصل المورد إلى منزلك.",
   "cart.payment.yourCommand": "طلبك",
   "cart.payment.delivTo": "توصيل الى",

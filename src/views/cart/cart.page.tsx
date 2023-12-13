@@ -1043,7 +1043,7 @@ const CartPage: React.FC = () => {
             }
             {
               showServicePopup && (
-                <WarnPopup message="Ce service n'est pas disponible dans votre ville" closeButtonText="continuer" confirmButtonText="Supprimer La Command" close={handleServicePopup} accept={dropOrder} />
+                <WarnPopup message="Ce service n'est pas disponible dans votre ville" closeButtonText={t('continuer')} confirmButtonText={t('Modal.finishCommand.dropOldCommand')} close={handleServicePopup} accept={dropOrder} />
               )
             }
           </div>
@@ -1056,7 +1056,7 @@ const CartPage: React.FC = () => {
                   <div className="empty-container-tab">
                     <div className="empty-header">
                     </div>
-                    <p>Votre panier est actuellement vide.</p>
+                    <p>{t('cartPage.empty')}</p>
                   </div>
                   <img loading="lazy" src={empty} alt=" not command items" />
                   <button className="emptyButton" onClick={() => navigate('/', { replace: true })}>
