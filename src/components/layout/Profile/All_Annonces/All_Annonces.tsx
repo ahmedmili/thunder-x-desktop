@@ -149,6 +149,11 @@ const Annonces = () => {
     <section className="annonces-section">
       <h1>{t('profile.allAnnounces.message')}</h1>
 
+      <div className="annonces-links-group">
+        <a className="annonces-link-item">Récent</a>
+        <a className="annonces-link-item">Tout effacer</a>
+      </div>
+
       {
         loading === false ? (
           <>

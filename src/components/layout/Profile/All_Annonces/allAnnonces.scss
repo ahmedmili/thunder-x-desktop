@@ -90,6 +90,22 @@
     }
 }
 
+/* -- annonces-links-group -- */
+.annonces-links-group {
+    @include flex(flex, center, space-between);
+
+    .annonces-link-item {
+        @include fonts(14px, 14px, $dark_Gray);
+        font-family: 'Poppins-Medium', serif;
+        cursor: pointer;
+        margin: 0 0 20px;
+
+        &:hover {
+            text-decoration: underline;
+        }
+    }
+}
+
 /* # $Mobile ::
 ------------------------------------*/
 
