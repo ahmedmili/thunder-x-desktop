@@ -410,14 +410,17 @@ const CartPage: React.FC = () => {
 
   //  get gifts
   const getclientGift = async () => {
-    let body = { supplier_id: cartItems[0].supplier_data.supplier_id };
-    const { status, data } = await cartService.getGift(body)
-    if (data.success) {
-      let gift = data.data.has_gift
-      if (gift) {
-        setHas_gift(gift);
-        setMaxGiftCost(data.data.max_gift_cost)
-        setMaxGiftId(data.data.gift_id)
+    if (cartItems.length > 0) {
+
+      let body = { supplier_id: cartItems[0].supplier_data.supplier_id };
+      const { status, data } = await cartService.getGift(body)
+      if (data.success) {
+        let gift = data.data.has_gift
+        if (gift) {
+          setHas_gift(gift);
+          setMaxGiftCost(data.data.max_gift_cost)
+          setMaxGiftId(data.data.gift_id)
+        }
       }
     }
   }
@@ -653,16 +656,18 @@ const CartPage: React.FC = () => {
 
   // get distance 
   const getDistance = async () => {
-    let obj = {
-      supplier_id: supplier.id,
-      lat: userPosition?.coords.latitude,
-      long: userPosition?.coords.longitude,
-    };
-    const res = await adressService.getDistance(obj)
-    res.data.code == 200 ? distance = res.data.data.distance : distance = 0
-    extraDeliveryCost = (distance - max_distance) > 0 ? Math.ceil(distance - max_distance) : 0
-    const deliveryPrice = cartItems.length > 0 ? Number(cartItems[0].supplier_data.delivery_price) + extraDeliveryCost : 0
-    setDelivPrice(deliveryPrice)
+    if (cartItems.length > 0) {
+      let obj = {
+        supplier_id: supplier.id,
+        lat: userPosition?.coords.latitude,
+        long: userPosition?.coords.longitude,
+      };
+      const res = await adressService.getDistance(obj)
+      res.data.code == 200 ? distance = res.data.data.distance : distance = 0
+      extraDeliveryCost = (distance - max_distance) > 0 ? Math.ceil(distance - max_distance) : 0
+      const deliveryPrice = cartItems.length > 0 ? Number(cartItems[0].supplier_data.delivery_price) + extraDeliveryCost : 0
+      setDelivPrice(deliveryPrice)
+    }
   }
 
   useEffect(() => {
@@ -711,21 +716,24 @@ const CartPage: React.FC = () => {
    check if supplier support delivery | pickup | inside 
   */
   useEffect(() => {
-    let take_away = supplier.take_away
-    let delivery = supplier.delivery
-    if (delivery === 1 && take_away == 1) {
-      setIsDelevery("delivery")
-      setSelectedOption(3)
-    } else if (delivery === 1 && take_away == 0) {
-      setSelectedOption(3)
-      setIsDelevery("delivery")
-    } else if (delivery === 0 && take_away == 1) {
-      setSelectedOption(2)
-      setIsDelevery("pickup")
-    } else if (delivery === 0 && take_away == 0) {
-      setIsDelevery("surplace")
-      setSelectedOption(1)
+    if (supplier) {
+      let take_away = supplier.take_away
+      let delivery = supplier.delivery
+      if (delivery === 1 && take_away == 1) {
+        setIsDelevery("delivery")
+        setSelectedOption(3)
+      } else if (delivery === 1 && take_away == 0) {
+        setSelectedOption(3)
+        setIsDelevery("delivery")
+      } else if (delivery === 0 && take_away == 1) {
+        setSelectedOption(2)
+        setIsDelevery("pickup")
+      } else if (delivery === 0 && take_away == 0) {
+        setIsDelevery("surplace")
+        setSelectedOption(1)
+      }
     }
+
   }, [supplier])
 
   // useEffect(() => {
@@ -839,15 +847,22 @@ const CartPage: React.FC = () => {
                         </div>
                         {/* promo end */}
                         {/* gift start */}
-                        <div className="promo-container">
-                          <span>{t('repasGratuit')}</span>
-                          <textarea name="code_promo" readOnly id="gift_ammount" placeholder="0" value={`${giftAmmount.toFixed(3)}`} ></textarea>
-                          <button style={{ backgroundColor: `${giftApplied ? "red" : "#FBC000"}` }} className={"button"} onClick={() => giftApplied ? clearGift() : applyGift()}>
-                            {giftApplied ? t('Annuler') : t('cartPage.appliquer')}
-                          </button>
-                        </div>
-                        <div className="devider">
-                        </div>
+
+                        {
+                          has_gift &&
+                          <>
+                            <div className="promo-container">
+                              <span>{t('repasGratuit')}</span>
+                              <textarea name="code_promo" readOnly id="gift_ammount" placeholder="0" value={`${giftAmmount.toFixed(3)}`} ></textarea>
+                              <button style={{ backgroundColor: `${giftApplied ? "red" : "#FBC000"}` }} className={"button"} onClick={() => giftApplied ? clearGift() : applyGift()}>
+                                {giftApplied ? t('Annuler') : t('cartPage.appliquer')}
+                              </button>
+                            </div>
+                            <div className="devider">
+                            </div>
+                          </>
+
+                        }
                         {/* gift end */}
                         {/* bonus start */}
                         <div className="promo-container">
