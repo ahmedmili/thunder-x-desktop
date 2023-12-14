@@ -72,10 +72,10 @@ const AnnonceCart: React.FC<AnnonceProps> = ({ title, bodyText, product, supplie
   }, [startAt]);
   return (<>
     <div className={`annonce-cart`} onClick={handleClick} >
-      <p className='title'>{title}</p>
+      <h3 className='title'>{title}</h3>
       <p className='body' >{bodyText}</p>
       {/* {time && <p className='time' >{time}</p>} */}
-      {startAt && <p className='time' >{formattedDate}</p>}
+      {startAt && <div className='time' >{formattedDate}</div>}
     </div>
   </>)
 }

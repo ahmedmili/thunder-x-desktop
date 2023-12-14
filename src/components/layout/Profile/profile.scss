@@ -11,7 +11,9 @@
     }
     .profile-main {
         width: 100%;
-        margin: 127px 78px 78px;
+        min-height: calc(100vh - 75px);
+        margin: 75px 0 0 350px;
+        padding: 52px 86px 52px 78px;
     }
     .bulles {
         display: flex;
@@ -55,6 +57,9 @@
         z-index: 10;
     }
 }
+
+/* # $Mobile ::
+------------------------------------*/
 
 @media only screen and (max-width: 992px) {
     .profile-container {
