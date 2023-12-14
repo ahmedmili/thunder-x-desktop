@@ -48,7 +48,6 @@ async function getSupplierById(supplierId: number) {
 }
 
 async function getSupplierISoPENById(supplierId: number) {
-
   try {
     const response = await api.get("getSupplierIsOpenById/" + supplierId);
     const { status, data } = response;
@@ -58,8 +57,9 @@ async function getSupplierISoPENById(supplierId: number) {
     throw error;
   }
 }
-async function getSuppliersByCategory(page: number, idCat: number, items: any, keywords: string) {
 
+
+async function getSuppliersByCategory(page: number, idCat: number, items: any, keywords: string) {
   try {
     const response = await api.post(`ClientGetSupplierByCategory/${items}?page=${page}`, { category_id: idCat, keyword: keywords });
     const { status, data } = response;
@@ -84,8 +84,6 @@ async function getSuppliersIndex(long: number, lat: number, delivery: number = 1
     throw error;
   }
 }
-
-
 
 export const supplierServices = {
   all_annonces,
