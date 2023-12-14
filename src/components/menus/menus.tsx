@@ -24,6 +24,7 @@ import './menus.scss';
 
 import ActiveGiftIcon from '../../assets/profile/ArchivedCommands/gift-active.png';
 import GiftIcon from '../../assets/profile/ArchivedCommands/gift.svg';
+import ClosedSupplier from '../Popups/ClosedSupplier/ClosedSupplier';
 
 interface MenuProps { }
 
@@ -39,12 +40,14 @@ const Menu: React.FC<MenuProps> = () => {
   const [currentPage, setCurrentPage] = useState<{ [key: string]: number }>({});
   const productsPerPage = 4;
 
-  const [showMismatchModal, setShowMismatchModal] = useState(false);
-  const [showOptionsPopup, setShowOptionsPopup] = useState(false);
+  const [showMismatchModal, setShowMismatchModal] = useState<boolean>(false);
+  const [showClosedWarnModal, setShowClosedWarnModal] = useState<boolean>(false);
+  const [showOptionsPopup, setShowOptionsPopup] = useState<boolean>(false);
   const [filtreddMenuData, setFiltreddMenuData] = useState<MenuData[]>([]);
   const [displayedRestaurant, setDisplayedRestaurant] = useState<any>();
   const { id, search, productId } = useParams<{ id: string, search?: string, productId?: string }>();
-  const [selectedOption, setSelectedOption] = useState(search ? search : "All");
+  const [selectedOption, setSelectedOption] = useState<string>(search ? search : "All");
+  const [isOpen, setIsOpen] = useState<boolean>(true);
   const idNumber = id?.split('-')[0];
 
   // handle messanger
@@ -105,6 +108,7 @@ const Menu: React.FC<MenuProps> = () => {
       navigate(newURL, { replace: true });
     }
   }
+
   const removeUrlProductId = () => {
     const locationPath = location.pathname;
 
@@ -137,25 +141,31 @@ const Menu: React.FC<MenuProps> = () => {
       throw error
     }
   }
+
+  const getSupplierIsOpen = async () => {
+    const { status, data } = await supplierServices.getSupplierISoPENById(Number(idNumber!))
+    data.data.is_open === 1 ? setIsOpen(true) : setIsOpen(false)
+  }
+
+  const getMenu = async () => {
+    const { status, data } = await productService.getMenu(idNumber);
+    if (status === 200) {
+      setMenuData(data.data);
+      setFiltreddMenuData(data.data)
+    }
+    setLoading(false);
+  };
+
   useEffect(() => {
     getSupplierById()
     handleFilter()
+    getSupplierIsOpen()
   }, [])
 
   // initialize menue 
   useEffect(() => {
-    const getMenu = async () => {
-      const { status, data } = await productService.getMenu(idNumber);
-      if (status === 200) {
-        setMenuData(data.data);
-        setFiltreddMenuData(data.data)
-      }
-      setLoading(false);
-    };
     getMenu();
   }, [idNumber]);
-
-
 
   // open miss match
   const handleMismatchModal = () => {
@@ -164,19 +174,29 @@ const Menu: React.FC<MenuProps> = () => {
     setShowMismatchModal(!showMismatchModal);
   };
 
-  // close options
-  const handleChooseOptions = (selectedMenuItem: any | null) => {
-    showOptionsPopup === false && handleUrlProductId(selectedMenuItem.id)
-    dispatch(setProduct(selectedMenuItem))
-    handlePopup()
+  // handle closed warn popup
+  const handleClosedWarnModal = () => {
+    setShowClosedWarnModal(!showClosedWarnModal);
   };
 
+
+  // close options
+  const handleChooseOptions = (selectedMenuItem: any | null) => {
+    if (isOpen) {
+      showOptionsPopup === false && handleUrlProductId(selectedMenuItem.id)
+      dispatch(setProduct(selectedMenuItem))
+      handlePopup()
+    } else {
+      handleClosedWarnModal()
+    }
+  };
 
   const getTruncatedName = (name: string, MAX_NAME_LENGTH: number) => {
     return name.length > MAX_NAME_LENGTH
       ? `${name.slice(0, MAX_NAME_LENGTH)}...`
       : name;
   };
+
   const handleOptionChange = (event: any) => {
     const updatedURL = `/restaurant/${id}/${event.target.value}`;
     navigate(updatedURL, { replace: true });
@@ -194,6 +214,7 @@ const Menu: React.FC<MenuProps> = () => {
       setFiltreddMenuData(filtredData)
     }
   }
+
   useEffect(() => {
     handleFilter()
   }, [selectedOption, menuData])
@@ -282,14 +303,21 @@ const Menu: React.FC<MenuProps> = () => {
           )}
     </>
   }
+
   return (
     <>
       <Container fluid className={`supplier-page-header`} >
         <Row>
           <div className="background-container">
             <img loading="lazy" src={displayedRestaurant?.images[0].path} alt="restaurant image" className="background" />
-            <div className="open-time">
-              <span>{t("supplier.opentime")} {displayedRestaurant?.closetime}</span>
+            <div className={`open-time ${!isOpen && "closed-time"} `}>
+              {
+                isOpen ?
+                  <span>{t("supplier.opentime")} {displayedRestaurant?.closetime}</span>
+                  :
+                  <span>{t("closed")}</span>
+
+              }
             </div>
           </div>
         </Row>
@@ -301,33 +329,37 @@ const Menu: React.FC<MenuProps> = () => {
             <div className="info-container">
               <div className="left-side">
                 <div className='name'>{displayedRestaurant?.name}</div>
-                <div className='price'>{t("supplier.delivPrice")} <span className='price-value'> {displayedRestaurant?.delivery_price} dt</span></div>
+                {
+                  displayedRestaurant &&
+                  <div className='price'>{t("supplier.delivPrice")} <span className='price-value'> {displayedRestaurant?.delivery_price} dt</span></div>
+
+                }
               </div>
+              {displayedRestaurant &&
+                <div className="right-side">
+                  <div className='rate-gouping'>
+                    {
+                      (displayedRestaurant?.star && (displayedRestaurant?.star > 0)) && (<span className='star-number'> {displayedRestaurant?.star}</span>)
+                    }
+                    <Star className='starIcon' style={{ visibility: 'visible' }} />
 
-              <div className="right-side">
-                <div className='rate-gouping'>
-                  {
-                    (displayedRestaurant?.star && (displayedRestaurant?.star > 0)) && (<span className='star-number'> {displayedRestaurant?.star}</span>)
-                  }
-                  <Star className='starIcon' style={{ visibility: 'visible' }} />
+                    {
+                      displayedRestaurant?.bonus ? (
+                        <div className='gift-icon' style={(displayedRestaurant?.bonus > 0) ? { backgroundImage: `url(${ActiveGiftIcon})` } : { backgroundImage: `url(${GiftIcon})` }}></div>
+                      ) : (
+                        <div className='gift-icon' style={{ backgroundImage: `url(${GiftIcon})` }}></div>
+                      )
+                    }
+                  </div>
 
-                  {
-                    displayedRestaurant?.bonus ? (
-                      <div className='gift-icon' style={(displayedRestaurant?.bonus > 0) ? { backgroundImage: `url(${ActiveGiftIcon})` } : { backgroundImage: `url(${GiftIcon})` }}></div>
-                    ) : (
-                      <div className='gift-icon' style={{ backgroundImage: `url(${GiftIcon})` }}></div>
-                    )
-                  }
+                  <div className='time'>
+                    <p>
+                      {`${Number(displayedRestaurant?.medium_time) - 10}-${Number(displayedRestaurant?.medium_time + 10)}min`}
+                    </p>
+                  </div>
+
                 </div>
-
-                <div className='time'>
-                  <p>
-                    {`${displayedRestaurant?.medium_time - 10} - ${displayedRestaurant?.medium_time + 10
-                      } min`}
-
-                  </p>
-                </div>
-              </div>
+              }
             </div>
           </section>
         </Row>
@@ -394,6 +426,10 @@ const Menu: React.FC<MenuProps> = () => {
       )}
       {showOptionsPopup && (
         <MenuPopup openMissMatch={handleMismatchModal} close={handlePopup} restaurant={displayedRestaurant} isOpen={showOptionsPopup} />
+      )}
+
+      {showClosedWarnModal && (
+        <ClosedSupplier close={handleClosedWarnModal} closeButtonText={t("continuer")} confirmButtonText='ok' message={t('popup.supplier.tryAgain')} />
       )}
 
     </>
