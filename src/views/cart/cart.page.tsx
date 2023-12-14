@@ -400,19 +400,28 @@ const CartPage: React.FC = () => {
     dispatch(setCodePromo(""));
     dispatch(setSupplier(null));
   }
+
+
+  /*
+  
+  
+  
+  */
+
   //  get gifts
   const getclientGift = async () => {
     let body = { supplier_id: cartItems[0].supplier_data.supplier_id };
     const { status, data } = await cartService.getGift(body)
-    if (data.data.succuss) {
+    if (data.success) {
       let gift = data.data.has_gift
-      setHas_gift(gift);
       if (gift) {
+        setHas_gift(gift);
         setMaxGiftCost(data.data.max_gift_cost)
         setMaxGiftId(data.data.gift_id)
       }
     }
   }
+
   // apply gift and calculate total
   const applyGift = () => {
     setGiftApplied(true)
@@ -424,13 +433,11 @@ const CartPage: React.FC = () => {
     }
     if (sum > 0 && sum <= maxGiftCost) {
       setGiftAmmount(sum);
-    }
-    else {
+    } else {
       setGiftAmmount(maxGiftCost);
     }
     if (sum === giftAmmount) {
       setLimitReachedGift(true);
-
     }
     else {
       setLimitReachedGift(false);
@@ -443,6 +450,7 @@ const CartPage: React.FC = () => {
     setGiftApplied(false)
     setLimitReachedBonus(false)
   }
+
 
   // calc bonus
   const applyBonus = () => {
@@ -631,7 +639,7 @@ const CartPage: React.FC = () => {
   // calc total function
   const calcTotal = () => {
     setTotal(
-      ((sousTotal + delivPrice) - ((appliedBonus / 1000) + promoReduction + discount)))
+      ((sousTotal + delivPrice) - ((appliedBonus / 1000) + (giftAmmount) + promoReduction + discount)))
   }
   // get supplier request
   const getSupplierById = async () => {
@@ -729,7 +737,7 @@ const CartPage: React.FC = () => {
   useEffect(() => {
     let check = supplier && cartItems.length > 0
     check && calcTotal()
-  }, [sousTotal, appliedBonus, promoReduction, delivPrice]);
+  }, [sousTotal, giftApplied, appliedBonus, promoReduction, delivPrice]);
 
   const goNextStep: MouseEventHandler<HTMLButtonElement> = ((event) => {
     setCurrentStep(2);
@@ -819,6 +827,7 @@ const CartPage: React.FC = () => {
                             }
                           </ul>
                         </div>
+                        {/* promo start */}
                         <div className="promo-container">
                           <span>Code promo</span>
                           <textarea name="code_promo" id="code_promo" placeholder="Code promo" value={promo} onChange={(e) => handlePromoChange(e.target.value)} ></textarea>
@@ -828,6 +837,19 @@ const CartPage: React.FC = () => {
                         </div>
                         <div className="devider">
                         </div>
+                        {/* promo end */}
+                        {/* gift start */}
+                        <div className="promo-container">
+                          <span>{t('repasGratuit')}</span>
+                          <textarea name="code_promo" readOnly id="gift_ammount" placeholder="0" value={`${giftAmmount.toFixed(3)}`} ></textarea>
+                          <button style={{ backgroundColor: `${giftApplied ? "red" : "#FBC000"}` }} className={"button"} onClick={() => giftApplied ? clearGift() : applyGift()}>
+                            {giftApplied ? t('Annuler') : t('cartPage.appliquer')}
+                          </button>
+                        </div>
+                        <div className="devider">
+                        </div>
+                        {/* gift end */}
+                        {/* bonus start */}
                         <div className="promo-container">
                           <span>{t('cartPage.bonus')}</span>
                           <textarea name="bonus" id="bonus" placeholder="Bonnus" value={bonus.toFixed(2) + ' pts'}></textarea>
@@ -840,6 +862,7 @@ const CartPage: React.FC = () => {
                             <p className="bonus-message">{t('cartPage.bonusMsg')}</p>
                           </li>
                         </ul>
+                        {/* bonus end */}
                         <div className="buttons">
                           <button className="cancel">
                             Annuler
@@ -962,9 +985,14 @@ const CartPage: React.FC = () => {
                         </div>
                       </div>)}
                     </div>
+
+                    {/* 
+                      order datails
+                    */}
                     <div className="summair-container">
                       <span>{t('cartPage.total')}</span>
                       <div className={`info`}>
+
                         <div className="sous-total">
                           <span className="title">{t('profile.commands.sousTotal')}</span>
                           <span className="value">{sousTotal.toFixed(2)} DT</span>
@@ -995,9 +1023,17 @@ const CartPage: React.FC = () => {
                               </div>
                             )
                           }
+                          {
+                            giftAmmount > 0 && (
+                              <div className="panie-row">
+                                <span>{t('Repas Gratuit')}</span>
+                                <span> - {(giftAmmount).toFixed(2)} DT</span>
+                              </div>
+                            )
+                          }
                           <div className="panie-row">
                             <span>{t('supplier.delivPrice')}</span>
-                            <span>{delivPrice} DT</span>
+                            <span>{delivPrice.toFixed(2)} DT</span>
                           </div>
                           <div className="panie-row"></div>
                         </div>
@@ -1014,6 +1050,10 @@ const CartPage: React.FC = () => {
                         </div> */}
                       </div>
                     </div>
+
+                    {/* 
+                       messsanger 
+                    */}
                     <div className='bulles'>
                       <button className='messanger-popup-btn' onClick={handleMessangerPopup} style={{ backgroundImage: `url(${MessangerBtnIcon})` }}>
                         {unReadedQt > 0 && (
