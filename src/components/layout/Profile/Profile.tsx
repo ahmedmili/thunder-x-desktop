@@ -32,7 +32,9 @@ const Profile = () => {
 
       <div className={`profile-container`}>
         <SideBar />
-        <Outlet />
+        <div className="profile-main">
+          <Outlet />
+        </div>
 
         <div className='bulles'>
           <button className='messanger-popup-btn' onClick={handleMessangerPopup} style={{ backgroundImage: `url(${MessangerBtnIcon})` }}>

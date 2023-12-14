@@ -1,3 +1,5 @@
+@import '../../../../scss/extend';
+
 @keyframes LongAnimation {
     0% {
         min-height: 0%;
@@ -38,15 +40,14 @@
         opacity: 1;
     }
 }
-
 .config-page {
     width: 100%;
     min-height: 100vh;
     border-radius: 25px;
-    background: #FFF;
+    background: $color-white;
     box-shadow: 0px 4px 4px 0px rgba(0, 0, 0, 0.25);
     padding: 40px 80px;
-    margin: 150px 86px 50px 0;
+    margin: 0;
     display: flex;
     flex-direction: column;
     gap: 37px;
@@ -57,45 +58,32 @@
     &::-webkit-scrollbar {
         width: 0;
     }
-
     .setting {
         .header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            border-bottom: #D9D9D9 solid 1px;
+            @include flex(flex, center, space-between);
+            border-bottom: $color-gray-alto solid 1px;
 
             &:hover {
                 cursor: pointer;
             }
-
             .title {
-                color: #484848;
-                font-family: Poppins;
+                color: $dark_Gray;
+                font-family: 'Poppins-SemiBold', serif;
                 font-size: 20px;
-                font-style: normal;
-                font-weight: 600;
                 line-height: normal;
                 transition: color 0.5s ease-in-out;
-
             }
-
             .icon {
-                width: 50px;
-                height: 50px;
-                color: #FBC000;
+                @include dimensions(50px, 50px);
+                color: $orange_color;
                 rotate: 90deg;
                 transition: rotate 0.5s ease-in-out;
-
             }
         }
-
         .active {
             .title {
-
-                color: #FBC000;
+                color: $orange_color;
             }
-
             .icon {
                 rotate: 180deg;
             }
@@ -109,18 +97,13 @@
         margin-bottom: -5px;
         animation: LongAnimation 0.5s ease-in;
     }
-
     .theme-container {
-        width: 80%;
-        height: 90px;
+        @include dimensions(80%, 90px);
         overflow: hidden;
         animation: ThemeAnimation 0.5s ease-in;
     }
-
     .map-container {
-        display: flex;
-        justify-content: center;
-        align-items: center;
+        @include flex;
         min-height: 444px;
 
         .container-map {
@@ -128,7 +111,6 @@
             padding: 4px 43px 0 20px;
         }
     }
-
 }
 
 @media only screen and (max-width: 1200px) {
@@ -140,10 +122,8 @@
                 .title {
                     font-size: 15px;
                 }
-
                 .icon {
-                    width: 40px;
-                    height: 33px;
+                    @include dimensions(40px, 33px);
                 }
             }
         }
@@ -160,11 +140,8 @@
                 .title {
                     font-size: 13px;
                 }
-
                 .icon {
-                    width: 23px;
-                    height: 28px;
-
+                    @include dimensions(23px, 28px);
                 }
             }
         }
