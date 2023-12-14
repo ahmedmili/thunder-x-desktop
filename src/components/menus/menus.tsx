@@ -188,7 +188,6 @@ const Menu: React.FC<MenuProps> = () => {
       handlePopup()
     } else {
       handleClosedWarnModal()
-      console.log("closed supplier")
     }
   };
 
