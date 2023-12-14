@@ -1,69 +1,54 @@
-@import '../../../../colors';
+@import '../../../../scss/extend';
 
 .visibility-button {
-    background-color: #24A6A4;
+    background-color: $Ocean_Teal;
     border: none;
-    width: 50px;
-    height: 50px;
+    @include dimensions(50px, 50px);
     margin: 90px 0 0 -5px;
     display: none;
     transition: all 1s ease-in-out;
     font-size: 28px;
-
-    color: white;
+    color: $color-white;
     position: absolute;
     padding: 0;
-
 }
-
 .side-bar {
-    background-color: #FFF;
-    height: 1024px;
-    width: 351px;
+    background-color: $color-white;
+    @include dimensions(351px, 1024px);
     transition: all 1s ease-in-out;
     border-radius: 25px;
-    position: absolute;
-    top: 0;
-    left: 0;
 
     .sideBar-header {
-        width: 351px;
-        height: 380px;
-        border-radius: 40px 0px;
-        background: linear-gradient(180deg, #24A6A4 0%, #2EB5B2 100%);
+        @include dimensions(351px, initial);
+        border-radius: 0 0 40px;
+        background: linear-gradient(180deg, $color-blue-scooter 0%, $color-blue-eastern 100%);
         display: flex;
         flex-direction: column;
         align-items: center;
         gap: 28px;
-        padding-top: 155px;
+        padding: 110px 15px 15px;
 
         .image {
-            width: 104.952px;
-            height: 102.743px;
-            border-radius: 104.952px;
-            background-color: #24A6A4;
+            @include dimensions(116px, 116px);
+            border-radius: 50%;
+            background-color: $Ocean_Teal;
             background-repeat: no-repeat;
             background-size: cover;
-            box-shadow: 0px 0px 0px 5px #8ACDCC
+            @include border(3px, $Light_Blue);
         }
-
         .info {
             display: flex;
             flex-direction: column;
             gap: 25px;
 
             .name {
-                width: 141px;
-                height: 23px;
-                color: #FFF;
-                font-family: Poppins;
+                @include dimensions(141px, 23px);
+                color: $color-white;
+                font-family: 'Poppins-SemiBold', serif;
                 font-size: 20px;
-                font-style: normal;
-                font-weight: 600;
                 line-height: normal;
                 text-align: center;
             }
-
             .icons {
                 display: flex;
                 justify-content: center;
@@ -71,9 +56,8 @@
 
                 .icon {
                     border-radius: 50%;
-                    width: 32px;
-                    height: 32px;
-                    background-color: white;
+                    @include dimensions(32px, 32px);
+                    background-color: $color-white;
 
                     &:hover {
                         cursor: pointer;
@@ -91,7 +75,8 @@
         ul {
             width: 100%;
             margin-left: 0;
-            padding-left: 41px;
+            // padding-left: 41px;
+            padding: 0;
 
             li {
                 list-style: none;
@@ -99,45 +84,37 @@
                 a {
                     display: flex;
                     align-items: center;
-                    padding-left: 35px;
+                    padding-left: 75px;
                     height: 50px;
                     text-decoration: none;
-                    color: #484848;
-                    font-family: Poppins;
+                    color: $dark_Gray;
+                    font-family: 'Poppins-Medium', serif;
                     font-size: 14px;
-                    font-style: normal;
-                    font-weight: 500;
                     line-height: normal;
                     gap: 22px;
 
                     .profile-list-icon {
                         background-size: 15px auto;
-                        width: 20px;
-                        height: 18px;
+                        @include dimensions(20px, 18px);
                         background-repeat: no-repeat;
                     }
                 }
-
                 .active {
-                    border-radius: 50px 0px 0px 50px;
-                    background-color: #2EB5B2;
-                    color: #FFF;
-                    font-family: Poppins;
+                    border-radius: 0 50px 50px 0;
+                    background-color: $color-blue-eastern;
+                    color: $color-white;
+                    font-family: 'Poppins-Medium', serif;
                     font-size: 14px;
-                    font-style: normal;
-                    font-weight: 500;
                     line-height: normal;
                 }
-
                 .disconnect {
                     margin-top: 166px;
-                    border-top: #E8E8E8 solid 1px;
+                    border-top: $color-gray-mercury solid 1px;
                 }
             }
         }
     }
 }
-
 
 @media only screen and (max-width: 992px) {
     .side-bar {
@@ -145,9 +122,7 @@
 
         .sideBar-header {
             width: 272px;
-
         }
-
         .sideBar-nav {
             ul {
                 padding-left: 37px;
@@ -175,9 +150,7 @@
 
         .sideBar-header {
             width: 272px;
-
         }
-
         .sideBar-nav {
             ul {
                 padding-left: 37px;
@@ -194,14 +167,11 @@
             }
         }
     }
-
     .visibility-button {
-
         display: flex;
         justify-content: center;
         align-items: baseline;
     }
-
     .visible-bar {
         z-index: 1000;
         transform: translateX(272px);

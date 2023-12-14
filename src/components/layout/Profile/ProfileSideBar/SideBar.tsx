@@ -171,14 +171,13 @@ const SideBar = () => {
             </li>
           </ul>
         </nav>
+      </div>
 
-
-
-      </div >
-
-      <button onClick={() => setIsDivVisible(!isDivVisible)} className={`visibility-button ${isDivVisible ? "visible-bar" : ""}`}>
-        ...
-      </button >
+      {/* 
+        <button onClick={() => setIsDivVisible(!isDivVisible)} className={`visibility-button ${isDivVisible ? "visible-bar" : ""}`}>
+          ...
+        </button>
+      */}
     </>
   );
 };

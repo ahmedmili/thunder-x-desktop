@@ -161,18 +161,18 @@ const Header = () => {
 
                   {!logged_in && (
                     <div className="header-buttons">
-                      <div
+                      <a
                         onClick={() => navigate('/register')}
-                        className='LoadingButton header-signup '
+                        className='LoadingButton header-signup signup-link'
                       >
                         {t('signup')}
-                      </div>
-                      <div
+                      </a>
+                      <button
                         onClick={() => navigate('/login')}
-                        className='LoadingButton header-signin'
+                        className='btn LoadingButton header-signin'
                       >
                         {t('login')}
-                      </div>
+                      </button>
                     </div>
                   )
                   }
