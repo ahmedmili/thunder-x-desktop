@@ -35,16 +35,17 @@ if (!isProduction) {
   const compression = (await import('compression')).default
   const sirv = (await import('sirv')).default
   app.use(compression())
-  app.use(base, sirv('./dist/client', { extensions: [] }))
+  app.use(base, sirv('./dist/client/assets', { extensions: [] }))
 }
 // get styls
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
 const resolve = (p) => path.resolve(__dirname, p);
+app.use('/assets', express.static(resolve("dist/client/assets")));
 
 const getStyleSheets = async () => {
   try {
-    const assetpath = resolve("dist/client");
+    const assetpath = resolve("dist/client/assets");
     const files = await fs.readdir(assetpath);
     const cssAssets = files.filter(l => l.endsWith(".css"));
     const allContent = [];
