@@ -65,7 +65,7 @@ const RestaurantList: React.FC<Props> = ({ restaurants, listType }) => {
     firstMiddle = restaurantsList.slice(0, middleIndex);
     lastMiddle = restaurantsList.slice(middleIndex);
   }
-  const isLargeScreen = useMediaQuery('(min-width : 1400px)');
+  const isLargeScreen = (typeof window !== "undefined") ? useMediaQuery('(min-width : 1400px)') : false;
 
   return (
     <div className={`${recommandedStyle.recommandedContainer}  ${listType == "discount" ? recommandedStyle.discount : ''}`}>

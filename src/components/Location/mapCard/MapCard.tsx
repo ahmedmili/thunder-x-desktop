@@ -1,9 +1,9 @@
 
 
 import { MouseEventHandler, useEffect, useRef, useState } from 'react';
-import { toast } from 'react-toastify';
 import { useAppDispatch, useAppSelector } from '../../../Redux/store';
 import { LocationService } from '../../../services/api/Location.api';
+// import { toast } from 'react-toastify';
 import './mapCard.scss';
 import EditPen from '../../../assets/edit-pen.svg'
 
@@ -13,12 +13,12 @@ import { LocationFormValues } from "../../../utils/formUtils";
 
 
 import { ErrorMessage, Field, Form, Formik, FormikHelpers } from 'formik';
+import { useSelector } from "react-redux";
 import * as Yup from 'yup';
 import {
   regionHomeSelector,
   homeLoadingSelector
 } from "../../../Redux/slices/home";
-import { useSelector } from "react-redux";
 
 
 type Position = {
@@ -46,7 +46,7 @@ function MapCard(props: { cancel: MouseEventHandler<HTMLButtonElement> | undefin
     const userPosition = useAppSelector((state) => state.location.position);
     const { t } = useTranslation();
     const logged_in = localStorageService.getUserToken();
-    const region = useSelector(regionHomeSelector);  
+    const region = useSelector(regionHomeSelector);
     const isLoading = useSelector(homeLoadingSelector);
     const validationSchema = Yup.object().shape({
         appNum: Yup.number()
@@ -64,7 +64,7 @@ function MapCard(props: { cancel: MouseEventHandler<HTMLButtonElement> | undefin
         setSubmitting(false);
         let emptyIntitule = values.intitule === "";
         if (emptyIntitule) {
-            toast.warn(t('adress.intitule_message'))
+            // toast.warn(t('adress.intitule_message'))
             dispatch({ type: "SET_SHOW", payload: false })
         } else {
             try {
@@ -83,7 +83,7 @@ function MapCard(props: { cancel: MouseEventHandler<HTMLButtonElement> | undefin
                         };
                         const resp = await LocationService.addaddresse(data);
                         let message = resp.data.message;
-                        toast.success(message);
+                        // toast.success(message);
                         resp.data.code === 200 && dispatch({ type: "SET_SHOW", payload: false })
 
                     }
@@ -133,7 +133,7 @@ function MapCard(props: { cancel: MouseEventHandler<HTMLButtonElement> | undefin
             const initialMarker = new google.maps.Marker({
                 position: latLng, // Initial position in Sousse, Tunisia
                 map: mapRef.current,
-                title: t('adress.initLocation'),
+                title: t('adress.initLocation').toString()
             });
             setMarker(initialMarker);
 
@@ -184,10 +184,8 @@ function MapCard(props: { cancel: MouseEventHandler<HTMLButtonElement> | undefin
             <div className="container-map container-card">
                 <div className="map-container">
                     {
-                    
-                        <div className={`${showForm == true ? 'd-none'  : 'w-100'}`}>
-                            {/* <p>{t('adress.takeAdressFromCart')}</p> */}
 
+                        <div className={`${showForm == true ? 'd-none' : ''}`}>
                             <div className='map-and-button'>
                                 <div id="map" ref={mapContainerRef}></div>
                                 <div className="location-indicator">
@@ -200,18 +198,18 @@ function MapCard(props: { cancel: MouseEventHandler<HTMLButtonElement> | undefin
                                         <div className="icon"></div>
                                         <p>{t('adress.currentPos')}</p>
                                     </button>
-                                </div>                                    
+                                </div>
                             </div>
                             {mapDisabled && (
                                 <div className='error'>Veuillez autoriser l'accès à votre position</div>
                             )}
                         </div>
-                        
+
                     }
                     {logged_in && showForm && (
                         <>
                             <div className="location-form-title">
-                                <h1>{userPosition?.coords.label}</h1>     
+                                <h1>{userPosition?.coords.label}</h1>
                                 <button className="edit-button" onClick={() => setShowForm(false)}>
                                     <div className="edit-icon"></div>
                                 </button>
@@ -286,7 +284,7 @@ function MapCard(props: { cancel: MouseEventHandler<HTMLButtonElement> | undefin
                                 {t("continuer")}
                             </button>
                         )}
-                        {!logged_in && showForm === false && userPosition?.coords.label && region && !isLoading &&(
+                        {!logged_in && showForm === false && userPosition?.coords.label && region && !isLoading && (
                             <button type="button" className="submit-cart close" onClick={props.cancel}>
                                 {t("fermer")}
                             </button>

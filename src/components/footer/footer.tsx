@@ -10,7 +10,7 @@ import TikTokIcon from "../../assets/icons/TiktokIcon";
 import InstaIcon from "../../assets/icons/InstaIcon";
 import FacebookIcon from "../../assets/icons/FacebookIcon";
 import { useAppSelector } from "../../Redux/store";
-import { useEffect, useState } from "react";
+import { Suspense, useEffect, useState } from "react";
 
 const Footer: React.FC<FooterProps> = () => {
 
@@ -36,97 +36,107 @@ const Footer: React.FC<FooterProps> = () => {
   }, [images]);
 
   return (
-    <Container fluid className={`footerContainer ${template === 1 && 'dark-background2'}`}>
-      <Row className="bodyRow">
-        {/* logo section */}
-        <Col className="footerLogoCol" >
-          <img  loading="lazy" className="webifyIcon" src={icon} alt="webify-icon" />
-        </Col>
-        {/* contact numbers sections */}
-        <Col className={"footerContacteTelCol"}>
-          <div>
-            <p className={"footerTitle"}>Contactez-Nous</p>
-            <p className={"FooterText"} ><span> <LocalPhoneIcon className="icon" /></span> &nbsp; +216 22 543 123 </p>
-            <p className={"FooterText"} > <span><LocalPhoneIcon className="icon" /></span> &nbsp; +216 22 543 123 </p>
+    <Suspense
+      fallback={
+        <>
+        </>
+      }
+      
+    >
 
-            <div className={"socialMedia"}>
-              <div className={"icons"}>
-                <FacebookIcon className="icon"></FacebookIcon>
+      <Container fluid className={`footerContainer ${template === 1 && 'dark-background2'}`}>
+        <Row className="bodyRow">
+          {/* logo section */}
+          <Col className="footerLogoCol" >
+            <img loading="lazy" className="webifyIcon" src={icon} alt="webify-icon" />
+          </Col>
+          {/* contact numbers sections */}
+          <Col className={"footerContacteTelCol"}>
+            <div>
+              <p className={"footerTitle"}>Contactez-Nous</p>
+              <p className={"FooterText"} ><span> <LocalPhoneIcon className="icon" /></span> &nbsp; +216 22 543 123 </p>
+              <p className={"FooterText"} > <span><LocalPhoneIcon className="icon" /></span> &nbsp; +216 22 543 123 </p>
 
-              </div>
-              <div className={"icons"}>
-                <InstaIcon className="icon" ></InstaIcon>
+              <div className={"socialMedia"}>
+                <div className={"icons"}>
+                  <FacebookIcon className="icon"></FacebookIcon>
 
-              </div>
+                </div>
+                <div className={"icons"}>
+                  <InstaIcon className="icon" ></InstaIcon>
 
-              <div className={"icons"}>
-                <TikTokIcon className="icon" ></TikTokIcon>
+                </div>
 
+                <div className={"icons"}>
+                  <TikTokIcon className="icon" ></TikTokIcon>
+
+                </div>
               </div>
             </div>
-          </div>
-        </Col>
-        {/* email section */}
-        <Col className={"footerContacteEmailCol"}>
-          <div className={"footerContacteEmailContainer"}>
-            <p className={"footerTitle"}>
-              <span>
-                <Email></Email>
-              </span>
-              contacts
-            </p>
-            <p className={"FooterText"}> thunder-express.com</p>
+          </Col>
+          {/* email section */}
+          <Col className={"footerContacteEmailCol"}>
+            <div className={"footerContacteEmailContainer"}>
+              <p className={"footerTitle"}>
+                <span>
+                  <Email></Email>
+                </span>
+                contacts
+              </p>
+              <p className={"FooterText"}> thunder-express.com</p>
 
-          </div>
-        </Col>
-        {/* pubs section */}
-        <Col className={"footerPubsCol"}>
-          <div className={"pubsContainer"}>
+            </div>
+          </Col>
+          {/* pubs section */}
+          <Col className={"footerPubsCol"}>
+            <div className={"pubsContainer"}>
 
-            <p className={"footerTitle"}> Derniere publication</p>
+              <p className={"footerTitle"}> Derniere publication</p>
 
-            {
-              images ? (
-                <>
-                  <div className="bottom-to-top-scroll-carousel-container">
-                    <div
-                      className="bottom-to-top-scroll-carousel-items"
-                      style={{
-                        transform: `translateY(-${currentIndex * 57}px)`,
-                        transition: 'transform 1s ease', // Adjust the transition duration as needed
-                      }}
-                    >
-                      {images.map((item: any, index: number) => (
-                        <div key={index} className="bottom-to-top-scroll-carousel-item">
-                          <img  loading="lazy" src={item.image} alt="item image" />
-                        </div>
-                      ))}
-                    </div>
-                  </div>
-                </>
-
-              ) :
-                (
+              {
+                images ? (
                   <>
+                    <div className="bottom-to-top-scroll-carousel-container">
+                      <div
+                        className="bottom-to-top-scroll-carousel-items"
+                        style={{
+                          transform: `translateY(-${currentIndex * 57}px)`,
+                          transition: 'transform 1s ease', // Adjust the transition duration as needed
+                        }}
+                      >
+                        {images.map((item: any, index: number) => (
+                          <div key={index} className="bottom-to-top-scroll-carousel-item">
+                            <img loading="lazy" src={item.image} alt="item image" />
+                          </div>
+                        ))}
+                      </div>
+                    </div>
                   </>
-                )
-            }
-          </div>
-        </Col>
-        <div className="demi-cerlce-container">
-          <div className="demi-cercle">
-          </div>
-        </div>
-      </Row>
 
-      {/* all right reserved section */}
-      <Row >
-        <Col className={`footerRightReserverCol  ${template === 1 && 'dark-background'} `} >
-          <p >Tous droits réservés © 2023</p>
-        </Col>
-      </Row>
+                ) :
+                  (
+                    <>
+                    </>
+                  )
+              }
+            </div>
+          </Col>
+          <div className="demi-cerlce-container">
+            <div className="demi-cercle">
+            </div>
+          </div>
+        </Row>
 
-    </Container>
+        {/* all right reserved section */}
+        <Row >
+          <Col className={`footerRightReserverCol  ${template === 1 && 'dark-background'} `} >
+            <p >Tous droits réservés © 2023</p>
+          </Col>
+        </Row>
+
+      </Container>
+    </Suspense>
+
   );
 
 };

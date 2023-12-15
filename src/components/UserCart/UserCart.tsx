@@ -184,7 +184,7 @@ export const UserCart: React.FC<CartProps> = ({ firstName = "", lastName = "", c
                         });
                       },
                       (error: GeolocationPositionError) => {
-                        toast.error(error.message)
+                        // toast.error(error.message)
                       }
                     );
 

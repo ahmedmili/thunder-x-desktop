@@ -1,12 +1,12 @@
 import { api } from '../axiosApi';
 
-async function getProduct(supplier_id: number | undefined) {
+async function getProduct(productId: number | undefined) {
     try {
-        if (supplier_id === undefined) {
+        if (productId === undefined) {
             return { status: undefined, data: undefined };
         }
         const response = await api.get(
-            `/getProduct/${supplier_id}`,
+            `/getProduct/${productId}`,
         );
         const { status, data } = response;
         return { status, data };

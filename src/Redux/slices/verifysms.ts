@@ -1,8 +1,8 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 import { RootState } from ".";
 import { api } from "../../services/axiosApi";
+import { localStorageService } from "../../services/localStorageService";
 import { AppDispatch } from "../store";
-import { localStorageService } from "../../services/localStorageService"
 
 export type VerifysmsState = {
   loading: boolean;

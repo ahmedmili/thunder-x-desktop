@@ -1,7 +1,7 @@
 import React, { useEffect } from "react";
 import { logout } from "../Redux/slices/userSlice";
-import { toast, ToastContainer } from "react-toastify";
-import "react-toastify/dist/ReactToastify.css";
+// import { toast, ToastContainer } from "react-toastify";
+// import "react-toastify/dist/ReactToastify.css";
 import { useAppDispatch } from "../Redux/store";
 import { LocationService } from "./api/Location.api";
 
@@ -29,7 +29,7 @@ const withValidUserCheck = (WrappedComponent: React.FC) => {
               // Perform any additional checks if needed
             } else {
               const errorData = await response.json();
-              toast.error(errorData.message || "An error occurred");
+              // toast.error(errorData.message || "An error occurred");
               dispatch(logout());
               navigator.geolocation.getCurrentPosition(
                 (position: any) => {
@@ -44,7 +44,7 @@ const withValidUserCheck = (WrappedComponent: React.FC) => {
                   });
                 },
                 (error: GeolocationPositionError) => {
-                  toast.error(error.message)
+                  // toast.error(error.message)
                 }
               );
             }
@@ -53,7 +53,7 @@ const withValidUserCheck = (WrappedComponent: React.FC) => {
               "Error occurred while checking user validity:",
               error
             );
-            toast.error("An error occurred while checking user validity");
+            // toast.error("An error occurred while checking user validity");
             dispatch(logout());
             navigator.geolocation.getCurrentPosition(
               (position: any) => {
@@ -68,7 +68,7 @@ const withValidUserCheck = (WrappedComponent: React.FC) => {
                 });
               },
               (error: GeolocationPositionError) => {
-                toast.error(error.message)
+                // toast.error(error.message)
               }
             );
           }
@@ -87,7 +87,7 @@ const withValidUserCheck = (WrappedComponent: React.FC) => {
               });
             },
             (error: GeolocationPositionError) => {
-              toast.error(error.message)
+              // toast.error(error.message)
             }
           );
         }
@@ -101,7 +101,7 @@ const withValidUserCheck = (WrappedComponent: React.FC) => {
     return (
       <div>
         <WrappedComponent />
-        <ToastContainer />
+        {/* <ToastContainer /> */}
       </div>
     );
   };

@@ -1,3 +1,7 @@
+export interface AppProps {
+  initialData?: any;
+}
+
 export interface User {
   firstname: string;
   lastname: string;

@@ -86,13 +86,11 @@
         width: 107.361px;
       }
       .SwitchLabel {
-        // padding: 3px;
         font-size: 14px;
       }
       .SwitchWrapper {
         .Switch {
           .SwitchText {
-            // padding: 5px;
             font-size: 14px;
           }
         }
@@ -107,28 +105,28 @@
         width: 107.361px;
       }
       .SwitchLabel {
-        // padding: 3px;
         font-size: 11px;
       }
       .SwitchWrapper {
         .Switch {
           .SwitchText {
-            // padding: 5px;
             font-size: 11px;
           }
         }
       }
     }
   }
+
   @media only screen and (max-width: 576px) {
     .SwitchesContainer {
       width: 10rem;
       line-height: 1rem;
+
       .SwitchWrapper {
         width: 50px;
+
         .Switch {
           .SwitchText {
-            // padding: 3px;
             font-size: 6px;
           }
         }

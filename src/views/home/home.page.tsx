@@ -1,4 +1,4 @@
-import "laravel-echo/dist/echo";
+// import "laravel-echo/dist/echo";
 import React from "react";
 import Skeleton from "react-loading-skeleton";
 import "react-loading-skeleton/dist/skeleton.css";
@@ -6,11 +6,11 @@ import { AdsCarousel } from "../../components/adsCarousel/adsCarousel";
 import { ApplicationAd } from "../../components/applicationAd/ApplicationAd";
 import { FooterNewsLeter } from "../../components/footerNewsLeter/FooterNewsLetter";
 import RestaurantList from "../../components/recommendedRestaurants/recommendedRestaurants";
-import { Restaurant } from "../../services/types";
+import { AppProps, Restaurant } from "../../services/types";
 import homeStyle from "./home.page.module.scss";
 
 
-import "laravel-echo/dist/echo";
+// import "laravel-echo/dist/echo";
 import { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
 import {
@@ -20,34 +20,34 @@ import {
   recommendedHomeSelector,
 } from "../../Redux/slices/home";
 import { useAppSelector } from "../../Redux/store";
+import MessangerBtnIcon from '../../assets/profile/Discuter/messanger-btn.svg';
+import Messanger from "../../components/Popups/Messanger/Messanger";
 import CategoryCarousel from "../../components/categoriesCarousel/categoriesCarousel";
 import HomeSkeleton from "./skeleton/HomeSkeleton";
-import Messanger from "../../components/Popups/Messanger/Messanger";
-import MessangerBtnIcon from '../../assets/profile/Discuter/messanger-btn.svg';
 
-const HomePage = () => {
 
-  const ads = useSelector(adsHomeSelector);
-  const categories = useSelector(categoriesHomeSelector);
-  const recommanded = useSelector(recommendedHomeSelector);
-  const isLoading = useSelector(homeLoadingSelector);
+
+const HomePage = ({ initialData }: AppProps) => {
+
+
   const [messangerPopup, setMessangerPopup] = useState<boolean>(false)
+  const ads = initialData ? initialData.ads : useSelector(adsHomeSelector);
+  const categories = initialData ? initialData.categories : useSelector(categoriesHomeSelector);
+  const recommanded = initialData ? initialData.recommended : useSelector(recommendedHomeSelector);
+  const isLoading = initialData ? false : useSelector(homeLoadingSelector);
 
-  const restaurantsList = useAppSelector(
-    (state) => state.restaurant.restaurants
-  );
+  const restaurantsList = useAppSelector((state) => state.restaurant.restaurants);
 
-  const unReadMessages = useAppSelector((state) => state.messanger.unReadedMessages)
+  const unReadMessages = initialData ? 0 : useAppSelector((state) => state.messanger.unReadedMessages)
   const [unReadedQt, setUnReadedQt] = useState<number>(unReadMessages)
 
   useEffect(() => {
     setUnReadedQt(unReadMessages)
   }, [unReadMessages])
 
+
   const [selectedCategory, setSelectedCategory] = useState<string>("");
-  const [filteredRestaurants, setFilteredRestaurants] = useState<Restaurant[]>(
-    []
-  );
+  const [filteredRestaurants, setFilteredRestaurants] = useState<Restaurant[]>([]);
 
   const handleCategorySelect = (category: string) => {
     if (selectedCategory === category) {
@@ -98,6 +98,7 @@ const HomePage = () => {
             {/* categories list */}
             {categories ? (
               <CategoryCarousel
+                ssrCategories={categories}
                 onCategorySelect={handleCategorySelect}
               />
             ) : (
@@ -149,7 +150,7 @@ const HomePage = () => {
 
             <div className={homeStyle.bulles}>
               <button className={homeStyle.messangerPopupBtn} onClick={handleMessangerPopup} style={{ backgroundImage: `url(${MessangerBtnIcon})` }}>
-                {unReadedQt > 0 && (
+                {unReadedQt > 0 && initialData && (
                   <div className={homeStyle.messangerBullNotifIcon}>
                     {unReadedQt}
                   </div>
@@ -166,6 +167,7 @@ const HomePage = () => {
           </>
         )}
       </div>
+
       <FooterNewsLeter />
     </>
   );

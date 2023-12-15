@@ -17,7 +17,7 @@ import { FormValues, generateForm } from "../../utils/formUtils";
 import { useNavigate } from "react-router-dom";
 
 import { useTranslation } from "react-i18next";
-import { toast } from "react-toastify";
+// import { toast } from "react-toastify";
 import { setUser } from "../../Redux/slices/userSlice";
 import { userService } from "../../services/api/user.api";
 import { localStorageService } from "../../services/localStorageService";
@@ -80,25 +80,25 @@ const LoginPage = () => {
       const { token, user } = await userService.loginUser(values);
       localStorageService.setUserCredentials(user, token);
       dispatch(setUser(user));
-      toast.success("You successfully logged in");
+      // toast.success("You successfully logged in");
       navigate("/"); // Redirect to the home page
     } catch (error: any) {
       if (error.response) {
         if (Array.isArray(error.response.data.error)) {
-          error.response.data.error.forEach((el: any) =>
-            toast.error(el.message, {
-              position: "top-right",
-            })
-          );
+          // error.response.data.error.forEach((el: any) =>
+          //   toast.error(el.message, {
+          //     position: "top-right",
+          //   })
+          // );
         } else {
-          toast.error(error.response.data.message, {
-            position: "top-right",
-          });
+          // toast.error(error.response.data.message, {
+          //   position: "top-right",
+          // });
         }
       } else {
-        toast.error("Something went wrong. Please try again.", {
-          position: "top-right",
-        });
+        // toast.error("Something went wrong. Please try again.", {
+        //   position: "top-right",
+        // });
       }
     }
   };

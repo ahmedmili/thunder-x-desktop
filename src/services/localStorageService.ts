@@ -9,40 +9,63 @@ function setUserCredentials(user: any, token: string) {
     localStorage.setItem('token', token);
     localStorage.setItem('userId', user.id.toString());
     localStorage.setItem('user', JSON.stringify(user));
+
 }
 function unsetUserCredentials() {
-    localStorage.removeItem('token');
-    localStorage.removeItem('userId');
-    localStorage.removeItem('user');
+    if (typeof window !== 'undefined') {
+
+        localStorage.removeItem('token');
+        localStorage.removeItem('userId');
+        localStorage.removeItem('user');
+    }
 }
 function setUserToken(token: string) {
     localStorage.setItem('token', token)
 }
 function getUserToken() {
-    return localStorage.getItem('token')
+    if (typeof window !== 'undefined') {
+
+        return localStorage.getItem('token')
+    } else return ""
 }
-function setUser(user:any) {
+function setUser(user: any) {
     let userData = JSON.stringify(user)
-    return localStorage.setItem('user',userData)
+    return localStorage.setItem('user', userData)
 }
 function getUser() {
-    return localStorage.getItem('user')
+    if (typeof window !== 'undefined') {
+
+        return localStorage.getItem('user')
+    }
+    else return ""
 }
 function getUserId() {
-    return localStorage.getItem('userId')
+    if (typeof window !== 'undefined') {
+
+        return localStorage.getItem('userId')
+
+    } else return ""
 }
 function setCurrentLocation(current_location: any) {
+
     localStorage.setItem('current_location', JSON.stringify(current_location));
 }
+
 function getCurrentLocation() {
-    return localStorage.getItem('current_location');
+    if (typeof window !== 'undefined') {
+
+        return localStorage.getItem('current_location');
+    } else return ""
 }
 function setCart(cart_items: any) {
     localStorage.setItem('cart_items', JSON.stringify(cart_items));
 }
 function unsetCart() {
-    localStorage.removeItem('cart_items');
+    if (typeof window !== 'undefined') {
+        localStorage.removeItem('cart_items');
+    }
 }
+
 function getCart() {
     return localStorage.getItem('cart_items');
 }
@@ -93,7 +116,7 @@ function getDelivery() {
 export const localStorageService = {
     setUserTheme,
     getUserTheme,
-    
+
     setUserCredentials,
     unsetUserCredentials,
     setUserToken,
