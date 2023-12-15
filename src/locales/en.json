@@ -13,6 +13,25 @@
   "monthAgo": "1 month ago",
   "daysAgo": "days ago",
   "weeksAgo": "weeks ago",
+  "auth.password.required": "password is required",
+  "auth.password.ConfirmMatch": "Passwords must match",
+  "auth.password.length.max": "password must be less than 20 characters",
+  "auth.password.length.min": "password must be more than 8",
+  "auth.email.required": "Email is required",
+  "auth.email.type": "Invalide e-mail format",
+
+  "auth.firstName.min": "firstname must be more than 3",
+  "auth.firstName.max": "firstname must be less than 20 characters",
+  "auth.firstName.required": "firstname is required",
+  
+  "auth.lastName.min": "lastname must be more than 3",
+  "auth.lastName.max": "lastname must be less than 20 characters",
+  "auth.lastName.required": "lastname is required",
+  
+  "auth.phone.min": "phone must be more than 8 numbers",
+  "auth.phone.max": "phone must be less than 8 numbers",
+  "auth.phone.required": "phone is required",
+
   "Modal.finishCommand": "Finalize the order",
   "Modal.finishCommand.message": "Please finalize your order to be able to place a new order, otherwise delete the unfinished order .",
   "Modal.finishCommand.finishOldCommande": "Finalize the previous order",

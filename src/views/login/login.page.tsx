@@ -35,6 +35,8 @@ const LoginPage = () => {
     console.log("toggle")
     setShowPassword((password) => !password)
   }
+
+
   const fields = [
     {
       type: "email",
@@ -66,11 +68,14 @@ const LoginPage = () => {
   ];
 
   const loginSchema = Yup.object().shape({
-    email: Yup.string().required().email().label("Email"),
+    email: Yup.string().
+      required(`${t('auth.email.required')}`)
+      .email(`${t('auth.email.type')}`)
+      .label("Email"),
     password: Yup.string()
-      .min(8, "password must be more than 8")
-      .max(20, "password must be less than 20 characters")
-      .required("password is required")
+      .min(8, `${t('auth.password.length.min')}`)
+      .max(20, `${t('auth.password.length.max')}`)
+      .required(`${t('auth.password.required')}`)
       .label("Password"),
   });
 

@@ -104,30 +104,34 @@ const Register = () => {
 
   const registerSchema = Yup.object().shape({
     firstname: Yup.string()
-      .min(3, "firstname must be more than 3")
-      .max(20, "firstname must be less than 20 characters")
-      .required("firstname is required")
+      .min(3, `${t('auth.firstName.min')}`)
+      .max(20, `${t('auth.firstName.max')}`)
+      .required(`${t('auth.firstName.required')}`)
       .label("firstname"),
     lastname: Yup.string()
-      .min(3, "lastname must be more than 3")
-      .max(20, "lastname must be less than 20 characters")
-      .required("lastname is required")
+      .min(3, `${t('auth.lastName.min')}`)
+      .max(20, `${t('auth.lastName.max')}`)
+      .required(`${t('auth.lastName.required')}`)
       .label("lastname"),
-    email: Yup.string().required().email().label("Email"),
+    email: Yup.string()
+      .required(`${t('auth.email.required')}`)
+      .email(`${t('auth.email.type')}`)
+      .label("Email"),
     password: Yup.string()
-      .min(8, "password must be more than 8")
-      .max(20, "password must be less than 20 characters")
-      .required("password is required")
+      .min(8, `${t('auth.password.length.min')}`)
+      .max(20, `${t('auth.password.length.max')}`)
+      .required(`${t('auth.password.required')}`)
       .label("Password"),
     confirm_password: Yup.string()
-      .max(20, "password must be less than 20 characters")
-      .required("password is required")
+      .min(8, `${t('auth.password.length.min')}`)
+      .max(20, `${t('auth.password.length.max')}`)
+      .required(`${t('auth.password.required')}`)
       .label("Confirm password")
       .oneOf([Yup.ref("password"), null], "Passwords must match"),
     phone: Yup.string()
-      .min(8, "phone must be more than 10")
-      .max(8, "phone must be less than 10 numbers")
-      .required("phone is required")
+      .min(8,  `${t('auth.phone.length.min')}`)
+      .max(8,  `${t('auth.phone.length.min')}`)
+      .required( `${t('auth.phone.length.min')}`)
       .label("phone"),
   });
 
