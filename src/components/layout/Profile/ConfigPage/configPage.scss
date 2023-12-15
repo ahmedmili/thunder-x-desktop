@@ -54,7 +54,6 @@
         .header {
             @include flex(flex, center, space-between);
             padding: 20px 0 !important;
-            border-bottom: 0;
 
             &:hover {
                 cursor: pointer;
@@ -72,15 +71,18 @@
             }
         }
         .active {
-            .title {
-                color: $orange_color;
-            }
             .icon {
                 rotate: 180deg;
             }
         }
         &:not(:last-child) {
-            border-bottom: $color-gray-alto solid 1px;
+            .header {
+                border-bottom: $color-gray-alto solid 1px;
+
+                &.active {
+                    border: 0;
+                }
+            }
         }
     }
     .longue-container {
