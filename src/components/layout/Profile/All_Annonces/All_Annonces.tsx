@@ -72,10 +72,10 @@ const AnnonceCart: React.FC<AnnonceProps> = ({ title, bodyText, product, supplie
   }, [startAt]);
   return (<>
     <div className={`annonce-cart`} onClick={handleClick} >
-      <p className='title'>{title}</p>
+      <h3 className='title'>{title}</h3>
       <p className='body' >{bodyText}</p>
       {/* {time && <p className='time' >{time}</p>} */}
-      {startAt && <p className='time' >{formattedDate}</p>}
+      {startAt && <div className='time' >{formattedDate}</div>}
     </div>
   </>)
 }
@@ -148,6 +148,11 @@ const Annonces = () => {
   return (
     <section className="annonces-section">
       <h1>{t('profile.allAnnounces.message')}</h1>
+
+      <div className="annonces-links-group">
+        <a className="annonces-link-item">Récent</a>
+        <a className="annonces-link-item">Tout effacer</a>
+      </div>
 
       {
         loading === false ? (

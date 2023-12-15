@@ -6,11 +6,10 @@ import { useNavigate } from 'react-router';
 import { logout } from '../../../../../Redux/slices/userSlice';
 import { useAppDispatch } from '../../../../../Redux/store';
 import Cover from '../../../../../assets/profile/desactive-cover.png';
+import { LocationService } from '../../../../../services/api/Location.api';
 import { userService } from '../../../../../services/api/user.api';
 import ConfirmPopup from '../../../../Popups/ConfirmPopup/ConfirmPopup';
 import './desactiveAccount.scss';
-import { Position } from '../../../../../services/types';
-import { LocationService } from '../../../../../services/api/Location.api';
 
 interface DesactiveAccountProps {
   type: string
@@ -39,8 +38,12 @@ const DesactiveAccount: React.FC<DesactiveAccountProps> = ({ type }) => {
   const handleRate = (index: number) => {
     setRate(index);
   }
+
+
+
   const handleAvisList = (index: number) => {
-    var avis: any[] = aviDefault;
+
+    var avis: any[] = [...avisList];
     avis[index].checked = !avis[index].checked
     setAvisList(avis)
   }
@@ -49,13 +52,23 @@ const DesactiveAccount: React.FC<DesactiveAccountProps> = ({ type }) => {
     setShowConfirm(current => !current)
   }
 
+  const concateTableReason = (t: any[]): string => {
+    let result: string[] = [];
+    t.forEach((e: any) => {
+      result.push(e.reason)
+    })
+    return result.join(',')
+  }
+
   const desactiveAccount = async () => {
     const checked = avisList.filter((e) => e.checked === true)
+    const resultReasons: string = concateTableReason(checked)
     const formData = {
       evaluation: rate,
-      reason: checked.length > 0 ? checked[0].reason : "",
+      reason: resultReasons,
       status_id: "2"
     }
+
     try {
       const { status, data } = await userService.desactivateAccount(formData)
       if (data.success) {
@@ -92,10 +105,12 @@ const DesactiveAccount: React.FC<DesactiveAccountProps> = ({ type }) => {
 
   const deleteAccount = async () => {
     const checked = avisList.filter((e) => e.checked === true)
+    const resultReasons: string = concateTableReason(checked)
     const formData = {
       evaluation: rate,
-      reason: checked.length > 0 ? checked[0].reason : "",
+      reason: resultReasons,
     }
+
     try {
       const { status, data } = await userService.deleteAccount(formData)
       if (data.success) {
@@ -154,7 +169,7 @@ const DesactiveAccount: React.FC<DesactiveAccountProps> = ({ type }) => {
               </label>
             </div>
             <div className='avi-content'>
-              <input type="checkbox" name="avis3" id="avis3" onClick={() => handleAvisList(2)} checked={avisList[2].checked} />
+              <input type="checkbox" name="avis3" id="avis3" checked={avisList[2].checked} />
 
               <label htmlFor="avis3" onClick={() => handleAvisList(2)} >
                 {avisList[2].reason}

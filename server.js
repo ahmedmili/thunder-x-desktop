@@ -44,7 +44,7 @@ const resolve = (p) => path.resolve(__dirname, p);
 
 const getStyleSheets = async () => {
   try {
-    const assetpath = resolve("dist/client/assets");
+    const assetpath = resolve("dist/client");
     const files = await fs.readdir(assetpath);
     const cssAssets = files.filter(l => l.endsWith(".css"));
     const allContent = [];

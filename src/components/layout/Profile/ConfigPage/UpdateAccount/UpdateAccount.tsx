@@ -97,31 +97,34 @@ const UpdateAccount: React.FC<updateProps> = ({ showPassword, showPhone }) => {
       <section className="update-section">
         <form onSubmit={(e) => handleSubmit(e)} >
 
-          <div className="input-container">
-            <label htmlFor="firstName">{t("lastName")}</label>
-            <div className="input">
-              <input className="update-input" value={firstName} type="text" name="firstName" placeholder="Entrer ici" onChange={(e) => setFirstName(e.target.value)} />
+          <div className="grid">
+            <div className="input-container">
+              <label htmlFor="firstName">{t("lastName")}</label>
+              <div className="input">
+                <input className="update-input" value={firstName} type="text" name="firstName" placeholder="Entrer ici" onChange={(e) => setFirstName(e.target.value)} />
+              </div>
             </div>
+            <div className="input-container">
+              <label htmlFor="lastName">{t("firstName")}</label>
+              <div className="input">
+                <input className="update-input" value={lastName} type="text" name="lastName" placeholder="Entrer ici" onChange={(e) => setLastName(e.target.value)} />
+              </div>
+            </div>
+          </div>
 
-          </div>
-          <div className="input-container">
-            <label htmlFor="lastName">{t("firstName")}</label>
-            <div className="input">
-              <input className="update-input" value={lastName} type="text" name="lastName" placeholder="Entrer ici" onChange={(e) => setLastName(e.target.value)} />
+          <div className="grid">
+            <div className="input-container">
+              <label htmlFor="email">{t("emailAddress")}</label>
+              <div className="input">
+                <input className="update-input" value={email} type="text" name="email" placeholder="Entrer ici" onChange={(e) => setEmail(e.target.value)} />
+              </div>
             </div>
-          </div>
-
-          <div className="input-container">
-            <label htmlFor="email">{t("emailAddress")}</label>
-            <div className="input">
-              <input className="update-input" value={email} type="text" name="email" placeholder="Entrer ici" onChange={(e) => setEmail(e.target.value)} />
-            </div>
-          </div>
-          <div className="input-container">
-            <label htmlFor="password">{t("password")}</label>
-            <div className="input">
-              <input readOnly className="update-input" type="password" name="password" placeholder="Entrer ici" />
-              <button onClick={showPassword} className='verif' >{t('Verifier')}</button>
+            <div className="input-container">
+              <label htmlFor="password">{t("password")}</label>
+              <div className="input">
+                <input readOnly className="update-input" type="password" name="password" placeholder="Entrer ici" />
+                <button onClick={showPassword} className='verif' >{t('Verifier')}</button>
+              </div>
             </div>
           </div>
 

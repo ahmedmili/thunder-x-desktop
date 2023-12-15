@@ -4,7 +4,7 @@
     "types": [
       "node",
       // "express",
-      "googlemaps"
+      // "googlemaps"
     ],
     "typeRoots": ["./node_modules/@types", "./src/types"],
     "useDefineForClassFields": true,
