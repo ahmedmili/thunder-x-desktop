@@ -19,9 +19,11 @@ const LegalCart: React.FC<legalProps> = ({ title, bodyText }) => {
   return (<>
     <div className="legal-cart">
       <p className='title'>{title}</p>
-      {
-        bodyText.map((text: string, index: number) => <p key={index} className='body' >{text}</p>)
-      }
+      <div className="legal-cart-desc">
+        {
+          bodyText.map((text: string, index: number) => <p key={index} className='body' >{text}</p>)
+        }
+      </div>
     </div>
   </>)
 }
@@ -64,7 +66,7 @@ const Legale = () => {
 
   return (
     <section className="Lgale-section">
-      <h1>{t('profile.mesConfig.legales.message')}</h1>
+      <h2>{t('profile.mesConfig.legales.message')}</h2>
       <div className="logo-container">
 
         <div className="logo-wrapper" style={{ backgroundImage: `url(${thunderLogo})` }}>
