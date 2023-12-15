@@ -14,8 +14,9 @@ const LegalCart: React.FC<legalProps> = ({ bodyText }) => {
 
   return (<>
     <div className="legal-cart">
-
-      <p className='body' >{bodyText}</p>
+      <div className="legal-cart-desc">
+        <p className='body' >{bodyText}</p>
+      </div>
     </div>
   </>)
 }

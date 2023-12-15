@@ -1,4 +1,4 @@
-@import '../../../../../colors';
+@import '../../../../../scss/extend';
 
 .desactive-account-section {
     display: flex;
@@ -7,48 +7,35 @@
     gap: 25px;
 
     .desactive-header-cover {
-        width: 100%;
-        height: 298px;
+        @include dimensions(100%, 298px);
         background-position: center;
         background-repeat: no-repeat;
         background-size: cover;
         border-radius: 25px;
+        margin: 0 0 20px;
     }
-
     .desactive-body {
-        background-color: white;
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-        justify-content: center;
-        gap: 40px;
+        background-color: $color-white;
 
         .desactive-title {
-            color: #484848;
-            font-family: Poppins;
-            font-size: 20px;
-            font-style: normal;
-            font-weight: 600;
-            line-height: normal;
+            font-family: 'Poppins-SemiBold', serif;
+            @include fonts(20px, 20px, $dark_Gray);
+            margin: 0 0 25px;
         }
-
         .desactive-warn {
-            color: #484848;
-            font-family: Poppins;
-            font-size: 15px;
-            font-style: normal;
-            font-weight: 400;
-            line-height: normal;
+            font-family: 'Poppins', serif;
+            @include fonts(15px, 15px, $dark_Gray);
+            font-weight: weight(regular);
+            margin: 0 0 35px;
         }
-
         .desactive-avis-container {
             display: grid;
-            grid-template-columns: 1fr 1fr;
+            grid-template-columns: repeat(2, 1fr);
             justify-content: center;
             align-items: center;
-            // grid-template-rows: 1fr 1fr;
             gap: 27px;
-            row-gap: 15px;
+            row-gap: 17px;
+            margin: 0 0 35px;
 
             .avi-content {
                 display: flex;
@@ -60,140 +47,103 @@
                 input[type='checkbox'] {
                     display: none;
                 }
-
-
                 label::before {
                     content: "";
                     display: inline-block;
-                    width: 20px;
-                    height: 20px;
-                    background-color: #24A6A4;
-                    border-color: #24A6A4;
+                    @include dimensions(20px, 20px);
+                    background-color: $color-blue-powder;
+                    @include border(1px, $color-blue-scooter);
                     border-radius: 4px;
                     position: absolute;
                     left: 0;
-                    top: 2px;
+                    top: -3px;
                 }
-
                 input[type="checkbox"]:checked+label::before {
                     content: "\2713";
-
-                    background-color: #007bff;
-                    border-color: #007bff;
-                    color: #fff;
+                    color: $color-blue-scooter;
                     font-size: 16px;
-                    display: flex;
-                    align-items: center;
-                    justify-content: center;
+                    @include flex;
                 }
-
                 label {
-                    color: #484848;
-                    font-family: Poppins;
-                    font-size: 15px;
-                    font-style: normal;
-                    font-weight: 400;
-                    line-height: normal;
+                    font-family: 'Poppins', serif;
+                    font-weight: weight(regular);
+                    @include fonts(15px, 15px, $dark_Gray);
 
                     &:hover {
                         cursor: pointer;
                     }
                 }
             }
-
         }
-
         .desactive-rate-container {
-            display: flex;
-            align-items: center;
-            justify-content: center;
+            margin: 0 0 30px;
+            @include flex;
             gap: 40px;
 
             .desactive-rate-btn {
-                border-radius: 5px;
-                border: 1px solid #24A6A4;
-                background-color: #8ACDCC;
-                color: #484848;
-                font-family: Poppins;
-                font-size: 15px;
-                font-style: normal;
-                font-weight: 400;
-                line-height: normal;
+                border-radius: 10px;
+                background: linear-gradient(0deg, rgba(46, 177, 195, 0.3), rgba(46, 177, 195, 0.3));;
+                font-family: 'Poppins', serif;
+                font-weight: weight(regular);
+                @include fonts(13px, 13px, $color-blue-eastern);
+                @include border(1px, $color-blue-scooter);
+                @include dimensions(43px, 39px);
                 margin: 0;
-                width: 43px;
-                height: 39px;
 
                 &.active {
-                    background-color: #2bc5c3;
+                    background-color: $color-turquoise;
+                    color: $color-white;
                 }
             }
         }
-
         .desactive-buttons {
-            display: flex;
-            justify-content: center;
-            gap: 50px;
-            width: 100%;
+            @include flex(flex, center, space-between);
+            gap: 55px;
 
             button {
-                background-color: transparent;
-                border: none;
+                min-width: 316px;
+                height: 43px;
+                background-color: $color-white;
+                @include border(2px, $color-yellow-buttercup);
                 border-radius: 50px;
-                color: #FFF;
-                font-family: Poppins;
-                font-size: 18px;
-                font-style: normal;
-                font-weight: 600;
-                line-height: normal;
-                height: 58px;
+                font-family: 'Poppins-Medium', serif;
+                @include fontSize(17px, 17px);
+                transition: all .3s;
 
                 &.cancle-btn {
-                    flex: 1;
-                    border: 2px solid #24A6A4;
-                    color: #484848;
-                }
+                    color: $color-yellow-buttercup;
 
+                    &:hover {
+                        background-color: $color-yellow-buttercup;
+                        color: $color-white;
+                    }
+                }
                 &.submit-btn {
-                    flex: 1;
-                    background: #FBC000;
+                    background-color: $color-yellow-buttercup;
+                    color: $color-white;
+
+                    &:hover {
+                        background-color: $color-white;
+                        color: $color-yellow-buttercup;
+                    }
                 }
-
-
             }
         }
     }
-
 }
+
+/* # $Mobile ::
+------------------------------------*/
 
 @media screen and (max-width :992px) {
     .desactive-account-section {
         .desactive-header-cover {
             height: 152px;
         }
-
         .desactive-body {
-            gap: 10px;
-
-            .desactive-title {
-                font-size: 15px;
-            }
-
-            .desactive-warn {
-                font-size: 12 px;
-            }
-
-            .desactive-avis-container {
-                .avi-content {
-                    label {
-                        font-size: 10px;
-                    }
-                }
-            }
-
             .desactive-rate-container {
                 gap: 10px;
             }
-
             .desactive-buttons {
                 gap: 10px;
 
@@ -201,24 +151,18 @@
                     font-size: 10px;
                 }
             }
-
         }
     }
 }
-
 @media screen and (max-width :786px) {
     .desactive-account-section {
         .desactive-header-cover {
             height: 119px;
         }
-
         .desactive-body {
-
             .desactive-avis-container {
-                display: flex;
                 flex-direction: column;
-                justify-content: start;
-                align-items: start;
+                @include flex(flex, start, center);
                 gap: 0px;
                 row-gap: 11px;
             }
