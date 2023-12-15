@@ -1,8 +1,6 @@
 
 import { useEffect, useState } from 'react';
 import thunderLogo from '../../../../../assets/icon.png';
-import LeftArrow from '../../../../../assets/profile/leftArrow.svg';
-import RigthArrow from '../../../../../assets/profile/rigthArrow.svg';
 import './legale.scss';
 import legalsData from './legals.json';
 
@@ -18,7 +16,7 @@ const LegalCart: React.FC<legalProps> = ({ title, bodyText }) => {
 
   return (<>
     <div className="legal-cart">
-      <p className='title'>{title}</p>
+      <h3 className='title'>{title}</h3>
       <div className="legal-cart-desc">
         {
           bodyText.map((text: string, index: number) => <p key={index} className='body' >{text}</p>)
@@ -86,18 +84,13 @@ const Legale = () => {
         {/* prev button */}
         {!(currentPage === 1) &&
           <div className="nav-page-button">
-            <button onClick={prevPage}>
-              <img loading="lazy" src={LeftArrow} alt="prev button" />
-            </button>
+            <button className="nav-page-button-item left" onClick={prevPage}></button>
           </div>
         }
         {/* next */}
         {!(currentPage === totalPages) &&
           <div className="nav-page-button">
-            <button onClick={nextPage}>
-              <img loading="lazy" src={RigthArrow} alt="prev button" />
-
-            </button>
+            <button className="nav-page-button-item right" onClick={nextPage}></button>
           </div>
         }
       </div>
