@@ -1,13 +1,14 @@
-import * as Yup from "yup";
 import { ErrorMessage, Field, Form, Formik, FormikHelpers } from "formik";
-import CustomError from "../components/CustomError/CustomError";
+import * as Yup from "yup";
 import Dash from "../assets/icons/Dash";
-import CustomErrorServer from "../components/custom-error-server/CustomErrorServer";
+import CustomError from "../components/CustomError/CustomError";
 import ButtonPrimary from "../components/button-primary/ButtonPrimary";
 import ButtonSecondary from "../components/button-secondary/ButtonSecondary";
+import CustomErrorServer from "../components/custom-error-server/CustomErrorServer";
 
-import styles from "./formutils.module.scss";
+import { useTranslation } from "react-i18next";
 import Spinner from "../components/spinner/Spinner";
+import styles from "./formutils.module.scss";
 export interface FormValues {
   firstname?: string;
   lastname?: string;
@@ -26,10 +27,10 @@ export interface LocationFormValues {
 
   appEnt: string,
   codePost: string,
-  appNum: string ,
+  appNum: string,
   selectedOption: number,
   intitule: string,
-  
+
 }
 
 interface FieldConfig {
@@ -61,6 +62,7 @@ interface GenerateFormProps {
 }
 
 export const generateForm = (props: GenerateFormProps) => {
+  const { t } = useTranslation()
   const {
     initialValues,
     validationSchema,
@@ -155,9 +157,9 @@ export const generateForm = (props: GenerateFormProps) => {
                     gap: "1rem",
                   }}
                 >
-                  <span>Non reçu</span>
+                  <span>{t('auth.notReciveid')}</span>
                   <a href="" style={{ color: "var(--primaryColor)" }}>
-                    Renvoyer le code
+                    {t('auth.resendCode')}
                   </a>
                 </div>
               </div>
@@ -204,7 +206,7 @@ export const generateForm = (props: GenerateFormProps) => {
             );
           })}
           {buttonAnnuler && (
-            <ButtonSecondary name="annuler">Annuler</ButtonSecondary>
+            <ButtonSecondary name="annuler">{t('Annuler')}</ButtonSecondary>
           )}
           <ButtonPrimary
             name="btn"

@@ -18,27 +18,30 @@
   "monthAgo": "Il y a 1 mois",
   "daysAgo": "jours",
   "weeksAgo": "semaines",
+  "tapeHere": "Enter ici",
   "auth.password.required": "Le mot de passe est requis",
   "auth.password.ConfirmMatch": "Les mots de passe doivent correspondre",
-  "auth.password.length.max": "Le mot de passe doit contenir moins de 20 caractères",
-  "auth.password.length.min": "Le mot de passe doit contenir plus de 8 caractères",
+  "auth.password.max": "Le mot de passe doit contenir moins de 20 caractères",
+  "auth.password.min": "Le mot de passe doit contenir plus de 8 caractères",
   "auth.email.required": "L'email est requis",
   "auth.email.type": "Format d'email invalide",
+  "auth.email.existe": "Un compte avec cette adresse e-mail est déjà utilisé",
   "auth.firstName.min": "Le prénom doit contenir plus de 3 caractères",
   "auth.firstName.max": "Le prénom doit contenir moins de 20 caractères",
   "auth.firstName.required": "Le prénom est requis",
   "auth.lastName.min": "Le nom doit contenir plus de 3 caractères",
   "auth.lastName.max": "Le nom doit contenir moins de 20 caractères",
   "auth.lastName.required": "Le nom est requis",
-
-
   "auth.phone.min": "Le numéro de téléphone doit contenir plus de 8 chiffres",
   "auth.phone.max": "Le numéro de téléphone doit contenir moins de 8 chiffres",
   "auth.phone.required": "Le téléphone est requis",
-
-
-
-
+  "auth.phone.existe": "Un compte avec cette numéro de téléphone est déjà utilisé",
+  "auth.ContinueApple": "Continue avec Apple",
+  "auth.ContinueGoogle": "Continue avec Google",
+  "auth.ContinueFacebook": "Continue avec Facebook",
+  "auth.invalideCredentials": "Les identifiants de connexion ne sont pas valides.",
+  "auth.notReciveid": "Non reçu",
+  "auth.resendCode": "Renvoyer le code",
   "Modal.finishCommand": "Finaliser de la commande",
   "Modal.finishCommand.message": "Veuillez finaliser votre commande pour pouvoir commander à nouveau, sinon supprimer la commande non-finalisée .",
   "Modal.finishCommand.finishOldCommande": "Finaliser la commande précédente",

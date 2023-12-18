@@ -1,3 +1,4 @@
+import { useState } from "react";
 import Email from "../../assets/icons/Email";
 import Eye from "../../assets/icons/Eye";
 import styles from "./inputform.module.scss";
@@ -26,35 +27,43 @@ const InputForm = ({
   ontoggleShowConfirmPassword,
   ...props
 }: InputFormProps & { field: any; form: any }) => {
-  const hasError = (touched[field.name] && errors[field.name]) || errorsServer;
+  const hasError = (((touched[field.name] ? true : false) && (errors[field.name] ? true : false)) || errorsServer) ? true : false;
+  const [err, setErr] = useState<boolean>(hasError)
+
   const inputStyle = {
     flex: 1,
     position: 'relative',
     borderRadius: '7px',
     border: '1px solid #fbc000',
-    backGroundColor:'#fff',
+    borderColor: !hasError ? '#fbc000' : '#a83232',
+    backGroundColor: '#fff',
     outline: 0,
     lineHeight: 1,
     padding: '1rem 0.5rem',
 
   };
+
   return (
-    <div className={`${styles.formControl} ${column ? styles.fill : ""}`}>
-      <label htmlFor={field.name} className={styles.label}>
+    <div
+      className={`${styles.formControl} ${column ? styles.fill : ""}`}>
+      <label htmlFor={field.name}
+        className={styles.label}
+      >
         {props.label}
       </label>
-      <div className={styles.formInputContent}>
+      <div
+        className={`${styles.formInputContent}`}
+      >
         {props.type === "tel" ? (
           <span
-            className={`${styles.indicator} ${hasError ? styles.errorColor : ""
-              }`}
+            className={`${hasError ? styles.errorColor : styles.defaultColor} ${styles.indicator} `}
           >
             +216
           </span>
         ) : null}
 
         <input
-          className={`${styles.formInput} ${hasError ? styles.errorStyle : ""}`}
+          className={`${hasError ? styles.errorStyle : styles.defaultColor} ${styles.formInput} `}
           style={
             field.name === "phone"
               ? {
@@ -62,6 +71,7 @@ const InputForm = ({
                 borderTopLeftRadius: 0,
                 borderBottomLeftRadius: 0,
                 borderLeft: 0,
+                borderWidth: "1px 1px 1px 0px",
               }
               : field.name === "email" || props.type === "password"
                 ? {
