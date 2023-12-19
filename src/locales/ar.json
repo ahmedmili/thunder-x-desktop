@@ -47,11 +47,13 @@
   "forgetPassword.useMyPhone": "استخدم رقمي",
   "forgetPassword.subTitle": "أدخل عنوان بريدك الإلكتروني، وسنرسل لك رابطًا لإعادة تعيين كلمة المرور",
   "forgetPassword.title": "هل نسيت كلمة المرور؟",
+  "forgetPassword.forgetPassword": "هل نسيت كلمة المرور؟",
   "forgetPassword.init": "إعادة تعيين",
   "forgetPassword.initPw.title": "إعادة تعيين كلمة المرور",
   "forgetPassword.initPw.subTitle": "لقد قمنا للتو بإرسال رمز مكون من 6 أرقام إلى هذا العنوان",
   "forgetPassword.initPw.newPassword": "كلمة المرور الجديدة",
   "forgetPassword.initPw.invalideCode": "الرمز غير متحقق.",
+  "forgetPassword.rememberMe": "تذكرني.",
 
   "Modal.finishCommand": "إكمال الطلب",
   "Modal.finishCommand.message": ".يرجى إكمال طلبك لتتمكن من إجراء طلب جديد، وإلا قم بحذف الطلب غير المكتمل",
@@ -165,6 +167,8 @@
   "signup_url_here": "أنشئ حسابك هنا",
   "ifYouHaveAnAccount": "إذا كان لديك حساب، تسجّل دخولك بسهولة.",
   "emailAddress": "عنوان البريد الإلكتروني",
+  "email": "البريد الإلكتروني",
+
   "password": "كلمة المرور",
   "noAccount": "لا تمتلك حسابًا؟",
   "noResult": "لا توجد نتائج",

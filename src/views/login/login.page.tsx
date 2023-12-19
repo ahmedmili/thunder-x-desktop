@@ -17,7 +17,6 @@ import { FormValues, generateForm } from "../../utils/formUtils";
 import { useNavigate } from "react-router-dom";
 
 import { useTranslation } from "react-i18next";
-// import { toast } from "react-toastify";
 import { setUser } from "../../Redux/slices/userSlice";
 import { userService } from "../../services/api/user.api";
 import { localStorageService } from "../../services/localStorageService";
@@ -40,7 +39,7 @@ const LoginPage = () => {
     {
       type: "email",
       name: "email",
-      label: "Email",
+      label: t('email'),
       placeholder: t('tapeHere'),
       id: "email",
       column: "fill",
@@ -49,7 +48,7 @@ const LoginPage = () => {
     {
       type: !showPassword ? "password" : "text",
       name: "password",
-      label: "Mot de passe",
+      label: t('password'),
       placeholder: t('tapeHere'),
       id: "password",
       column: "fill",
@@ -61,7 +60,7 @@ const LoginPage = () => {
     {
       type: "checkbox",
       name: "remember",
-      label: "Remember me",
+      label: t('forgetPassword.rememberMe'),
       id: "remember",
       component: CheckboxForm,
 
@@ -86,7 +85,6 @@ const LoginPage = () => {
       const { token, user } = await userService.loginUser(values);
       localStorageService.setUserCredentials(user, token);
       dispatch(setUser(user));
-      // toast.success("You successfully logged in");
       navigate("/"); // Redirect to the home page
     } catch (error: any) {
       if (error.response) {
