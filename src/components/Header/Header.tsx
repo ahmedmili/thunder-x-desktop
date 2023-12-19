@@ -9,7 +9,7 @@ import PermIdentityOutlinedIcon from '@mui/icons-material/PermIdentityOutlined';
 import PinDropIcon from "@mui/icons-material/PinDrop";
 import ShoppingCartOutlinedIcon from '@mui/icons-material/ShoppingCartOutlined';
 import { Box } from '@mui/material';
-import { useEffect, useState } from "react";
+import { Suspense, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { logout } from "../../Redux/slices/userSlice";
 import { localStorageService } from "../../services/localStorageService";
@@ -28,8 +28,7 @@ import {
 } from "../../Redux/slices/home";
 
 const Header = () => {
-
-  const msg_notifs = useAppSelector((state) => state.messanger.unReadedMessages)
+  const msg_notifs = useAppSelector((state) => state.messanger.unReadedMessages);
   const logged_in = localStorageService.getUserToken() !== null;
   const userItem = localStorageService.getUser();
 
@@ -52,10 +51,12 @@ const Header = () => {
   
   const handleScroll = () => {
     // Check if the user has scrolled down more than a certain threshold
-    if (window.pageYOffset > 100) {
-      setScrolling(true);
-    } else {
-      setScrolling(false);
+    if (typeof window != 'undefined') {
+      if (window.pageYOffset > 100) {
+        setScrolling(true);
+      } else {
+        setScrolling(false);
+      }
     }
   };
 
@@ -65,11 +66,14 @@ const Header = () => {
   }, [msg_notifs])
 
   useEffect(() => {
-    window.addEventListener('scroll', handleScroll);   
+    if (typeof window != 'undefined') {
+      window.addEventListener('scroll', handleScroll);
+    }
     return () => {
       window.removeEventListener('scroll', handleScroll);
     };
   }, []);
+
   useEffect(() => {
     if (region === false) {
       dispatch({ type: "SET_SHOW", payload: true })
@@ -114,7 +118,7 @@ const Header = () => {
     setShowCart(!showCart);
   };
 
-  const handleUserCart = async () => {
+  const handleUserCart = () => {
     if (user) {
       showCart && setShowCart(false);
       setShowProfile(!showProfile);
@@ -193,7 +197,7 @@ const Header = () => {
                 </div>
                 )
               }
-              <Row className={`headerContainer row-xxl-12`}>
+              <Row className={`headerContainer `}>
                 <Col className='col-12 col-sm-7'>
                   <div className="headerAppBar2">
                     <div className="headerMessage">
@@ -252,7 +256,7 @@ const Header = () => {
                 onClick={() => navigate('/')} >
                 <a href="#" className={`logoMain minimizedlogoMain`}></a>
               </div>
-              
+
               <div className='info'>
                 <div className="position">
 

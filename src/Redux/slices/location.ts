@@ -9,7 +9,7 @@ export interface LocationState {
 
 export const initialLocationState: LocationState = {
   position: null,
-  showMap :false,
+  showMap: false,
 };
 
 export const locationReducer = (

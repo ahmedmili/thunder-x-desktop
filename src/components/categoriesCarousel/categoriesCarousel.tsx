@@ -28,25 +28,26 @@ interface Category {
 }
 interface CategoryCarouselProps {
   onCategorySelect: (category: string) => void;
+  ssrCategories?: any;
 }
 
 const CategoryCarousel: React.FC<CategoryCarouselProps> = ({
-  onCategorySelect,
+  onCategorySelect, ssrCategories
 }) => {
 
   const navigate = useNavigate();
   const dispatch = useDispatch();
-  const cats = useAppSelector((state) => state.home.data.categories)
+  const cats = ssrCategories ? ssrCategories : useAppSelector((state) => state.home.data.categories)
   const navLocation = useLocation();
   const { t } = useTranslation();
-  const [categories, setCategories] = useState(cats.filter(category => category.description !== "Promo"));
+  const [categories, setCategories] = useState(cats.filter((category: any) => category.description !== "Promo"));
 
   const [selectedCategories, setSelectedCategories] = useState("");
 
   const [subCat, setSubCat] = useState(false);
 
   useEffect(() => {
-    setCategories(cats.filter(category => category.description !== "Promo"))
+    setCategories(cats.filter((category: any) => category.description !== "Promo"))
   }, [cats])
 
   useEffect(() => {
@@ -70,19 +71,19 @@ const CategoryCarousel: React.FC<CategoryCarouselProps> = ({
   }
 
   const handleCategoryClick = (categoryName: string) => {
-    const updatedCategories = categories.map((category) => ({
+    const updatedCategories = categories.map((category: any) => ({
       ...category,
       image: category.image,
       selected: category.name === categoryName ? !category.selected : false,
     }));
 
-    const subCategories = categories.filter((cat) => {
+    const subCategories = categories.filter((cat: any) => {
       if (cat.children) {
         return cat.name == categoryName && cat.children.length > 0
       }
     })
     if (categoryName == selectedCategories) {
-      setCategories(cats.filter(category => category.description !== "Promo"));
+      setCategories(cats.filter((category: any) => category.description !== "Promo"));
       setSelectedCategories("");
       setSubCat(false)
     } else {
@@ -122,23 +123,27 @@ const CategoryCarousel: React.FC<CategoryCarouselProps> = ({
 
   // Helper function to calculate the number of visible slides based on screen width
   const calculateVisibleSlides = () => {
-    const width = window.innerWidth;
-    let items = 2;
-     switch (true) {
-      case width >= 1200:
-         items =  4;
-        break;
-      case width >= 768 && width < 1200:
-        items =  3;
-        break;
-      case width < 768:
-        items =  2;
-        break;
-      default:
-        items =  1;
-        break;
+    if (typeof window != 'undefined') {
+      const width = window.innerWidth;
+      let items = 2;
+      switch (true) {
+        case width >= 1200:
+          items = 4;
+          break;
+        case width >= 768 && width < 1200:
+          items = 3;
+          break;
+        case width < 768:
+          items = 2;
+          break;
+        default:
+          items = 1;
+          break;
+      }
+      return items;
+    } else {
+      return 3
     }
-    return items;
   };
 
   return (
@@ -163,7 +168,7 @@ const CategoryCarousel: React.FC<CategoryCarouselProps> = ({
               <Row>
                 <Col >
                   <Slider>
-                    {categories.map((category) => (
+                    {categories.map((category: any) => (
 
                       <Slide className='carousel-slide' key={category.id} index={category.id - 1}>
                         <Box

@@ -79,7 +79,7 @@
       }
 
       .card-paiment {
-        padding: 0;
+        padding: 36px 43px;
         width: 100%;
       }
 
@@ -108,7 +108,7 @@
           td {
             color: #484848;
             font-family: Poppins;
-            font-size: 18px;
+            font-size: 16px;
             font-style: normal;
             font-weight: 600;
             line-height: 149.5%;
@@ -128,8 +128,8 @@
 
           .ariticle-info-container {
             // .image-container {
-              // margin-top: 25px;
-              // margin-bottom: 25px;  
+            // margin-top: 25px;
+            // margin-bottom: 25px;  
             // }
 
             .sous-total {
@@ -606,6 +606,12 @@
 
         }
 
+        .cart {
+          width: 26px;
+          color: $Ocean_Teal;
+
+        }
+
         .form-check-input[type="radio"] {
           font-size: 20px;
           background-color: transparent;
@@ -1016,7 +1022,7 @@
         display: inline-block;
         padding: 0;
 
-       
+
       }
     }
   }

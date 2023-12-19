@@ -6,7 +6,7 @@ import VisibilityIcon from '@mui/icons-material/Visibility';
 import VisibilityOffIcon from '@mui/icons-material/VisibilityOff';
 import { useNavigate } from "react-router";
 import { userService } from "../../../services/api/user.api";
-import { toast } from "react-toastify";
+// import { toast } from "react-toastify";
 import * as yup from 'yup';
 interface Props {
     close: any
@@ -67,10 +67,10 @@ const ModifPassword: React.FC<Props> = ({ close }) => {
                 if (data && data.success === undefined) {
                     const errors = Object.keys(data).map(key => data[key]);
                     errors.map((element: string) => {
-                        toast.warn(element[0])
+                        // toast.warn(element[0])
                     })
                 } else if (data.success === false) {
-                    toast.warn(data.message)
+                    // toast.warn(data.message)
 
                 }
             }

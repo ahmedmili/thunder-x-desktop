@@ -1,9 +1,10 @@
+// "use client";
 import { CssBaseline } from "@mui/material";
 import "bootstrap/dist/css/bootstrap.min.css";
-import "./assets/fonts/Poppins/Poppins.css";
-import { Suspense, lazy, useCallback, useEffect, useState } from "react";
+import { Suspense, lazy, startTransition, useCallback, useEffect, useState } from "react";
 import { Navigate, Outlet, Route, Routes, useLocation, useNavigate } from "react-router-dom";
-import { ToastContainer, toast } from "react-toastify";
+// import { ToastContainer, toast } from "react-toastify";
+
 import Layout from "./components/layout/layout";
 
 import { useAppDispatch, useAppSelector } from "./Redux/store";
@@ -28,11 +29,12 @@ import { supplierServices } from "./services/api/suppliers.api";
 import { userService } from "./services/api/user.api";
 import { localStorageService } from "./services/localStorageService";
 import eventEmitter from "./services/thunderEventsService";
-import { Message, Restaurant } from "./services/types";
+import { AppProps, Message, Restaurant } from "./services/types";
 import channelListener from "./services/web-socket";
 
 import MenuOptions from "./components/menus/menuOptions/MenuOptions";
 import HomeSkeleton from "./views/home/skeleton/HomeSkeleton";
+import Spinner from "./components/spinner/Spinner";
 //lazy loading components
 const Header = lazy(() => import("./components/Header/Header"));
 const Footer = lazy(() => import("./components/footer/footer"));
@@ -46,10 +48,7 @@ import Favors from "./components/layout/Profile/Favors/Favors";
 import FidelitePage from "./components/layout/Profile/FidelitePage/FidelitePage";
 import Feedback from "./components/layout/Profile/Feedback/Feedback";
 import Verify from "./views/Verify";
-
-
-
-const Menu = lazy(() => import("./components/menus/menus"));
+import Menu from "./components/menus/menus";
 //lazy loading pages
 const Profile = lazy(() => import("./components/layout/Profile/Profile"));
 const HomePage = lazy(() => import("./views/home/home.page"));
@@ -71,7 +70,8 @@ type Position = {
     longitude: number;
   };
 };
-function App() {
+
+function App({ initialData }: AppProps) {
   const dispatch = useAppDispatch();
   const navLocation = useLocation()
   const navigate = useNavigate()
@@ -84,7 +84,11 @@ function App() {
     setUpdateTrigger((prev) => !prev);
   }, []);
 
+  
+  // console.log("menuResponse", initialData.menuResponse.data)
+
   useEffect(() => {
+
     eventEmitter.on("homeDataChanged", updateHomeData);
     return () => {
       eventEmitter.off("homeDataChanged", updateHomeData);
@@ -123,8 +127,16 @@ function App() {
 
   useEffect(() => {
     let isLoggedIn = localStorageService.getUserToken();
-    isLoggedIn?.length! > 0 && getClientFavors();
-    isLoggedIn?.length! > 0 && getSupplierData();
+    isLoggedIn?.length! > 0 &&
+      startTransition(() => {
+        // Your data fetching code here
+        getClientFavors();
+      });
+    isLoggedIn?.length! > 0 &&
+      startTransition(() => {
+        // Your data fetching code here
+        getSupplierData();
+      });
   }, [updateTrigger]);
 
   // get home data 
@@ -160,7 +172,7 @@ function App() {
   // prepare default location 
   useEffect(() => {
     const location = localStorageService.getCurrentLocation();
-    if (!location) {
+    if (!location || location.length < 3) {
       navigator.geolocation.getCurrentPosition(
         (position: Position) => {
           const { latitude, longitude } = position.coords;
@@ -226,7 +238,10 @@ function App() {
 
   // handle recive admin message
   const newMessage = async (message: Message) => {
-    dispatch(addMessangerSuccess(message))
+    startTransition(() => {
+      // Your data fetching code here
+      dispatch(addMessangerSuccess(message))
+    });
   }
   // webSocket create instance
   useEffect(() => {
@@ -253,22 +268,29 @@ function App() {
     // });
   }, [navLocation, Navigate]);
 
+
   return (
     <>
       <CssBaseline />
-      <ToastContainer />
-      <Suspense fallback={
+      {/* <ToastContainer /> */}
+      <Suspense fallback={(typeof window != "undefined") ?
         <>
-          <Header />
+          {/* <Header />
           <HomeSkeleton />
-          <Footer />
+          <Footer /> */}
+          {/* loading */}
         </>
-      }>
+        :
+        <>
+          <Spinner name="Loading" />
+        </>
+      }
+      >
         <Routes>
           <Route path="/" element={<Layout />}>
-            <Route index element={<HomePage />} />
-            <Route path="/restaurant/:id/:search?/:productId?/*" element={<Menu />} />
-            <Route path="/product/:id/:search?/:productId/*" element={<MenuOptions />} />
+            <Route index element={<HomePage initialData={initialData} />} />
+            <Route path="/restaurant/:id/:search?/:productId?/*" element={<Menu initialData={initialData} />} />
+            <Route path="/product/:id/:search?/:productId/*" element={<MenuOptions initialData={initialData} />} />
             <Route path="/cart/*" element={<CartPage />} />
             <Route path="/search/:search?/*" element={<FilterPage />} />
             {/* Private Route */}

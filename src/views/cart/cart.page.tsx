@@ -28,7 +28,7 @@ import 'react-time-picker/dist/TimePicker.css';
 
 import { useTranslation } from "react-i18next";
 import { useNavigate } from "react-router-dom";
-import { toast } from "react-toastify";
+// import { toast } from "react-toastify";
 import * as z from "zod";
 import { logout } from "../../Redux/slices/userSlice";
 import { FoodItem } from "../../services/types";
@@ -52,6 +52,7 @@ import "./cart.page.scss";
 import Messanger from "../../components/Popups/Messanger/Messanger";
 import { fetchMessages } from "../../Redux/slices/messanger";
 import MinCostError from "../../components/Popups/MinCostError/MinCostError";
+import { toast } from "react-toastify";
 
 const CartPage: React.FC = () => {
   const { t } = useTranslation();
@@ -175,68 +176,72 @@ const CartPage: React.FC = () => {
       }
     };
 
-    return <>
-      <div className="supplier-name">
-        <span >{item.supplier_data.supplier_name}</span>
-      </div>
-      <div className="info-text">
-        <span className="title">{item.product.name}</span>
-        {item.options.length ?
-          (<Accordion className="link-accordion">
-            <AccordionSummary
-              aria-controls="panel1a-content"
-              id="panel1a-header"
-            >
-              <p>Voir détail</p>
-            </AccordionSummary>
-            <AccordionDetails>
-              {
-                item.options.map((i: any, index: number) => {
-                  return (
-                    <>
-                      <strong className="description description--title">{i[0].type}</strong>
-                      <span className="description">
-                        {i.map((option: any, indexOption: number) => {
-                          return (
-                            <span key={indexOption}>{option.name}</span>
-                          )
-                        })}
-                      </span>
-                    </>
-                  )
-                })
-              }
-            </AccordionDetails>
-          </Accordion>)
-          : ""}
-      </div>
-      <div className="total-price">
-        <span >{item.unitePrice.toFixed(2)} DT</span>
-      </div>
-      <div className="quantite">
-        <div className="count-container">
-          <input readOnly={true} type="number" name="product-count" id="product-count" value={count} />
-          <div className="count-buttons">
-            <button onClick={handleIncreaseQuantity} >
-              <KeyboardArrowUpOutlinedIcon className="count-more" />
-            </button>
-            <button onClick={handleDecreaseQuantity} >
-              <KeyboardArrowDownOutlinedIcon className="count-less" />
+    return (
+      <>
+        <div className="supplier-name">
+          <span >{item.supplier_data.supplier_name}</span>
+        </div>
+        <div className="info-text">
+          <span className="title">{item.product.name}</span>
+          {item.options.length ?
+            (<Accordion className="link-accordion">
+              <AccordionSummary
+                aria-controls="panel1a-content"
+                id="panel1a-header"
+              >
+                <p>Voir détail</p>
+              </AccordionSummary>
+              <AccordionDetails>
+                {
+                  item.options.map((i: any, index: number) => {
+                    return (
+                      <>
+                        <strong className="description description--title">{i[0].type}</strong>
+                        <span className="description">
+                          {i.map((option: any, indexOption: number) => {
+                            return (
+                              <span key={indexOption}>{option.name}</span>
+                            )
+                          })}
+                        </span>
+                      </>
+                    )
+                  })
+                }
+              </AccordionDetails>
+            </Accordion>)
+            : ""
+          }
+
+        </div>
+        <div className="total-price">
+          <span >{item.unitePrice.toFixed(2)} DT</span>
+        </div>
+        <div className="quantite">
+          <div className="count-container">
+            <input readOnly={true} type="number" name="product-count" id="product-count" value={count} />
+            <div className="count-buttons">
+              <button onClick={handleIncreaseQuantity} >
+                <KeyboardArrowUpOutlinedIcon className="count-more" />
+              </button>
+              <button onClick={handleDecreaseQuantity} >
+                <KeyboardArrowDownOutlinedIcon className="count-less" />
+              </button>
+            </div>
+          </div>
+          <div className="total-price">
+            <span>
+              {item.total.toFixed(2)} DT
+            </span>
+          </div>
+          <div>
+            <button type="button" className="remove-btn" onClick={remove}>
+              <CloseIcon className='close-icon'></CloseIcon>
             </button>
           </div>
         </div>
-      </div>
-      <div className="total-price">
-        <span>
-          {item.total.toFixed(2)} DT
-        </span>
-      </div>
-      <div>
-        <button type="button" className="remove-btn" onClick={remove}>
-          <CloseIcon className='close-icon'></CloseIcon>
-        </button>
-      </div>
-    </>
+      </>
+    )
   }
 
 
@@ -346,15 +351,12 @@ const CartPage: React.FC = () => {
             throw error
           }
         }
-
-      } else {
-        navigate("/login");
-        toast.warn("You need to be logged in to make an order!");
       }
-    } catch (error: any) {
-      toast.error("Failed to submit order. Please try again.", error.message);
-    }
-  };
+    } catch (e) {
+      throw e
+    };
+
+  }
 
   const getUser = async () => {
     const user_id = localStorageService.getUserId()
@@ -378,12 +380,9 @@ const CartPage: React.FC = () => {
   // handle deliv program state changes
   const handleOptionChange = async (value: number) => {
     if (value === 3) {
-      let delivery = supplier.delivery
-
-      delivery === 1 ? setSelectedOption(value) : handleServicePopup();
+      setSelectedOption(value);
     } else {
-      // const take_away = await commandService.isdelivery(supplier.id)
-      let take_away = supplier.take_away
+      const take_away = await commandService.isdelivery(supplier.id)
       take_away === 1 ? setSelectedOption(value) : handleServicePopup();
     }
   };
@@ -463,33 +462,27 @@ const CartPage: React.FC = () => {
     } else {
       sum = sousTotal;
     }
-    if (appliedBonus > 0) { // if allready bonus used once
-      setbonus((bonus) => bonus + appliedBonus);
-      setAppliedBonus(0);
-      setBonusApplied(false);
+    //  if the bonus exceeds 40000pts
+    if (bonus > 40000 && sum > 40) {
+      setAppliedBonus(40000);
+      setbonus((bonus) => bonus - 40000);
+    }
+    //   // if bonus exceeds the total amouunt
+    else if (bonus / 1000 > sum) {
+      setAppliedBonus(sum * 1000);
+      setbonus((bonus) => bonus - (sum * 1000));
+    }
+    // if the bonus less than the total amount
+    else {
+      setAppliedBonus(bonus);
+      setbonus(0);
+    }
+    setBonusApplied(true);
+    if (sum === (appliedBonus / 1000)) {
+      setLimitReachedBonus(true);
+    }
+    else {
       setLimitReachedBonus(false);
-
-    } else {
-      //  if the bonus exceeds 40000pts
-      if (bonus > 40000 && sum > 40) {
-        setAppliedBonus(40000);
-        setbonus((bonus) => bonus - 40000);
-
-      }
-      else if (bonus / 1000 > sum) {     // if bonus exceeds the total amouunt
-        setAppliedBonus(sum * 1000);
-        setbonus((bonus) => bonus - (sum * 1000));
-      } else {    // if the bonus less than the total amount
-        setAppliedBonus(bonus);
-        setbonus(0);
-      }
-      setBonusApplied(true);
-      if (sum === (appliedBonus / 1000)) {
-        setLimitReachedBonus(true);
-      }
-      else {
-        setLimitReachedBonus(false);
-      }
     }
   }
 
@@ -498,6 +491,7 @@ const CartPage: React.FC = () => {
     const { status, data } = await cartService.getAllPromoCodes()
     setPromosList(data.data)
   }
+
 
   //  check promo validation
   const checkPromoCode = async () => {
@@ -533,13 +527,35 @@ const CartPage: React.FC = () => {
 
   }
 
+  // handle promo text state
+  const handlePromoChange = (code: string) => {
+    setPromo(code);
+    dispatch(setCodePromo(code));
+    setCouponExiste(true)
+    if (code.length <= 0) {
+      setCouponExiste(false)
+    }
+  };
+
+  // handle promo state from list 
+  const selectCoupon = (coupon: any) => {
+    //check if you're clicking on the same promo code
+    if (selectedCoupon !== coupon) {
+      setPromo(coupon.code_coupon);
+      setSelectedCoupon(coupon);
+      setCouponExiste(true)
+    } else {
+      setPromo('');
+      setSelectedCoupon(null)
+      setCouponExiste(false)
+    }
+  }
   // calc promo value
   const CalculatePromoPrice = () => {
     var promoReduction;
     if (Object.keys(selectedCoupon).length > 0) {
 
       const initDeliveryPrice = cartItems.length > 0 ? Number(cartItems[0].supplier_data.delivery_price) + extraDeliveryCost : 0
-
       if (selectedCoupon.apply_on === 'DELIVERY') {
         if (selectedCoupon.delivery_fixed != 1) {
           if (selectedCoupon.type === 'percentage') {
@@ -579,36 +595,15 @@ const CartPage: React.FC = () => {
         setPromoReduction(promoReduction)
         return 0;
       }
+      setPromoApplied(false)
+      promoReduction = 0;
+      setPromoReduction(promoReduction)
+      return 0;
     }
-    setPromoApplied(false)
     promoReduction = 0;
     setPromoReduction(promoReduction)
     return 0;
   }
-  // handle promo text state
-  const handlePromoChange = (code: string) => {
-    setPromo(code);
-    dispatch(setCodePromo(code));
-    setCouponExiste(true)
-    if (code.length <= 0) {
-      setCouponExiste(false)
-    }
-  };
-
-  // handle promo state from list 
-  const selectCoupon = (coupon: any) => {
-    //check if you're clicking on the same promo code
-    if (selectedCoupon !== coupon) {
-      setPromo(coupon.code_coupon);
-      setSelectedCoupon(coupon);
-      setCouponExiste(true)
-    } else {
-      setPromo('');
-      setSelectedCoupon(null)
-      setCouponExiste(false)
-    }
-  }
-
 
   //  calc total befor reduction (gift / promo / bonus ...)
   const getSousTotal = () => {
@@ -648,11 +643,11 @@ const CartPage: React.FC = () => {
   const getSupplierById = async () => {
     const { status, data } = await supplierServices.getSupplierById(supplier.id)
     max_distance = data.data?.max_distance;
+    // minCost = data?.data.min_cost;
+    // isClosed = data?.status;
     setMinCost(data?.data.min_cost);
     setIsClosed(data?.status);
-
   }
-
 
   // get distance 
   const getDistance = async () => {
@@ -886,82 +881,119 @@ const CartPage: React.FC = () => {
                             Continuer
                           </button>
                         </div>
-                      </>)}
-                      {currentStep == 2 && (<div className="card-paiment">
-                        <div className="paiment-container">
-                          <span className="title">{t('cartPage.payMode')}</span>
-                          <div className="method">
-                            <img loading="lazy" className="icon" src={PayCashSVG} alt="My SVG" />
-                            <label htmlFor="espece">{t('cartPage.espece')}</label>
-                            <input className="form-check-input" type="radio" name="pay" id="espece" checked={payMode === 1} onClick={() => setPayMode(1)} />
+                      </>)
+                      }
+                      {
+                        currentStep == 2 && (<div className="card-paiment">
+                          <div className="paiment-container">
+                            <span className="title">{t('cartPage.payMode')}</span>
+                            <div className="method">
+                              <img loading="lazy" className="icon" src={PayCashSVG} alt="My SVG" />
+                              <label htmlFor="espece">{t('cartPage.espece')}</label>
+                              <input className="form-check-input" type="radio" name="pay" id="espece" checked={payMode === 1} onClick={() => setPayMode(1)} />
+                            </div>
+                            <div className="method">
+                              <img loading="lazy" className="cart" src={CartSVG} alt="My SVG" />
+                              <label htmlFor="bnc-cart">{t('cartPage.bankPay')}</label>
+                              <input className="form-check-input" type="radio" name="pay" id="bnc-cart" checked={payMode === 2} onClick={() => setPayMode(2)} />
+                            </div>
                           </div>
-                          <div className="method">
-                            <img loading="lazy" className="cart" src={CartSVG} alt="My SVG" />
-                            <label htmlFor="bnc-cart">{t('cartPage.bankPay')}</label>
-                            <input className="form-check-input" type="radio" name="pay" id="bnc-cart" checked={payMode === 2} onClick={() => setPayMode(2)} />
+                          <div className="devider">
                           </div>
-                        </div>
-                        <div className="devider">
-                        </div>
-                        <div className="deliv-details">
-                          <div className={`select ${selectedOption == 1 ? "selected" : ""}`}  >
-                            <img loading="lazy" className="icon1" src={dinnerFurnitureIcn} alt="sur place icon" onClick={() => handleOptionChange(1)} />
-                            <input type="radio" value="1" id='domicile' name='type' checked={selectedOption === 1} />
-                            <label htmlFor="domicile"  >{t('cartPage.surPalce')}</label>
-                          </div>
-                          <div className={`select ${selectedOption == 2 ? "selected" : ""}`}  >
-                            <img loading="lazy" className="icon2" src={bagPaperShoppingIcn} alt="a emporter icon" onClick={() => handleOptionChange(2)} />
+                          <div className="deliv-details">
+                            <div className={`select ${selectedOption == 1 ? "selected" : ""}`}  >
+                              <img loading="lazy" className="icon1" src={dinnerFurnitureIcn} alt="sur place icon" onClick={() => handleOptionChange(1)} />
+                              <input type="radio" value="1" id='domicile' name='type' checked={selectedOption === 1} />
+                              <label htmlFor="domicile"  >{t('cartPage.surPalce')}</label>
+                            </div>
+                            <div className={`select ${selectedOption == 2 ? "selected" : ""}`}  >
+                              <img loading="lazy" className="icon2" src={bagPaperShoppingIcn} alt="a emporter icon" onClick={() => handleOptionChange(2)} />
 
-                            <input type="radio" value="2" id='travail' name='type' checked={selectedOption === 2} />
-                            <label htmlFor="travail">{t('cartPage.emporter')}</label>
+                              <input type="radio" value="2" id='travail' name='type' checked={selectedOption === 2} />
+                              <label htmlFor="travail">{t('cartPage.emporter')}</label>
+                            </div>
+                            <div className={`select ${selectedOption == 3 ? "selected" : ""}`}  >
+                              <img loading="lazy" className="icon3" src={scooterTransportIcn} alt="Livraison icon" onClick={() => handleOptionChange(3)} />
+                              <input type="radio" value="3" id='autre' name='type' checked={selectedOption === 3} />
+                              <label htmlFor="autre">{t('cartPage.delivery')}</label>
+                            </div>
                           </div>
-                          <div className={`select ${selectedOption == 3 ? "selected" : ""}`}  >
-                            <img loading="lazy" className="icon3" src={scooterTransportIcn} alt="Livraison icon" onClick={() => handleOptionChange(3)} />
-                            <input type="radio" value="3" id='autre' name='type' checked={selectedOption === 3} />
-                            <label htmlFor="autre">{t('cartPage.delivery')}</label>
-                          </div>
-                        </div>
-                        {
-                          selectedOption == 2 && (
-                            <>
-                              <TimePicker
-                                className="time-picker"
-                                onChange={(newTime) => {
-                                  // Parse the selected time and create a Date object
-                                  if (newTime !== null) {
-                                    const [hours, minutes] = newTime.split(':');
-                                    const selectedDate = new Date();
-                                    selectedDate.setHours(parseInt(hours, 10));
-                                    selectedDate.setMinutes(parseInt(minutes, 10));
-                                    const formattedTime = selectedDate.toLocaleString('en-US', {
-                                      hour: 'numeric',
-                                      minute: 'numeric',
-                                      month: 'numeric',
-                                      day: 'numeric',
-                                      year: 'numeric',
-                                    });
-                                    const parsedDate = new Date(formattedTime);
-                                    setTakeAwayDate(parsedDate);
-                                  }
-                                }}
-                                value={takeAwayDate}
-                                format="h:m a"
-                                disableClock={true}
-                              />
+                          {
+                            selectedOption == 2 && (
+                              <>
+                                <TimePicker
+                                  className="time-picker"
+                                  onChange={(newTime) => {
+                                    // Parse the selected time and create a Date object
+                                    if (newTime !== null) {
+                                      const [hours, minutes] = newTime.split(':');
+                                      const selectedDate = new Date();
+                                      selectedDate.setHours(parseInt(hours, 10));
+                                      selectedDate.setMinutes(parseInt(minutes, 10));
+                                      const formattedTime = selectedDate.toLocaleString('en-US', {
+                                        hour: 'numeric',
+                                        minute: 'numeric',
+                                        month: 'numeric',
+                                        day: 'numeric',
+                                        year: 'numeric',
+                                      });
+                                      const parsedDate = new Date(formattedTime);
+                                      setTakeAwayDate(parsedDate);
+                                    }
+                                  }}
+                                  value={takeAwayDate}
+                                  format="h:m a"
+                                  disableClock={true}
+                                />
 
-                            </>
-                          )
-                        }
-                        <div className="deliv-to">
-                          <span className="title">{t('cartPage.delivto')}</span>
-                          <div className="info-container">
-                            <label htmlFor="client-name">{t('cartPage.client')} : </label>
-                            <input type="text" name="client-name" value={name} placeholder="Client Name" onChange={(e) => setName(e.target.value)} />
-                          </div>
+                              </>
+                            )
+                          }
+                          <div className="deliv-to">
+                            <span className="title">{t('cartPage.delivto')}</span>
+                            <div className="info-container">
+                              <label htmlFor="client-name">{t('cartPage.client')} : </label>
+                              <input type="text" name="client-name" value={name} placeholder="Client Name" onChange={(e) => setName(e.target.value)} />
+                            </div>
 
-                          <div className="info-container">
-                            <label htmlFor="client-name">{t('cartPage.phoneNumber2')}</label>
-                            <input type="text" name="" value={phoneNumber} placeholder="phone number" onChange={(e) => setPhoneNumber(e.target.value)} />
+                            <div className="info-container">
+                              <label htmlFor="client-name">{t('cartPage.phoneNumber2')}</label>
+                              <input type="text" name="" value={phoneNumber} placeholder="phone number" onChange={(e) => setPhoneNumber(e.target.value)} />
+                            </div>
+                            <div className="adress">
+                              <p className="title" style={{ margin: 0 }} >
+                                {t('profile.mesConfig.delivAdress')} :
+                              </p>
+                              <p className="adress-text">
+                                {userPosition?.coords.label}
+                              </p>
+                            </div>
+
+                            <div className="buttons">
+                              <button className="continue" onClick={() => navigate('/', { replace: true })}>
+                                {t('cartPage.continueAchats')}
+                              </button>
+                              <button className="commander"
+                                onClick={() =>
+                                  submitOrder(
+                                    cartItems,
+                                    deliveryOption,
+                                    name,
+                                    phoneNumber,
+                                    aComment,
+                                    total,
+                                    appliedBonus,
+                                    dispatch,
+                                    userPosition,
+                                    supplier.id,
+                                    deliveryPrice
+                                  )
+                                }
+                              >
+                                {t('cartPage.commander')}
+                              </button>
+                            </div>
+
                           </div>
                           <div className="adress">
                             <p className="title" style={{ margin: 0 }} >
@@ -998,7 +1030,7 @@ const CartPage: React.FC = () => {
                           </div>
 
                         </div>
-                      </div>)}
+                      )}
                     </div>
 
                     {/* 
@@ -1083,9 +1115,9 @@ const CartPage: React.FC = () => {
                     {
                       messangerPopup && <Messanger className="discuter-messanger-popup" close={handleMessangerPopup} />
                     }
-                  </main>
-                </Col>
-              </Row>
+                  </main >
+                </Col >
+              </Row >
               {
                 minCostError && <MinCostError close={handleMinCostModal} />
               }
@@ -1101,7 +1133,7 @@ const CartPage: React.FC = () => {
                 <WarnPopup message="Ce service n'est pas disponible dans votre ville" closeButtonText={t('continuer')} confirmButtonText={t('Modal.finishCommand.dropOldCommand')} close={handleServicePopup} accept={dropOrder} />
               )
             }
-          </div>
+          </div >
         ) : (
           <Container>
             <Row>

@@ -1,6 +1,6 @@
-import { createSlice, PayloadAction, createAsyncThunk } from '@reduxjs/toolkit';
-import { FoodItem } from '../../../services/types';
+import { PayloadAction, createAsyncThunk, createSlice } from '@reduxjs/toolkit';
 import { localStorageService } from '../../../services/localStorageService';
+import { FoodItem } from '../../../services/types';
 
 interface CartState {
   items: FoodItem[];

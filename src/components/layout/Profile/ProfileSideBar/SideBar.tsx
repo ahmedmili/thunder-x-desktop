@@ -20,15 +20,16 @@ import Espace from '../../../../assets/profile/blue/Espace.svg';
 import Favors from '../../../../assets/profile/blue/Favors.svg';
 import Offres from '../../../../assets/profile/blue/Offres.svg';
 
-import { toast } from 'react-toastify';
-import AccueilW from '../../../../assets/profile/white/Accueil.svg';
-import ArchiveW from '../../../../assets/profile/white/Archive.svg';
-import ConfigW from '../../../../assets/profile/white/Config.svg';
-import DiscuterW from '../../../../assets/profile/white/Discuter.svg';
-import EspaceW from '../../../../assets/profile/white/Espace.svg';
-import FavorsW from '../../../../assets/profile/white/Favors.svg';
-import OffresW from '../../../../assets/profile/white/Offres.svg';
+import AccueilW from '../../../../assets/profile/white/Accueil.svg'
+import OffresW from '../../../../assets/profile/white/Offres.svg'
+import ConfigW from '../../../../assets/profile/white/Config.svg'
+import ArchiveW from '../../../../assets/profile/white/Archive.svg'
+import EspaceW from '../../../../assets/profile/white/Espace.svg'
+import DiscuterW from '../../../../assets/profile/white/Discuter.svg'
+import FavorsW from '../../../../assets/profile/white/Favors.svg'
 import { LocationService } from '../../../../services/api/Location.api';
+// import { toast } from 'react-toastify';
+
 import { scrollToTop } from '../../../../utils/utils';
 
 
@@ -161,7 +162,7 @@ const SideBar = () => {
                     });
                   },
                   (error: GeolocationPositionError) => {
-                    toast.error(error.message)
+                    // toast.error(error.message)
                   }
                 );
               }}>

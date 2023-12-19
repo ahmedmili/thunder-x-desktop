@@ -1,16 +1,16 @@
-import { combineReducers } from "@reduxjs/toolkit";
+import { combineReducers as combine } from "@reduxjs/toolkit";
 import cartSlice from "./cart/cartSlice";
 import commandsSlice from "./commandsSlice";
+import homeReducer from "./home";
 import homeDataSlice from "./homeDataSlice";
+import { locationReducer } from "./location";
+import messangerReducer from "./messanger";
 import restaurantSlice from "./restaurantSlice";
 import userSlice from "./userSlice";
 import usersReducer from "./users";
-import { locationReducer } from "./location";
 import verifysmsReducer from "./verifysms";
-import homeReducer from "./home";
-import messangerReducer from "./messanger";
 
-const rootReducer = combineReducers({
+const rootReducer = combine({
   user: userSlice,
   users: usersReducer,
   messanger: messangerReducer,

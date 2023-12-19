@@ -9,7 +9,7 @@ import { useLocation, useNavigate, useParams } from 'react-router-dom';
 import { setProduct } from "../../Redux/slices/restaurantSlice";
 import { useAppDispatch, useAppSelector } from '../../Redux/store';
 import { productService } from '../../services/api/product.api';
-import { MenuData } from '../../services/types';
+import { AppProps, MenuData } from '../../services/types';
 
 import { Container, Row } from 'react-bootstrap';
 import { fetchMessages } from '../../Redux/slices/messanger';
@@ -26,20 +26,17 @@ import ActiveGiftIcon from '../../assets/profile/ArchivedCommands/gift-active.pn
 import GiftIcon from '../../assets/profile/ArchivedCommands/gift.svg';
 import ClosedSupplier from '../Popups/ClosedSupplier/ClosedSupplier';
 
-interface MenuProps { }
 
-
-const Menu: React.FC<MenuProps> = () => {
-
+const Menu: React.FC<AppProps> = ({ initialData }) => {
   const { t } = useTranslation();
   const dispatch = useAppDispatch();
   const navigate = useNavigate();
   const location = useLocation();
-  const [menuData, setMenuData] = useState<MenuData[]>([]);
-  const [loading, setLoading] = useState(true);
+  const [loading, setLoading] = useState((typeof window != 'undefined') ? true : false);
   const [currentPage, setCurrentPage] = useState<{ [key: string]: number }>({});
   const productsPerPage = 4;
 
+  const [menuData, setMenuData] = useState<MenuData[]>((typeof window != 'undefined') ? [] : initialData?.menuResponse.data);
   const [showMismatchModal, setShowMismatchModal] = useState<boolean>(false);
   const [showClosedWarnModal, setShowClosedWarnModal] = useState<boolean>(false);
   const [showOptionsPopup, setShowOptionsPopup] = useState<boolean>(false);
@@ -77,9 +74,12 @@ const Menu: React.FC<MenuProps> = () => {
   useEffect(() => {
     if (productId != null) {
       let locationArray = location.pathname.split('/');
-      locationArray[1] = "product";
-      const newUrl = locationArray.join("/");
-      navigate(`${newUrl}`);
+      if (locationArray[1] !== "product") {
+
+        locationArray[1] = "product";
+        const newUrl = locationArray.join("/");
+        navigate(`${newUrl}`);
+      }
     } else {
       if (search == null || search == "") {
         let locationArray = location.pathname.split('/')
@@ -90,6 +90,7 @@ const Menu: React.FC<MenuProps> = () => {
     }
 
   }, [])
+
   // assure '/' in the end of url
   useEffect(() => {
     const { pathname } = location;
@@ -113,7 +114,6 @@ const Menu: React.FC<MenuProps> = () => {
     const locationPath = location.pathname;
 
     let locationArray = locationPath.split("/");
-    // locationArray.pop();
     let newArray = locationArray.slice(0, -2)
     const newURL = newArray.join("/");
     navigate(newURL, { replace: true });
@@ -133,31 +133,48 @@ const Menu: React.FC<MenuProps> = () => {
   };
 
   const getSupplierById = async () => {
+    let data: any;
     try {
-
-      const { status, data } = await supplierServices.getSupplierById(Number(idNumber!))
+      if (typeof window != "undefined") {
+        data = await supplierServices.getSupplierById(Number(idNumber!))
+        data = data.data
+      }
+      else data = initialData.supplierResponse
       setDisplayedRestaurant(data.data)
     } catch (error) {
       throw error
     }
   }
-
+  const getMenu = async () => {
+    var data: any;
+    try {
+      if (typeof window != "undefined") {
+        data = await productService.getMenu(idNumber)
+        if (data.status === 200) {
+          data = data.data
+          setMenuData(data.data);
+          setFiltreddMenuData(data.data)
+        }
+      }
+      else {
+        data = initialData.menuResponse.data
+        setMenuData(data);
+        setFiltreddMenuData(data)
+      }
+    } catch (error) {
+      throw error
+    }
+    setLoading(false);
+  };
+  
   const getSupplierIsOpen = async () => {
     const { status, data } = await supplierServices.getSupplierISoPENById(Number(idNumber!))
     data.data.is_open === 1 ? setIsOpen(true) : setIsOpen(false)
   }
 
-  const getMenu = async () => {
-    const { status, data } = await productService.getMenu(idNumber);
-    if (status === 200) {
-      setMenuData(data.data);
-      setFiltreddMenuData(data.data)
-    }
-    setLoading(false);
-  };
-
   useEffect(() => {
     getSupplierById()
+    getMenu()
     handleFilter()
     getSupplierIsOpen()
   }, [])
