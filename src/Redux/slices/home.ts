@@ -54,7 +54,9 @@ const homeSlice = createSlice({
       state.isDelivery = 1;
       state.data = {
         ads: homeData.ads,
-        categories: homeData.categories,
+        categories: homeData.categories
+          .slice()
+          .sort((a: any, b: any) => a.position -  b.position),
         favorites: homeData.favorites,
         popular: homeData.popular,
         recommended: homeData.recommended,

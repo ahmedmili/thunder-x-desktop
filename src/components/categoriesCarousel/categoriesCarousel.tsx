@@ -25,6 +25,7 @@ interface Category {
   children: [];
   image?: React.ReactElement;
   selected: boolean;
+  position: number;
 }
 interface CategoryCarouselProps {
   onCategorySelect: (category: string) => void;
@@ -37,7 +38,7 @@ const CategoryCarousel: React.FC<CategoryCarouselProps> = ({
 
   const navigate = useNavigate();
   const dispatch = useDispatch();
-  const cats = ssrCategories ? ssrCategories : useAppSelector((state) => state.home.data.categories)
+  var cats = ssrCategories ? ssrCategories : useAppSelector((state) => state.home.data.categories)
   const navLocation = useLocation();
   const { t } = useTranslation();
   const [categories, setCategories] = useState(cats.filter((category: any) => category.description !== "Promo"));
@@ -47,7 +48,9 @@ const CategoryCarousel: React.FC<CategoryCarouselProps> = ({
   const [subCat, setSubCat] = useState(false);
 
   useEffect(() => {
-    setCategories(cats.filter((category: any) => category.description !== "Promo"))
+    if (cats && cats.length > 0) {
+        setCategories(cats.filter((category: any) => category.description !== "Promo"))
+    }
   }, [cats])
 
   useEffect(() => {
