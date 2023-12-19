@@ -7,6 +7,7 @@ import ButtonSecondary from "../components/button-secondary/ButtonSecondary";
 import CustomErrorServer from "../components/custom-error-server/CustomErrorServer";
 
 import { useTranslation } from "react-i18next";
+import { Link } from "react-router-dom";
 import Spinner from "../components/spinner/Spinner";
 import styles from "./formutils.module.scss";
 export interface FormValues {
@@ -62,7 +63,8 @@ interface GenerateFormProps {
 }
 
 export const generateForm = (props: GenerateFormProps) => {
-  const { t } = useTranslation()
+  const { t } = useTranslation();
+
   const {
     initialValues,
     validationSchema,
@@ -77,92 +79,105 @@ export const generateForm = (props: GenerateFormProps) => {
     ontoggleShowConfirmPassword,
   } = props;
 
+
+
   return (
     <Formik
       initialValues={initialValues}
       validationSchema={validationSchema}
       onSubmit={onSubmit}
+
     >
       {({ isSubmitting }) => (
         <Form className={styles.formWrapper}>
           {fields.map((field) => {
             return field.type === "code" ? (
-              <div
-                key={field.name}
-                style={{
-                  gridColumn: "span 2",
-                  display: "grid",
-                  gridTemplateColumns: "40px 40px 40px 40px 40px 40px",
-                  justifyContent: "center",
-                  gap: "10px",
-                  padding: "0 4rem",
-                }}
-              >
-                <Field
-                  type={"text"}
-                  name={field.name + "1"}
-                  id={field.name + "1"}
-                  next={field.name + "2"}
-                  placeholder={field.placeholder}
-                  component={field.component}
-                />
-                <Field
-                  type={"text"}
-                  name={field.name + "2"}
-                  id={field.name + "2"}
-                  next={field.name + "3"}
-                  placeholder={field.placeholder}
-                  component={field.component}
-                />
-                <Field
-                  type={"text"}
-                  name={field.name + "3"}
-                  id={field.name + "3"}
-                  next={field.name + "4"}
-                  placeholder={field.placeholder}
-                  component={field.component}
-                />
-                <Field
-                  type={"text"}
-                  name={field.name + "4"}
-                  id={field.name + "4"}
-                  next={field.name + "5"}
-                  placeholder={field.placeholder}
-                  component={field.component}
-                />
-                <Field
-                  type={"text"}
-                  name={field.name + "5"}
-                  id={field.name + "5"}
-                  next={field.name + "6"}
-                  placeholder={field.placeholder}
-                  component={field.component}
-                />
-                <Field
-                  type={"text"}
-                  name={field.name + "6"}
-                  id={field.name + "6"}
-                  next={"btn"}
-                  placeholder={field.placeholder}
-                  component={field.component}
-                />
+              <>
                 <div
+                  key={field.name}
                   style={{
-                    gridColumn: "span 6",
-                    justifySelf: "end",
-                    color: "#958E8E",
-                    fontSize: "1.2rem",
-                    fontFamily: "var(--fontPrimary)",
-                    display: "flex",
-                    gap: "1rem",
+                    gridColumn: "span 2",
+                    display: "grid",
+                    gridTemplateColumns: "40px 40px 40px 40px 40px 40px",
+                    justifyContent: "center",
+                    gap: "10px",
+                    padding: "0 4rem",
                   }}
                 >
-                  <span>{t('auth.notReciveid')}</span>
-                  <a href="" style={{ color: "var(--primaryColor)" }}>
-                    {t('auth.resendCode')}
-                  </a>
+                  <Field
+                    type={"text"}
+                    name={field.name + "1"}
+                    id={field.name + "1"}
+                    next={field.name + "2"}
+                    placeholder={field.placeholder}
+                    component={field.component}
+                    className={styles.codeBox}
+                  />
+                  <Field
+                    type={"text"}
+                    name={field.name + "2"}
+                    id={field.name + "2"}
+                    next={field.name + "3"}
+                    placeholder={field.placeholder}
+                    component={field.component}
+                    className={styles.codeBox}
+
+                  />
+                  <Field
+                    type={"text"}
+                    name={field.name + "3"}
+                    id={field.name + "3"}
+                    next={field.name + "4"}
+                    placeholder={field.placeholder}
+                    component={field.component}
+                    className={styles.codeBox}
+                  />
+                  <Field
+                    type={"text"}
+                    name={field.name + "4"}
+                    id={field.name + "4"}
+                    next={field.name + "5"}
+                    placeholder={field.placeholder}
+                    component={field.component}
+                    className={styles.codeBox}
+                  />
+                  <Field
+                    type={"text"}
+                    name={field.name + "5"}
+                    id={field.name + "5"}
+                    next={field.name + "6"}
+                    placeholder={field.placeholder}
+                    component={field.component}
+                    className={styles.codeBox}
+                  />
+                  <Field
+                    type={"text"}
+                    name={field.name + "6"}
+                    id={field.name + "6"}
+                    next={"btn"}
+                    placeholder={field.placeholder}
+                    component={field.component}
+                    className={styles.codeBox}
+                  />
+                  <div
+                    style={{
+                      gridColumn: "span 6",
+                      justifySelf: "end",
+                      color: "#958E8E",
+                      fontSize: "1.2rem",
+                      fontFamily: "var(--fontPrimary)",
+                      display: "flex",
+                      gap: "1rem",
+                    }}
+                  >
+                    <span>{t('auth.notReciveid')}</span>
+                    <Link style={{ color: '#FBC000' }} to={"/forgotpassword/"}>
+                      {t('auth.resendCode')}
+                    </Link>
+                  </div>
                 </div>
-              </div>
+                <div className={styles.codeErrorMessage} >{field.errorsServer}</div>
+              </>
             ) : field.type === "checkbox" ? (
               <div key={field.name} style={{ gridColumn: "span 2" }}>
                 <Field
@@ -206,18 +221,22 @@ export const generateForm = (props: GenerateFormProps) => {
             );
           })}
           {buttonAnnuler && (
-            <ButtonSecondary name="annuler">{t('Annuler')}</ButtonSecondary>
+            <ButtonSecondary type="reset" name="annuler">{t('Annuler')}</ButtonSecondary>
           )}
-          <ButtonPrimary
-            name="btn"
-            type="submit"
-            disabled={isSubmitting}
-            style={
-              buttonAnnuler ? { gidColumn: "span 1" } : { gridColumn: "span 2" }
-            }
-          >
-            {!loading ? button : <Spinner name={button} />}
-          </ButtonPrimary>
+          {
+            button && (
+              <ButtonPrimary
+                name="btn"
+                type="submit"
+                disabled={isSubmitting}
+                style={
+                  buttonAnnuler ? { gidColumn: "span 1" } : { gridColumn: "span 2" }
+                }
+              >
+                {!loading ? button : <Spinner name={button} />}
+              </ButtonPrimary>
+            )
+          }
         </Form>
       )}
     </Formik>

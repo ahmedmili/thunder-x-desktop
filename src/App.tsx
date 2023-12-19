@@ -45,6 +45,7 @@ import Discuter from "./components/layout/Profile/Discuter/Discuter";
 import Favors from "./components/layout/Profile/Favors/Favors";
 import FidelitePage from "./components/layout/Profile/FidelitePage/FidelitePage";
 import Feedback from "./components/layout/Profile/Feedback/Feedback";
+import Verify from "./views/Verify";
 
 
 
@@ -290,7 +291,8 @@ function App() {
           <Route path="register/*" element={<RegisterPage />} />
           <Route path="confirm/*" element={<ConfirmNumberPage />} />
           <Route path="welcome/*" element={<WelcomePage />} />
-          <Route path="forgotpassword/*" element={<ForgotPasswordPage />} />
+          <Route path="forgotpassword/" element={<ForgotPasswordPage />} />
+          <Route path="forgotpassword/verif/:email/" element={<Verify />} />
         </Routes>
       </Suspense>
     </>

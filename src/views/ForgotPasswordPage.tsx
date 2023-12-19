@@ -1,40 +1,44 @@
-import * as Yup from "yup";
-import { useAppDispatch } from "../Redux/store";
-import { useNavigate } from "react-router-dom";
-import { useSelector } from "react-redux";
-import { usersErrors, usersLoding } from "../Redux/slices/users";
-import InputForm from "../components/Input-form/InputForm";
-import CardPage from "../components/card-page/CardPage";
-import PicturesList from "../components/picture-list/PicturesList";
-import Interogation from "../assets/icons/Interogation";
-import { FormValues, generateForm } from "../utils/formUtils";
 import { FormikHelpers } from "formik";
-import Or from "../components/or/Or";
+import { useState } from "react";
+import { useTranslation } from "react-i18next";
+import { useSelector } from "react-redux";
+import { useNavigate } from "react-router-dom";
+import * as Yup from "yup";
+import { usersLoding } from "../Redux/slices/users";
+import Interogation from "../assets/icons/Interogation";
+import InputForm from "../components/Input-form/InputForm";
 import ButtonTertiary from "../components/button-tertiary/ButtonTertiary";
+import CardPage from "../components/card-page/CardPage";
+import Or from "../components/or/Or";
+import PicturesList from "../components/picture-list/PicturesList";
+import { userService } from "../services/api/user.api";
+import { FormValues, generateForm } from "../utils/formUtils";
 
 const ForgotPasswordPage = () => {
-  const dispatch = useAppDispatch();
   const navigate = useNavigate();
 
-  const errorsServer = useSelector(usersErrors);
+  const [errorsServer, setErrorsServer] = useState<string>("")
   const loading = useSelector(usersLoding);
+  const { t } = useTranslation()
 
   const fields = [
     {
       type: "email",
       name: "email",
       label: "Email",
-      placeholder: "Enter ici",
+      placeholder: t('tapeHere'),
       id: "email",
       column: "fill",
-      errorsServer:
-        errorsServer && errorsServer.message ? errorsServer.message : "",
+      errorsServer: errorsServer,
       component: InputForm,
     },
   ];
 
   const forgotSchema = Yup.object().shape({
-    email: Yup.string().required().email().label("Email"),
+    email: Yup.string()
+      .required(`${t('auth.email.required')}`)
+      .email(`${t('auth.email.type')}`)
+      .label("Email"),
   });
 
   const initialValues = {
@@ -44,12 +48,16 @@ const ForgotPasswordPage = () => {
     values: FormValues,
     { setSubmitting, resetForm }: FormikHelpers<FormValues>
   ) => {
+    const { status, data } = await userService.resetPWClient(`${values.email}`)
+    const response = data.data;
+    !response ? setErrorsServer(data.message) : setErrorsServer("");
+    response && navigate(`verif/${response.client.email}`)
   };
   return (
     <CardPage
       icon={<Interogation />}
-      text="Entrez votre adresse e-mail et nous vous enverrons un lien pour réinitialiser votre mot de passe"
-      title="Mot de passe oublié ?"
+      text={t('forgetPassword.initPw.subTitle')}
+      title={t('forgetPassword.initPw.title')}
       image={<PicturesList />}
     >
       {generateForm({
@@ -57,14 +65,14 @@ const ForgotPasswordPage = () => {
         validationSchema: forgotSchema,
         fields,
         loading: loading,
-        button: "Réinitialiser",
-        buttonAnnuler: "Annuler",
+        button: `${t('forgetPassword.init')}`,
+        buttonAnnuler: `${t('Annuler')}`,
         onSubmit,
       })}
       <div style={{ display: "flex", flexDirection: "column", gap: "2rem" }}>
         <Or>Or</Or>
         <ButtonTertiary name="number" type="button">
-          Utilisé mon numéro
+          {t('forgetPassword.useMyPhone')}
         </ButtonTertiary>
       </div>
     </CardPage>

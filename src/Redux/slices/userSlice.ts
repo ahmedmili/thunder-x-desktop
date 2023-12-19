@@ -33,9 +33,14 @@ export const userSlice = createSlice({
       localStorageService.setUserToken(action.payload);
       state.isAuthenticated = true;
     },
+    setUserCredentials: (state, action: PayloadAction<{ user: IUser; token: string }>) => {
+      localStorageService.setUserCredentials(action.payload.user, action.payload.token);
+      state.user = action.payload.user;
+      state.isAuthenticated = true;
+    },
   },
 });
 
 export default userSlice.reducer;
 
-export const { logout, setUser, registerUser, login } = userSlice.actions;
+export const { logout, setUser, registerUser, login, setUserCredentials } = userSlice.actions;

@@ -93,7 +93,6 @@ function getDelivery() {
 export const localStorageService = {
     setUserTheme,
     getUserTheme,
-    
     setUserCredentials,
     unsetUserCredentials,
     setUserToken,
