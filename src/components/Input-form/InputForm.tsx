@@ -1,8 +1,7 @@
-import { useState } from "react";
 import Email from "../../assets/icons/Email";
 import Eye from "../../assets/icons/Eye";
 import styles from "./inputform.module.scss";
-
+import VisibilityOffOutlinedIcon from '@mui/icons-material/VisibilityOffOutlined';
 interface InputFormProps {
   type?: string;
   label?: string;
@@ -28,7 +27,6 @@ const InputForm = ({
   ...props
 }: InputFormProps & { field: any; form: any }) => {
   const hasError = (((touched[field.name] ? true : false) && (errors[field.name] ? true : false)) || errorsServer) ? true : false;
-  const [err, setErr] = useState<boolean>(hasError)
 
   const inputStyle = {
     flex: 1,
@@ -40,7 +38,6 @@ const InputForm = ({
     outline: 0,
     lineHeight: 1,
     padding: '1rem 0.5rem',
-
   };
 
   return (
@@ -108,11 +105,11 @@ const InputForm = ({
           </span>
         ) : field.name === "password" ? (
           <span
-            className={`${styles.rightIcon} ${hasError ? styles.errorColor : styles.defaultColor
+            className={`${styles.rightIcon} ${styles.clickable} ${hasError ? styles.errorColor : styles.defaultColor
               }`}
             onClick={ontoggleShowPassword}
           >
-            <Eye />
+            {showPassword ? <Eye /> : <VisibilityOffOutlinedIcon />}
           </span>
         ) : field.name == "confirm_password" ? (
           <span

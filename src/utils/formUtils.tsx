@@ -220,23 +220,25 @@ export const generateForm = (props: GenerateFormProps) => {
               </div>
             );
           })}
-          {buttonAnnuler && (
-            <ButtonSecondary type="reset" name="annuler">{t('Annuler')}</ButtonSecondary>
-          )}
-          {
-            button && (
-              <ButtonPrimary
-                name="btn"
-                type="submit"
-                disabled={isSubmitting}
-                style={
-                  buttonAnnuler ? { gidColumn: "span 1" } : { gridColumn: "span 2" }
-                }
-              >
-                {!loading ? button : <Spinner name={button} />}
-              </ButtonPrimary>
-            )
-          }
+          <div className="" style={{ display: 'flex', gap: '2px', gridColumn: "span 2" }}>
+            {buttonAnnuler && (
+              <ButtonSecondary type="reset" name="annuler">{t('Annuler')}</ButtonSecondary>
+            )}
+            {
+              button && (
+                <ButtonPrimary
+                  name="btn"
+                  type="submit"
+                  disabled={isSubmitting}
+                  style={
+                    buttonAnnuler ? { gidColumn: "span 1" } : { gridColumn: "span 2" }
+                  }
+                >
+                  {!loading ? button : <Spinner name={button} />}
+                </ButtonPrimary>
+              )
+            }
+          </div>
         </Form>
       )}
     </Formik>
