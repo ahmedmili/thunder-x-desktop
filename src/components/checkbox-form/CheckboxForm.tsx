@@ -1,5 +1,6 @@
 import { NavLink } from "react-router-dom";
 import styles from "./checkboxform.module.scss";
+import { t } from "i18next";
 
 interface CheckboxFormProps {
   type?: string;
@@ -29,7 +30,7 @@ const CheckboxForm = ({
           fontSize: "1.4rem",
         }}
       >
-        Mot de passe oublié
+        {t('forgetPassword.forgetPassword')}
       </NavLink>
     </div>
   );

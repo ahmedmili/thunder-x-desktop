@@ -150,6 +150,7 @@ async function updatePassword(userData: any) {
     throw error;
   }
 }
+
 async function updateAccount(userData: any) {
   try {
     const user_id = localStorageService.getUserId()
@@ -166,6 +167,54 @@ async function updateAccount(userData: any) {
     throw error;
   }
 }
+
+async function resetPWClient(email: string) {
+  try {
+
+    const response = await api.get(
+      `resetPWClient?email=${email}`
+    );
+    const { status, data } = response;
+    return { status, data };
+  } catch (error) {
+    throw error;
+  }
+}
+
+async function updatePWClient(email: string, password: string, confirm_password: string) {
+  try {
+    const formData = {
+      email,
+      password,
+      confirm_password
+    }
+
+    const response = await api.post(
+      `reset_pw`, formData
+    );
+    const { status, data } = response;
+    return { status, data };
+  } catch (error) {
+    throw error;
+  }
+}
+async function verifySmsCode(email: string, code: string) {
+  try {
+    const response = await api.post(
+      `verify_sms_code`, {
+      email: email,
+      code: code
+    }
+    );
+    const { status, data } = response;
+    return { status, data };
+  } catch (error) {
+    throw error;
+  }
+}
+
+
+
 async function addfavorite(supp_id: number) {
   try {
     const response = await api.post(
@@ -402,6 +451,9 @@ export const userService = {
   registerUser,
   getUser,
   updatePassword,
+  resetPWClient,
+  updatePWClient,
+  verifySmsCode,
   updateAccount,
   addfavorite,
   deletefavorite,
