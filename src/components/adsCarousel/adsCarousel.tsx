@@ -15,7 +15,6 @@ export const AdsCarousel = (props: any) => {
     useEffect(() => {
         const filtredAds = props.data.filter((ad: any) => ad.status !== 'cloture')
         setAds(filtredAds)
-        console.log("filtredAds : ", filtredAds)
     }, [props])
 
 

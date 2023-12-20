@@ -12,6 +12,7 @@ import missingImage from '../../assets/missingImage.png';
 import { userService } from '../../services/api/user.api';
 import { Restaurant } from '../../services/types';
 import supplierStyle from './SupplierCard.module.scss';
+import { supplierServices } from '../../services/api/suppliers.api';
 
 interface SupplierCard {
     data: Restaurant,
@@ -23,8 +24,16 @@ const SupplierCard: React.FC<SupplierCard> = ({ data, favors = false, className 
     const { t } = useTranslation();
 
     const [fav, setFav] = useState<boolean>(data.favor !== undefined ? data.favor : favors);
+    const [isOpen, setIsOpen] = useState<boolean>(true);
 
+    const getSupplierIsOpen = async (suppId: number) => {
+        const { status, data } = await supplierServices.getSupplierISoPENById(Number(suppId))
+        data.data.is_open === 1 ? setIsOpen(true) : setIsOpen(false)
+    }
 
+    useEffect(() => {
+        getSupplierIsOpen(data.id)
+    }, [])
 
 
     const getImageUrl = (restaurant: Restaurant) => {
@@ -120,7 +129,7 @@ const SupplierCard: React.FC<SupplierCard> = ({ data, favors = false, className 
                                     }
                                     <Star className={supplierStyle.starIcon} />
                                 </span>
-                            
+
                             </p>
                             {/* option take_away & delivery */}
                             <p className={supplierStyle.option} >
@@ -145,10 +154,18 @@ const SupplierCard: React.FC<SupplierCard> = ({ data, favors = false, className 
                                 </span>
                                 {/* time lable */}
                                 {data.medium_time && (
-                                    <Box className={supplierStyle.restaurantTime}>
-                                        <p>
-                                            {`${data.medium_time - 10}mins - ${data.medium_time + 10}mins`}
-                                        </p>
+                                    <Box className={`${supplierStyle.restaurantTime} ${!isOpen ? supplierStyle.closedSpan : ""}`}>
+                                        {
+                                            isOpen ? (
+                                                <p>
+                                                    {`${data.medium_time - 10}-${data.medium_time + 10} mins`}
+                                                </p>
+                                            ) : (
+                                                <p >
+                                                    {t('closed')}
+                                                </p>
+                                            )
+                                        }
                                     </Box>
                                 )}
                             </div>
