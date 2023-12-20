@@ -1,6 +1,6 @@
 
 
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 
 import { DiscountRounded, Star } from '@mui/icons-material';
 import FavoriteIcon from '@mui/icons-material/Favorite';
@@ -12,7 +12,6 @@ import missingImage from '../../assets/missingImage.png';
 import { userService } from '../../services/api/user.api';
 import { Restaurant } from '../../services/types';
 import supplierStyle from './SupplierCard.module.scss';
-import { supplierServices } from '../../services/api/suppliers.api';
 
 interface SupplierCard {
     data: Restaurant,
@@ -24,17 +23,7 @@ const SupplierCard: React.FC<SupplierCard> = ({ data, favors = false, className 
     const { t } = useTranslation();
 
     const [fav, setFav] = useState<boolean>(data.favor !== undefined ? data.favor : favors);
-    const [isOpen, setIsOpen] = useState<boolean>(true);
-
-    const getSupplierIsOpen = async (suppId: number) => {
-        const { status, data } = await supplierServices.getSupplierISoPENById(Number(suppId))
-        data.data.is_open === 1 ? setIsOpen(true) : setIsOpen(false)
-    }
-
-    useEffect(() => {
-        getSupplierIsOpen(data.id)
-    }, [])
-
+    const isOpen = data.status === 1 ? true : false;
 
     const getImageUrl = (restaurant: Restaurant) => {
         const image1 = restaurant.images.length > 0 ? restaurant.images[0] : null;
