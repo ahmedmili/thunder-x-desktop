@@ -46,6 +46,8 @@
   "auth.accountStatus.Inactive": "non actif.",
   "auth.verifSMS.page": "Vérifier votre compte",
   "auth.verifSMS.page.desc": "Nous venons de vous envoyer un code de 6 chiffres a votre numéro",
+  "auth.verifSMS.ERROR_RESEND": "Vous avez dépassé le nombre de tentatives autorisées (3 SMS par heure)",
+  "auth.verifSMS.SUCCESS_RESEND": "Demande envoyée",
 
   "auth.notReciveid": "Non reçu",
   "auth.resendCode": "Renvoyer le code",

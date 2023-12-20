@@ -6,6 +6,7 @@ import { useNavigate, useParams } from "react-router-dom";
 import * as Yup from "yup";
 import { setUserCredentials } from "../Redux/slices/userSlice";
 import { usersLoding } from "../Redux/slices/users";
+import Cadenas from "../assets/icons/Cadenas ";
 import InputForm from "../components/Input-form/InputForm";
 import CardPage from "../components/card-page/CardPage";
 import InputNumber from "../components/input-number/InputNumber";
@@ -13,7 +14,6 @@ import PicturesList from "../components/picture-list/PicturesList";
 import { userService } from "../services/api/user.api";
 import { IUser } from "../services/types";
 import { FormValues, generateForm } from "../utils/formUtils";
-import Cadenas from "../assets/icons/Cadenas ";
 
 const Verify = () => {
 
@@ -47,8 +47,6 @@ const Verify = () => {
       !response ? setErrorsServer(`${t('forgetPassword.initPw.invalideCode')}`) : setShowResetForm(true);
     }
   }
-
-
 
   const saveUser = (user: IUser, token: string) => {
     const UserCredentials = { user, token }

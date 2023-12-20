@@ -48,6 +48,8 @@
   "auth.accountStatus.Inactive": "غير نشط.",
   "auth.verifSMS.page": "تحقق من حسابك",
   "auth.verifSMS.page.desc": "لقد قمنا لتونا بإرسال رمز مكون من 6 أرقام إلى رقمك",
+  "auth.verifSMS.ERROR_RESEND": "لقد تجاوزت عدد المحاولات المسموح بها (3 رسائل في الساعة)",
+  "auth.verifSMS.SUCCESS_RESEND":"وقع إرسال الطلب",
 
   "auth.notReciveid": "لم يتم استلامه",
   "auth.resendCode": "إعادة إرسال الرمز",

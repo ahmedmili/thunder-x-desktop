@@ -1,5 +1,5 @@
 import { FormikHelpers } from "formik";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import * as Yup from "yup";
 import { verifysmsAction } from "../Redux/slices/verifysms";
@@ -11,18 +11,27 @@ import PicturesList from "../components/picture-list/PicturesList";
 import { FormValues, generateForm } from "../utils/formUtils";
 import { userService } from "../services/api/user.api";
 import { useTranslation } from "react-i18next";
+import { toast } from "react-toastify";
 
 const ConfirmNumber = () => {
 
   const { userId } = useParams()
+  const [errorsServer, setErrorsServer] = useState<string>('');
 
   const dispatch = useAppDispatch();
   const navigate = useNavigate();
   const { t } = useTranslation()
-  
+
   const sendSMS = async () => {
-    const { status, data } = await userService.resendSMS(parseInt(userId!))
-    console.log(data)
+    try {
+      const { status, data } = await userService.resendSMS(parseInt(userId!))
+      // setErrorsServer(`${t('auth.verifSMS.SUCCESS_RESEND')}`)
+      toast.success(`${t('auth.verifSMS.SUCCESS_RESEND')}`)
+      console.log(data)
+    } catch {
+      // setErrorsServer(`${t('auth.verifSMS.ERROR_RESEND')}`)
+      toast.error(`${t('auth.verifSMS.ERROR_RESEND')}`)
+    }
   }
 
   useEffect(() => {
@@ -36,6 +45,8 @@ const ConfirmNumber = () => {
       placeholder: "",
       id: "num",
       component: InputNumber,
+      errorsServer: errorsServer
+
     },
   ];
 
@@ -89,7 +100,7 @@ const ConfirmNumber = () => {
         loading: false,
         button: `${t('Envoyer')}`,
         onSubmit,
-        resendSMS:sendSMS,
+        resendSMS: sendSMS,
       })}
     </CardPage>
   );
