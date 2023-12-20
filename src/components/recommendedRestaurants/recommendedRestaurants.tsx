@@ -29,18 +29,21 @@ const RestaurantList: React.FC<Props> = ({ restaurants, listType }) => {
 
 
   useEffect(() => {
-    let list: Restaurant[];
-    if (listType === "recommanded") {
-      list = restaurants.filter((rest: Restaurant) => {
-        return rest.discount_title === null
-      })
-    } else {
-      list = restaurants.filter((rest: Restaurant) => {
-        return rest.discount_title !== null
-      })
+    if (listType !== 'popular') {
+      let list: Restaurant[];
+      if (listType === "recommanded") {
+        list = restaurants.filter((rest: Restaurant) => {
+          return rest.discount_title === null
+        })
+      } else {
+        list = restaurants.filter((rest: Restaurant) => {
+          return rest.discount_title !== null
+        })
+      }
+      setRestaurantsList(list);
     }
-    setRestaurantsList(list);
   }, [restaurants]);
+
 
   if (restaurants.length === 0 && listType == "recommanded") {
     return (
@@ -78,13 +81,19 @@ const RestaurantList: React.FC<Props> = ({ restaurants, listType }) => {
               {t("recommendedForYou")}
             </h2>
           )}
+          {listType == "popular" && (
+            <h2 className={recommandedStyle.recaommandedTitle}>
+              {" "}
+              {t("popular")}
+            </h2>
+          )}
           {listType == "discount" && (
             <Box className={recommandedStyle.discountTitleContainer}>
-              <h2>Jusqu'à 25 % de réduction - Offres de repas</h2>
+              <h2>{t('todayOffre.title')}</h2>
               <p>
-                Besoin d'une pause de cuisine ou simplement envie de votre{" "}
+                {t('todayOffre.message1')}
                 <br />
-                restaurant préféré ?
+                {t('todayOffre.message2')}
               </p>
             </Box>
           )}

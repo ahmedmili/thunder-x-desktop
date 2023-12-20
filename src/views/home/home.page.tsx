@@ -17,6 +17,7 @@ import {
   adsHomeSelector,
   categoriesHomeSelector,
   homeLoadingSelector,
+  popularHomeSelector,
   recommendedHomeSelector,
 } from "../../Redux/slices/home";
 import { useAppSelector } from "../../Redux/store";
@@ -34,9 +35,8 @@ const HomePage = ({ initialData }: AppProps) => {
   const ads = initialData ? initialData.ads : useSelector(adsHomeSelector);
   const categories = initialData ? initialData.categories : useSelector(categoriesHomeSelector);
   const recommanded = initialData ? initialData.recommended : useSelector(recommendedHomeSelector);
+  const popular = initialData ? initialData.recommended : useSelector(popularHomeSelector);
   const isLoading = initialData ? false : useSelector(homeLoadingSelector);
-
-  const restaurantsList = useAppSelector((state) => state.restaurant.restaurants);
 
   const unReadMessages = initialData ? 0 : useAppSelector((state) => state.messanger.unReadedMessages)
   const [unReadedQt, setUnReadedQt] = useState<number>(unReadMessages)
@@ -45,7 +45,9 @@ const HomePage = ({ initialData }: AppProps) => {
     setUnReadedQt(unReadMessages)
   }, [unReadMessages])
 
-
+  useEffect(() => {
+    console.log('populair : ', popular)
+  }, [])
   const [selectedCategory, setSelectedCategory] = useState<string>("");
   const [filteredRestaurants, setFilteredRestaurants] = useState<Restaurant[]>([]);
 
@@ -113,7 +115,6 @@ const HomePage = ({ initialData }: AppProps) => {
               <AdsCarousel data={ads.HOME_1} />
             )}
             {/* promo list */}
-
             {recommanded.length > 0 ? (
               <div className="home-resto-container">
                 <RestaurantList
@@ -124,6 +125,18 @@ const HomePage = ({ initialData }: AppProps) => {
             ) : (
               <></>
             )}
+            <br></br>
+            {popular.length > 0 ? (
+              <div className="home-resto-container">
+                <RestaurantList
+                  listType="popular"
+                  restaurants={popular}
+                />
+              </div>
+            ) : (
+              <></>
+            )}
+
 
             <ApplicationAd />
 

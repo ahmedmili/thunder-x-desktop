@@ -80,7 +80,6 @@
   "profile.commands.command": "Commande",
   "profile.commands.avis": "Donner votre avis",
   "profile.commands.feedback.thanksMessage": "On Vous remercie pour votre feedback concernant cette commande",
-
   "profile.fidelite.Parrainage": "Parrainage",
   "profile.fidelite.inviteNow": "Inviter maintenant",
   "profile.fidelite.inviteFriends": "Invitez vos amis",
@@ -133,7 +132,6 @@
   "orderTrackingPage.oldCommands": "Mes commandes passées",
   "orderTrackingPage.currentCommands": "Suivi mes commandes",
   "orderTrackingPage.archivedCommands": "Archives commandes",
-
   "orderTrackingPage.price": "Prix",
   "createAccSubtitle": "S’inscrire et créer facilement votre compte",
   "createAcc": "Créer votre compte",
@@ -170,6 +168,10 @@
   "emporter": "A emporter",
   "noSuggestions": "Aucune suggestion",
   "recommendedForYou": "Recommandé pour vous",
+  "todayOffre.title": "Jusqu'à 25 % de réduction - Offres de repas",
+  "todayOffre.message1": "Besoin d'une pause de cuisine ou simplement envie de votre ",
+  "todayOffre.message2": "restaurant préféré ? ",
+  "popular": "Les plus populaires",
   "deliveryPrice": "Prix de livraison :",
   "open": "Ouvert",
   "closed": "Fermé",
