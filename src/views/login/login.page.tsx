@@ -17,9 +17,10 @@ import { FormValues, generateForm } from "../../utils/formUtils";
 import { useNavigate } from "react-router-dom";
 
 import { useTranslation } from "react-i18next";
-import { setUser } from "../../Redux/slices/userSlice";
+import { setUser, setUserCredentials } from "../../Redux/slices/userSlice";
 import { userService } from "../../services/api/user.api";
 import { localStorageService } from "../../services/localStorageService";
+import { IUser } from "../../services/types";
 
 const LoginPage = () => {
   const [showPassword, setShowPassword] = useState(false);
@@ -79,6 +80,10 @@ const LoginPage = () => {
       .label("Password"),
   });
 
+  const saveUser = (user: IUser, token: string) => {
+    dispatch(setUserCredentials({ user, token }));
+    navigate('/');
+  }
 
   const onSubmitHandler = async (values: any) => {
     try {
@@ -87,22 +92,15 @@ const LoginPage = () => {
         const userState = user.status ? user.status : user.status_id
         switch (userState) {
           case 1:
-            // localStorageService.setUserCredentials(user, token);
-            // dispatch(setUser(user));
-            // navigate("/"); // Redirect to the home page
-            console.log('user : actif')
-            navigate("/confirm/"); // Redirect to the home page
+            saveUser(user, token)
             setErrorServer('')
             break;
           case 4:
-            console.log('user : en attente')
-            setErrorServer(`${t('auth.accountStatus.waiting')}`)
+            navigate("/confirm/");
             break;
           default:
             break;
         }
-        // console.log('user : ', user)
-        console.log('user status: ', userState)
       } else {
 
       }
@@ -111,7 +109,6 @@ const LoginPage = () => {
       if (error.response) {
         if (Array.isArray(error.response.data.error)) {
           error.response.data.error.forEach((el: any) => {
-            console.warn('warn', el)
           });
         } else {
           const errorMessage = error.response.data.message
@@ -119,10 +116,8 @@ const LoginPage = () => {
           setErrorServer(`${t('auth.invalideCredentials')}`)
           errorMessage === 'account blocked.' ? setErrorServer(`${t('auth.accountStatus.blocked')}`) :
             errorMessage === 'Login credentials are invalid.' ? setErrorServer(`${t('auth.invalideCredentials')}`) : setErrorServer(errorMessage)
-          console.log("errorMessage", errorMessage)
         }
       } else {
-        console.log("Something went wrong. Please try again")
         // toast.error("Something went wrong. Please try again.", {
         //   position: "top-right",
         // });

@@ -148,7 +148,6 @@ const Register = () => {
   };
 
   const saveUser = (user: IUser, token: string) => {
-    // userSlice.setUserCredentials(user, token)
     dispatch(setUserCredentials({ user, token }));
     navigate('/');
   }
@@ -168,7 +167,6 @@ const Register = () => {
         accountStatus === 4 ? navigate("/confirm/") : accountStatus === 1 && saveUser(clientData, userData.token);
       }
       setSubmitting(false);
-      console.log("reg res data : ", data)
     } catch (error) {
       setSubmitting(false);
     }
