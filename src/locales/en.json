@@ -29,6 +29,7 @@
   "auth.lastName.required": "lastname is required",
   "auth.phone.min": "phone must be more than 8 numbers",
   "auth.phone.max": "phone must be less than 8 numbers",
+  "auth.phone.exasctly": "The phone number must contain 8 digits",
   "auth.phone.required": "phone is required",
   "auth.phone.existe": "an account with this phone number already used",
   "auth.ContinueApple": "Continue with Apple",
@@ -47,7 +48,6 @@
   "forgetPassword.initPw.newPassword": "New password",
   "forgetPassword.initPw.invalideCode": "Code not verified.",
   "forgetPassword.rememberMe": "Remember me.",
-
   "Modal.finishCommand": "Finalize the order",
   "Modal.finishCommand.message": "Please finalize your order to be able to place a new order, otherwise delete the unfinished order .",
   "Modal.finishCommand.finishOldCommande": "Finalize the previous order",
@@ -183,7 +183,6 @@
   "ifYouHaveAnAccount": "If you have an account, log in easily.",
   "emailAddress": "Email Address",
   "email": "E-mail",
-
   "password": "Password",
   "noAccount": "Don't have an account?",
   "noResult": "No results",

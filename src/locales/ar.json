@@ -36,6 +36,7 @@
   "auth.lastName.required": "اللقب مطلوب",
   "auth.phone.min": "يجب أن يكون رقم الهاتف أكثر من 8 أرقام",
   "auth.phone.max": "يجب أن يكون رقم الهاتف أقل من 8 أرقام",
+  "auth.phone.exasctly": "يجب أن يحتوي رقم الهاتف على 8 أرقام",
   "auth.phone.required": "الهاتف مطلوب",
   "auth.phone.existe": "هناك حساب مرتبط بنفس رقم الهاتف تم استخدامه بالفعل",
   "auth.ContinueApple": "استمر مع أبل",
@@ -54,7 +55,6 @@
   "forgetPassword.initPw.newPassword": "كلمة المرور الجديدة",
   "forgetPassword.initPw.invalideCode": "الرمز غير متحقق.",
   "forgetPassword.rememberMe": "تذكرني.",
-
   "Modal.finishCommand": "إكمال الطلب",
   "Modal.finishCommand.message": ".يرجى إكمال طلبك لتتمكن من إجراء طلب جديد، وإلا قم بحذف الطلب غير المكتمل",
   "Modal.finishCommand.finishOldCommande": "إكمال الطلب السابق",
@@ -168,7 +168,6 @@
   "ifYouHaveAnAccount": "إذا كان لديك حساب، تسجّل دخولك بسهولة.",
   "emailAddress": "عنوان البريد الإلكتروني",
   "email": "البريد الإلكتروني",
-
   "password": "كلمة المرور",
   "noAccount": "لا تمتلك حسابًا؟",
   "noResult": "لا توجد نتائج",

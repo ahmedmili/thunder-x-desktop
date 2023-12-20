@@ -127,11 +127,11 @@ const Register = () => {
       .max(20, `${t('auth.password.max')}`)
       .required(`${t('auth.password.required')}`)
       .label("Confirm password")
-      .oneOf([Yup.ref("password"), null], "Passwords must match"),
+      .oneOf([Yup.ref("password"), null], `${t('auth.password.ConfirmMatch')}`),
     phone: Yup.string()
-      .min(8, `${t('auth.phone.min')}`)
-      .max(8, `${t('auth.phone.min')}`)
-      .required(`${t('auth.phone.min')}`)
+      .min(8, `${t('auth.phone.exasctly')}`)
+      .max(8, `${t('auth.phone.exasctly')}`)
+      .required(`${t('auth.phone.required')}`)
       .label("phone"),
   });
 

@@ -34,6 +34,7 @@
   "auth.lastName.required": "Le nom est requis",
   "auth.phone.min": "Le numéro de téléphone doit contenir plus de 8 chiffres",
   "auth.phone.max": "Le numéro de téléphone doit contenir moins de 8 chiffres",
+  "auth.phone.exasctly": "Le numéro de téléphone doit contenir 8 chiffres",
   "auth.phone.required": "Le téléphone est requis",
   "auth.phone.existe": "Un compte avec cette numéro de téléphone est déjà utilisé",
   "auth.ContinueApple": "Continue avec Apple",

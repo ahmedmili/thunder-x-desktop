@@ -129,7 +129,7 @@ const Verify = () => {
       .max(20, `${t('auth.password.max')}`)
       .required(`${t('auth.password.required')}`)
       .label("Confirm password")
-      .oneOf([Yup.ref("password"), null], "Passwords must match"),
+      .oneOf([Yup.ref("password"), null], `${t('auth.password.ConfirmMatch')}`),
   });
   const forgotCodeSchema = Yup.object().shape({
     num1: Yup.number(),
