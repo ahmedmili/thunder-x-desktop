@@ -36,6 +36,10 @@
   "auth.ContinueGoogle": "Continue with Google",
   "auth.ContinueFacebook": "Continue with Facebook",
   "auth.invalideCredentials": "Login credentials are invalid.",
+  "auth.accountStatus.blocked": "account blocked.",
+  "auth.accountStatus.waiting": "Pending.",
+  "auth.accountStatus.Inactive": "Inactive.",
+
   "auth.notReciveid": "Not received",
   "auth.resendCode": "Resend the code",
   "forgetPassword.useMyPhone": "Use my number",

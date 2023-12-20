@@ -41,6 +41,10 @@
   "auth.ContinueGoogle": "Continue avec Google",
   "auth.ContinueFacebook": "Continue avec Facebook",
   "auth.invalideCredentials": "Les identifiants de connexion ne sont pas valides.",
+  "auth.accountStatus.blocked": "Compte bloqué.",
+  "auth.accountStatus.waiting": "en attente.",
+  "auth.accountStatus.Inactive": "non actif.",
+
   "auth.notReciveid": "Non reçu",
   "auth.resendCode": "Renvoyer le code",
   "forgetPassword.useMyPhone": "Utilisé mon numéro",
@@ -53,7 +57,6 @@
   "forgetPassword.initPw.newPassword": "Nouveau mot de passe",
   "forgetPassword.initPw.invalideCode": "Code non vérifié.",
   "forgetPassword.rememberMe": "Se souvenir de moi.",
-
   "Modal.finishCommand": "Finaliser de la commande",
   "Modal.finishCommand.message": "Veuillez finaliser votre commande pour pouvoir commander à nouveau, sinon supprimer la commande non-finalisée .",
   "Modal.finishCommand.finishOldCommande": "Finaliser la commande précédente",

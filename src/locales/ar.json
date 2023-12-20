@@ -43,6 +43,10 @@
   "auth.ContinueGoogle": "استمر مع جوجل",
   "auth.ContinueFacebook": "الاستمرار مع فيسبوك",
   "auth.invalideCredentials": "بيانات تسجيل الدخول غير صحيحة.",
+  "auth.accountStatus.blocked": "الحساب محظور.",
+  "auth.accountStatus.waiting": "قيد الانتظار.",
+  "auth.accountStatus.Inactive": "غير نشط.",
+
   "auth.notReciveid": "لم يتم استلامه",
   "auth.resendCode": "إعادة إرسال الرمز",
   "forgetPassword.useMyPhone": "استخدم رقمي",
