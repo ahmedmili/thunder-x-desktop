@@ -5,7 +5,8 @@ import { useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import * as Yup from "yup";
 import { fetchHomeData, isDeliveryHomeSelector } from "../Redux/slices/home";
-import { createUser, usersErrors, usersLoding } from "../Redux/slices/users";
+import { setUserCredentials } from "../Redux/slices/userSlice";
+import { usersErrors, usersLoding } from "../Redux/slices/users";
 import { useAppDispatch, useAppSelector } from "../Redux/store";
 import Apple from "../assets/icons/Apple";
 import Facebook from "../assets/icons/Facebook";
@@ -16,10 +17,9 @@ import CardPage from "../components/card-page/CardPage";
 import LinkConnect from "../components/link-connect/LinkConnect";
 import Or from "../components/or/Or";
 import PicturesList from "../components/picture-list/PicturesList";
-import { FormValues, generateForm } from "../utils/formUtils";
 import { api } from "../services/axiosApi";
 import { IUser } from "../services/types";
-import userSlice, { setUserCredentials } from "../Redux/slices/userSlice";
+import { FormValues, generateForm } from "../utils/formUtils";
 
 const Register = () => {
   const { t } = useTranslation()
@@ -164,7 +164,7 @@ const Register = () => {
         const clientData = userData.client;
         const accountStatus = clientData.status;
         resetForm();
-        accountStatus === 4 ? navigate("/confirm/") : accountStatus === 1 && saveUser(clientData, userData.token);
+        accountStatus === 4 ? navigate(`/confirm/${clientData.id}/`) : accountStatus === 1 && saveUser(clientData, userData.token);
       }
       setSubmitting(false);
     } catch (error) {

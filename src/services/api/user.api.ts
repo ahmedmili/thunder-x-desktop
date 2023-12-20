@@ -198,6 +198,7 @@ async function updatePWClient(email: string, password: string, confirm_password:
     throw error;
   }
 }
+
 async function verifySmsCode(email: string, code: string) {
   try {
     const response = await api.post(
@@ -213,7 +214,18 @@ async function verifySmsCode(email: string, code: string) {
   }
 }
 
-
+async function resendSMS(userId: number) {
+  try {
+    const response = await api.post(
+      `resendsms/${userId}`, { observe: 'response' }
+    );
+    const { status, data } = response;
+    console.log("resend SMS")
+    return { status, data };
+  } catch (error) {
+    throw error;
+  }
+}
 
 async function addfavorite(supp_id: number) {
   try {
@@ -451,6 +463,7 @@ export const userService = {
   registerUser,
   getUser,
   updatePassword,
+  resendSMS,
   resetPWClient,
   updatePWClient,
   verifySmsCode,

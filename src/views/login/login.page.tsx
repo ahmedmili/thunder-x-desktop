@@ -17,9 +17,8 @@ import { FormValues, generateForm } from "../../utils/formUtils";
 import { useNavigate } from "react-router-dom";
 
 import { useTranslation } from "react-i18next";
-import { setUser, setUserCredentials } from "../../Redux/slices/userSlice";
+import { setUserCredentials } from "../../Redux/slices/userSlice";
 import { userService } from "../../services/api/user.api";
-import { localStorageService } from "../../services/localStorageService";
 import { IUser } from "../../services/types";
 
 const LoginPage = () => {
@@ -96,7 +95,7 @@ const LoginPage = () => {
             setErrorServer('')
             break;
           case 4:
-            navigate("/confirm/");
+            navigate(`/confirm/${user.id}/`);
             break;
           default:
             break;

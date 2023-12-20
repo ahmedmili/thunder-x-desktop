@@ -39,6 +39,8 @@
   "auth.accountStatus.blocked": "account blocked.",
   "auth.accountStatus.waiting": "Pending.",
   "auth.accountStatus.Inactive": "Inactive.",
+  "auth.verifSMS.page": "Verify your account",
+  "auth.verifSMS.page.desc": "We have just sent you a 6-digit code to your number",
 
   "auth.notReciveid": "Not received",
   "auth.resendCode": "Resend the code",

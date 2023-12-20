@@ -301,7 +301,7 @@ function App({ initialData }: AppProps) {
           <Route path="unauthorized/*" element={<UnauthorizePage />} />
           <Route path="/login" element={<LoginPage />} />
           <Route path="register/*" element={<RegisterPage />} />
-          <Route path="/confirm/*" element={<ConfirmNumberPage />} />
+          <Route path="/confirm/:userId/*" element={<ConfirmNumberPage />} />
           <Route path="welcome/*" element={<WelcomePage />} />
           <Route path="forgotpassword/" element={<ForgotPasswordPage />} />
           <Route path="forgotpassword/verif/:email/" element={<Verify />} />
