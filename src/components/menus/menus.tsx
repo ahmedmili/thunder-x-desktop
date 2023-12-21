@@ -61,8 +61,6 @@ const Menu: React.FC<AppProps> = ({ initialData }) => {
   }
   useEffect(() => {
     fetchMessages()
-    console.log("menuData", menuData)
-    console.log("filtreddMenuData", filtreddMenuData)
   }, [])
   /*
   *
@@ -311,6 +309,16 @@ const Menu: React.FC<AppProps> = ({ initialData }) => {
                               {`${t('price')}: ${Math.round(product.price)} DT`}
                             </p>
                             <p className="product-description" dangerouslySetInnerHTML={{ __html: product.description }}></p>
+                            <div className='labels-container'>
+                              {
+                                product.is_popular ?
+                                  <span className='popular-label'>Popular</span> : <></>
+                              }
+                              {
+                                product.discount_value && product.discount_value > 0 ?
+                                  <span className='discount-label'>{product.discount_value} {product.discount_type === "PERCENTAGE" ? "%" : ""} </span> : <></>
+                              }
+                            </div>
                             <button className="product-button"
                               onClick={() => {
                                 handleChooseOptions(product);

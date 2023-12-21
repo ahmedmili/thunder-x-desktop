@@ -1,4 +1,4 @@
-@import '../../colors';
+@import '../../scss/extend';
 
 
 .supplier-page-header {
@@ -34,7 +34,7 @@
 
             span {
                 color: white;
-                font-family: Poppins;
+                font-family: 'Poppins-Bold', serif;
                 font-size: 24px;
                 font-style: normal;
                 font-weight: 400;
@@ -82,7 +82,7 @@
 
                 .name {
                     color: $dark_Gray;
-                    font-family: Poppins;
+                    font-family: 'Poppins-Bold', serif;
                     font-size: 40px;
                     font-style: normal;
                     font-weight: 700;
@@ -91,7 +91,7 @@
 
                 .price {
                     color: $light_Gray;
-                    font-family: Poppins;
+                    font-family: 'Poppins-Bold', serif;
                     font-size: 24px;
                     font-style: normal;
                     font-weight: 600;
@@ -99,7 +99,7 @@
 
                     .price-value {
                         color: $orange_color;
-                        font-family: Poppins;
+                        font-family: 'Poppins-Bold', serif;
                         font-size: 24px;
                         font-style: normal;
                         font-weight: 400;
@@ -157,7 +157,7 @@
                     p {
                         margin: 0;
                         color: #FFF;
-                        font-family: Poppins;
+                        font-family: 'Poppins-Bold', serif;
                         font-size: 24px;
                         font-style: normal;
                         font-weight: 600;
@@ -271,7 +271,7 @@
                     label {
                         cursor: pointer;
                         color: $light_Gray;
-                        font-family: Poppins;
+                        font-family: 'Poppins-Bold', serif;
                         font-size: 18px;
                         font-style: normal;
                         font-weight: 500;
@@ -318,17 +318,19 @@
                         align-items: center;
                         justify-content: center;
                         gap: 10px;
+
                         span {
                             margin: 0;
                             color: white;
-                            font-family: Poppins;
+                            font-family: 'Poppins-Bold', serif;
                             font-size: 22px;
                             font-style: normal;
                             font-weight: 600;
                             line-height: normal;
 
                         }
-                        .discount-label{
+
+                        .discount-label {
                             background-color: #FBC000;
                             padding: 3px 10px;
                             border-radius: 25px;
@@ -359,7 +361,7 @@
                             overflow: hidden;
                             position: relative;
                             max-width: 281.392px;
-                            height: 97.772px;
+                            height: 123px;
                             display: flex;
                             border-radius: 15px;
                             border: 1px solid rgba(149, 142, 142, 0.3);
@@ -384,7 +386,7 @@
                                     max-width: 135.927px;
                                     height: 19.674px;
                                     color: $dark_Gray;
-                                    font-family: Poppins;
+                                    font-family: 'Poppins-Bold', serif;
                                     font-size: 18px;
                                     font-style: normal;
                                     font-weight: 600;
@@ -396,7 +398,7 @@
                                     max-width: 149.043px;
                                     height: 39.674px;
                                     color: #484848;
-                                    font-family: Poppins;
+                                    font-family: 'Poppins-Bold', serif;
                                     font-size: 15px;
                                     font-style: normal;
                                     font-weight: 400;
@@ -415,12 +417,35 @@
                                     }
                                 }
 
+                                .labels-container {
+                                    display: flex;
+                                    justify-content: start;
+                                    align-items: center;
+                                    gap: 7px;
+                                    color: white;
+                                    font-size: 12px;
+                                    font-weight: 400;
+                                    font-family: 'Poppins-Bold', serif;
+
+                                    .popular-label {
+                                        background-color: #1F94A4;
+                                        padding: 2px 10px;
+                                        border-radius: 25px;
+                                    }
+
+                                    .discount-label {
+                                        background-color: #FBC000;
+                                        padding: 2px 10px;
+                                        border-radius: 25px;
+                                    }
+                                }
+
                                 .product-price {
                                     margin: 0;
                                     max-width: 149.043px;
                                     height: 19.674px;
                                     color: $Ocean_Teal;
-                                    font-family: Poppins;
+                                    font-family: 'Poppins-Bold', serif;
                                     font-size: 15px;
                                     font-style: normal;
                                     font-weight: 600;
@@ -439,7 +464,7 @@
                                     align-items: center;
                                     justify-content: center;
                                     color: #FFF;
-                                    font-family: Poppins;
+                                    font-family: 'Poppins-Bold', serif;
                                     font-size: 20px;
                                     font-style: normal;
                                     font-weight: 300;
@@ -584,7 +609,7 @@
 
                             .product-card {
                                 max-width: 281.392px;
-                                height: 97.772px;
+                                height: 123px;
 
                                 .info-container {
                                     .product-title {

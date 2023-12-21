@@ -1,6 +1,6 @@
 
 
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 
 import { DiscountRounded, Star } from '@mui/icons-material';
 import FavoriteIcon from '@mui/icons-material/Favorite';
@@ -24,6 +24,10 @@ const SupplierCard: React.FC<SupplierCard> = ({ data, favors = false, className 
 
     const [fav, setFav] = useState<boolean>(data.favor !== undefined ? data.favor : favors);
     const isOpen = data.status === 1 ? true : false;
+
+    useEffect(() => {
+        console.log("supp cart data : ", data)
+    }, [])
 
     const getImageUrl = (restaurant: Restaurant) => {
         const image1 = restaurant.images.length > 0 ? restaurant.images[0] : null;

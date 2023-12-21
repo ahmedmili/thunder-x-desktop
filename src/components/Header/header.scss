@@ -14,9 +14,10 @@
 
 .headerContainer {
     padding-top: 75px;
-    @media (max-width: 1399.98px) { 
+
+    @media (max-width: 1399.98px) {
         margin-bottom: -80px;
-    }  
+    }
 }
 
 .header {
@@ -29,101 +30,110 @@
         top: 31%;
         left: 0;
         width: 91px;
-        
+
         .demiCercle {
             z-index: 20;
             height: 352.35px;
             width: 352.35px;
-            transform: translateX(-261.35px);            
+            transform: translateX(-261.35px);
             border-radius: 500px;
             background: linear-gradient(180deg, $orange_color 0%, $orange_color 100%);
-        }      
-        @media (max-width: 1399.98px){ 
+        }
+
+        @media (max-width: 1399.98px) {
             transform: scale(0.8);
             left: 0;
         }
+
         @media (max-width: 1468px) {
             transform: scale(0.8);
-            left:-28px;
+            left: -28px;
         }
     }
+
     .imageBuilderContainer {
         position: relative;
         z-index: 1;
         padding: 0;
         height: 600px;
 
-        @media (max-width: 1399.98px) { 
-            transform: translateX(84px) scale(0.8);
-            height: 532px;
-        }        
-        @media (max-width: 1199.98px){ 
+        @media (max-width: 1399.98px) {
             transform: translateX(84px) scale(0.8);
             height: 532px;
         }
-        @media (max-width: 991.98px) { 
+
+        @media (max-width: 1199.98px) {
+            transform: translateX(84px) scale(0.8);
+            height: 532px;
+        }
+
+        @media (max-width: 991.98px) {
             transform: translateX(245px) scale(0.8);
         }
-    .imageBuilder {
-        background-image: url('/src/assets/home/image.png');
-        background-size: contain;
-        background-repeat: no-repeat;
-        background-position: bottom right;
-        @include dimensions(570px, 610px);
-        border-radius: 0 0 292px 206px;
-        position: absolute;
-        right: -55px;
-        bottom: -2px;
 
-        &::before{
-            content: "";
-            @include dimensions(173px, 147px);
-            background-image: url("/src/assets/home/pizza.png");
+        .imageBuilder {
+            background-image: url('/src/assets/home/image.png');
             background-size: contain;
-            background-position: center;
             background-repeat: no-repeat;
-            display: block;
+            background-position: bottom right;
+            @include dimensions(570px, 610px);
+            border-radius: 0 0 292px 206px;
             position: absolute;
-            top: 22%;
-            left: -154px;
+            right: -55px;
+            bottom: -2px;
+
+            &::before {
+                content: "";
+                @include dimensions(173px, 147px);
+                background-image: url("/src/assets/home/pizza.png");
+                background-size: contain;
+                background-position: center;
+                background-repeat: no-repeat;
+                display: block;
+                position: absolute;
+                top: 22%;
+                left: -154px;
+            }
+
+            &::after {
+                content: "";
+                @include dimensions(110px, 159px);
+                background-image: url("/src/assets/home/purepng.png");
+                background-size: 100%;
+                background-position: center;
+                background-repeat: no-repeat;
+                display: block;
+                position: absolute;
+                bottom: 13%;
+                left: -148px;
+            }
         }
-        &::after{
+
+        &::before {
             content: "";
-            @include dimensions(110px, 159px);
-            background-image: url("/src/assets/home/purepng.png");
+            @include dimensions(566px, 500px);
+            background: linear-gradient(180deg, $color-yellow-ronchi -11.3%, $color-yellow-ronchi 111.3%);
+            display: block;
+            z-index: -1;
+            position: absolute;
+            border-radius: 248.5px;
+            bottom: 0;
+            right: -28px;
+        }
+
+        &::after {
+            content: "";
+            @include dimensions(165px, 126px);
+            background-image: url('/src/assets/home/pizza2.png');
             background-size: 100%;
             background-position: center;
             background-repeat: no-repeat;
             display: block;
             position: absolute;
-            bottom: 13%;
-            left: -148px;
+            right: -78px;
+            top: 24%;
         }
     }
-    &::before{
-        content: "";
-        @include dimensions(566px, 500px);
-        background: linear-gradient(180deg, $color-yellow-ronchi -11.3%, $color-yellow-ronchi 111.3%);
-        display: block;
-        z-index: -1;
-        position: absolute;
-        border-radius: 248.5px;
-        bottom: 0;
-        right: -28px;
-    }
-    &::after{
-        content: "";
-        @include dimensions(165px, 126px);
-        background-image: url('/src/assets/home/pizza2.png');
-        background-size: 100%;
-        background-position: center;
-        background-repeat: no-repeat;
-        display: block;
-        position: absolute;
-        right: -78px;
-        top: 24%;
-    }
-}
 }
 
 
@@ -153,6 +163,7 @@
             height: 119.64px;
         }
     }
+
     .appBar {
         @include flex(flex, center, end);
         height: 100%;
@@ -177,17 +188,20 @@
         }
     }
 }
+
 .headerAppBar2 {
     padding-top: 135px;
 
-    @media (max-width: 1399.98px) { 
+    @media (max-width: 1399.98px) {
         margin-left: 42px;
         padding-top: 60px;
     }
-    @media (max-width: 991.98px) { 
+
+    @media (max-width: 991.98px) {
         margin-left: 0px;
         padding-top: 122px;
     }
+
     .headerMessage {
         margin-top: 2px;
         display: flex;
@@ -201,6 +215,7 @@
             font-size: 40px;
             line-height: normal;
         }
+
         .headerMessageSyle2 {
             display: inline;
             color: $primary_color;
@@ -234,9 +249,11 @@
         .pin-icon {
             font-size: 24px;
         }
+
         &:hover {
             color: $dark_002;
         }
+
         .localisationIcon {
             background-image: url('/src/assets/icons/map.svg');
             @include dimensions(15px, 21px);
@@ -298,6 +315,7 @@
                 background-color: $color-white;
                 opacity: 1;
             }
+
             &.header-signup {
                 font-family: "Poppins-Bold", serif;
                 color: $color-blue-eastern;
@@ -319,6 +337,7 @@
                     transform-origin: right;
                     transition: transform .5s;
                 }
+
                 &:hover {
                     &::after {
                         transform: scaleX(1);
@@ -341,6 +360,7 @@
             @include dimensions(107px, 39px);
         }
     }
+
     .info {
         height: 80%;
         @include flex(flex, center, end);
@@ -358,10 +378,12 @@
                 color: $primary_color;
             }
         }
+
         .account,
         .search {
             margin: 3px 0;
         }
+
         .account {
             color: $primary_color;
             position: relative;
@@ -381,6 +403,7 @@
             &:hover {
                 cursor: pointer;
             }
+
             .account-icon {
                 @include dimensions(40px, 44px);
                 background-image: url('/src/assets/icons/account.svg');
@@ -390,19 +413,23 @@
                 background-size: 18px;
             }
         }
+
         .loggedin-account {
             display: none;
         }
+
         .search {
             color: $primary_color;
 
             &:hover {
                 cursor: pointer;
             }
+
             .search-icon {
                 @include dimensions(30px, 30px);
             }
         }
+
         .cart-item {
             @include flex;
             gap: 7px;
@@ -421,12 +448,14 @@
                 background-repeat: no-repeat;
                 background-position: center;
             }
+
             &:hover {
                 cursor: pointer;
             }
         }
     }
-    &.scroll{
+
+    &.scroll {
         box-shadow: 0px 0px 10px 0px rgba(0, 0, 0, 0.75);
     }
 }
@@ -458,6 +487,7 @@
                 font-size: 12px;
             }
         }
+
         .info {
             .cart-item {
                 @include dimensions(65px, 35px);
@@ -471,6 +501,7 @@
         }
     }
 }
+
 @media only screen and (max-width:1200px) {
     .head1 {
         .demiCercle {
@@ -478,6 +509,7 @@
             left: -493px;
         }
     }
+
     .fixedHeaderContainer {
         height: 82px;
 
@@ -488,14 +520,17 @@
             }
         }
     }
+
     .headerContainer {
         .headerAppBar2 {
             .headerMessage {
+
                 .headerMessageSyle1,
                 .headerMessageSyle2 {
                     font-size: 31px;
                 }
             }
+
             .headerLocalisationMessageContainer {
                 a {
                     font-size: 15px;
@@ -507,16 +542,19 @@
                 }
             }
         }
+
         .imageBuilder {
             @include dimensions(354px, 281px);
         }
     }
+
     .fixedHeaderContainer2 {
         .header-buttons {
             .LoadingButton {
                 display: none;
             }
         }
+
         .info {
             .loggedin-account {
                 display: inline-block;
@@ -524,6 +562,7 @@
         }
     }
 }
+
 @media only screen and (max-width: 992px) {
     .fixedHeaderContainer2 {
         left: 5%;
@@ -537,6 +576,7 @@
             }
         }
     }
+
     .head1 {
         .demiCercle {
             top: 39px;
@@ -550,13 +590,16 @@
         .imageBuilder {
             @include dimensions(255px, 208px);
         }
+
         .headerAppBar2 {
             .headerMessage {
+
                 .headerMessageSyle1,
                 .headerMessageSyle2 {
                     font-size: 24.54px;
                 }
             }
+
             .headerLocalisationMessageContainer {
                 padding: 5px 8px;
 
@@ -567,6 +610,7 @@
         }
     }
 }
+
 @media only screen and (max-width: 768px) {
     .fixedHeaderContainer2 {
         .info {
@@ -575,6 +619,7 @@
             .cart-item {
                 @include dimensions(66px, 36px);
             }
+
             .position {
                 font-size: 12px;
                 gap: 7px;
@@ -584,36 +629,43 @@
                     font-size: 16px;
                 }
             }
+
             .account {
                 .account-icon {
                     height: 35px;
                 }
             }
+
             .cart-item {
                 font-size: 20px;
                 height: 34px;
             }
         }
     }
+
     .head1 {
         .demiCercle {
             top: 39px;
             left: -170px;
         }
     }
+
     .headerContainer {
         .imageBuilder {
             @include dimensions(191px, 186px);
         }
+
         .headerAppBar2 {
             margin-left: 13px;
 
             .headerMessage {
+
                 .headerMessageSyle1,
                 .headerMessageSyle2 {
                     font-size: 18px;
                 }
             }
+
             .headerLocalisationMessageContainer {
                 a {
                     font-size: 11px;
@@ -621,10 +673,12 @@
             }
         }
     }
+
     .cart-container {
         width: 304px;
     }
 }
+
 @media only screen and (max-width: 576px) {
     .fixedHeaderContainer2 {
         .info {
@@ -635,6 +689,7 @@
             }
         }
     }
+
     .cart-container {
         top: 80px;
         right: 10vw;
@@ -672,21 +727,19 @@
             flex-direction: column;
 
             .headerMessage {
+
                 .headerMessageSyle1,
                 .headerMessageSyle2 {
                     font-size: 11px;
                 }
             }
+
             .headerLocalisationMessageContainer {
                 padding: 0;
                 margin: 0px;
 
                 a {
                     font-size: 6.33px;
-
-                    .localisationIcon {
-                        // top: -2px;
-                    }
                 }
             }
         }
