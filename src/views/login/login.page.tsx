@@ -20,6 +20,7 @@ import { useTranslation } from "react-i18next";
 import { setUserCredentials } from "../../Redux/slices/userSlice";
 import { userService } from "../../services/api/user.api";
 import { IUser } from "../../services/types";
+import { toast } from "react-toastify";
 
 const LoginPage = () => {
   const [showPassword, setShowPassword] = useState(false);
@@ -92,6 +93,7 @@ const LoginPage = () => {
         switch (userState) {
           case 1:
             saveUser(user, token)
+            user.rollback && toast.success(t('auth.restoredAccount')) 
             setErrorServer('')
             break;
           case 4:

@@ -48,6 +48,7 @@
   "auth.verifSMS.page.desc": "Nous venons de vous envoyer un code de 6 chiffres a votre numéro",
   "auth.verifSMS.ERROR_RESEND": "Vous avez dépassé le nombre de tentatives autorisées (3 SMS par heure)",
   "auth.verifSMS.SUCCESS_RESEND": "Demande envoyée",
+  "auth.restoredAccount": "Félicitations, compte restauré ! Nous sommes heureux de vous accueillir de nouveau parmi nous !",
 
   "auth.notReciveid": "Non reçu",
   "auth.resendCode": "Renvoyer le code",
