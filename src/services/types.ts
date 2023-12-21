@@ -48,6 +48,8 @@ export type MenuData = {
   position: number;
   image: string;
   price: number;
+  is_discount?: boolean;
+  discount_value? : number;
   products: Array<{
     id: number;
     name: string;

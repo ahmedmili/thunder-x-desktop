@@ -41,7 +41,8 @@
                 line-height: normal;
             }
         }
-        .closed-time{
+
+        .closed-time {
             background-color: red;
         }
     }
@@ -312,16 +313,28 @@
                     height: 56px;
                     text-transform: capitalize;
 
-                    span {
-                        margin: 0;
-                        color: white;
-                        font-family: Poppins;
-                        font-size: 22px;
-                        font-style: normal;
-                        font-weight: 600;
-                        line-height: normal;
+                    .menu-item-header-info-container {
+                        display: flex;
+                        align-items: center;
+                        justify-content: center;
+                        gap: 10px;
+                        span {
+                            margin: 0;
+                            color: white;
+                            font-family: Poppins;
+                            font-size: 22px;
+                            font-style: normal;
+                            font-weight: 600;
+                            line-height: normal;
 
+                        }
+                        .discount-label{
+                            background-color: #FBC000;
+                            padding: 3px 10px;
+                            border-radius: 25px;
+                        }
                     }
+
                 }
 
                 .epmty-pagination {

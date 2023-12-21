@@ -47,6 +47,7 @@ const Menu: React.FC<AppProps> = ({ initialData }) => {
   const [isOpen, setIsOpen] = useState<boolean>(true);
   const idNumber = id?.split('-')[0];
 
+
   // handle messanger
   const unReadMessages = useAppSelector((state) => state.messanger.unReadedMessages)
   const [messangerPopup, setMessangerPopup] = useState<boolean>(false)
@@ -60,6 +61,8 @@ const Menu: React.FC<AppProps> = ({ initialData }) => {
   }
   useEffect(() => {
     fetchMessages()
+    console.log("menuData", menuData)
+    console.log("filtreddMenuData", filtreddMenuData)
   }, [])
   /*
   *
@@ -166,7 +169,7 @@ const Menu: React.FC<AppProps> = ({ initialData }) => {
     }
     setLoading(false);
   };
-  
+
   const getSupplierIsOpen = async () => {
     const { status, data } = await supplierServices.getSupplierISoPENById(Number(idNumber!))
     data.data.is_open === 1 ? setIsOpen(true) : setIsOpen(false)
@@ -245,10 +248,11 @@ const Menu: React.FC<AppProps> = ({ initialData }) => {
           <CircularProgress sx={{ alignSelf: 'center', my: '2rem' }} />
         ) :
           (
-            filtreddMenuData.map((menuItem) => {
+            filtreddMenuData.map((menuItem: MenuData) => {
               const menuItemId = menuItem.id;
               const menuItemProducts = menuItem.products;
-
+              const isDiscount = menuItem.is_discount
+              const discountVal = isDiscount ? menuItem.discount_value : 0
               const indexOfLastProduct = currentPage[menuItemId]
                 ? currentPage[menuItemId] * productsPerPage
                 : productsPerPage;
@@ -263,24 +267,36 @@ const Menu: React.FC<AppProps> = ({ initialData }) => {
                     <span className='menu-item-header-title'>
                       {menuItem.name}
                     </span>
-                    <span className='menu-item-header-choix'>
-                      {menuItemProducts.length} choix
-                    </span>
-                  </div>
-                  {menuItemProducts.length > productsPerPage ? (
-                    <Pagination
-                      style={{ marginTop: '1rem' }}
-                      count={Math.ceil(menuItemProducts.length / productsPerPage)}
-                      page={currentPage[menuItemId] || 1}
-                      onChange={(event, page) =>
-                        handlePaginationClick(page, menuItemId)
+                    <div className='menu-item-header-info-container'>
+                      {
+                        !isDiscount &&
+                        <span className='menu-item-header-choix'>
+                          {menuItemProducts.length} choix
+                        </span>
                       }
-                    />
-                  ) : (
-                    <div className='epmty-pagination'>
-
+                      {
+                        isDiscount && <span className='discount-label'>
+                          {discountVal} %
+                        </span>
+                      }
                     </div>
-                  )
+
+                  </div>
+                  {
+                    menuItemProducts.length > productsPerPage ? (
+                      <Pagination
+                        style={{ marginTop: '1rem' }}
+                        count={Math.ceil(menuItemProducts.length / productsPerPage)}
+                        page={currentPage[menuItemId] || 1}
+                        onChange={(event, page) =>
+                          handlePaginationClick(page, menuItemId)
+                        }
+                      />
+                    ) : (
+                      <div className='epmty-pagination'>
+
+                      </div>
+                    )
                   }
 
                   <div className='product-container'>
@@ -313,7 +329,7 @@ const Menu: React.FC<AppProps> = ({ initialData }) => {
                       ))}
                     </div>
                   </div>
-                </div>
+                </div >
               );
             }
             )
