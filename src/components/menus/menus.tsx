@@ -22,6 +22,7 @@ import Messanger from '../Popups/Messanger/Messanger';
 import SameSupplierWarn from '../Popups/SameSupplierWarn/SameSupplierWarn';
 import './menus.scss';
 
+import moment from 'moment';
 import ActiveGiftIcon from '../../assets/profile/ArchivedCommands/gift-active.png';
 import GiftIcon from '../../assets/profile/ArchivedCommands/gift.svg';
 import ClosedSupplier from '../Popups/ClosedSupplier/ClosedSupplier';
@@ -45,8 +46,18 @@ const Menu: React.FC<AppProps> = ({ initialData }) => {
   const { id, search, productId } = useParams<{ id: string, search?: string, productId?: string }>();
   const [selectedOption, setSelectedOption] = useState<string>(search ? search : "All");
   const [isOpen, setIsOpen] = useState<boolean>(true);
+  const [closeTime, setCloseTime] = useState<string>('');
   const idNumber = id?.split('-')[0];
+  var currentDate = moment();
+  var today = currentDate.format('ddd');  // Get the current day name (e.g., 'Mon', 'Tue', etc.)
 
+  useEffect(() => {
+    const schedules = displayedRestaurant ? displayedRestaurant.schedules : []
+    var currentDayObject = schedules.find((day: any) => day.day === today);
+    let closeTimeArray = currentDayObject.to.toString().split(':')
+    let closeTime = `${closeTimeArray[0]}:${closeTimeArray[1]}`
+    setCloseTime(closeTime)
+  }, [displayedRestaurant])
 
   // handle messanger
   const unReadMessages = useAppSelector((state) => state.messanger.unReadedMessages)
@@ -354,7 +365,7 @@ const Menu: React.FC<AppProps> = ({ initialData }) => {
             <div className={`open-time ${!isOpen && "closed-time"} `}>
               {
                 isOpen ?
-                  <span>{t("supplier.opentime")} {displayedRestaurant?.closetime}</span>
+                  <span>{t("supplier.opentime")} {closeTime}</span>
                   :
                   <span>{t("closed")}</span>
 
