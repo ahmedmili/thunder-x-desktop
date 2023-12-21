@@ -47,35 +47,35 @@ const Register = () => {
     {
       type: "text",
       name: "firstname",
-      label: "Nom",
-      placeholder: "Enter ici",
+      label: t('firstName'),
+      placeholder: t('tapeHere'),
       id: "firstname",
       component: InputForm,
     },
     {
       type: "text",
       name: "lastname",
-      label: "Prénom",
-      placeholder: "Enter ici",
+      label: t('lastName'),
+      placeholder: t('tapeHere'),
       id: "lastname",
       component: InputForm,
     },
     {
       type: "email",
       name: "email",
-      label: "Email",
-      placeholder: "Enter ici",
+      label: t('emailAddress'),
+      placeholder: t('tapeHere'),
       id: "email",
       column: "fill",
       errorsServer:
-        errorsServer && errorsServer.email ? errorsServer.email[0] : "",
+        errorsServer && errorsServer.email ? t('auth.email.existe') : "",
       component: InputForm,
     },
     {
       type: !showPassword ? "password" : "text",
       name: "password",
-      label: "Mot de passe",
-      placeholder: "Enter ici",
+      label: t('password'),
+      placeholder: t('tapeHere'),
       id: "password",
       column: "fill",
       component: InputForm,
@@ -83,8 +83,8 @@ const Register = () => {
     {
       type: !showConfirmPassword ? "password" : "text",
       name: "confirm_password",
-      label: "Confirmer le mot de passe",
-      placeholder: "Enter ici",
+      label: t('confirmPassword'),
+      placeholder: t('tapeHere'),
       id: "confirm_password",
       column: "fill",
       component: InputForm,
@@ -92,42 +92,46 @@ const Register = () => {
     {
       type: "tel",
       name: "phone",
-      label: "Numéro de téléphone",
-      placeholder: "Enter ici",
+      label: t('cartPage.phoneNumber'),
+      placeholder: t('tapeHere'),
       id: "phone",
       column: "fill",
       errorsServer:
-        errorsServer && errorsServer.message ? errorsServer.message : "",
+        errorsServer && errorsServer.message ? t('auth.phone.existe') : "",
       component: InputForm,
     },
   ];
 
   const registerSchema = Yup.object().shape({
     firstname: Yup.string()
-      .min(3, "firstname must be more than 3")
-      .max(20, "firstname must be less than 20 characters")
-      .required("firstname is required")
+      .min(3, `${t('auth.firstName.min')}`)
+      .max(20, `${t('auth.firstName.max')}`)
+      .required(`${t('auth.firstName.required')}`)
       .label("firstname"),
     lastname: Yup.string()
-      .min(3, "lastname must be more than 3")
-      .max(20, "lastname must be less than 20 characters")
-      .required("lastname is required")
+      .min(3, `${t('auth.lastName.min')}`)
+      .max(20, `${t('auth.lastName.max')}`)
+      .required(`${t('auth.lastName.required')}`)
       .label("lastname"),
-    email: Yup.string().required().email().label("Email"),
+    email: Yup.string()
+      .required(`${t('auth.email.required')}`)
+      .email(`${t('auth.email.type')}`)
+      .label("Email"),
     password: Yup.string()
-      .min(8, "password must be more than 8")
-      .max(20, "password must be less than 20 characters")
-      .required("password is required")
+      .min(8, `${t('auth.password.min')}`)
+      .max(20, `${t('auth.password.max')}`)
+      .required(`${t('auth.password.required')}`)
       .label("Password"),
     confirm_password: Yup.string()
-      .max(20, "password must be less than 20 characters")
-      .required("password is required")
+      .min(8, `${t('auth.password.min')}`)
+      .max(20, `${t('auth.password.max')}`)
+      .required(`${t('auth.password.required')}`)
       .label("Confirm password")
-      .oneOf([Yup.ref("password"), null], "Passwords must match"),
+      .oneOf([Yup.ref("password"), null], `${t('auth.password.ConfirmMatch')}`),
     phone: Yup.string()
-      .min(8, "phone must be more than 10")
-      .max(8, "phone must be less than 10 numbers")
-      .required("phone is required")
+      .min(8, `${t('auth.phone.exasctly')}`)
+      .max(8, `${t('auth.phone.exasctly')}`)
+      .required(`${t('auth.phone.required')}`)
       .label("phone"),
   });
 
@@ -159,13 +163,13 @@ const Register = () => {
   };
 
   return (
-    <CardPage icon="" text="" title="S'inscrire" image={<PicturesList />}>
+    <CardPage icon="" text="" title={t('signup')} image={<PicturesList />}>
       {generateForm({
         initialValues,
         validationSchema: registerSchema,
         fields,
         loading: loading,
-        button: "S'inscrire",
+        button: t('signup'),
         showPassword,
         showConfirmPassword,
         ontoggleShowPassword,
@@ -174,9 +178,9 @@ const Register = () => {
       })}
       <div style={{ display: "flex", flexDirection: "column", gap: "1rem" }}>
         <Or>Or</Or>
-        <ButtonConnect provider="apple" icon={<Apple />} text="Continue avec Apple" />
-        <ButtonConnect provider="google" icon={<Google />} text="Continue avec Google" />
-        <ButtonConnect provider="fcb" icon={<Facebook />} text="Continue avec Facebook" />
+        <ButtonConnect provider="apple" icon={<Apple />} text={t('auth.ContinueApple')} />
+        <ButtonConnect provider="google" icon={<Google />} text={t('auth.ContinueGoogle')} />
+        <ButtonConnect provider="fcb" icon={<Facebook />} text={t('auth.ContinueFacebook')} />
         <LinkConnect to="/login" label={t('haveAcc')} clickTitle={t('login2')} />
       </div>
     </CardPage>
@@ -184,4 +188,3 @@ const Register = () => {
 };
 
 export default Register;
-

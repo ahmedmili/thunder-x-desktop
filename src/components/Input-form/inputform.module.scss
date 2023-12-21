@@ -63,6 +63,11 @@
   display: flex;
   align-items: center;
 }
+.clickable{
+  &:hover{
+    cursor: pointer;
+  }
+}
 .errorColor {
   border-color: var(--errorColor);
   color: var(--errorColor);

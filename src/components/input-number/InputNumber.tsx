@@ -35,6 +35,7 @@ const InputNumber = ({
   return (
     <input
       className={styles.input}
+      style={{textAlign:"center"}}
       type={props.type}
       error={errors[field.name]}
       onInput={(event: any) => handleInput(event, props.next)}
