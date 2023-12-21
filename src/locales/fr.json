@@ -41,6 +41,15 @@
   "auth.ContinueGoogle": "Continue avec Google",
   "auth.ContinueFacebook": "Continue avec Facebook",
   "auth.invalideCredentials": "Les identifiants de connexion ne sont pas valides.",
+  "auth.accountStatus.blocked": "Compte bloqué.",
+  "auth.accountStatus.waiting": "en attente.",
+  "auth.accountStatus.Inactive": "non actif.",
+  "auth.verifSMS.page": "Vérifier votre compte",
+  "auth.verifSMS.page.desc": "Nous venons de vous envoyer un code de 6 chiffres a votre numéro",
+  "auth.verifSMS.ERROR_RESEND": "Vous avez dépassé le nombre de tentatives autorisées (3 SMS par heure)",
+  "auth.verifSMS.SUCCESS_RESEND": "Demande envoyée",
+  "auth.restoredAccount": "Félicitations, compte restauré ! Nous sommes heureux de vous accueillir de nouveau parmi nous !",
+
   "auth.notReciveid": "Non reçu",
   "auth.resendCode": "Renvoyer le code",
   "forgetPassword.useMyPhone": "Utilisé mon numéro",
@@ -53,7 +62,6 @@
   "forgetPassword.initPw.newPassword": "Nouveau mot de passe",
   "forgetPassword.initPw.invalideCode": "Code non vérifié.",
   "forgetPassword.rememberMe": "Se souvenir de moi.",
-
   "Modal.finishCommand": "Finaliser de la commande",
   "Modal.finishCommand.message": "Veuillez finaliser votre commande pour pouvoir commander à nouveau, sinon supprimer la commande non-finalisée .",
   "Modal.finishCommand.finishOldCommande": "Finaliser la commande précédente",

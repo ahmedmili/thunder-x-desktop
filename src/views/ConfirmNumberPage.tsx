@@ -1,5 +1,8 @@
 import { FormikHelpers } from "formik";
-import { useNavigate } from "react-router-dom";
+import { useEffect, useState } from "react";
+import { useTranslation } from "react-i18next";
+import { useNavigate, useParams } from "react-router-dom";
+import { toast } from "react-toastify";
 import * as Yup from "yup";
 import { verifysmsAction } from "../Redux/slices/verifysms";
 import { useAppDispatch } from "../Redux/store";
@@ -7,10 +10,30 @@ import Confirm from "../assets/icons/Confirm";
 import CardPage from "../components/card-page/CardPage";
 import InputNumber from "../components/input-number/InputNumber";
 import PicturesList from "../components/picture-list/PicturesList";
+import { userService } from "../services/api/user.api";
 import { FormValues, generateForm } from "../utils/formUtils";
+
 const ConfirmNumber = () => {
+
+  const { userId } = useParams()
+  const [errorsServer, setErrorsServer] = useState<string>('');
+
   const dispatch = useAppDispatch();
   const navigate = useNavigate();
+  const { t } = useTranslation()
+
+  const sendSMS = async () => {
+    try {
+      const { status, data } = await userService.resendSMS(parseInt(userId!))
+      toast.success(`${t('auth.verifSMS.SUCCESS_RESEND')}`)
+    } catch {
+      toast.error(`${t('auth.verifSMS.ERROR_RESEND')}`)
+    }
+  }
+
+  useEffect(() => {
+    sendSMS()
+  }, [])
   const fields = [
     {
       type: "code",
@@ -19,6 +42,8 @@ const ConfirmNumber = () => {
       placeholder: "",
       id: "num",
       component: InputNumber,
+      errorsServer: errorsServer
+
     },
   ];
 
@@ -46,7 +71,7 @@ const ConfirmNumber = () => {
     try {
       const { num1, num2, num3, num4, num5, num6 } = values;
       const code = num1! + num2 + num3 + num4 + num5 + num6;
-      const response = await dispatch(verifysmsAction(code));
+      const response = await dispatch(verifysmsAction(Number(userId!), code));
       const { success } = response?.data;
       if (success) {
         setSubmitting(false);
@@ -58,13 +83,11 @@ const ConfirmNumber = () => {
       setSubmitting(false);
     }
   };
-  const resendSms = async () => { };
   return (
     <CardPage
       icon={<Confirm />}
-      title="Vérifier votre compte"
-      text="Nous venons de vous envoyer un code de 6 chiffres a votre
-    numéro"
+      title={t('auth.verifSMS.page')}
+      text={t('auth.verifSMS.page.desc')}
       image={<PicturesList />}
     >
       {generateForm({
@@ -72,8 +95,9 @@ const ConfirmNumber = () => {
         validationSchema: confirmSchema,
         fields,
         loading: false,
-        button: "Envoyer",
+        button: `${t('Envoyer')}`,
         onSubmit,
+        resendSMS: sendSMS,
       })}
     </CardPage>
   );

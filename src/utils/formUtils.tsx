@@ -7,9 +7,9 @@ import ButtonSecondary from "../components/button-secondary/ButtonSecondary";
 import CustomErrorServer from "../components/custom-error-server/CustomErrorServer";
 
 import { useTranslation } from "react-i18next";
-import { Link } from "react-router-dom";
 import Spinner from "../components/spinner/Spinner";
 import styles from "./formutils.module.scss";
+import { useNavigate } from "react-router-dom";
 export interface FormValues {
   firstname?: string;
   lastname?: string;
@@ -58,13 +58,14 @@ interface GenerateFormProps {
     values: FormValues,
     formikHelpers: FormikHelpers<FormValues>
   ) => void | Promise<any>;
+  resendSMS?: () => void;
   ontoggleShowPassword?: () => void;
   ontoggleShowConfirmPassword?: () => void;
 }
 
 export const generateForm = (props: GenerateFormProps) => {
   const { t } = useTranslation();
-
+  const navigate = useNavigate()
   const {
     initialValues,
     validationSchema,
@@ -75,11 +76,15 @@ export const generateForm = (props: GenerateFormProps) => {
     showPassword,
     showConfirmPassword,
     onSubmit,
+    resendSMS,
     ontoggleShowPassword,
     ontoggleShowConfirmPassword,
   } = props;
 
-
+  const resendCode = (e: any) => {
+    e.preventDefault
+    resendSMS ? resendSMS() : navigate('/forgotpassword/')
+  }
 
   return (
     <Formik
@@ -171,9 +176,9 @@ export const generateForm = (props: GenerateFormProps) => {
                     }}
                   >
                     <span>{t('auth.notReciveid')}</span>
-                    <Link style={{ color: '#FBC000' }} to={"/forgotpassword/"}>
+                    <a style={{ color: '#FBC000' }} href="#" onClick={(e: any) => resendCode(e)}>
                       {t('auth.resendCode')}
-                    </Link>
+                    </a>
                   </div>
                 </div>
                 <div className={styles.codeErrorMessage} >{field.errorsServer}</div>

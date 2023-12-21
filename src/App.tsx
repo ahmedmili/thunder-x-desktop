@@ -3,7 +3,7 @@ import { CssBaseline } from "@mui/material";
 import "bootstrap/dist/css/bootstrap.min.css";
 import { Suspense, lazy, startTransition, useCallback, useEffect, useState } from "react";
 import { Navigate, Outlet, Route, Routes, useLocation, useNavigate } from "react-router-dom";
-// import { ToastContainer, toast } from "react-toastify";
+import { ToastContainer, toast } from "react-toastify";
 
 import Layout from "./components/layout/layout";
 
@@ -84,7 +84,7 @@ function App({ initialData }: AppProps) {
     setUpdateTrigger((prev) => !prev);
   }, []);
 
-  
+
   // console.log("menuResponse", initialData.menuResponse.data)
 
   useEffect(() => {
@@ -272,7 +272,7 @@ function App({ initialData }: AppProps) {
   return (
     <>
       <CssBaseline />
-      {/* <ToastContainer /> */}
+      <ToastContainer />
       <Suspense fallback={(typeof window != "undefined") ?
         <>
           {/* <Header />
@@ -295,7 +295,17 @@ function App({ initialData }: AppProps) {
             <Route path="/search/:search?/*" element={<FilterPage />} />
             {/* Private Route */}
             {/* <Route path="track-order/*" element={<OrderTrackingPage />} /> */}
+
           </Route>
+
+          <Route path="unauthorized/*" element={<UnauthorizePage />} />
+          <Route path="/login" element={<LoginPage />} />
+          <Route path="register/*" element={<RegisterPage />} />
+          <Route path="/confirm/:userId/*" element={<ConfirmNumberPage />} />
+          <Route path="welcome/*" element={<WelcomePage />} />
+          <Route path="forgotpassword/" element={<ForgotPasswordPage />} />
+          <Route path="forgotpassword/verif/:email/" element={<Verify />} />
+
           <Route element={<ProtectedRoute children={undefined} />}>
             <Route path="/profile" element={<Profile />}>
               <Route index element={<ConfigPage />} />
@@ -308,13 +318,6 @@ function App({ initialData }: AppProps) {
             </Route>
           </Route>
 
-          <Route path="unauthorized/*" element={<UnauthorizePage />} />
-          <Route path="login/*" element={<LoginPage />} />
-          <Route path="register/*" element={<RegisterPage />} />
-          <Route path="confirm/*" element={<ConfirmNumberPage />} />
-          <Route path="welcome/*" element={<WelcomePage />} />
-          <Route path="forgotpassword/" element={<ForgotPasswordPage />} />
-          <Route path="forgotpassword/verif/:email/" element={<Verify />} />
         </Routes>
       </Suspense>
     </>

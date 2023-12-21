@@ -5,7 +5,8 @@ import { useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import * as Yup from "yup";
 import { fetchHomeData, isDeliveryHomeSelector } from "../Redux/slices/home";
-import { createUser, usersErrors, usersLoding } from "../Redux/slices/users";
+import { setUserCredentials } from "../Redux/slices/userSlice";
+import { usersErrors, usersLoding } from "../Redux/slices/users";
 import { useAppDispatch, useAppSelector } from "../Redux/store";
 import Apple from "../assets/icons/Apple";
 import Facebook from "../assets/icons/Facebook";
@@ -16,6 +17,8 @@ import CardPage from "../components/card-page/CardPage";
 import LinkConnect from "../components/link-connect/LinkConnect";
 import Or from "../components/or/Or";
 import PicturesList from "../components/picture-list/PicturesList";
+import { api } from "../services/axiosApi";
+import { IUser } from "../services/types";
 import { FormValues, generateForm } from "../utils/formUtils";
 
 const Register = () => {
@@ -144,17 +147,24 @@ const Register = () => {
     phone: "",
   };
 
+  const saveUser = (user: IUser, token: string) => {
+    dispatch(setUserCredentials({ user, token }));
+    navigate('/');
+  }
+
   const onSubmit = async (
     values: FormValues,
     { setSubmitting, resetForm }: FormikHelpers<FormValues>
   ) => {
     try {
-      const response = await dispatch(createUser(values));
-      const { success } = response?.data;
-      if (success) {
-        setSubmitting(false);
+      const response = await api.post("signupclient", values);
+      const data = response.data
+      if (data.success) {
+        const userData = data.data;
+        const clientData = userData.client;
+        const accountStatus = clientData.status;
         resetForm();
-        navigate("/confirm");
+        accountStatus === 4 ? navigate(`/confirm/${clientData.id}/`) : accountStatus === 1 && saveUser(clientData, userData.token);
       }
       setSubmitting(false);
     } catch (error) {

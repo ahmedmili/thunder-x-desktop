@@ -17,9 +17,10 @@ import { FormValues, generateForm } from "../../utils/formUtils";
 import { useNavigate } from "react-router-dom";
 
 import { useTranslation } from "react-i18next";
-import { setUser } from "../../Redux/slices/userSlice";
+import { setUserCredentials } from "../../Redux/slices/userSlice";
 import { userService } from "../../services/api/user.api";
-import { localStorageService } from "../../services/localStorageService";
+import { IUser } from "../../services/types";
+import { toast } from "react-toastify";
 
 const LoginPage = () => {
   const [showPassword, setShowPassword] = useState(false);
@@ -79,13 +80,32 @@ const LoginPage = () => {
       .label("Password"),
   });
 
+  const saveUser = (user: IUser, token: string) => {
+    dispatch(setUserCredentials({ user, token }));
+    navigate('/');
+  }
 
   const onSubmitHandler = async (values: any) => {
     try {
       const { token, user } = await userService.loginUser(values);
-      localStorageService.setUserCredentials(user, token);
-      dispatch(setUser(user));
-      navigate("/"); // Redirect to the home page
+      if (user) {
+        const userState = user.status ? user.status : user.status_id
+        switch (userState) {
+          case 1:
+            saveUser(user, token)
+            user.rollback && toast.success(t('auth.restoredAccount')) 
+            setErrorServer('')
+            break;
+          case 4:
+            navigate(`/confirm/${user.id}/`);
+            break;
+          default:
+            break;
+        }
+      } else {
+
+      }
+
     } catch (error: any) {
       if (error.response) {
         if (Array.isArray(error.response.data.error)) {
@@ -95,7 +115,8 @@ const LoginPage = () => {
           const errorMessage = error.response.data.message
 
           setErrorServer(`${t('auth.invalideCredentials')}`)
-
+          errorMessage === 'account blocked.' ? setErrorServer(`${t('auth.accountStatus.blocked')}`) :
+            errorMessage === 'Login credentials are invalid.' ? setErrorServer(`${t('auth.invalideCredentials')}`) : setErrorServer(errorMessage)
         }
       } else {
         // toast.error("Something went wrong. Please try again.", {
