@@ -54,9 +54,11 @@ const Menu: React.FC<AppProps> = ({ initialData }) => {
   useEffect(() => {
     const schedules = displayedRestaurant ? displayedRestaurant.schedules : []
     var currentDayObject = schedules.find((day: any) => day.day === today);
-    let closeTimeArray = currentDayObject.to.toString().split(':')
-    let closeTime = `${closeTimeArray[0]}:${closeTimeArray[1]}`
-    setCloseTime(closeTime)
+    if (currentDayObject) {
+      let closeTimeArray = currentDayObject.to.toString().split(':')
+      let closeTime = `${closeTimeArray[0]}:${closeTimeArray[1]}`
+      setCloseTime(closeTime)
+    }
   }, [displayedRestaurant])
 
   // handle messanger

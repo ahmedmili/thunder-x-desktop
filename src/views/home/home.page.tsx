@@ -45,9 +45,6 @@ const HomePage = ({ initialData }: AppProps) => {
     setUnReadedQt(unReadMessages)
   }, [unReadMessages])
 
-  useEffect(() => {
-    console.log('populair : ', popular)
-  }, [])
   const [selectedCategory, setSelectedCategory] = useState<string>("");
   const [filteredRestaurants, setFilteredRestaurants] = useState<Restaurant[]>([]);
 

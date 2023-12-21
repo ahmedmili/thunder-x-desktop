@@ -17,12 +17,9 @@ import { FormValues, generateForm } from "../../utils/formUtils";
 import { useNavigate } from "react-router-dom";
 
 import { useTranslation } from "react-i18next";
-// import { toast } from "react-toastify";
 import { setUser } from "../../Redux/slices/userSlice";
 import { userService } from "../../services/api/user.api";
 import { localStorageService } from "../../services/localStorageService";
-// import { OldSocialLogin as SocialLogin } from "react-social-login";
-
 const LoginPage = () => {
   const [showPassword, setShowPassword] = useState(false);
 
@@ -32,7 +29,6 @@ const LoginPage = () => {
   const { t } = useTranslation()
 
   const handlePasswordToggle = () => {
-    console.log("toggle")
     setShowPassword((password) => !password)
   }
   const fields = [
