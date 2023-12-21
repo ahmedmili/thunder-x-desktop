@@ -22,6 +22,7 @@ import Messanger from '../Popups/Messanger/Messanger';
 import SameSupplierWarn from '../Popups/SameSupplierWarn/SameSupplierWarn';
 import './menus.scss';
 
+import moment from 'moment';
 import ActiveGiftIcon from '../../assets/profile/ArchivedCommands/gift-active.png';
 import GiftIcon from '../../assets/profile/ArchivedCommands/gift.svg';
 import ClosedSupplier from '../Popups/ClosedSupplier/ClosedSupplier';
@@ -45,7 +46,20 @@ const Menu: React.FC<AppProps> = ({ initialData }) => {
   const { id, search, productId } = useParams<{ id: string, search?: string, productId?: string }>();
   const [selectedOption, setSelectedOption] = useState<string>(search ? search : "All");
   const [isOpen, setIsOpen] = useState<boolean>(true);
+  const [closeTime, setCloseTime] = useState<string>('');
   const idNumber = id?.split('-')[0];
+  var currentDate = moment();
+  var today = currentDate.format('ddd');  // Get the current day name (e.g., 'Mon', 'Tue', etc.)
+
+  useEffect(() => {
+    const schedules = displayedRestaurant ? displayedRestaurant.schedules : []
+    var currentDayObject = schedules.find((day: any) => day.day === today);
+    if (currentDayObject) {
+      let closeTimeArray = currentDayObject.to.toString().split(':')
+      let closeTime = `${closeTimeArray[0]}:${closeTimeArray[1]}`
+      setCloseTime(closeTime)
+    }
+  }, [displayedRestaurant])
 
   // handle messanger
   const unReadMessages = useAppSelector((state) => state.messanger.unReadedMessages)
@@ -166,7 +180,7 @@ const Menu: React.FC<AppProps> = ({ initialData }) => {
     }
     setLoading(false);
   };
-  
+
   const getSupplierIsOpen = async () => {
     const { status, data } = await supplierServices.getSupplierISoPENById(Number(idNumber!))
     data.data.is_open === 1 ? setIsOpen(true) : setIsOpen(false)
@@ -245,10 +259,11 @@ const Menu: React.FC<AppProps> = ({ initialData }) => {
           <CircularProgress sx={{ alignSelf: 'center', my: '2rem' }} />
         ) :
           (
-            filtreddMenuData.map((menuItem) => {
+            filtreddMenuData.map((menuItem: MenuData) => {
               const menuItemId = menuItem.id;
               const menuItemProducts = menuItem.products;
-
+              const isDiscount = menuItem.is_discount
+              const discountVal = isDiscount ? menuItem.discount_value : 0
               const indexOfLastProduct = currentPage[menuItemId]
                 ? currentPage[menuItemId] * productsPerPage
                 : productsPerPage;
@@ -263,24 +278,36 @@ const Menu: React.FC<AppProps> = ({ initialData }) => {
                     <span className='menu-item-header-title'>
                       {menuItem.name}
                     </span>
-                    <span className='menu-item-header-choix'>
-                      {menuItemProducts.length} choix
-                    </span>
-                  </div>
-                  {menuItemProducts.length > productsPerPage ? (
-                    <Pagination
-                      style={{ marginTop: '1rem' }}
-                      count={Math.ceil(menuItemProducts.length / productsPerPage)}
-                      page={currentPage[menuItemId] || 1}
-                      onChange={(event, page) =>
-                        handlePaginationClick(page, menuItemId)
+                    <div className='menu-item-header-info-container'>
+                      {
+                        !isDiscount &&
+                        <span className='menu-item-header-choix'>
+                          {menuItemProducts.length} choix
+                        </span>
                       }
-                    />
-                  ) : (
-                    <div className='epmty-pagination'>
-
+                      {
+                        isDiscount && <span className='discount-label'>
+                          {discountVal} %
+                        </span>
+                      }
                     </div>
-                  )
+
+                  </div>
+                  {
+                    menuItemProducts.length > productsPerPage ? (
+                      <Pagination
+                        style={{ marginTop: '1rem' }}
+                        count={Math.ceil(menuItemProducts.length / productsPerPage)}
+                        page={currentPage[menuItemId] || 1}
+                        onChange={(event, page) =>
+                          handlePaginationClick(page, menuItemId)
+                        }
+                      />
+                    ) : (
+                      <div className='epmty-pagination'>
+
+                      </div>
+                    )
                   }
 
                   <div className='product-container'>
@@ -295,6 +322,16 @@ const Menu: React.FC<AppProps> = ({ initialData }) => {
                               {`${t('price')}: ${Math.round(product.price)} DT`}
                             </p>
                             <p className="product-description" dangerouslySetInnerHTML={{ __html: product.description }}></p>
+                            <div className='labels-container'>
+                              {
+                                product.is_popular ?
+                                  <span className='popular-label'>Popular</span> : <></>
+                              }
+                              {
+                                product.discount_value && product.discount_value > 0 ?
+                                  <span className='discount-label'>{product.discount_value} {product.discount_type === "PERCENTAGE" ? "%" : ""} </span> : <></>
+                              }
+                            </div>
                             <button className="product-button"
                               onClick={() => {
                                 handleChooseOptions(product);
@@ -313,7 +350,7 @@ const Menu: React.FC<AppProps> = ({ initialData }) => {
                       ))}
                     </div>
                   </div>
-                </div>
+                </div >
               );
             }
             )
@@ -330,7 +367,7 @@ const Menu: React.FC<AppProps> = ({ initialData }) => {
             <div className={`open-time ${!isOpen && "closed-time"} `}>
               {
                 isOpen ?
-                  <span>{t("supplier.opentime")} {displayedRestaurant?.closetime}</span>
+                  <span>{t("supplier.opentime")} {closeTime}</span>
                   :
                   <span>{t("closed")}</span>
 

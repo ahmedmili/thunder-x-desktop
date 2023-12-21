@@ -23,8 +23,7 @@ const SupplierCard: React.FC<SupplierCard> = ({ data, favors = false, className 
     const { t } = useTranslation();
 
     const [fav, setFav] = useState<boolean>(data.favor !== undefined ? data.favor : favors);
-
-
+    const isOpen = data.status === 1 ? true : false;
 
 
     const getImageUrl = (restaurant: Restaurant) => {
@@ -120,7 +119,7 @@ const SupplierCard: React.FC<SupplierCard> = ({ data, favors = false, className 
                                     }
                                     <Star className={supplierStyle.starIcon} />
                                 </span>
-                            
+
                             </p>
                             {/* option take_away & delivery */}
                             <p className={supplierStyle.option} >
@@ -145,10 +144,18 @@ const SupplierCard: React.FC<SupplierCard> = ({ data, favors = false, className 
                                 </span>
                                 {/* time lable */}
                                 {data.medium_time && (
-                                    <Box className={supplierStyle.restaurantTime}>
-                                        <p>
-                                            {`${data.medium_time - 10}mins - ${data.medium_time + 10}mins`}
-                                        </p>
+                                    <Box className={`${supplierStyle.restaurantTime} ${!isOpen ? supplierStyle.closedSpan : ""}`}>
+                                        {
+                                            isOpen ? (
+                                                <p>
+                                                    {`${data.medium_time - 10}-${data.medium_time + 10} mins`}
+                                                </p>
+                                            ) : (
+                                                <p >
+                                                    {t('closed')}
+                                                </p>
+                                            )
+                                        }
                                     </Box>
                                 )}
                             </div>

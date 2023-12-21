@@ -48,12 +48,18 @@ export type MenuData = {
   position: number;
   image: string;
   price: number;
+  is_discount?: boolean;
+  discount_value?: number;
   products: Array<{
     id: number;
     name: string;
     description: string;
     price: number;
     image: any;
+    is_popular?: number;
+    discount_type?: string;
+    discount_value?: number;
+    discount_price?: number;
   }>;
 };
 export interface IGenericResponse {
@@ -208,6 +214,10 @@ export interface Restaurant {
   plates: string[];
   favor?: boolean;
   bonus?: number;
+  is_popular?: number;
+  discount_type?: string;
+  discount_value?: number;
+  discount_price?: number;
 }
 
 export interface Message {
