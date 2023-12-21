@@ -146,6 +146,20 @@ const CartPage: React.FC = () => {
     fetchMessages()
   }, [])
 
+  useEffect(() => {
+    {/* total delivPrice giftAmmount discountValue promoReduction  appliedBonus */ }
+    // console.log("______________________________________________________________________________")
+    // console.log("sousTotal : ", sousTotal)
+    // console.log("total : ", total)
+    // console.log("delivPrice : ", delivPrice)
+    // console.log("giftAmmount : ", giftAmmount)
+    // console.log("discountValue : ", discountValue)
+    // console.log("promoReduction : ", promoReduction)
+    // console.log("appliedBonus : ", appliedBonus)
+    // console.log("______________________________________________________________________________")
+    console.log("cartItems : ", cartItems)
+  }, [discountValue])
+
   // article component 
   interface Article {
     item: FoodItem,
@@ -154,7 +168,9 @@ const CartPage: React.FC = () => {
 
   const ArticleProvider: React.FC<Article> = ({ item, remove }) => {
     const [count, setCount] = useState<number>(item.quantity)
-
+    // useEffect(() => {
+    //   console.log("item", item)
+    // }, [])
     const handleIncreaseQuantity = () => {
       dispatch(
         changeItemQuantity({
@@ -400,13 +416,6 @@ const CartPage: React.FC = () => {
     dispatch(setSupplier(null));
   }
 
-
-  /*
-  
-  
-  
-  */
-
   //  get gifts
   const getclientGift = async () => {
     if (cartItems.length > 0) {
@@ -453,7 +462,6 @@ const CartPage: React.FC = () => {
     setLimitReachedBonus(false)
   }
 
-
   // calc bonus
   const applyBonus = () => {
     let sum = 0;
@@ -491,7 +499,6 @@ const CartPage: React.FC = () => {
     const { status, data } = await cartService.getAllPromoCodes()
     setPromosList(data.data)
   }
-
 
   //  check promo validation
   const checkPromoCode = async () => {
@@ -609,11 +616,14 @@ const CartPage: React.FC = () => {
   const getSousTotal = () => {
 
     let cartItems2 = [...cartItems];
+    console.log("cartItems2.1", cartItems2)
+    var discount = 0;
     cartItems.forEach((item: any, index: number) => {
       let sub_total_final = item.total;
       if (item.product.computed_value.discount_value && item.product.computed_value.discount_value > 0) {
         sub_total_final = item.total - ((item.total * item.product.computed_value.discount_value) / 100)
-        discount += ((item.total * item.product.computed_value.discount_value) / 100)
+        // discount += ((item.unitePrice * item.product.computed_value.discount_value) / 100)
+        discount += ((item.product.old_value - item.product.cost) * item.quantity)
       }
 
       cartItems2[index] = {
@@ -626,7 +636,9 @@ const CartPage: React.FC = () => {
         },
       }
     })
+
     setDiscountValue(discount)
+    console.log("cartItems2.2", cartItems2)
     cartItems = cartItems2;
     let sum = 0;
 
@@ -731,16 +743,11 @@ const CartPage: React.FC = () => {
 
   }, [supplier])
 
-  // useEffect(() => {
-  //   console.log("searchByDeliv : ", searchByDeliv)
-  //   searchByDeliv ? setSelectedOption(3) : setSelectedOption(2);
-  // }, [])
-
   // calc total for each changement 
   useEffect(() => {
     let check = supplier && cartItems.length > 0
     check && calcTotal()
-  }, [sousTotal, giftApplied, appliedBonus, promoReduction, delivPrice]);
+  }, [sousTotal, giftApplied, appliedBonus, promoReduction, delivPrice, discountValue]);
 
   const goNextStep: MouseEventHandler<HTMLButtonElement> = ((event) => {
     setCurrentStep(2);
@@ -995,42 +1002,8 @@ const CartPage: React.FC = () => {
                             </div>
 
                           </div>
-                          <div className="adress">
-                            <p className="title" style={{ margin: 0 }} >
-                              {t('profile.mesConfig.delivAdress')} :
-                            </p>
-                            <p className="adress-text">
-                              {userPosition?.coords.label}
-                            </p>
-                          </div>
-
-                          <div className="buttons">
-                            <button className="continue" onClick={() => navigate('/', { replace: true })}>
-                              {t('cartPage.continueAchats')}
-                            </button>
-                            <button className="commander"
-                              onClick={() =>
-                                submitOrder(
-                                  cartItems,
-                                  deliveryOption,
-                                  name,
-                                  phoneNumber,
-                                  aComment,
-                                  total,
-                                  appliedBonus,
-                                  dispatch,
-                                  userPosition,
-                                  supplier.id,
-                                  deliveryPrice
-                                )
-                              }
-                            >
-                              {t('cartPage.commander')}
-                            </button>
-                          </div>
-
                         </div>
-                      )}
+                        )}
                     </div>
 
                     {/* 
@@ -1061,6 +1034,7 @@ const CartPage: React.FC = () => {
                                 <span> - {(promoReduction).toFixed(2)} DT</span>
                               </div>
                             )
+
                           }
                           {
                             discountValue > 0 && (
