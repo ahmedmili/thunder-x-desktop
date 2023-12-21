@@ -220,7 +220,6 @@ async function resendSMS(userId: number) {
       `resendsms/${userId}`, { observe: 'response' }
     );
     const { status, data } = response;
-    console.log("resend SMS")
     return { status, data };
   } catch (error) {
     throw error;
