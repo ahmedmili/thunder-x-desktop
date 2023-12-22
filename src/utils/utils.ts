@@ -29,10 +29,12 @@ export const isInsideRegions = (coupons: any[], lat: number, lng: number): any[]
     return coupons.filter((coupon) => {
         if (coupon.regionsPromo.length === 0) {
             return true;
+        } else {
+            return coupon.regionsPromo.some((region: any) => {
+                const polygonCoordinates = parseCoordinates(region.point);
+                const coordsInPolygon = pointInPolygon([lat, lng], polygonCoordinates)
+                return coordsInPolygon;
+            });
         }
-        return coupon.regionsPromo.some((region: any) => {
-            const polygonCoordinates = parseCoordinates(region.point);
-            return pointInPolygon([lat, lng], polygonCoordinates);
-        });
     });
 }

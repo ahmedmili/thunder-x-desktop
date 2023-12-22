@@ -122,7 +122,7 @@ const ConfigPage = () => {
             <Politiques />
           </div>
         }
-        <SettingSection settingIndex={6} actionListener={handleselect} title='Désactiver mon compte' className={`${selectedSetting === 6 ? "active" : ""}`} />
+        <SettingSection settingIndex={6} actionListener={handleselect} title={t('profile.desactive.Desactiveok')} className={`${selectedSetting === 6 ? "active" : ""}`} />
         {
           selectedSetting === 6 &&
           <div className='desactive-container'>
@@ -133,7 +133,7 @@ const ConfigPage = () => {
         {
           selectedSetting === 7 &&
           <div className='desactive-container'>
-            <DesactiveAccount  type='delete'/>
+            <DesactiveAccount type='delete' />
           </div>
         }
 
