@@ -15,17 +15,22 @@ interface LanguageDetectorInterface {
 
 const defaultLanguage = 'fr';
 
+if (typeof window !== 'undefined') {
+  // Code to execute when window is defined
+}
+
 const languageDetector: LanguageDetectorInterface = {
+
   type: 'languageDetector',
   async: true,
   detect: (cb) => {
-    const storedLanguage = localStorage.getItem('i18nextLng');
+    const storedLanguage = (typeof window !== 'undefined') ? localStorage.getItem('i18nextLng') : false;
     const userLanguage = storedLanguage || defaultLanguage;
     cb(userLanguage);
   },
   init: () => { },
   cacheUserLanguage: (lng) => {
-    localStorage.setItem('i18nextLng', lng);
+    (typeof window !== 'undefined') && localStorage.setItem('i18nextLng', lng);
   },
 };
 
