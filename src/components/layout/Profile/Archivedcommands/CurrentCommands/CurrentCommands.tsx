@@ -72,10 +72,9 @@ const Command: React.FC<CommandProps> = ({ removeCommand, data }) => {
         setTotal(total)
     }
 
-    // useEffect(() => {
-    //     calculeData()
-    //     console.log("data", data)
-    // }, [data])
+    useEffect(() => {
+        calculeData()
+    }, [data])
 
     return (
         <div className='command-product-container'>
@@ -168,6 +167,7 @@ const CurrentCommands: React.FC<CommandsListProps> = ({ removeCommand, goToPasse
     const supplier = data.supplier
     const delivery = data.delivery
     const cycle = data.cycle
+    const isReady = data.is_ready
     const isDelevery = data.is_delivery
     const take_away_date = data.take_away_date
     const lat = supplier.localisation.lat;
@@ -254,7 +254,10 @@ const CurrentCommands: React.FC<CommandsListProps> = ({ removeCommand, goToPasse
     };
 
     useEffect(() => {
-        const { message, status } = getProgressDescription(cycle)
+        const { message, status } = isReady ? {
+            message: t('orderTrackingPage.isReady'),
+            status: 6
+        } : getProgressDescription(cycle)
         setStatus(status)
         setMessage(message)
     }, [])
@@ -275,9 +278,6 @@ const CurrentCommands: React.FC<CommandsListProps> = ({ removeCommand, goToPasse
         }
     }
 
-    useEffect(() => {
-        console.log("isDelevery", isDelevery)
-    }, [isDelevery])
     return (
 
         <>
@@ -304,7 +304,7 @@ const CurrentCommands: React.FC<CommandsListProps> = ({ removeCommand, goToPasse
                             status > 2 && status < 6 && <p className="description">{t('profile.commands.sousMessage2')}</p>
                         }
                         {
-                            status == 6 && <p className="description">{t('profile.commands.sousMessage3')}</p>
+                            status == 6 && isDelevery ? <p className="description">{t('profile.commands.sousMessage3')}</p> : <p>{t('orderTrackingPage.importedReady')}</p>
                         }
                         <div className='command-graph'>
                             <div className='time-line'></div>
@@ -384,9 +384,9 @@ const CurrentCommands: React.FC<CommandsListProps> = ({ removeCommand, goToPasse
                                         )
                                     }
                                 </>
-                            ) : (
+                            ) : status > 2 && (
                                 <>
-                                    {/* <div className="buttons">
+                                    <div className="buttons">
                                         <button className='lieu-button' onClick={openGoogleMap}> <span className='position-icon' style={{ backgroundImage: `url(${positionIconBlue})` }}></span> {t('profile.commands.lieu')}</button>
                                         {
                                             status == 6 && (
@@ -396,17 +396,17 @@ const CurrentCommands: React.FC<CommandsListProps> = ({ removeCommand, goToPasse
                                         }
 
                                     </div>
-                                    <hr /> */}
-                                    {/* <div className='import-position'>
+                                    <hr />
+                                    <div className='import-position'>
                                         <div className='position-icon' style={{ backgroundImage: `url(${positionIcon}) ` }}></div>
                                         <p className='position-text' > {position}</p>
-                                    </div> */}
+                                    </div>
 
-                                    {/* <div className='tacke-away-date'>
+                                    <div className='tacke-away-date'>
                                         <span>{t('profile.commands.prevu')}:</span>
                                         <span>{date}</span>
                                         <span>{time}</span>
-                                    </div> */}
+                                    </div>
 
                                 </>
                             )

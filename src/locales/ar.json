@@ -49,9 +49,8 @@
   "auth.verifSMS.page": "تحقق من حسابك",
   "auth.verifSMS.page.desc": "لقد قمنا لتونا بإرسال رمز مكون من 6 أرقام إلى رقمك",
   "auth.verifSMS.ERROR_RESEND": "لقد تجاوزت عدد المحاولات المسموح بها (3 رسائل في الساعة)",
-  "auth.verifSMS.SUCCESS_RESEND":"وقع إرسال الطلب",
+  "auth.verifSMS.SUCCESS_RESEND": "وقع إرسال الطلب",
   "auth.restoredAccount": "تهانينا، تم استعادة الحساب! نحن سعداء بأن نرحب بك مرة أخرى بيننا!",
-
   "auth.notReciveid": "لم يتم استلامه",
   "auth.resendCode": "إعادة إرسال الرمز",
   "forgetPassword.useMyPhone": "استخدم رقمي",
@@ -161,6 +160,8 @@
   "orderTrackingPage.command_is_on_its_way": "الطلب في طريقه",
   "orderTrackingPage.you_have_no_commands_yet": "ليس لديك أي طلبات بعد",
   "orderTrackingPage.price": "السعر:",
+  "orderTrackingPage.importedReady": "في انتظار الاستلام من المطعم",
+  "orderTrackingPage.isReady": "الطلب جاهز",
   "orderTrackingPage.oldCommands": "طلباتي السابقة",
   "orderTrackingPage.currentCommands": "تتبع طلباتي",
   "orderTrackingPage.archivedCommands": "أرشيف الطلبات",
@@ -198,7 +199,6 @@
   "todayOffre.title": "خصم يصل إلى 25% - عروض الوجبات",
   "todayOffre.message1": "بحاجة إلى استراحة من المطبخ أو مجرد رغبة في طهي الخاص بك ",
   "todayOffre.message2": "المطعم المفضل? ",
-
   "deliveryPrice": "سعر التوصيل:",
   "open": "مفتوح",
   "closed": "مغلق",
