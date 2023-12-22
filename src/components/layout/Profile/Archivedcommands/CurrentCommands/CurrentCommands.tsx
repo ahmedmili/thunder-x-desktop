@@ -166,6 +166,7 @@ const CurrentCommands: React.FC<CommandsListProps> = ({ removeCommand, goToPasse
     const { t } = useTranslation()
     const supplier = data.supplier
     const delivery = data.delivery
+    const toAdress = data.to_adresse
     const cycle = data.cycle
     const isReady = data.is_ready
     const isDelevery = data.is_delivery
@@ -174,6 +175,7 @@ const CurrentCommands: React.FC<CommandsListProps> = ({ removeCommand, goToPasse
     const long = supplier.localisation.long;
     const position = supplier.street + " " + supplier.region + " " + supplier.city
     const [status, setStatus] = useState<number>(0)
+
 
     const [messsage, setMessage] = useState<string>('')
     const [time, setTime] = useState<string>('')
@@ -399,7 +401,7 @@ const CurrentCommands: React.FC<CommandsListProps> = ({ removeCommand, goToPasse
                                     <hr />
                                     <div className='import-position'>
                                         <div className='position-icon' style={{ backgroundImage: `url(${positionIcon}) ` }}></div>
-                                        <p className='position-text' > {position}</p>
+                                        <p className='position-text' > {toAdress}</p>
                                     </div>
 
                                     <div className='tacke-away-date'>
@@ -420,7 +422,7 @@ const CurrentCommands: React.FC<CommandsListProps> = ({ removeCommand, goToPasse
                             </div>
                         )
                     }
-                    {/* {status != 6 && <CommandsFooter />} */}
+                    {status != 6 && <CommandsFooter />}
                 </main >
             </div >
 
