@@ -122,7 +122,7 @@
   "profile.commands.INPROGRESS": "في مرحلة الإعداد",
   "profile.commands.delivTime": "وقت الوصول",
   "profile.commands.recupere": " استعادة الطلب",
-  "profile.commands.prevu": "الاستيلام في :",
+  "profile.commands.prevu": "الاستيلام في ",
   "profile.commands.recue": "إستلام الطلب",
   "profile.commands.problem": "االابلاغ عن مشكل ؟",
   "profile.commands.lieu": "مشاهدة الموقع",

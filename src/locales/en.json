@@ -106,7 +106,7 @@
   "profile.commands.INPROGRESS": "In preparation phase",
   "profile.commands.delivTime": "Arrival Time",
   "profile.commands.recupere": "Order Recovered",
-  "profile.commands.prevu": "Planned for the :",
+  "profile.commands.prevu": "Planned for the ",
   "profile.commands.recue": "Order received",
   "profile.commands.problem": "Reporting a problem ?",
   "profile.commands.lieu": "View Location",

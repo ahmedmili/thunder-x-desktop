@@ -109,7 +109,7 @@
   "profile.commands.INPROGRESS": "En phase de préparation",
   "profile.commands.delivTime": "Temps de déplacement",
   "profile.commands.recupere": "Commande récuperé",
-  "profile.commands.prevu": "Prévu le :",
+  "profile.commands.prevu": "Prévu le ",
   "profile.commands.recue": "Commande reçue",
   "profile.commands.problem": "Signaler un problème ?",
   "profile.commands.lieu": "Voir le lieu",

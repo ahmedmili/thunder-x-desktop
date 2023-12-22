@@ -416,13 +416,13 @@ const CurrentCommands: React.FC<CommandsListProps> = ({ removeCommand, goToPasse
 
                     </div>
                     {
-                        status == 6 && (
+                        status == 6 && isDelevery ? (
                             <div className='buttons'>
                                 <button className="problem" onClick={handleProblemPopup}>{t('profile.commands.problem')}</button>
                             </div>
-                        )
+                        ) : <></>
                     }
-                    {status != 6 && <CommandsFooter />}
+                    {status != 6 ? <CommandsFooter /> : <></>}
                 </main >
             </div >
 
