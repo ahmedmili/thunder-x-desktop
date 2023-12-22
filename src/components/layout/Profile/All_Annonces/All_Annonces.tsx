@@ -112,9 +112,10 @@ const Annonces = () => {
     const { status, data } = await cartService.getAllPromoCodes()
     if (status === 200) {
       const list = data.data;
+
       const location = await localStorageService.getCurrentLocation()
       let address = JSON.parse(location!).coords
-      let couponList = isInsideRegions(list, address.lat, address.long);
+      let couponList = isInsideRegions(list, address.latitude, address.longitude);
       setAllPromoCodes(couponList)
       setLoading(false);
     }
