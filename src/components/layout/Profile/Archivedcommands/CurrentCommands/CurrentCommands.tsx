@@ -303,10 +303,10 @@ const CurrentCommands: React.FC<CommandsListProps> = ({ removeCommand, goToPasse
                             status <= 2 && <p className="description">{t('profile.commands.sousMessage')}</p>
                         }
                         {
-                            status > 2 && status < 6 && <p className="description">{t('profile.commands.sousMessage2')}</p>
+                            status > 2 && status < 6 && !isReady && <p className="description">{t('profile.commands.sousMessage2')}</p>
                         }
                         {
-                            status == 6 && isDelevery ? <p className="description">{t('profile.commands.sousMessage3')}</p> : <p>{t('orderTrackingPage.importedReady')}</p>
+                            status == 6 && isDelevery && isReady ? <p className="description">{t('profile.commands.sousMessage3')}</p> : !isDelevery && isReady ? <p className="description">{t('orderTrackingPage.importedReady')}</p> : <></>
                         }
                         <div className='command-graph'>
                             <div className='time-line'></div>
