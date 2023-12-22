@@ -24,6 +24,7 @@ const Longue = () => {
         setSelectedLangue(2)
         break;
       case 'en':
+      case 'en-US':
         setSelectedLangue(3)
         break;
       default:
