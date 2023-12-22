@@ -38,6 +38,7 @@ interface CommandProps {
     data: {
         products: [],
         total_price: number,
+        is_delivery: number,
         delivery_price: number
         command_id: number,
         bonus: number,
@@ -71,9 +72,10 @@ const Command: React.FC<CommandProps> = ({ removeCommand, data }) => {
         setTotal(total)
     }
 
-    useEffect(() => {
-        calculeData()
-    }, [data])
+    // useEffect(() => {
+    //     calculeData()
+    //     console.log("data", data)
+    // }, [data])
 
     return (
         <div className='command-product-container'>
@@ -90,10 +92,13 @@ const Command: React.FC<CommandProps> = ({ removeCommand, data }) => {
                 <span className='left-price'>{total.toFixed(2)} DT</span>
             </div>
             {/* deliv price */}
-            <div className='deliv-price'>
-                <span>{t('supplier.delivPrice')}</span>
-                <span className='left-price'>{data.coupon.delivery_fixed === 1 ? data.delivery_price : (data.delivery_price - data.total_price_coupon).toFixed(2)} DT</span>
-            </div>
+            {
+                data.is_delivery === 1 &&
+                <div className='deliv-price'>
+                    <span>{t('supplier.delivPrice')}</span>
+                    <span className='left-price'>{data.coupon.delivery_fixed === 1 ? data.delivery_price : (data.delivery_price - data.total_price_coupon).toFixed(2)} DT</span>
+                </div>
+            }
             {/* products discriptions */}
             <ul>
                 {(data.products && data.products.length > 0) &&
@@ -174,7 +179,6 @@ const CurrentCommands: React.FC<CommandsListProps> = ({ removeCommand, goToPasse
     const [time, setTime] = useState<string>('')
     const [date, setDate] = useState<string>('')
     const [problemPopup, setProblemPopup] = useState<boolean>(false)
-
 
     const handleProblemPopup = () => {
         setProblemPopup(current => !current)
@@ -267,11 +271,15 @@ const CurrentCommands: React.FC<CommandsListProps> = ({ removeCommand, goToPasse
             total_price_coupon: Number(data.total_price_coupon),
             mode_pay: data.mode_pay,
             coupon: data.coupon,
+            is_delivery: isDelevery,
         }
-
     }
+
+    useEffect(() => {
+        console.log("isDelevery", isDelevery)
+    }, [isDelevery])
     return (
-      
+
         <>
             <div className="current-commands-container">
                 <header className={` current-command-header `}>
@@ -378,7 +386,7 @@ const CurrentCommands: React.FC<CommandsListProps> = ({ removeCommand, goToPasse
                                 </>
                             ) : (
                                 <>
-                                    <div className="buttons">
+                                    {/* <div className="buttons">
                                         <button className='lieu-button' onClick={openGoogleMap}> <span className='position-icon' style={{ backgroundImage: `url(${positionIconBlue})` }}></span> {t('profile.commands.lieu')}</button>
                                         {
                                             status == 6 && (
@@ -388,17 +396,17 @@ const CurrentCommands: React.FC<CommandsListProps> = ({ removeCommand, goToPasse
                                         }
 
                                     </div>
-                                    <hr />
-                                    <div className='import-position'>
+                                    <hr /> */}
+                                    {/* <div className='import-position'>
                                         <div className='position-icon' style={{ backgroundImage: `url(${positionIcon}) ` }}></div>
                                         <p className='position-text' > {position}</p>
-                                    </div>
+                                    </div> */}
 
-                                    <div className='tacke-away-date'>
+                                    {/* <div className='tacke-away-date'>
                                         <span>{t('profile.commands.prevu')}:</span>
                                         <span>{date}</span>
                                         <span>{time}</span>
-                                    </div>
+                                    </div> */}
 
                                 </>
                             )
@@ -412,7 +420,7 @@ const CurrentCommands: React.FC<CommandsListProps> = ({ removeCommand, goToPasse
                             </div>
                         )
                     }
-                    {status != 6 && <CommandsFooter />}
+                    {/* {status != 6 && <CommandsFooter />} */}
                 </main >
             </div >
 
