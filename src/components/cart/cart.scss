@@ -60,7 +60,8 @@
       &:hover {
         cursor: pointer;
       }
-      .close-icon{
+
+      .close-icon {
         font-size: 28px;
       }
     }
@@ -144,8 +145,8 @@
           font-weight: 600;
           line-height: 20px;
           white-space: nowrap;
-        overflow: hidden;
-        text-overflow: ellipsis;
+          overflow: hidden;
+          text-overflow: ellipsis;
         }
 
         .unit-total {
@@ -155,6 +156,12 @@
           font-style: normal;
           font-weight: 600;
           line-height: 20px;
+
+          .default-price {
+            text-decoration: line-through;
+            margin-right: 3px;
+            color: $light_Gray;
+          }
         }
 
         .description {
@@ -178,10 +185,12 @@
         display: flex;
         align-items: center;
         justify-content: center;
+
         &:hover {
           cursor: pointer;
         }
-        .close-icon{
+
+        .close-icon {
           font-size: 18px;
         }
       }
@@ -202,6 +211,7 @@
         display: flex;
         align-items: center;
       }
+
       .count-container {
         position: relative;
         border: 1px solid $orange_color;
@@ -213,6 +223,7 @@
         justify-content: space-between;
         padding: 5px 15px;
         margin: 0 131px 0 auto;
+
         .count-buttons {
           display: flex;
           justify-content: center;
@@ -220,7 +231,9 @@
           flex-direction: column;
           width: 6px;
           gap: 5px;
+
           button {
+
             .count-more,
             .count-less {
               width: 14px;
@@ -229,6 +242,7 @@
             }
           }
         }
+
         input[type="number"] {
           width: 70%;
           outline: none;
@@ -256,9 +270,10 @@
           -webkit-appearance: none;
           margin: 0;
         }
-      }      
+      }
     }
   }
+
   .price-resume {
     border-top: #E8E8E8 1px solid;
     margin-top: 18px;
@@ -274,9 +289,10 @@
         font-size: 15px;
         font-style: normal;
         font-weight: 600;
-        line-height: normal;      
+        line-height: normal;
       }
-      &:not(:last-child){
+
+      &:not(:last-child) {
         margin-bottom: 6px;
       }
     }

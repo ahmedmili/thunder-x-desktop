@@ -145,21 +145,7 @@ const CartPage: React.FC = () => {
   useEffect(() => {
     fetchMessages()
   }, [])
-
-  useEffect(() => {
-    {/* total delivPrice giftAmmount discountValue promoReduction  appliedBonus */ }
-    // console.log("______________________________________________________________________________")
-    // console.log("sousTotal : ", sousTotal)
-    // console.log("total : ", total)
-    // console.log("delivPrice : ", delivPrice)
-    // console.log("giftAmmount : ", giftAmmount)
-    // console.log("discountValue : ", discountValue)
-    // console.log("promoReduction : ", promoReduction)
-    // console.log("appliedBonus : ", appliedBonus)
-    // console.log("______________________________________________________________________________")
-    console.log("cartItems : ", cartItems)
-  }, [discountValue])
-
+  
   // article component 
   interface Article {
     item: FoodItem,
@@ -168,9 +154,6 @@ const CartPage: React.FC = () => {
 
   const ArticleProvider: React.FC<Article> = ({ item, remove }) => {
     const [count, setCount] = useState<number>(item.quantity)
-    // useEffect(() => {
-    //   console.log("item", item)
-    // }, [])
     const handleIncreaseQuantity = () => {
       dispatch(
         changeItemQuantity({
@@ -616,16 +599,13 @@ const CartPage: React.FC = () => {
   const getSousTotal = () => {
 
     let cartItems2 = [...cartItems];
-    console.log("cartItems2.1", cartItems2)
     var discount = 0;
     cartItems.forEach((item: any, index: number) => {
       let sub_total_final = item.total;
       if (item.product.computed_value.discount_value && item.product.computed_value.discount_value > 0) {
         sub_total_final = item.total - ((item.total * item.product.computed_value.discount_value) / 100)
-        // discount += ((item.unitePrice * item.product.computed_value.discount_value) / 100)
-        discount += ((item.product.old_value - item.product.cost) * item.quantity)
+        discount += (item.default_price - item.unitePrice) * item.quantity
       }
-
       cartItems2[index] = {
         ...cartItems2[index],
         product: {
@@ -638,7 +618,6 @@ const CartPage: React.FC = () => {
     })
 
     setDiscountValue(discount)
-    console.log("cartItems2.2", cartItems2)
     cartItems = cartItems2;
     let sum = 0;
 

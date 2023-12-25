@@ -20,7 +20,8 @@ interface CartProps {
 interface Article {
   id: number;
   image: string;
-  price: number
+  price: number;
+  default_price: number;
   total: number;
   name: string;
   description: string;
@@ -50,10 +51,6 @@ export const Cart: React.FC<CartProps> = ({ items, closeButton }) => {
 
   const ArticlesProvider: React.FC<Article> = (props) => {
     const [count, setCount] = useState<number>(props.count)
-
-
-    // const handleRemoveItemFromCart = () => dispatch(removeItem({ id: props.id }));
-
     const handleIncreaseQuantity = () => {
       dispatch(
         changeItemQuantity({
@@ -83,7 +80,7 @@ export const Cart: React.FC<CartProps> = ({ items, closeButton }) => {
           </div>
           <div className="product-info">
             <div className='name'>{props.name}</div>
-            <div className='unit-total'>{props.price} DT</div>
+            <div className='unit-total'>{props.price != props.default_price && <span className='default-price'> {Number(props.default_price).toFixed(2)}DT </span>}   {Number(props.price).toFixed(2)} DT</div>
             <div className="description" dangerouslySetInnerHTML={{ __html: props.description }}></div>
 
           </div>
@@ -159,6 +156,7 @@ export const Cart: React.FC<CartProps> = ({ items, closeButton }) => {
                   id: item.product.id,
                   image: item.product.image[0] ? item.product.image[0].path : "",
                   price: item.unitePrice,
+                  default_price: item.product.default_price ? item.default_price : item.unitePrice,
                   total: item.total,
                   name: item.product.name,
                   description: item.product.description,
@@ -197,7 +195,6 @@ export const Cart: React.FC<CartProps> = ({ items, closeButton }) => {
                 closeButton()
                 navigate('/cart')
               }
-
               }>
                 {t('cart.payment.checkCart')}
               </button>
