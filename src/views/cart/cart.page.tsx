@@ -109,13 +109,14 @@ const CartPage: React.FC = () => {
   const [giftAmmount, setGiftAmmount] = useState<number>(0)
   const [limitReachedGift, setLimitReachedGift] = useState<boolean>(false)
   const [discountValue, setDiscountValue] = useState<number>(0)
+  const [extraDeliveryCost, setExtraDeliveryCost] = useState<number>(0);
   const [currentStep, setCurrentStep] = useState<number>(1);
 
   // take away plan vars
   const command_type = deliveryOption === "delivery" ? 3 : 1;
   const [selectedOption, setSelectedOption] = useState<number>(command_type);
 
-  var extraDeliveryCost = 0;
+  // var extraDeliveryCost = 0;
   var max_distance: number = 5;
   var distance: number = 0;
   var discount = 0
@@ -145,7 +146,7 @@ const CartPage: React.FC = () => {
   useEffect(() => {
     fetchMessages()
   }, [])
-  
+
   // article component 
   interface Article {
     item: FoodItem,
@@ -487,6 +488,7 @@ const CartPage: React.FC = () => {
   const checkPromoCode = async () => {
     if (promoApplied) {
       const initDeliveryPrice = cartItems.length > 0 ? Number(cartItems[0].supplier_data.delivery_price) + extraDeliveryCost : 0;
+
       setDelivPrice(initDeliveryPrice)
       setPromoApplied(false)
       setPromoReduction(0)
@@ -634,8 +636,6 @@ const CartPage: React.FC = () => {
   const getSupplierById = async () => {
     const { status, data } = await supplierServices.getSupplierById(supplier.id)
     max_distance = data.data?.max_distance;
-    // minCost = data?.data.min_cost;
-    // isClosed = data?.status;
     setMinCost(data?.data.min_cost);
     setIsClosed(data?.status);
   }
@@ -650,8 +650,10 @@ const CartPage: React.FC = () => {
       };
       const res = await adressService.getDistance(obj)
       res.data.code == 200 ? distance = res.data.data.distance : distance = 0
-      extraDeliveryCost = (distance - max_distance) > 0 ? Math.ceil(distance - max_distance) : 0
+      let extraDeliveryCost = (distance - max_distance) > 0 ? Math.ceil(distance - max_distance) : 0
+
       const deliveryPrice = cartItems.length > 0 ? Number(cartItems[0].supplier_data.delivery_price) + extraDeliveryCost : 0
+      setExtraDeliveryCost(extraDeliveryCost)
       setDelivPrice(deliveryPrice)
     }
   }
@@ -818,7 +820,7 @@ const CartPage: React.FC = () => {
                         </div>
                         {/* promo start */}
                         <div className="promo-container">
-                          <span>Code promo</span>
+                          <span>{t('cart.PromosCode')}</span>
                           <textarea name="code_promo" id="code_promo" placeholder="Code promo" value={promo} onChange={(e) => handlePromoChange(e.target.value)} ></textarea>
                           <button disabled={!couponExiste} style={{ backgroundColor: `${promoApplied ? "red" : "#FBC000"}` }} className={(couponExiste) ? "button" : "button disabled"} onClick={checkPromoCode}>
                             {promoApplied ? t('Annuler') : t('cartPage.appliquer')}
@@ -861,10 +863,10 @@ const CartPage: React.FC = () => {
                         {/* bonus end */}
                         <div className="buttons">
                           <button className="cancel">
-                            Annuler
+                            {t('Annuler')}
                           </button>
                           <button className="commander" onClick={goNextStep} >
-                            Continuer
+                            {t('continuer')}
                           </button>
                         </div>
                       </>)
@@ -1018,7 +1020,7 @@ const CartPage: React.FC = () => {
                           {
                             discountValue > 0 && (
                               <div className="panie-row">
-                                <span>discount value</span>
+                                <span>{t('cart.discount')}</span>
                                 <span> - {(discountValue).toFixed(2)} DT</span>
                               </div>
                             )
