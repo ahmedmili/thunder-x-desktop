@@ -80,7 +80,7 @@ const CartPage: React.FC = () => {
 
   const [sousTotal, setSousTotal] = useState<number>(0)
   const [total, setTotal] = useState<number>(0)
-  const [delivPrice, setDelivPrice] = useState<number>(0)
+  // const [delivPrice, setDelivPrice] = useState<number>(0)
   const [aComment, setAComment] = React.useState<string>(comment ? comment : "");
 
   const [popupType, setPopupType] = React.useState<string>("");
@@ -487,9 +487,11 @@ const CartPage: React.FC = () => {
   //  check promo validation
   const checkPromoCode = async () => {
     if (promoApplied) {
-      const initDeliveryPrice = cartItems.length > 0 ? Number(cartItems[0].supplier_data.delivery_price) + extraDeliveryCost : 0;
+      const initDeliveryPrice = cartItems.length <= 0 ? 0 : Number(cartItems[0].supplier_data.delivery_price) + extraDeliveryCost;
 
-      setDelivPrice(initDeliveryPrice)
+      // setDelivPrice(initDeliveryPrice)
+      dispatch(setDeliveryPrice(initDeliveryPrice));
+
       setPromoApplied(false)
       setPromoReduction(0)
       selectCoupon(selectedCoupon)
@@ -546,23 +548,28 @@ const CartPage: React.FC = () => {
   const CalculatePromoPrice = () => {
     var promoReduction;
     if (Object.keys(selectedCoupon).length > 0) {
-
-      const initDeliveryPrice = cartItems.length > 0 ? Number(cartItems[0].supplier_data.delivery_price) + extraDeliveryCost : 0
+      const initDeliveryPrice = (cartItems.length <= 0) ? 0 : Number(cartItems[0].supplier_data.delivery_price) + (extraDeliveryCost)
+      const extraDelivFixed = selectedCoupon.extra_delivery_fixed
       if (selectedCoupon.apply_on === 'DELIVERY') {
         if (selectedCoupon.delivery_fixed != 1) {
           if (selectedCoupon.type === 'percentage') {
             promoReduction = (deliveryPrice * (selectedCoupon.value / 100));
             setPromoReduction(promoReduction)
-            setDelivPrice(initDeliveryPrice)
+            dispatch(setDeliveryPrice(initDeliveryPrice))
+            return 0
+          } else if (selectedCoupon.type !== 'percentage') {
+            promoReduction = (deliveryPrice - selectedCoupon.value);
+            setPromoReduction(promoReduction)
+            dispatch(setDeliveryPrice(initDeliveryPrice))
             return 0
           }
-          setDelivPrice(initDeliveryPrice)
+          dispatch(setDeliveryPrice(initDeliveryPrice))
           promoReduction = selectedCoupon.value;
           setPromoReduction(promoReduction)
           return 0
         } else {
           setPromoReduction(0)
-          setDelivPrice(selectedCoupon.value)
+          extraDelivFixed  === 0 ? dispatch(setDeliveryPrice(selectedCoupon.value)) :  dispatch(setDeliveryPrice(selectedCoupon.value + extraDeliveryCost))
           return 0
         }
       }
@@ -630,7 +637,7 @@ const CartPage: React.FC = () => {
   // calc total function
   const calcTotal = () => {
     setTotal(
-      ((sousTotal + delivPrice) - ((appliedBonus / 1000) + (giftAmmount) + promoReduction + discount)))
+      ((sousTotal + deliveryPrice) - ((appliedBonus / 1000) + (giftAmmount) + promoReduction + discount)))
   }
   // get supplier request
   const getSupplierById = async () => {
@@ -652,9 +659,11 @@ const CartPage: React.FC = () => {
       res.data.code == 200 ? distance = res.data.data.distance : distance = 0
       let extraDeliveryCost = (distance - max_distance) > 0 ? Math.ceil(distance - max_distance) : 0
 
-      const deliveryPrice = cartItems.length > 0 ? Number(cartItems[0].supplier_data.delivery_price) + extraDeliveryCost : 0
+      const deliveryPrice = cartItems.length <= 0 ? 0 : Number(cartItems[0].supplier_data.delivery_price) + extraDeliveryCost
       setExtraDeliveryCost(extraDeliveryCost)
-      setDelivPrice(deliveryPrice)
+      // setDelivPrice(deliveryPrice)
+      dispatch(setDeliveryPrice(deliveryPrice))
+
     }
   }
 
@@ -728,7 +737,7 @@ const CartPage: React.FC = () => {
   useEffect(() => {
     let check = supplier && cartItems.length > 0
     check && calcTotal()
-  }, [sousTotal, giftApplied, appliedBonus, promoReduction, delivPrice, discountValue]);
+  }, [sousTotal, giftApplied, appliedBonus, promoReduction, deliveryPrice, discountValue]);
 
   const goNextStep: MouseEventHandler<HTMLButtonElement> = ((event) => {
     setCurrentStep(2);
@@ -788,12 +797,7 @@ const CartPage: React.FC = () => {
                           <span>{t('cartPage.commentaire')}</span>
                           <textarea name="commentaire" id="commentaire" cols={30} rows={10} value={aComment} onChange={(e) => handleCommentChange(e.target.value)} placeholder="Ex:sandwich"></textarea>
                         </div>
-                        {/* {
-                      has_gift && (
-                        <>
-                        </>
-                      )
-                    } */}
+
                         <div className="devider">
                         </div>
                         <div className="promos-list">
@@ -1035,7 +1039,7 @@ const CartPage: React.FC = () => {
                           }
                           <div className="panie-row">
                             <span>{t('supplier.delivPrice')}</span>
-                            <span>{delivPrice.toFixed(2)} DT</span>
+                            <span>{Number(deliveryPrice).toFixed(2)} DT</span>
                           </div>
                           <div className="panie-row"></div>
                         </div>
