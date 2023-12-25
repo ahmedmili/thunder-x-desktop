@@ -38,6 +38,7 @@ interface CommandProps {
     data: {
         products: [],
         total_price: number,
+        is_delivery: number,
         delivery_price: number
         command_id: number,
         bonus: number,
@@ -90,10 +91,13 @@ const Command: React.FC<CommandProps> = ({ removeCommand, data }) => {
                 <span className='left-price'>{total.toFixed(2)} DT</span>
             </div>
             {/* deliv price */}
-            <div className='deliv-price'>
-                <span>{t('supplier.delivPrice')}</span>
-                <span className='left-price'>{data.coupon.delivery_fixed === 1 ? data.delivery_price : (data.delivery_price - data.total_price_coupon).toFixed(2)} DT</span>
-            </div>
+            {
+                data.is_delivery === 1 &&
+                <div className='deliv-price'>
+                    <span>{t('supplier.delivPrice')}</span>
+                    <span className='left-price'>{data.coupon.delivery_fixed === 1 ? data.delivery_price : (data.delivery_price - data.total_price_coupon).toFixed(2)} DT</span>
+                </div>
+            }
             {/* products discriptions */}
             <ul>
                 {(data.products && data.products.length > 0) &&
@@ -162,7 +166,9 @@ const CurrentCommands: React.FC<CommandsListProps> = ({ removeCommand, goToPasse
     const { t } = useTranslation()
     const supplier = data.supplier
     const delivery = data.delivery
+    const toAdress = data.to_adresse
     const cycle = data.cycle
+    const isReady = data.is_ready
     const isDelevery = data.is_delivery
     const take_away_date = data.take_away_date
     const lat = supplier.localisation.lat;
@@ -170,11 +176,11 @@ const CurrentCommands: React.FC<CommandsListProps> = ({ removeCommand, goToPasse
     const position = supplier.street + " " + supplier.region + " " + supplier.city
     const [status, setStatus] = useState<number>(0)
 
+
     const [messsage, setMessage] = useState<string>('')
     const [time, setTime] = useState<string>('')
     const [date, setDate] = useState<string>('')
     const [problemPopup, setProblemPopup] = useState<boolean>(false)
-
 
     const handleProblemPopup = () => {
         setProblemPopup(current => !current)
@@ -250,7 +256,10 @@ const CurrentCommands: React.FC<CommandsListProps> = ({ removeCommand, goToPasse
     };
 
     useEffect(() => {
-        const { message, status } = getProgressDescription(cycle)
+        const { message, status } = isReady ? {
+            message: t('orderTrackingPage.isReady'),
+            status: 6
+        } : getProgressDescription(cycle)
         setStatus(status)
         setMessage(message)
     }, [])
@@ -267,11 +276,12 @@ const CurrentCommands: React.FC<CommandsListProps> = ({ removeCommand, goToPasse
             total_price_coupon: Number(data.total_price_coupon),
             mode_pay: data.mode_pay,
             coupon: data.coupon,
+            is_delivery: isDelevery,
         }
-
     }
+
     return (
-      
+
         <>
             <div className="current-commands-container">
                 <header className={` current-command-header `}>
@@ -293,10 +303,10 @@ const CurrentCommands: React.FC<CommandsListProps> = ({ removeCommand, goToPasse
                             status <= 2 && <p className="description">{t('profile.commands.sousMessage')}</p>
                         }
                         {
-                            status > 2 && status < 6 && <p className="description">{t('profile.commands.sousMessage2')}</p>
+                            status > 2 && status < 6 && !isReady && <p className="description">{t('profile.commands.sousMessage2')}</p>
                         }
                         {
-                            status == 6 && <p className="description">{t('profile.commands.sousMessage3')}</p>
+                            status == 6 && isDelevery && isReady ? <p className="description">{t('profile.commands.sousMessage3')}</p> : !isDelevery && isReady ? <p className="description">{t('orderTrackingPage.importedReady')}</p> : <></>
                         }
                         <div className='command-graph'>
                             <div className='time-line'></div>
@@ -376,7 +386,7 @@ const CurrentCommands: React.FC<CommandsListProps> = ({ removeCommand, goToPasse
                                         )
                                     }
                                 </>
-                            ) : (
+                            ) : status > 2 && (
                                 <>
                                     <div className="buttons">
                                         <button className='lieu-button' onClick={openGoogleMap}> <span className='position-icon' style={{ backgroundImage: `url(${positionIconBlue})` }}></span> {t('profile.commands.lieu')}</button>
@@ -391,7 +401,7 @@ const CurrentCommands: React.FC<CommandsListProps> = ({ removeCommand, goToPasse
                                     <hr />
                                     <div className='import-position'>
                                         <div className='position-icon' style={{ backgroundImage: `url(${positionIcon}) ` }}></div>
-                                        <p className='position-text' > {position}</p>
+                                        <p className='position-text' > {toAdress}</p>
                                     </div>
 
                                     <div className='tacke-away-date'>
@@ -406,13 +416,13 @@ const CurrentCommands: React.FC<CommandsListProps> = ({ removeCommand, goToPasse
 
                     </div>
                     {
-                        status == 6 && (
+                        status == 6 && isDelevery ? (
                             <div className='buttons'>
                                 <button className="problem" onClick={handleProblemPopup}>{t('profile.commands.problem')}</button>
                             </div>
-                        )
+                        ) : <></>
                     }
-                    {status != 6 && <CommandsFooter />}
+                    {status != 6 ? <CommandsFooter /> : <></>}
                 </main >
             </div >
 

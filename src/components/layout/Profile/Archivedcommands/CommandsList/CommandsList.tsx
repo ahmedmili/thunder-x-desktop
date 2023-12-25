@@ -148,7 +148,6 @@ const CommandsList: React.FC<CommandsListProps> = ({ type = "old", goToPassedCom
                             ) : (
                                 <section className='commands-List' >
                                     {displayedContent.length > 0 && displayedContent.map((command: any, index: number) => {
-
                                         return (
                                             <React.Fragment key={index}>
                                                 <div className={`command-header  ${selectedCommand === index ? "active-header" : ""}`} key={index} onClick={() => handleSelectCommand(index)}>
