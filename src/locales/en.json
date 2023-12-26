@@ -311,6 +311,10 @@
   "cart.payment.noCommands": "You have not placed any orders yet",
   "cart.payment.iCommand": "Order",
   "cart.payment.payment": "Payment",
+  "cart.discount": "discount value",
+  "product": "product",
+  "cart.PromosCode": "Promo code",
+
   "repasGratuit": "Free Meal",
   "faq.header": "Frequently Asked Questions",
   "faq.questions": [

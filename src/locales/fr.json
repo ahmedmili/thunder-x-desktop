@@ -313,6 +313,9 @@
   "cart.payment.noCommands": "Vous n’avez passé aucune commande pour le moment",
   "cart.payment.iCommand": "Je commande",
   "cart.payment.payment": "Paiement",
+  "cart.discount": "valeur de réduction",
+  "cart.PromosCode": "Code promo",
+  "product": "produit",
   "repasGratuit": "Repas Gratuit",
   "faq.title": "Foire Aux Questions",
   "faq.questions": [

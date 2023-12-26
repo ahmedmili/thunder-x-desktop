@@ -292,6 +292,10 @@
   "cart.payment.noCommands": "لم تحصل على أي طلب في الوقت الحالي.",
   "cart.payment.iCommand": "أطلب",
   "cart.payment.payment": "الدفع",
+  "cart.discount": "قيمة الخصم",
+  "cart.PromosCode": "رمز الخصم",
+  "product": "منتج",
+
   "repasGratuit": "وجبة مجانية",
   "mobile.menu.title": "اطلب في التطبيق",
   "mobile.menu.description": "استمتع بفوائد خاصة في أماكنك ومطاعمك المفضلة!",
