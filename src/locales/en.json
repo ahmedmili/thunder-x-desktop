@@ -14,6 +14,8 @@
   "daysAgo": "days ago",
   "weeksAgo": "weeks ago",
   "tapeHere": "Enter here",
+  "clearAll": "Clear all",
+  "Recent": "Recent",
   "auth.password.required": "password is required",
   "auth.password.ConfirmMatch": "Passwords must match",
   "auth.password.max": "password must be less than 20 characters",

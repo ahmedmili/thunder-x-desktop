@@ -21,6 +21,8 @@
   "daysAgo": "أيام",
   "weeksAgo": "منذ أسابيع",
   "tapeHere": "أدخل هنا",
+  "clearAll": "حذف الكل",
+  "Recent": "حديث",
   "auth.password.required": "كلمة المرور مطلوبة",
   "auth.password.ConfirmMatch": "يجب أن تتطابق كلمات المرور",
   "auth.password.max": "يجب أن تكون كلمة المرور أقل من 20 حرفًا",

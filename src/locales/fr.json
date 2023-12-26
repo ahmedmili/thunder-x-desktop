@@ -19,6 +19,8 @@
   "daysAgo": "jours",
   "weeksAgo": "semaines",
   "tapeHere": "Enter ici",
+  "clearAll": "Tout effacer",
+  "Recent": "Récent",
   "auth.password.required": "Le mot de passe est requis",
   "auth.password.ConfirmMatch": "Les mots de passe doivent correspondre",
   "auth.password.max": "Le mot de passe doit contenir moins de 20 caractères",
