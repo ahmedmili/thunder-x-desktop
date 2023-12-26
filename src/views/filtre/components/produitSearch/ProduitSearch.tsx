@@ -13,9 +13,10 @@ function SearchProduit() {
     }
     return (
         <div className="search-filter-container">
-            <div className="searchFilter">
+            <div className="search-filter-container__input">
                 <input type="text" className="search-input" name="search" id="search" placeholder="Produit ?" />
                 <SearchIcon className="text-search-icon" />
+                <span className="search-icon"></span>
             </div>
         </div>
     )

@@ -40,12 +40,12 @@ function Cle() {
     }
     return (
         <div className="cle-filter-container">
-            <h1> Cle</h1>
-            <ul>
+            <h1 className="cle-filter-container__title">Mots clés</h1>
+            <ul className="cle-filter-container__list">
                 {
                     lists.map((data, index) => {
                         return (
-                            <li key={index}>
+                            <li key={index} className="cle-filter-container__list__item">
                                 <div className="form-check" onClick={() => clickHandle(data.name)}>
                                     <input type="radio" className="btn-check" name="cle" id={`${index}`} />
                                     <label className="radio-button" htmlFor={`${index}`}>{data.name}</label>

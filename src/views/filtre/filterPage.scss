@@ -1,4 +1,4 @@
-@import '../../colors';
+@import "../../scss/extend";
 
 .filter-page-container {
 
@@ -6,7 +6,6 @@
     flex-direction: column;
     gap: 25px;
     padding: 20px 57px;
-
     .display-main {
         .not-found-container {
             position: relative;
@@ -226,6 +225,59 @@
                     width: 40vw
                 }
             }
+        }
+    }
+}
+.container{
+    &__row{
+
+    }
+    &__column{  
+        &__filter{
+
+        }
+        &--first {
+            padding: 29px 9px;
+            border: 1px solid $light_Gray;
+            border-radius: 15px;     
+            height: fit-content;      
+        }
+        &--second{
+            padding-left: 36px;
+        }
+        &__search-bar{
+            margin-bottom: 37px;            
+        }
+    }
+    &__scroll-content{
+        padding-inline: 30px;
+        max-height: 1000px;
+        overflow: auto;
+        &::-webkit-scrollbar {
+            width: 5px;
+        }    
+        &::-webkit-scrollbar-thumb {
+            background-color: $color-gray-alto;
+            border-radius: 25px;
+        }    
+        &::-webkit-scrollbar-track {
+            background-color: $color-white;
+        }
+    }
+}
+.main-content{
+    &__col-ads{
+        margin-bottom: 57px;
+    }
+    &__col-offers{
+        &__title{
+            color: $dark_Gray;            
+            font-family: Poppins;
+            font-size: 24px;
+            font-style: normal;
+            font-weight: 600;
+            line-height: normal;
+            margin-bottom: 37px;
         }
     }
 }
