@@ -569,7 +569,7 @@ const CartPage: React.FC = () => {
           return 0
         } else {
           setPromoReduction(0)
-          extraDelivFixed  === 0 ? dispatch(setDeliveryPrice(selectedCoupon.value)) :  dispatch(setDeliveryPrice(selectedCoupon.value + extraDeliveryCost))
+          extraDelivFixed  === 1 ? dispatch(setDeliveryPrice(selectedCoupon.value)) :  dispatch(setDeliveryPrice(selectedCoupon.value + extraDeliveryCost))
           return 0
         }
       }
