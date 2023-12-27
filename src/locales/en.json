@@ -272,6 +272,7 @@
   "adress.input4": "Address title",
   "adress.default_adress": "Default Address",
   "adress.empty": "No address to be saved",
+  "adress.delivAddress": "Delivery address",
   "adress.title1": "Add a delivery address",
   "adress.cartSelect": "Select from the map",
   "adress.message1": "My Delivery Addresses",
@@ -316,7 +317,6 @@
   "cart.discount": "discount value",
   "product": "product",
   "cart.PromosCode": "Promo code",
-
   "repasGratuit": "Free Meal",
   "faq.header": "Frequently Asked Questions",
   "faq.questions": [

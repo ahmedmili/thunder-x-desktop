@@ -1,0 +1,194 @@
+@import '../../scss/extend';
+
+.searchContainer {
+  background: linear-gradient(0deg, rgba(255, 255, 255, 0.3), rgba(255, 255, 255, 0.3));
+  border-radius: 25px;
+  width: 66%;
+  min-height: 52px;
+  @include flex(flex, center, space-between);
+  border: 1px solid $color-white;
+
+  .icons {
+    color: $color-white;
+
+    .icon {
+      font-size: 30px;
+      margin-left: 5px;
+    }
+  }
+  .iconBackgorund {
+    @include dimensions(42px, 42px);
+    background-image: url('/src/assets/icons/arrow.svg');
+    background-color: $color-white;
+    border-radius: 50%;
+    background-repeat: no-repeat;
+    background-position: center;
+
+    &:hover {
+      cursor: pointer;
+      opacity: .9;
+    }
+  }
+
+  form {
+    @include flex(flex, center, space-between);
+    width: 100%;
+
+    .headerSearchBar {
+      color: $color-white;
+      border-radius: 25px;
+      width: 80%;
+      @include flex;
+
+      input {
+        border-radius: 25px;
+        padding: 5px;
+        background-color: transparent;
+        border: none;
+        width: 100%;
+        font-family: 'Poppins-Regular', serif;
+        @include fonts(14px, 14px, $color-white);
+        text-align: center;
+
+        &:focus {
+          outline: none;
+        }
+
+        &::placeholder {
+          color: $color-white;
+          text-align: center;
+        }
+      }
+
+      .deleteSearchTextButton {
+        @include dimensions(36px, 32px);
+        @include flex;
+        @include fonts(16px, 16px, $primary_color);
+        font-weight: weight(semiBold);
+        border-radius: 50%;
+        margin-right: 6px;
+        background-color: $color-white;
+
+        &:hover {
+          cursor: pointer;
+          opacity: .9;
+        }
+      }
+
+      button {
+        border-radius: 25px;
+        background-color: transparent;
+        color: $color-white;
+        border: none;
+        margin-left: 0.5rem;
+        padding: 0.5rem;
+        border-radius: 5px;
+        cursor: pointer;
+        max-width: 100px;
+        @include dimensions(40px, 40px);
+        font-size: 20px;
+        position: relative;
+      }
+
+      .filters {
+        border-radius: 25px;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        position: absolute;
+        top: 70%;
+        left: 73%;
+        background-color: $color-white;
+        z-index: 999;
+        padding: 2rem;
+        box-shadow: 1px 2px 4px 2px rgba(0, 0, 0, 0.2);
+      }
+    }
+  }
+}
+
+/* -- btnHandleSearch -- */
+.btnHandleSearch {
+  background-color: $color-yellow-saffron;
+  border-radius: 50px;
+  height: 50px;
+  min-width: 150px;
+  @include fonts(12px, 12px, $color-white);
+  font-family: 'Poppins-Bold', serif;
+}
+
+/* # $Mobile ::
+------------------------------------*/
+
+@media only screen and (max-width: 992px) {
+  .searchContainer {
+    width: 77%;
+    padding: 5px 10px;
+
+    form {
+      .headerSearchBar {
+        margin: 0;
+
+        input {
+          padding: 0 10px;
+          font-size: 14px;
+        }
+      }
+    }
+
+    .bi-search {
+      font-size: 10px;
+    }
+  }
+}
+
+@media only screen and (max-width: 768px) {
+  .searchContainer {
+    .icons {
+      .icon {
+        font-size: 13px;
+      }
+    }
+
+    form {
+      .headerSearchBar {
+        margin: 0;
+
+        input {
+          padding: 0px;
+          font-size: 11px;
+        }
+      }
+    }
+  }
+}
+
+@media only screen and (max-width: 576px) {
+  .searchContainer {
+    padding: 0 5px;
+    width: 120px;
+
+    .icon {
+      font-size: 8px;
+    }
+
+    .iconBackgorund {
+      background-color: $color-white;
+      border-radius: 50%;
+      color: $primary_color;
+      height: 10px;
+      @include flex;
+    }
+
+    form {
+      .headerSearchBar {
+        margin: 0 0 3px 0;
+
+        input {
+          padding: 0px;
+          font-size: 6px;
+        }
+      }
+    }
+  }
+}

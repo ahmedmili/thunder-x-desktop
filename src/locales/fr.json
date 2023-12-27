@@ -278,6 +278,7 @@
   "select": "Sélectionner",
   "continuer": "Continuer",
   "adress.title1": "Ajouter une adresse de livraison",
+  "adress.delivAddress": "Adresse de livraison",
   "adress.card.title1": "Indiquer votre adresse sur la carte",
   "adress.current_position": "Current Position",
   "adress.input1": "Numéro d’appartement, porte, étage . . .",

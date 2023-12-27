@@ -257,6 +257,7 @@
   "choose_options": "اختر الخيارات",
   "price": "السعر",
   "adress.title1": "إضافة عنوان إرسال",
+  "adress.delivAddress": "عنوان التوصيل",
   "adress.card.title1": "تحديد عنوانك على الخريطة",
   "adress.current_position": "الموقع  الحالي",
   "adress.input1": "رقم الشقة، الباب، الطابق.",
@@ -297,7 +298,6 @@
   "cart.discount": "قيمة الخصم",
   "cart.PromosCode": "رمز الخصم",
   "product": "منتج",
-
   "repasGratuit": "وجبة مجانية",
   "mobile.menu.title": "اطلب في التطبيق",
   "mobile.menu.description": "استمتع بفوائد خاصة في أماكنك ومطاعمك المفضلة!",
