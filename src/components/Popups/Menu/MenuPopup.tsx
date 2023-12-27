@@ -79,6 +79,8 @@ const reducer = (state: any, action: any) => {
             return { ...state, supplement_max: action.payload };
         case 'SET_VIANDE_MAX':
             return { ...state, viande_max: action.payload };
+        case 'SET_DEFAULT_PRICE':
+            return { ...state, default_price: action.payload };
         default:
             return state;
     }
@@ -200,6 +202,7 @@ const MenuPopup: React.FC<Props> = ({ close, openMissMatch, restaurant }) => {
         });
         unite_price = unite_price + sum;
 
+        dispatch({ type: 'SET_DEFAULT_PRICE', payload: unite_price });
         if (product?.computed_value?.discount_value) {
             unite_price = unite_price - (unite_price * (product?.computed_value?.discount_value / 100));
         }
@@ -304,6 +307,7 @@ const MenuPopup: React.FC<Props> = ({ close, openMissMatch, restaurant }) => {
             options: opts,
             quantity: productCount,
             total: state.total,
+            default_price: state.default_price,
             supplier_data: {
                 supplier_id: restaurant.id,
                 supplier_name: restaurant.name,

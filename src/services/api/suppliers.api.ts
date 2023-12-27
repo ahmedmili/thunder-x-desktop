@@ -85,6 +85,12 @@ async function getSuppliersIndex(long: number, lat: number, delivery: number = 1
   }
 }
 
+
+const redAnnonce = (formData: any) => {
+  return api.post(`read_annonces`, formData)
+
+}
+
 export const supplierServices = {
   all_annonces,
   searchSupplierByArticle,
@@ -93,6 +99,7 @@ export const supplierServices = {
   getSupplierISoPENById,
   getSuppliersByCategory,
   getSuppliersIndex,
+  redAnnonce,
 
 
 };

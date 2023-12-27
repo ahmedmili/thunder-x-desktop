@@ -1,4 +1,4 @@
-import { changeItemQuantity, removeItem, removeItemWithIndex } from '../../Redux/slices/cart/cartSlice'; // Change import statement to changeItemQuantity
+import { changeItemQuantity, removeItemWithIndex } from '../../Redux/slices/cart/cartSlice'; // Change import statement to changeItemQuantity
 import { useAppDispatch, useAppSelector } from '../../Redux/store';
 
 import React, { useEffect, useState } from 'react';
@@ -12,6 +12,7 @@ import CloseIcon from '@mui/icons-material/Close';
 import { useTranslation } from 'react-i18next';
 import { useNavigate } from 'react-router-dom';
 import './cart.scss';
+import { adressService } from '../../services/api/adress.api';
 interface CartProps {
   items: FoodItem[];
   closeButton: any
@@ -20,7 +21,8 @@ interface CartProps {
 interface Article {
   id: number;
   image: string;
-  price: number
+  price: number;
+  default_price: number;
   total: number;
   name: string;
   description: string;
@@ -32,28 +34,25 @@ interface Article {
 
 export const Cart: React.FC<CartProps> = ({ items, closeButton }) => {
   const [sousTotal, setSousTotal] = useState<number>(0)
-  const [popupType, setPopupType] = useState<string>("")
   const [locationName, setLocationName] = useState<string>("")
-  const [showPopup, setShowPopup] = useState<boolean>(false)
+  const [discount_value, setDiscountValue] = useState<number>(0)
+  const [delivPrice, setDelivPrice] = useState<number>(0)
 
+  var distance: number = 0;
+  var extraDeliveryCost = 0;
+  var max_distance: number = 5;
 
   const location = useAppSelector(state => state.location.position)
+  const userPosition = useAppSelector((state) => state.location.position);
 
   const dispatch = useAppDispatch();
   const navigate = useNavigate()
   const { t } = useTranslation()
 
 
-  useEffect(() => {
-    setLocationName("" + location?.coords.label)
-  }, [location])
 
   const ArticlesProvider: React.FC<Article> = (props) => {
     const [count, setCount] = useState<number>(props.count)
-
-
-    // const handleRemoveItemFromCart = () => dispatch(removeItem({ id: props.id }));
-
     const handleIncreaseQuantity = () => {
       dispatch(
         changeItemQuantity({
@@ -83,7 +82,7 @@ export const Cart: React.FC<CartProps> = ({ items, closeButton }) => {
           </div>
           <div className="product-info">
             <div className='name'>{props.name}</div>
-            <div className='unit-total'>{props.price} DT</div>
+            <div className='unit-total'>{props.price != props.default_price && <span className='default-price'> {Number(props.default_price).toFixed(2)}DT </span>}   {Number(props.price).toFixed(2)} DT</div>
             <div className="description" dangerouslySetInnerHTML={{ __html: props.description }}></div>
 
           </div>
@@ -113,22 +112,46 @@ export const Cart: React.FC<CartProps> = ({ items, closeButton }) => {
 
   const getSousTotal = () => {
     let sum = 0;
-    items.forEach((item: FoodItem) => sum = sum + item.total);
+    let discountVal = 0;
+    items.forEach((item: FoodItem) => {
+
+      sum += item.total
+      discountVal += (item.default_price * item.quantity) - item.total
+    });
     setSousTotal(sum);
+    setDiscountValue(discountVal)
   }
 
-
-
-  useEffect(() => {
-    getSousTotal();
-  }, [items])
-
+  const getDistance = async () => {
+    if (items.length > 0) {
+      let obj = {
+        supplier_id: items[0].supplier_data.supplier_id,
+        lat: userPosition?.coords.latitude,
+        long: userPosition?.coords.longitude,
+      };
+      const res = await adressService.getDistance(obj)
+      res.data.code == 200 ? distance = res.data.data.distance : distance = 0
+      extraDeliveryCost = (distance - max_distance) > 0 ? Math.ceil(distance - max_distance) : 0
+      const deliveryPrice = items.length > 0 ? Number(items[0].supplier_data.delivery_price) + extraDeliveryCost : 0
+      setDelivPrice(deliveryPrice)
+    }
+  }
 
   const removeItemsWithIndex = (i: number) => {
     dispatch(removeItemWithIndex({ index: i }))
   }
 
+  useEffect(() => {
+    getSousTotal();
+  }, [items])
 
+  useEffect(() => {
+    setLocationName("" + location?.coords.label)
+  }, [location])
+
+  useEffect(() => {
+    getDistance()
+  }, [])
 
   return (
     <div className={`cart-main`}>
@@ -147,7 +170,7 @@ export const Cart: React.FC<CartProps> = ({ items, closeButton }) => {
               </button>
             </section>
             <div className='sous-total'>
-              <span>{items.length} article</span>
+              <span>{items.length} {t('product')}</span>
               <span>{t('profile.commands.sousTotal')} {sousTotal.toFixed(2)} dt</span>
             </div>
 
@@ -159,6 +182,7 @@ export const Cart: React.FC<CartProps> = ({ items, closeButton }) => {
                   id: item.product.id,
                   image: item.product.image[0] ? item.product.image[0].path : "",
                   price: item.unitePrice,
+                  default_price: item.product.default_price ? item.default_price : item.unitePrice,
                   total: item.total,
                   name: item.product.name,
                   description: item.product.description,
@@ -177,19 +201,22 @@ export const Cart: React.FC<CartProps> = ({ items, closeButton }) => {
                 <span className='title'>{t('profile.commands.sousTotal')}</span>
                 <span className='value'>{sousTotal.toFixed(2)} DT</span>
               </div>
-              <div className="info-text">
-                <span className='title'>Forfait</span>
-                <span className='value'>0.00 DT</span>
-              </div>
+              {
+                discount_value && discount_value > 0 ?
+                  <div className="info-text">
+                    <span className='title'>{t('cart.discount')}</span>
+                    <span className='value'>-{Number(discount_value).toFixed(2)}DT</span>
+                  </div> : <></>
+              }
               <div className="info-text">
                 <span className='title'>{t("supplier.delivPrice")}</span>
-                <span className='value'>{Number(items[0].supplier_data.delivery_price).toFixed(2)}DT</span>
+                <span className='value'>{Number(delivPrice).toFixed(2)}DT</span>
               </div>
             </section>
             <section className="price-resume">
               <div className="info-text">
                 <span className='title'>{t("cartPage.total")}</span>
-                <span className='value'>{sousTotal + Number(items[0].supplier_data.delivery_price)} DT</span>
+                <span className='value'>{(sousTotal + Number(delivPrice)).toFixed(2)} DT</span>
               </div>
             </section>
             <section className='cart-btns' >
@@ -197,7 +224,6 @@ export const Cart: React.FC<CartProps> = ({ items, closeButton }) => {
                 closeButton()
                 navigate('/cart')
               }
-
               }>
                 {t('cart.payment.checkCart')}
               </button>

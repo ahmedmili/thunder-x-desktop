@@ -72,7 +72,8 @@
         }
 
         .imageBuilder {
-            background-image: url('/src/assets/home/image.png');
+            background-image: url('/src/assets/home/home-section-one-img.png');
+            // background-image: none;
             background-size: contain;
             background-repeat: no-repeat;
             background-position: bottom right;
@@ -85,7 +86,8 @@
             &::before {
                 content: "";
                 @include dimensions(173px, 147px);
-                background-image: url("/src/assets/home/pizza.png");
+                // background-image: url("/src/assets/home/pizza.png");
+                background-image: none;
                 background-size: contain;
                 background-position: center;
                 background-repeat: no-repeat;
@@ -98,7 +100,8 @@
             &::after {
                 content: "";
                 @include dimensions(110px, 159px);
-                background-image: url("/src/assets/home/purepng.png");
+                // background-image: url("/src/assets/home/purepng.png");
+                background-image: none;
                 background-size: 100%;
                 background-position: center;
                 background-repeat: no-repeat;
@@ -113,6 +116,7 @@
             content: "";
             @include dimensions(566px, 500px);
             background: linear-gradient(180deg, $color-yellow-ronchi -11.3%, $color-yellow-ronchi 111.3%);
+            background: transparent;
             display: block;
             z-index: -1;
             position: absolute;
@@ -124,7 +128,8 @@
         &::after {
             content: "";
             @include dimensions(165px, 126px);
-            background-image: url('/src/assets/home/pizza2.png');
+            // background-image: url('/src/assets/home/pizza2.png');
+            background-image: none;
             background-size: 100%;
             background-position: center;
             background-repeat: no-repeat;
@@ -201,27 +206,31 @@
         margin-left: 0px;
         padding-top: 122px;
     }
-
     .headerMessage {
-        margin-top: 2px;
         display: flex;
         flex-direction: column;
+        margin: 0 0 35px;
 
         .headerMessageSyle1 {
-            margin: 3px 0 0 0;
             display: inline;
-            color: $dark_Gray;
             font-family: 'Poppins-Bold', serif;
-            font-size: 40px;
-            line-height: normal;
-        }
+            @include fonts(54px, 54px, $color-white);
 
+            &:not(:last-child) {
+                margin: 0 0 10px;
+            }
+            &:nth-child(2) {
+                @include fontSize(45px, 45px);
+
+                .headerMessageSyle2 {
+                    @include fontSize(45px, 45px);
+                }
+            }
+        }
         .headerMessageSyle2 {
             display: inline;
-            color: $primary_color;
             font-family: 'Poppins-Bold', serif;
-            font-size: 40px;
-            line-height: normal;
+            @include fonts(54px, 54px, $color-yellow-saffron);
         }
     }
 }
@@ -238,9 +247,8 @@
     cursor: pointer;
 
     a {
-        color: $dark_Gray;
         font-family: 'Poppins-Bold', serif;
-        font-size: 17px;
+        @include fonts(17px, 17px, $color-white);
         line-height: normal;
         transition: color 1s;
         @include flex(flex, center, start);
@@ -249,13 +257,12 @@
         .pin-icon {
             font-size: 24px;
         }
-
         &:hover {
-            color: $dark_002;
+            text-decoration: underline;
+            color: $color-white;
         }
-
         .localisationIcon {
-            background-image: url('/src/assets/icons/map.svg');
+            background-image: url('/src/assets/icons/map-white.svg');
             @include dimensions(15px, 21px);
             background-size: contain;
             background-position: center;
@@ -276,46 +283,43 @@
     }
 }
 
-
-
-
 .fixedHeaderContainer2 {
-    background-color: $white_001;
-    height: 75px;
     position: fixed;
     top: 0;
     left: 10%;
     right: 10%;
     bottom: 0;
-    @include flex(flex, center, space-between);
+    z-index: 978;
+    background-color: transparent;
+    height: 110px;
     padding: 15px 35px;
     border-radius: 0px 0px 20px 20px;
-    z-index: 978;
     transition: box-shadow 0.3s ease-in-out;
+
+    > .container {
+        @include flex(flex, center, space-between);
+    }
 
     .header-buttons {
         @include flex(flex, center, end);
         gap: 20px;
 
         .LoadingButton {
-            background-color: $color-blue-eastern;
-            @include border(1px, $color-blue-eastern);
-            border-radius: 25px;
+            background-color: $color-white;
+            border-radius: 30px;
             min-width: 141px;
             height: 40px;
             @include flex;
-            color: $color-white;
+            @include fonts(15px, 15px, $color-blue-eastern);
             font-family: 'Poppins-SemiBold', serif;
-            font-size: 15px;
-            line-height: normal;
             cursor: pointer;
+            box-shadow: 4px 4px 19px 0px $color-blue-casal;
 
             &:hover {
                 color: $color-blue-eastern;
                 background-color: $color-white;
                 opacity: 1;
             }
-
             &.header-signup {
                 font-family: "Poppins-Bold", serif;
                 color: $color-blue-eastern;
@@ -354,10 +358,11 @@
         .logoMain {
             background-repeat: no-repeat;
             display: inline-block;
-            background-image: url('/src/assets/logo-horizontale.svg');
+            background-image: url('/src/assets/logo-thunder.svg');
             background-position: center;
             background-size: contain;
-            @include dimensions(107px, 39px);
+            // @include dimensions(107px, 39px);
+            @include dimensions(210px, 77px);
         }
     }
 
@@ -368,14 +373,14 @@
 
         .position {
             font-family: 'Poppins-Medium', serif;
-            @include fonts(15px, 15px, $dark_Gray);
+            @include fonts(15px, 15px, $color-white);
             @include flex(flex, center, end);
             gap: 7px;
             margin-right: 10px;
 
             .position-icon {
                 font-size: 21px;
-                color: $primary_color;
+                color: $color-white;
             }
         }
 
@@ -403,10 +408,9 @@
             &:hover {
                 cursor: pointer;
             }
-
             .account-icon {
                 @include dimensions(40px, 44px);
-                background-image: url('/src/assets/icons/account.svg');
+                background-image: url('/src/assets/icons/account-white.svg');
                 display: block;
                 background-repeat: no-repeat;
                 background-position: center;
@@ -429,7 +433,6 @@
                 @include dimensions(30px, 30px);
             }
         }
-
         .cart-item {
             @include flex;
             gap: 7px;
@@ -448,15 +451,41 @@
                 background-repeat: no-repeat;
                 background-position: center;
             }
-
             &:hover {
                 cursor: pointer;
             }
         }
     }
-
     &.scroll {
         box-shadow: 0px 0px 10px 0px rgba(0, 0, 0, 0.75);
+        background-color: $color-white;
+        height: 75px;
+
+        .logoContainer {
+            .logoMain {
+                background-image: url('/src/assets/logo-horizontale.svg');
+                @include dimensions(107px, 39px);
+            }
+        }
+        .info {    
+            .position {
+                color: $dark_Gray;
+    
+                .position-icon {
+                    color: $primary_color;
+                }
+            }
+            .account {
+                .account-icon {
+                    background-image: url('/src/assets/icons/account.svg');
+                }
+            }
+        }
+        .header-buttons {
+            .LoadingButton {
+                box-shadow: none;
+            }
+        }
     }
 }
 
@@ -473,6 +502,18 @@
     animation: cart-animation 0.3s linear;
     padding: 15px 0;
 }
+
+/* -- home-section-one  -- */
+
+.home-section-one {
+    background: linear-gradient(180deg, $color-blue-chill 0%, rgba(11, 164, 185, 0.75) 100%);
+    min-height: calc(100vh - 150px);
+
+    .container {
+        background-color: transparent;
+    }
+}
+
 
 /* # $Mobile ::
 ------------------------------------*/

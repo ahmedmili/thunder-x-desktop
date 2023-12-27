@@ -11,7 +11,7 @@ interface MobileMenuContentProps {
   donwloadApp: () => void;
 }
 
-const MobileMenuContent = ({isMobileMenuOpen, toggleMobileMenu, donwloadApp }: MobileMenuContentProps) => {
+const MobileMenuContent = ({ isMobileMenuOpen, toggleMobileMenu, donwloadApp }: MobileMenuContentProps) => {
   const { t } = useTranslation();
   const [backgroundClass, setBackgroundClass] = useState("");
   useEffect(() => {
@@ -19,18 +19,21 @@ const MobileMenuContent = ({isMobileMenuOpen, toggleMobileMenu, donwloadApp }: M
     const randomClass = classes[Math.floor(Math.random() * classes.length)];
     setBackgroundClass(randomClass);
   }, []);
-  
+
   return (
     <div className={`mobile-menu ${backgroundClass} ${isMobileMenuOpen ? "menu-close hidden" : ""}`}>
       <div className="close-menu" onClick={toggleMobileMenu}>
         <img src={close} alt="logo" loading="lazy" className="img-logo" />
       </div>
       <div className={`mobile-menu-content`}>
-        <div className="logo-container">
-          <img src={logo} alt="logo" loading="lazy" className="img-logo" />
+        <div className='logo-text-container'>
+          <div className="logo-container">
+            <img src={logo} alt="logo" loading="lazy" className="img-logo" />
+          </div>
+          <p className="logo-content-container">{"thunder exspress".toUpperCase()}</p>
         </div>
-        <h1 className="title-content-container">{t("mobile.menu.title")}</h1>
-        <p className="desc-content-container">{t("mobile.menu.description")}</p>
+        <h2 className="title-content-container">{t("mobile.menu.title").toUpperCase()}</h2>
+        <p className="desc-content-container">{t("mobile.menu.description").toUpperCase()}</p>
         <div className="btn-block-container">
           <button className="yellow-button" onClick={donwloadApp}>
             {t("mobile.menu.download_button")}

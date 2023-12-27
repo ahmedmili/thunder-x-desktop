@@ -29,6 +29,7 @@ export interface FoodItem {
   quantity: number;
   total: number;
   unitePrice: number;
+  default_price: number;
 
 }
 
@@ -157,6 +158,7 @@ export interface Product {
   }];
   position: number;
   price: number;
+  default_price?: number;
   quantity?: number;
   old_value?: number;
   cost?: number;

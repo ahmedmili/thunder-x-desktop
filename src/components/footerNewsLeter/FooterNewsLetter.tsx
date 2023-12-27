@@ -1,22 +1,28 @@
 import style from './footerNewsLetter.module.scss'
-import { Container, Row, Col } from 'react-bootstrap'
-import KeyboardArrowRightIcon from '@mui/icons-material/KeyboardArrowRight';
+import { Container, Form } from 'react-bootstrap'
+import newsLetterImg from './../../assets/newsletter-icn.png'
+
 export const FooterNewsLeter = () => {
     return (
-        <div className={style.newsLetterBackground}>
-            <Container  className={style.newsLetterContainer}>            
-                <Row className={style.newsLetterRow} >
-                    <Col className={"col-6 " + style.textContainer}>
-                        <p  className={style.firstPara}>Abonnez-vous à notre newsletter</p>
-                        <p className={style.secondPara}>Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's.</p>
-                    </Col >
-                    <Col className={"col-6 " + style.inputContainer}>
-                        <div className={style.emailInputContainer}>
-                            <input type="email" name="email" id="email" placeholder='Votre adresse e-mail' />
-                            <button> s'abonner <span className={style.iconContainer}><KeyboardArrowRightIcon className={style.icon}/></span></button>
-                        </div>
-                    </Col>
-                </Row>
+        <div className={style.newsLetterArea}>
+            <Container className={style.newsLetterContainer}>      
+                <div className={style.newsLetterDescription}>
+                    <h3 className={style.newsLetterTitle}>Abonnez-vous à notre newsletter</h3>
+                    <p className={style.newsLetterDesc}>
+                        Restez au courant 
+                    </p>
+                    <div className={style.emailWrapper}>
+                        <Form.Control className={style.formControl} type="email" placeholder="Votre adresse e-mail" />
+                        <button className={style.btnEmailSubmit}> 
+                            s'abonner 
+                            <span className={style.icon}>
+                            </span>
+                        </button>
+                    </div>
+                </div>
+                <div className={style.newsLetterImg}>
+                    <img src={newsLetterImg} alt="" />
+                </div>
             </Container>
         </div>
     )

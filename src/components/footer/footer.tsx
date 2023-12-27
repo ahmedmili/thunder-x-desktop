@@ -53,7 +53,7 @@ const Footer: React.FC<FooterProps> = () => {
           {/* contact numbers sections */}
           <Col className={"footerContacteTelCol"}>
             <div>
-              <p className={"footerTitle"}>Contactez-Nous</p>
+              <h4 className={"footerTitle"}>Contactez-Nous</h4>
               <p className={"FooterText"} ><span> <LocalPhoneIcon className="icon" /></span> &nbsp; +216 22 543 123 </p>
               <p className={"FooterText"} > <span><LocalPhoneIcon className="icon" /></span> &nbsp; +216 22 543 123 </p>
 
@@ -77,14 +77,10 @@ const Footer: React.FC<FooterProps> = () => {
           {/* email section */}
           <Col className={"footerContacteEmailCol"}>
             <div className={"footerContacteEmailContainer"}>
-              <p className={"footerTitle"}>
-                <span>
-                  <Email></Email>
-                </span>
+              <h4 className={"footerTitle"}>
                 contacts
-              </p>
+              </h4>
               <p className={"FooterText"}> thunder-express.com</p>
-
             </div>
           </Col>
           {/* pubs section */}
@@ -121,10 +117,12 @@ const Footer: React.FC<FooterProps> = () => {
               }
             </div>
           </Col>
-          <div className="demi-cerlce-container">
-            <div className="demi-cercle">
+          {/* 
+            <div className="demi-cerlce-container">
+              <div className="demi-cercle">
+              </div>
             </div>
-          </div>
+          */}
         </Row>
 
         {/* all right reserved section */}
