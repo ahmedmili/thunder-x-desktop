@@ -75,7 +75,7 @@
       }
     }
     .categories-list-buttons-container {
-      width: 108%;
+      width: 100%;
       height: 50px;
       display: flex;
       justify-content: space-between;
@@ -168,11 +168,6 @@
         }
       }
 
-      .categories-list-buttons-container {
-        width: 113%;
-        top: 44%;
-        left: -7%;
-      }
     }
   }
 }
@@ -190,12 +185,6 @@
       .carousel-slide {
         width: calc(100% / 5);
         height: 239px;
-      }
-
-      .categories-list-buttons-container {
-        width: 115%;
-        top: 44%;
-        left: -7%;
       }
     }
   }
@@ -229,17 +218,6 @@
           .category-name {
             font-size: 0.5rem;
           }
-        }
-      }
-
-      .categories-list-buttons-container {
-        width: 116%;
-        height: 21px;
-        top: 66%;
-        left: -9%;
-
-        .slider-button-icon {
-          font-size: 1.5rem;
         }
       }
     }

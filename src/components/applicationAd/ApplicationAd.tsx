@@ -12,15 +12,28 @@ export const ApplicationAd = () => {
 
 
     return (
-        <Container className={` ${addsStyles.applicationAdsMainContainer}`}>            
-            <Row className={addsStyles.applicationAdsDesignContainer} >
-                <Col sm={4} className={'text-center'}>
-                    <img className={addsStyles.applicationAdsImg} loading='lazy' src={phone_icn} alt="phone app" />
-                </Col>
-                <Col sm={8}>
+        <div className={` ${addsStyles.applicationAdsMainContainer}`}>    
+            <Container className={addsStyles.applicationAdsWrapper}>
+                <div className={addsStyles.applicationAdsDesignContainer} >
+                    <div className={addsStyles.phonesImgsBlc}>
+                        <div className={addsStyles.phonesImg}></div>
+                        <div className={addsStyles.phonesImg}></div>
+                    </div>
                     <div className={addsStyles.applicationAdsInfo}>
                         <div className={addsStyles.infoContainer}>
 
+                            <h2 className={addsStyles.infoTitle}>
+                                Livraison rapide & pick-up facile
+                            </h2>
+                            <p className={addsStyles.infoDesc}>
+                                Accompagnez vos commandes jusqu'à votre porte.
+                            </p>
+                            <div className={addsStyles.storeLinkGroup}>
+                                <button className={addsStyles.storeLinkItem}></button>
+                                <button className={addsStyles.storeLinkItem}></button>
+                            </div>
+
+                            {/* 
                             <div className={addsStyles.info1}>
                                 <p className={addsStyles.info1P1}>Livraison rapide & pick-up facile</p>
                                 <p className={addsStyles.info1P2}>Suivez les commandes jusqu’à votre porte</p>
@@ -40,10 +53,11 @@ export const ApplicationAd = () => {
                                     <img src={google_play} loading='lazy' alt="google_play" />
                                 </div>
                             </div>
+                            */}
                         </div>
                     </div>
-                </Col>
-            </Row>
-        </Container>
+                </div>
+            </Container>
+        </div>
     )
 }

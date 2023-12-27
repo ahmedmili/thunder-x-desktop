@@ -104,12 +104,13 @@ const SupplierCard: React.FC<SupplierCard> = ({ data, favors = false, className 
 
                         <div className={supplierStyle.leftSide}>
                             {/* supplier name */}
-                            <p className={supplierStyle.name}>
-                                <abbr title={data.name}>
+                            <div className={supplierStyle.name}>
+                                <h3 title={data.name}>
 
                                     {getTruncatedName(data.name)}
-                                </abbr>
+                                </h3>
                                 <span className={supplierStyle.rate}>
+                                    <Star className={supplierStyle.starIcon} />
                                     {
                                         data.star && data.star > 0 && (
                                             <>
@@ -117,10 +118,10 @@ const SupplierCard: React.FC<SupplierCard> = ({ data, favors = false, className 
                                             </>
                                         )
                                     }
-                                    <Star className={supplierStyle.starIcon} />
+                                    
                                 </span>
 
-                            </p>
+                            </div>
                             {/* option take_away & delivery */}
                             <p className={supplierStyle.option} >
                                 {

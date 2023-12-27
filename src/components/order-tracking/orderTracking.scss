@@ -1,0 +1,29 @@
+@import '../../scss/extend';
+
+.order-tracking-area {
+    .order-tracking-description {
+        margin: 0 auto 50px;
+        text-align: center;
+        max-width: 830px;
+
+        .order-tracking-title {
+            font-family: 'Poppins-Bold', serif;
+            @include fonts(30px, 35px, $color-blue-pelorous);
+            margin: 0 0 15px;
+        }
+        .order-tracking-desc {
+            font-family: 'Poppins-Medium', serif;
+            @include fonts(16px, 26px, $dark_Gray);
+            margin: 0;
+        }
+    }
+    .order-tracking-map {
+        @include dimensions(100%, 400px);
+        @include flex;
+        overflow: hidden;
+
+        img {
+            width: 100%;
+        }
+    }
+}

@@ -1,13 +1,10 @@
-@import '../../colors';
-
-
+@import '../../scss/extend';
 
 .recommandedContainer {
   margin-bottom: 5px;
   .container {
-    background-color: white;
+    background-color: $color-white;
     position: relative;
-    // padding: 25px;
     top: 0;
     justify-content: center;
     margin-bottom: 10px;
@@ -15,40 +12,28 @@
 
     .recaommandedTitle {
       text-align: center;
-      color: $primary_color;
-      font-family: Poppins;
-      font-size: 3rem;
-      font-style: normal;
-      font-weight: 700;
-      line-height: normal;
-      margin-bottom: 30px;
+      font-family: 'Poppins', serif;
+      font-weight: weight(light);
+      @include fonts(32px, 32px, $dark_002);
+      margin-bottom: 60px;
     }
-
-
     .discountTitleContainer {
-      text-align: left;
-      margin-bottom: 30px;
-      margin-left: 70px;
+      margin: 0 0 100px;
+      text-align: center;
+
       h2 {
-        color: $primary_color;
-        font-family: Poppins;
-        font-size: 32px;
-        font-style: normal;
-        font-weight: 700;
-        line-height: normal;
+        font-family: 'Poppins-Bold', serif;
+        @include fonts(32px, 32px, $color-blue-pelorous);
+        margin: 0 0 10px;
       }
       p {
-        color: $dark_Gray;
-        font-family: Poppins;
-        font-size: 18px;
-        font-style: normal;
-        font-weight: 700;
-        line-height: normal;
+        font-family: 'Poppins-Medium', serif;
+        @include fonts(18px, 24px, $dark_Gray);
+        margin: 0;
       }
     }
     .unique {
-      width: 96%;
-      height: 223px;
+      @include dimensions(96%, 223px);
       border-radius: 60px;
       background: $Light_yellow;
       position: absolute;
@@ -65,34 +50,31 @@
     }
     .carouselProvider {
       margin: 0 5%;
-      .uniqueDivCard {
-        // display: inline-block;
-        // margin-left: 6px;
-      }
+
       .recommandedListButtonsContainer {        
         .btn {
-          width: 43px;
-          height: 43px;
-          display: flex;
-          background-color: white;
-          text-align: center;
+          @include dimensions(43px, 43px);
+          @include flex;
+          background-color: $color-gray-pewter;
+          @include border(1px, $color-gray-pewter);
           border-radius: 50%;
-          justify-content: center;
           position: absolute;
-          top:45%;
+          top: 45%;
           transform: translate(-150%, -50%);
           margin-bottom: 10px;
-          &:hover {
-            background-color: $orange_color;
-          }
+          
           .sliderButtonIcon {
             font-size: 25px;
-            color: $orange_color;
-            font-weight: 400;
+            color: $color-white;
+            font-weight: weight(regular);
             margin-left:10px;
             margin-right: 0;
-            &:hover {
-              color: white;
+          }
+          &:hover {
+            background-color: $color-white;
+
+            .sliderButtonIcon {
+              color: $color-gray-pewter;
             }
           }
         }
@@ -107,46 +89,36 @@
          }
         }
       }
-
       .uniqueButtons {
-        width: 110%;
-        height: 50px;
+        @include dimensions(110%, 50px);
         top: 41%;
         left: -4%;
       }
     }
-
   }
   &.discount{
      .double {
-      background: #FFEDB0;
+      background: $Light_yellow;
       top: calc(50% - 105px);
     }
   }
 }
 
 
+/* # $Mobile ::
+------------------------------------*/
 
 @media only screen and (max-width: 1200px) {
-
   .recommandedContainer {
     .container {
       .unique {
         height: 143px;
-        // top: 108px;
       }
-
-      .double {
-        // height: 20vw;
-        // top: 10vw;
-      }
-
       .carouselProvider {
         .recommandedListButtonsContainer {
           top: 25%;
           left: -5%;
         }
-
         .uniqueButtons {
           top: 33%;
           left: -4%;
@@ -162,26 +134,16 @@
     }
   }
 }  
-
 @media only screen and (max-width: 991px) {
-
   .recommandedContainer {
     .container {
       .unique {
-        height: 157px;
         top: 101px;
-        width: 95%;
+        @include dimensions(95%, 157px);
       }
-
-      .double {
-        // height: 228px;
-        // top: 138px;
-      }
-
       .carouselProvider {
         .recommandedListButtonsContainer {
-          width: 112%;
-          height: 23px;
+          @include dimensions(112%, 23px);
           top: 166px;
           left: -5%;
         }
@@ -190,25 +152,16 @@
   }
 }
 
-
 @media only screen and (max-width: 767px) {
-
   .recommandedContainer {
     .container {
       .unique {
         top: 110px;
         height: 128px;
       }
-
-      .double {
-        // height: 201px;
-        // top: 134px;
-      }
-
       .carouselProvider {
         .recommandedListButtonsContainer {
-          width: 113%;
-          height: 23px;
+          @include dimensions(113%, 23px);
           top: 44%;
           left: -5%;
 
@@ -217,9 +170,7 @@
               font-size: 14px;
             }
           }
-
         }
-
         .uniqueButtons {
           width: 111%;
           top: 56%;
@@ -237,37 +188,24 @@
 
     .container {
       .unique {
-        height: 106px;
         top: 103px;
-        width: 88%;
+        @include dimensions(88%, 106px);
       }
-
       .recaommandedTitle {
-
         font-size: 2rem;
       }
-
-      .double {
-        // height: 159px;
-        // top: 73px;
-      }
-
-
       .carouselProvider {
         .recommandedListButtonsContainer {
-          width: 113%;
-          height: 23px;
+          @include dimensions(113%, 23px);
           top: 33%;
           left: -5%;
 
           .btn {
-
             .sliderButtonIcon {
               font-size: 14px;
             }
           }
         }
-
         .uniqueButtons {
           width: 111%;
           top: 44%;
@@ -279,44 +217,30 @@
   }
 }
 
-
 @media only screen and (max-width: 375px) {
-
   .recommandedContainer {
     .container {
-
       .unique {
         height: 90px;
         top: 66px;
       }
-
-      .double {
-        // height: 88px;
-        // top: 112px;
-        // width: 88%;
-      }
-
       .discountTitleContainer {
         text-align: left;
 
         h2 {
           font-size: 1rem;
         }
-
         p {
           font-size: 0.5rem;
         }
       }
-
       .carouselProvider {
         .recommandedListButtonsContainer {
           top: 39%;
           left: -5%;
-          height: 23px;
-          width: 116%;
+          @include dimensions(116%, 23px);
 
           .btn {
-
             .sliderButtonIcon {
               font-size: 11px;
             }
