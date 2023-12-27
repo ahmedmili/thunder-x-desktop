@@ -253,7 +253,7 @@ const Header = () => {
 
         ) : (
           <>
-            <div className={`fixedHeaderContainer2`} >
+            <div className={`fixedHeaderContainer2 scroll`} >
               <div className="logoContainer"
                 onClick={() => navigate('/')} >
                 <a href="#" className={`logoMain minimizedlogoMain`}></a>

@@ -206,6 +206,7 @@
         margin-left: 0px;
         padding-top: 122px;
     }
+
     .headerMessage {
         display: flex;
         flex-direction: column;
@@ -219,6 +220,7 @@
             &:not(:last-child) {
                 margin: 0 0 10px;
             }
+
             &:nth-child(2) {
                 @include fontSize(45px, 45px);
 
@@ -227,6 +229,7 @@
                 }
             }
         }
+
         .headerMessageSyle2 {
             display: inline;
             font-family: 'Poppins-Bold', serif;
@@ -257,10 +260,12 @@
         .pin-icon {
             font-size: 24px;
         }
+
         &:hover {
             text-decoration: underline;
             color: $color-white;
         }
+
         .localisationIcon {
             background-image: url('/src/assets/icons/map-white.svg');
             @include dimensions(15px, 21px);
@@ -296,7 +301,7 @@
     border-radius: 0px 0px 20px 20px;
     transition: box-shadow 0.3s ease-in-out;
 
-    > .container {
+    >.container {
         @include flex(flex, center, space-between);
     }
 
@@ -320,6 +325,7 @@
                 background-color: $color-white;
                 opacity: 1;
             }
+
             &.header-signup {
                 font-family: "Poppins-Bold", serif;
                 color: $color-blue-eastern;
@@ -408,6 +414,7 @@
             &:hover {
                 cursor: pointer;
             }
+
             .account-icon {
                 @include dimensions(40px, 44px);
                 background-image: url('/src/assets/icons/account-white.svg');
@@ -433,6 +440,7 @@
                 @include dimensions(30px, 30px);
             }
         }
+
         .cart-item {
             @include flex;
             gap: 7px;
@@ -451,15 +459,19 @@
                 background-repeat: no-repeat;
                 background-position: center;
             }
+
             &:hover {
                 cursor: pointer;
             }
         }
     }
+
     &.scroll {
         box-shadow: 0px 0px 10px 0px rgba(0, 0, 0, 0.75);
         background-color: $color-white;
         height: 75px;
+        display: flex;
+        justify-content: space-between;
 
         .logoContainer {
             .logoMain {
@@ -467,20 +479,23 @@
                 @include dimensions(107px, 39px);
             }
         }
-        .info {    
+
+        .info {
             .position {
                 color: $dark_Gray;
-    
+
                 .position-icon {
                     color: $primary_color;
                 }
             }
+
             .account {
                 .account-icon {
                     background-image: url('/src/assets/icons/account.svg');
                 }
             }
         }
+
         .header-buttons {
             .LoadingButton {
                 box-shadow: none;
