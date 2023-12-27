@@ -1,18 +1,18 @@
 
+import copy from 'clipboard-copy';
+import moment from "moment";
 import { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
+import { useNavigate } from 'react-router-dom';
 import LeftArrow from '../../../../assets/profile/leftArrow.svg';
 import RigthArrow from '../../../../assets/profile/rigthArrow.svg';
 import { cartService } from '../../../../services/api/cart.api';
 import { supplierServices } from '../../../../services/api/suppliers.api';
+import { localStorageService } from '../../../../services/localStorageService';
 import { Announce, Coupon, Product, Restaurant } from '../../../../services/types';
+import { isInsideRegions } from '../../../../utils/utils';
 import Spinner from '../../../spinner/Spinner';
 import './allAnnonces.scss';
-import moment from "moment";
-import { isInsideRegions } from '../../../../utils/utils';
-import { localStorageService } from '../../../../services/localStorageService';
-import { useNavigate } from 'react-router-dom';
-import copy from 'clipboard-copy';
 
 interface AnnonceProps {
   title: string,
@@ -26,7 +26,6 @@ interface AnnonceProps {
 
 
 const AnnonceCart: React.FC<AnnonceProps> = ({ title, bodyText, product, supplier, code_coupon, startAt }) => {
-
 
   const [formattedDate, setFormattedDate] = useState("");
   const { t } = useTranslation()
@@ -70,6 +69,7 @@ const AnnonceCart: React.FC<AnnonceProps> = ({ title, bodyText, product, supplie
       setFormattedDate(result);
     }
   }, [startAt]);
+
   return (<>
     <div className={`annonce-cart`} onClick={handleClick} >
       <h3 className='title'>{title}</h3>
@@ -79,7 +79,6 @@ const AnnonceCart: React.FC<AnnonceProps> = ({ title, bodyText, product, supplie
     </div>
   </>)
 }
-
 
 const Annonces = () => {
   const itemsPerPage = 8;
@@ -112,9 +111,10 @@ const Annonces = () => {
     const { status, data } = await cartService.getAllPromoCodes()
     if (status === 200) {
       const list = data.data;
+
       const location = await localStorageService.getCurrentLocation()
       let address = JSON.parse(location!).coords
-      let couponList = isInsideRegions(list, address.lat, address.long);
+      let couponList = isInsideRegions(list, address.latitude, address.longitude);
       setAllPromoCodes(couponList)
       setLoading(false);
     }
@@ -144,14 +144,29 @@ const Annonces = () => {
     setCurrentPage(currentPage - 1);
   }
 
+  const redAnnonce = async () => {
+    if (allAnnoncesData.length) {
+      let list: any = [];
+      // extract announces id's
+      allAnnoncesData.forEach((res: any) => {
+        list.push(res.id);
+      });
+      let formData = new FormData();
+      formData.append('annonces_ids', JSON.stringify(list));
+      const { status, data } = await supplierServices.redAnnonce(formData)
+      if (data.success) {
+        setDisplayedContent(AllPromoCodes)
+      }
+    }
+  }
 
   return (
     <section className="annonces-section">
       <h1>{t('profile.allAnnounces.message')}</h1>
 
       <div className="annonces-links-group">
-        <a className="annonces-link-item">Récent</a>
-        <a className="annonces-link-item">Tout effacer</a>
+        <a className="annonces-link-item">{t('Recent')}</a>
+        <a className="annonces-link-item" onClick={redAnnonce}>{t('clearAll')}</a>
       </div>
 
       {
