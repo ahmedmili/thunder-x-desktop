@@ -1,118 +1,143 @@
-@import '../../colors';
+@import '../../scss/extend';
 
 .applicationAdsMainContainer {
-    width: 100%;
+    @include dimensions(100%, 320px);
     position: relative;
-    background-color: white;
-    border-radius: 50px;
+    background-color: $color-blue-tranquil;
     background-repeat: no-repeat;
     background-position: center;
-    background-size: calc(100% - 50px) auto;
-    background-image: url("data:image/svg+xml;charset=utf-8,<svg xmlns='http://www.w3.org/2000/svg' width='1241' height='356' viewBox='0 0 1241 356' fill='none'><path d='M1241 171.855C1241 141.02 1217.63 115.205 1186.94 112.15L65.9431 0.56409C30.6312 -2.95092 0 24.7826 0 60.269V296C0 329.137 26.8629 356 60 356H1181C1214.14 356 1241 329.137 1241 296V171.855Z' fill='%2324A6A4'/></svg>");
+    background-size: cover;
+    background-image: url('./../../assets/app-ads-bg.png');
+    margin: 0 0 100px;
+
+    .applicationAdsWrapper {
+        border-radius: 0;
+        margin: 0 auto;
+        background-color: transparent;
+        
+    }
+    .phonesImgsBlc {
+        display: flex;
+        align-items: center;
+        gap: 20px;
+        margin: -77px 0 0;
+
+        .phonesImg {
+            @include dimensions(210px, 440px);
+            background-repeat: no-repeat;
+            background-position: center;
+            background-size: cover;
+
+            &:nth-child(1) {
+                margin: -80px 0 0;
+                background-image: url('./../../assets/phone-icn-1.png');
+            }
+            &:nth-child(2) {
+                background-image: url('./../../assets/phone-icn-2.png');
+            }
+        }
+    }
     .applicationAdsImg {    
         width: 62%;
     }
     .applicationAdsDesignContainer {
         position: relative;
+        display: flex;
+        gap: 100px;
+
         .applicationAdsInfo {
-            // width: 862px;
             height: 100%;
-            // background-image: url("data:image/svg+xml;charset=utf-8,<svg xmlns='http://www.w3.org/2000/svg' width='1241' height='356' viewBox='0 0 1241 356' fill='none'><path d='M1241 171.855C1241 141.02 1217.63 115.205 1186.94 112.15L65.9431 0.56409C30.6312 -2.95092 0 24.7826 0 60.269V296C0 329.137 26.8629 356 60 356H1181C1214.14 356 1241 329.137 1241 296V171.855Z' fill='%2324A6A4'/></svg>");
             background-repeat: no-repeat;
             background-size: 98% 297px;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
+            @include flex(flex, center, space-between);
+
             .infoContainer {
-                display: flex;
-                justify-content: space-between;
-                align-items: center;
-                margin-top: 0;
-                width: 100%;
+                .infoTitle {
+                    font-family: 'Poppins-Bold', serif;
+                    @include fonts(30px, 34px, $color-blue-pelorous);
+                    margin: 0 0 20px;
+                }
+                .infoDesc {
+                    font-family: 'Poppins-Medium', serif;
+                    @include fonts(20px, 24px, $dark_Gray);
+                    margin: 0 0 20px;
+                }
+                .storeLinkGroup {
+                    @include flex(flex, center, flex-start);
+                    gap: 15px;
+
+                    .storeLinkItem {
+                        @include dimensions(200px, 50px);
+                        background-repeat: no-repeat;
+                        background-position: center;
+                        background-size: cover;
+
+                        &:nth-child(1) {
+                            background-image: url('./../../assets/store-play-icn.png');
+                        }
+                        &:nth-child(2) {
+                            background-image: url('./../../assets/store-apple-icn.png');
+                        }
+                    }
+                }
                 .info1P1 {
                     width: 210px;
                     height: 55px;
-                    color: white;
-                    font-family: Poppins;
+                    color: $color-white;
+                    font-family: 'Poppins-Bold', serif;
                     font-size: 22px;
-                    font-style: normal;
-                    font-weight: 700;
                     line-height: normal;
                 }
-
                 .info1P2 {
-
                     width: 187px;
                     height: 68px;
-                    color: white;
-                    font-family: Poppins;
+                    color: $color-white;
+                    font-family: 'Poppins-Medium', serif;
                     font-size: 15px;
-                    font-style: normal;
-                    font-weight: 500;
                     line-height: normal;
                     margin: 0;
                 }
-
                 .info1Button {
                     width: 179px;
                     height: 50px;
                     margin-bottom: 16px;
                     border-radius: 25px;
                     background: $orange_color;
-                    display: flex;
-                    justify-content: center;
-                    align-items: center;
-                    color: white;
-                    font-family: Poppins;
-                    font-size: 24px;
-                    font-style: normal;
-                    font-weight: 700;
-                    line-height: 18px;
+                    @include flex;
+                    font-family: 'Poppins-Bold', serif;
+                    @include fonts(24px, 18px, $color-white);
                 }
-
                 .info2P1 {
                     width: 96px;
                     height: 78px;
                     color: $orange_color;
-                    font-family: Poppins;
+                    font-family: 'Poppins-Light', serif;
                     font-size: 48px;
-                    font-style: normal;
-                    font-weight: 300;
                     line-height: normal;
                 }
-
                 .info3 {
                     p {
                         margin: 0;
                     }
-
                     .info3P1 {
                         width: 396px;
                         height: 38px;
                         color: $orange_color;
-                        font-family: Poppins;
+                        font-family: 'Poppins-Bold', serif;
                         font-size: 28px;
-                        font-style: normal;
-                        font-weight: 700;
-
                         line-height: normal;
-
                     }
-
                     .info3P2 {
-                        color: white;
-                        font-family: Poppins;
+                        color: $color-white;
+                        font-family: 'Poppins-Bold', serif;
                         font-size: 18px;
-                        font-style: normal;
-                        font-weight: 700;
                         line-height: normal;
                     }
-
                     .socialBoxs {
                         margin: 7px 3px;
                         height: 36px;
                         display: inline-block;
-                        border: 1px white solid;
+                        border: 1px $color-white solid;
                         border-radius: 5px;
                     }
 
@@ -121,6 +146,12 @@
         }
     }
 }
+
+
+
+/* # $Mobile ::
+------------------------------------*/
+
 
 // @media only screen and (max-width:1200px) {
 //     .applicationAdsMainContainer {

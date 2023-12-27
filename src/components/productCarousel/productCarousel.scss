@@ -1,0 +1,114 @@
+@import '../../scss/extend';
+
+/* -- slider-area -- */
+.slider-area {
+  &.product-carousel {
+    margin: -100px 0 0;
+  }
+}
+
+.container {
+  top: 0;
+  margin-top: 10px;
+  border-radius: 50px;
+  padding: 25px;
+
+  .carousal-cat-title {
+    text-align: center;
+    color: $primary_color;
+    font-family: Poppins;
+    font-size: 32px;
+    font-style: normal;
+    font-weight: 700;
+    line-height: normal;
+  }
+}
+
+.carousal-provider {
+  padding-top: 16px;
+  height: 300px;
+  margin-bottom: 48px;
+  position: relative;
+  z-index: 0;
+
+  .categorie-carousel {
+    .carousel-slide {
+
+      .category-box {
+        box-shadow: 4px 4px 22px 0px #00000040;
+        background-color: $Off-White;
+        cursor: pointer;
+        border-radius: 20px;
+        margin: 0 auto;
+        @include dimensions(230px, 178px);
+        @include flex;
+        transition: box-shadow 0.3s ease-in-out;
+
+        &.selected {
+          border: 2px solid $primary_color;
+          background-color: $color-white;
+          box-shadow: 1px 2px 4px 2px rgba(0, 0, 0, 0.17);
+        }
+        &:hover {
+          cursor: pointer;
+          border: 2px solid $primary_color;
+          background-color: $Off-White;
+          box-shadow: 1px 2px 4px 2px rgba(0, 0, 0, 0.17);
+        }
+        img {
+          width: auto;
+          height: 96px;
+        }
+      }
+    }
+    .categories-list-buttons-container {
+      width: 108%;
+      height: 50px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      position: absolute;
+      top: 45%;
+      left: -4%;
+
+      .btn {
+        display: flex;
+        text-align: center;
+        border-radius: 50%;
+        justify-content: center;       
+        &:active{
+          border: none !important;
+        }
+      }
+      .slider-button-icon {
+        color: $Off-White;
+        font-weight: 400;
+        font-size: 2.2rem;
+
+        &:hover {
+          color: $light_beige;;
+        }
+      }
+    }
+    >.row>.col{
+      z-index: 9;
+    }
+  }
+}
+
+
+/* -- product-slider -- */
+
+.product-slider {
+  .carousal-provider {
+    &::before {
+      display: none;
+    }
+    .categorie-carousel {
+      max-width: 100%;
+    }
+  }
+}
+
+/* # $Mobile ::
+------------------------------------*/

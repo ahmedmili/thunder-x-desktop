@@ -132,56 +132,58 @@ const Header = () => {
 
       {
         (routerLocation.pathname == "/" || routerLocation.pathname.includes("/search/")) ? (
-          <div className="overflow-hidden">
+          <div className="overflow-hidden home-section-one">
             <Container className="xxl-12 header" >
-              <div className="head1">
-                <div className="demiCercle">
-
-                </div>
-              </div>
-              <div className={`fixedHeaderContainer2 ${scrolling ? 'scroll' : ''}`} >
-                <div className="logoContainer"
-                  onClick={() => navigate('/')} >
-                  <a href="#" className={`logoMain minimizedlogoMain`}></a>
-                </div>
-
-                <div className='info'>
-                  <div className="position">
-                    <LocationOnIcon className='position-icon' />
-                    {location
-                      ? location?.coords.label
-                      : t('no_location_detected')}
+              {/* 
+                <div className="head1">
+                  <div className="demiCercle">
 
                   </div>
-                  <button onClick={handleCart} className="cart-item">
-                    {/* <ShoppingCartOutlinedIcon className='cart-icon' /> */}
-                    <span className='cart-icon'></span>
-                    {cartItems.length}
-                  </button>
-                  <button onClick={handleUserCart} className={`account ${!logged_in && 'loggedin-account'}`}  >
-                    {/* <PermIdentityOutlinedIcon className='account-icon' /> */}
-                    <span className='account-icon'></span>
-                  </button>                  
-
-                  {!logged_in && (
-                    <div className="header-buttons">
-                      <a
-                        onClick={() => navigate('/register')}
-                        className='LoadingButton header-signup signup-link'
-                      >
-                        {t('signup')}
-                      </a>
-                      <button
-                        onClick={() => navigate('/login')}
-                        className='btn LoadingButton header-signin'
-                      >
-                        {t('login')}
-                      </button>
-                    </div>
-                  )
-                  }
                 </div>
+              */}
+              <div className={`fixedHeaderContainer2 ${scrolling ? 'scroll' : ''}`} >
+                <div className="container">
+                  <div className="logoContainer"
+                    onClick={() => navigate('/')} >
+                    <a href="#" className={`logoMain minimizedlogoMain`}></a>
+                  </div>
+                  <div className='info'>
+                    <div className="position">
+                      <LocationOnIcon className='position-icon' />
+                      {location
+                        ? location?.coords.label
+                        : t('no_location_detected')}
 
+                    </div>
+                    <button onClick={handleCart} className="cart-item">
+                      {/* <ShoppingCartOutlinedIcon className='cart-icon' /> */}
+                      <span className='cart-icon'></span>
+                      {cartItems.length}
+                    </button>
+                    <button onClick={handleUserCart} className={`account ${!logged_in && 'loggedin-account'}`}  >
+                      {/* <PermIdentityOutlinedIcon className='account-icon' /> */}
+                      <span className='account-icon'></span>
+                    </button>                  
+
+                    {!logged_in && (
+                      <div className="header-buttons">
+                        <a
+                          onClick={() => navigate('/register')}
+                          className='LoadingButton'
+                        >
+                          {t('signup')}
+                        </a>
+                        <button
+                          onClick={() => navigate('/login')}
+                          className='btn LoadingButton'
+                        >
+                          {t('login')}
+                        </button>
+                      </div>
+                    )
+                    }
+                  </div>
+                </div>
               </div>
               {
                 showCart && (

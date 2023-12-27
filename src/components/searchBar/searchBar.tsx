@@ -100,10 +100,12 @@ const SearchBar: React.FC<Props> = ({ placeholder }) => {
     <>
       <div className={searchStyle.searchContainer}>
         <form onSubmit={handleSearchSubmit}>
-          <span className={searchStyle.icons}>
-            <SearchIcon className={searchStyle.icon} />
-            <i className="bi bi-search"></i>
-          </span>
+          {/* 
+            <span className={searchStyle.icons}>
+              <SearchIcon className={searchStyle.icon} />
+              <i className="bi bi-search"></i>
+            </span>
+          */}
           <div className={searchStyle.headerSearchBar}>
             <input
               type="text"
@@ -112,17 +114,19 @@ const SearchBar: React.FC<Props> = ({ placeholder }) => {
               onKeyDown={(event) => onSubmit(event)}
               onChange={(event) => onChangerText(event.target.value)}
               aria-label="Enter recherche term"
-
             />
             {searchTerm.length > 0 && (
-              <span
+              <button
                 className={searchStyle.deleteSearchTextButton}
                 onClick={() => deleteSearchText()}
-              >X</span>
+              >X</button>
             )}
           </div>
+          {/* 
           <span onClick={handleTextSearch} className={`${searchStyle.icons} ${searchStyle.iconBackgorund}  `}>
           </span>
+          */}
+          <button className={searchStyle.btnHandleSearch}>Rechercher</button>
         </form>
       </div>
       {

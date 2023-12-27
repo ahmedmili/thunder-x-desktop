@@ -25,6 +25,8 @@ import MessangerBtnIcon from '../../assets/profile/Discuter/messanger-btn.svg';
 import Messanger from "../../components/Popups/Messanger/Messanger";
 import CategoryCarousel from "../../components/categoriesCarousel/categoriesCarousel";
 import HomeSkeleton from "./skeleton/HomeSkeleton";
+import ProductCarousel from "../../components/productCarousel/productCarousel";
+import { OrderTracking } from "../../components/order-tracking/orderTracking";
 
 
 
@@ -86,6 +88,13 @@ const HomePage = ({ initialData }: AppProps) => {
   return (
     <>
 
+      <div className="slider-area product-carousel">
+        <ProductCarousel
+          ssrCategories={categories}
+          onCategorySelect={handleCategorySelect}
+        />
+      </div>
+
       <div className={`xxl-12 ${homeStyle.homePageContainer}`}>
         {isLoading ? (
           <div className={homeStyle.homeSkeletonContainer}>
@@ -124,7 +133,7 @@ const HomePage = ({ initialData }: AppProps) => {
             )}
             <br></br>
             {popular.length > 0 ? (
-              <div className="home-resto-container">
+              <div className={`home-resto-container ${homeStyle.popularRestos}`}>
                 <RestaurantList
                   listType="popular"
                   restaurants={popular}
@@ -178,6 +187,7 @@ const HomePage = ({ initialData }: AppProps) => {
         )}
       </div>
 
+      <OrderTracking />
       <FooterNewsLeter />
     </>
   );
