@@ -1,5 +1,5 @@
 import SendIcon from '@mui/icons-material/Send';
-import { useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Badge, Stack } from "react-bootstrap";
 import { useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
@@ -13,6 +13,7 @@ import './autocompleteInput.scss';
 
 interface AutocompleteInputProps {
     initLocation: boolean;
+    returnSuggestions?: (sugg: any) => void
 }
 
 type Position = {
@@ -23,7 +24,7 @@ type Position = {
 };
 
 
-const AutocompleteInput: React.FC<AutocompleteInputProps> = ({ initLocation }) => {
+const AutocompleteInput: React.FC<AutocompleteInputProps> = ({ initLocation, returnSuggestions }) => {
     const [inputValue, setInputValue] = useState<string>('');
     const [suggestions, setSuggestions] = useState([]);
     const [loading, setLoading] = useState<boolean>(false);
@@ -34,7 +35,6 @@ const AutocompleteInput: React.FC<AutocompleteInputProps> = ({ initLocation }) =
     const dispatch = useDispatch()
     const navigate = useNavigate()
     const { t } = useTranslation()
-
 
     const getPosition = () => {
 
@@ -58,24 +58,32 @@ const AutocompleteInput: React.FC<AutocompleteInputProps> = ({ initLocation }) =
         );
     };
 
+
+
+
     function handleOnClick(suggestion: any) {
-        dispatch({
-            type: "SET_LOCATION",
-            payload: {
-                coords: {
-                    latitude: suggestion.position[0].lat,
-                    longitude: suggestion.position[0].long,
-                    label: suggestion.title,
+        if (initLocation) {
+            dispatch({
+                type: "SET_LOCATION",
+                payload: {
+                    coords: {
+                        latitude: suggestion.position[0].lat,
+                        longitude: suggestion.position[0].long,
+                        label: suggestion.title,
+                    },
                 },
-            },
-        });
+            });
+        } else {
+            (returnSuggestions != undefined) && returnSuggestions(suggestion)
+        }
+        setInputValue(suggestion.title)
         setSuggestions([])
     }
 
     // Simulate an API call for autocomplete suggestions
     const fetchSuggestions = async () => {
         if (inputValue === '') {
-            setSuggestions([]);
+            clearInput()
             return;
         }
         setLoading(true);
@@ -83,7 +91,9 @@ const AutocompleteInput: React.FC<AutocompleteInputProps> = ({ initLocation }) =
         const response = await LocationService.autocomplete(inputValue);
         const { status, data } = response;
         data.data && setSuggestions(data.data);
+        !data.data && setSuggestions([])
         setLoading(false);
+
     };
 
     useEffect(() => {
@@ -101,6 +111,8 @@ const AutocompleteInput: React.FC<AutocompleteInputProps> = ({ initLocation }) =
     };
 
     const clearInput = () => {
+        (returnSuggestions != undefined) && returnSuggestions(null)
+        setSuggestions([]);
         setInputValue("");
     }
 
@@ -167,4 +179,4 @@ const AutocompleteInput: React.FC<AutocompleteInputProps> = ({ initLocation }) =
     );
 };
 
-export default AutocompleteInput
+export default React.memo(AutocompleteInput);
