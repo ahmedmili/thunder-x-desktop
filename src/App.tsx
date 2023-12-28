@@ -186,7 +186,7 @@ function App({ initialData }: AppProps) {
           });
         },
         (error: GeolocationPositionError) => {
-          dispatch({ type: "SET_SHOW", payload: true })
+          // dispatch({ type: "SET_SHOW", payload: true })
         }
       );
     }
