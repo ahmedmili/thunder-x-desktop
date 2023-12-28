@@ -20,7 +20,7 @@ import Messanger from "../../components/Popups/Messanger/Messanger";
 import { OrderTracking } from "../../components/order-tracking/orderTracking";
 import ProductCarousel from "../../components/productCarousel/productCarousel";
 import HomeSkeleton from "./skeleton/HomeSkeleton";
-
+import { JoinUs } from "../../components/joinUs/joinUs";
 
 
 const HomePage = ({ initialData }: AppProps) => {
@@ -97,6 +97,7 @@ const HomePage = ({ initialData }: AppProps) => {
       </div>
 
       <OrderTracking />
+      <JoinUs />
       <FooterNewsLeter />
     </>
   );
