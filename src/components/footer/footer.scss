@@ -24,8 +24,7 @@
 }
 
 .footerContainer {
-    height: 363px;
-    width: 100%;
+    @include dimensions(100%, 363px);
     background-color: $color-gray-gallery;
 
     .bodyRow {
@@ -40,10 +39,10 @@
             top: -27px;
             right: 0;
             width: 103px;
+
             .demi-cercle {
                 z-index: 20;
-                height: 390.35px;
-                width: 417.35px;
+                @include dimensions(417px, 390px);
                 border-radius: 500px;
                 background: linear-gradient(180deg, $orange_color 0%, $orange_color 100%);
             }
@@ -54,20 +53,16 @@
             flex: 1;
 
             .webifyIcon {
-                width: 77px;
-                height: 119.64px;
+                @include dimensions(77px, 119px);
             }
         }
-
         .footerContacteEmailCol,
         .footerContacteTelCol {
-
             font-size: 14px;
             display: flex;
             justify-content: center;
             flex: 1;
         }
-
         .footerPubsCol {
             flex: 1;
 
@@ -76,15 +71,47 @@
                 overflow-y: hidden;
                 padding: 5px;
 
-                .bottom-to-top-scroll-carousel-item {
-                    width: 100%;
-                    height: 47px;
-                    margin-bottom: 10px;
+                .last-pubs-area {
+                    max-width: 260px;
+
+                    .last-pubs-item {
+                        @include dimensions(100%, 47px);
+                        margin-bottom: 10px;
+                        display: flex;
+                        gap: 10px;
+
+                        &:not(:last-child) {
+                            margin: 0 0 10px;
+                        }
+                        .last-pub-img {
+                            @include dimensions(76px, 50px);
+                            @include flex;
+                            flex-shrink: 0;
+                            overflow: hidden;
+
+                            img {
+                                object-fit: fill;
+                                @include dimensions(100%, 100%);
+                            }
+                        }
+                        .last-pub-desc {
+                            h5 {
+                                font-family: 'Poppins-SemiBold', serif;
+                                @include fonts(10px, 10px, $light_Gray);
+                                margin: 0 0 10px;
+                            } 
+                            p {
+                                font-family: 'Poppins', serif;
+                                font-weight: weight(regular);
+                                @include fonts(10px, 10px, $light_Gray);
+                                margin: 0;
+                            }
+                        }
+                    }
                 }
             }
             .pubsImage {
-                width: 76px;
-                height: 50px;
+                @include dimensions(76px, 50px);
             }
         }
         .footerTitle {
@@ -95,7 +122,7 @@
         }
         .FooterText {
             font-family: 'Poppins-SemiBold', serif;
-            @include fonts(18px, 18px, $light_Gray);
+            @include fonts(15px, 15px, $light_Gray);
             display: flex;
             align-items: center;
 
@@ -103,28 +130,30 @@
                 font-size: 18px;
                 color: $orange_color;
             }
+            &.phone {
+                background-image: url('./../../assets/phone-icn.svg');
+                background-repeat: no-repeat;
+                background-position: left 0;
+                background-size: 17px auto;
+                padding: 3px 0 3px 22px;
+            }
         }
         .socialMedia {
             color: $color-white;
             width: 100%;
             @include flex(flex, center, space-around);
-            margin-top: 10px;
+            margin-top: 35px;
 
             .icons {
-                display: flex;
-                justify-content: center;
-                align-items: center;
+                @include flex;
                 padding: 9px;
                 background-color: $orange_color ;
                 border-radius: 50%;
                 transition: background-color 250ms ease-in-out;
 
                 .icon {
-                    width: 23px;
-                    height: 23px;
-
+                    @include dimensions(23px, 23px);
                 }
-
                 &:hover {
                     background-color: $orange_color_001 ;
                     cursor: pointer;
@@ -133,24 +162,38 @@
         }
     }
     .footerRightReserverCol {
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        background-color: $primary_color_001;
+        @include flex;
+        background-color: $color-blue-eastern;
         color: $color-white;
         height: 54px;
 
         p {
             margin: 0;
-            color: $color-white;
-            font-family: Poppins;
-            font-size: 18px;
-            font-style: normal;
-            font-weight: 500;
-            line-height: normal;
+            font-family: 'Poppins-Medium', serif;
+            @include fonts(13px, 13px, $color-white);
         }
     }
+}
 
+/* # $Mobile ::
+------------------------------------*/
+
+@media (max-width: 1440px) {
+    .footerContainer {
+        height: initial;
+        
+        .bodyRow {
+            padding: 80px 0 28px;
+
+            .footerTitle {
+                @include fontSize(15px, 15px);
+                margin: 0 0 15px;
+            }
+            .FooterText {
+                @include fontSize(13px, 13px);
+            }
+        }
+    }
 }
 
 @media only screen and (max-width:1200px) {
@@ -179,12 +222,10 @@
             .demi-cerlce-container {
                 right: 0;
             }
-
             .footerTitle {
                 font-size: 1.5rem;
                 line-height: 33px
             }
-
         }
     }
 }
@@ -196,8 +237,7 @@
                 top: -61px;
 
                 .demi-cercle {
-                    height: 599.415px;
-                    width: 599.415px;
+                    @include dimensions(599px, 599px);
                 }
             }
             .footerTitle {
@@ -226,8 +266,7 @@
             }
             .footerLogoCol {
                 .webifyIcon {
-                    height: 65px;
-                    width: 37px;
+                    @include dimensions(37px, 65px);
                 }
             }
             .footerTitle {
@@ -243,20 +282,16 @@
                 }
             }
             .webifyIcon {
-                height: 10%;
-                width: 10%;
+                @include dimensions(10%, 10%);
             }
             .socialMedia {
                 .icons {
                     padding: 3px;
-                    display: flex;
-                    justify-content: center;
-                    align-items: center;
+                    @include flex;
                     text-align: center;
 
                     .icon {
-                        width: 10px;
-                        height: 10px;
+                        @include dimensions(10px, 10px);
                     }
                 }
             }
@@ -279,22 +314,15 @@
 @media only screen and (max-width:500px) {
     .footerContainer {
         .bodyRow {
-
-
             .footerLogoCol {
                 .webifyIcon {
-                    height: 65px;
-                    width: 37px;
+                    @include dimensions(37px, 65px);
                 }
             }
-
-
-
             .footerTitle {
                 font-size: 0.5rem;
                 line-height: 15px;
             }
-
             .FooterText {
                 font-size: 0.5rem;
                 line-height: 21px;
@@ -303,27 +331,20 @@
                     font-size: 0.7rem;
                 }
             }
-
             .webifyIcon {
-                height: 10%;
-                width: 10%;
+                @include dimensions(10%, 10%);
             }
-
             .socialMedia {
                 .icons {
                     padding: 3px;
-                    display: flex;
-                    justify-content: center;
-                    align-items: center;
+                    @include flex;
                     text-align: center;
 
                     .icon {
-                        width: 10px;
-                        height: 10px;
+                        @include dimensions(10px, 10px);
                     }
                 }
             }
-
             .footerContacteEmailCol,
             .footerContacteTelCol {
                 font-size: 14px;
