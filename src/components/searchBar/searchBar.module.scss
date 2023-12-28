@@ -120,6 +120,17 @@
 /* # $Mobile ::
 ------------------------------------*/
 
+@media (max-width: 1440px) {
+  .searchContainer {
+    form {
+      .headerSearchBar {
+        input {
+          @include fontSize(12px, 12px);
+        }
+      }
+    }
+  }
+}
 @media only screen and (max-width: 992px) {
   .searchContainer {
     width: 77%;

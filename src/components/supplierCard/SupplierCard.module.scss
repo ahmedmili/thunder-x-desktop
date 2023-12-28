@@ -158,11 +158,24 @@
     @include dimensions(95%, 370px);
   }
 }
-
-@media only screen and (max-width: 1200px) {
+@media (max-width: 1440px) {
   .supplierCard {
     width: 94%;
 
+    .restaurantLink {
+      .card {
+        .imageContainer {
+          height: 200px;
+        }
+        .contentContainer {
+          height: 130px;
+        }
+      }
+    }
+  }
+}
+@media only screen and (max-width: 1200px) {
+  .supplierCard {
     .restaurantLink {
       .card {
         height: 77%;

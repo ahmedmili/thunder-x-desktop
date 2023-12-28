@@ -130,11 +130,11 @@ const ProductCarousel: React.FC<ProductCarouselProps> = ({
       const width = window.innerWidth;
       let items = 2;
       switch (true) {
-        case width >= 1200:
+        case width >= 1440:
           items = 7;
           break;
-        case width >= 768 && width < 1200:
-          items = 3;
+        case width >= 768 && width < 1440:
+          items = 6;
           break;
         case width < 768:
           items = 2;

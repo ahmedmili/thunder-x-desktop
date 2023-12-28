@@ -57,20 +57,6 @@
         padding: 0;
         height: 600px;
 
-        @media (max-width: 1399.98px) {
-            transform: translateX(84px) scale(0.8);
-            height: 532px;
-        }
-
-        @media (max-width: 1199.98px) {
-            transform: translateX(84px) scale(0.8);
-            height: 532px;
-        }
-
-        @media (max-width: 991.98px) {
-            transform: translateX(245px) scale(0.8);
-        }
-
         .imageBuilder {
             background-image: url('/src/assets/home/home-section-one-img.png');
             // background-image: none;
@@ -196,16 +182,6 @@
 
 .headerAppBar2 {
     padding-top: 135px;
-
-    @media (max-width: 1399.98px) {
-        margin-left: 42px;
-        padding-top: 60px;
-    }
-
-    @media (max-width: 991.98px) {
-        margin-left: 0px;
-        padding-top: 122px;
-    }
 
     .headerMessage {
         display: flex;
@@ -536,7 +512,15 @@
 @media (max-width: 1440px) {
     .fixedHeaderContainer2 {
         padding: 12px 28px;
+        left: 0;
+        right: 0;
+        height: 85px;
 
+        .logoContainer {
+            .logoMain {
+                @include dimensions(160px, 60px);
+            }
+        }
         .header-buttons {
             .LoadingButton {
                 min-width: 113px;
@@ -544,8 +528,9 @@
                 font-size: 12px;
             }
         }
-
         .info {
+            gap: 15px;
+
             .cart-item {
                 @include dimensions(65px, 35px);
                 @include fontSize(14px, 14px);
@@ -555,6 +540,47 @@
                     background-size: 16px, auto;
                 }
             }
+        }
+    }
+    .home-section-one {
+        .headerAppBar2 {
+            padding-top: 60px;
+            margin: 0;
+
+            .headerMessage {
+                margin: 0 0 25px;
+
+                .headerMessageSyle1 {
+                    @include fontSize(40px, 40px);
+                }
+            }
+        }
+    }
+    .header {
+        .imageBuilderContainer {
+            &::before,
+            &::after {
+                display: none;
+            }
+            .imageBuilder {
+                background-position: center;
+                @include dimensions(450px, 480px);
+                border-radius: 0;
+                position: absolute;
+                right: 20px;
+                bottom: initial;
+                top: -75px;
+
+                &::before,
+                &::after {
+                    display: none;
+                }
+            }
+        }
+    }
+    .headerLocalisationMessageContainer {
+        a {
+            @include fontSize(14px, 14px);
         }
     }
 }
