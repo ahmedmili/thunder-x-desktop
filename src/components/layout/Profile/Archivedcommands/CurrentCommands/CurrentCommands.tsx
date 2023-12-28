@@ -25,6 +25,7 @@ import { commandService } from '../../../../../services/api/command.api';
 import { Product } from '../../../../../services/types';
 import SignaleProblem from '../../../../Popups/SignaleProblem/SignaleProblem';
 import CommandsFooter from '../Footer/Footer';
+import WarnPopup from '../../../../Popups/WarnPopup/WarnPopup';
 
 interface CommandsListProps {
     data: any
@@ -56,6 +57,7 @@ interface CommandProps {
 
 const Command: React.FC<CommandProps> = ({ removeCommand, data }) => {
     const [total, setTotal] = useState<number>(0)
+    const [showCancleConfirm, setShowCancleConfirm] = useState<boolean>(false)
     const { t } = useTranslation()
 
     const calculeData = () => {
@@ -76,6 +78,12 @@ const Command: React.FC<CommandProps> = ({ removeCommand, data }) => {
         calculeData()
     }, [data])
 
+    const handleConfrmModal = ( )=>{
+        setShowCancleConfirm(!showCancleConfirm)
+    }
+    const dropCommand = (id:number) =>{
+        removeCommand(id)
+    } 
     return (
         <div className='command-product-container'>
             <h3 className='title'> {t('profile.commands.command')}</h3>
@@ -155,7 +163,13 @@ const Command: React.FC<CommandProps> = ({ removeCommand, data }) => {
                 )
             }
             {/* deliv price */}
-            <button className='cancel-btn' onClick={() => removeCommand(data.command_id)}>{t('profile.commands.annuler')}</button>
+            <button className='cancel-btn' onClick={handleConfrmModal}>{t('profile.commands.annuler')}</button>
+            {
+                showCancleConfirm && (
+
+                    <WarnPopup close={handleConfrmModal} accept={() => dropCommand(data.command_id)} closeButtonText={t('Annuler')} confirmButtonText={t('delete')}  message='' />
+                )
+            }
         </div>
     )
 
