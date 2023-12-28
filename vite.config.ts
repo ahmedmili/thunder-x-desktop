@@ -11,7 +11,7 @@ export default defineConfig({
   base: '/',
 
   build: {
-    chunkSizeWarningLimit: 1000, // Adjust chunk size warning limit
+    chunkSizeWarningLimit: 1600, // Adjust chunk size warning limit
     outDir: 'dist',
     assetsDir: 'assets',
     manifest: true,
