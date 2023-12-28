@@ -1,0 +1,147 @@
+@import '../../../scss/extend';
+
+
+.location-search-input-container {
+  position: relative;
+  width: 100%;
+  border-radius: 15px;
+  @include flex(flex, center, space-between);
+  padding-left: 5px;
+
+  .current-location-btn {
+    padding-bottom: 10px;
+
+    .current-location-icon {
+      color: white;
+      @include dimensions(25px, 25px);
+      transform: rotate(-45deg);
+    }
+  }
+
+  .location-search-inpute {
+    background-color: $color-white;
+    height: 33px;
+    padding: 0 10px;
+    border-radius: 0;
+    @include flex(flex, center, space-between);
+
+    border-bottom: 1px solid $light_Gray;
+
+    &::before {
+      width: 14.96px;
+      height: 21px;
+      content: '';
+      background-image: url(/src/assets/icons/map.svg);
+      background-size: 12px;
+      background-repeat: no-repeat;
+      background-position: center;
+      margin-left: -12px;
+    }
+
+    .icon {
+      color: $light_Gray;
+      font-size: 12px;
+      font-weight: weight(bold);
+    }
+
+    input[type="text"] {
+      width: 100%;
+      font-family: 'Poppins-Medium', serif;
+      @include fonts(15px, 24px, $dark_Gray);
+      letter-spacing: 0em;
+      text-align: left;
+      border: none;
+      outline: none;
+      padding-left: 10px;
+
+      &::placeholder {
+        color: $dark_Gray;
+        font-size: 15px;
+      }
+    }
+
+    &.location-search-input {
+      background-color: transparent;
+      border: 0;
+      padding: 0 10px 0 0px;
+
+      input[type=text] {
+        background-color: transparent;
+        padding-left: 0;
+        font-family: 'Poppins-Medium', serif;
+        @include fonts(15px, 24px, $white2);
+
+        &::placeholder {
+          color: $white2;
+          text-align: center;
+          @include fonts(15px, 24px, $white2);
+        }
+      }
+
+      &::before {
+        display: none;
+      }
+    }
+  }
+
+  ul {
+    width: 100%;
+    position: absolute;
+    top: 50px;
+    left: 0;
+    z-index: 999;
+
+    background-color: $Off-White;
+    padding: 0;
+    margin: 0;
+
+    li {
+      list-style: none;
+      padding: 5px 15px;
+
+      &:hover {
+        background-color: $primary_color;
+      }
+    }
+  }
+
+  .error {
+    font-family: 'Poppins-Medium', serif;
+    @include fonts(12px, 18px, $color-red);
+    letter-spacing: 0em;
+    margin-top: 15px;
+    margin-left: 10px;
+  }
+
+  .store-img {
+    @include dimensions(163px, 119px);
+    background-image: url(/src/assets/home/store.png);
+    background-size: contain;
+    background-position: center;
+    background-repeat: no-repeat;
+    margin-block: 15px;
+    margin-inline: auto;
+  }
+
+  .stores-container {
+    text-align: center;
+    margin-block: 15px;
+
+    .store-badge {
+      width: 100.72px;
+      height: 27px;
+      background-color: $Ocean_Teal !important;
+      font-family: 'Poppins-Regular', serif;
+      font-size: 14px;
+      font-weight: weight(regular);
+      letter-spacing: 0em;
+      line-height: 1.3;
+    }
+
+    h2 {
+      font-family: 'Poppins-SemiBold', serif;
+      @include fonts(18px, 33px, $dark_Gray);
+      letter-spacing: 0em;
+    }
+  }
+}

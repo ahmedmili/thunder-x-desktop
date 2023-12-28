@@ -17,20 +17,23 @@
 
   .container {
     max-height: calc(100vh - 70px);
-    overflow-y: auto;   
-    overflow-x: hidden; 
+    overflow-y: auto;
+    overflow-x: hidden;
     padding: 10px;
 
     &::-webkit-scrollbar {
       width: 9px;
     }
+
     &::-webkit-scrollbar-track {
       background: $Off-White;
     }
+
     &::-webkit-scrollbar-thumb {
       background: $Off-White;
     }
   }
+
   .cancel-icon-container {
     position: absolute;
     top: 29px;
@@ -40,9 +43,10 @@
     justify-content: end;
     z-index: 99;
 
-    &:hover{
+    &:hover {
       cursor: pointer;
     }
+
     .cancel-icon {
       border-radius: 50%;
       font-size: 25px;
@@ -55,6 +59,7 @@
 
     }
   }
+
   .form {
     margin-top: 37px;
     @include flex(flex, start, center);
@@ -67,8 +72,9 @@
       font-size: 24px;
       line-height: 36px;
       letter-spacing: 0em;
-      text-align: center; 
+      text-align: center;
     }
+
     label {
       font-family: 'Poppins-Regular', serif;
       font-size: 15px;
@@ -79,6 +85,7 @@
       color: $dark_Gray;
       margin-left: 10px;
     }
+
     button {
       @include flex(flex, center, space-between);
       margin-bottom: 19px;
@@ -98,114 +105,14 @@
         background-color: $color-blue-endeavour;
       }
     }
+
     .adresses_container {
       display: flex;
       justify-content: center;
       width: 80%;
     }
   }
-  .location-search-input-container {
-    position: relative;
-    width: 100%;
-    border-radius: 15px;
 
-    .location-search-inpute {
-      background-color: $color-white;
-      height: 33px;
-      padding: 0 10px;
-      border-radius: 0;
-      display: flex;
-      align-items: center;
-      border-bottom: 1px solid $light_Gray;
-
-      &::before{
-        width: 14.96px;
-        height: 21px;
-        content: '';
-        background-image: url(/src/assets/icons/map.svg);
-        background-size: 12px;
-        background-repeat: no-repeat;
-        background-position: center;
-        margin-left: -12px;
-      }
-      .icon {
-        color: $light_Gray;
-        font-size: 12px;
-        font-weight: weight(bold);
-      }
-      input[type="text"] {      
-        width: 100%;  
-        font-family: 'Poppins-Medium', serif;
-        @include fonts(15px, 24px, $dark_Gray);
-        letter-spacing: 0em;
-        text-align: left;
-        border: none;
-        outline: none;
-        padding-left: 10px;
-
-        &::placeholder {
-          color: $dark_Gray;
-          font-size: 15px;
-        }
-      }
-    }
-    ul {
-      width: 100%;
-      position: absolute;
-      top: 50px;
-      left: 0;
-      z-index: 999;
-
-      background-color: $Off-White;
-      padding: 0;
-      margin: 0;
-
-      li {
-        list-style: none;
-        padding: 5px 15px;
-
-        &:hover {
-          background-color: $primary_color;
-        }
-      }
-    }
-    .error {
-      font-family: 'Poppins-Medium', serif;
-      @include fonts(12px, 18px, $color-red);
-      letter-spacing: 0em;
-      margin-top: 15px;
-      margin-left: 10px;
-    }
-    .store-img {
-      @include dimensions(163px, 119px);
-      background-image: url(/src/assets/home/store.png);
-      background-size: contain;
-      background-position: center;
-      background-repeat: no-repeat;
-      margin-block: 15px;
-      margin-inline: auto;
-    }
-    .stores-container{
-      text-align: center;
-      margin-block: 15px;
-
-      .store-badge {
-        width: 100.72px;
-        height: 27px;       
-        background-color: $Ocean_Teal !important;
-        font-family: 'Poppins-Regular', serif;
-        font-size: 14px;
-        font-weight: weight(regular);
-        letter-spacing: 0em;
-        line-height: 1.3;
-      }
-      h2 {
-        font-family: 'Poppins-SemiBold', serif;
-        @include fonts(18px, 33px, $dark_Gray);
-        letter-spacing: 0em;
-      }
-    }
-  }
 
   .location-filtre {
     margin-top: 11px;
@@ -235,6 +142,7 @@
         line-height: normal;
         transition: all ease-in-out 0.5s;
       }
+
       input[type="radio"] {
         appearance: none;
         -webkit-appearance: none;
@@ -242,6 +150,7 @@
         position: absolute;
       }
     }
+
     .selected {
       background-color: $orange_color ;
       border: none;
@@ -251,6 +160,7 @@
       }
     }
   }
+
   .Text-container {
     @include flex(flex, start, center);
     flex-direction: column;
@@ -266,6 +176,7 @@
       text-align: start;
       margin-left: 10%;
     }
+
     h6 {
       color: $dark_Gray;
       font-family: 'Poppins-Regular', serif;
@@ -275,6 +186,7 @@
       text-align: start;
     }
   }
+
   .saved-adresses-title {
     width: 100%;
     color: $dark_Gray;
@@ -283,6 +195,7 @@
     line-height: normal;
     margin: 15px auto 5px auto;
   }
+
   .adresses-container {
     overflow-y: auto;
     @include dimensions(100%, 251px);
@@ -292,12 +205,15 @@
     &::-webkit-scrollbar {
       width: 9px;
     }
+
     &::-webkit-scrollbar-track {
       background: $Off-White;
     }
+
     &::-webkit-scrollbar-thumb {
       background: $Off-White;
     }
+
     .adressCompContainer {
       display: flex;
       flex-direction: column;
@@ -307,7 +223,7 @@
       margin-top: 10px;
       padding: 15px;
       box-shadow: 0px 4px 4px 0px #00000014;
-        
+
       .type {
         display: flex;
         flex: 1;
@@ -329,6 +245,7 @@
             object-fit: cover;
           }
         }
+
         .edit-button {
           @include dimensions(44px, 44px);
           background-color: $Off-White;
@@ -341,6 +258,7 @@
           }
         }
       }
+
       .position-name {
         width: 100%;
         color: $dark_Gray;
@@ -356,15 +274,17 @@
 }
 
 .profile-config-map {
-  width:  100%;
+  width: 100%;
   box-shadow: none;
 
   .cancel-icon-container {
     display: none;
   }
+
   h1.text-center {
     display: none;
   }
+
   &.location-container {
     z-index: 1;
 
@@ -385,13 +305,16 @@
       h1 {
         font-size: 20px;
       }
+
       button {
         width: 312px;
       }
     }
+
     .location-search-input-container {
       width: 312px;
     }
+
     .location-filtre {
       .select {
         cursor: pointer;
@@ -404,6 +327,7 @@
         }
       }
     }
+
     .Text-container {
       p {
         font-size: 17px;
@@ -411,6 +335,7 @@
     }
   }
 }
+
 @media only screen and (max-width : 576px) {
   .location-container {
     width: 251px;
@@ -419,11 +344,13 @@
       h1 {
         font-size: 15px;
       }
+
       button {
         width: 191px;
         font-size: 10px;
       }
     }
+
     .location-search-input-container {
       width: 191px;
 
@@ -438,6 +365,7 @@
         }
       }
     }
+
     .location-filtre {
       .select {
         cursor: pointer;
@@ -450,6 +378,7 @@
         }
       }
     }
+
     .Text-container {
       p {
         font-size: 14px;

@@ -1,31 +1,25 @@
 import { Col, Container, Row } from "react-bootstrap";
 import { useNavigate } from 'react-router-dom';
-import { toast } from 'react-toastify';
 import { useAppDispatch, useAppSelector } from '../../Redux/store';
 import './header.scss';
 
 import LocationOnIcon from '@mui/icons-material/LocationOn';
-import PermIdentityOutlinedIcon from '@mui/icons-material/PermIdentityOutlined';
-import PinDropIcon from "@mui/icons-material/PinDrop";
-import ShoppingCartOutlinedIcon from '@mui/icons-material/ShoppingCartOutlined';
 import { Box } from '@mui/material';
-import { Suspense, useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
-import { logout } from "../../Redux/slices/userSlice";
 import { localStorageService } from "../../services/localStorageService";
 import Map from "../Location/Location";
-import SearchBar from "../searchBar/searchBar";
 import Switches from "../toggleSwitch/toggleSwitch";
 
-import { Search } from '@mui/icons-material';
-import { useLocation } from 'react-router-dom';
-import { LocationService } from "../../services/api/Location.api";
-import { UserCart } from '../UserCart/UserCart';
-import { Cart } from '../cart/cart';
 import { useSelector } from "react-redux";
+import { useLocation } from 'react-router-dom';
 import {
   regionHomeSelector
 } from "../../Redux/slices/home";
+import LocationsearchBar from "../LocationsearchBar/LocationsearchBar";
+import { UserCart } from '../UserCart/UserCart';
+import { Cart } from '../cart/cart';
+import SearchBar from "../searchBar/searchBar";
 
 const Header = () => {
   const msg_notifs = useAppSelector((state) => state.messanger.unReadedMessages);
@@ -47,8 +41,8 @@ const Header = () => {
   const navigate = useNavigate();
   const routerLocation = useLocation();
   const { t } = useTranslation();
-  const region :any  = useSelector(regionHomeSelector);
-  
+  const region: any = useSelector(regionHomeSelector);
+
   const handleScroll = () => {
     // Check if the user has scrolled down more than a certain threshold
     if (typeof window != 'undefined') {
@@ -78,40 +72,7 @@ const Header = () => {
     if (region === false) {
       dispatch({ type: "SET_SHOW", payload: true })
     }
-  }, [region]); 
-  const onLogoutHandler = async () => {
-    try {
-      dispatch(logout());
-      navigator.geolocation.getCurrentPosition(
-        (position: any) => {
-          const { latitude, longitude } = position.coords;
-          LocationService.geoCode(latitude, longitude).then(data => {
-            dispatch({
-              type: "SET_LOCATION",
-              payload: {
-                ...data
-              },
-            });
-          });
-        },
-        (error: GeolocationPositionError) => {
-          console.log(error.message, "error.message1");
-        }
-      );
-
-      navigate("/");
-    } catch (error: any) {
-      if (Array.isArray(error.data.error)) {
-        error.data.error.forEach((el: any) =>
-   
-          console.log(el.message, "error.message1")
-        );
-      } else {
-
-        console.log(error.message, "error.message1")
-      }
-    }
-  };
+  }, [region]);
 
   const handleCart = async () => {
     showProfile && setShowProfile(false)
@@ -163,7 +124,7 @@ const Header = () => {
                     <button onClick={handleUserCart} className={`account ${!logged_in && 'loggedin-account'}`}  >
                       {/* <PermIdentityOutlinedIcon className='account-icon' /> */}
                       <span className='account-icon'></span>
-                    </button>                  
+                    </button>
 
                     {!logged_in && (
                       <div className="header-buttons">
@@ -202,21 +163,22 @@ const Header = () => {
               <Row className={`headerContainer `}>
                 <Col className='col-12 col-sm-7'>
                   <div className="headerAppBar2">
+
                     <div className="headerMessage">
-                      <p className="headerMessageSyle1" > {t('header.nous')} &nbsp;
+                      <p className="headerMessageSyle1" >
+                        {t('header.thunderXdeliv')},  <br /> {t('header.plus')}
                         <span className="headerMessageSyle2">
-                          {t('header.livrons')}
-                        </span>
-                      </p>
-                      <p className="headerMessageSyle1"> {t('header.plus')} &nbsp;
-                        <span className="headerMessageSyle2">
+                          &nbsp;
                           {t('header.nourriture')}
                         </span> .
                       </p>
                     </div>
-                    <div className="Switches">
-                      <Switches />
-                    </div>
+                    {
+                      location &&
+                      <div className="Switches">
+                        <Switches />
+                      </div>
+                    }
                     <Box className="headerLocalisationMessageContainer" onClick={() => dispatch({ type: "SET_SHOW", payload: true })}>
                       <a href="#" >
                         <span className="localisationIcon" >
@@ -224,10 +186,14 @@ const Header = () => {
                         </span>
                         {location
                           ? location?.coords.label
-                          : t('no_location_detected')}
+                          : t('entrezAdress')}
                       </a>
                     </Box>
-                    <SearchBar placeholder={t('search_placeholder')} />
+                    {
+                      location ?
+                        <SearchBar placeholder={t('search_placeholder')} /> :
+                        <LocationsearchBar placeholder={t('search_placeholder')} />
+                    }
 
                   </div>
                 </Col>
@@ -253,7 +219,7 @@ const Header = () => {
 
         ) : (
           <>
-            <div className={`fixedHeaderContainer2`} >
+            <div className={`fixedHeaderContainer2 scroll`} >
               <div className="logoContainer"
                 onClick={() => navigate('/')} >
                 <a href="#" className={`logoMain minimizedlogoMain`}></a>

@@ -186,7 +186,7 @@ function App({ initialData }: AppProps) {
           });
         },
         (error: GeolocationPositionError) => {
-          dispatch({ type: "SET_SHOW", payload: true })
+          // dispatch({ type: "SET_SHOW", payload: true })
         }
       );
     }
@@ -288,7 +288,12 @@ function App({ initialData }: AppProps) {
       >
         <Routes>
           <Route path="/" element={<Layout />}>
-            <Route index element={<HomePage initialData={initialData} />} />
+            {
+              location ?
+                <Route index element={<FilterPage />} />
+                :
+                <Route index element={<HomePage initialData={initialData} />} />
+            }
             <Route path="/restaurant/:id/:search?/:productId?/*" element={<Menu initialData={initialData} />} />
             <Route path="/product/:id/:search?/:productId/*" element={<MenuOptions initialData={initialData} />} />
             <Route path="/cart/*" element={<CartPage />} />
