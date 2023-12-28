@@ -27,6 +27,7 @@ import CategoryCarousel from "../../components/categoriesCarousel/categoriesCaro
 import HomeSkeleton from "./skeleton/HomeSkeleton";
 import ProductCarousel from "../../components/productCarousel/productCarousel";
 import { OrderTracking } from "../../components/order-tracking/orderTracking";
+import { JoinUs } from "../../components/joinUs/joinUs";
 
 
 
@@ -188,6 +189,7 @@ const HomePage = ({ initialData }: AppProps) => {
       </div>
 
       <OrderTracking />
+      <JoinUs />
       <FooterNewsLeter />
     </>
   );

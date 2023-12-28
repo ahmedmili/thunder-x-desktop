@@ -1,0 +1,70 @@
+@import '../../scss/extend';
+
+
+.joinus-area {
+    .joinus-title {
+        text-align: center;
+        font-family: "Poppins", serif;
+        font-weight: 300;
+        @include fonts(32px, 40px, $dark_002);
+        text-transform: uppercase;
+        max-width: 550px;
+        margin: 0 auto 60px;
+    }
+    .joinus-blc {
+        .joinus-item {
+            box-shadow: 10px 10px 20px 0px #A6A1A11A;
+            background-color: $color-orange-white;
+            display: grid;
+            grid-column-gap: 20px;
+
+            &:not(:last-child) {
+                margin: 0 0 50px;
+            }
+            &:nth-child(odd) {
+                grid-template-columns: 1fr 570px;
+            }
+            &:nth-child(even) {
+                grid-template-columns: 570px 1fr;
+            }
+            .joinus-description {
+                background-color: $color-orange-white;
+                padding: 30px 40px 25px;
+
+                h3 {
+                    margin: 0 0 25px;
+                    @include fonts(40px, 50px, $orange_color);
+                    font-family: 'Poppins-Bold', serif;
+                }
+                p {
+                    margin: 0 0 35px;
+                    @include fonts(18px, 26px, $dark_002);
+                    font-family: 'Poppins', serif;
+                    font-weight: weight(regular);
+                }
+                .btn {
+                    &.btn-yellow {
+                        min-width: 270px;
+                        height: 45px;
+                        background-color: $color-golden-dream;
+                        @include border(1px, $color-golden-dream);
+                        @include fonts(16px, 16px, $color-white);
+                        font-family: 'Poppins-SemiBold', serif;
+                        border-radius: 20px;
+                    }
+                }
+            }
+            .joinus-img-blc {
+                @include dimensions(570px, 100%);
+                @include flex;
+                overflow: hidden;
+
+                img {
+                    @include dimensions(100%, 100%);
+                }
+            }
+        }
+    }
+}
+
+
