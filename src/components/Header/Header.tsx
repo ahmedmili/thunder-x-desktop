@@ -19,6 +19,7 @@ import {
 import LocationsearchBar from "../LocationsearchBar/LocationsearchBar";
 import { UserCart } from '../UserCart/UserCart';
 import { Cart } from '../cart/cart';
+import SearchBar from "../searchBar/searchBar";
 
 const Header = () => {
   const msg_notifs = useAppSelector((state) => state.messanger.unReadedMessages);
@@ -162,21 +163,22 @@ const Header = () => {
               <Row className={`headerContainer `}>
                 <Col className='col-12 col-sm-7'>
                   <div className="headerAppBar2">
+
                     <div className="headerMessage">
-                      <p className="headerMessageSyle1" > {t('header.nous')} &nbsp;
+                      <p className="headerMessageSyle1" >
+                        {t('header.thunderXdeliv')},  <br /> {t('header.plus')}
                         <span className="headerMessageSyle2">
-                          {t('header.livrons')}
-                        </span>
-                      </p>
-                      <p className="headerMessageSyle1"> {t('header.plus')} &nbsp;
-                        <span className="headerMessageSyle2">
+                          &nbsp;
                           {t('header.nourriture')}
                         </span> .
                       </p>
                     </div>
-                    <div className="Switches">
-                      <Switches />
-                    </div>
+                    {
+                      location &&
+                      <div className="Switches">
+                        <Switches />
+                      </div>
+                    }
                     <Box className="headerLocalisationMessageContainer" onClick={() => dispatch({ type: "SET_SHOW", payload: true })}>
                       <a href="#" >
                         <span className="localisationIcon" >
@@ -184,11 +186,14 @@ const Header = () => {
                         </span>
                         {location
                           ? location?.coords.label
-                          : t('no_location_detected')}
+                          : t('entrezAdress')}
                       </a>
                     </Box>
-                    {/* <SearchBar placeholder={t('search_placeholder')} /> */}
-                    <LocationsearchBar placeholder={t('search_placeholder')} />
+                    {
+                      location ?
+                        <SearchBar placeholder={t('search_placeholder')} /> :
+                        <LocationsearchBar placeholder={t('search_placeholder')} />
+                    }
 
                   </div>
                 </Col>

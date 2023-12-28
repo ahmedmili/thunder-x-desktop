@@ -216,18 +216,19 @@
             display: inline;
             font-family: 'Poppins-Bold', serif;
             @include fonts(54px, 54px, $color-white);
+            line-height: normal;
 
             &:not(:last-child) {
                 margin: 0 0 10px;
             }
 
-            &:nth-child(2) {
-                @include fontSize(45px, 45px);
+            // &:nth-child(2) {
+            //     @include fontSize(45px, 45px);
 
                 .headerMessageSyle2 {
                     @include fontSize(45px, 45px);
                 }
-            }
+            // }
         }
 
         .headerMessageSyle2 {
