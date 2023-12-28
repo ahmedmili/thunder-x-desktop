@@ -108,6 +108,34 @@
 /* # $Mobile ::
 ------------------------------------*/
 
+@media (max-width: 1440px) {
+  .recommandedContainer {
+    .container {
+      .discountTitleContainer {
+        margin: 0 0 80px;
+
+        h2 {
+          @include fontSize(26px, 26px);
+        }
+        p {
+          @include fontSize(15px, 20px);
+        }
+      }
+      .carouselProvider {
+        .recommandedListButtonsContainer {
+          .btn {
+            @include dimensions(33px, 33px);
+
+            .sliderButtonIcon {
+              font-size: 20px;
+            }
+          }
+        }
+      }
+    }
+  }
+}
+
 @media only screen and (max-width: 1200px) {
   .recommandedContainer {
     .container {

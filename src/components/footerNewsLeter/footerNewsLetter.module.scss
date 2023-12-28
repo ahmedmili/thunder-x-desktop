@@ -60,3 +60,22 @@
     }
 }
 
+/* # $Mobile ::
+------------------------------------*/
+
+@media (max-width: 1440px) {
+    .newsLetterArea {
+        margin: 0 0 40px;
+
+        .newsLetterDescription {
+            .newsLetterTitle {
+                margin: 0 0 10px;
+                @include fontSize(24px, 28px);
+            }
+            .newsLetterDesc {
+                margin: 0 0 25px;
+                @include fontSize(13px, 23px);
+            }
+        }
+    }
+}
