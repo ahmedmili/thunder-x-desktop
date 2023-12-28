@@ -1,27 +1,24 @@
-import React, { useState, useEffect, useCallback } from "react";
-import { Col, Container, Row, Badge, Stack } from "react-bootstrap";
-import "react-toastify/dist/ReactToastify.css";
-import { adressService } from "../../services/api/adress.api";
+import React, { useEffect, useState } from "react";
+import { Badge, Col, Container, Row, Stack } from "react-bootstrap";
 import { useTranslation } from "react-i18next";
-import "./Location.scss";
 import { useSelector } from "react-redux";
+import "react-toastify/dist/ReactToastify.css";
 import { useAppDispatch, useAppSelector } from '../../Redux/store';
+import { adressService } from "../../services/api/adress.api";
+import "./Location.scss";
 
 
-import HomeLocation from '../../assets/home-location.svg'
-import EditPen from '../../assets/edit-pen.svg'
 import ClearRoundedIcon from "@mui/icons-material/ClearRounded";
+import HomeLocation from '../../assets/home-location.svg';
 
-import NearMeOutlinedIcon from "@mui/icons-material/NearMeOutlined";
-import { localStorageService } from "../../services/localStorageService";
-import { LocationService } from "../../services/api/Location.api";
-import MapCard from "./mapCard/MapCard";
-import CloseIcon from "../../assets/icons/closeIcon";
-import { CancelPresentation } from "@mui/icons-material";
 import {
-  regionHomeSelector,
-  homeLoadingSelector
+  homeLoadingSelector,
+  regionHomeSelector
 } from "../../Redux/slices/home";
+import { LocationService } from "../../services/api/Location.api";
+import { localStorageService } from "../../services/localStorageService";
+import MapCard from "./mapCard/MapCard";
+import AutocompleteInput from "./AutocompleteInput/AutocompleteInput";
 
 declare global {
   interface Window {
@@ -52,7 +49,7 @@ const Map: React.FC<MapProps> = ({ className }) => {
   const region = useSelector(regionHomeSelector);
   const location = localStorageService.getCurrentLocation()
   const isLoading = useSelector(homeLoadingSelector);
-  
+
 
   useEffect(() => {
     // Function to disable scrolling
@@ -74,28 +71,29 @@ const Map: React.FC<MapProps> = ({ className }) => {
     const userItem = localStorageService.getUser();
     const fetchData = async () => {
       let res = await adressService.getAdressByid(JSON.parse(userItem!).id);
-      setClientAdressTable(res.data.data);     
+      setClientAdressTable(res.data.data);
     };
     userItem != null && fetchData();
   }, []);
 
   const userItem = localStorageService.getUser();
-  const cancel = () => {   
+  
+  const cancel = () => {
     if (searchType === "") {
       const location = localStorageService.getCurrentLocation()
-      if (location) {        
+      if (location) {
         if (region) {
           dispatch({ type: "SET_SHOW", payload: false })
         }
         else {
           console.log("zone not available");
         }
-      }      
+      }
       else {
         console.log("you dont have location");
       }
     }
-    else{
+    else {
       setSearchType("")
     }
   };
@@ -107,11 +105,12 @@ const Map: React.FC<MapProps> = ({ className }) => {
             onClick={cancel}
             className="cancel-icon"
           ></ClearRoundedIcon>
-        </div>        
-        <Options />         
+        </div>
+        <Options />
       </div>
     </>
   )
+
   function Options() {
     const [selectedOption, setSelectedOption] = useState<number>(1);
 
@@ -125,25 +124,17 @@ const Map: React.FC<MapProps> = ({ className }) => {
 
     return (
       <Container>
-         <h1 className="text-center">{t('adress.add')}</h1>
+        <h1 className="text-center">{t('adress.add')}</h1>
         <Row>
           <Col className='col-5'>
-            <div className="form">             
-              {/*  map location button */}
-              {/* <button type="button" onClick={() => setSearchType("card")}>
-                {t("adress.cartSelect")}{" "}
-                <NearMeOutlinedIcon></NearMeOutlinedIcon>
-              </button> */}
+            <div className="form">
+
               {/*  search location input */}
-              <label>Adresse de livraison</label>
+              <label>{t('adress.delivAddress')}</label>
               <div className="adresses_container">
-                <AutocompleteInput />
+                <AutocompleteInput initLocation={true} />
               </div>
             </div>
-            {/* <div style={{ display: userItem ? "inline" : "none" }} className="Text-container">
-              <p>{t("adress.message1")}</p>
-              <p>{t("adress.message2")}</p>
-            </div> */}            
             {clientAdressTable.length > 0 &&
               <>
                 <p className="saved-adresses-title">{t('adress.savedAdress')}</p>
@@ -160,13 +151,13 @@ const Map: React.FC<MapProps> = ({ className }) => {
                     <input type="radio" value="3" id='autre' name='type' checked={selectedOption === 3} onChange={handleOptionChange} />
                     <label htmlFor="autre">{t("autre")}</label>
                   </div>
-                </div> 
+                </div>
               </>
             }
             {filtredPositions.length > 0 ? (
               <>
                 {/* <center>
-                </center> */}                
+                </center> */}
                 <div className="adresses-container">
 
                   {filtredPositions.map((element) => (
@@ -191,118 +182,15 @@ const Map: React.FC<MapProps> = ({ className }) => {
                 </h6>
               </div>
             )
-                }
+            }
           </Col>
           <Col className='col-7'>
-            <MapCard cancel={cancel}/>
+            <MapCard cancel={cancel} />
           </Col>
         </Row>
       </Container>
     )
   }
-  function AutocompleteInput() {
-    const [inputValue, setInputValue] = useState<string>('');
-    const [suggestions, setSuggestions] = useState([]);
-    const [loading, setLoading] = useState<boolean>(false);
-    const location :any = useAppSelector((state) => state.location.position);
-
-    function handleOnClick(suggestion: any) {
-
-      dispatch({
-        type: "SET_LOCATION",
-        payload: {
-          coords: {
-            latitude: suggestion.position[0].lat,
-            longitude: suggestion.position[0].long,
-            label: suggestion.title,
-          },
-        },
-      });
-      // setSearchType("card")
-    }
-
-    useEffect(() => {
-      // Simulate an API call for autocomplete suggestions
-      const fetchSuggestions = async () => {
-        if (inputValue === '') {
-          setSuggestions([]);
-          return;
-        }
-        setLoading(true);
-        // Replace this with your actual API endpoint for suggestions
-        const response = await LocationService.autocomplete(inputValue);
-        const { status, data } = response;
-        setSuggestions(data.data);
-        setLoading(false);
-      };
-
-      // Delay the API call to avoid too frequent requests
-      const debounceTimeout = setTimeout(fetchSuggestions, 300);
-
-      return () => {
-        clearTimeout(debounceTimeout);
-      };
-    }, [inputValue]);
-
-    const handleInputChange = (event: any) => {
-      setInputValue(event.target.value);
-    };
-    const clearInput = () => {
-      setInputValue("");
-    }
-
-    return (
-      <div className="location-search-input-container">
-        <div className="location-search-inpute">
-          <input
-            type="text"
-            value={inputValue}
-            onChange={handleInputChange}
-            placeholder={`${t("adress.searchWithAdress")} . . .`}
-          />
-          <span className="icon" onClick={clearInput}>
-            { inputValue && <CloseIcon className='icon'/>}
-          </span>
-        </div>
-        {(loading || isLoading) && <div>{t('loading')}...</div>}
-        {
-          suggestions.length > 0 && (
-            <ul>
-              {suggestions.map((suggestion: any, index) => (
-                <li key={index} onClick={() => handleOnClick(suggestion)} >
-                  {suggestion.title}
-                </li>
-              ))}
-            </ul>
-          )
-        }
-        {
-          !loading && !suggestions.length && location && !region && !isLoading &&  (
-            <div className="error">
-              {location?.coords.label}, n'est malheureusement pas incluse dans notre
-              zone de livraison. Veuillez sélectionner une autre adresse
-            </div>
-          )
-        }
-        {
-          location && !region && !isLoading &&
-          (
-          <>
-            <div className="store-img"></div>
-            <div className="stores-container">
-                <h2>Disponible à :</h2>
-                <Stack direction="horizontal" gap={2}>
-                  <Badge pill  className="store-badge">Sousse</Badge>
-                  <Badge pill   className="store-badge">Monastir</Badge>
-                  <Badge pill  className="store-badge">Mahdia</Badge>
-                </Stack>
-            </div>
-          </>          
-          )
-        }
-      </div>
-    );
-  };
 
   function AdressComponent({
     type,

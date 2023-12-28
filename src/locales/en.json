@@ -7,6 +7,7 @@
   "Verifier": "Check",
   "Verifier.phone": "Telephone number verification",
   "Annuler": "Cancel",
+  "delete": "delete",
   "Envoyer": "Send",
   "today": "Today",
   "dayAgo": "1 day ago",
@@ -69,6 +70,8 @@
   "Modal.minCostError.Message.section2": "Please add another item to the cart.",
   "header.nous": "We",
   "header.livrons": "deliver",
+  "header.thunderXdeliv": "Thunder Express delivers to you",
+
   "header.plus": "more than just",
   "header.nourriture": "food",
   "home.categorie": "What can we bring you?",
@@ -206,6 +209,7 @@
   "autre": "Other",
   "clickToChange": "Click to change",
   "no_location_detected": "Enter your delivery address",
+  "entrezAdress": "Enter an address to discover the options",
   "search_placeholder": "What do you want delivered?",
   "recommended_restaurants": "Recommended Restaurants",
   "welcome": "Welcome",
@@ -272,6 +276,7 @@
   "adress.input4": "Address title",
   "adress.default_adress": "Default Address",
   "adress.empty": "No address to be saved",
+  "adress.delivAddress": "Delivery address",
   "adress.title1": "Add a delivery address",
   "adress.cartSelect": "Select from the map",
   "adress.message1": "My Delivery Addresses",
@@ -316,7 +321,6 @@
   "cart.discount": "discount value",
   "product": "product",
   "cart.PromosCode": "Promo code",
-
   "repasGratuit": "Free Meal",
   "faq.header": "Frequently Asked Questions",
   "faq.questions": [
