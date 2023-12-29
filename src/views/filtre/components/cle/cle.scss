@@ -1,135 +1,52 @@
-@import "../../../../colors";
-
+@import "../../../../scss/extend";
 .cle-filter-container {
-    border-radius: 8px;
-    border: 1px solid #FBC000;
-    padding: 18px;
-
-    h1 {
+    &__title {
         color: $dark_Gray;
         font-family: Poppins;
-        font-size: 22px;
+        font-size: 17px;
         font-style: normal;
         font-weight: 600;
         line-height: normal;
+        margin-bottom: 24px;
     }
-
-    ul {
-        // background-color: $Buttercream;
-        padding: 10px;
-        display: grid;
-        grid-template-columns: repeat(2, 0.5fr);
-        gap: 1px;
-
-        li {
-            list-style: none;
-            margin-bottom: 5px;
-
-            .form-check {
-                display: inline-block;
-            
-
-                label {
+    &__list{
+        list-style: none;
+        padding: 0;
+        margin:0;
+        display: flex;
+        flex-wrap: wrap;
+        gap: 12px;
+        &__item{
+            .form-check{     
+                padding: 0;     
+                width: fit-content;     
+                .radio-button{
+                    transition: all 0.3s ease-in-out;
+                    color: $dark_Gray;
                     font-family: Poppins;
-                    font-size: 18px;
+                    font-size: 16px;
                     font-style: normal;
                     font-weight: 400;
                     line-height: normal;
-                    text-decoration: none;
-                    color: $dark_Gray;
-                    background-color: $Warm_Vanilla;
+                    padding: 2px 12px;
+                    background-color: $shade_Gray;
                     border-radius: 20px;
-                    padding: 0px 10px;
-
-                    &:hover {
-                        font-weight: 500;
-                        cursor: pointer;
+                    text-align: center;
+                    cursor: pointer;
+                    min-width: 100px;
+                }
+                .btn-check{
+                    appearance: none;
+                    -webkit-appearance: none;
+                    -moz-appearance: none;                   
+                    position: initial;
+                    &:checked~.radio-button {
+                        color: $color-white;
+                        background-color: $shade-reddish-orange;
                     }
                 }
-                .btn-check[type="radio"]:checked~.radio-button {
-                    color: white;
-                    background-color: $Ocean_Teal;
-                }
-            }
-
+            }            
         }
-    }
+    }    
 }
 
-
-@media screen and (max-width : 1100px) {
-
-    .cle-filter-container {
-        h1 {
-            font-size: 20px;
-        }
-
-        ul {
-            li {
-                .form-check {
-                    padding: 0;
-                    label {
-                        font-size: 10px;
-                    }
-                }
-            }
-        }
-    }
-
-}
-
-@media screen and (max-width : 776px) {
-
-    .cle-filter-container {
-        padding: 2px;
-
-        h1 {
-            font-size: 16px;
-        }
-        ul {
-            padding: 2px;
-            margin: 2px;
-            li {
-                .form-check {
-                    padding: 0;
-
-                    label {
-                        font-size: 8px;
-                    }
-                }
-            }
-        }
-    }
-}
-
-@media screen and (max-width : 500px) {
-
-    .cle-filter-container {
-        padding: 2px;
-
-        h1 {
-            font-size: 10px;
-        }
-
-        ul {
-            padding: 2px;
-            margin: 2px;
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            align-items: center;
-
-
-            li {
-                margin: 0;
-                .form-check {
-                    padding: 0;
-
-                    label {
-                        font-size: 6px;
-                    }
-                }
-            }
-        }
-    }
-}

@@ -4,7 +4,8 @@ import "bootstrap/dist/css/bootstrap.min.css";
 import { Suspense, lazy, startTransition, useCallback, useEffect, useState } from "react";
 import { Navigate, Outlet, Route, Routes, useLocation, useNavigate } from "react-router-dom";
 import { ToastContainer, toast } from "react-toastify";
-
+import "slick-carousel/slick/slick.css"; 
+import "slick-carousel/slick/slick-theme.css";
 import Layout from "./components/layout/layout";
 
 import { useAppDispatch, useAppSelector } from "./Redux/store";
@@ -257,6 +258,7 @@ function App({ initialData }: AppProps) {
   // Enforce Trailing Slash 
   useEffect(() => {
     const { pathname } = navLocation;
+    console.log(navLocation);
     // Check if the path doesn't end with '/'
     if (!pathname.endsWith('/') && pathname !== '/') {
       // Redirect to the same route with a '/' at the end

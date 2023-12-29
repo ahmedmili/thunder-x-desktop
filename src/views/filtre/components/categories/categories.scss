@@ -1,107 +1,116 @@
-@import "../../../../colors";
-
-
+@import "../../../../scss/extend";
 
 .categories-filter-container {
-    border-radius: 8px;
-    border: 1px solid #FBC000;
-    padding: 18px;
-
-    h1 {
+    position: relative;
+    padding-bottom: 38px;
+    border-bottom: 1px solid $color-gray-alto;
+    margin-bottom: 32px;
+    &__title {
         color: $dark_Gray;
         font-family: Poppins;
-        font-size: 22px;
+        font-size: 17px;
         font-style: normal;
         font-weight: 600;
         line-height: normal;
-        
+        margin-bottom: 24px;
+        transition: all 0.3s ease-in-out;
+        &.collapsed{
+            margin-bottom: 0;
+        }
     }
-
-    ul {
-        background-color: $Buttercream;
-        padding: 10px;
-        border-radius: 10px;
-        li {
-            list-style: none;
-            margin-bottom: 5px;
-
-            a {
-                font-family: Poppins;
-                font-size: 18px;
-                font-style: normal;
-                font-weight: 400;
-                line-height: normal;
-                text-decoration: none;
-                color: $dark_Gray;
+    &__list {
+        transition: all 0.3s ease-in-out;
+        position: relative;
+        list-style: none;
+        padding: 0;
+        margin: 0;
+        min-height: fit-content;
+        &__item {
+            position: relative;
+            .form-check {
                 display: flex;
-                justify-content: space-between;
-                &:hover{
+                align-items: center;
+                gap: 10px;
+                padding-left: 18px;
+                margin-bottom: 12px;
+                .radio-btn {
+                    appearance: none;
+                    -webkit-appearance: none;
+                    -moz-appearance: none;
+                    width: 19px;
+                    height: 19px;
+                    border: none;
+                    border-radius: 5px;
+                    background-color: rgba($color-blue-pelorous, 0.58);
+                    &:checked {
+                        position: relative;
+                        &:after {
+                            content: "";
+                            width: 19px;
+                            height: 19px;
+                            background-color: $color-blue-eastern;
+                            position: absolute;
+                            left: 0;
+                            top: 0;
+                            border-radius: 5px;
+                        }
+                    }
+                }
+                .form-label {
+                    color: $dark_Gray;
+                    font-family: Poppins;
+                    font-size: 18px;
+                    font-style: normal;
                     font-weight: 500;
+                    line-height: normal;
+                    margin-bottom: 0;                   
                 }
-                &:active{
-                    color: $Ocean_Teal;
+                .toggle-icon {
+                    position: absolute;
+                    right: 0;
+                    top: 3px;
+                    font-size: 21px;
+                    color: $dark_Gray;
+                    transition: all 0.3s ease-in-out;
+                    cursor: pointer;
+                    &.open {
+                        transform: rotate(-90deg);
+                    }
                 }
-            }
-            
-            .active{
-                color: $Ocean_Teal;
-            }
-        }
-    }
-}
-
-
-@media screen and (max-width : 776px) {
-
-    .categories-filter-container {
-        h1 {
-            font-size: 20px;
-        }
-
-        ul {
-            li {
-                a {
-                    font-size: 16px;
+            }            
+            &--sub {
+                .form-check {
+                    .form-label {    
+                        font-weight: 400;
+                    }
                 }
             }
         }
-    }
-
-}
-
-@media screen and (max-width : 576px) {
-
-    .categories-filter-container {
-        h1 {
-            font-size: 16px;
+        &--sub{
+            margin-left: 20px;
+            transition: all 0.3s ease-in-out;
+            overflow: visible;
+            &.hide{
+                opacity: 0;
+                overflow: hidden;
+                height: 0;
+            }           
         }
-
-        ul {
-            li {
-                a {
-                    font-size: 12px;
-                }
-            }
+        &.hide {
+            opacity: 0;
+            overflow: hidden;
         }
-    }
-}
-
-@media screen and (max-width : 450px) {
-
-    .categories-filter-container {
-        padding: 2px;
-        h1 {
-            font-size: 10px;
-        }
-
-        ul {
-            padding: 2px;
-            margin: 2px;
-            li {
-                a {
-                    font-size: 10px;
-                }
-            }
+    } 
+    &__collapse-icon {
+        position: absolute;
+        right: 0;
+        top: 3px;
+        font-size: 21px;
+        color: $dark_Gray;
+        transition: all 0.3s ease-in-out;
+        cursor: pointer;
+        &.open {
+            transform: rotate(-90deg);
         }
     }
 }

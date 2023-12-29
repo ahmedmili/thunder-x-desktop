@@ -1,50 +1,85 @@
 
 
-import { useState } from "react"
+import { useEffect, useRef, useState } from "react"
 import "./trie.scss"
+import ChevronRightIcon from '@mui/icons-material/ChevronRight';
+import { useNavigate } from "react-router-dom";
+import { useDispatch, useSelector } from "react-redux";
+import { homeRefresh, setRefresh } from "../../../../Redux/slices/home";
 function Trie() {
-
-    const [active, setActive] = useState("")
+    const [active, setActive] = useState<any>()
+    const [collpased, setCollapse] = useState(false)
+    const [contentHeight, setContentHeight] = useState(156);
+    const contentRef: any = useRef(null);
+    const navigate = useNavigate();
+    const dispatch = useDispatch();
+    const refresh = useSelector(homeRefresh)
+  
+    useEffect(() => {
+        const searchParams = new URLSearchParams(location.search);
+        if (searchParams.has("order")) {
+            const order_id: any = searchParams.get("order");
+            setActive(order_id);
+        }        
+    }, []);
+    useEffect(() => {    
+        if (refresh) {
+           const searchParams = new URLSearchParams(location.search);
+            if (!searchParams.has("order")) {
+                setActive("")
+            } 
+        }    
+    }, [refresh]);    
+    useEffect(() => {
+        setTimeout(() => {
+            setContentHeight(contentRef?.current?.scrollHeight);
+        }, 300); 
+    }, [collpased]);
 
     const lists = [
         {
-            id: 1,
-            name: "Offres du jour"
-        },
+            id: 'created_at',
+            name: "Nouveau sur thunder"
+        },       
         {
-            id: 2,
-            name: "Recommandé"
-        },
-        {
-            id: 3,
-            name: "Offre Premuim"
-        },
-        {
-            id: 4,
+            id: 'popular',
             name: "Les plus populaires"
         },
         {
-            id: 5,
+            id: 'stars',
             name: "Les mieux notés",
         },
-    ]
+    ]   
+    const toggleCollapse = () => {        
+        setCollapse(!collpased)
+    }
 
-
-    function clickHandle(searchQuery: string) {
+    function clickHandle(searchQuery: any) {
         setActive(searchQuery)
-        // add api here when its ready
+        const searchParams = new URLSearchParams(location.search);
+        if (searchParams.has('order')) {
+            searchParams.set('order', searchQuery);
+        }
+        else {
+            searchParams.append('order', searchQuery);
+        }
+        navigate(`/search/?${searchParams.toString()}`, {      
+            replace: false,
+        });
+        dispatch(setRefresh(true));
     }
     return (
         <div className="trie-filter-container">
-            <h1> Trier</h1>
-            <ul>
+            <h1 className="trie-filter-container__title"> Trier</h1>
+            <ChevronRightIcon className={`trie-filter-container__collapse-icon  ${collpased ? 'close' : 'open'}`}  onClick={toggleCollapse}></ChevronRightIcon>
+            <ul  className={`trie-filter-container__list  ${collpased ? 'hide' : 'show'}`}  ref={contentRef} style={{ maxHeight: collpased ?  '0' : `${contentHeight}px`}}>
                 {
                     lists.map((data, index) => {
                         return (
-                            <li key={index}>
-                                <div className="form-check" onClick={() => clickHandle(data.name)}>
-                                    <input className="form-check-input" type="radio" name="trie" id={`flexRadioDefault${index}`} /> {/* Self-closing tag */}
-                                    <label className= {`form-check-label`} htmlFor={`flexRadioDefault${index}`}>
+                            <li key={index} className="trie-filter-container__list__item">
+                                <div className="form-check">
+                                    <input className="radio-btn" type="radio" name="trie" id={`flexRadioDefault${index}`}  onChange={() => clickHandle(data.id)} checked={active == data?.id}/> {/* Self-closing tag */}
+                                    <label className= {`form-label`} htmlFor={`flexRadioDefault${index}`}>
                                         {data.name}
                                     </label>
                                 </div>

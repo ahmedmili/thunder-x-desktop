@@ -7,6 +7,7 @@ const homeDataSlice = createSlice({
     loading: true,
     error: null,
     isDelivery: true, // new state property
+    refresh: false
   },
   reducers: {
     setData: (state, action) => {
@@ -22,10 +23,13 @@ const homeDataSlice = createSlice({
       // new action
       state.isDelivery = action.payload;
     },
+    setRefresh: (state, action) => {
+      state.refresh = action.payload;
+    },
   },
 });
 
-export const { setData, setLoading, setError, setIsDelivery } =
+export const { setData, setLoading, setError, setIsDelivery, setRefresh } =
   homeDataSlice.actions;
 
 export const selectHomeData = (state: { homeData: { data: any } }) =>
