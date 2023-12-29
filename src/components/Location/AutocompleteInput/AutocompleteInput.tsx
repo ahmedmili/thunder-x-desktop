@@ -28,6 +28,7 @@ const AutocompleteInput: React.FC<AutocompleteInputProps> = ({ initLocation, ret
     const [inputValue, setInputValue] = useState<string>('');
     const [suggestions, setSuggestions] = useState([]);
     const [loading, setLoading] = useState<boolean>(false);
+    const [selected, setSelected] = useState<boolean>(false);
 
     const location: any = useAppSelector((state) => state.location.position);
     const region = useSelector(regionHomeSelector);
@@ -58,9 +59,6 @@ const AutocompleteInput: React.FC<AutocompleteInputProps> = ({ initLocation, ret
         );
     };
 
-
-
-
     function handleOnClick(suggestion: any) {
         if (initLocation) {
             dispatch({
@@ -77,6 +75,7 @@ const AutocompleteInput: React.FC<AutocompleteInputProps> = ({ initLocation, ret
             (returnSuggestions != undefined) && returnSuggestions(suggestion)
         }
         setInputValue(suggestion.title)
+        setSelected(true)
         setSuggestions([])
     }
 
@@ -84,15 +83,19 @@ const AutocompleteInput: React.FC<AutocompleteInputProps> = ({ initLocation, ret
     const fetchSuggestions = async () => {
         if (inputValue === '') {
             clearInput()
+            setSelected(false)
             return;
+        } else if (selected) {
+            return
+        } else {
+            setLoading(true);
+            // Replace this with your actual API endpoint for suggestions
+            const response = await LocationService.autocomplete(inputValue);
+            const { status, data } = response;
+            data.data && setSuggestions(data.data);
+            !data.data && setSuggestions([])
+            setLoading(false);
         }
-        setLoading(true);
-        // Replace this with your actual API endpoint for suggestions
-        const response = await LocationService.autocomplete(inputValue);
-        const { status, data } = response;
-        data.data && setSuggestions(data.data);
-        !data.data && setSuggestions([])
-        setLoading(false);
 
     };
 
@@ -107,6 +110,7 @@ const AutocompleteInput: React.FC<AutocompleteInputProps> = ({ initLocation, ret
     }, [inputValue]);
 
     const handleInputChange = (event: any) => {
+        setSelected(false)
         setInputValue(event.target.value);
     };
 
@@ -114,6 +118,7 @@ const AutocompleteInput: React.FC<AutocompleteInputProps> = ({ initLocation, ret
         (returnSuggestions != undefined) && returnSuggestions(null)
         setSuggestions([]);
         setInputValue("");
+        setSelected(false)
     }
 
     return (

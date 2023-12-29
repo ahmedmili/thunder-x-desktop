@@ -14,7 +14,6 @@ interface Props {
 const LocationSearchBar: React.FC<Props> = ({ placeholder }) => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
-  const userLocation = useAppSelector((state) => state.location.position)
   const [suggestions, setSuggestions] = useState<any>();
 
   const { t } = useTranslation()
@@ -37,9 +36,6 @@ const LocationSearchBar: React.FC<Props> = ({ placeholder }) => {
     }
   }
 
-  useEffect(()=>{
-    console.log('suggestions',suggestions)
-  },[suggestions])
   return (
     <>
       <div className={searchStyle.searchContainer}>
