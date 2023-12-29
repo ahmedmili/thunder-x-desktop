@@ -21,6 +21,11 @@ import { OrderTracking } from "../../components/order-tracking/orderTracking";
 import ProductCarousel from "../../components/productCarousel/productCarousel";
 import HomeSkeleton from "./skeleton/HomeSkeleton";
 import { JoinUs } from "../../components/joinUs/joinUs";
+import CategoryCarousel from "../../components/categoriesCarousel/categoriesCarousel";
+import Skeleton from "react-loading-skeleton";
+import { localStorageService } from "../../services/localStorageService";
+import { useNavigate } from "react-router";
+
 
 
 const HomePage = ({ initialData }: AppProps) => {
@@ -32,7 +37,10 @@ const HomePage = ({ initialData }: AppProps) => {
   const isLoading = initialData ? false : useSelector(homeLoadingSelector);
 
   const unReadMessages = initialData ? 0 : useAppSelector((state) => state.messanger.unReadedMessages)
+  const locationState = useAppSelector((state) => state.location.position)
   const [unReadedQt, setUnReadedQt] = useState<number>(unReadMessages)
+
+  const navigate = useNavigate()
 
   useEffect(() => {
     setUnReadedQt(unReadMessages)
@@ -41,18 +49,14 @@ const HomePage = ({ initialData }: AppProps) => {
   const handleMessangerPopup = () => {
     setMessangerPopup(!messangerPopup)
   }
+  useEffect(() => {
+    const location = localStorageService.getCurrentLocation()
+    location && navigate('/search/', { replace: true })
+
+  }, [locationState])
 
   return (
     <>
-
-      <div className="slider-area product-carousel">
-        <ProductCarousel
-          ssrCategories={categories}
-          // onCategorySelect={handleCategorySelect}
-          onCategorySelect={() => { }}
-        />
-      </div>
-
       <div className={`xxl-12 ${homeStyle.homePageContainer}`}>
         {isLoading ? (
           <div className={homeStyle.homeSkeletonContainer}>
@@ -61,21 +65,28 @@ const HomePage = ({ initialData }: AppProps) => {
           </div>
         ) : (
           <>
+            <div className="slider-area product-carousel">
+              <ProductCarousel
+                ssrCategories={categories}
+                // onCategorySelect={handleCategorySelect}
+                onCategorySelect={() => { }}
+              />
+            </div>
 
 
-            {!isLoading && ads && ads.HOME_1 && (
+            {/* {!isLoading && ads && ads.HOME_1 && (
               <AdsCarousel data={ads.HOME_1} />
-            )}
+            )} */}
 
-            <ApplicationAd />
+            {/* <ApplicationAd /> */}
 
-            {!isLoading && ads && ads.HOME_2 && (
+            {/* {!isLoading && ads && ads.HOME_2 && (
               <AdsCarousel data={ads.HOME_2} />
-            )}
-
+            )} */}
+            {/* 
             {!isLoading && ads && ads.HOME_3 && (
               <AdsCarousel data={ads.HOME_3} />
-            )}
+            )} */}
 
             <div className={homeStyle.bulles}>
               <button className={homeStyle.messangerPopupBtn} onClick={handleMessangerPopup} style={{ backgroundImage: `url(${MessangerBtnIcon})` }}>

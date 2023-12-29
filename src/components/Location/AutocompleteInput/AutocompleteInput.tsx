@@ -1,5 +1,5 @@
 import SendIcon from '@mui/icons-material/Send';
-import { useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Badge, Stack } from "react-bootstrap";
 import { useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
@@ -13,6 +13,7 @@ import './autocompleteInput.scss';
 
 interface AutocompleteInputProps {
     initLocation: boolean;
+    returnSuggestions?: (sugg: any) => void
 }
 
 type Position = {
@@ -23,10 +24,11 @@ type Position = {
 };
 
 
-const AutocompleteInput: React.FC<AutocompleteInputProps> = ({ initLocation }) => {
+const AutocompleteInput: React.FC<AutocompleteInputProps> = ({ initLocation, returnSuggestions }) => {
     const [inputValue, setInputValue] = useState<string>('');
     const [suggestions, setSuggestions] = useState([]);
     const [loading, setLoading] = useState<boolean>(false);
+    const [selected, setSelected] = useState<boolean>(false);
 
     const location: any = useAppSelector((state) => state.location.position);
     const region = useSelector(regionHomeSelector);
@@ -34,7 +36,6 @@ const AutocompleteInput: React.FC<AutocompleteInputProps> = ({ initLocation }) =
     const dispatch = useDispatch()
     const navigate = useNavigate()
     const { t } = useTranslation()
-
 
     const getPosition = () => {
 
@@ -59,31 +60,43 @@ const AutocompleteInput: React.FC<AutocompleteInputProps> = ({ initLocation }) =
     };
 
     function handleOnClick(suggestion: any) {
-        dispatch({
-            type: "SET_LOCATION",
-            payload: {
-                coords: {
-                    latitude: suggestion.position[0].lat,
-                    longitude: suggestion.position[0].long,
-                    label: suggestion.title,
+        if (initLocation) {
+            dispatch({
+                type: "SET_LOCATION",
+                payload: {
+                    coords: {
+                        latitude: suggestion.position[0].lat,
+                        longitude: suggestion.position[0].long,
+                        label: suggestion.title,
+                    },
                 },
-            },
-        });
+            });
+        } else {
+            (returnSuggestions != undefined) && returnSuggestions(suggestion)
+        }
+        setInputValue(suggestion.title)
+        setSelected(true)
         setSuggestions([])
     }
 
     // Simulate an API call for autocomplete suggestions
     const fetchSuggestions = async () => {
         if (inputValue === '') {
-            setSuggestions([]);
+            clearInput()
+            setSelected(false)
             return;
+        } else if (selected) {
+            return
+        } else {
+            setLoading(true);
+            // Replace this with your actual API endpoint for suggestions
+            const response = await LocationService.autocomplete(inputValue);
+            const { status, data } = response;
+            data.data && setSuggestions(data.data);
+            !data.data && setSuggestions([])
+            setLoading(false);
         }
-        setLoading(true);
-        // Replace this with your actual API endpoint for suggestions
-        const response = await LocationService.autocomplete(inputValue);
-        const { status, data } = response;
-        data.data && setSuggestions(data.data);
-        setLoading(false);
+
     };
 
     useEffect(() => {
@@ -97,11 +110,15 @@ const AutocompleteInput: React.FC<AutocompleteInputProps> = ({ initLocation }) =
     }, [inputValue]);
 
     const handleInputChange = (event: any) => {
+        setSelected(false)
         setInputValue(event.target.value);
     };
 
     const clearInput = () => {
+        (returnSuggestions != undefined) && returnSuggestions(null)
+        setSuggestions([]);
         setInputValue("");
+        setSelected(false)
     }
 
     return (
@@ -167,4 +184,4 @@ const AutocompleteInput: React.FC<AutocompleteInputProps> = ({ initLocation }) =
     );
 };
 
-export default AutocompleteInput
+export default React.memo(AutocompleteInput);

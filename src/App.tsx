@@ -291,9 +291,9 @@ function App({ initialData }: AppProps) {
         <Routes>
           <Route path="/" element={<Layout />}>
             {
-              location ?
-                <Route index element={<FilterPage />} />
-                :
+              // location ?
+              //   <Route index element={<FilterPage />} />
+              //   :
                 <Route index element={<HomePage initialData={initialData} />} />
             }
             <Route path="/restaurant/:id/:search?/:productId?/*" element={<Menu initialData={initialData} />} />
