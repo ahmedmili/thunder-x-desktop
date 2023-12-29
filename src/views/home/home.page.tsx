@@ -3,7 +3,7 @@ import "react-loading-skeleton/dist/skeleton.css";
 import { AdsCarousel } from "../../components/adsCarousel/adsCarousel";
 import { ApplicationAd } from "../../components/applicationAd/ApplicationAd";
 import { FooterNewsLeter } from "../../components/footerNewsLeter/FooterNewsLetter";
-import { AppProps, Restaurant } from "../../services/types";
+import { Ads, AppProps, Restaurant } from "../../services/types";
 import homeStyle from "./home.page.module.scss";
 
 
@@ -22,13 +22,20 @@ import { OrderTracking } from "../../components/order-tracking/orderTracking";
 import ProductCarousel from "../../components/productCarousel/productCarousel";
 import { supplierServices } from "../../services/api/suppliers.api";
 import HomeSkeleton from "./skeleton/HomeSkeleton";
+import HomPageAds from "../../components/HomPageAds/HomPageAds";
 
+interface homePageAds {
+  HOME_1: Ads[],
+  HOME_2: Ads[],
+  HOME_3: Ads[],
+}
 
 const HomePage = ({ initialData }: AppProps) => {
 
 
   const [messangerPopup, setMessangerPopup] = useState<boolean>(false)
   const [suppliers, setSuppliers] = useState<Restaurant[]>([])
+  const [homeAds, setHomeAds] = useState<homePageAds>()
   const ads = initialData ? initialData.ads : useSelector(adsHomeSelector);
   const categories = initialData ? initialData.categories : [];
   const isLoading = initialData ? false : useSelector(homeLoadingSelector);
@@ -48,6 +55,8 @@ const HomePage = ({ initialData }: AppProps) => {
 
     const { status, data } = await supplierServices.getSuppliersAndAds()
     data.success && setSuppliers(data.data.suppliers)
+    data.success && setHomeAds(data.data.ads)
+
   }
   useEffect(() => {
     getSuppliers()
@@ -70,7 +79,9 @@ const HomePage = ({ initialData }: AppProps) => {
           </div>
         ) : (
           <>
-
+            {
+              homeAds!.HOME_1 && <HomPageAds homeAds={homeAds!.HOME_2} />
+            }
 
             {!isLoading && ads && ads.HOME_1 && (
               <AdsCarousel data={ads.HOME_1} />
