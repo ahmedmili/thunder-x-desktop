@@ -62,7 +62,7 @@ const PopularList: React.FC<Props> = ({ restaurants, listType }) => {
         <div className="row">  
           {restaurantsList.map(function(slide : any) {
                 return (
-                  <div key={slide.id} className="col-4">
+                  <div key={slide.id} className="col-4 restaurant-list__column">
                     <SupplierMiniCard data={slide} />
                   </div>
                 );

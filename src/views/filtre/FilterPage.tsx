@@ -71,24 +71,42 @@ function FilterPage() {
   const { t } = useTranslation();
   const navigate = useNavigate();
   const dispatch = useDispatch();
-  const suppliersListRef = useRef(null);
+  const suppliersListRef = useRef(null); 
+  const [newSuppliers, setNewuppliers] = useState<any>(false);
+  const [bestRatedSuppliers, setBestRatedSuppliers] = useState<any>(false);
+
   const [searchSuppliersList, setSearchSuppliersList] = useState<any>();
   useEffect(() => {
-    searchSupplier();
+    const currentLocation = JSON.parse(
+      localStorageService.getCurrentLocation()!
+    )?.coords;
+    if (currentLocation) {
+      searchSupplier();
+    }
+    else {
+      navigate('/')
+    }    
   }, []);
+  useEffect(() => {
+    if (recommanded.length) {
+      const news = recommanded.filter((s: any) => isAtLeastSevenDaysAgo(s.created_at))
+      const bestRated = recommanded.filter((s: any) => s.star >= 2)
+      setNewuppliers(news)
+      setBestRatedSuppliers(bestRated)      
+    }   
+  }, [recommanded]);
   useEffect(() => {
     if (refresh) {
       dispatch(setRefresh(false));
-      if (!isloadFilter) {
-        searchSupplier();
-      }
+      searchSupplier();    
     }
   }, [refresh]);
-  const searchSupplier = () => {
+  const searchSupplier = () => {   
     const searchParams = new URLSearchParams(location.search);
     if (isEmptySearchParams(searchParams)) {
       setSearchSuppliersList("");
       setHasFilter(false);
+      setIsLoadFilter(false);
     } else {
       setHasFilter(true);
       const currentLocation = JSON.parse(
@@ -122,8 +140,14 @@ function FilterPage() {
       setIsLoadFilter(true);
       supplierServices
         .getSuppliersByFilters(payload)
-        .then((res: any) => {
-          setSearchSuppliersList(res.data.data.suppliers);
+        .then((res: any) => {          
+          if (payload.filter && payload.filter != "") {
+            const filtredList = res.data.data.suppliers.filter((item: any) => item.name.toUpperCase().includes(payload.filter.toUpperCase()));
+            setSearchSuppliersList(filtredList);
+          }
+          else {
+            setSearchSuppliersList(res.data.data.suppliers);
+          }          
           setIsLoadFilter(false);
         })
         .catch((error) => {
@@ -140,100 +164,14 @@ function FilterPage() {
     setAds2(homeData.HOME_2);
     setAds3(homeData.HOME_3);
   }, [homeData]);
+  function isAtLeastSevenDaysAgo(dateString : any) {
+    var dateObject: any = new Date(dateString);
+    var today: any = new Date();
+    var timeDifference :any = today - dateObject;
+    var daysDifference = timeDifference / (1000 * 60 * 60 * 24);
+    return daysDifference >= 7;
+  }
   const renderItems = () => {
-
-  
-
-    useEffect(() => {
-        setAds(homeData.HOME_1)
-    }, [homeData])
-
-
-   
-
-
-  
-
-   
-    useEffect(() => {
-        renderItems()
-    }, [allRestaurantsList])
-
-    const renderItems = () => {
-        const startIndex = (currentPage - 1) * itemsPerPage;
-        const endIndex = startIndex + itemsPerPage;
-        const displayedSuppleirs = allRestaurantsList.slice(startIndex, endIndex)
-        return <>
-            {
-                displayedSuppleirs.length > 0 && (
-                    <div className="filtred-main" >
-                        <div className="sup-card-container" >
-                            <SupplierCard data={displayedSuppleirs[0]} />
-                        </div>
-                        {
-                            displayedSuppleirs[1] && (
-                                <div className="sup-card-container" >
-                                    <SupplierCard data={displayedSuppleirs[1]} />
-                                </div>
-                            )
-                        }
-                        {
-                            displayedSuppleirs[2] && (
-                                <div className="sup-card-container" >
-                                    <SupplierCard data={displayedSuppleirs[2]} />
-                                </div>
-                            )
-                        }
-                        {
-                            displayedSuppleirs[3] && (
-                                <div className="sup-card-container" >
-                                    <SupplierCard data={displayedSuppleirs[3]} />
-                                </div>
-                            )
-                        }
-
-                        {
-                            ads && (
-                                <div className="adsCols">
-                                    <AdsCarousel data={ads} />
-                                </div>
-                            )
-                        }
-
-                        {
-                            displayedSuppleirs[4] && (
-                                <div className="sup-card-container" >
-                                    <SupplierCard data={displayedSuppleirs[4]} />
-                                </div>
-                            )
-                        }
-                        {
-                            displayedSuppleirs[5] && (
-                                <div className="sup-card-container" >
-                                    <SupplierCard data={displayedSuppleirs[5]} />
-                                </div>
-                            )
-                        }
-                        {
-                            displayedSuppleirs[6] && (
-                                <div className="sup-card-container">
-                                    <SupplierCard data={displayedSuppleirs[6]} />
-                                </div>
-                            )
-                        }
-                        {
-                            displayedSuppleirs[7] && (
-                                <div className="sup-card-container">
-                                    <SupplierCard data={displayedSuppleirs[7]} />
-                                </div>
-                            )
-                        }
-                    </div>
-                )
-            }
-
-        </>
-    };
     return (
       <>
         {
@@ -262,7 +200,19 @@ function FilterPage() {
               <div className="main-content__col-ads">
                 <FilterAds data={ads2} slides={1} />
               </div>
-            )}
+            )}            
+            {bestRatedSuppliers.length ? <div className="main-content__col-offers">
+              <h3 className="main-content__col-offers__title">
+                Les mieux notés  
+              </h3>
+              <OffersList listType="recommanded" restaurants={bestRatedSuppliers} />
+            </div> : ''}
+            {newSuppliers.length ? <div className="main-content__col-offers">
+              <h3 className="main-content__col-offers__title">
+                Nouveau sur Thunder 
+              </h3>
+              <OffersList listType="recommanded" restaurants={newSuppliers} />
+            </div> : ''}
             <div className="main-content__col-offers">
               <h3 className="main-content__col-offers__title">
                 Marques populaires
@@ -311,13 +261,13 @@ function FilterPage() {
               <Col className="col-9 content__column content__column--second">
                 <div className="content__column__search-bar">
                   <SearchProduit />
-                </div>
-                {hasFilter && !isloadFilter ? <BtnReset></BtnReset> : ""}
-                {searchSuppliersList?.length && !isloadFilter ? (
-                  <div className="row">
+                  {hasFilter && !isloadFilter ? <BtnReset></BtnReset> : ""}
+                </div>                
+                {searchSuppliersList?.length && !isloadFilter && hasFilter ? (
+                  <div className="row search-list">
                     {searchSuppliersList.map(function (supp: any) {
                       return (
-                        <div key={supp.id} className="col-3">
+                        <div key={supp.id} className="col-3 search-list__column px-0">
                           <SupplierWhiteCard data={supp} className="mb-32" />
                         </div>
                       );
@@ -424,8 +374,7 @@ function FilterPage() {
                 ) : (
                   ""
                 )}
-                {recommanded.length &&
-                !searchSuppliersList?.length &&
+                {recommanded.length &&               
                 !isloadFilter &&
                 !hasFilter ? (
                   <div>

@@ -29,7 +29,7 @@ export const FilterAds = (props: any) => {
                 "centerMode": props.center ? true : false,
                 "centerPadding": props.center ? "40px" : "",
                 "nextArrow":  <NextArrow /> ,
-                "prevArrow": <PrevArrow /> 
+                "prevArrow": <PrevArrow />,               
             }}>
                 {ads.map(function(ad : any) {
                 return (

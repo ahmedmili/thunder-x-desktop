@@ -3,26 +3,41 @@
     display: flex;
     justify-content: end;
     transition: all 0.3s ease-in-out;
-    margin-bottom: 37px;
+    margin-bottom: 0px;
      &__btn{
-        background-color: $Off-White;
-        border: 2px solid $Off-White;        
+        width: 119px;
+        height: 59px;
+        background-color: $color-blue-eastern;
+        border: 2px solid $color-blue-eastern;        
         font-family: Poppins;
         font-size: 18px;
-        font-weight: 500;
+        font-weight: 400;
         line-height: 27px;
         letter-spacing: 0em;
         text-align: left;
-        color: $dark_Gray;
+        color: $color-white;
         padding-inline: 15px;
-        border-radius: 15px;
+        border-radius: 10px;
+        margin-left: 12px;
+        background-image: url("/src/assets/icons/reset.svg");
+        background-size: 28px;
+        background-position:  calc(100% - 15px) center;
+        background-repeat: no-repeat;
         &:hover{
-            box-shadow: 1px 2px 4px 2px rgba($dark_002, 0.17);
-            background-color: $Off-White;
+            background-color: $color-blue-eastern;
+            border: 2px solid $color-blue-eastern;
+            opacity: 1;
+            color: $color-white;
+            background-position: calc(100% - 14px) center;
         }
-        &:focus{
+        &:focus, &:active{
             outline: none;
             border: none;
+            background-color: $color-blue-eastern;
+            border: 2px solid $color-blue-eastern;
+            opacity: 1;
+            color: $color-white;
+            background-position: calc(100% - 14px) center;
         }
      }
 }

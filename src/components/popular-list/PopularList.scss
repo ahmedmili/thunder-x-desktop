@@ -48,4 +48,9 @@
     .slick-list{
         padding-left: 0 !important;
     }
+    &__column{
+        @media(max-width: 1400px){
+            width: 50%;
+        }
+    }
 }

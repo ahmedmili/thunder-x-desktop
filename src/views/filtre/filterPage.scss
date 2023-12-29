@@ -1,14 +1,50 @@
 @import "../../scss/extend";
 
-.content{
-    padding-inline: 123px;
-    &__row{
-        min-width: 1440px;
+.content{   
+    min-width: 1024px;
+    @media(min-width: 1537px){
+        padding-inline: 123px;
     }
-    &__column{  
-        &__filter{
-
+    @media(min-width:1200px) and (max-width: 1536.999px){
+        padding-inline: 60px;
+        .content__scroll-content{
+            padding-inline: 8px;
+            .trie-filter-container__list__item .form-check {
+                padding-left: 12px;
+            }
+            .categories-filter-container__list__item .form-check {
+                padding-left: 12px;
+            }
+            .categories-filter-container__list__item .form-check .form-label {
+                font-size: 16px;
+            }
+            .trie-filter-container__list__item .form-check .form-label {
+                font-size: 16px;
+            }
         }
+    }
+    @media(min-width:1024px) and (max-width: 1199.999px) {
+        padding-inline: 40px;
+        .content__scroll-content {
+            padding-inline: 8px;
+            .trie-filter-container__list__item .form-check{
+                padding-left: 0px;
+            }
+            .trie-filter-container__list__item .form-check .form-label {
+                font-size: 15px;
+            }
+            .categories-filter-container__list__item .form-check{
+                padding-left: 0px;
+            }
+            .categories-filter-container__list__item .form-check .form-label{
+                font-size: 15px;
+            }
+        }
+    }
+    &__row{
+        min-width: 944px;
+    }
+    &__column{ 
         &--first {
             padding: 29px 9px;
             border: 1px solid $light_Gray;
@@ -54,7 +90,16 @@
             }
         }
         &__search-bar{
+            display: flex;
+            align-items: center;
             margin-bottom: 37px;            
+        }
+        .search-list{
+            &__column{
+                @media(max-width: 1343px) {
+                    width: 33.33%;
+                }
+            }
         }
     }
     &__scroll-content{
@@ -91,7 +136,7 @@
 }
 .category-bar{
     margin-bottom: 51px;
-    margin-top: 200px;
+    margin-top: 121px;
 }
 .mb-32{
     margin-bottom: 32px !important;

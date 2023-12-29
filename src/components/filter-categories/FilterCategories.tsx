@@ -42,11 +42,8 @@ const FilterCategories: React.FC<FilterCategoriesProps> = ({
   const navLocation = useLocation();
   const { t } = useTranslation();
   const [categories, setCategories] = useState([]);
-
   const [selectedCategories, setSelectedCategories] = useState("");
-   const [selectedSubCategories, setSelectedSubCategories] = useState("");
-
-  const [subCat, setSubCat] = useState(false);
+  const [selectedSubCategories, setSelectedSubCategories] = useState("");
   const [loaded, setLoaded] = useState(false);
   const refresh = useSelector(homeRefresh)
    
@@ -70,14 +67,29 @@ const FilterCategories: React.FC<FilterCategoriesProps> = ({
   }, [categories]);
   
   const handleCategoryClick = (categoryId: string) => {
-    if (categoryId == selectedCategories) {
+    console.log(selectedSubCategories ,">>>>>>");
+    if (Number(categoryId) == Number(selectedSubCategories)) {
+      console.log("here");
+      setSelectedSubCategories("");
+      const updatedCategories :any = categories.map((category: any) => ({
+        ...category,
+        image: category.image,
+        selected: (Number(category.id) === Number(selectedCategories) ) ? true : false,
+      }));
+      setCategories(updatedCategories);
+      const searchParams = new URLSearchParams(location.search);
+      searchParams.set('category', selectedCategories);
+      navigate(`/search/?${searchParams.toString()}`, {      
+        replace: false,
+      });
+    }
+    else if (categoryId == selectedCategories) {
       setCategories(cats.filter((category: any) => category.description !== "Promo"))
       const searchParams = new URLSearchParams(location.search);
       searchParams.delete('category');
       navigate(`/search/?${searchParams.toString()}`, {      
         replace: false,
       });
-      setSelectedCategories("");
       setSelectedCategories("");
     }
     else {
@@ -112,7 +124,7 @@ const FilterCategories: React.FC<FilterCategoriesProps> = ({
       }        
       else {
         setSelectedCategories(categoryId);
-        setSelectedCategories("");
+        setSelectedSubCategories("");
       }  
     }
     dispatch(setRefresh(true));   
@@ -145,10 +157,14 @@ const FilterCategories: React.FC<FilterCategoriesProps> = ({
         }
       }
       let selected = cats.find((c: any) => (c.children.length > 0 && c.children.find((c: any) => Number(c.id) === Number(categoryId))))
-      if (selected)
-        setSelectedCategories(selected.id);
-      else 
+      if (selected) {
+        setSelectedCategories(selected.id);    
+        setSelectedSubCategories(categoryId);
+      }        
+      else {
         setSelectedCategories(categoryId);
+        setSelectedSubCategories("");
+      }
   }
   useEffect(() => {    
     if (refresh) {

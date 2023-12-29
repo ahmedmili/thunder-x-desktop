@@ -87,6 +87,9 @@
                             font-family: 'Poppins';
                             font-weight: 700;
                             margin: 0;
+                            white-space: nowrap;
+                            overflow: hidden;
+                            text-overflow: ellipsis;
 
                             &:hover {
                                 cursor: pointer;
@@ -113,7 +116,7 @@
                         flex-wrap: nowrap;
                         color: $light_Gray;
                         font-family: Poppins;
-                        font-size: 14px;
+                        font-size: 12px;
                         font-style: normal;
                         font-weight: 600;
                         line-height: 149.5%;
@@ -135,19 +138,20 @@
                             border-radius: 30px;
                             padding: 0.2rem 0.5rem;
                             z-index: 1;
-                            min-width: 110px;
-                            height: 32px; 
+                            height: 27px;
+                            width: 80px;
+                        
                             p {
                                 margin: 0;
                                 font-family: 'Poppins';
-                                @include fonts(14px, 14px, $color-white);
+                                @include fonts(12px, 12px, $color-white);
                                 text-wrap: nowrap;
                                 font-weight: normal;
                             }
                         }
 
                         .closedSpan {
-                            background-color: $color-red;
+                            background-color: $shade-reddish-orange;
 
                             p {
                                 color: $color-white;
@@ -179,7 +183,7 @@
     }
 }
 
-@media only screen and (max-width: 1200px) {
+@media only screen and (max-width: 1399px) {
     .SupplierWhiteCard {
         width: 94%;
 

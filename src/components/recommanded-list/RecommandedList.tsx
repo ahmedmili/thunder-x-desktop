@@ -60,7 +60,14 @@ const RecommandedList: React.FC<Props> = ({ restaurants, listType }) => {
             "slidesToScroll": 1,
             "rows": 2,
             "nextArrow": <NextArrow />,
-            "prevArrow": <PrevArrow />}}>
+            "prevArrow": <PrevArrow />,
+            "responsive": [
+              {
+                breakpoint: 1343,
+                settings: {
+                  slidesToShow: restaurantsList.length < 3 ? restaurantsList.length : 3,
+                }
+              },]}}>
             {restaurantsList.map(function(slide : any) {
               return (
                 <div key={slide.id}>

@@ -127,7 +127,7 @@
                         flex-wrap: nowrap;
                         color: $light_Gray;
                         font-family: Poppins;
-                        font-size: 13px;
+                        font-size: 12px;
                         font-style: normal;
                         font-weight: 600;
                         line-height: 149.5%;
@@ -149,7 +149,6 @@
                             border-radius: 30px;
                             padding: 0.2rem 0.5rem;
                             z-index: 1;
-                            // min-width: 110px;
                             height: 27px;
                             width: 80px;
                             p {
@@ -162,7 +161,7 @@
                         }
 
                         .closedSpan {
-                            background-color: $color-red;
+                            background-color: $shade-reddish-orange;
 
                             p {
                                 color: $color-white;

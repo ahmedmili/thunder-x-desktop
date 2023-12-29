@@ -64,7 +64,15 @@ const OffersList: React.FC<Props> = ({ restaurants, listType }) => {
             "autoplaySpeed": 2000,
             "cssEase": "linear",
             "nextArrow": <NextArrow />,
-            "prevArrow": <PrevArrow />}}>
+            "prevArrow": <PrevArrow />,
+            "responsive": [
+              {
+                breakpoint: 1343,
+                settings: {
+                  slidesToShow: restaurantsList.length < 2 ? restaurantsList.length : 2,
+                }
+              },]     
+            }}>
             {restaurantsList.map(function(slide : any) {
               return (
                 <div key={slide.id}>

@@ -16,7 +16,7 @@ function SearchProduit() {
     const refresh = useSelector(homeRefresh)
     useEffect(() => {
         const searchParams = new URLSearchParams(location.search);
-        if (searchParams.has("filter")) {
+        if (searchParams.has("filter") && searchParams.get("filter")!="") {
             const filter: any = searchParams.get("filter");
             setActive(filter);
         }        
@@ -34,17 +34,28 @@ function SearchProduit() {
         setActive(event.target.value);
         handleInputChange(event)
     }
-    const handleInputChange = debounce((event) => {        
-        const searchParams = new URLSearchParams(location.search);
-        if (searchParams.has('filter')) {
-            searchParams.set('filter', event.target.value);
+    const handleInputChange = debounce((event) => {  
+        if (event.target.value !="") {
+            const searchParams = new URLSearchParams(location.search);
+            if (searchParams.has('filter')) {
+                searchParams.set('filter', event.target.value);
+            }
+            else {
+                searchParams.append('filter', event.target.value);
+            }
+            navigate(`/search/?${searchParams.toString()}`, {      
+                replace: false,
+            });
         }
         else {
-            searchParams.append('filter', event.target.value);
-        }
-        navigate(`/search/?${searchParams.toString()}`, {      
-            replace: false,
-        });
+            const searchParams = new URLSearchParams(location.search);
+            if (searchParams.has('filter')) {
+                searchParams.delete('filter');
+                navigate(`/search/?${searchParams.toString()}`, {      
+                    replace: false,
+                });
+            }           
+        }        
         dispatch(setRefresh(true));
     }, 500); 
     return (
