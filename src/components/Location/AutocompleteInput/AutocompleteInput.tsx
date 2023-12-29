@@ -43,7 +43,6 @@ const AutocompleteInput: React.FC<AutocompleteInputProps> = ({ initLocation }) =
                 let pos = position.coords
                 const { latitude, longitude } = pos;
                 LocationService.geoCode(latitude, longitude).then(data => {
-                    // console.log('current location : ', data)
                     dispatch({
                         type: "SET_LOCATION",
                         payload: {

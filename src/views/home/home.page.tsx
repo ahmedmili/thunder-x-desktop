@@ -3,7 +3,7 @@ import "react-loading-skeleton/dist/skeleton.css";
 import { AdsCarousel } from "../../components/adsCarousel/adsCarousel";
 import { ApplicationAd } from "../../components/applicationAd/ApplicationAd";
 import { FooterNewsLeter } from "../../components/footerNewsLeter/FooterNewsLetter";
-import { AppProps } from "../../services/types";
+import { AppProps, Restaurant } from "../../services/types";
 import homeStyle from "./home.page.module.scss";
 
 
@@ -17,16 +17,18 @@ import {
 import { useAppSelector } from "../../Redux/store";
 import MessangerBtnIcon from '../../assets/profile/Discuter/messanger-btn.svg';
 import Messanger from "../../components/Popups/Messanger/Messanger";
+import { JoinUs } from "../../components/joinUs/joinUs";
 import { OrderTracking } from "../../components/order-tracking/orderTracking";
 import ProductCarousel from "../../components/productCarousel/productCarousel";
+import { supplierServices } from "../../services/api/suppliers.api";
 import HomeSkeleton from "./skeleton/HomeSkeleton";
-import { JoinUs } from "../../components/joinUs/joinUs";
 
 
 const HomePage = ({ initialData }: AppProps) => {
 
 
   const [messangerPopup, setMessangerPopup] = useState<boolean>(false)
+  const [suppliers, setSuppliers] = useState<Restaurant[]>([])
   const ads = initialData ? initialData.ads : useSelector(adsHomeSelector);
   const categories = initialData ? initialData.categories : [];
   const isLoading = initialData ? false : useSelector(homeLoadingSelector);
@@ -42,14 +44,21 @@ const HomePage = ({ initialData }: AppProps) => {
     setMessangerPopup(!messangerPopup)
   }
 
+  const getSuppliers = async () => {
+
+    const { status, data } = await supplierServices.getSuppliersAndAds()
+    data.success && setSuppliers(data.data.suppliers)
+  }
+  useEffect(() => {
+    getSuppliers()
+  }, [])
   return (
     <>
 
       <div className="slider-area product-carousel">
         <ProductCarousel
-          ssrCategories={categories}
-          // onCategorySelect={handleCategorySelect}
-          onCategorySelect={() => { }}
+          // ssrCategories={suppliers}
+          suppliers={suppliers}
         />
       </div>
 

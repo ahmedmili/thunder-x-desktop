@@ -84,6 +84,16 @@ async function getSuppliersIndex(long: number, lat: number, delivery: number = 1
     throw error;
   }
 }
+async function getSuppliersAndAds() {
+  try {
+    const response = await api.get(`home/index`);
+    const { status, data } = response;
+    return { status, data };
+  } catch (error) {
+    console.error('Error', error);
+    throw error;
+  }
+}
 
 
 const redAnnonce = (formData: any) => {
@@ -99,6 +109,7 @@ export const supplierServices = {
   getSupplierISoPENById,
   getSuppliersByCategory,
   getSuppliersIndex,
+  getSuppliersAndAds,
   redAnnonce,
 
 

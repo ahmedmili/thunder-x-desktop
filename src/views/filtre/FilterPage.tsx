@@ -147,7 +147,6 @@ function FilterPage() {
         setIsLoading(true);
         let locationArray = location.pathname.split('/')
         locationArray.length < 3 && navigate("/");
-        console.log("locationArray : ",locationArray)
         const searchTypeArray =  locationArray[0].length > 0 && locationArray[2].length && locationArray[2].includes("=") ? locationArray[2].split("=") : null
         if (searchTypeArray) {
             switch (searchTypeArray[0]) {

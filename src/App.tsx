@@ -1,10 +1,12 @@
 // "use client";
 import { CssBaseline } from "@mui/material";
 import "bootstrap/dist/css/bootstrap.min.css";
+import "./app.scss";
+import './assets/fonts/Poppins/Poppins.css';
+
 import { Suspense, lazy, startTransition, useCallback, useEffect, useState } from "react";
 import { Navigate, Outlet, Route, Routes, useLocation, useNavigate } from "react-router-dom";
-import { ToastContainer, toast } from "react-toastify";
-
+import { ToastContainer } from "react-toastify";
 import Layout from "./components/layout/layout";
 
 import { useAppDispatch, useAppSelector } from "./Redux/store";
@@ -23,7 +25,6 @@ import { fetchHomeData } from "./Redux/slices/home";
 import { addMessangerSuccess } from "./Redux/slices/messanger";
 import { setRestaurants } from "./Redux/slices/restaurantSlice";
 import { login, logout, setUser } from "./Redux/slices/userSlice";
-import "./app.scss";
 import { LocationService } from "./services/api/Location.api";
 import { supplierServices } from "./services/api/suppliers.api";
 import { userService } from "./services/api/user.api";
@@ -33,7 +34,6 @@ import { AppProps, Message, Restaurant } from "./services/types";
 import channelListener from "./services/web-socket";
 
 import MenuOptions from "./components/menus/menuOptions/MenuOptions";
-import HomeSkeleton from "./views/home/skeleton/HomeSkeleton";
 import Spinner from "./components/spinner/Spinner";
 //lazy loading components
 const Header = lazy(() => import("./components/Header/Header"));
@@ -45,10 +45,10 @@ import ArchivedCommands from "./components/layout/Profile/Archivedcommands/Archi
 import ConfigPage from "./components/layout/Profile/ConfigPage/ConfigPage";
 import Discuter from "./components/layout/Profile/Discuter/Discuter";
 import Favors from "./components/layout/Profile/Favors/Favors";
-import FidelitePage from "./components/layout/Profile/FidelitePage/FidelitePage";
 import Feedback from "./components/layout/Profile/Feedback/Feedback";
-import Verify from "./views/Verify";
+import FidelitePage from "./components/layout/Profile/FidelitePage/FidelitePage";
 import Menu from "./components/menus/menus";
+import Verify from "./views/Verify";
 //lazy loading pages
 const Profile = lazy(() => import("./components/layout/Profile/Profile"));
 const HomePage = lazy(() => import("./views/home/home.page"));
@@ -83,9 +83,6 @@ function App({ initialData }: AppProps) {
   const updateHomeData = useCallback(() => {
     setUpdateTrigger((prev) => !prev);
   }, []);
-
-
-  // console.log("menuResponse", initialData.menuResponse.data)
 
   useEffect(() => {
 
