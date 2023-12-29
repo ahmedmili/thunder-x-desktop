@@ -1,0 +1,280 @@
+@import '../../scss/extend';
+
+.recommandedContainer {
+  margin-bottom: 5px;
+  .container {
+    background-color: $color-white;
+    position: relative;
+    top: 0;
+    justify-content: center;
+    margin-bottom: 10px;
+    height: 100%;
+
+    .recaommandedTitle {
+      text-align: center;
+      font-family: 'Poppins', serif;
+      font-weight: weight(light);
+      @include fonts(32px, 32px, $dark_002);
+      margin-bottom: 60px;
+    }
+    .discountTitleContainer {
+      margin: 0 0 100px;
+      text-align: center;
+
+      h2 {
+        font-family: 'Poppins-Bold', serif;
+        @include fonts(32px, 32px, $color-blue-pelorous);
+        margin: 0 0 10px;
+      }
+      p {
+        font-family: 'Poppins-Medium', serif;
+        @include fonts(18px, 24px, $dark_Gray);
+        margin: 0;
+      }
+    }
+    .unique {
+      @include dimensions(96%, 223px);
+      border-radius: 60px;
+      background: $Light_yellow;
+      position: absolute;
+      top: 183px;
+    }
+    .double {
+      width: calc(100% + 100px);
+      height: 317px;
+      top: calc(50% - 149px);
+      left: -50px;
+      border-radius: 60px;
+      background: $Light_Blue;
+      position: absolute;
+    }
+    .carouselProvider {
+      margin: 0 5%;
+
+      .recommandedListButtonsContainer {        
+        .btn {
+          @include dimensions(43px, 43px);
+          @include flex;
+          background-color: $color-gray-pewter;
+          @include border(1px, $color-gray-pewter);
+          border-radius: 50%;
+          position: absolute;
+          top: 45%;
+          transform: translate(-150%, -200%);
+          margin-bottom: 10px;
+          
+          .sliderButtonIcon {
+            font-size: 25px;
+            color: $color-white;
+            font-weight: weight(regular);
+            margin-left:10px;
+            margin-right: 0;
+          }
+          &:hover {
+            background-color: $color-white;
+
+            .sliderButtonIcon {
+              color: $color-gray-pewter;
+            }
+          }
+        }
+        .rightBtn {
+         .btn{
+          right:0;
+          transform: translate(150%, -200%);
+          .sliderButtonIcon{
+            margin-left:5px;
+            margin-right: 0;
+          }
+         }
+        }
+      }
+      .uniqueButtons {
+        @include dimensions(110%, 50px);
+        top: 41%;
+        left: -4%;
+      }
+    }
+  }
+  &.discount{
+     .double {
+      background: $Light_yellow;
+      top: calc(50% - 105px);
+    }
+  }
+}
+
+
+/* # $Mobile ::
+------------------------------------*/
+
+@media (max-width: 1440px) {
+  .recommandedContainer {
+    .container {
+      .discountTitleContainer {
+        margin: 0 0 80px;
+
+        h2 {
+          @include fontSize(26px, 26px);
+        }
+        p {
+          @include fontSize(15px, 20px);
+        }
+      }
+      .carouselProvider {
+        .recommandedListButtonsContainer {
+          .btn {
+            @include dimensions(33px, 33px);
+
+            .sliderButtonIcon {
+              font-size: 20px;
+            }
+          }
+        }
+      }
+    }
+  }
+}
+
+@media only screen and (max-width: 1200px) {
+  .recommandedContainer {
+    .container {
+      .unique {
+        height: 143px;
+      }
+      .carouselProvider {
+        .recommandedListButtonsContainer {
+          top: 25%;
+          left: -5%;
+        }
+        .uniqueButtons {
+          top: 33%;
+          left: -4%;
+        }
+      }
+    }
+  }
+}
+@media (max-width: 1399.98px) { 
+  .recommandedContainer {
+    .container {
+      margin-bottom: 0;
+    }
+  }
+}  
+@media only screen and (max-width: 991px) {
+  .recommandedContainer {
+    .container {
+      .unique {
+        top: 101px;
+        @include dimensions(95%, 157px);
+      }
+      .carouselProvider {
+        .recommandedListButtonsContainer {
+          @include dimensions(112%, 23px);
+          top: 166px;
+          left: -5%;
+        }
+      }
+    }
+  }
+}
+
+@media only screen and (max-width: 767px) {
+  .recommandedContainer {
+    .container {
+      .unique {
+        top: 110px;
+        height: 128px;
+      }
+      .carouselProvider {
+        .recommandedListButtonsContainer {
+          @include dimensions(113%, 23px);
+          top: 44%;
+          left: -5%;
+
+          .btn {
+            .sliderButtonIcon {
+              font-size: 14px;
+            }
+          }
+        }
+        .uniqueButtons {
+          width: 111%;
+          top: 56%;
+          left: -4%;
+        }
+      }
+    }
+  }
+}
+
+@media only screen and (max-width: 660px) {
+
+  .recommandedContainer {
+    font-size: 1rem;
+
+    .container {
+      .unique {
+        top: 103px;
+        @include dimensions(88%, 106px);
+      }
+      .recaommandedTitle {
+        font-size: 2rem;
+      }
+      .carouselProvider {
+        .recommandedListButtonsContainer {
+          @include dimensions(113%, 23px);
+          top: 33%;
+          left: -5%;
+
+          .btn {
+            .sliderButtonIcon {
+              font-size: 14px;
+            }
+          }
+        }
+        .uniqueButtons {
+          width: 111%;
+          top: 44%;
+          left: -4%;
+        }
+      }
+
+    }
+  }
+}
+
+@media only screen and (max-width: 375px) {
+  .recommandedContainer {
+    .container {
+      .unique {
+        height: 90px;
+        top: 66px;
+      }
+      .discountTitleContainer {
+        text-align: left;
+
+        h2 {
+          font-size: 1rem;
+        }
+        p {
+          font-size: 0.5rem;
+        }
+      }
+      .carouselProvider {
+        .recommandedListButtonsContainer {
+          top: 39%;
+          left: -5%;
+          @include dimensions(116%, 23px);
+
+          .btn {
+            .sliderButtonIcon {
+              font-size: 11px;
+            }
+          }
+        }
+      }
+    }
+  }
+}

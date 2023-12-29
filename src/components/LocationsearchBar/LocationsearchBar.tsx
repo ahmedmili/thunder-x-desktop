@@ -14,12 +14,12 @@ interface Props {
 const LocationSearchBar: React.FC<Props> = ({ placeholder }) => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
-  const [suggestions, setSuggestions] = useState<any>();
+  const [suggestions, setSuggestions] = useState<any>(null);
 
   const { t } = useTranslation()
 
   const handleSearch = () => {
-    if ( suggestions) {
+    if (suggestions) {
       dispatch({
         type: "SET_LOCATION",
         payload: {
@@ -30,7 +30,7 @@ const LocationSearchBar: React.FC<Props> = ({ placeholder }) => {
           },
         },
       });
-      navigate('/search')
+      // navigate('/search')
     } else {
       dispatch({ type: "SET_SHOW", payload: true })
     }

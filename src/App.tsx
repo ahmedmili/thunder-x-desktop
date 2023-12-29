@@ -6,9 +6,9 @@ import './assets/fonts/Poppins/Poppins.css';
 
 import { Suspense, lazy, startTransition, useCallback, useEffect, useState } from "react";
 import { Navigate, Outlet, Route, Routes, useLocation, useNavigate } from "react-router-dom";
-import { ToastContainer, toast } from "react-toastify";
-import "slick-carousel/slick/slick.css";
+import { ToastContainer } from "react-toastify";
 import "slick-carousel/slick/slick-theme.css";
+import "slick-carousel/slick/slick.css";
 import Layout from "./components/layout/layout";
 
 import { useAppDispatch, useAppSelector } from "./Redux/store";
@@ -232,7 +232,10 @@ function App({ initialData }: AppProps) {
         );
       }
     }
+  }, [])
 
+  useEffect(() => {
+    dispatch({ type: "SET_SHOW", payload: false })
   }, [])
 
   // handle recive admin message
@@ -256,7 +259,6 @@ function App({ initialData }: AppProps) {
   // Enforce Trailing Slash 
   useEffect(() => {
     const { pathname } = navLocation;
-    console.log(navLocation);
     if (!pathname.endsWith('/') && pathname !== '/') {
       navigate(`${pathname}/`, { replace: true });
     }

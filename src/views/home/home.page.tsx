@@ -1,39 +1,42 @@
 import React from "react";
 import "react-loading-skeleton/dist/skeleton.css";
-import { AdsCarousel } from "../../components/adsCarousel/adsCarousel";
-import { ApplicationAd } from "../../components/applicationAd/ApplicationAd";
 import { FooterNewsLeter } from "../../components/footerNewsLeter/FooterNewsLetter";
-import { AppProps, Restaurant } from "../../services/types";
+import { Ads, AppProps, Restaurant } from "../../services/types";
 import homeStyle from "./home.page.module.scss";
 
 
 // import "laravel-echo/dist/echo";
 import { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
+import { useNavigate } from "react-router";
 import {
   adsHomeSelector,
   homeLoadingSelector
 } from "../../Redux/slices/home";
 import { useAppSelector } from "../../Redux/store";
 import MessangerBtnIcon from '../../assets/profile/Discuter/messanger-btn.svg';
+import HomPageAds from "../../components/HomPageAds/HomPageAds";
 import Messanger from "../../components/Popups/Messanger/Messanger";
 import { JoinUs } from "../../components/joinUs/joinUs";
 import { OrderTracking } from "../../components/order-tracking/orderTracking";
 import ProductCarousel from "../../components/productCarousel/productCarousel";
 import { supplierServices } from "../../services/api/suppliers.api";
-import HomeSkeleton from "./skeleton/HomeSkeleton";
-import CategoryCarousel from "../../components/categoriesCarousel/categoriesCarousel";
-import Skeleton from "react-loading-skeleton";
 import { localStorageService } from "../../services/localStorageService";
-import { useNavigate } from "react-router";
+import HomeSkeleton from "./skeleton/HomeSkeleton";
 
 
+interface homePageAds {
+  HOME_1: Ads[],
+  HOME_2: Ads[],
+  HOME_3: Ads[],
+}
 
 const HomePage = ({ initialData }: AppProps) => {
 
 
   const [messangerPopup, setMessangerPopup] = useState<boolean>(false)
   const [suppliers, setSuppliers] = useState<Restaurant[]>([])
+  const [homeAds, setHomeAds] = useState<homePageAds>()
   const ads = initialData ? initialData.ads : useSelector(adsHomeSelector);
   const categories = initialData ? initialData.categories : [];
   const isLoading = initialData ? false : useSelector(homeLoadingSelector);
@@ -61,7 +64,10 @@ const HomePage = ({ initialData }: AppProps) => {
 
     const { status, data } = await supplierServices.getSuppliersAndAds()
     data.success && setSuppliers(data.data.suppliers)
+    data.success && setHomeAds(data.data.ads)
+
   }
+
   useEffect(() => {
     getSuppliers()
   }, [])
@@ -83,20 +89,9 @@ const HomePage = ({ initialData }: AppProps) => {
           </div>
         ) : (
           <>
-
-            {/* {!isLoading && ads && ads.HOME_1 && (
-              <AdsCarousel data={ads.HOME_1} />
-            )} */}
-
-            {/* <ApplicationAd /> */}
-
-            {/* {!isLoading && ads && ads.HOME_2 && (
-              <AdsCarousel data={ads.HOME_2} />
-            )} */}
-            {/* 
-            {!isLoading && ads && ads.HOME_3 && (
-              <AdsCarousel data={ads.HOME_3} />
-            )} */}
+            {
+              homeAds && homeAds.HOME_2 && <HomPageAds homeAds={homeAds!.HOME_2} />
+            }
 
             <div className={homeStyle.bulles}>
               <button className={homeStyle.messangerPopupBtn} onClick={handleMessangerPopup} style={{ backgroundImage: `url(${MessangerBtnIcon})` }}>
@@ -111,7 +106,6 @@ const HomePage = ({ initialData }: AppProps) => {
               messangerPopup &&
               <Messanger className={homeStyle.discuterMessangerPopup} close={handleMessangerPopup} />
             }
-
 
           </>
         )}
