@@ -1,8 +1,8 @@
 @import '../../scss/extend';
-.offers-list{
+.restaurant-list{
     margin-bottom: 37px;
-    margin-left: -10px;
-    .prev-offers-arrow{
+    margin-inline: -10px;
+    .prev-arrow{
         display: block;
         width: 45px;
         height: 45px;
@@ -17,7 +17,6 @@
         background-position: center;
         background-size: 20px;
         transition: all 0.2s ease-in-out;
-        opacity: 0;
         &::before {
             display: none;
         }
@@ -48,10 +47,5 @@
     }
     .slick-list{
         padding-left: 0 !important;
-    }
-    &:hover{
-        .prev-offers-arrow {
-            opacity: 1;
-        }
     }
 }

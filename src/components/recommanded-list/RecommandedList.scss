@@ -1,8 +1,8 @@
 @import '../../scss/extend';
-.offers-list{
+.recommanded-list{
     margin-bottom: 37px;
-    margin-left: -10px;
-    .prev-offers-arrow{
+    margin-inline: -10px;
+    .prev-recommanded-arrow{
         display: block;
         width: 45px;
         height: 45px;
@@ -45,12 +45,12 @@
         &:hover {
             right: -14px;
         }
-    }
-    .slick-list{
-        padding-left: 0 !important;
+    }   
+    .mb-32{
+        margin-bottom: 32px;
     }
     &:hover{
-        .prev-offers-arrow {
+        .prev-recommanded-arrow {
             opacity: 1;
         }
     }

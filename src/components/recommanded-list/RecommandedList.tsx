@@ -2,7 +2,7 @@ import { Box, Typography } from "@mui/material";
 import React, { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { Restaurant } from "../../services/types";
-import "./OffersList.scss";
+import "./RecommandedList.scss";
 import Slider from "react-slick";
 import SupplierWhiteCard from "../supplier-white-card/SupplierWhiteCard";
 
@@ -11,7 +11,7 @@ interface Props {
   restaurants: Restaurant[];
 }
 
-const OffersList: React.FC<Props> = ({ restaurants, listType }) => {
+const RecommandedList: React.FC<Props> = ({ restaurants, listType }) => {
   const { t } = useTranslation();
   const settings = {
     dots: true,
@@ -50,29 +50,25 @@ const OffersList: React.FC<Props> = ({ restaurants, listType }) => {
   }
   else if (loaded) {
     return (
-      <div className="offers-list">       
+      <div className="recommanded-list">       
         <Slider
           {...{
-            "slidesToShow": restaurantsList.length < 3 ? restaurantsList.length : 3,
+            "slidesToShow": restaurantsList.length < 4 ? restaurantsList.length : 4,
             "dots": false,
             "infinite": true,
-            "slidesToScroll": 1,
-            "centerMode": true,
-            "centerPadding": "40px",
-            "autoplay": true,
             "speed": 500,
-            "autoplaySpeed": 2000,
-            "cssEase": "linear",
+            "slidesToScroll": 1,
+            "rows": 2,
             "nextArrow": <NextArrow />,
             "prevArrow": <PrevArrow />}}>
             {restaurantsList.map(function(slide : any) {
               return (
                 <div key={slide.id}>
-                  <SupplierWhiteCard data={slide} />
+                  <SupplierWhiteCard data={slide} className="mb-32"/>
                 </div>
               );
             })}
-        </Slider>
+          </Slider>
       </div>
     );    
   }  
@@ -81,7 +77,7 @@ function PrevArrow(props: any) {
   const { className, style, onClick } = props;
   return (
     <div
-      className={className + " prev-offers-arrow"}
+      className={className + " prev-recommanded-arrow"}
       style={{ ...style }}
       onClick={onClick}
     />
@@ -98,4 +94,4 @@ function NextArrow(props: any) {
   );
 }
 
-export default OffersList;
+export default RecommandedList;

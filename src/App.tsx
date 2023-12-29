@@ -258,6 +258,7 @@ function App({ initialData }: AppProps) {
   // Enforce Trailing Slash 
   useEffect(() => {
     const { pathname } = navLocation;
+    console.log(navLocation);
     // Check if the path doesn't end with '/'
     if (!pathname.endsWith('/') && pathname !== '/') {
       // Redirect to the same route with a '/' at the end

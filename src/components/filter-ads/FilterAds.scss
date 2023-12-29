@@ -1,0 +1,79 @@
+@import '../../scss/extend';
+.carousel-ads {  
+  padding: 0;
+  margin: 0 -10px;
+  &__image {
+    border-radius: 15px;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    border: none;    
+  }   
+  &__item{
+    padding-inline: 10px;
+    height: 228px;
+  }  
+  &:hover{
+    .prev-ads-arrow{
+      opacity: 1;
+    }
+  }
+  .slick-list {
+    padding-left: 0 !important;
+  }
+}
+.carousel__inner-slide {
+  padding: 0 10px;
+}
+.prev-ads-arrow {
+  display: block;
+  width: 45px;
+  height: 45px;
+  background-color: $color-white;
+  border-radius: 50%;
+  box-shadow: 0px 6px 4px 1px rgba(0, 0, 0, 0.25);
+  z-index: 9;
+  left: -12px;
+  background-image: url("/src/assets/icons/arrow-prev.svg");
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: 20px;
+  transition: all 0.2s ease-in-out;
+  opacity: 0;
+  &::before {
+    display: none;
+  }
+  &:hover {
+    left: -14px;
+    background-image: url("/src/assets/icons/arrow-prev.svg");
+    background-repeat: no-repeat;
+    background-position: center;
+    background-size: 20px;
+    background-color: $color-white;
+  }
+ }
+
+.next-arrow {
+  display: block;
+  width: 45px;
+  height: 45px;
+  background-color: $color-white;
+  border-radius: 50%;
+  box-shadow: 0px 6px 4px 1px rgba(0, 0, 0, 0.25);
+  background-image: url("/src/assets/icons/arrow-next.svg");
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: 20px;
+  right: -12px;
+  transition: all 0.2s ease-in-out;
+  &::before {
+    display: none;
+  }
+  &:hover {
+    right: -14px;
+    background-image: url("/src/assets/icons/arrow-next.svg");
+    background-repeat: no-repeat;
+    background-position: center;
+    background-color: $color-white;
+  }
+}

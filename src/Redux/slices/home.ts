@@ -20,6 +20,7 @@ export type HomeDataState = {
   profilePage: number;
   data: HomeDataProps;
   loading: boolean;
+  refresh: boolean;
   error: any;
   isDelivery: number;
 };
@@ -39,6 +40,7 @@ const initialState: HomeDataState = {
   loading: false,
   error: false,
   isDelivery: 1,
+  refresh: false
 };
 
 const homeSlice = createSlice({
@@ -56,7 +58,7 @@ const homeSlice = createSlice({
         ads: homeData.ads,
         categories: homeData.categories
           .slice()
-          .sort((a: any, b: any) => a.position -  b.position),
+          .sort((a: any, b: any) => a.position - b.position),
         favorites: homeData.favorites,
         popular: homeData.popular,
         recommended: homeData.recommended,
@@ -80,6 +82,9 @@ const homeSlice = createSlice({
     setProfilePage: (state, action) => {
       state.profilePage = action.payload;
     },
+    setRefresh: (state, action) => {
+      state.refresh = action.payload;
+    },
   },
 });
 
@@ -90,6 +95,7 @@ export const {
   setIsDelivery,
   setTheme,
   setProfilePage,
+  setRefresh
 } = homeSlice.actions;
 
 const homeReducer = homeSlice.reducer;
@@ -111,6 +117,7 @@ export const isDeliveryHomeSelector = (state: RootState) =>
   state.home.isDelivery;
 export const homeErrorsSelector = (state: RootState) => state.home.error;
 export const homeLoadingSelector = (state: RootState) => state.home.loading;
+export const homeRefresh = (state: RootState) => state.home.refresh;
 var favorsList: number[] = []
 // Action
 const getClientFavors = async () => {

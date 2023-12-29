@@ -1,0 +1,29 @@
+@import "../../../../scss/extend";
+.reset-filter-container {
+    display: flex;
+    justify-content: end;
+    transition: all 0.3s ease-in-out;
+    margin-bottom: 37px;
+     &__btn{
+        background-color: $Off-White;
+        border: 2px solid $Off-White;        
+        font-family: Poppins;
+        font-size: 18px;
+        font-weight: 500;
+        line-height: 27px;
+        letter-spacing: 0em;
+        text-align: left;
+        color: $dark_Gray;
+        padding-inline: 15px;
+        border-radius: 15px;
+        &:hover{
+            box-shadow: 1px 2px 4px 2px rgba($dark_002, 0.17);
+            background-color: $Off-White;
+        }
+        &:focus{
+            outline: none;
+            border: none;
+        }
+     }
+}
+

@@ -3,7 +3,8 @@ import ArrowForwardIosIcon from "@mui/icons-material/ArrowForwardIos";
 import { useEffect, useRef, useState } from "react";
 import { Col, Container, Row } from "react-bootstrap";
 import { useTranslation } from "react-i18next";
-import Skeleton from "react-loading-skeleton";
+import Skeleton from "@mui/material/Skeleton";
+import Box from "@mui/material/Box";
 import { useSelector } from "react-redux";
 import { useAppSelector } from "../../Redux/store";
 import { AdsCarousel } from "../../components/adsCarousel/adsCarousel";
@@ -33,8 +34,16 @@ import {
   homeLoadingSelector,
   popularHomeSelector,
   recommendedHomeSelector,
+  homeRefresh,
+  setRefresh,
 } from "../../Redux/slices/home";
 import OffersList from "../../components/offersList/OffersList";
+import RecommandedList from "../../components/recommanded-list/RecommandedList";
+import { FilterAds } from "../../components/filter-ads/FilterAds";
+import PopularList from "../../components/popular-list/PopularList";
+import FilterCategories from "../../components/filter-categories/FilterCategories";
+import SupplierWhiteCard from "../../components/supplier-white-card/SupplierWhiteCard";
+import BtnReset from "./components/btn-reset/BtnReset";
 
 function FilterPage() {
   const restaurantsList = useAppSelector(
@@ -44,15 +53,18 @@ function FilterPage() {
   const homeData = useAppSelector(adsHomeSelector);
   const [currentPage, setCurrentPage] = useState(1);
   const [ads, setAds] = useState<any[]>([]);
+  const [ads2, setAds2] = useState<any[]>([]);
+  const [ads3, setAds3] = useState<any[]>([]);
   const [allRestaurantsList, setAllRestaurantsList] = useState<any[]>([]);
   const [originCategories, setOriginCategories] = useState<any[]>([]);
 
   const recommanded = useSelector(recommendedHomeSelector);
   const popular = useSelector(popularHomeSelector);
   const isLoading = useSelector(homeLoadingSelector);
-
-  const [isloading, setIsLoading] = useState<boolean>(false);
-
+  const refresh = useSelector(homeRefresh);
+  const [isload, setIsLoading] = useState<boolean>(false);
+  const [isloadFilter, setIsLoadFilter] = useState<boolean>(false);
+  const [hasFilter, setHasFilter] = useState<boolean>(false);
   const categories = useSelector(categoriesHomeSelector);
   const itemsPerPage = 8;
   const totalPages = Math.ceil(allRestaurantsList.length / itemsPerPage);
@@ -60,205 +72,82 @@ function FilterPage() {
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const suppliersListRef = useRef(null);
-
-  // handle messanger
-  const unReadMessages = useAppSelector(
-    (state) => state.messanger.unReadedMessages
-  );
-  const [messangerPopup, setMessangerPopup] = useState<boolean>(false);
-  const [unReadedQt, setUnReadedQt] = useState<number>(unReadMessages);
+  const [searchSuppliersList, setSearchSuppliersList] = useState<any>();
   useEffect(() => {
-    setUnReadedQt(unReadMessages);
-  }, [unReadMessages]);
-
-  const handleMessangerPopup = () => {
-    setMessangerPopup(!messangerPopup);
-  };
-  useEffect(() => {
-    fetchMessages();
+    searchSupplier();
   }, []);
-  //
-  const scrollToTarget = (targetRef: any) => {
-    targetRef.current &&
-      targetRef.current.scrollIntoView({
-        behavior: "smooth",
-        block: "start",
-        inline: "nearest",
-      });
-  };
-
-  function handleTextSearch(searchTerm: string): void {
-    const currentLocation = localStorageService.getCurrentLocation();
-    if (location) {
-      if (searchTerm.length > 0) {
-        const LongLat = JSON.parse(currentLocation!).coords;
-        const data = {
-          search: searchTerm,
-          lat: LongLat.latitude,
-          long: LongLat.longitude,
-        };
-        try {
-          supplierServices.searchSupplierByArticle(data).then((resp) => {
-            dispatch(setfilterRestaurants(resp.data.data.suppliers));
-            setIsLoading(false);
-            suppliersListRef && scrollToTarget(suppliersListRef);
-          });
-        } catch (e) {
-          throw e;
-        }
-      } else {
-        // setErrorMessage("Veuillez compléter la recherche.");
-      }
-    } else {
-      // setErrorMessage("choisissez l\'emplacement s\'il vous plaît");
-    }
-
-    dispatch(setSearchQuery(searchTerm));
-  }
-
-  function findProductIdByName(productName: string) {
-    for (const category of categories) {
-      if (category.name === productName) {
-        return category.id;
-      }
-
-      for (const product of category.children) {
-        if (product.name === productName) {
-          return product.id;
-        }
-      }
-    }
-    return null; // Product not found
-  }
-
-  const handleCategorySearch = (categoryName: string) => {
-    const currentLocation = JSON.parse(
-      localStorageService.getCurrentLocation()!
-    ).coords;
-    const cat_id = findProductIdByName(categoryName);
-    const requestData = {
-      category_id: cat_id,
-      lat: currentLocation!.latitude,
-      long: currentLocation!.longitude,
-    };
-    supplierServices
-      .searchSupplierBySubArticle(requestData)
-      .then((res: any) => {
-        dispatch(setfilterRestaurants(res.data.data.suppliers));
-        setIsLoading(false);
-        suppliersListRef && scrollToTarget(suppliersListRef);
-      });
-  };
-
   useEffect(() => {
-    setOriginCategories(categories);
-    categories && searchByUrl();
-    suppliersListRef && scrollToTarget(suppliersListRef);
-  }, [categories]);
-
+    if (refresh) {
+      dispatch(setRefresh(false));
+      if (!isloadFilter) {
+        searchSupplier();
+      }
+    }
+  }, [refresh]);
+  const searchSupplier = () => {
+    const searchParams = new URLSearchParams(location.search);
+    if (isEmptySearchParams(searchParams)) {
+      setSearchSuppliersList("");
+      setHasFilter(false);
+    } else {
+      setHasFilter(true);
+      const currentLocation = JSON.parse(
+        localStorageService.getCurrentLocation()!
+      ).coords;
+      const payload = {
+        order_by: "popular",
+        max_price: 1000,
+        min_price: 0,
+        lat: currentLocation!.latitude,
+        long: currentLocation!.longitude,
+        category_id: "",
+        delivery_price: 0,
+        filter: "",
+      };
+      if (searchParams.has("category")) {
+        payload.category_id = searchParams.get("category") as string;
+      }
+      if (searchParams.has("order")) {
+        payload.order_by = searchParams.get("order") as string;
+      }
+      if (searchParams.has("min_price")) {
+        payload.min_price = Number(searchParams.get("min_price"));
+      }
+      if (searchParams.has("max_price")) {
+        payload.max_price = Number(searchParams.get("max_price"));
+      }
+      if (searchParams.has("filter")) {
+        payload.filter = searchParams.get("filter") as string;
+      }
+      setIsLoadFilter(true);
+      supplierServices
+        .getSuppliersByFilters(payload)
+        .then((res: any) => {
+          setSearchSuppliersList(res.data.data.suppliers);
+          setIsLoadFilter(false);
+        })
+        .catch((error) => {
+          setIsLoadFilter(false);
+        });
+    }
+  };
+  const isEmptySearchParams = (searchParams: any) => {
+    const iterator = searchParams.entries();
+    return iterator.next().done;
+  };
   useEffect(() => {
     setAds(homeData.HOME_1);
+    setAds2(homeData.HOME_2);
+    setAds3(homeData.HOME_3);
   }, [homeData]);
-
-  const searchByUrl = () => {
-    setIsLoading(true);
-    let locationArray = location.pathname.split("/");
-    locationArray.length < 3 && navigate("/");
-    const searchTypeArray =
-      locationArray[2].length > 0 && locationArray[2].includes("=")
-        ? locationArray[2].split("=")
-        : null;
-    if (searchTypeArray) {
-      switch (searchTypeArray[0]) {
-        case "searchTerm":
-          searchTypeArray[1] && handleTextSearch(searchTypeArray[1]);
-          break;
-        case "category":
-          searchTypeArray[1] && handleCategorySearch(searchTypeArray[1]);
-          break;
-        default:
-          navigate("/");
-          break;
-      }
-    } else {
-      suppliersListRef && scrollToTarget(suppliersListRef);
-
-      setIsLoading(false);
-    }
-  };
-
-  useEffect(() => {
-    var delivFilterList =
-      isDeliv == true
-        ? restaurantsList.filter((res) => {
-            return res.delivery == 1;
-          })
-        : restaurantsList.filter((res) => {
-            return res.take_away == 1;
-          });
-
-    setAllRestaurantsList(delivFilterList);
-    suppliersListRef && scrollToTarget(suppliersListRef);
-  }, [restaurantsList, isDeliv]);
-
-  // navigation
-  const handleClick = (page: number) => {
-    setCurrentPage(page);
-    suppliersListRef && scrollToTarget(suppliersListRef);
-  };
-  const handleBackClick = () => {
-    if (currentPage != 1) {
-      setCurrentPage(currentPage - 1);
-      suppliersListRef && scrollToTarget(suppliersListRef);
-    }
-  };
-  const handleNextClick = () => {
-    if (currentPage != totalPages) {
-      setCurrentPage(currentPage + 1);
-      suppliersListRef && scrollToTarget(suppliersListRef);
-    }
-  };
-
-  const renderPaginationButtons = () => {
-    const buttons = [];
-    buttons.push(
-      <a key={"01"} onClick={handleBackClick}>
-        <ArrowBackIosIcon className="icon" />
-      </a>
-    );
-    for (let i = 1; i <= totalPages; i++) {
-      buttons.push(
-        <a
-          key={i}
-          onClick={() => handleClick(i)}
-          className={i == currentPage ? "active" : ""}
-        >
-          {i}
-        </a>
-      );
-    }
-    buttons.push(
-      <a key={0} onClick={handleNextClick}>
-        <ArrowForwardIosIcon className="icon" />
-      </a>
-    );
-    return buttons;
-  };
-  useEffect(() => {
-    renderItems();
-  }, [allRestaurantsList]);
-
   const renderItems = () => {
-    const startIndex = (currentPage - 1) * itemsPerPage;
-    const endIndex = startIndex + itemsPerPage;
-    const displayedSuppleirs = allRestaurantsList.slice(startIndex, endIndex);
     return (
       <>
-        {displayedSuppleirs.length > 0 && (
+        {
           <div className="main-content">
             {ads && (
               <div className="main-content__col-ads">
-                <AdsCarousel data={ads} slides={3} />
+                <FilterAds data={ads} slides={3} />
               </div>
             )}
             <div className="main-content__col-offers">
@@ -267,187 +156,211 @@ function FilterPage() {
               </h3>
               <OffersList listType="discount" restaurants={recommanded} />
             </div>
-
-            <div className="sup-card-container">
-              <SupplierCard data={displayedSuppleirs[0]} />
+            <div className="main-content__col-offers">
+              <h3 className="main-content__col-offers__title">
+                Recommandé pour vous
+              </h3>
+              <RecommandedList
+                listType="recommanded"
+                restaurants={recommanded}
+              ></RecommandedList>
             </div>
-            {displayedSuppleirs[1] && (
-              <div className="sup-card-container">
-                <SupplierCard data={displayedSuppleirs[1]} />
+            {ads2 && (
+              <div className="main-content__col-ads">
+                <FilterAds data={ads2} slides={1} />
               </div>
             )}
-            {displayedSuppleirs[2] && (
-              <div className="sup-card-container">
-                <SupplierCard data={displayedSuppleirs[2]} />
+            <div className="main-content__col-offers">
+              <h3 className="main-content__col-offers__title">
+                Marques populaires
+              </h3>
+              <PopularList listType="popular" restaurants={popular} />
+            </div>
+            {ads3 && (
+              <div className="main-content__col-ads">
+                <FilterAds data={ads3} slides={2} center={true} arrows={true} />
               </div>
-            )}
-            {displayedSuppleirs[3] && (
-              <div className="sup-card-container">
-                <SupplierCard data={displayedSuppleirs[3]} />
-              </div>
-            )}
-
-            {displayedSuppleirs[4] && (
-              <div className="sup-card-container">
-                <SupplierCard data={displayedSuppleirs[4]} />
-              </div>
-            )}
-            {displayedSuppleirs[5] && (
-              <div className="sup-card-container">
-                <SupplierCard data={displayedSuppleirs[5]} />
-              </div>
-            )}
-            {displayedSuppleirs[6] && (
-              <div className="sup-card-container">
-                <SupplierCard data={displayedSuppleirs[6]} />
-              </div>
-            )}
-            {displayedSuppleirs[7] && (
-              <div className="sup-card-container">
-                <SupplierCard data={displayedSuppleirs[7]} />
-              </div>
-            )}
+            )}           
           </div>
-        )}
+        }
       </>
     );
   };
   return (
     <>
-      {/* <>
-            <Container fluid className="filter-page-container">
-                {originCategories ? (
-                    <CategoriesCarousel
-                        onCategorySelect={() => { }}
-                    />
-                ) : (
-                    <div className="skeleton-container">
-                        <Skeleton count={12} className="loading-skeleton" />
-                        <Skeleton count={12} className="loading-skeleton" />
-                        <Skeleton count={12} className="loading-skeleton" />
-                    </div>
-                )}
-                <Row>
-                    <Col className="col-4 filter-side-bar">
-                        <div className="filter-categories-container">
-                            <Categories />
-                        </div>
-                        <div className="search-produit-container">
-                            <SearchProduit />
-                        </div>
-                        <div className="price-categories-container">
-                            <PriceSlide />
-                        </div>
-                        <div className="filter-trie-container">
-                            <Trie />
-                        </div>
-
-                        <div className="cle-trie-container">
-                            <Cle />
-                        </div>
-                    </Col>
-
-                    <Col className="display-main" ref={suppliersListRef}>
-                        {
-                            allRestaurantsList.length > 0 && !isloading ? (
-                                <>
-                                    <div >
-                                        {renderItems()}
-                                    </div>
-                                    <div className="paginationBtnsContainer">
-
-                                        <div className="pagination-btns">{renderPaginationButtons()}</div>
-                                    </div>
-                                </>
-                            ) : isloading ?
-                                (<Spinner name="loading" />)
-                                : (
-                                    <div className="not-found-container">
-                                        <div className="no-data-text">
-                                            {t('noResult')}.
-                                        </div>
-                                        <div className="not-found-img">
-                                        </div>
-                                    </div>
-                                )
-                        }
-
-                    </Col>
-                </Row>
-
-                <div className='bulles'>
-                    <button className='messanger-popup-btn' onClick={handleMessangerPopup} style={{ backgroundImage: `url(${MessangerBtnIcon})` }}>
-                        {unReadedQt > 0 && (
-                            <div className='messanger-bull-notif-icon'>
-                                {unReadedQt}
-                            </div>
-                        )}
-                    </button>
-                </div>
-
-                {
-                    messangerPopup && <Messanger className="discuter-messanger-popup" close={handleMessangerPopup} />
-                }
-
-            </Container>
-        </> */}
-      <>
-        <Container className="container">
-          <div className="container__category-bar">
+      {!isLoading ? (
+        <>
+          <div className="category-bar">
             {originCategories ? (
-              <CategoriesCarousel onCategorySelect={() => {}} />
+              <FilterCategories onCategorySelect={searchSupplier} />
             ) : (
-              <div className="skeleton-container">
-                <Skeleton count={12} className="loading-skeleton" />
-                <Skeleton count={12} className="loading-skeleton" />
-                <Skeleton count={12} className="loading-skeleton" />
-              </div>
+              ""
             )}
           </div>
-          <Row className="container__row">
-            <Col className="col-3 container__column container__column--first">
-              <div className="container__column container__scroll-content">
-                <div className="container__column__filter">
-                  <Trie />
+          <div className="content container-fluid">
+            <Row className="content__row">
+              <Col className="col-3 content__column content__column--first">
+                <div className="content__column content__scroll-content">
+                  <div className="content__column__filter">
+                    <Trie />
+                  </div>
+                  <div className="content__column__filter">
+                    <PriceSlide />
+                  </div>
+                  <div className="content__column__filter">
+                    <Categories onCategorySelect={searchSupplier} />
+                  </div>
+                  <div className="content__column__filter">
+                    <Cle />
+                  </div>
                 </div>
-                <div className="container__column__filter">
-                  <PriceSlide />
+              </Col>
+              <Col className="col-9 content__column content__column--second">
+                <div className="content__column__search-bar">
+                  <SearchProduit />
                 </div>
-                <div className="container__column__filter">
-                  <Categories />
-                </div>
-                <div className="container__column__filter">
-                  <Cle />
-                </div>
-              </div>
-            </Col>
-            <Col className="col-9 container__column container__column--second">
-              <div className="container__column__search-bar">
-                <SearchProduit />
-              </div>
-              <div>
-                {allRestaurantsList.length > 0 && !isloading ? (
+                {hasFilter && !isloadFilter ? <BtnReset></BtnReset> : ""}
+                {searchSuppliersList?.length && !isloadFilter ? (
+                  <div className="row">
+                    {searchSuppliersList.map(function (supp: any) {
+                      return (
+                        <div key={supp.id} className="col-3">
+                          <SupplierWhiteCard data={supp} className="mb-32" />
+                        </div>
+                      );
+                    })}
+                  </div>
+                ) : (
+                  ""
+                )}
+                {isloadFilter ? (
                   <>
-                    <div>{renderItems()}</div>
-                    <div className="paginationBtnsContainer">
-                      <div className="pagination-btns">
-                        {renderPaginationButtons()}
+                    <div className="row">
+                      <div className="col-3">
+                        <Skeleton
+                          variant="rectangular"
+                          width={"100%"}
+                          height={118}
+                        />
+                        <Box sx={{ pt: 0.5 }} className="mt-4">
+                          <Skeleton height={20} />
+                          <Skeleton width="60%" className="mt-2" height={20} />
+                        </Box>
+                      </div>
+                      <div className="col-3">
+                        <Skeleton
+                          variant="rectangular"
+                          width={"100%"}
+                          height={118}
+                        />
+                        <Box sx={{ pt: 0.5 }} className="mt-4">
+                          <Skeleton height={20} />
+                          <Skeleton width="60%" className="mt-2" height={20} />
+                        </Box>
+                      </div>
+                      <div className="col-3">
+                        <Skeleton
+                          variant="rectangular"
+                          width={"100%"}
+                          height={118}
+                        />
+                        <Box sx={{ pt: 0.5 }} className="mt-4">
+                          <Skeleton height={20} />
+                          <Skeleton width="60%" className="mt-2" height={20} />
+                        </Box>
+                      </div>
+                      <div className="col-3">
+                        <Skeleton
+                          variant="rectangular"
+                          width={"100%"}
+                          height={118}
+                        />
+                        <Box sx={{ pt: 0.5 }} className="mt-4">
+                          <Skeleton height={20} />
+                          <Skeleton width="60%" className="mt-2" height={20} />
+                        </Box>
+                      </div>
+                    </div>
+                    <div className="row">
+                      <div className="col-3">
+                        <Skeleton
+                          variant="rectangular"
+                          width={"100%"}
+                          height={118}
+                        />
+                        <Box sx={{ pt: 0.5 }} className="mt-4">
+                          <Skeleton height={20} />
+                          <Skeleton width="60%" className="mt-2" height={20} />
+                        </Box>
+                      </div>
+                      <div className="col-3">
+                        <Skeleton
+                          variant="rectangular"
+                          width={"100%"}
+                          height={118}
+                        />
+                        <Box sx={{ pt: 0.5 }} className="mt-4">
+                          <Skeleton height={20} />
+                          <Skeleton width="60%" className="mt-2" height={20} />
+                        </Box>
+                      </div>
+                      <div className="col-3">
+                        <Skeleton
+                          variant="rectangular"
+                          width={"100%"}
+                          height={118}
+                        />
+                        <Box sx={{ pt: 0.5 }} className="mt-4">
+                          <Skeleton height={20} />
+                          <Skeleton width="60%" className="mt-2" height={20} />
+                        </Box>
+                      </div>
+                      <div className="col-3">
+                        <Skeleton
+                          variant="rectangular"
+                          width={"100%"}
+                          height={118}
+                        />
+                        <Box sx={{ pt: 0.5 }} className="mt-4">
+                          <Skeleton height={20} />
+                          <Skeleton width="60%" className="mt-2" height={20} />
+                        </Box>
                       </div>
                     </div>
                   </>
-                ) : isloading ? (
-                  <Spinner name="loading" />
                 ) : (
-                  <div className="not-found-container">
-                    <div className="no-data-text">{t("noResult")}.</div>
-                    <div className="not-found-img"></div>
-                  </div>
+                  ""
                 )}
-              </div>
-            </Col>
-          </Row>
-        </Container>
-      </>
+                {recommanded.length &&
+                !searchSuppliersList?.length &&
+                !isloadFilter &&
+                !hasFilter ? (
+                  <div>
+                    <div>{renderItems()}</div>
+                  </div>
+                ) : (
+                  ""
+                )}
+                {hasFilter && !isloadFilter && !searchSuppliersList?.length ? (
+                  <>
+                    <div className="result-not-found">
+                      <div className="result-not-found__title">Oups !</div>
+                      <div className="result-not-found__text">
+                        Aucun résultat correspondant à vos critères de recherche{" "}
+                      </div>
+                      <div className="result-not-found__icon"></div>
+                    </div>
+                  </>
+                ) : (
+                  ""
+                )}
+              </Col>
+            </Row>
+          </div>
+        </>
+      ) : (
+        ""
+      )}
     </>
   );
 }
