@@ -27,3 +27,20 @@
         }
     }
 }
+
+/* # $Mobile ::
+------------------------------------*/
+
+@media (max-width: 1440px) {
+    .order-tracking-area {
+        .order-tracking-description {
+            margin: 0 auto 40px;
+            max-width: 700px;
+
+            .order-tracking-title {
+                @include fontSize(24px, 32px);
+                margin: 0 0 10px;
+            }
+        }
+    }
+}

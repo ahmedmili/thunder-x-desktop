@@ -112,3 +112,24 @@
 
 /* # $Mobile ::
 ------------------------------------*/
+
+@media (max-width: 1440px) {
+  .slider-area {
+    &.product-carousel {
+      margin: -85px 0 0;
+    }
+  }
+  .carousal-provider {
+    border-radius: 16px;
+    height: 230px;
+    margin-bottom: 30px;
+
+    .categorie-carousel {
+      .carousel-slide {
+        .category-box {
+          @include dimensions(180px, 140px);
+        }
+      }
+    }
+  }
+}

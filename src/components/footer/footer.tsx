@@ -54,8 +54,8 @@ const Footer: React.FC<FooterProps> = () => {
           <Col className={"footerContacteTelCol"}>
             <div>
               <h4 className={"footerTitle"}>Contactez-Nous</h4>
-              <p className={"FooterText"} ><span> <LocalPhoneIcon className="icon" /></span> &nbsp; +216 22 543 123 </p>
-              <p className={"FooterText"} > <span><LocalPhoneIcon className="icon" /></span> &nbsp; +216 22 543 123 </p>
+              <p className="FooterText phone"> +216 22 543 123 </p>
+              <p className="FooterText phone"> +216 22 543 123 </p>
 
               <div className={"socialMedia"}>
                 <div className={"icons"}>
@@ -94,15 +94,21 @@ const Footer: React.FC<FooterProps> = () => {
                   <>
                     <div className="bottom-to-top-scroll-carousel-container">
                       <div
-                        className="bottom-to-top-scroll-carousel-items"
+                        className="last-pubs-area"
                         style={{
                           transform: `translateY(-${currentIndex * 57}px)`,
                           transition: 'transform 1s ease', // Adjust the transition duration as needed
                         }}
                       >
                         {images.map((item: any, index: number) => (
-                          <div key={index} className="bottom-to-top-scroll-carousel-item">
-                            <img loading="lazy" src={item.image} alt="item image" />
+                          <div key={index} className="last-pubs-item">
+                            <div className="last-pub-img">
+                              <img loading="lazy" src={item.image} alt="item image" />
+                            </div>
+                            <div className="last-pub-desc">
+                              <h5>Boisson gazeuse gratuite avec chaque pizza</h5>
+                              <time>05 juillet 2023</time>
+                            </div>
                           </div>
                         ))}
                       </div>

@@ -141,6 +141,99 @@ function FilterPage() {
     setAds3(homeData.HOME_3);
   }, [homeData]);
   const renderItems = () => {
+
+  
+
+    useEffect(() => {
+        setAds(homeData.HOME_1)
+    }, [homeData])
+
+
+   
+
+
+  
+
+   
+    useEffect(() => {
+        renderItems()
+    }, [allRestaurantsList])
+
+    const renderItems = () => {
+        const startIndex = (currentPage - 1) * itemsPerPage;
+        const endIndex = startIndex + itemsPerPage;
+        const displayedSuppleirs = allRestaurantsList.slice(startIndex, endIndex)
+        return <>
+            {
+                displayedSuppleirs.length > 0 && (
+                    <div className="filtred-main" >
+                        <div className="sup-card-container" >
+                            <SupplierCard data={displayedSuppleirs[0]} />
+                        </div>
+                        {
+                            displayedSuppleirs[1] && (
+                                <div className="sup-card-container" >
+                                    <SupplierCard data={displayedSuppleirs[1]} />
+                                </div>
+                            )
+                        }
+                        {
+                            displayedSuppleirs[2] && (
+                                <div className="sup-card-container" >
+                                    <SupplierCard data={displayedSuppleirs[2]} />
+                                </div>
+                            )
+                        }
+                        {
+                            displayedSuppleirs[3] && (
+                                <div className="sup-card-container" >
+                                    <SupplierCard data={displayedSuppleirs[3]} />
+                                </div>
+                            )
+                        }
+
+                        {
+                            ads && (
+                                <div className="adsCols">
+                                    <AdsCarousel data={ads} />
+                                </div>
+                            )
+                        }
+
+                        {
+                            displayedSuppleirs[4] && (
+                                <div className="sup-card-container" >
+                                    <SupplierCard data={displayedSuppleirs[4]} />
+                                </div>
+                            )
+                        }
+                        {
+                            displayedSuppleirs[5] && (
+                                <div className="sup-card-container" >
+                                    <SupplierCard data={displayedSuppleirs[5]} />
+                                </div>
+                            )
+                        }
+                        {
+                            displayedSuppleirs[6] && (
+                                <div className="sup-card-container">
+                                    <SupplierCard data={displayedSuppleirs[6]} />
+                                </div>
+                            )
+                        }
+                        {
+                            displayedSuppleirs[7] && (
+                                <div className="sup-card-container">
+                                    <SupplierCard data={displayedSuppleirs[7]} />
+                                </div>
+                            )
+                        }
+                    </div>
+                )
+            }
+
+        </>
+    };
     return (
       <>
         {

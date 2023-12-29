@@ -70,7 +70,8 @@
                         @include dimensions(200px, 50px);
                         background-repeat: no-repeat;
                         background-position: center;
-                        background-size: cover;
+                        background-size: 200px auto;
+                        border-radius: 3px;
 
                         &:nth-child(1) {
                             background-image: url('./../../assets/store-play-icn.png');
@@ -81,16 +82,14 @@
                     }
                 }
                 .info1P1 {
-                    width: 210px;
-                    height: 55px;
+                    @include dimensions(210px, 55px);
                     color: $color-white;
                     font-family: 'Poppins-Bold', serif;
                     font-size: 22px;
                     line-height: normal;
                 }
                 .info1P2 {
-                    width: 187px;
-                    height: 68px;
+                    @include dimensions(187px, 68px);
                     color: $color-white;
                     font-family: 'Poppins-Medium', serif;
                     font-size: 15px;
@@ -98,8 +97,7 @@
                     margin: 0;
                 }
                 .info1Button {
-                    width: 179px;
-                    height: 50px;
+                    @include dimensions(179px, 50px);
                     margin-bottom: 16px;
                     border-radius: 25px;
                     background: $orange_color;
@@ -108,8 +106,7 @@
                     @include fonts(24px, 18px, $color-white);
                 }
                 .info2P1 {
-                    width: 96px;
-                    height: 78px;
+                    @include dimensions(96px, 78px);
                     color: $orange_color;
                     font-family: 'Poppins-Light', serif;
                     font-size: 48px;
@@ -120,8 +117,7 @@
                         margin: 0;
                     }
                     .info3P1 {
-                        width: 396px;
-                        height: 38px;
+                        @include dimensions(396px, 38px);
                         color: $orange_color;
                         font-family: 'Poppins-Bold', serif;
                         font-size: 28px;
@@ -137,7 +133,7 @@
                         margin: 7px 3px;
                         height: 36px;
                         display: inline-block;
-                        border: 1px $color-white solid;
+                        @include border(1px, $color-white);
                         border-radius: 5px;
                     }
 
@@ -148,10 +144,52 @@
 }
 
 
-
 /* # $Mobile ::
 ------------------------------------*/
 
+@media (max-width: 1440px) {
+    .applicationAdsMainContainer {
+        height: 260px;
+        margin: 0 0 80px;
+        
+        .applicationAdsDesignContainer {
+            gap: 80px;
+
+            .phonesImgsBlc {
+                margin: -60px 0 0;
+
+                .phonesImg {
+                    @include dimensions(170px, 350px);
+                    background-size: 100% 100%;
+
+                    &:nth-child(1) {
+                        margin: -60px 0 0;
+                    }
+                }
+            }
+            .applicationAdsInfo {
+                .infoContainer {
+                    .infoTitle {
+                        @include fontSize(24px, 28px);
+                        margin: 0 0 15px;
+                    }
+                    .infoDesc {
+                        @include fontSize(16px, 20px);
+                        margin: 0 0 15px;
+                    }
+                    .storeLinkGroup {
+                        gap: 12px;
+
+                        .storeLinkItem {
+                            @include dimensions(160px, 40px);
+                            background-size: 160px auto;
+                        }
+                    }
+                }
+            }
+        }
+    }
+}
 
 // @media only screen and (max-width:1200px) {
 //     .applicationAdsMainContainer {

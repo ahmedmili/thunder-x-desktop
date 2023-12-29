@@ -57,20 +57,6 @@
         padding: 0;
         height: 600px;
 
-        @media (max-width: 1399.98px) {
-            transform: translateX(84px) scale(0.8);
-            height: 532px;
-        }
-
-        @media (max-width: 1199.98px) {
-            transform: translateX(84px) scale(0.8);
-            height: 532px;
-        }
-
-        @media (max-width: 991.98px) {
-            transform: translateX(245px) scale(0.8);
-        }
-
         .imageBuilder {
             background-image: url('/src/assets/home/home-section-one-img.png');
             // background-image: none;
@@ -197,15 +183,6 @@
 .headerAppBar2 {
     padding-top: 135px;
 
-    @media (max-width: 1399.98px) {
-        margin-left: 42px;
-        padding-top: 60px;
-    }
-
-    @media (max-width: 991.98px) {
-        margin-left: 0px;
-        padding-top: 122px;
-    }
     .headerMessage {
         display: flex;
         flex-direction: column;
@@ -215,18 +192,21 @@
             display: inline;
             font-family: 'Poppins-Bold', serif;
             @include fonts(54px, 54px, $color-white);
+            line-height: normal;
 
             &:not(:last-child) {
                 margin: 0 0 10px;
             }
-            &:nth-child(2) {
-                @include fontSize(45px, 45px);
+
+            // &:nth-child(2) {
+            //     @include fontSize(45px, 45px);
 
                 .headerMessageSyle2 {
                     @include fontSize(45px, 45px);
                 }
-            }
+            // }
         }
+
         .headerMessageSyle2 {
             display: inline;
             font-family: 'Poppins-Bold', serif;
@@ -257,10 +237,12 @@
         .pin-icon {
             font-size: 24px;
         }
+
         &:hover {
             text-decoration: underline;
             color: $color-white;
         }
+
         .localisationIcon {
             background-image: url('/src/assets/icons/map-white.svg');
             @include dimensions(15px, 21px);
@@ -296,7 +278,7 @@
     border-radius: 0px 0px 20px 20px;
     transition: box-shadow 0.3s ease-in-out;
 
-    > .container {
+    >.container {
         @include flex(flex, center, space-between);
     }
 
@@ -320,6 +302,7 @@
                 background-color: $color-white;
                 opacity: 1;
             }
+
             &.header-signup {
                 font-family: "Poppins-Bold", serif;
                 color: $color-blue-eastern;
@@ -408,6 +391,7 @@
             &:hover {
                 cursor: pointer;
             }
+
             .account-icon {
                 @include dimensions(40px, 44px);
                 background-image: url('/src/assets/icons/account-white.svg');
@@ -433,6 +417,7 @@
                 @include dimensions(30px, 30px);
             }
         }
+
         .cart-item {
             @include flex;
             gap: 7px;
@@ -451,15 +436,19 @@
                 background-repeat: no-repeat;
                 background-position: center;
             }
+
             &:hover {
                 cursor: pointer;
             }
         }
     }
+
     &.scroll {
         box-shadow: 0px 0px 10px 0px rgba(0, 0, 0, 0.75);
         background-color: $color-white;
         height: 75px;
+        display: flex;
+        justify-content: space-between;
 
         .logoContainer {
             .logoMain {
@@ -467,20 +456,23 @@
                 @include dimensions(107px, 39px);
             }
         }
-        .info {    
+
+        .info {
             .position {
                 color: $dark_Gray;
-    
+
                 .position-icon {
                     color: $primary_color;
                 }
             }
+
             .account {
                 .account-icon {
                     background-image: url('/src/assets/icons/account.svg');
                 }
             }
         }
+
         .header-buttons {
             .LoadingButton {
                 box-shadow: none;
@@ -520,7 +512,15 @@
 @media (max-width: 1440px) {
     .fixedHeaderContainer2 {
         padding: 12px 28px;
+        left: 0;
+        right: 0;
+        height: 85px;
 
+        .logoContainer {
+            .logoMain {
+                @include dimensions(160px, 60px);
+            }
+        }
         .header-buttons {
             .LoadingButton {
                 min-width: 113px;
@@ -528,8 +528,9 @@
                 font-size: 12px;
             }
         }
-
         .info {
+            gap: 15px;
+
             .cart-item {
                 @include dimensions(65px, 35px);
                 @include fontSize(14px, 14px);
@@ -539,6 +540,47 @@
                     background-size: 16px, auto;
                 }
             }
+        }
+    }
+    .home-section-one {
+        .headerAppBar2 {
+            padding-top: 60px;
+            margin: 0;
+
+            .headerMessage {
+                margin: 0 0 25px;
+
+                .headerMessageSyle1 {
+                    @include fontSize(40px, 40px);
+                }
+            }
+        }
+    }
+    .header {
+        .imageBuilderContainer {
+            &::before,
+            &::after {
+                display: none;
+            }
+            .imageBuilder {
+                background-position: center;
+                @include dimensions(450px, 480px);
+                border-radius: 0;
+                position: absolute;
+                right: 20px;
+                bottom: initial;
+                top: -75px;
+
+                &::before,
+                &::after {
+                    display: none;
+                }
+            }
+        }
+    }
+    .headerLocalisationMessageContainer {
+        a {
+            @include fontSize(14px, 14px);
         }
     }
 }
