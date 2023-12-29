@@ -21,6 +21,9 @@ import { OrderTracking } from "../../components/order-tracking/orderTracking";
 import ProductCarousel from "../../components/productCarousel/productCarousel";
 import HomeSkeleton from "./skeleton/HomeSkeleton";
 import { JoinUs } from "../../components/joinUs/joinUs";
+import CategoryCarousel from "../../components/categoriesCarousel/categoriesCarousel";
+import Skeleton from "react-loading-skeleton";
+
 
 
 const HomePage = ({ initialData }: AppProps) => {
@@ -45,13 +48,6 @@ const HomePage = ({ initialData }: AppProps) => {
   return (
     <>
 
-      <div className="slider-area product-carousel">
-        <ProductCarousel
-          ssrCategories={categories}
-          // onCategorySelect={handleCategorySelect}
-          onCategorySelect={() => { }}
-        />
-      </div>
 
       <div className={`xxl-12 ${homeStyle.homePageContainer}`}>
         {isLoading ? (
@@ -61,6 +57,14 @@ const HomePage = ({ initialData }: AppProps) => {
           </div>
         ) : (
           <>
+
+            <div className="slider-area product-carousel">
+              <ProductCarousel
+                ssrCategories={categories}
+                // onCategorySelect={handleCategorySelect}
+                onCategorySelect={() => { }}
+              />
+            </div>
 
 
             {!isLoading && ads && ads.HOME_1 && (

@@ -323,33 +323,13 @@
   "cart.PromosCode": "Code promo",
   "product": "produit",
   "repasGratuit": "Repas Gratuit",
-  "faq.title": "Foire Aux Questions",
-  "faq.questions": [
-    {
-      "question": "Comment passer une commande sur l'application ?",
-      "answer": "Pour passer une commande, il vous suffit de sélectionner le restaurant auprès duquel vous souhaitez commander, de parcourir le menu et d'ajouter les articles à votre panier. Une fois prêt, procédez au paiement et entrez vos informations de livraison."
-    },
-    {
-      "question": "Quels sont les modes de paiement acceptés sur l'application ?",
-      "answer": "Nous acceptons toutes les principales cartes de crédit, ainsi que PayPal et Apple Pay. Vous pouvez enregistrer en toute sécurité vos informations de paiement pour les commandes futures."
-    },
-    {
-      "question": "Combien de temps faut-il pour que ma commande soit livrée ?",
-      "answer": "Les délais de livraison varient en fonction du restaurant et de votre lieu de résidence. Vous pouvez suivre votre commande en temps réel et recevoir des mises à jour sur son statut."
-    },
-    {
-      "question": "Puis-je modifier ou annuler ma commande une fois qu'elle a été passée ?",
-      "answer": "Une fois votre commande passée, elle ne peut être modifiée ou annulée. Cependant, vous pouvez contacter le service clientèle pour obtenir de l'aide."
-    },
-    {
-      "question": "Que faire si ma commande est incorrecte ou s'il manque des articles ?",
-      "answer": "Si votre commande est incorrecte ou s'il manque des articles, veuillez contacter immédiatement le service clientèle. Nous travaillerons avec le restaurant pour résoudre le problème et nous assurer que vous recevez la commande correcte."
-    },
-    {
-      "question": "Y a-t-il un montant minimum de commande pour la livraison ?",
-      "answer": "Oui, il y a un montant minimum de commande pour la livraison. Le montant varie en fonction du restaurant et de l'emplacement, mais il sera affiché dans l'application lorsque vous sélectionnerez un restaurant."
-    }
-  ],
+  "joinUs": "REJOIGNEZ-NOUS ET GAGNER DE L’ARGENT FACILEMENT",
+  "beLiv": "Devenir livreur de Thunder Express",
+  "getStableJob": "Choisissez un emploi stable et flexible en rejoignant l’équipe de nos livreurs.",
+  "joinTeam": "Je rejoins l’équipe.",
+  "join": "Je rejoins.",
+  "bePartnaire": "Devenir partenaire de Thunder Express.",
+  "partnaireDesc": "Votre partenariat nous intéresse. Ensemble, nous visons à élargir notre clientèle et misons sur sa satisfaction..",
   "mobile.menu.title": "Commandez dans l’application",
   "mobile.menu.description": "Bénéficiez d'avantages spéciaux dans vos lieux et restaurants favoris!",
   "mobile.menu.download_button": "Télécharger l'application",
