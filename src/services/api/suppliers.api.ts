@@ -100,6 +100,16 @@ const redAnnonce = (formData: any) => {
   return api.post(`read_annonces`, formData)
 
 }
+async function getSuppliersByFilters(payload: any) {
+  try {
+    const response = await api.post(`search_supplier_filters`, payload);
+    const { status, data } = response;
+    return { status, data };
+  } catch (error) {
+    console.error('Error', error);
+    throw error;
+  }
+}
 
 export const supplierServices = {
   all_annonces,
@@ -111,6 +121,5 @@ export const supplierServices = {
   getSuppliersIndex,
   getSuppliersAndAds,
   redAnnonce,
-
-
+  getSuppliersByFilters
 };

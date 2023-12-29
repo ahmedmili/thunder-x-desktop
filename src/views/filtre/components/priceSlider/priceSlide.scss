@@ -1,93 +1,97 @@
-@import "../../../../colors";
-
-
-
-.trie-filter-container {
-    border-radius: 8px;
-    border: 1px solid #FBC000;
-    padding: 18px;
-
-    h1 {
+@import "../../../../scss/extend";
+.price-filter-container{
+    padding-bottom: 43px;
+    border-bottom: 1px solid $color-gray-alto;
+    margin-bottom: 32px;
+    &__title{
         color: $dark_Gray;
         font-family: Poppins;
-        font-size: 22px;
+        font-size: 17px;
         font-style: normal;
         font-weight: 600;
         line-height: normal;
+        margin-bottom: 24px;
     }
-
-    .info-container {
+    &__container{
         display: flex;
-        justify-content: space-between;
         align-items: center;
-    }
-
-    .formm-range {
-        width: 80%;
-        border: none;
-        height: 10px;
-        transition: background-color 0.3s;
-        background: $orange_color;
-    }
-
-    
-    // /***** Chrome, Safari, Opera, and Edge Chromium *****/
-    // input[type="range"] {
-        
-    // }
-    input[type="range"]::-webkit-slider-thumb {
-        background-color: $orange_color !important; /* Thumb color */
-        
-    }
-    input[type="range"]::-webkit-slider-runnable-track {
-        background-color: $orange_color ; /* Thumb color */
-   
-    }
-    
-    /******** Firefox ********/
-    input[type="range"]::-moz-range-thumb {
-        background-color: white; /* Thumb color */
-      }
-    input[type="range"]::-moz-range-progress {
-        background-color: black; /* Thumb color */  
-      }
-    input[type="range"]::-moz-range-track {
-        background: #053a5f;
-        height: 0.5rem;
-    }
-
-}
-
-
-
-@media screen and (max-width : 776px) {
-
-    .trie-filter-container {
-        h1 {
-            font-size: 16px;
+        justify-content: space-between;
+        margin-bottom: 9px;
+        &__price {
+            color: $dark_Gray;
+            font-family: Poppins;
+            font-size: 17px;
+            font-style: normal;
+            font-weight: 600;
+            line-height: normal;
         }
-    }
-
-}
-
-@media screen and (max-width : 576px) {
-
-    .trie-filter-container {
-        padding: 2px;
-
-        h1 {
-            font-size: 16px;
+        &__rang-value{
+            color: $dark_Gray;            
+            font-family: Poppins;
+            font-size: 15px;
+            font-style: normal;
+            font-weight: 400;
+            line-height: normal;
         }
-    }
-}
-
-@media screen and (max-width : 450px) {
-
-    .trie-filter-container {
-        padding: 2px;
-
-        h1 {
-            font-size: 10px;
-        }
+        &__form-range{          
+            &--first{
+                -webkit-appearance: none;
+                appearance: none;
+                width: 100%;
+                cursor: pointer;
+                outline: none;
+                border-radius: 15px;
+                height: 4px;
+                background: $orange_color;            
+                &::-webkit-slider-thumb {
+                    -webkit-appearance: none;
+                    appearance: none;
+                    height: 12px;
+                    width: 12px;
+                    background-color: $Ocean_Teal;
+                    border-radius: 50%;
+                    border: none;
+                    transition: .2s ease-in-out;
+                }            
+                &::-moz-range-thumb {
+                    appearance: none;
+                    height: 12px;
+                    width: 12px;
+                    background-color: $Ocean_Teal;
+                    border-radius: 50%;
+                    border: none;
+                    transition: .2s ease-in-out;
+                }
+            }
+            &--second{
+                -webkit-appearance: none;
+                appearance: none;
+                width: 100%;                
+                height: 0;  
+                &::-webkit-slider-thumb {
+                    -webkit-appearance: none;
+                    appearance: none;
+                    height: 12px;
+                    width: 12px;
+                    background-color: $Ocean_Teal;
+                    border-radius: 50%;
+                    border: none;
+                    transition: .2s ease-in-out;
+                    transform: translateY(-14px);
+                    cursor: pointer;
+                }
+                &::-moz-range-thumb {
+                    appearance: none;
+                    height: 12px;
+                    width: 12px;
+                    background-color: $Ocean_Teal;
+                    border-radius: 50%;
+                    border: none;
+                    transition: .2s ease-in-out;
+                    transform: translateY(-14px);
+                    cursor: pointer;
+                }
+            }
+        }               
     }
 }

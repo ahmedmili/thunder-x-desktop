@@ -90,7 +90,9 @@ const Map: React.FC<MapProps> = ({ className }) => {
         }
       }
       else {
-        console.log("you dont have location");
+        // console.log("you dont have location");
+        dispatch({ type: "SET_SHOW", payload: false })
+
       }
     }
     else {

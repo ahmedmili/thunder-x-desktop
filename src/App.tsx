@@ -6,7 +6,9 @@ import './assets/fonts/Poppins/Poppins.css';
 
 import { Suspense, lazy, startTransition, useCallback, useEffect, useState } from "react";
 import { Navigate, Outlet, Route, Routes, useLocation, useNavigate } from "react-router-dom";
-import { ToastContainer } from "react-toastify";
+import { ToastContainer, toast } from "react-toastify";
+import "slick-carousel/slick/slick.css";
+import "slick-carousel/slick/slick-theme.css";
 import Layout from "./components/layout/layout";
 
 import { useAppDispatch, useAppSelector } from "./Redux/store";
@@ -254,15 +256,10 @@ function App({ initialData }: AppProps) {
   // Enforce Trailing Slash 
   useEffect(() => {
     const { pathname } = navLocation;
-    // Check if the path doesn't end with '/'
+    console.log(navLocation);
     if (!pathname.endsWith('/') && pathname !== '/') {
-      // Redirect to the same route with a '/' at the end
       navigate(`${pathname}/`, { replace: true });
     }
-    // window.scrollTo({
-    //   top: 0,
-    //   behavior: 'smooth'
-    // });
   }, [navLocation, Navigate]);
 
 
@@ -272,10 +269,7 @@ function App({ initialData }: AppProps) {
       <ToastContainer />
       <Suspense fallback={(typeof window != "undefined") ?
         <>
-          {/* <Header />
-          <HomeSkeleton />
-          <Footer /> */}
-          {/* loading */}
+
         </>
         :
         <>
@@ -285,18 +279,11 @@ function App({ initialData }: AppProps) {
       >
         <Routes>
           <Route path="/" element={<Layout />}>
-            {
-              location ?
-                <Route index element={<FilterPage />} />
-                :
-                <Route index element={<HomePage initialData={initialData} />} />
-            }
+            <Route index element={<HomePage initialData={initialData} />} />
             <Route path="/restaurant/:id/:search?/:productId?/*" element={<Menu initialData={initialData} />} />
             <Route path="/product/:id/:search?/:productId/*" element={<MenuOptions initialData={initialData} />} />
             <Route path="/cart/*" element={<CartPage />} />
             <Route path="/search/:search?/*" element={<FilterPage />} />
-            {/* Private Route */}
-            {/* <Route path="track-order/*" element={<OrderTrackingPage />} /> */}
 
           </Route>
 
