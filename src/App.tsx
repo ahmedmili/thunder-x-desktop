@@ -232,7 +232,10 @@ function App({ initialData }: AppProps) {
         );
       }
     }
+  }, [])
 
+  useEffect(() => {
+    dispatch({ type: "SET_SHOW", payload: false })
   }, [])
 
   // handle recive admin message

@@ -26,7 +26,7 @@ const HomPageAds: React.FC<Props> = ({ homeAds }) => {
       <Container className={`container`}>
         <CarouselProvider
           naturalSlideWidth={100}
-          naturalSlideHeight={70}
+          naturalSlideHeight={50}
           totalSlides={homeAds.length}
           visibleSlides={2}
           step={1}
