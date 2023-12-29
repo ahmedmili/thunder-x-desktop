@@ -1,7 +1,5 @@
 import React from "react";
 import "react-loading-skeleton/dist/skeleton.css";
-import { AdsCarousel } from "../../components/adsCarousel/adsCarousel";
-import { ApplicationAd } from "../../components/applicationAd/ApplicationAd";
 import { FooterNewsLeter } from "../../components/footerNewsLeter/FooterNewsLetter";
 import { Ads, AppProps, Restaurant } from "../../services/types";
 import homeStyle from "./home.page.module.scss";
@@ -10,19 +8,22 @@ import homeStyle from "./home.page.module.scss";
 // import "laravel-echo/dist/echo";
 import { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
+import { useNavigate } from "react-router";
 import {
   adsHomeSelector,
   homeLoadingSelector
 } from "../../Redux/slices/home";
 import { useAppSelector } from "../../Redux/store";
 import MessangerBtnIcon from '../../assets/profile/Discuter/messanger-btn.svg';
+import HomPageAds from "../../components/HomPageAds/HomPageAds";
 import Messanger from "../../components/Popups/Messanger/Messanger";
 import { JoinUs } from "../../components/joinUs/joinUs";
 import { OrderTracking } from "../../components/order-tracking/orderTracking";
 import ProductCarousel from "../../components/productCarousel/productCarousel";
 import { supplierServices } from "../../services/api/suppliers.api";
+import { localStorageService } from "../../services/localStorageService";
 import HomeSkeleton from "./skeleton/HomeSkeleton";
-import HomPageAds from "../../components/HomPageAds/HomPageAds";
+
 
 interface homePageAds {
   HOME_1: Ads[],
@@ -41,7 +42,10 @@ const HomePage = ({ initialData }: AppProps) => {
   const isLoading = initialData ? false : useSelector(homeLoadingSelector);
 
   const unReadMessages = initialData ? 0 : useAppSelector((state) => state.messanger.unReadedMessages)
+  const locationState = useAppSelector((state) => state.location.position)
   const [unReadedQt, setUnReadedQt] = useState<number>(unReadMessages)
+
+  const navigate = useNavigate()
 
   useEffect(() => {
     setUnReadedQt(unReadMessages)
@@ -50,6 +54,11 @@ const HomePage = ({ initialData }: AppProps) => {
   const handleMessangerPopup = () => {
     setMessangerPopup(!messangerPopup)
   }
+  useEffect(() => {
+    const location = localStorageService.getCurrentLocation()
+    location && navigate('/search/', { replace: true })
+
+  }, [locationState])
 
   const getSuppliers = async () => {
 
@@ -58,6 +67,7 @@ const HomePage = ({ initialData }: AppProps) => {
     data.success && setHomeAds(data.data.ads)
 
   }
+
   useEffect(() => {
     getSuppliers()
   }, [])
@@ -80,22 +90,8 @@ const HomePage = ({ initialData }: AppProps) => {
         ) : (
           <>
             {
-              homeAds!.HOME_1 && <HomPageAds homeAds={homeAds!.HOME_2} />
+              homeAds && homeAds.HOME_2 && <HomPageAds homeAds={homeAds!.HOME_2} />
             }
-
-            {!isLoading && ads && ads.HOME_1 && (
-              <AdsCarousel data={ads.HOME_1} />
-            )}
-
-            <ApplicationAd />
-
-            {!isLoading && ads && ads.HOME_2 && (
-              <AdsCarousel data={ads.HOME_2} />
-            )}
-
-            {!isLoading && ads && ads.HOME_3 && (
-              <AdsCarousel data={ads.HOME_3} />
-            )}
 
             <div className={homeStyle.bulles}>
               <button className={homeStyle.messangerPopupBtn} onClick={handleMessangerPopup} style={{ backgroundImage: `url(${MessangerBtnIcon})` }}>
@@ -110,7 +106,6 @@ const HomePage = ({ initialData }: AppProps) => {
               messangerPopup &&
               <Messanger className={homeStyle.discuterMessangerPopup} close={handleMessangerPopup} />
             }
-
 
           </>
         )}

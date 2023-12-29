@@ -1,4 +1,4 @@
-import { Box, Card, CardMedia, Typography } from "@mui/material";
+import { Card, CardMedia } from "@mui/material";
 import {
   ButtonBack,
   ButtonNext,
@@ -6,28 +6,19 @@ import {
   Slide,
   Slider,
 } from "pure-react-carousel";
-import React, { useEffect, useState } from "react";
+import React from "react";
 import { Col, Container, Row } from "react-bootstrap";
-import { useTranslation } from "react-i18next";
-import { Restaurant, Ads } from "../../services/types";
-import SupplierCard from "../supplierCard/SupplierCard";
+import { Ads } from "../../services/types";
 import "./HomPageAds.scss";
 
 import ArrowBackIosIcon from '@mui/icons-material/ArrowBackIos';
-import ArrowForwardIosIcon from '@mui/icons-material/ArrowForwardIos'; import useMediaQuery from "../../utils/useMediaQuery";
+import ArrowForwardIosIcon from '@mui/icons-material/ArrowForwardIos';
 
 interface Props {
   homeAds: Ads[];
 }
 
 const HomPageAds: React.FC<Props> = ({ homeAds }) => {
-  const { t } = useTranslation();
-
-  const [ads, setAds] = useState(homeAds);
-
-  useEffect(() => {
-    console.log("homeAds : ", homeAds)
-  }, [homeAds])
 
   return (
     <div className={`recommandedContainer`}>
@@ -38,7 +29,8 @@ const HomPageAds: React.FC<Props> = ({ homeAds }) => {
           naturalSlideHeight={70}
           totalSlides={homeAds.length}
           visibleSlides={2}
-          step={3}
+          step={1}
+          isPlaying={true}
           infinite={true}
           className={`carouselProvider`}
         >
@@ -46,13 +38,24 @@ const HomPageAds: React.FC<Props> = ({ homeAds }) => {
             {homeAds.map((ad, index) => (
               <Slide index={index} key={index}>
                 <Card sx={{ maxWidth: 345 }}>
-                  <CardMedia
-                    component="img"
-                    height="194"
-                    image={`${ad.image}`}
-                    alt="Paella dish"
-                  />
-
+                  {
+                    ad.type === "IMAGE" ?
+                      <CardMedia
+                        component="img"
+                        height="194"
+                        image={`${ad.image}`}
+                        alt="ads image"
+                      />
+                      :
+                      <CardMedia
+                        component="video"
+                        height="194"
+                        controls // This adds play/pause controls to the video
+                      >
+                        <source src={`${ad.image}`} type="video/mp4" />
+                        Your browser does not support the video tag.
+                      </CardMedia>
+                  }
                 </Card>
               </Slide>
             ))}

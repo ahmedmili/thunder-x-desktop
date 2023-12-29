@@ -1,0 +1,376 @@
+@import '../../scss/extend';
+
+.SupplierWhiteCard {
+    width: 300px;
+    background-color: transparent;
+    max-height: 50%;
+    border-radius: 25px;
+    margin: 0 auto;
+    position: relative;
+
+    .favorIcon {
+        z-index: 800;
+        border-radius: 50%;
+        @include flex;
+        padding: 5px;
+        border: none;
+        position: absolute;
+        top: 5%;
+        background-color: $color-white;
+        right: 5px;
+
+        &:hover {
+            cursor: pointer;
+        }
+
+        .activeIcon {
+            color: red;
+        }
+    }
+
+    .restaurantLink {
+        margin-bottom: 4px;
+        text-decoration: none;
+        padding-bottom: 3px;
+        display: block;
+        height: 100%;
+
+        .card {
+            position: relative;
+            border-radius: 18px;
+            height: 100%;
+            border-radius: 15px;
+            border: 1px solid rgba(149, 142, 142, 0.30);
+            background: #FFF;
+            box-shadow: 0px 4px 4px 0px rgba(0, 0, 0, 0.09);
+
+            .imageContainer {
+                position: relative;
+                .discountBox {
+                    @include flex(flex, center, flex-start);
+                    background-color: $shade-reddish-orange;
+                    padding: 8px 11px;
+                    border-radius: 0px 6px 6px 0px;
+                    position: absolute;
+                    top: 12%;
+                    left: 0;
+                    z-index: 1;
+                    height: 31px;
+                    p {
+                        font-size: 11px;
+                        color: $color-white;
+                        margin: 0;                        
+                        font-family: Poppins;
+                        font-style: normal;
+                        font-weight: 600;
+                        line-height: normal;
+                    }
+                }
+
+                .restaurantImage {
+                    height: 151px;
+                }
+            }
+
+            .contentContainer {
+                padding: 22px 12px;
+                .leftSide {
+                    font-family: 'Poppins';
+
+                    .name {
+                        @include flex(flex, center, space-between);
+                        margin: 0 0 12px;
+
+                        h3 {
+                            text-decoration: none;
+                            @include fonts(16px, 16px, black);
+                            font-family: 'Poppins';
+                            font-weight: 700;
+                            margin: 0;
+                            white-space: nowrap;
+                            overflow: hidden;
+                            text-overflow: ellipsis;
+
+                            &:hover {
+                                cursor: pointer;
+                            }
+                        }
+
+                        .rate {
+                            @include flex;
+                            @include fonts(16px, 16px, $dark_002);
+                            font-family: 'Poppins';
+                            gap: 8px;
+                            font-size: 13px;
+
+                            .starIcon {
+                                color: $orange_color;
+                                font-size: 19px;
+                            }
+                        }
+                    }
+
+                    .price {
+                        margin-bottom: 0;
+                        @include flex(flex, center, space-between);
+                        flex-wrap: nowrap;
+                        color: $light_Gray;
+                        font-family: Poppins;
+                        font-size: 12px;
+                        font-style: normal;
+                        font-weight: 600;
+                        line-height: 149.5%;
+                        span {
+                            white-space: nowrap;
+                            display: flex;
+                            flex-wrap: wrap;
+                            align-items: center;
+                            span {                                
+                                margin: 0 ;
+                                color: #FBC301;
+                                margin-left: 5px
+                            }
+                        }
+
+                        .restaurantTime {
+                            @include flex;
+                            background-color: $color-blue-pelorous;
+                            border-radius: 30px;
+                            padding: 0.2rem 0.5rem;
+                            z-index: 1;
+                            height: 27px;
+                            width: 80px;
+                        
+                            p {
+                                margin: 0;
+                                font-family: 'Poppins';
+                                @include fonts(12px, 12px, $color-white);
+                                text-wrap: nowrap;
+                                font-weight: normal;
+                            }
+                        }
+
+                        .closedSpan {
+                            background-color: $shade-reddish-orange;
+
+                            p {
+                                color: $color-white;
+                            }
+                        }
+                    }
+
+                    .option {
+                        font-family: Poppins;
+                        font-size: 15px;
+                        font-style: normal;
+                        font-weight: 600;
+                        line-height: 149.5%;
+                        @include fonts(14px, 14px, $Ocean_Teal);
+                        margin: 0 0 12px;
+                    }
+                }
+            }
+        }
+    }
+}
+
+/* # $Mobile ::
+------------------------------------*/
+
+@media only screen and (min-width : 1400px) {
+    .SupplierWhiteCard {
+        @include dimensions(calc(100% - 20px), fit-content);
+    }
+}
+
+@media only screen and (max-width: 1399px) {
+    .SupplierWhiteCard {
+        width: 94%;
+
+        .restaurantLink {
+            .card {
+                height: 77%;
+
+                .imageContainer {
+                    position: relative;
+                }
+
+                .contentContainer {
+                    p {
+                        margin: 0;
+                    }
+                }
+            }
+        }
+    }
+}
+
+@media only screen and (max-width: 978px) {
+    .SupplierWhiteCard {
+        .restaurantLink {
+            .card {
+                .contentContainer {
+                    .leftSide {
+                        .price {
+                            font-size: 9px;
+
+                            span {
+                                font-size: 9px;
+                            }
+
+                            p {
+                                font-size: 7px;
+                            }
+
+                            .restaurantTime {
+                                p {
+                                    font-size: 7px;
+                                }
+                            }
+                        }
+                    }
+
+                }
+            }
+        }
+    }
+}
+
+@media only screen and (max-width: 767px) {
+    .SupplierWhiteCard {
+        .restaurantLink {
+            .card {
+                height: 50%;
+
+                .imageContainer {
+                    position: relative;
+                    height: 81px;
+
+                    .discountBox {
+                        font-size: 6px;
+                    }
+                }
+
+                .contentContainer {
+                    .leftSide {
+                        .name {
+                            font-size: 10px;
+                            max-height: 200px;
+
+                            .starIcon {
+                                font-size: 1.2rem;
+                            }
+                        }
+
+                        .price {
+                            font-size: 6px;
+
+                            .restaurantTime {
+                                p {
+                                    font-size: 5px;
+                                }
+
+                            }
+
+                            span {
+
+                                span {
+                                    font-size: 6px;
+                                }
+                            }
+                        }
+
+                        .option {
+                            font-size: 9px;
+                        }
+
+                    }
+                }
+            }
+        }
+    }
+}
+
+@media only screen and (max-width: 660px) {
+    .SupplierWhiteCard {
+        .restaurantLink {
+            .card {
+                .imageContainer {
+                    height: 47px;
+                }
+
+                .contentContainer {
+                    position: relative;
+                    height: 59px;
+
+                    .leftSide {
+                        .name {
+                            font-size: 9px;
+                            max-height: 200px;
+                            max-width: 100px;
+                        }
+
+                        .price {
+                            span {
+                                span {
+                                    font-size: 6px;
+                                }
+                            }
+                        }
+
+                        .option {
+                            font-size: 7px;
+                        }
+
+                    }
+                }
+            }
+        }
+    }
+}
+
+@media only screen and (max-width: 375px) {
+
+    .SupplierWhiteCard {
+        .restaurantLink {
+            .card {
+                .imageContainer {
+                    height: 30px;
+                }
+
+                .contentContainer {
+                    position: relative;
+                    height: 45px;
+
+                    .leftSide {
+                        .name {
+                            margin: 0;
+                            font-size: 4px;
+                            max-height: 200px;
+                            max-width: 100px;
+                        }
+
+                        .price {
+                            margin: 0;
+                            font-size: 4px;
+
+                            span {
+
+                                span {
+                                    margin: 0;
+                                    font-size: 4px;
+                                }
+                            }
+                        }
+
+                        .option {
+                            margin: 0;
+                            font-size: 4px;
+                        }
+
+                    }
+                }
+            }
+        }
+    }
+}

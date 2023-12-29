@@ -92,7 +92,7 @@ const Header = () => {
     <>
 
       {
-        (routerLocation.pathname == "/" || routerLocation.pathname.includes("/search/")) ? (
+        (routerLocation.pathname == "/" ) ? (
           <div className="overflow-hidden home-section-one">
             <Container className="xxl-12 header" >
               {/* 
@@ -190,11 +190,10 @@ const Header = () => {
                       </a>
                     </Box>
                     {
-                      location ?
+                      location?.coords ?
                         <SearchBar placeholder={t('search_placeholder')} /> :
                         <LocationsearchBar placeholder={t('search_placeholder')} />
-                    }
-
+                      }
                   </div>
                 </Col>
 

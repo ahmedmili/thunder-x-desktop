@@ -321,7 +321,6 @@ const MenuPopup: React.FC<Props> = ({ close, openMissMatch, restaurant }) => {
             openMissMatch()
             return;
         }
-        // toast.success("item added ")
         usedispatch(setDeliveryPrice(restaurant.delivery_price));
         usedispatch(setSupplier(restaurant));
         localStorageService.setSupplier(restaurant);

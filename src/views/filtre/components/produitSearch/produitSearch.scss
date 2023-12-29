@@ -1,44 +1,53 @@
-@import "../../../../colors";
-
-
+@import "../../../../scss/extend";
 
 .search-filter-container {
-    border-radius: 8px;
-    border: 1px solid $orange_color;
-    padding: 18px;
-
-    .searchFilter {
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-
-        .search-input {
-            width: 90%;
+    width: 100%;
+    &__input{
+        position: relative;
+        .search-input{
+            width: 100%;
+            line-height: 33px;
+            padding:16px 88px;
+            color: $dark_002;            
+            font-family: Poppins;
+            font-size: 18px;
+            font-style: normal;
+            font-weight: 400;
+            line-height: normal;
+            border-radius: 10px;
+            background: $light-blue;
             border: none;
-
-            &:focus {
+            box-shadow: none;
+            &:focus{
                 border: none;
                 outline: none;
             }
+            &::placeholder{
+                color: $dark_002;
+            }
         }
-
-        .text-search-icon {
-            color: $orange_color;
-
+        .text-search-icon{
+            color: $dark_002;
+            position: absolute;
+            left: 32px;
+            top: 18px;
+            font-size: 26px;
+        }       
+        .search-icon{
+            display: inline-block;
+            width: 42px;
+            height: 42px;
+            background-color: $color-blue-pelorous;
+            border-radius: 50px;
+            position: absolute;
+            top: 9px;
+            right: 15px;
+            background-image: url("/src/assets/icons/arrow-2.svg");
+            background-repeat: no-repeat;
+            background-position: center;
+            background-size: 25px;
         }
     }
+   
 }
 
-
-@media screen and (max-width : 776px) {}
-
-@media screen and (max-width : 576px) {}
-
-@media screen and (max-width : 450px) {
-    .search-filter-container {
-        padding: 2px;
-        .text-search-icon {
-            font-size: 10px;
-        }
-    }
-    }

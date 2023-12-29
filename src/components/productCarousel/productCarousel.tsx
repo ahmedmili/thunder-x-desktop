@@ -72,13 +72,13 @@ const ProductCarousel: React.FC<ProductCarouselProps> = ({
       <div className="carousal-provider">
         <CarouselProvider
           naturalSlideWidth={250}
-          naturalSlideHeight={100}
+          naturalSlideHeight={250}
           totalSlides={suppliers.length}
           visibleSlides={calculateVisibleSlides()}
           // visibleSlides={3}
           isPlaying
           step={1}
-          interval={100}
+          interval={1000 * 3}
           infinite={true}
           className='categorie-carousel'
         >
