@@ -67,9 +67,7 @@ const FilterCategories: React.FC<FilterCategoriesProps> = ({
   }, [categories]);
   
   const handleCategoryClick = (categoryId: string) => {
-    console.log(selectedSubCategories ,">>>>>>");
-    if (Number(categoryId) == Number(selectedSubCategories)) {
-      console.log("here");
+      if (Number(categoryId) == Number(selectedSubCategories)) {
       setSelectedSubCategories("");
       const updatedCategories :any = categories.map((category: any) => ({
         ...category,

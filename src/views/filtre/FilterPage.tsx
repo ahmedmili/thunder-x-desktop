@@ -89,8 +89,9 @@ function FilterPage() {
   }, []);
   useEffect(() => {
     if (recommanded.length) {
-      const news = recommanded.filter((s: any) => isAtLeastSevenDaysAgo(s.created_at))
-      const bestRated = recommanded.filter((s: any) => s.star >= 2)
+      const news =  sort(recommanded, 'created_at', 10);    
+      let bestRated = recommanded.filter((s: any) => s.star);
+      bestRated = sort(bestRated, 'star', 10);      
       setNewuppliers(news)
       setBestRatedSuppliers(bestRated)
     }
@@ -262,6 +263,7 @@ function FilterPage() {
 
           <div className="left-side" >
             <Skeleton height={1275} width={361} />
+
           </div>
 
           < div className="right-side" >
@@ -396,6 +398,12 @@ function FilterPage() {
     )
   }
 
+
+  function sort(array :any, property :any, n: any) {
+    const sortedArray = array.slice().sort((a :any, b:any) => a[property] - b[property]);
+    return sortedArray.slice(0, n);
+  }
+  
   return (
     <Suspense fallback={
       <SkeletonEffect />
