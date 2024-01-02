@@ -1,6 +1,6 @@
 import ArrowBackIosIcon from "@mui/icons-material/ArrowBackIos";
 import ArrowForwardIosIcon from "@mui/icons-material/ArrowForwardIos";
-import { useEffect, useRef, useState } from "react";
+import React, { Suspense, useEffect, useRef, useState } from "react";
 import { Col, Container, Row } from "react-bootstrap";
 import { useTranslation } from "react-i18next";
 import Skeleton from "@mui/material/Skeleton";
@@ -71,7 +71,7 @@ function FilterPage() {
   const { t } = useTranslation();
   const navigate = useNavigate();
   const dispatch = useDispatch();
-  const suppliersListRef = useRef(null); 
+  const suppliersListRef = useRef(null);
   const [newSuppliers, setNewuppliers] = useState<any>(false);
   const [bestRatedSuppliers, setBestRatedSuppliers] = useState<any>(false);
 
@@ -85,23 +85,23 @@ function FilterPage() {
     }
     else {
       navigate('/')
-    }    
+    }
   }, []);
   useEffect(() => {
     if (recommanded.length) {
       const news = recommanded.filter((s: any) => isAtLeastSevenDaysAgo(s.created_at))
       const bestRated = recommanded.filter((s: any) => s.star >= 2)
       setNewuppliers(news)
-      setBestRatedSuppliers(bestRated)      
-    }   
+      setBestRatedSuppliers(bestRated)
+    }
   }, [recommanded]);
   useEffect(() => {
     if (refresh) {
       dispatch(setRefresh(false));
-      searchSupplier();    
+      searchSupplier();
     }
   }, [refresh]);
-  const searchSupplier = () => {   
+  const searchSupplier = () => {
     const searchParams = new URLSearchParams(location.search);
     if (isEmptySearchParams(searchParams)) {
       setSearchSuppliersList("");
@@ -140,14 +140,14 @@ function FilterPage() {
       setIsLoadFilter(true);
       supplierServices
         .getSuppliersByFilters(payload)
-        .then((res: any) => {          
+        .then((res: any) => {
           if (payload.filter && payload.filter != "") {
             const filtredList = res.data.data.suppliers.filter((item: any) => item.name.toUpperCase().includes(payload.filter.toUpperCase()));
             setSearchSuppliersList(filtredList);
           }
           else {
             setSearchSuppliersList(res.data.data.suppliers);
-          }          
+          }
           setIsLoadFilter(false);
         })
         .catch((error) => {
@@ -164,10 +164,10 @@ function FilterPage() {
     setAds2(homeData.HOME_2);
     setAds3(homeData.HOME_3);
   }, [homeData]);
-  function isAtLeastSevenDaysAgo(dateString : any) {
+  function isAtLeastSevenDaysAgo(dateString: any) {
     var dateObject: any = new Date(dateString);
     var today: any = new Date();
-    var timeDifference :any = today - dateObject;
+    var timeDifference: any = today - dateObject;
     var daysDifference = timeDifference / (1000 * 60 * 60 * 24);
     return daysDifference >= 7;
   }
@@ -200,16 +200,16 @@ function FilterPage() {
               <div className="main-content__col-ads">
                 <FilterAds data={ads2} slides={1} />
               </div>
-            )}            
+            )}
             {bestRatedSuppliers.length ? <div className="main-content__col-offers">
               <h3 className="main-content__col-offers__title">
-                Les mieux notés  
+                Les mieux notés
               </h3>
               <OffersList listType="recommanded" restaurants={bestRatedSuppliers} />
             </div> : ''}
             {newSuppliers.length ? <div className="main-content__col-offers">
               <h3 className="main-content__col-offers__title">
-                Nouveau sur Thunder 
+                Nouveau sur Thunder
               </h3>
               <OffersList listType="recommanded" restaurants={newSuppliers} />
             </div> : ''}
@@ -223,187 +223,361 @@ function FilterPage() {
               <div className="main-content__col-ads">
                 <FilterAds data={ads3} slides={2} center={true} arrows={true} />
               </div>
-            )}           
+            )}
           </div>
         }
       </>
     );
   };
-  return (
-    <>
-      {!isLoading ? (
-        <>
-          <div className="category-bar">
-            {originCategories ? (
-              <FilterCategories onCategorySelect={searchSupplier} />
-            ) : (
-              ""
-            )}
+
+  // skeletopn compnent
+  const SkeletonEffect: React.FC = () => {
+    return (
+      <>
+        <div className="cat-carousel" style={{
+          paddingTop:'70px'
+        }} >
+
+          <Skeleton height={268} style={{
+            flex: '1'
+          }} />
+          <Skeleton height={268} style={{
+            flex: '1'
+          }} />
+          <Skeleton height={268} style={{
+            flex: '1'
+          }} />
+          <Skeleton height={268} style={{
+            flex: '1'
+          }} />
+          <Skeleton height={268} style={{
+            flex: '1'
+          }} />
+       
+
+        </div>
+
+        <div className="filter-page-skeleton">
+
+
+          <div className="left-side" >
+            <Skeleton height={1275} width={361} />
           </div>
-          <div className="content container-fluid">
-            <Row className="content__row">
-              <Col className="col-3 content__column content__column--first">
-                <div className="content__column content__scroll-content">
-                  <div className="content__column__filter">
-                    <Trie />
-                  </div>
-                  <div className="content__column__filter">
-                    <PriceSlide />
-                  </div>
-                  <div className="content__column__filter">
-                    <Categories onCategorySelect={searchSupplier} />
-                  </div>
-                  <div className="content__column__filter">
-                    <Cle />
-                  </div>
+
+          < div className="right-side" >
+
+
+            <div className="search-bar" >
+              <Skeleton height={75} style={{
+                flex: 3,
+                backgroundColor: "#B2E9F0"
+              }}
+              />
+              <Skeleton height={75} style={{
+                flex: '1',
+                backgroundColor: "##1F94A4"
+              }} />
+            </div>
+
+            <div className="ads" >
+              <Skeleton height={230} style={{
+                flex: 1,
+              }}
+              />
+              <Skeleton height={230} style={{
+                flex: 1,
+              }}
+              />
+              <Skeleton height={230} style={{
+                flex: 1,
+              }}
+              />
+
+            </div>
+            <div className="main-content">
+              <div className="row">
+                <div className="col-3">
+                  <Skeleton
+                    variant="rectangular"
+                    width={"100%"}
+                    height={118}
+                  />
+                  <Box sx={{ pt: 0.5 }} className="mt-4">
+                    <Skeleton height={20} />
+                    <Skeleton width="60%" className="mt-2" height={20} />
+                  </Box>
                 </div>
-              </Col>
-              <Col className="col-9 content__column content__column--second">
-                <div className="content__column__search-bar">
-                  <SearchProduit />
-                  {hasFilter && !isloadFilter ? <BtnReset></BtnReset> : ""}
-                </div>                
-                {searchSuppliersList?.length && !isloadFilter && hasFilter ? (
-                  <div className="row search-list">
-                    {searchSuppliersList.map(function (supp: any) {
-                      return (
-                        <div key={supp.id} className="col-3 search-list__column px-0">
-                          <SupplierWhiteCard data={supp} className="mb-32" />
+                <div className="col-3">
+                  <Skeleton
+                    variant="rectangular"
+                    width={"100%"}
+                    height={118}
+                  />
+                  <Box sx={{ pt: 0.5 }} className="mt-4">
+                    <Skeleton height={20} />
+                    <Skeleton width="60%" className="mt-2" height={20} />
+                  </Box>
+                </div>
+                <div className="col-3">
+                  <Skeleton
+                    variant="rectangular"
+                    width={"100%"}
+                    height={118}
+                  />
+                  <Box sx={{ pt: 0.5 }} className="mt-4">
+                    <Skeleton height={20} />
+                    <Skeleton width="60%" className="mt-2" height={20} />
+                  </Box>
+                </div>
+                <div className="col-3">
+                  <Skeleton
+                    variant="rectangular"
+                    width={"100%"}
+                    height={118}
+                  />
+                  <Box sx={{ pt: 0.5 }} className="mt-4">
+                    <Skeleton height={20} />
+                    <Skeleton width="60%" className="mt-2" height={20} />
+                  </Box>
+                </div>
+              </div>
+              <div className="row">
+                <div className="col-3">
+                  <Skeleton
+                    variant="rectangular"
+                    width={"100%"}
+                    height={118}
+                  />
+                  <Box sx={{ pt: 0.5 }} className="mt-4">
+                    <Skeleton height={20} />
+                    <Skeleton width="60%" className="mt-2" height={20} />
+                  </Box>
+                </div>
+                <div className="col-3">
+                  <Skeleton
+                    variant="rectangular"
+                    width={"100%"}
+                    height={118}
+                  />
+                  <Box sx={{ pt: 0.5 }} className="mt-4">
+                    <Skeleton height={20} />
+                    <Skeleton width="60%" className="mt-2" height={20} />
+                  </Box>
+                </div>
+                <div className="col-3">
+                  <Skeleton
+                    variant="rectangular"
+                    width={"100%"}
+                    height={118}
+                  />
+                  <Box sx={{ pt: 0.5 }} className="mt-4">
+                    <Skeleton height={20} />
+                    <Skeleton width="60%" className="mt-2" height={20} />
+                  </Box>
+                </div>
+                <div className="col-3">
+                  <Skeleton
+                    variant="rectangular"
+                    width={"100%"}
+                    height={118}
+                  />
+                  <Box sx={{ pt: 0.5 }} className="mt-4">
+                    <Skeleton height={20} />
+                    <Skeleton width="60%" className="mt-2" height={20} />
+                  </Box>
+                </div>
+              </div>
+            </div>
+
+          </div >
+        </div>
+      </>
+
+    )
+  }
+
+  return (
+    <Suspense fallback={
+      <SkeletonEffect />
+    } >
+
+      <>
+        {!isLoading ? (
+          <>
+            <div className="category-bar">
+              {originCategories ? (
+                <FilterCategories onCategorySelect={searchSupplier} />
+              ) : (
+                ""
+              )}
+            </div>
+            <div className="content container-fluid">
+              <Row className="content__row">
+                <Col className="col-3 content__column content__column--first">
+                  <div className="content__column content__scroll-content">
+                    <div className="content__column__filter">
+                      <Trie />
+                    </div>
+                    <div className="content__column__filter">
+                      <PriceSlide />
+                    </div>
+                    <div className="content__column__filter">
+                      <Categories onCategorySelect={searchSupplier} />
+                    </div>
+                    <div className="content__column__filter">
+                      <Cle />
+                    </div>
+                  </div>
+                </Col>
+                <Col className="col-9 content__column content__column--second">
+                  <div className="content__column__search-bar">
+                    <SearchProduit />
+                    {hasFilter && !isloadFilter ? <BtnReset></BtnReset> : ""}
+                  </div>
+                  {searchSuppliersList?.length && !isloadFilter && hasFilter ? (
+                    <div className="row search-list">
+                      {searchSuppliersList.map(function (supp: any) {
+                        return (
+                          <div key={supp.id} className="col-3 search-list__column px-0">
+                            <SupplierWhiteCard data={supp} className="mb-32" />
+                          </div>
+                        );
+                      })}
+                    </div>
+                  ) : (
+                    ""
+                  )}
+                  {isloadFilter ? (
+                    <>
+                      <div className="row">
+                        <div className="col-3">
+                          <Skeleton
+                            variant="rectangular"
+                            width={"100%"}
+                            height={118}
+                          />
+                          <Box sx={{ pt: 0.5 }} className="mt-4">
+                            <Skeleton height={20} />
+                            <Skeleton width="60%" className="mt-2" height={20} />
+                          </Box>
                         </div>
-                      );
-                    })}
-                  </div>
-                ) : (
-                  ""
-                )}
-                {isloadFilter ? (
-                  <>
-                    <div className="row">
-                      <div className="col-3">
-                        <Skeleton
-                          variant="rectangular"
-                          width={"100%"}
-                          height={118}
-                        />
-                        <Box sx={{ pt: 0.5 }} className="mt-4">
-                          <Skeleton height={20} />
-                          <Skeleton width="60%" className="mt-2" height={20} />
-                        </Box>
+                        <div className="col-3">
+                          <Skeleton
+                            variant="rectangular"
+                            width={"100%"}
+                            height={118}
+                          />
+                          <Box sx={{ pt: 0.5 }} className="mt-4">
+                            <Skeleton height={20} />
+                            <Skeleton width="60%" className="mt-2" height={20} />
+                          </Box>
+                        </div>
+                        <div className="col-3">
+                          <Skeleton
+                            variant="rectangular"
+                            width={"100%"}
+                            height={118}
+                          />
+                          <Box sx={{ pt: 0.5 }} className="mt-4">
+                            <Skeleton height={20} />
+                            <Skeleton width="60%" className="mt-2" height={20} />
+                          </Box>
+                        </div>
+                        <div className="col-3">
+                          <Skeleton
+                            variant="rectangular"
+                            width={"100%"}
+                            height={118}
+                          />
+                          <Box sx={{ pt: 0.5 }} className="mt-4">
+                            <Skeleton height={20} />
+                            <Skeleton width="60%" className="mt-2" height={20} />
+                          </Box>
+                        </div>
                       </div>
-                      <div className="col-3">
-                        <Skeleton
-                          variant="rectangular"
-                          width={"100%"}
-                          height={118}
-                        />
-                        <Box sx={{ pt: 0.5 }} className="mt-4">
-                          <Skeleton height={20} />
-                          <Skeleton width="60%" className="mt-2" height={20} />
-                        </Box>
+                      <div className="row">
+                        <div className="col-3">
+                          <Skeleton
+                            variant="rectangular"
+                            width={"100%"}
+                            height={118}
+                          />
+                          <Box sx={{ pt: 0.5 }} className="mt-4">
+                            <Skeleton height={20} />
+                            <Skeleton width="60%" className="mt-2" height={20} />
+                          </Box>
+                        </div>
+                        <div className="col-3">
+                          <Skeleton
+                            variant="rectangular"
+                            width={"100%"}
+                            height={118}
+                          />
+                          <Box sx={{ pt: 0.5 }} className="mt-4">
+                            <Skeleton height={20} />
+                            <Skeleton width="60%" className="mt-2" height={20} />
+                          </Box>
+                        </div>
+                        <div className="col-3">
+                          <Skeleton
+                            variant="rectangular"
+                            width={"100%"}
+                            height={118}
+                          />
+                          <Box sx={{ pt: 0.5 }} className="mt-4">
+                            <Skeleton height={20} />
+                            <Skeleton width="60%" className="mt-2" height={20} />
+                          </Box>
+                        </div>
+                        <div className="col-3">
+                          <Skeleton
+                            variant="rectangular"
+                            width={"100%"}
+                            height={118}
+                          />
+                          <Box sx={{ pt: 0.5 }} className="mt-4">
+                            <Skeleton height={20} />
+                            <Skeleton width="60%" className="mt-2" height={20} />
+                          </Box>
+                        </div>
                       </div>
-                      <div className="col-3">
-                        <Skeleton
-                          variant="rectangular"
-                          width={"100%"}
-                          height={118}
-                        />
-                        <Box sx={{ pt: 0.5 }} className="mt-4">
-                          <Skeleton height={20} />
-                          <Skeleton width="60%" className="mt-2" height={20} />
-                        </Box>
-                      </div>
-                      <div className="col-3">
-                        <Skeleton
-                          variant="rectangular"
-                          width={"100%"}
-                          height={118}
-                        />
-                        <Box sx={{ pt: 0.5 }} className="mt-4">
-                          <Skeleton height={20} />
-                          <Skeleton width="60%" className="mt-2" height={20} />
-                        </Box>
-                      </div>
+                    </>
+                  ) : (
+                    ""
+                  )}
+                  {recommanded.length &&
+                    !isloadFilter &&
+                    !hasFilter ? (
+                    <div>
+                      <div>{renderItems()}</div>
                     </div>
-                    <div className="row">
-                      <div className="col-3">
-                        <Skeleton
-                          variant="rectangular"
-                          width={"100%"}
-                          height={118}
-                        />
-                        <Box sx={{ pt: 0.5 }} className="mt-4">
-                          <Skeleton height={20} />
-                          <Skeleton width="60%" className="mt-2" height={20} />
-                        </Box>
+                  ) : (
+                    ""
+                  )}
+                  {hasFilter && !isloadFilter && !searchSuppliersList?.length ? (
+                    <>
+                      <div className="result-not-found">
+                        <div className="result-not-found__title">Oups !</div>
+                        <div className="result-not-found__text">
+                          Aucun résultat correspondant à vos critères de recherche{" "}
+                        </div>
+                        <div className="result-not-found__icon"></div>
                       </div>
-                      <div className="col-3">
-                        <Skeleton
-                          variant="rectangular"
-                          width={"100%"}
-                          height={118}
-                        />
-                        <Box sx={{ pt: 0.5 }} className="mt-4">
-                          <Skeleton height={20} />
-                          <Skeleton width="60%" className="mt-2" height={20} />
-                        </Box>
-                      </div>
-                      <div className="col-3">
-                        <Skeleton
-                          variant="rectangular"
-                          width={"100%"}
-                          height={118}
-                        />
-                        <Box sx={{ pt: 0.5 }} className="mt-4">
-                          <Skeleton height={20} />
-                          <Skeleton width="60%" className="mt-2" height={20} />
-                        </Box>
-                      </div>
-                      <div className="col-3">
-                        <Skeleton
-                          variant="rectangular"
-                          width={"100%"}
-                          height={118}
-                        />
-                        <Box sx={{ pt: 0.5 }} className="mt-4">
-                          <Skeleton height={20} />
-                          <Skeleton width="60%" className="mt-2" height={20} />
-                        </Box>
-                      </div>
-                    </div>
-                  </>
-                ) : (
-                  ""
-                )}
-                {recommanded.length &&               
-                !isloadFilter &&
-                !hasFilter ? (
-                  <div>
-                    <div>{renderItems()}</div>
-                  </div>
-                ) : (
-                  ""
-                )}
-                {hasFilter && !isloadFilter && !searchSuppliersList?.length ? (
-                  <>
-                    <div className="result-not-found">
-                      <div className="result-not-found__title">Oups !</div>
-                      <div className="result-not-found__text">
-                        Aucun résultat correspondant à vos critères de recherche{" "}
-                      </div>
-                      <div className="result-not-found__icon"></div>
-                    </div>
-                  </>
-                ) : (
-                  ""
-                )}
-              </Col>
-            </Row>
-          </div>
-        </>
-      ) : (
-        ""
-      )}
-    </>
+                    </>
+                  ) : (
+                    ""
+                  )}
+                </Col>
+              </Row>
+            </div>
+          </>
+        ) : (
+          <SkeletonEffect />
+
+        )}
+      </>
+    </Suspense>
+
   );
 }
 

@@ -9,7 +9,7 @@ import {
 import React from "react";
 import { Col, Container, Row } from "react-bootstrap";
 import { Ads } from "../../services/types";
-import "./HomPageAds.scss";
+import "./homePageAds.scss"
 
 import ArrowBackIosIcon from '@mui/icons-material/ArrowBackIos';
 import ArrowForwardIosIcon from '@mui/icons-material/ArrowForwardIos';
