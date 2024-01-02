@@ -105,6 +105,19 @@ export type Coupon = {
   updated_at: string | Date;
   value: number;
 };
+export interface Ads {
+  adsarea: { id: number, title: string },
+  cover: String,
+  id: number,
+  region_id: number,
+  end_date: String | Date,
+  start_date: String | Date,
+  image: String,
+  status: String,
+  type: String,
+  menu: MenuData | null;
+  product: FoodItem | null;
+}
 export type Announce = {
   created_at: string | Date;
   description: string;

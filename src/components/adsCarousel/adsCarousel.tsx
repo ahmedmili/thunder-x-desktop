@@ -20,17 +20,17 @@ export const AdsCarousel = (props: any) => {
 
     return (
 
-        < div className={`container carousal-ads-container`}>
+        < div className={`carousal-ads-container`}>
             <CarouselProvider className='carousel-ads'
                 naturalSlideWidth={350}
-                naturalSlideHeight={250}
+                naturalSlideHeight={230}
                 totalSlides={
                     props.data.length
                 }
-                visibleSlides={2}
+                visibleSlides={props.slides ? props.slides : 2}
                 step={1}
-                infinite={true}
-                isPlaying={true}
+                infinite={false}
+                isPlaying={false}
                 lockOnWindowScroll={true}
 
             >

@@ -5,7 +5,7 @@
   position: relative;
   width: 100%;
   border-radius: 15px;
-  @include flex(flex, center, space-between);
+  @include flex(flex, center, space-evenly);
   padding-left: 5px;
 
   .current-location-btn {

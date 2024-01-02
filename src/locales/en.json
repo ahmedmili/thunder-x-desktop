@@ -71,7 +71,6 @@
   "header.nous": "We",
   "header.livrons": "deliver",
   "header.thunderXdeliv": "Thunder Express delivers to you",
-
   "header.plus": "more than just",
   "header.nourriture": "food",
   "home.categorie": "What can we bring you?",
@@ -322,33 +321,13 @@
   "product": "product",
   "cart.PromosCode": "Promo code",
   "repasGratuit": "Free Meal",
-  "faq.header": "Frequently Asked Questions",
-  "faq.questions": [
-    {
-      "question": "How can I place an order on the app?",
-      "answer": "To place an order, simply select the restaurant you want to order from, browse their menu, and add items to your cart. Once you're ready, proceed to checkout and enter your payment and delivery information."
-    },
-    {
-      "question": "What payment methods are accepted on the app?",
-      "answer": "We accept all major credit cards, as well as PayPal and Apple Pay. You can securely save your payment information for future orders."
-    },
-    {
-      "question": "How long does it take for my order to be delivered?",
-      "answer": "Delivery times vary depending on the restaurant and your location. You can track your order in real time and receive updates on its status."
-    },
-    {
-      "question": "Can I change or cancel my order after it has been placed?",
-      "answer": "Once your order has been placed, it cannot be changed or cancelled. However, you can contact customer support for assistance."
-    },
-    {
-      "question": "What if my order is incorrect or missing items?",
-      "answer": "If your order is incorrect or missing items, please contact customer support immediately. We'll work with the restaurant to resolve the issue and ensure that you receive the correct order."
-    },
-    {
-      "question": "Is there a minimum order amount for delivery?",
-      "answer": "Yes, there is a minimum order amount for delivery. The amount varies by restaurant and location, but it will be displayed in the app when you select a restaurant."
-    }
-  ],
+  "joinUs": "JOIN US AND EARN MONEY EASILY",
+  "beLiv": "Become a delivery person for Thunder Express",
+  "getStableJob": "Choose a stable and flexible job by joining our delivery team.",
+  "joinTeam": "I am joining the team.",
+  "bePartnaire": "Become a partner with Thunder Express.",
+  "partnaireDesc": "Your partnership interests us. Together, we aim to expand our customer base and focus on its satisfaction..",
+  "join": "I am joining.",
   "mobile.menu.title": "Order in the application",
   "mobile.menu.description": "Enjoy special benefits at your favorite places and restaurants!",
   "mobile.menu.download_button": "Download the application",

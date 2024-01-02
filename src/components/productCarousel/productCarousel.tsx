@@ -1,19 +1,16 @@
-import { Box, Typography } from '@mui/material';
-import React, { useEffect, useState } from 'react';
+import { Box } from '@mui/material';
+import React, { useEffect } from 'react';
 
 import ArrowBackIosIcon from '@mui/icons-material/ArrowBackIos';
 import ArrowForwardIosIcon from '@mui/icons-material/ArrowForwardIos';
 
 import { ButtonBack, ButtonNext, CarouselProvider, Slide, Slider } from 'pure-react-carousel';
 import 'pure-react-carousel/dist/react-carousel.es.css';
-import { Col, Container, Row } from 'react-bootstrap';
+import { Col, Row } from 'react-bootstrap';
 import { useTranslation } from 'react-i18next';
 import { useDispatch } from 'react-redux';
-import { useLocation, useNavigate } from 'react-router-dom';
-import { setfilterRestaurants } from '../../Redux/slices/restaurantSlice';
-import { useAppSelector } from '../../Redux/store';
-import { supplierServices } from '../../services/api/suppliers.api';
-import { localStorageService } from '../../services/localStorageService';
+import { useNavigate } from 'react-router-dom';
+import { Restaurant } from '../../services/types';
 import './productCarousel.scss';
 
 interface Category {
@@ -28,101 +25,22 @@ interface Category {
   position: number;
 }
 interface ProductCarouselProps {
-  onCategorySelect: (category: string) => void;
-  ssrCategories?: any;
+  // ssrCategories?: any;
+  suppliers: Restaurant[];
 }
 
 const ProductCarousel: React.FC<ProductCarouselProps> = ({
-  onCategorySelect, ssrCategories
+  suppliers
 }) => {
 
   const navigate = useNavigate();
-  const dispatch = useDispatch();
-  var cats = ssrCategories ? ssrCategories : useAppSelector((state) => state.home.data.categories)
-  const navLocation = useLocation();
   const { t } = useTranslation();
-  const [categories, setCategories] = useState(cats.filter((category: any) => category.description !== "Promo"));
 
-  const [selectedCategories, setSelectedCategories] = useState("");
+  const handleCategoryClick = (rest: Restaurant) => {
 
-  const [subCat, setSubCat] = useState(false);
-
-  useEffect(() => {
-    if (cats && cats.length > 0) {
-        setCategories(cats.filter((category: any) => category.description !== "Promo"))
-    }
-  }, [cats])
-
-  useEffect(() => {
-    onCategorySelect(selectedCategories);
-
-  }, [selectedCategories])
-
-  function findProductIdByName(productName: string) {
-    for (const category of categories) {
-      if (category.name === productName) {
-        return category.id;
-      }
-
-      for (const product of category.children) {
-        if (product.name === productName) {
-          return product.id;
-        }
-      }
-    }
-    return null; // Product not found
-  }
-
-  const handleCategoryClick = (categoryName: string) => {
-    const updatedCategories = categories.map((category: any) => ({
-      ...category,
-      image: category.image,
-      selected: category.name === categoryName ? !category.selected : false,
-    }));
-
-    const subCategories = categories.filter((cat: any) => {
-      if (cat.children) {
-        return cat.name == categoryName && cat.children.length > 0
-      }
-    })
-    if (categoryName == selectedCategories) {
-      setCategories(cats.filter((category: any) => category.description !== "Promo"));
-      setSelectedCategories("");
-      setSubCat(false)
-    } else {
-      if (subCategories.length > 0) {
-        if (subCat == false) {
-          setSelectedCategories(categoryName);
-          const newCategories = [subCategories[0], ...subCategories[0]["children"]]
-          setSubCat(true)
-          setCategories(newCategories);
-        } else if (subCat == true) {
-          setSelectedCategories("");
-          setCategories(updatedCategories);
-          setSubCat(false)
-        }
-      } else {
-
-        const location = JSON.parse(localStorageService.getCurrentLocation()!).coords
-        const cat_id = findProductIdByName(categoryName)
-        const requestData = {
-          category_id: cat_id,
-          lat: location!.latitude,
-          long: location!.longitude
-        }
-        supplierServices.searchSupplierBySubArticle(requestData).then((res: any) => {
-          dispatch(setfilterRestaurants(res.data.data.suppliers))
-          !navLocation.pathname.includes("/search/") && navigate(`/search/category=` + categoryName);
-          navLocation.pathname.includes("/search/") && navigate(`/search/category=` + categoryName, { replace: true });
-
-        })
-      }
-    }
+    const goTo = `/restaurant/${rest.id}-${rest.name.split(' ').join('-')}/All/`
+    navigate(goTo)
   };
-
-  useEffect(() => {
-    handleCategoryClick("")
-  }, [])
 
   // Helper function to calculate the number of visible slides based on screen width
   const calculateVisibleSlides = () => {
@@ -154,33 +72,35 @@ const ProductCarousel: React.FC<ProductCarouselProps> = ({
       <div className="carousal-provider">
         <CarouselProvider
           naturalSlideWidth={250}
-          naturalSlideHeight={100}
-          totalSlides={categories.length}
+          naturalSlideHeight={250}
+          totalSlides={suppliers.length}
           visibleSlides={calculateVisibleSlides()}
           // visibleSlides={3}
+          isPlaying
           step={1}
+          interval={1000 * 3}
           infinite={true}
           className='categorie-carousel'
         >
           <Row>
             <Col >
               <Slider>
-                {categories.map((category: any) => (
+                {suppliers.map((supp: any) => (
 
-                  <Slide className='carousel-slide' key={category.id} index={category.id - 1}>
+                  <Slide className='carousel-slide' key={supp.id} index={supp.id - 1}>
                     <Box
-                      className={`category-box ${category.selected ? 'selected' : ''}`}
-                      onClick={() => handleCategoryClick(category.name)}
+                      className={`category-box ${supp.selected ? 'selected' : ''}`}
+                      onDoubleClick={() => handleCategoryClick(supp)}
                     >
                       <Box>
                         <img
                           src={
-                            typeof category.image === 'string'
-                              ? category.image
+                            typeof supp.images[0].path === 'string'
+                              ? supp.images[0].pivot.type === "principal" ? supp.images[0].path : supp.images[1].path
                               : undefined
                           }
                           loading='lazy'
-                          alt={category.name}
+                          alt={supp.name}
                         />
                       </Box>
                     </Box>
@@ -200,7 +120,7 @@ const ProductCarousel: React.FC<ProductCarouselProps> = ({
           </div>
         </CarouselProvider>
       </div>
-    </div> 
+    </div>
   );
 };
 

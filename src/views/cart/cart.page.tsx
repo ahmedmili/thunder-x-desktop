@@ -261,6 +261,7 @@ const CartPage: React.FC = () => {
     deliveryPrice: number
   ) => {
     let products = cartItems.flatMap((item) => ({
+      ...item.product,
       id: item.product.id,
       supplier_id: item.supplier_data.supplier_id,
       qte: item.quantity,
@@ -268,9 +269,10 @@ const CartPage: React.FC = () => {
       computed_value: item.product.computed_value,
       total: item.total,
       discount_value: item.product.discount_value,
-      cost: item.product.cost,
-      old_value: item.product.old_value,
+      cost: item.unitePrice,
+      old_value: item.default_price,
     }))
+
 
     try {
       var year = takeAwayDate.getFullYear();
@@ -304,7 +306,6 @@ const CartPage: React.FC = () => {
         gift_ammount: giftAmmount,
         gift_id: giftId,
       };
-
       if (isAuthenticated) {
         orderSchema.parse(order);
         try {
@@ -569,7 +570,7 @@ const CartPage: React.FC = () => {
           return 0
         } else {
           setPromoReduction(0)
-          extraDelivFixed  === 1 ? dispatch(setDeliveryPrice(selectedCoupon.value)) :  dispatch(setDeliveryPrice(selectedCoupon.value + extraDeliveryCost))
+          extraDelivFixed === 1 ? dispatch(setDeliveryPrice(selectedCoupon.value)) : dispatch(setDeliveryPrice(selectedCoupon.value + extraDeliveryCost))
           return 0
         }
       }
