@@ -2,13 +2,14 @@
 
 import { useEffect, useState } from "react";
 import "./priceSlide.scss";
-import { useNavigate } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import { homeRefresh, setRefresh } from "../../../../Redux/slices/home";
 import { useDispatch, useSelector } from "react-redux";
 import { debounce } from 'lodash';
 import Slider from '@mui/material/Slider';
 function PriceSlide() {
     const [rangeValues, setRangeValues] = useState<any>([0, 100]);
+    const navLocation = useLocation();
     const navigate = useNavigate();
     const dispatch = useDispatch();
     const refresh = useSelector(homeRefresh)
@@ -47,12 +48,14 @@ function PriceSlide() {
             document.body.removeEventListener('mouseup', handleBodyMouseUp);
         };
     }, []);
-    const handleBodyMouseUp = () => {
-        handleInputChange();
+    const handleBodyMouseUp = (event: any) => {
+        const { pathname } = navLocation;        
+        if (pathname == "/search/") {
+            handleInputChange();
+        }        
     };
     const handleInputChange = debounce(() => {
         const searchParams = new URLSearchParams(location.search);
-        console.log(searchParams.get('min_price'));
         if (Number(searchParams.get('min_price')) !== Number(rangeValues[0]) || Number(searchParams.get('max_price')) !== Number(rangeValues[1])) {
             if (searchParams.has('min_price')) {
                 searchParams.set('min_price', rangeValues[0]);
