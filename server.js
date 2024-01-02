@@ -6,7 +6,7 @@ import { fileURLToPath } from "url";
 
 // Constants
 const isProduction = process.env.VITE_NODE_ENV === 'production'
-const port = process.env.PORT || 8000
+const port = process.env.PORT || 3212
 const base = process.env.BASE || '/'
 const apiUrl = 'https://api.thunder.webify.pro/api/'
 

@@ -11,7 +11,7 @@ import { useAppDispatch, useAppSelector } from '../../Redux/store';
 import { productService } from '../../services/api/product.api';
 import { AppProps, MenuData } from '../../services/types';
 
-import { Container, Row } from 'react-bootstrap';
+import { Container, Row, Button } from 'react-bootstrap';
 import { fetchMessages } from '../../Redux/slices/messanger';
 import instaposter from "../../assets/food_instagram_story.png";
 import MessangerBtnIcon from '../../assets/profile/Discuter/messanger-btn.svg';
@@ -293,31 +293,15 @@ const Menu: React.FC<AppProps> = ({ initialData }) => {
                     </div>
 
                   </div>
-                  {
-                    menuItemProducts.length > productsPerPage ? (
-                      <Pagination
-                        style={{ marginTop: '1rem' }}
-                        count={Math.ceil(menuItemProducts.length / productsPerPage)}
-                        page={currentPage[menuItemId] || 1}
-                        onChange={(event, page) =>
-                          handlePaginationClick(page, menuItemId)
-                        }
-                      />
-                    ) : (
-                      <div className='epmty-pagination'>
-
-                      </div>
-                    )
-                  }
-
+                  
                   <div className='product-container'>
                     <div className="product-grid">
                       {displayedProducts.map((product) => (
                         <div key={product.id} className="product-card">
                           <div className='info-container' >
-                            <p className="product-title" >
+                            <h4 className="product-title" >
                               {getTruncatedName(product.name, 10)}
-                            </p>
+                            </h4>
                             <p className="product-price">
                               {`${t('price')}: ${Math.round(product.price)} DT`}
                             </p>
@@ -339,18 +323,42 @@ const Menu: React.FC<AppProps> = ({ initialData }) => {
                               <AddIcon className="product-button-icon" />
                             </button>
                           </div>
-                          <img loading="lazy" src={
-                            product.image[0]?.path ?
-                              product.image[0]?.path :
-                              displayedRestaurant?.images[0].pivot.type === "principal" ?
-                                displayedRestaurant?.images[0].path :
-                                displayedRestaurant?.images[1].path
-                          } alt='product photo' className="product-image" />
+                          <div className="product-image-blc">
+                            <img loading="lazy" src={
+                              product.image[0]?.path ?
+                                product.image[0]?.path :
+                                displayedRestaurant?.images[0].pivot.type === "principal" ?
+                                  displayedRestaurant?.images[0].path :
+                                  displayedRestaurant?.images[1].path
+                            } alt='product photo' className="product-image" />
+                          </div>
+                          
                         </div>
                       ))}
                     </div>
                   </div>
-                </div >
+
+                  <div className="pagination-blc">
+                    {
+                      menuItemProducts.length > productsPerPage ? (
+                        <Pagination
+                          style={{ marginTop: '1rem' }}
+                          count={Math.ceil(menuItemProducts.length / productsPerPage)}
+                          page={currentPage[menuItemId] || 1}
+                          onChange={(event, page) =>
+                            handlePaginationClick(page, menuItemId)
+                          }
+                        />
+                      ) : (
+                        <div className='epmty-pagination'>
+
+                        </div>
+                      )
+                    }
+                  </div>
+                  
+
+                </div>
               );
             }
             )
@@ -360,23 +368,121 @@ const Menu: React.FC<AppProps> = ({ initialData }) => {
 
   return (
     <>
-      <Container fluid className={`supplier-page-header`} >
-        <Row>
-          <div className="background-container">
-            <img loading="lazy" src={displayedRestaurant?.images[0].path} alt="restaurant image" className="background" />
-            <div className={`open-time ${!isOpen && "closed-time"} `}>
-              {
-                isOpen ?
+      <div className={`supplier-page-header`}>
+        <Container className="supplier-page-header-container">
+          <div className="btn-back-blc">
+            <Button className="btn-back" variant="link">Retour</Button>
+          </div>
+
+          <div className="supplier-infos-area">
+            <div className="background-container">
+              <img loading="lazy" src={displayedRestaurant?.images[0].path} alt="restaurant image" className="background" />
+              <div className={`open-time ${!isOpen && "closed-time"} `}>
+                {
+                  isOpen ?
                   <span>{t("supplier.opentime")} {closeTime}</span>
                   :
                   <span>{t("closed")}</span>
+                }
+              </div>
+            </div>
+            <div className="supplier-infos-blc">
+              <div className="supplier-title-area">
+                <div className="supplier-logo">
+                  <img loading="lazy" src={displayedRestaurant?.images[0].pivot.type === "principal" ? displayedRestaurant?.images[0].path : displayedRestaurant?.images[1].path} alt="" />
+                </div>
+                <div className="supplier-title-blc">
+                  <h1 className="supplier-title">{displayedRestaurant?.name}</h1>
+                  <p className="supplier-desc">
+                    Restaurant - chiken  Grillade  hamburger  pate  pizza  sandwich  salade
+                  </p>
+                </div>
+              </div>
+              <div className="supplier-infos_list-wrapper">
+                <div className="supplier-infos_list-blc">
+                  <div className="supplier-infos_list">
+                    <ul>
+                      <li>
+                        <p className="supplier-infos_list-item location">
+                          Khzema sousse
+                        </p>
+                      </li>
+                      <li>
+                        <p className="supplier-infos_list-item time-work">
+                          Ouvert jusqu’à 22:00 PM
+                        </p>
+                      </li>
+                      <li>
+                        <p className="supplier-infos_list-item shipping-cost">
+                          Frais de livraison: 3 Dt
+                        </p>
+                      </li>
+                    </ul>
+                  </div>
+                  <div className="supplier-infos_ratings-count">
+                    
+                    <div className='rate-gouping'>
+                      {
+                        (displayedRestaurant?.star && (displayedRestaurant?.star > 0)) && (<span className='star-number'> {displayedRestaurant?.star}</span>)
+                      }
+                      <Star className='starIcon' style={{ visibility: 'visible' }} />
 
-              }
+                      {
+                        displayedRestaurant?.bonus ? (
+                          <div className='gift-icon' style={(displayedRestaurant?.bonus > 0) ? { backgroundImage: `url(${ActiveGiftIcon})` } : { backgroundImage: `url(${GiftIcon})` }}></div>
+                        ) : (
+                          <div className='gift-icon' style={{ backgroundImage: `url(${GiftIcon})` }}></div>
+                        )
+                      }
+                    </div>
+                    <div className='time'>
+                      {`${Number(displayedRestaurant?.medium_time) - 10}-${Number(displayedRestaurant?.medium_time + 10)}min`}
+                    </div>
+                  </div>
+                </div>
+                <div className="supplier-info-search">
+                  <button className="btn btn-search"></button>
+                  <div className="search-blc">
+                    <input type="search" className="form-control" placeholder="Qu’est ce qu’on vous apporte ?" />
+                  </div>
+                </div>
+              </div>
             </div>
           </div>
-        </Row>
-      </Container>
+          <div className="categories-filters filers">
+            {
+              menuData.length != 0 && (
+                <>
+                  <div className={`select ${selectedOption == "All" ? "selected" : ""}`}  >
+                    <input type="radio" value="All" id='All' name='type' checked={selectedOption === "1"} onChange={handleOptionChange} />
+                    <label htmlFor="All">{t('supplier.allProducts')}</label>
+                  </div>
+                  {
+                    menuData.map((data, index) => {
+                      return (
+                        <React.Fragment key={index}>
+                          <div className={`select ${selectedOption == data.name ? "selected" : ""}`}  >
+                            <input type="radio" value={data.name} id={data.name} name='type' checked={selectedOption === data.name} onChange={handleOptionChange} />
+                            <label htmlFor={data.name}>{data.name}</label>
+                          </div>
+                        </React.Fragment>
+                      )
 
+                    })
+                  }
+
+                </>
+              )
+            }
+          </div>
+          <div className="supplier-main-menu">
+            <Product />
+          </div>
+
+        </Container>
+      </div>
+
+      {/* 
       <Container fluid className={`supplier-page-main-container`}>
         <Row>
           <section className={`info-section `}>
@@ -467,14 +573,14 @@ const Menu: React.FC<AppProps> = ({ initialData }) => {
               </div>
             )}
           </button>
-          {/* <button className='phone-popup-btn' onClick={handlePhonePopup} style={{ backgroundImage: `url(${PhoneBtnIcon})` }}></button> */}
+          <button className='phone-popup-btn' onClick={handlePhonePopup} style={{ backgroundImage: `url(${PhoneBtnIcon})` }}></button>
         </div>
 
         {
           messangerPopup && <Messanger className="discuter-messanger-popup" close={handleMessangerPopup} />
         }
 
-      </Container>
+      </Container>*/}
       {showMismatchModal && (
         <SameSupplierWarn close={handleMismatchModal} />
       )}
