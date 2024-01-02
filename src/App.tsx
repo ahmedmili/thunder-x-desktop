@@ -1,6 +1,7 @@
 // "use client";
 import { CssBaseline } from "@mui/material";
 import "bootstrap/dist/css/bootstrap.min.css";
+import "./assets/fonts/Poppins/Poppins.css";
 import { Suspense, lazy, startTransition, useCallback, useEffect, useState } from "react";
 import { Navigate, Outlet, Route, Routes, useLocation, useNavigate } from "react-router-dom";
 import { ToastContainer, toast } from "react-toastify";
