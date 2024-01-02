@@ -8,7 +8,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { debounce } from 'lodash';
 import Slider from '@mui/material/Slider';
 function PriceSlide() {
-    const [rangeValues, setRangeValues] = useState<any>([0, 1000]);
+    const [rangeValues, setRangeValues] = useState<any>([0, 100]);
     const navigate = useNavigate();
     const dispatch = useDispatch();
     const refresh = useSelector(homeRefresh)
@@ -28,7 +28,7 @@ function PriceSlide() {
         if (refresh) {
            const searchParams = new URLSearchParams(location.search);
             if (!searchParams.has("min_price")&&!searchParams.has("max_price")) {
-                setRangeValues([0, 1000])
+                setRangeValues([0, 100])
             } 
         }    
     }, [refresh]);
@@ -38,27 +38,40 @@ function PriceSlide() {
              
     };   
     const onGlissEnd = (event: any) => { 
+        event.stopPropagation();
         handleInputChange();
     }
+    useEffect(() => {
+        document.body.addEventListener('mouseup', handleBodyMouseUp);
+        return () => {
+            document.body.removeEventListener('mouseup', handleBodyMouseUp);
+        };
+    }, []);
+    const handleBodyMouseUp = () => {
+        handleInputChange();
+    };
     const handleInputChange = debounce(() => {
         const searchParams = new URLSearchParams(location.search);
-        if (searchParams.has('min_price')) {
-            searchParams.set('min_price', rangeValues[0]);
-        }
-        else {
-            searchParams.append('min_price', rangeValues[0]);
-        }
-         if (searchParams.has('max_price')) {
-            searchParams.set('max_price', rangeValues[1]);
-        }
-        else {
-            searchParams.append('max_price', rangeValues[1]);
-        }
-        navigate(`/search/?${searchParams.toString()}`, {      
-            replace: false,
-        });
-        dispatch(setRefresh(true));
-    }, 700);  
+        console.log(searchParams.get('min_price'));
+        if (Number(searchParams.get('min_price')) !== Number(rangeValues[0]) || Number(searchParams.get('max_price')) !== Number(rangeValues[1])) {
+            if (searchParams.has('min_price')) {
+                searchParams.set('min_price', rangeValues[0]);
+            }
+            else {
+                searchParams.append('min_price', rangeValues[0]);
+            }
+            if (searchParams.has('max_price')) {
+                searchParams.set('max_price', rangeValues[1]);
+            }
+            else {
+                searchParams.append('max_price', rangeValues[1]);
+            }
+            navigate(`/search/?${searchParams.toString()}`, {      
+                replace: false,
+            });
+            dispatch(setRefresh(true));            
+        }     
+    }, 200);  
     return (
         <div className="price-filter-container">
             <h1 className="price-filter-container__title"> filtrer par prix</h1>

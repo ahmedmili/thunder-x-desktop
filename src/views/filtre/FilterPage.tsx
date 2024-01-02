@@ -115,7 +115,7 @@ function FilterPage() {
       ).coords;
       const payload = {
         order_by: "popular",
-        max_price: 1000,
+        max_price: 100,
         min_price: 0,
         lat: currentLocation!.latitude,
         long: currentLocation!.longitude,
