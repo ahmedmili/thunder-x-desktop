@@ -48,11 +48,14 @@ const ProductCarousel: React.FC<ProductCarouselProps> = ({
       const width = window.innerWidth;
       let items = 2;
       switch (true) {
-        case width >= 1440:
+        case width >= 1700:
           items = 7;
           break;
-        case width >= 768 && width < 1440:
+        case width >= 1440 && width < 1700:
           items = 6;
+          break;
+        case width >= 768 && width < 1440:
+          items = 5;
           break;
         case width < 768:
           items = 2;
@@ -110,14 +113,16 @@ const ProductCarousel: React.FC<ProductCarouselProps> = ({
               </Slider>
             </Col>
           </Row>
-          <div className='categories-list-buttons-container'>
-            <ButtonBack className='btn'>
-              <ArrowBackIosIcon className=' slider-button-icon' />
-            </ButtonBack>
-            <ButtonNext className='btn btn-default'>
-              <ArrowForwardIosIcon className=' slider-button-icon' />
-            </ButtonNext>
-          </div>
+          {/* 
+            <div className='categories-list-buttons-container'>
+              <ButtonBack className='btn'>
+                <ArrowBackIosIcon className=' slider-button-icon' />
+              </ButtonBack>
+              <ButtonNext className='btn btn-default'>
+                <ArrowForwardIosIcon className=' slider-button-icon' />
+              </ButtonNext>
+            </div>
+          */}
         </CarouselProvider>
       </div>
     </div>

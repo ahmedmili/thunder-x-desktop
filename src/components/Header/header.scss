@@ -191,7 +191,7 @@
         .headerMessageSyle1 {
             display: inline;
             font-family: 'Poppins-Bold', serif;
-            @include fonts(54px, 54px, $color-white);
+            @include fonts(50px, 50px, $color-white);
             line-height: normal;
 
             &:not(:last-child) {
@@ -544,7 +544,7 @@
     }
     .home-section-one {
         .headerAppBar2 {
-            padding-top: 60px;
+            padding-top: 100px;
             margin: 0;
 
             .headerMessage {
@@ -569,7 +569,6 @@
                 position: absolute;
                 right: 20px;
                 bottom: initial;
-                top: -75px;
 
                 &::before,
                 &::after {

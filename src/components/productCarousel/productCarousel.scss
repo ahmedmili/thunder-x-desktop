@@ -43,6 +43,7 @@
         @include dimensions(230px, 178px);
         @include flex;
         transition: box-shadow 0.3s ease-in-out;
+        padding: 0;
 
         &.selected {
           border: 2px solid $primary_color;
@@ -55,9 +56,14 @@
           background-color: $Off-White;
           box-shadow: 1px 2px 4px 2px rgba(0, 0, 0, 0.17);
         }
+        > div {
+          @include dimensions(100%, 100%);
+          border-radius: 20px;
+        }
         img {
-          width: auto;
-          height: 96px;
+          @include dimensions(100%, 100%);
+          object-fit: cover;
+          border-radius: 20px;
         }
       }
     }
