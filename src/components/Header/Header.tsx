@@ -92,7 +92,7 @@ const Header = () => {
     <>
 
       {
-        (routerLocation.pathname == "/" ) ? (
+        (routerLocation.pathname == "/" && !location) ? (
           <div className="overflow-hidden home-section-one">
             <Container className="xxl-12 header" >
               {/* 
