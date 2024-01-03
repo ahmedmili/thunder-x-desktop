@@ -5,14 +5,15 @@
   position: relative;
   width: 100%;
   border-radius: 15px;
-  @include flex(flex, center, space-evenly);
-  padding-left: 5px;
+  padding: 0 0 0 70px;
 
   .current-location-btn {
-    padding-bottom: 10px;
+    position: absolute;
+    left: 20px;
+    top: 0;
 
     .current-location-icon {
-      color: white;
+      color: $color-white;
       @include dimensions(25px, 25px);
       transform: rotate(-45deg);
     }
@@ -57,6 +58,7 @@
       &::placeholder {
         color: $dark_Gray;
         font-size: 15px;
+        text-align: left;
       }
     }
 
@@ -75,6 +77,9 @@
           color: $white2;
           text-align: center;
           @include fonts(15px, 24px, $white2);
+        }
+        &::-webkit-input-placeholder {
+          text-align: left;
         }
       }
 
