@@ -50,7 +50,7 @@ const SupplierCard: React.FC<SupplierCard> = ({ data, favors = false, className 
     return (
         <div className={`${supplierStyle.supplierCard} ${className}`}>
             {/* favors icons */}
-            {(fav) ? (
+            {/* {(fav) ? (
                 <button className={supplierStyle.favorIcon} onClick={deletefavorite} >
                     <FavoriteIcon className={supplierStyle.activeIcon} />
                 </button>
@@ -58,7 +58,7 @@ const SupplierCard: React.FC<SupplierCard> = ({ data, favors = false, className 
                 <button className={supplierStyle.favorIcon} onClick={handleFavorsAdd} >
                     <FavoriteBorderIcon />
                 </button>
-            )}
+            )} */}
 
             <Link
                 className={supplierStyle.restaurantLink}

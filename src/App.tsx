@@ -23,7 +23,7 @@ import {
   setDeliveryPrice,
   setSupplier,
 } from "./Redux/slices/cart/cartSlice";
-import { fetchHomeData } from "./Redux/slices/home";
+import { fetchHomeData, regionHomeSelector } from "./Redux/slices/home";
 import { addMessangerSuccess } from "./Redux/slices/messanger";
 import { setRestaurants } from "./Redux/slices/restaurantSlice";
 import { login, logout, setUser } from "./Redux/slices/userSlice";
@@ -36,7 +36,6 @@ import { AppProps, Message, Restaurant } from "./services/types";
 import channelListener from "./services/web-socket";
 
 import MenuOptions from "./components/menus/menuOptions/MenuOptions";
-import Spinner from "./components/spinner/Spinner";
 //lazy loading components
 const Header = lazy(() => import("./components/Header/Header"));
 const Footer = lazy(() => import("./components/footer/footer"));
@@ -51,6 +50,8 @@ import Feedback from "./components/layout/Profile/Feedback/Feedback";
 import FidelitePage from "./components/layout/Profile/FidelitePage/FidelitePage";
 import Menu from "./components/menus/menus";
 import Verify from "./views/Verify";
+import SpinnerPopup from "./components/Popups/Spinner/SpinnerPopup";
+import { useSelector } from "react-redux";
 //lazy loading pages
 const Profile = lazy(() => import("./components/layout/Profile/Profile"));
 const HomePage = lazy(() => import("./views/home/home.page"));
@@ -81,10 +82,19 @@ function App({ initialData }: AppProps) {
   var favorsList: number[] = [];
   const location = useAppSelector((state) => state.location.position);
   const deliv = useAppSelector((state) => state.homeData.isDelivery);
+  const region: any = useSelector(regionHomeSelector);
+
   const [updateTrigger, setUpdateTrigger] = useState(false);
+
   const updateHomeData = useCallback(() => {
     setUpdateTrigger((prev) => !prev);
   }, []);
+
+  useEffect(() => {
+    if (!region.id) {
+      dispatch({ type: "SET_SHOW", payload: true })
+    }
+  }, [region]);
 
   useEffect(() => {
 
@@ -227,15 +237,11 @@ function App({ initialData }: AppProps) {
             });
           },
           (error: GeolocationPositionError) => {
-            dispatch({ type: "SET_SHOW", payload: true })
+            // dispatch({ type: "SET_SHOW", payload: true })
           }
         );
       }
     }
-  }, [])
-
-  useEffect(() => {
-    dispatch({ type: "SET_SHOW", payload: false })
   }, [])
 
   // handle recive admin message
@@ -271,17 +277,21 @@ function App({ initialData }: AppProps) {
       <ToastContainer />
       <Suspense fallback={(typeof window != "undefined") ?
         <>
-
         </>
         :
         <>
-          <Spinner name="Loading" />
+          <SpinnerPopup name="Loading" />
         </>
       }
       >
         <Routes>
           <Route path="/" element={<Layout />}>
-            <Route index element={<HomePage initialData={initialData} />} />
+            {
+              (!location || !(typeof window != undefined)) ?
+                <Route index element={<HomePage initialData={initialData} />} />
+                :
+                <Route index element={<FilterPage />} />
+            }
             <Route path="/restaurant/:id/:search?/:productId?/*" element={<Menu initialData={initialData} />} />
             <Route path="/product/:id/:search?/:productId/*" element={<MenuOptions initialData={initialData} />} />
             <Route path="/cart/*" element={<CartPage />} />

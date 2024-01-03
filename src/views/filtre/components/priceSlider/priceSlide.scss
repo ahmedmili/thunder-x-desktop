@@ -36,23 +36,23 @@
     }
 }
 .MuiSlider-thumb {
-    color: $Ocean_Teal;    
+    color: $Ocean_Teal !important;    
     &.Mui-active{
-        box-shadow: none;
+        box-shadow: none !important;
     }
     &.Mui-focusVisible {
-        box-shadow: none;
+        box-shadow: none !important;
     }
     &:hover{
-        box-shadow: none;
+        box-shadow: none !important;
     }
 }
 .MuiSlider-root{
-    color: $Ocean_Teal;
-    height: 4px;
-    border-radius: 15px;
+    color: $Ocean_Teal !important;
+    height: 4px !important;
+    border-radius: 15px !important;
 }
 .MuiSlider-rail{
-    background-color: $orange_color;
-    opacity: 1;
+    background-color: $orange_color !important;
+    opacity: 1 !important;
 }
