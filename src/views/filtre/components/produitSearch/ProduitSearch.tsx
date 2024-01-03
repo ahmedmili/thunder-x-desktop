@@ -19,7 +19,10 @@ function SearchProduit() {
         if (searchParams.has("filter") && searchParams.get("filter")!="") {
             const filter: any = searchParams.get("filter");
             setActive(filter);
-        }        
+        }    
+        else {
+            setActive("");
+        }
     }, []);
     useEffect(() => {    
         if (refresh) {
