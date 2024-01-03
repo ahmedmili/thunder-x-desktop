@@ -59,13 +59,13 @@ function SearchProduit() {
         dispatch(setRefresh(true));
     }, 500); 
     return (
-        <div className="search-filter-container">
+        <form className="search-filter-container" autoComplete="off">
             <div className="search-filter-container__input">
-                <input type="text" className="search-input" name="search" id="search" placeholder="Qu’est ce qu’on vous apporte ?" value={active} onChange={clickHandle}/>
+                <input autoComplete="off" type="text" className="search-input" name="search" id="search" placeholder="Qu’est ce qu’on vous apporte ?" value={active} onChange={clickHandle}/>
                 <SearchIcon className="text-search-icon" />
                 <span className="search-icon"></span>
             </div>
-        </div>
+        </form>
     )
 }
 

@@ -1,4 +1,8 @@
 import { Add as AddIcon, Star } from '@mui/icons-material';
+import StarBorderIcon from '@mui/icons-material/StarBorder';
+import { localStorageService } from "../../services/localStorageService";
+import { userService } from "../../services/api/user.api";
+import Skeleton from "@mui/material/Skeleton";
 import {
   CircularProgress,
   Pagination,
@@ -23,8 +27,10 @@ import SameSupplierWarn from '../Popups/SameSupplierWarn/SameSupplierWarn';
 import './menus.scss';
 
 import moment from 'moment';
-import ActiveGiftIcon from '../../assets/profile/ArchivedCommands/gift-active.png';
+import ActiveGiftIcon from '../../assets/profile/ArchivedCommands/activeGift.svg';
 import GiftIcon from '../../assets/profile/ArchivedCommands/gift.svg';
+import FavorIcon from '../../assets/profile/ArchivedCommands/favor.svg';
+import FavorActiveIcon from '../../assets/profile/ArchivedCommands/favor-active.svg';
 import ClosedSupplier from '../Popups/ClosedSupplier/ClosedSupplier';
 
 
@@ -34,6 +40,7 @@ const Menu: React.FC<AppProps> = ({ initialData }) => {
   const navigate = useNavigate();
   const location = useLocation();
   const [loading, setLoading] = useState((typeof window != 'undefined') ? true : false);
+
   const [currentPage, setCurrentPage] = useState<{ [key: string]: number }>({});
   const productsPerPage = 4;
 
@@ -47,7 +54,10 @@ const Menu: React.FC<AppProps> = ({ initialData }) => {
   const [selectedOption, setSelectedOption] = useState<string>(search ? search : "All");
   const [isOpen, setIsOpen] = useState<boolean>(true);
   const [closeTime, setCloseTime] = useState<string>('');
+  const [searchTerms, setSearchTerms] = useState<string>('');
   const idNumber = id?.split('-')[0];
+  const [categories, setCategories] = useState<any>("");
+
   var currentDate = moment();
   var today = currentDate.format('ddd');  // Get the current day name (e.g., 'Mon', 'Tue', etc.)
 
@@ -65,6 +75,8 @@ const Menu: React.FC<AppProps> = ({ initialData }) => {
   const unReadMessages = useAppSelector((state) => state.messanger.unReadedMessages)
   const [messangerPopup, setMessangerPopup] = useState<boolean>(false)
   const [unReadedQt, setUnReadedQt] = useState<number>(unReadMessages)
+  const [favor, setFavor] = useState<boolean>(false)
+
   useEffect(() => {
     setUnReadedQt(unReadMessages)
   }, [unReadMessages])
@@ -152,6 +164,17 @@ const Menu: React.FC<AppProps> = ({ initialData }) => {
       if (typeof window != "undefined") {
         data = await supplierServices.getSupplierById(Number(idNumber!))
         data = data.data
+        let isLoggedIn = localStorageService.getUserToken();
+        if (isLoggedIn?.length! > 0) {
+          let favList :any = await userService.getClientFavorits(); 
+          favList = favList.data.data.map((i: any) => Number(i.id))
+          if (favList.includes(Number(idNumber))) {
+            setFavor(true)
+          }
+          else {
+            setFavor(false)
+          }
+        }
       }
       else data = initialData.supplierResponse
       setDisplayedRestaurant(data.data)
@@ -168,30 +191,53 @@ const Menu: React.FC<AppProps> = ({ initialData }) => {
           data = data.data
           setMenuData(data.data);
           setFiltreddMenuData(data.data)
+          let categories = data.data.map((item:any)=>item.name)?.join(' - ')
+          setCategories(categories)
         }
       }
       else {
         data = initialData.menuResponse.data
         setMenuData(data);
         setFiltreddMenuData(data)
+        let categories = data.data.map((item:any)=>item.name)?.join(' - ')
+        setCategories(categories)
       }
     } catch (error) {
       throw error
-    }
-    setLoading(false);
+    }    
   };
 
   const getSupplierIsOpen = async () => {
     const { status, data } = await supplierServices.getSupplierISoPENById(Number(idNumber!))
     data.data.is_open === 1 ? setIsOpen(true) : setIsOpen(false)
   }
-
+  const handleFavorsAdd = async () => {
+    const response = await userService.addfavorite(Number(idNumber))
+    response.data.success && setFavor(true)
+  }
+  const deletefavorite = async () => {
+    const response = await userService.deletefavorite(Number(idNumber))
+    response.data.success && setFavor(false)
+  }
+  const updatefavorite = () => {
+    if (favor) {
+      deletefavorite()
+    }
+    else {
+      handleFavorsAdd();
+    }
+  }
   useEffect(() => {
-    getSupplierById()
-    getMenu()
+    fetchData();    
+  }, [])
+  const fetchData = async () => {
+    setLoading(true);
+    await getSupplierById()
+    await getMenu()
     handleFilter()
     getSupplierIsOpen()
-  }, [])
+    setLoading(false);
+  };
 
   // initialize menue 
   useEffect(() => {
@@ -236,13 +282,41 @@ const Menu: React.FC<AppProps> = ({ initialData }) => {
 
   const handleFilter = () => {
     if (selectedOption === "All") {
-      setFiltreddMenuData(menuData)
+      if (searchTerms.length) {
+        let filteredData = menuData.map((menu) => {         
+          return {
+            ...menu,
+            products : menu.products.filter(product =>
+              product.name.toLowerCase().includes((searchTerms || '').toLowerCase())
+            )
+          }
+        }).filter((item:any)=>item.products.length)
+        setFiltreddMenuData(filteredData)       
+      }
+      else {
+        setFiltreddMenuData(menuData)        
+      }
     }
     else {
-      let filtredData = menuData.filter((data) => {
-        return data.name === selectedOption
-      })
-      setFiltreddMenuData(filtredData)
+      if (searchTerms.length) {
+        let filtredData = menuData.map((menu) => {         
+          return {
+            ...menu,
+            products : menu.products.filter(product =>
+              product.name.toLowerCase().includes((searchTerms || '').toLowerCase())
+            )
+          }
+        }).filter((data) => {
+          return data.name === selectedOption && data.products.length
+        })        
+        setFiltreddMenuData(filtredData);        
+      }
+      else {
+        let filtredData = menuData.filter((data) => {
+          return data.name === selectedOption
+        })
+        setFiltreddMenuData(filtredData)        
+      }      
     }
   }
 
@@ -250,7 +324,12 @@ const Menu: React.FC<AppProps> = ({ initialData }) => {
     handleFilter()
   }, [selectedOption, menuData])
 
-
+  const handleSearch = (event: any) => {
+    setSearchTerms(event?.target?.value);   
+  }
+  useEffect(() => {
+    handleFilter()
+  }, [searchTerms])
 
   const Product = () => {
     return <>
@@ -259,6 +338,7 @@ const Menu: React.FC<AppProps> = ({ initialData }) => {
           <CircularProgress sx={{ alignSelf: 'center', my: '2rem' }} />
         ) :
           (
+            filtreddMenuData.length ? 
             filtreddMenuData.map((menuItem: MenuData) => {
               const menuItemId = menuItem.id;
               const menuItemProducts = menuItem.products;
@@ -361,96 +441,180 @@ const Menu: React.FC<AppProps> = ({ initialData }) => {
                 </div>
               );
             }
-            )
+            ) 
+            :
+            <>
+              <div className="result-not-found">
+                <div className="result-not-found__title">Oups !</div>
+                <div className="result-not-found__text">
+                  Aucun résultat correspondant à vos critères de recherche{" "}
+                </div>
+                <div className="result-not-found__icon"></div>
+              </div>
+            </>
           )}
     </>
   }
+  const goBack = () => {
+    navigate(-1);
+  };
 
   return (
     <>
       <div className={`supplier-page-header`}>
         <Container className="supplier-page-header-container">
           <div className="btn-back-blc">
-            <Button className="btn-back" variant="link">Retour</Button>
+            <Button className="btn-back" variant="link" onClick={goBack}>Retour</Button>
           </div>
-
-          <div className="supplier-infos-area">
-            <div className="background-container">
-              <img loading="lazy" src={displayedRestaurant?.images[0].path} alt="restaurant image" className="background" />
-              <div className={`open-time ${!isOpen && "closed-time"} `}>
-                {
-                  isOpen ?
-                  <span>{t("supplier.opentime")} {closeTime}</span>
-                  :
-                  <span>{t("closed")}</span>
-                }
+          {
+            loading ?
+              <>
+                <div className="supplier-infos-area">
+                  <Skeleton
+                    variant="rectangular"
+                    width={'100%'}
+                    height={365}
+                  />
+                  <div>
+                    <div className="loading-supplier-name">
+                      <Skeleton
+                        variant="rectangular"
+                        width={85}
+                        height={85}
+                      />
+                      <div className='loading-supplier-details'>
+                        <Skeleton
+                          variant="rectangular"
+                          width={'100%'}
+                          height={30}
+                        />
+                        <Skeleton
+                          variant="rectangular"
+                          width={'100%'}
+                          height={20}
+                        />
+                    </div>
+                    </div>
+                    <div className="loading-supplier">
+                      {[...Array(3)].map((_, index) => (
+                        <div className='icons-loader'>
+                          <Skeleton
+                            variant="rectangular"
+                            width={40}
+                            height={40}
+                          />
+                          <Skeleton
+                            variant="rectangular"
+                            width={160}
+                            height={10}
+                          />
+                        </div>     
+                      ))
+                      }
+                      <Skeleton
+                        variant="rectangular"
+                        width={'100%'}
+                        height={46}
+                      />
+                    </div>  
+                  </div>                
+                </div>
+              </>
+            : 
+            <div className="supplier-infos-area">
+              <div className="background-container">
+                <img loading="lazy" src={displayedRestaurant?.images[0].path} alt="restaurant image" className="background" />
+              </div>
+              <div className="supplier-infos-blc">
+                <div className="supplier-title-area">
+                  <div className="supplier-logo">
+                    <img loading="lazy" src={displayedRestaurant?.images[0].pivot.type === "principal" ? displayedRestaurant?.images[0].path : displayedRestaurant?.images[1].path} alt="" />
+                  </div>
+                  <div className="supplier-title-blc">
+                    <h1 className="supplier-title">{displayedRestaurant?.name}</h1>
+                    <p className="supplier-desc">
+                      {categories}
+                    </p>
+                  </div>
+                </div>
+                <div className="supplier-infos_list-wrapper">
+                  <div className="supplier-infos_list-blc">
+                    <div className="supplier-infos_list">
+                      <ul>
+                        <li>
+                          <p className="supplier-infos_list-item location">
+                            {displayedRestaurant?.city +' '+displayedRestaurant?.street+' '+displayedRestaurant?.postcode} 
+                          </p>
+                        </li>
+                        <li>
+                          <p className={`supplier-infos_list-item time-work ${isOpen ? 'open': 'close'}`}>
+                            {
+                              isOpen ?
+                              <span>{t("supplier.opentime")} {closeTime}</span>
+                              :
+                              <span>{t("closed")}</span>
+                            }
+                          </p>
+                        </li>
+                        <li>
+                          <p className="supplier-infos_list-item shipping-cost">
+                            Frais de livraison: {displayedRestaurant?.delivery_price} Dt
+                          </p>
+                        </li>
+                      </ul>
+                    </div>
+                    <div className="supplier-infos_ratings-count">                    
+                      <div className='rate-gouping'>
+                        <div className="favor" style={(favor) ? { backgroundImage: `url(${FavorActiveIcon})` } : { backgroundImage: `url(${FavorIcon})` }} onClick={updatefavorite}>
+                        </div>    
+                        {
+                          displayedRestaurant?.bonus ? (
+                            <div className='gift-icon' style={(displayedRestaurant?.bonus > 0) ? { backgroundImage: `url(${ActiveGiftIcon})` } : { backgroundImage: `url(${GiftIcon})` }}></div>
+                          ) : (
+                            <div className='gift-icon' style={{ backgroundImage: `url(${GiftIcon})` }}></div>
+                          )
+                        }
+                      </div>
+                      <div className="stars">
+                        {
+                          (displayedRestaurant?.star && (displayedRestaurant?.star > 0)) && (<span className='star-number'> {displayedRestaurant?.star}</span>)
+                        }
+                        {[...Array(5)].map((_, index) => (
+                          <span key={index + 1}>                          
+                            {(displayedRestaurant?.star && (displayedRestaurant?.star >= index + 1))
+                              ? <Star className='starIcon' style={{ visibility: 'visible' }} /> : <StarBorderIcon className='starIcon'  style={{ visibility: 'visible' }} />  
+                            }
+                          </span>
+                        ))}                     
+                      </div>                      
+                      <div className='time'>
+                        {`${Number(displayedRestaurant?.medium_time) - 10}-${Number(displayedRestaurant?.medium_time + 10)}min`}
+                      </div>
+                    </div>
+                  </div>
+                  <div className="supplier-info-search">
+                    <button className="btn btn-search"></button>
+                    <div className="search-blc">
+                      <input type="search" value={searchTerms} className="form-control" placeholder="Qu’est ce qu’on vous apporte ?" onInput={handleSearch}/>
+                    </div>
+                  </div>
+                </div>
               </div>
             </div>
-            <div className="supplier-infos-blc">
-              <div className="supplier-title-area">
-                <div className="supplier-logo">
-                  <img loading="lazy" src={displayedRestaurant?.images[0].pivot.type === "principal" ? displayedRestaurant?.images[0].path : displayedRestaurant?.images[1].path} alt="" />
-                </div>
-                <div className="supplier-title-blc">
-                  <h1 className="supplier-title">{displayedRestaurant?.name}</h1>
-                  <p className="supplier-desc">
-                    Restaurant - chiken  Grillade  hamburger  pate  pizza  sandwich  salade
-                  </p>
-                </div>
-              </div>
-              <div className="supplier-infos_list-wrapper">
-                <div className="supplier-infos_list-blc">
-                  <div className="supplier-infos_list">
-                    <ul>
-                      <li>
-                        <p className="supplier-infos_list-item location">
-                          Khzema sousse
-                        </p>
-                      </li>
-                      <li>
-                        <p className="supplier-infos_list-item time-work">
-                          Ouvert jusqu’à 22:00 PM
-                        </p>
-                      </li>
-                      <li>
-                        <p className="supplier-infos_list-item shipping-cost">
-                          Frais de livraison: 3 Dt
-                        </p>
-                      </li>
-                    </ul>
-                  </div>
-                  <div className="supplier-infos_ratings-count">
-                    
-                    <div className='rate-gouping'>
-                      {
-                        (displayedRestaurant?.star && (displayedRestaurant?.star > 0)) && (<span className='star-number'> {displayedRestaurant?.star}</span>)
-                      }
-                      <Star className='starIcon' style={{ visibility: 'visible' }} />
-
-                      {
-                        displayedRestaurant?.bonus ? (
-                          <div className='gift-icon' style={(displayedRestaurant?.bonus > 0) ? { backgroundImage: `url(${ActiveGiftIcon})` } : { backgroundImage: `url(${GiftIcon})` }}></div>
-                        ) : (
-                          <div className='gift-icon' style={{ backgroundImage: `url(${GiftIcon})` }}></div>
-                        )
-                      }
-                    </div>
-                    <div className='time'>
-                      {`${Number(displayedRestaurant?.medium_time) - 10}-${Number(displayedRestaurant?.medium_time + 10)}min`}
-                    </div>
-                  </div>
-                </div>
-                <div className="supplier-info-search">
-                  <button className="btn btn-search"></button>
-                  <div className="search-blc">
-                    <input type="search" className="form-control" placeholder="Qu’est ce qu’on vous apporte ?" />
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
+          }          
           <div className="categories-filters filers">
             {
+              loading ?
+                <div className='loading-container'>
+                  {[...Array(4)].map((_, index) => (
+                    <Skeleton
+                      variant="rectangular"
+                      width={180}
+                      height={46}
+                    />
+                  ))}                  
+                </div>                
+                : 
               menuData.length != 0 && (
                 <>
                   <div className={`select ${selectedOption == "All" ? "selected" : ""}`}  >
@@ -475,9 +639,32 @@ const Menu: React.FC<AppProps> = ({ initialData }) => {
               )
             }
           </div>
-          <div className="supplier-main-menu">
-            <Product />
-          </div>
+          {
+            loading ?
+              <>
+                <div className='loading-category'>
+                  <Skeleton
+                    variant="rectangular"
+                    width={'100%'}
+                    height={56}
+                  />
+                </div>
+                <div className='loading-menu'>             
+                  {[...Array(4)].map((_, index) => (
+                    <Skeleton
+                      variant="rectangular"
+                      width={375}
+                      height={160}
+                    />
+                  ))}                  
+                </div> 
+              </>                           
+            : 
+              <div className="supplier-main-menu">
+                <Product />
+              </div>
+          }
+        
 
         </Container>
       </div>
