@@ -51,7 +51,7 @@ const ProductCarousel: React.FC<ProductCarouselProps> = ({
         case width >= 1700:
           items = 7;
           break;
-        case width >= 1440 && width < 1700:
+        case width < 1700:
           items = 6;
           break;
         case width >= 768 && width < 1440:
