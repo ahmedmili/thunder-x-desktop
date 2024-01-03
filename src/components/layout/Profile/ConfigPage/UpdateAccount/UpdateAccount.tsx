@@ -34,6 +34,10 @@ const UpdateAccount: React.FC<updateProps> = ({ showPassword, showPhone }) => {
     tel: yup.string().min(8, 'Invalid phone number').required('Phone is required'),
   });
 
+  const navigateToHome = () => {
+    const currentLocation = localStorageService.getCurrentLocation()
+    currentLocation ? navigate('/search') : navigate('/')
+  }
   const handleSubmit = async (e: any) => {
     e.preventDefault()
     const userData = {
@@ -70,7 +74,8 @@ const UpdateAccount: React.FC<updateProps> = ({ showPassword, showPhone }) => {
             savedData.tel = userData.tel
             localStorageService.setUser(savedData)
           }
-          navigate('/')
+          // navigate('/')
+          navigateToHome()
         }
       }
 

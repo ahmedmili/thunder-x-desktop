@@ -105,6 +105,12 @@ function FilterPage() {
     handleSsr()
   }, [])
 
+  const navigateToHome = () => {
+    const currenLocation = localStorageService.getCurrentLocation()
+    let path = '';
+    currenLocation ? path = '/search' : path = '/'
+    navigate(path, { replace: true })
+  }
 
   useEffect(() => {
     const currentLocation = JSON.parse(
@@ -114,7 +120,8 @@ function FilterPage() {
       searchSupplier();
     }
     else {
-      navigate('/')
+      // navigate('/')
+      navigateToHome()
     }
   }, []);
 

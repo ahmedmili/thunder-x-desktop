@@ -668,6 +668,14 @@ const CartPage: React.FC = () => {
     }
   }
 
+  const navigateToHome = () => {
+    const currenLocation = localStorageService.getCurrentLocation()
+    let path = '';
+    currenLocation ? path = '/search' : path = '/'
+    navigate(path, { replace: true })
+  }
+
+
   useEffect(() => {
     switch (selectedOption) {
       case 1:
@@ -963,7 +971,7 @@ const CartPage: React.FC = () => {
                             </div>
 
                             <div className="buttons">
-                              <button className="continue" onClick={() => navigate('/', { replace: true })}>
+                              <button className="continue" onClick={navigateToHome}>
                                 {t('cartPage.continueAchats')}
                               </button>
                               <button className="commander"
@@ -1106,7 +1114,7 @@ const CartPage: React.FC = () => {
                     <p>{t('cartPage.empty')}</p>
                   </div>
                   <img loading="lazy" src={empty} alt=" not command items" />
-                  <button className="emptyButton" onClick={() => navigate('/', { replace: true })}>
+                  <button className="emptyButton" onClick={navigateToHome}>
                     {t('cart.payment.iCommand')}
                   </button>
                 </div>

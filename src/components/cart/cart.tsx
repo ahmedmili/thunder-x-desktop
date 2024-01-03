@@ -11,12 +11,14 @@ import empty from '../../assets/panier/empty.png';
 import CloseIcon from '@mui/icons-material/Close';
 import { useTranslation } from 'react-i18next';
 import { useNavigate } from 'react-router-dom';
-import './cart.scss';
 import { adressService } from '../../services/api/adress.api';
+import './cart.scss';
+import { localStorageService } from '../../services/localStorageService';
 interface CartProps {
   items: FoodItem[];
   closeButton: any
 }
+
 
 interface Article {
   id: number;
@@ -49,7 +51,10 @@ export const Cart: React.FC<CartProps> = ({ items, closeButton }) => {
   const navigate = useNavigate()
   const { t } = useTranslation()
 
-
+  const navigateToHome = () => {
+    const currentLocation = localStorageService.getCurrentLocation()
+    currentLocation ? navigate('/search') : navigate('/')
+  }
 
   const ArticlesProvider: React.FC<Article> = (props) => {
     const [count, setCount] = useState<number>(props.count)
@@ -244,7 +249,7 @@ export const Cart: React.FC<CartProps> = ({ items, closeButton }) => {
               <p>{t('cart.payment.noCommands')}</p>
               <button className='emptyButton' onClick={() => {
                 closeButton()
-                navigate('/')
+                navigateToHome()
               }}>
                 {t('cart.payment.iCommand')}
               </button>
