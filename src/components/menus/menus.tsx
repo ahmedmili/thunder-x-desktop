@@ -39,7 +39,7 @@ const Menu: React.FC<AppProps> = ({ initialData }) => {
   const dispatch = useAppDispatch();
   const navigate = useNavigate();
   const location = useLocation();
-  const [loading, setLoading] = useState((typeof window != 'undefined') ? true : false);
+  const [loading, setLoading] = useState(true);
 
   const [currentPage, setCurrentPage] = useState<{ [key: string]: number }>({});
   const productsPerPage = 4;
@@ -164,7 +164,7 @@ const Menu: React.FC<AppProps> = ({ initialData }) => {
     try {
       if (typeof window != "undefined") {
         data = await supplierServices.getSupplierById(Number(idNumber!))
-        data = data.data
+        data = data.data;         
         if (isLoggedIn?.length! > 0) {
           let favList :any = await userService.getClientFavorits(); 
           favList = favList.data.data.map((i: any) => Number(i.id))
@@ -177,6 +177,9 @@ const Menu: React.FC<AppProps> = ({ initialData }) => {
         }
       }
       else data = initialData.supplierResponse
+
+      let categories = data.data.categorys.map((item:any)=>item.name)?.join(' - ')
+      setCategories(categories)
       setDisplayedRestaurant(data.data)
     } catch (error) {
       throw error
@@ -190,17 +193,13 @@ const Menu: React.FC<AppProps> = ({ initialData }) => {
         if (data.status === 200) {
           data = data.data
           setMenuData(data.data);
-          setFiltreddMenuData(data.data)
-          let categories = data.data.map((item:any)=>item.name)?.join(' - ')
-          setCategories(categories)
+          setFiltreddMenuData(data.data)         
         }
       }
       else {
         data = initialData.menuResponse.data
         setMenuData(data);
-        setFiltreddMenuData(data)
-        let categories = data.data.map((item:any)=>item.name)?.join(' - ')
-        setCategories(categories)
+        setFiltreddMenuData(data)    
       }
     } catch (error) {
       throw error
@@ -235,7 +234,7 @@ const Menu: React.FC<AppProps> = ({ initialData }) => {
     await getSupplierById()
     await getMenu()
     handleFilter()
-    getSupplierIsOpen()
+    await getSupplierIsOpen()
     setLoading(false);
   };
 
@@ -259,13 +258,19 @@ const Menu: React.FC<AppProps> = ({ initialData }) => {
 
   // close options
   const handleChooseOptions = (selectedMenuItem: any | null) => {
-    if (isOpen) {
-      showOptionsPopup === false && handleUrlProductId(selectedMenuItem.id)
-      dispatch(setProduct(selectedMenuItem))
-      handlePopup()
-    } else {
-      handleClosedWarnModal()
-    }
+    const locationPath = location.pathname;
+    let locationArray = locationPath.split("/");
+    locationArray[4] = selectedMenuItem.id.toString();
+    locationArray[1] = 'product';
+    const newURL = locationArray.join("/");    
+    navigate(newURL);
+    // if (isOpen) {
+    //   showOptionsPopup === false && handleUrlProductId(selectedMenuItem.id)
+    //   dispatch(setProduct(selectedMenuItem))
+    //   handlePopup()
+    // } else {
+    //   handleClosedWarnModal()
+    // }
   };
 
   const getTruncatedName = (name: string, MAX_NAME_LENGTH: number) => {
@@ -456,7 +461,7 @@ const Menu: React.FC<AppProps> = ({ initialData }) => {
     </>
   }
   const goBack = () => {
-    navigate(-1);
+    navigate('/search/');
   };
 
   return (
@@ -565,9 +570,9 @@ const Menu: React.FC<AppProps> = ({ initialData }) => {
                     </div>
                     <div className="supplier-infos_ratings-count">                    
                       <div className='rate-gouping'>
-                          {isLoggedIn ?
-                            <div className="favor" style={(favor) ? { backgroundImage: `url(${FavorActiveIcon})` } : { backgroundImage: `url(${FavorIcon})` }} onClick={updatefavorite}>
-                            </div> : ""
+                        { isLoggedIn ?
+                          <div className="favor" style={(favor) ? { backgroundImage: `url(${FavorActiveIcon})` } : { backgroundImage: `url(${FavorIcon})` }} onClick={updatefavorite}>
+                          </div> : ""
                         }   
                         {
                           displayedRestaurant?.bonus ? (

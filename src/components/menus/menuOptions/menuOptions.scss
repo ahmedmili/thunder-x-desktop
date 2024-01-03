@@ -340,6 +340,7 @@
             }
         }
         .supplier-title-blc {
+            width: 100%;
             .supplier-title {
                 margin: 0 0 10px;
                 font-family: 'Poppins-Bold', serif;
@@ -350,6 +351,82 @@
                 font-family: 'Poppins', serif;
                 font-weight: weight(regular);
                 @include fonts(14px, 14px, $dark_002);
+            }
+        }
+        .supplier-infos_ratings-count {
+            .time {
+                min-width: 190px;
+                height: 43px;
+                background-color: $color-blue-pelorous;
+                border-radius: 55px;
+                display: inline-flex;
+                align-items: center;
+                justify-content: center;
+                @include fonts(17px, 17px, $color-white);
+                font-family: 'Poppins-Medium', serif;
+            }
+        }
+
+        .rate-gouping {
+            @include flex(flex, center, flex-end);
+            margin: 0 0 24px;
+
+            .star-number {
+                color: $dark_Gray;
+                font-size: 24px;
+                font-weight: weight(bold);
+            }
+
+            .starIcon {
+                @include dimensions(36px, 35px);
+                color: $orange_color;
+            }
+
+            .gift-icon {
+                @include dimensions(28px, 34px);
+                background-position: center;
+                background-repeat: no-repeat;
+                background-size: 21px;
+                color: $color-blue-eastern;
+            }
+
+            .favor {
+                @include dimensions(23px, 29px);
+                background-position: center;
+                background-repeat: no-repeat;
+                background-size: contain;
+                margin-top: 5px;
+                margin-right: 10px;
+
+                &:hover {
+                    cursor: pointer;
+                }
+            }
+        }
+
+        .stars {
+            text-align: end;
+            margin: 0 0 29px;
+            display: flex;
+            align-items: center;
+            justify-content: flex-end;
+
+            .starIcon {
+                height: 28px;
+                width: 28px;
+                color: $orange_color;
+            }
+
+            .star-number {
+                color: $dark_002;
+                font-family: Poppins;
+                font-size: 20px;
+                font-style: normal;
+                font-weight: 500;
+                line-height: 28px;
+                margin-right: 13px;
+                display: inline-block;
+                margin-top: 5px;
             }
         }
     }
@@ -390,6 +467,12 @@
                 &::before {
                     background-image: url('./../../../assets/time-work-icn.svg');
                     background-size: 25px auto;
+                }
+                &.close {
+                    color: $color-apricot;
+                    &::before {
+                        background-color: $color-apricot;
+                    }
                 }
             }
             &.shipping-cost {
@@ -648,6 +731,25 @@
                 }
             }
         }
+    }
+}
+.loading-menu-container{
+    display: flex;
+    margin-block: 55px ;
+    gap: 68px;    
+    .MuiSkeleton-rectangular {
+        border-radius: 10px
+    }
+    .right-loaders{
+        width: 50%;
+        .MuiSkeleton-rectangular{
+            margin-bottom: 20px;
+        }
+    }
+}
+.loading-container{
+    .MuiSkeleton-rectangular {
+        border-radius: 10px
     }
 }
 

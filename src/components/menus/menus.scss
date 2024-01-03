@@ -514,6 +514,7 @@
 .loading-menu{
     display: flex;
     gap: 10px;
+    margin-bottom: 65px;
     .MuiSkeleton-rectangular {
         border-radius: 15px;
     }
@@ -620,6 +621,9 @@
                         }
                         &.close {
                             color: $color-apricot;
+                            &::before {
+                                background-color: $color-apricot;
+                            }
                         }
                     }
                     &.shipping-cost {
