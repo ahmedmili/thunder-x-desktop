@@ -23,6 +23,9 @@ import ProductCarousel from "../../components/productCarousel/productCarousel";
 import { supplierServices } from "../../services/api/suppliers.api";
 import { localStorageService } from "../../services/localStorageService";
 import HomeSkeleton from "./skeleton/HomeSkeleton";
+import Spinner from "../../components/spinner/Spinner";
+import { checkSsr } from "../../utils/utils";
+import SpinnerPopup from "../../components/Popups/Spinner/SpinnerPopup";
 
 
 interface homePageAds {
@@ -40,13 +43,16 @@ const HomePage = ({ initialData }: AppProps) => {
   const ads = initialData ? initialData.ads : useSelector(adsHomeSelector);
   const categories = initialData ? initialData.categories : [];
   const isLoading = initialData ? false : useSelector(homeLoadingSelector);
+  const [ssrLoading, setSsrLoading] = useState<boolean>(true)
 
   const unReadMessages = initialData ? 0 : useAppSelector((state) => state.messanger.unReadedMessages)
   const locationState = useAppSelector((state) => state.location.position)
   const [unReadedQt, setUnReadedQt] = useState<number>(unReadMessages)
 
   const navigate = useNavigate()
+  var ssrTimeout: any = () => {
 
+  };
   useEffect(() => {
     setUnReadedQt(unReadMessages)
   }, [unReadMessages])
@@ -59,6 +65,29 @@ const HomePage = ({ initialData }: AppProps) => {
     location && navigate('/search/', { replace: true })
 
   }, [locationState])
+
+  const handleSsr = () => {
+    let isSsr = checkSsr()
+    setSsrLoading(isSsr)
+    setTimeout(() => {
+      let currentLocation = localStorageService.getCurrentLocation()
+      let isSsr = checkSsr()
+      if (isSsr) {
+        setSsrLoading(true)
+      } else {
+        if (currentLocation) {
+          navigate('/search', { replace: true })
+        } else {
+        }
+        setSsrLoading(false)
+      }
+    }, 1000 * 3)
+  }
+
+
+  useEffect(() => {
+    handleSsr()
+  }, [])
 
   const getSuppliers = async () => {
 
@@ -73,48 +102,58 @@ const HomePage = ({ initialData }: AppProps) => {
   }, [])
   return (
     <>
+      {/* {
+        !ssrLoading ? */}
+      <>
+        <div className="slider-area product-carousel">
+          <ProductCarousel
+            // ssrCategories={suppliers}
+            suppliers={suppliers}
+          />
+        </div>
 
-      <div className="slider-area product-carousel">
-        <ProductCarousel
-          // ssrCategories={suppliers}
-          suppliers={suppliers}
-        />
-      </div>
+        <div className={`xxl-12 ${homeStyle.homePageContainer}`}>
+          {isLoading ? (
+            <div className={homeStyle.homeSkeletonContainer}>
 
-      <div className={`xxl-12 ${homeStyle.homePageContainer}`}>
-        {isLoading ? (
-          <div className={homeStyle.homeSkeletonContainer}>
-
-            <HomeSkeleton />
-          </div>
-        ) : (
-          <>
-            {
-              homeAds && homeAds.HOME_2 && <HomPageAds homeAds={homeAds!.HOME_2} />
-            }
-
-            <div className={homeStyle.bulles}>
-              <button className={homeStyle.messangerPopupBtn} onClick={handleMessangerPopup} style={{ backgroundImage: `url(${MessangerBtnIcon})` }}>
-                {unReadedQt > 0 && initialData && (
-                  <div className={homeStyle.messangerBullNotifIcon}>
-                    {unReadedQt}
-                  </div>
-                )}
-              </button>
+              <HomeSkeleton />
             </div>
-            {
-              messangerPopup &&
-              <Messanger className={homeStyle.discuterMessangerPopup} close={handleMessangerPopup} />
-            }
+          ) : (
+            <>
+              {
+                homeAds && homeAds.HOME_2 && <HomPageAds homeAds={homeAds!.HOME_2} />
+              }
 
-          </>
-        )}
-      </div>
+              <div className={homeStyle.bulles}>
+                <button className={homeStyle.messangerPopupBtn} onClick={handleMessangerPopup} style={{ backgroundImage: `url(${MessangerBtnIcon})` }}>
+                  {unReadedQt > 0 && initialData && (
+                    <div className={homeStyle.messangerBullNotifIcon}>
+                      {unReadedQt}
+                    </div>
+                  )}
+                </button>
+              </div>
+              {
+                messangerPopup &&
+                <Messanger className={homeStyle.discuterMessangerPopup} close={handleMessangerPopup} />
+              }
 
-      <OrderTracking />
-      <JoinUs />
-      <FooterNewsLeter />
+            </>
+          )}
+        </div>
+
+        <OrderTracking />
+        <JoinUs />
+        <FooterNewsLeter />
+        {
+          ssrLoading && <SpinnerPopup />
+        }
+      </>
+      {/* : <Spinner borderColor="red" borderLeftColor="white" name="loading"></Spinner>
+      } */}
     </>
+
+
   );
 };
 

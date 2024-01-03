@@ -191,7 +191,7 @@
         .headerMessageSyle1 {
             display: inline;
             font-family: 'Poppins-Bold', serif;
-            @include fonts(54px, 54px, $color-white);
+            @include fonts(50px, 50px, $color-white);
             line-height: normal;
 
             &:not(:last-child) {
@@ -274,12 +274,13 @@
     z-index: 978;
     background-color: transparent;
     height: 110px;
-    padding: 15px 35px;
+    padding: 15px; // 15px 35px
     border-radius: 0px 0px 20px 20px;
     transition: box-shadow 0.3s ease-in-out;
 
-    >.container {
+    > .container {
         @include flex(flex, center, space-between);
+        padding: 0;
     }
 
     .header-buttons {
@@ -544,7 +545,7 @@
     }
     .home-section-one {
         .headerAppBar2 {
-            padding-top: 60px;
+            padding-top: 100px;
             margin: 0;
 
             .headerMessage {
@@ -569,7 +570,6 @@
                 position: absolute;
                 right: 20px;
                 bottom: initial;
-                top: -75px;
 
                 &::before,
                 &::after {

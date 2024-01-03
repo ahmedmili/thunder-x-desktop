@@ -41,7 +41,6 @@ const Header = () => {
   const navigate = useNavigate();
   const routerLocation = useLocation();
   const { t } = useTranslation();
-  const region: any = useSelector(regionHomeSelector);
 
   const handleScroll = () => {
     // Check if the user has scrolled down more than a certain threshold
@@ -68,11 +67,7 @@ const Header = () => {
     };
   }, []);
 
-  useEffect(() => {
-    if (region === false) {
-      dispatch({ type: "SET_SHOW", payload: true })
-    }
-  }, [region]);
+  
 
   const handleCart = async () => {
     showProfile && setShowProfile(false)
@@ -88,41 +83,41 @@ const Header = () => {
     }
   };
 
+  const navigateToHome = () => {
+    const currentLocation = localStorageService.getCurrentLocation()
+    currentLocation ? navigate('/search') : navigate('/')
+  }
+
+
   return (
     <>
 
       {
-        (routerLocation.pathname == "/" ) ? (
+        (routerLocation.pathname == "/" && !location) ? (
           <div className="overflow-hidden home-section-one">
             <Container className="xxl-12 header" >
-              {/* 
-                <div className="head1">
-                  <div className="demiCercle">
-
-                  </div>
-                </div>
-              */}
               <div className={`fixedHeaderContainer2 ${scrolling ? 'scroll' : ''}`} >
                 <div className="container">
                   <div className="logoContainer"
-                    onClick={() => navigate('/')} >
+                    onClick={navigateToHome} >
                     <a href="#" className={`logoMain minimizedlogoMain`}></a>
                   </div>
                   <div className='info'>
                     <div className="position">
                       <LocationOnIcon className='position-icon' />
-                      {location
+                      {/* {location
                         ? location?.coords.label
-                        : t('no_location_detected')}
+                        :
+                        t('no_location_detected')
+                      } */}
+                      {t('no_location_detected')}
 
                     </div>
                     <button onClick={handleCart} className="cart-item">
-                      {/* <ShoppingCartOutlinedIcon className='cart-icon' /> */}
                       <span className='cart-icon'></span>
                       {cartItems.length}
                     </button>
                     <button onClick={handleUserCart} className={`account ${!logged_in && 'loggedin-account'}`}  >
-                      {/* <PermIdentityOutlinedIcon className='account-icon' /> */}
                       <span className='account-icon'></span>
                     </button>
 
@@ -184,16 +179,18 @@ const Header = () => {
                         <span className="localisationIcon" >
                           {/* <PinDropIcon className="pin-icon" /> */}
                         </span>
-                        {location
-                          ? location?.coords.label
-                          : t('entrezAdress')}
+                        {/* {location
+                          ? location.coords.label
+                          : t('entrezAdress')} */}
+                        {t('entrezAdress')}
                       </a>
                     </Box>
                     {
-                      location?.coords ?
+                      location ?
                         <SearchBar placeholder={t('search_placeholder')} /> :
                         <LocationsearchBar placeholder={t('search_placeholder')} />
-                      }
+                    }
+
                   </div>
                 </Col>
 
@@ -220,7 +217,7 @@ const Header = () => {
           <>
             <div className={`fixedHeaderContainer2 scroll`} >
               <div className="logoContainer"
-                onClick={() => navigate('/')} >
+                onClick={navigateToHome} >
                 <a href="#" className={`logoMain minimizedlogoMain`}></a>
               </div>
 

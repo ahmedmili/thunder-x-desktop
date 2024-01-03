@@ -7,6 +7,7 @@ import { RootState } from '../../../Redux/slices';
 import { addItem, setDeliveryPrice, setSupplier } from '../../../Redux/slices/cart/cartSlice';
 import { useAppDispatch, useAppSelector } from '../../../Redux/store';
 import { productService } from '../../../services/api/product.api';
+import { Container, Button } from 'react-bootstrap';
 // import { toast } from 'react-toastify';
 import './menuOptions.scss';
 
@@ -19,6 +20,8 @@ import { AppProps, Option, Restaurant } from '../../../services/types';
 
 import { fetchMessages } from '../../../Redux/slices/messanger';
 import MessangerBtnIcon from '../../../assets/profile/Discuter/messanger-btn.svg';
+import SupplierIcn from './../../../assets/supplier-icn.png';
+import menuImg from './../../../assets/menu-1.png';
 import Messanger from '../../Popups/Messanger/Messanger';
 import SameSupplierWarn from '../../Popups/SameSupplierWarn/SameSupplierWarn';
 
@@ -454,108 +457,246 @@ function MenuOptions({ initialData }: AppProps) {
 
     return (
         <div className="menue-options-container" onClick={(e) => e.stopPropagation()}>
-            <div className="modal-content-image">
-                <div className="modal-content-image-inner"
-                    style={{ backgroundImage: `url(${(product.image?.length > 0) ? product.image[0].path : productSupplier?.images[0].path})`, }}>
+
+            <Container>
+                <div className="btn-back-blc">
+                    <Button className="btn-back" variant="link">Retour</Button>
                 </div>
-            </div>
-            <div className="modal-content-options">
-                <div className="options-info">
 
-                    <h5 className="menu-title" dangerouslySetInnerHTML={{ __html: product?.name }}></h5>
-                    <h6 className='menu-price'>
-                        A partir de {product.price}
-                    </h6>
-                    <p className='menu-description' dangerouslySetInnerHTML={{ __html: product?.description }}></p>
-
+                <div className="supplier-details-header">
+                    <div className="supplier-title-area">
+                        <div className="supplier-logo">
+                            <img src={SupplierIcn} alt="supplier icn" />
+                        </div>
+                        <div className="supplier-title-blc">
+                            <h1 className="supplier-title">L’instant café & restaurant</h1>
+                            <p className="supplier-desc">Restaurant - chiken  Grillade  hamburger  pate  pizza  sandwich  salade</p>
+                        </div>
+                    </div>
+                    <div className="supplier-infos_list">
+                        <ul>
+                            <li>
+                                <p className="supplier-infos_list-item location">Khzema sousse</p>
+                            </li>
+                            <li>
+                                <p className="supplier-infos_list-item time-work">Ouvert jusqu’à 22:00 PM</p>
+                            </li>
+                            <li>
+                                <p className="supplier-infos_list-item shipping-cost">Frais de livraison: 3 Dt</p>
+                            </li>
+                            <li>
+                                <div className="time">1123-1143min</div>
+                            </li>
+                        </ul>
+                    </div>
                 </div>
-                <div className="menu-options">
-                    {
-                        state.optionslist.length === 0 ? (
-                            <>
-                            </>
-                        ) : allContent.map((options, index) => {
-                            return (
-                                <React.Fragment key={index}>
-                                    <div className='menu-options-header'>
-                                        <div className="option-name">Choisissez votre {Object.keys(options)[0]}</div>
-                                        {
 
-                                            Object.keys(options)[0] === "packet" && <div className="option-obligatoir">Obligatoire</div>
-                                        }
+                <div className="supplier-details-body">
+                    <div className="modal-content-image">
+                        <div className="modal-content-image-inner"
+                            style={{ backgroundImage: `url(${(product.image?.length > 0) ? product.image[0].path : productSupplier?.images[0].path})`, }}>
+                        </div>
+                    </div>
+                    <div className="modal-content-options">
+                        <div className="options-info">
 
-                                        {
-                                            Object.keys(options)[0] === "sauce" && state.sauce_max?.max > 0 && <div className="option-max">{"MAX " + state.sauce_max?.max}</div>
-                                        }
-                                        {
-                                            Object.keys(options)[0] === "viande" && state.viande_max?.max > 0 && <div className="option-max">{"MAX " + state.viande_max?.max}</div>
-                                        }
-                                        {
-                                            Object.keys(options)[0] === "extra" && state.extra_max?.max > 0 && <div className="option-max">{"MAX " + state.extra_max?.max}</div>
-                                        }
-                                        {
-                                            Object.keys(options)[0] === "supplement" && state.supplement_max?.max > 0 && <div className="option-max">{"MAX " + state.supplement_max?.max}</div>
-                                        }
-                                    </div>
-                                    <form>
-                                        {state[Object.keys(options)[0]].map((option: any, index: number) => (
-                                            <div key={index} className="options-list">
-                                                <div className="checkBox">
-                                                    <input type='checkbox' name={option.id} id={option.id} value={option.id || ''} onChange={(e) => selectOption(Object.keys(options)[0], index, e)} checked={option?.checked}>
-                                                    </input>
-                                                    <div className="custom-checkbox"></div>
-                                                    <label htmlFor={option.id}>{option.name} </label>
+                            <h2 className="menu-title" dangerouslySetInnerHTML={{ __html: product?.name }}></h2>
+                            <p className='menu-price'>
+                                A partir de {product.price}
+                            </p>
+                            <div className='menu-description' dangerouslySetInnerHTML={{ __html: product?.description }}></div>
+
+                        </div>
+                        <div className="menu-options">
+                            {
+                                state.optionslist.length === 0 ? (
+                                    <>
+                                    </>
+                                ) : allContent.map((options, index) => {
+                                    return (
+                                        <React.Fragment key={index}>
+                                            <div className="menu-options-blc">
+                                                <div className='menu-options-header'>
+                                                    <div className="option-name">Choisissez votre {Object.keys(options)[0]}</div>
+                                                    {
+
+                                                        Object.keys(options)[0] === "packet" && <div className="option-obligatoir">Obligatoire</div>
+                                                    }
+
+                                                    {
+                                                        Object.keys(options)[0] === "sauce" && state.sauce_max?.max > 0 && <div className="option-max">{"MAX " + state.sauce_max?.max}</div>
+                                                    }
+                                                    {
+                                                        Object.keys(options)[0] === "viande" && state.viande_max?.max > 0 && <div className="option-max">{"MAX " + state.viande_max?.max}</div>
+                                                    }
+                                                    {
+                                                        Object.keys(options)[0] === "extra" && state.extra_max?.max > 0 && <div className="option-max">{"MAX " + state.extra_max?.max}</div>
+                                                    }
+                                                    {
+                                                        Object.keys(options)[0] === "supplement" && state.supplement_max?.max > 0 && <div className="option-max">{"MAX " + state.supplement_max?.max}</div>
+                                                    }
                                                 </div>
-                                                <span className='option-price'>{option.price} DT</span>
+                                                <form>
+                                                    {state[Object.keys(options)[0]].map((option: any, index: number) => (
+                                                        <div key={index} className="options-list">
+                                                            <div className="checkBox">
+                                                                <input type='checkbox' name={option.id} id={option.id} value={option.id || ''} onChange={(e) => selectOption(Object.keys(options)[0], index, e)} checked={option?.checked}>
+                                                                </input>
+                                                                <div className="custom-checkbox"></div>
+                                                                <label htmlFor={option.id}>{option.name} </label>
+                                                            </div>
+                                                            <span className='option-price'>{option.price} DT</span>
+                                                        </div>
+                                                    ))}
+                                                </form>
                                             </div>
-                                        ))}
-                                    </form>
-
-                                    <div className="devider">
-
-                                    </div>
-                                </React.Fragment>)
-                        })
-                    }
+                                        </React.Fragment>)
+                                })
+                            }
 
 
-                </div >
+                        </div >
 
 
-                <div className="buttons">
-                    <div className="count-container">
-                        <input type="number" name="product-count" id="product-count" value={productCount} onChange={(e) => { (parseInt(e.target.value) >= 1) && setProductCount(parseInt(e.target.value)) }} />
-                        <div className="count-buttons">
-                            <button onClick={() => handleCount("add")} >
-                                <KeyboardArrowUpOutlinedIcon className="count-more" />
+                        <div className="buttons btns-group">
+                            <div className="count-container">
+                                <input type="number" name="product-count" id="product-count" value={productCount} onChange={(e) => { (parseInt(e.target.value) >= 1) && setProductCount(parseInt(e.target.value)) }} />
+                                <div className="count-buttons">
+                                    <button className="btn counter-more" onClick={() => handleCount("add")} ></button>
+                                    <button className="btn counter-minus" onClick={() => handleCount("remove")} ></button>
+                                </div>
+                            </div>
+
+                            <button className="add-to-cart-button" onClick={() => {
+                                addToCart()
+                            }}>
+                                {t('add_to_cart')}
                             </button>
-                            <button onClick={() => handleCount("remove")} >
 
-                                <KeyboardArrowDownOutlinedIcon className="count-less" />
-                            </button>
+                        </div>
+                    </div>
+                </div>
+
+
+                <div className="menu-container">
+                    <div className="menu-title-blc">
+                        <h3 className="menu-title">Produits achetés ensemble</h3>
+                    </div>
+
+                    <div className="menu-grid">
+                        <div className="product-card">
+                            <div className="info-container">
+                                <h4 className="product-title">Lasagne Bo...</h4>
+                                <p className="product-price">Prix: 13 DT</p>
+                                <p className="product-description">
+                                    <p>Lasagne Bolognaise</p>
+                                </p>
+                                <div className="labels-container"></div>
+                                <button className="product-button">
+                                    <svg className="MuiSvgIcon-root MuiSvgIcon-fontSizeMedium product-button-icon css-vubbuv" focusable="false" aria-hidden="true" viewBox="0 0 24 24" data-testid="AddIcon"><path d="M19 13h-6v6h-2v-6H5v-2h6V5h2v6h6v2z"></path></svg>
+                                </button>
+                            </div>
+                            <div className="product-image-blc">
+                                <img loading="lazy" src={menuImg} alt="product photo" className="product-image" />
+                            </div>
+                        </div>
+                        <div className="product-card">
+                            <div className="info-container">
+                                <h4 className="product-title">Lasagne Bo...</h4>
+                                <p className="product-price">Prix: 13 DT</p>
+                                <p className="product-description">
+                                    <p>Lasagne Bolognaise</p>
+                                </p>
+                                <div className="labels-container"></div>
+                                <button className="product-button">
+                                    <svg className="MuiSvgIcon-root MuiSvgIcon-fontSizeMedium product-button-icon css-vubbuv" focusable="false" aria-hidden="true" viewBox="0 0 24 24" data-testid="AddIcon"><path d="M19 13h-6v6h-2v-6H5v-2h6V5h2v6h6v2z"></path></svg>
+                                </button>
+                            </div>
+                            <div className="product-image-blc">
+                                <img loading="lazy" src={menuImg} alt="product photo" className="product-image" />
+                            </div>
+                        </div>
+                        <div className="product-card">
+                            <div className="info-container">
+                                <h4 className="product-title">Lasagne Bo...</h4>
+                                <p className="product-price">Prix: 13 DT</p>
+                                <p className="product-description">
+                                    <p>Lasagne Bolognaise</p>
+                                </p>
+                                <div className="labels-container"></div>
+                                <button className="product-button">
+                                    <svg className="MuiSvgIcon-root MuiSvgIcon-fontSizeMedium product-button-icon css-vubbuv" focusable="false" aria-hidden="true" viewBox="0 0 24 24" data-testid="AddIcon"><path d="M19 13h-6v6h-2v-6H5v-2h6V5h2v6h6v2z"></path></svg>
+                                </button>
+                            </div>
+                            <div className="product-image-blc">
+                                <img loading="lazy" src={menuImg} alt="product photo" className="product-image" />
+                            </div>
+                        </div>
+                        <div className="product-card">
+                            <div className="info-container">
+                                <h4 className="product-title">Lasagne Bo...</h4>
+                                <p className="product-price">Prix: 13 DT</p>
+                                <p className="product-description">
+                                    <p>Lasagne Bolognaise</p>
+                                </p>
+                                <div className="labels-container"></div>
+                                <button className="product-button">
+                                    <svg className="MuiSvgIcon-root MuiSvgIcon-fontSizeMedium product-button-icon css-vubbuv" focusable="false" aria-hidden="true" viewBox="0 0 24 24" data-testid="AddIcon"><path d="M19 13h-6v6h-2v-6H5v-2h6V5h2v6h6v2z"></path></svg>
+                                </button>
+                            </div>
+                            <div className="product-image-blc">
+                                <img loading="lazy" src={menuImg} alt="product photo" className="product-image" />
+                            </div>
+                        </div>
+                        <div className="product-card">
+                            <div className="info-container">
+                                <h4 className="product-title">Lasagne Bo...</h4>
+                                <p className="product-price">Prix: 13 DT</p>
+                                <p className="product-description">
+                                    <p>Lasagne Bolognaise</p>
+                                </p>
+                                <div className="labels-container"></div>
+                                <button className="product-button">
+                                    <svg className="MuiSvgIcon-root MuiSvgIcon-fontSizeMedium product-button-icon css-vubbuv" focusable="false" aria-hidden="true" viewBox="0 0 24 24" data-testid="AddIcon"><path d="M19 13h-6v6h-2v-6H5v-2h6V5h2v6h6v2z"></path></svg>
+                                </button>
+                            </div>
+                            <div className="product-image-blc">
+                                <img loading="lazy" src={menuImg} alt="product photo" className="product-image" />
+                            </div>
+                        </div>
+                        <div className="product-card">
+                            <div className="info-container">
+                                <h4 className="product-title">Lasagne Bo...</h4>
+                                <p className="product-price">Prix: 13 DT</p>
+                                <p className="product-description">
+                                    <p>Lasagne Bolognaise</p>
+                                </p>
+                                <div className="labels-container"></div>
+                                <button className="product-button">
+                                    <svg className="MuiSvgIcon-root MuiSvgIcon-fontSizeMedium product-button-icon css-vubbuv" focusable="false" aria-hidden="true" viewBox="0 0 24 24" data-testid="AddIcon"><path d="M19 13h-6v6h-2v-6H5v-2h6V5h2v6h6v2z"></path></svg>
+                                </button>
+                            </div>
+                            <div className="product-image-blc">
+                                <img loading="lazy" src={menuImg} alt="product photo" className="product-image" />
+                            </div>
                         </div>
                     </div>
 
-                    <button className="add-to-cart-button" onClick={() => {
-                        addToCart()
-                    }}>
-                        <ShoppingCartOutlinedIcon className='cart-icon' />
-                        {t('add_to_cart')}
-                    </button>
 
                 </div>
-            </div>
 
-            <div className='bulles'>
-                <button className='messanger-popup-btn' onClick={handleMessangerPopup} style={{ backgroundImage: `url(${MessangerBtnIcon})` }}>
-                    {unReadedQt > 0 && (
-                        <div className='messanger-bull-notif-icon'>
-                            {unReadedQt}
-                        </div>
-                    )}
-                </button>
-                {/* <button className='phone-popup-btn' onClick={handlePhonePopup} style={{ backgroundImage: `url(${PhoneBtnIcon})` }}></button> */}
-            </div>
+
+                <div className='bulles'>
+                    <button className='messanger-popup-btn' onClick={handleMessangerPopup} style={{ backgroundImage: `url(${MessangerBtnIcon})` }}>
+                        {unReadedQt > 0 && (
+                            <div className='messanger-bull-notif-icon'>
+                                {unReadedQt}
+                            </div>
+                        )}
+                    </button>
+                    {/* <button className='phone-popup-btn' onClick={handlePhonePopup} style={{ backgroundImage: `url(${PhoneBtnIcon})` }}></button> */}
+                </div>
+            </Container>
 
             {
                 messangerPopup && <Messanger className="discuter-messanger-popup" close={handleMessangerPopup} />

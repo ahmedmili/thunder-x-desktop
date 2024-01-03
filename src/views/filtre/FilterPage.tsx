@@ -44,6 +44,7 @@ import PopularList from "../../components/popular-list/PopularList";
 import FilterCategories from "../../components/filter-categories/FilterCategories";
 import SupplierWhiteCard from "../../components/supplier-white-card/SupplierWhiteCard";
 import BtnReset from "./components/btn-reset/BtnReset";
+import { checkSsr } from "../../utils/utils";
 
 function FilterPage() {
   const restaurantsList = useAppSelector(
@@ -76,6 +77,41 @@ function FilterPage() {
   const [bestRatedSuppliers, setBestRatedSuppliers] = useState<any>(false);
 
   const [searchSuppliersList, setSearchSuppliersList] = useState<any>();
+  const [ssrLoading, setSsrLoading] = useState<boolean>(true)
+
+
+  const handleSsr = () => {
+    let isSsr = checkSsr()
+    isSsr ? setSsrLoading(true) : setSsrLoading(false)
+    setSsrLoading(isSsr)
+    setTimeout(() => {
+      let currentLocation = localStorageService.getCurrentLocation()
+      let isSsr = checkSsr()
+      if (isSsr) {
+        setSsrLoading(true)
+
+      } else {
+        if (currentLocation) {
+          setSsrLoading(false)
+          navigate('/search', { replace: true })
+        } else {
+          setSsrLoading(false)
+        }
+      }
+    }, 1000 * 3)
+  }
+
+  useEffect(() => {
+    handleSsr()
+  }, [])
+
+  const navigateToHome = () => {
+    const currenLocation = localStorageService.getCurrentLocation()
+    let path = '';
+    currenLocation ? path = '/search' : path = '/'
+    navigate(path, { replace: true })
+  }
+
   useEffect(() => {
     const currentLocation = JSON.parse(
       localStorageService.getCurrentLocation()!
@@ -84,18 +120,21 @@ function FilterPage() {
       searchSupplier();
     }
     else {
-      navigate('/')
+      // navigate('/')
+      navigateToHome()
     }
   }, []);
+
   useEffect(() => {
     if (recommanded.length) {
-      const news =  sort(recommanded, 'created_at', 10);    
+      const news = sort(recommanded, 'created_at', 10);
       let bestRated = recommanded.filter((s: any) => s.star);
-      bestRated = sort(bestRated, 'star', 10);      
+      bestRated = sort(bestRated, 'star', 10);
       setNewuppliers(news)
       setBestRatedSuppliers(bestRated)
     }
   }, [recommanded]);
+
   useEffect(() => {
     if (refresh) {
       dispatch(setRefresh(false));
@@ -165,6 +204,7 @@ function FilterPage() {
     setAds2(homeData.HOME_2);
     setAds3(homeData.HOME_3);
   }, [homeData]);
+
   function isAtLeastSevenDaysAgo(dateString: any) {
     var dateObject: any = new Date(dateString);
     var today: any = new Date();
@@ -236,7 +276,7 @@ function FilterPage() {
     return (
       <>
         <div className="cat-carousel" style={{
-          paddingTop:'70px'
+          paddingTop: '70px'
         }} >
 
           <Skeleton height={268} style={{
@@ -254,7 +294,7 @@ function FilterPage() {
           <Skeleton height={268} style={{
             flex: '1'
           }} />
-       
+
 
         </div>
 
@@ -399,11 +439,11 @@ function FilterPage() {
   }
 
 
-  function sort(array :any, property :any, n: any) {
-    const sortedArray = array.slice().sort((a :any, b:any) => a[property] - b[property]);
+  function sort(array: any, property: any, n: any) {
+    const sortedArray = array.slice().sort((a: any, b: any) => a[property] - b[property]);
     return sortedArray.slice(0, n);
   }
-  
+
   return (
     <Suspense fallback={
       <SkeletonEffect />

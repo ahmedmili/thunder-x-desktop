@@ -10,6 +10,7 @@ import { LocationService } from '../../../../../services/api/Location.api';
 import { userService } from '../../../../../services/api/user.api';
 import ConfirmPopup from '../../../../Popups/ConfirmPopup/ConfirmPopup';
 import './desactiveAccount.scss';
+import { localStorageService } from '../../../../../services/localStorageService';
 
 interface DesactiveAccountProps {
   type: string
@@ -39,6 +40,10 @@ const DesactiveAccount: React.FC<DesactiveAccountProps> = ({ type }) => {
     setRate(index);
   }
 
+  const navigateToHome = () => {
+    const currentLocation = localStorageService.getCurrentLocation()
+    currentLocation ? navigate('/search') : navigate('/')
+  }
 
 
   const handleAvisList = (index: number) => {
@@ -92,7 +97,8 @@ const DesactiveAccount: React.FC<DesactiveAccountProps> = ({ type }) => {
             // toast.error(error.message)
           }
         );
-        navigate('/')
+        // navigate('/')
+        navigateToHome()
       }
       else {
         // toast.error('un probléme')
@@ -118,7 +124,8 @@ const DesactiveAccount: React.FC<DesactiveAccountProps> = ({ type }) => {
         localStorage.clear();
         localStorage.setItem('lang', lang!);
         dispatch(logout())
-        navigate('/')
+        // navigate('/')
+        navigateToHome()
       }
       else {
         // toast.error('un probléme')

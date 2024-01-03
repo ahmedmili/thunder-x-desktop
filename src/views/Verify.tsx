@@ -14,6 +14,7 @@ import PicturesList from "../components/picture-list/PicturesList";
 import { userService } from "../services/api/user.api";
 import { IUser } from "../services/types";
 import { FormValues, generateForm } from "../utils/formUtils";
+import { localStorageService } from "../services/localStorageService";
 
 const Verify = () => {
 
@@ -47,11 +48,15 @@ const Verify = () => {
       !response ? setErrorsServer(`${t('forgetPassword.initPw.invalideCode')}`) : setShowResetForm(true);
     }
   }
-
+  const navigateToHome = () => {
+    const currentLocation = localStorageService.getCurrentLocation()
+    currentLocation ? navigate('/search') : navigate('/')
+  }
   const saveUser = (user: IUser, token: string) => {
     const UserCredentials = { user, token }
     dispatch(setUserCredentials(UserCredentials))
-    navigate('/')
+    // navigate('/')
+    navigateToHome()
   }
 
   const onSubmit = async (

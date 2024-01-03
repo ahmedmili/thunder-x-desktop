@@ -1,6 +1,7 @@
 import React, { useEffect, useMemo, useState } from 'react';
 
 import KeyboardArrowUpOutlinedIcon from '@mui/icons-material/KeyboardArrowUpOutlined';
+import empty from '../../../../../assets/panier/empty.png';
 import { commandService } from '../../../../../services/api/command.api';
 import { userService } from '../../../../../services/api/user.api';
 import eventEmitter from '../../../../../services/thunderEventsService';
@@ -9,10 +10,10 @@ import CurrentCommands from '../CurrentCommands/CurrentCommands';
 import OldCommands from '../OldCommands/OldCommands';
 import ArrowIcon from './../../../../../assets/profile/leftArrow.svg';
 import "./commandsList.scss";
-import empty from '../../../../../assets/panier/empty.png';
 
-import { useNavigate } from 'react-router';
 import { useTranslation } from 'react-i18next';
+import { useNavigate } from 'react-router';
+import { localStorageService } from '../../../../../services/localStorageService';
 interface CommandsListProps {
     type?: string;
     goToPassedCommands: () => void;
@@ -33,7 +34,10 @@ const CommandsList: React.FC<CommandsListProps> = ({ type = "old", goToPassedCom
     const [loading, setLoading] = useState<boolean>(false)
 
     const itemsPerPage = 7;
-
+    const navigateToHome = () => {
+        const currentLocation = localStorageService.getCurrentLocation()
+        currentLocation ? navigate('/search') : navigate('/')
+    }
     const getClientFeedback = async () => {
         const { status, data } = await userService.getClientFeedback()
         if (data.success) {
@@ -140,7 +144,7 @@ const CommandsList: React.FC<CommandsListProps> = ({ type = "old", goToPassedCom
                                     <img loading="lazy" src={empty} alt="empty cart" />
                                     <p>{t('cart.payment.noCommands')}</p>
                                     <button className='emptyButton' onClick={() => {
-                                        navigate('/')
+                                        navigateToHome()
                                     }}>
                                         {t('cart.payment.iCommand')}
                                     </button>

@@ -1,11 +1,14 @@
 // "use client";
 import { CssBaseline } from "@mui/material";
 import "bootstrap/dist/css/bootstrap.min.css";
+import "./app.scss";
+import './assets/fonts/Poppins/Poppins.css';
+
 import { Suspense, lazy, startTransition, useCallback, useEffect, useState } from "react";
 import { Navigate, Outlet, Route, Routes, useLocation, useNavigate } from "react-router-dom";
-import { ToastContainer, toast } from "react-toastify";
-import "slick-carousel/slick/slick.css"; 
+import { ToastContainer } from "react-toastify";
 import "slick-carousel/slick/slick-theme.css";
+import "slick-carousel/slick/slick.css";
 import Layout from "./components/layout/layout";
 
 import { useAppDispatch, useAppSelector } from "./Redux/store";
@@ -20,11 +23,10 @@ import {
   setDeliveryPrice,
   setSupplier,
 } from "./Redux/slices/cart/cartSlice";
-import { fetchHomeData } from "./Redux/slices/home";
+import { fetchHomeData, regionHomeSelector } from "./Redux/slices/home";
 import { addMessangerSuccess } from "./Redux/slices/messanger";
 import { setRestaurants } from "./Redux/slices/restaurantSlice";
 import { login, logout, setUser } from "./Redux/slices/userSlice";
-import "./app.scss";
 import { LocationService } from "./services/api/Location.api";
 import { supplierServices } from "./services/api/suppliers.api";
 import { userService } from "./services/api/user.api";
@@ -34,8 +36,6 @@ import { AppProps, Message, Restaurant } from "./services/types";
 import channelListener from "./services/web-socket";
 
 import MenuOptions from "./components/menus/menuOptions/MenuOptions";
-import HomeSkeleton from "./views/home/skeleton/HomeSkeleton";
-import Spinner from "./components/spinner/Spinner";
 //lazy loading components
 const Header = lazy(() => import("./components/Header/Header"));
 const Footer = lazy(() => import("./components/footer/footer"));
@@ -46,10 +46,12 @@ import ArchivedCommands from "./components/layout/Profile/Archivedcommands/Archi
 import ConfigPage from "./components/layout/Profile/ConfigPage/ConfigPage";
 import Discuter from "./components/layout/Profile/Discuter/Discuter";
 import Favors from "./components/layout/Profile/Favors/Favors";
-import FidelitePage from "./components/layout/Profile/FidelitePage/FidelitePage";
 import Feedback from "./components/layout/Profile/Feedback/Feedback";
-import Verify from "./views/Verify";
+import FidelitePage from "./components/layout/Profile/FidelitePage/FidelitePage";
 import Menu from "./components/menus/menus";
+import Verify from "./views/Verify";
+import SpinnerPopup from "./components/Popups/Spinner/SpinnerPopup";
+import { useSelector } from "react-redux";
 //lazy loading pages
 const Profile = lazy(() => import("./components/layout/Profile/Profile"));
 const HomePage = lazy(() => import("./views/home/home.page"));
@@ -80,13 +82,19 @@ function App({ initialData }: AppProps) {
   var favorsList: number[] = [];
   const location = useAppSelector((state) => state.location.position);
   const deliv = useAppSelector((state) => state.homeData.isDelivery);
+  const region: any = useSelector(regionHomeSelector);
+
   const [updateTrigger, setUpdateTrigger] = useState(false);
+
   const updateHomeData = useCallback(() => {
     setUpdateTrigger((prev) => !prev);
   }, []);
 
-
-  // console.log("menuResponse", initialData.menuResponse.data)
+  useEffect(() => {
+    if (!region.id) {
+      dispatch({ type: "SET_SHOW", payload: true })
+    }
+  }, [region]);
 
   useEffect(() => {
 
@@ -229,12 +237,11 @@ function App({ initialData }: AppProps) {
             });
           },
           (error: GeolocationPositionError) => {
-            dispatch({ type: "SET_SHOW", payload: true })
+            // dispatch({ type: "SET_SHOW", payload: true })
           }
         );
       }
     }
-
   }, [])
 
   // handle recive admin message
@@ -258,16 +265,9 @@ function App({ initialData }: AppProps) {
   // Enforce Trailing Slash 
   useEffect(() => {
     const { pathname } = navLocation;
-    console.log(navLocation);
-    // Check if the path doesn't end with '/'
     if (!pathname.endsWith('/') && pathname !== '/') {
-      // Redirect to the same route with a '/' at the end
       navigate(`${pathname}/`, { replace: true });
     }
-    // window.scrollTo({
-    //   top: 0,
-    //   behavior: 'smooth'
-    // });
   }, [navLocation, Navigate]);
 
 
@@ -277,31 +277,25 @@ function App({ initialData }: AppProps) {
       <ToastContainer />
       <Suspense fallback={(typeof window != "undefined") ?
         <>
-          {/* <Header />
-          <HomeSkeleton />
-          <Footer /> */}
-          {/* loading */}
         </>
         :
         <>
-          <Spinner name="Loading" />
+          <SpinnerPopup name="Loading" />
         </>
       }
       >
         <Routes>
           <Route path="/" element={<Layout />}>
             {
-              location ?
-                <Route index element={<FilterPage />} />
-                :
+              (!location || !(typeof window != undefined)) ?
                 <Route index element={<HomePage initialData={initialData} />} />
+                :
+                <Route index element={<FilterPage />} />
             }
             <Route path="/restaurant/:id/:search?/:productId?/*" element={<Menu initialData={initialData} />} />
             <Route path="/product/:id/:search?/:productId/*" element={<MenuOptions initialData={initialData} />} />
             <Route path="/cart/*" element={<CartPage />} />
             <Route path="/search/:search?/*" element={<FilterPage />} />
-            {/* Private Route */}
-            {/* <Route path="track-order/*" element={<OrderTrackingPage />} /> */}
 
           </Route>
 
