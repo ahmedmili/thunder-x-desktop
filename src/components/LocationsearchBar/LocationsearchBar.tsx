@@ -39,7 +39,7 @@ const LocationSearchBar: React.FC<Props> = ({ placeholder }) => {
   return (
     <>
       <div className={searchStyle.searchContainer}>
-        <form >
+        <form>
 
           <AutocompleteInput initLocation={false} returnSuggestions={setSuggestions} />
 
