@@ -57,6 +57,7 @@ const Menu: React.FC<AppProps> = ({ initialData }) => {
   const [searchTerms, setSearchTerms] = useState<string>('');
   const idNumber = id?.split('-')[0];
   const [categories, setCategories] = useState<any>("");
+  const [isLoggedIn, setIsLoggedIn] = useState<any>(typeof window != 'undefined' ? localStorageService.getUserToken() : false);
 
   var currentDate = moment();
   var today = currentDate.format('ddd');  // Get the current day name (e.g., 'Mon', 'Tue', etc.)
@@ -164,7 +165,6 @@ const Menu: React.FC<AppProps> = ({ initialData }) => {
       if (typeof window != "undefined") {
         data = await supplierServices.getSupplierById(Number(idNumber!))
         data = data.data
-        let isLoggedIn = localStorageService.getUserToken();
         if (isLoggedIn?.length! > 0) {
           let favList :any = await userService.getClientFavorits(); 
           favList = favList.data.data.map((i: any) => Number(i.id))
@@ -565,8 +565,10 @@ const Menu: React.FC<AppProps> = ({ initialData }) => {
                     </div>
                     <div className="supplier-infos_ratings-count">                    
                       <div className='rate-gouping'>
-                        <div className="favor" style={(favor) ? { backgroundImage: `url(${FavorActiveIcon})` } : { backgroundImage: `url(${FavorIcon})` }} onClick={updatefavorite}>
-                        </div>    
+                          {isLoggedIn ?
+                            <div className="favor" style={(favor) ? { backgroundImage: `url(${FavorActiveIcon})` } : { backgroundImage: `url(${FavorIcon})` }} onClick={updatefavorite}>
+                            </div> : ""
+                        }   
                         {
                           displayedRestaurant?.bonus ? (
                             <div className='gift-icon' style={(displayedRestaurant?.bonus > 0) ? { backgroundImage: `url(${ActiveGiftIcon})` } : { backgroundImage: `url(${GiftIcon})` }}></div>
