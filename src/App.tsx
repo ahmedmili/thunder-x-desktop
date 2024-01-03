@@ -51,6 +51,7 @@ import Feedback from "./components/layout/Profile/Feedback/Feedback";
 import FidelitePage from "./components/layout/Profile/FidelitePage/FidelitePage";
 import Menu from "./components/menus/menus";
 import Verify from "./views/Verify";
+import SpinnerPopup from "./components/Popups/Spinner/SpinnerPopup";
 //lazy loading pages
 const Profile = lazy(() => import("./components/layout/Profile/Profile"));
 const HomePage = lazy(() => import("./views/home/home.page"));
@@ -271,17 +272,22 @@ function App({ initialData }: AppProps) {
       <ToastContainer />
       <Suspense fallback={(typeof window != "undefined") ?
         <>
-
+          <SpinnerPopup name="Loading" />
         </>
         :
         <>
-          <Spinner name="Loading" />
+          <SpinnerPopup name="Loading" />
         </>
       }
       >
         <Routes>
           <Route path="/" element={<Layout />}>
-            <Route index element={<HomePage initialData={initialData} />} />
+            {
+              (!location || !(typeof window != undefined)) ?
+                <Route index element={<HomePage initialData={initialData} />} />
+                :
+                <Route index element={<FilterPage />} />
+            }
             <Route path="/restaurant/:id/:search?/:productId?/*" element={<Menu initialData={initialData} />} />
             <Route path="/product/:id/:search?/:productId/*" element={<MenuOptions initialData={initialData} />} />
             <Route path="/cart/*" element={<CartPage />} />

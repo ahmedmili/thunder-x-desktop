@@ -38,3 +38,8 @@ export const isInsideRegions = (coupons: any[], lat: number, lng: number): any[]
         }
     });
 }
+
+export const checkSsr = () : boolean  => {
+    let isSsr = typeof window === undefined;
+    return isSsr
+  }
