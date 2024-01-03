@@ -39,21 +39,8 @@ function PriceSlide() {
              
     };   
     const onGlissEnd = (event: any) => { 
-        event.stopPropagation();
         handleInputChange();
-    }
-    useEffect(() => {
-        document.body.addEventListener('mouseup', handleBodyMouseUp);
-        return () => {
-            document.body.removeEventListener('mouseup', handleBodyMouseUp);
-        };
-    }, []);
-    const handleBodyMouseUp = (event: any) => {
-        const { pathname } = navLocation;        
-        if (pathname == "/search/") {
-            handleInputChange();
-        }        
-    };
+    }    
     const handleInputChange = debounce(() => {
         const searchParams = new URLSearchParams(location.search);
         if (Number(searchParams.get('min_price')) !== Number(rangeValues[0]) || Number(searchParams.get('max_price')) !== Number(rangeValues[1])) {
@@ -72,7 +59,7 @@ function PriceSlide() {
             navigate(`/search/?${searchParams.toString()}`, {      
                 replace: false,
             });
-            dispatch(setRefresh(true));            
+            dispatch(setRefresh(true));   
         }     
     }, 200);  
     return (
