@@ -117,26 +117,6 @@ const Menu: React.FC<AppProps> = ({ initialData }) => {
     }
 
   }, [])
-
-  // assure '/' in the end of url
-  useEffect(() => {
-    const { pathname } = location;
-    if (!pathname.endsWith('/') && pathname !== '/') {
-      navigate(`${pathname}/`);
-    }
-  }, [location, navigate]);
-
-  // add product id into url
-  const handleUrlProductId = (id: number) => {
-    const locationPath = location.pathname;
-    if (Number(productId) != id) {
-      let locationArray = locationPath.split("/");
-      locationArray[4] = id.toString();
-      const newURL = locationArray.join("/");
-      navigate(newURL, { replace: true });
-    }
-  }
-
   const removeUrlProductId = () => {
     const locationPath = location.pathname;
 
@@ -146,7 +126,6 @@ const Menu: React.FC<AppProps> = ({ initialData }) => {
     navigate(newURL, { replace: true });
 
   }
-
   const handlePopup = () => {
     setShowOptionsPopup(!showOptionsPopup)
     showOptionsPopup && removeUrlProductId()
@@ -158,7 +137,6 @@ const Menu: React.FC<AppProps> = ({ initialData }) => {
       [menuItemId]: pageNumber,
     }));
   };
-
   const getSupplierById = async () => {
     let data: any;
     try {
@@ -264,13 +242,6 @@ const Menu: React.FC<AppProps> = ({ initialData }) => {
     locationArray[1] = 'product';
     const newURL = locationArray.join("/");    
     navigate(newURL);
-    // if (isOpen) {
-    //   showOptionsPopup === false && handleUrlProductId(selectedMenuItem.id)
-    //   dispatch(setProduct(selectedMenuItem))
-    //   handlePopup()
-    // } else {
-    //   handleClosedWarnModal()
-    // }
   };
 
   const getTruncatedName = (name: string, MAX_NAME_LENGTH: number) => {
@@ -520,6 +491,7 @@ const Menu: React.FC<AppProps> = ({ initialData }) => {
                         variant="rectangular"
                         width={'100%'}
                         height={46}
+                        style={{backgroundColor: '#B2E9F0',borderRadius:10}}
                       />
                     </div>  
                   </div>                

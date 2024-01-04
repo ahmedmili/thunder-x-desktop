@@ -16,7 +16,7 @@ function PriceSlide() {
     useEffect(() => {
         const searchParams = new URLSearchParams(location.search);
         let min = 0;
-        let max=1000
+        let max=100
         if (searchParams.has("min_price")) {
            min = Number(searchParams.get("min_price"))
         }

@@ -589,22 +589,42 @@ function MenuOptions({ initialData }: AppProps) {
                                     width={'50%'}
                                     height={945}
                                 />                            
-                                <div className="right-loaders">
+                                <div className="right-loaders">                                    
                                     <Skeleton
                                         variant="rectangular"
-                                        width={'100%'}
-                                        height={100}
+                                        width={'50%'}
+                                        height={22}
                                     /> 
                                     <Skeleton
                                         variant="rectangular"
-                                        width={'100%'}
-                                        height={100}
+                                        width={'50%'}
+                                        height={10}
                                     /> 
                                     <Skeleton
                                         variant="rectangular"
-                                        width={'100%'}
-                                        height={100}
+                                        width={'50%'}
+                                        height={10}
+                                        style={{marginBottom: 20,borderRadius:10}}
                                     /> 
+                                    {[...Array(3)].map((_, index) => (
+                                        <>
+                                            <Skeleton
+                                                variant="rectangular"
+                                                width={'100%'}
+                                                height={49}
+                                                style={{backgroundColor: '#3BB3C480',borderRadius:10, marginTop: 50}}
+                                            /> 
+                                            {[...Array(3)].map((_, index) => (
+                                                <>
+                                                    <Skeleton
+                                                        variant="rectangular"
+                                                        width={'100%'}
+                                                        height={22}
+                                                    />                                              
+                                                </>
+                                            ))} 
+                                        </>
+                                    ))}                                                                                                       
                                 </div>
                             </div>
                         </>                        
