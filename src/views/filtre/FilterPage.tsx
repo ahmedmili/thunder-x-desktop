@@ -79,51 +79,57 @@ function FilterPage() {
   const [searchSuppliersList, setSearchSuppliersList] = useState<any>();
   const [ssrLoading, setSsrLoading] = useState<boolean>(true)
 
+  const [messangerPopup, setMessangerPopup] = useState<boolean>(false)
 
-  const handleSsr = () => {
-    let isSsr = checkSsr()
-    isSsr ? setSsrLoading(true) : setSsrLoading(false)
-    setSsrLoading(isSsr)
-    setTimeout(() => {
-      let currentLocation = localStorageService.getCurrentLocation()
-      let isSsr = checkSsr()
-      if (isSsr) {
-        setSsrLoading(true)
 
-      } else {
-        if (currentLocation) {
-          setSsrLoading(false)
-          navigate('/search', { replace: true })
-        } else {
-          setSsrLoading(false)
-        }
-      }
-    }, 1000 * 3)
-  }
+  const unReadMessages =  useAppSelector((state) => state.messanger.unReadedMessages)
+  const [unReadedQt, setUnReadedQt] = useState<number>(unReadMessages)
 
-  useEffect(() => {
-    handleSsr()
-  }, [])
 
-  const navigateToHome = () => {
-    const currenLocation = localStorageService.getCurrentLocation()
-    let path = '';
-    currenLocation ? path = '/search' : path = '/'
-    navigate(path, { replace: true })
-  }
+  // const handleSsr = () => {
+  //   let isSsr = checkSsr()
+  //   isSsr ? setSsrLoading(true) : setSsrLoading(false)
+  //   setSsrLoading(isSsr)
+  //   setTimeout(() => {
+  //     let currentLocation = localStorageService.getCurrentLocation()
+  //     let isSsr = checkSsr()
+  //     if (isSsr) {
+  //       setSsrLoading(true)
 
-  useEffect(() => {
-    const currentLocation = JSON.parse(
-      localStorageService.getCurrentLocation()!
-    )?.coords;
-    if (currentLocation) {
-      searchSupplier();
-    }
-    else {
-      // navigate('/')
-      navigateToHome()
-    }
-  }, []);
+  //     } else {
+  //       if (currentLocation) {
+  //         setSsrLoading(false)
+  //         navigate('/search', { replace: true })
+  //       } else {
+  //         setSsrLoading(false)
+  //       }
+  //     }
+  //   }, 1000 * 3)
+  // }
+
+  // useEffect(() => {
+  //   handleSsr()
+  // }, [])
+
+  // const navigateToHome = () => {
+  //   const currenLocation = localStorageService.getCurrentLocation()
+  //   let path = '';
+  //   currenLocation ? path = '/search' : path = '/'
+  //   navigate(path, { replace: true })
+  // }
+
+  // useEffect(() => {
+  //   const currentLocation = JSON.parse(
+  //     localStorageService.getCurrentLocation()!
+  //   )?.coords;
+  //   if (currentLocation) {
+  //     searchSupplier();
+  //   }
+  //   else {
+  //     // navigate('/')
+  //     navigateToHome()
+  //   }
+  // }, []);
 
   useEffect(() => {
     if (recommanded.length) {
@@ -134,6 +140,13 @@ function FilterPage() {
       setBestRatedSuppliers(bestRated)
     }
   }, [recommanded]);
+
+  const handleMessangerPopup = () => {
+    setMessangerPopup(!messangerPopup)
+  }
+  useEffect(() => {
+    setUnReadedQt(unReadMessages)
+  }, [unReadMessages])
 
   useEffect(() => {
     if (refresh) {
@@ -618,6 +631,19 @@ function FilterPage() {
                 </Col>
               </Row>
             </div>
+            <div className={'bulles'}>
+              <button className={'messangerPopupBtn'} onClick={handleMessangerPopup} style={{ backgroundImage: `url(${MessangerBtnIcon})` }}>
+                {unReadedQt > 0 && (
+                  <div className={'messangerBullNotifIcon'}>
+                    {unReadedQt}
+                  </div>
+                )}
+              </button>
+            </div>
+            {
+              messangerPopup &&
+              <Messanger className='discuterMessangerPopup' close={handleMessangerPopup} />
+            }
           </>
         ) : (
           <SkeletonEffect />

@@ -50,9 +50,7 @@ const HomePage = ({ initialData }: AppProps) => {
   const [unReadedQt, setUnReadedQt] = useState<number>(unReadMessages)
 
   const navigate = useNavigate()
-  var ssrTimeout: any = () => {
-
-  };
+ 
   useEffect(() => {
     setUnReadedQt(unReadMessages)
   }, [unReadMessages])
@@ -76,6 +74,8 @@ const HomePage = ({ initialData }: AppProps) => {
         setSsrLoading(true)
       } else {
         if (currentLocation) {
+          const pathLocation = window.location.pathname
+          console.log("_____________: ",pathLocation)
           navigate('/search', { replace: true })
         } else {
         }

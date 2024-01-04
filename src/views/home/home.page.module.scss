@@ -1,8 +1,6 @@
 @import '../../scss/extend';
 
-.homePageContainer {
-  // margin: 0 35px;
-}
+
 .loadingSkeleton {
   line-height: 4;
   @include dimensions(20vw, 20px);
