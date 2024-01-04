@@ -33,7 +33,6 @@ import FavorIcon from '../../assets/profile/ArchivedCommands/favor.svg';
 import FavorActiveIcon from '../../assets/profile/ArchivedCommands/favor-active.svg';
 import ClosedSupplier from '../Popups/ClosedSupplier/ClosedSupplier';
 
-
 const Menu: React.FC<AppProps> = ({ initialData }) => {
   const { t } = useTranslation();
   const dispatch = useAppDispatch();
@@ -58,7 +57,6 @@ const Menu: React.FC<AppProps> = ({ initialData }) => {
   const idNumber = id?.split('-')[0];
   const [categories, setCategories] = useState<any>("");
   const [isLoggedIn, setIsLoggedIn] = useState<any>(typeof window != 'undefined' ? localStorageService.getUserToken() : false);
-
   var currentDate = moment();
   var today = currentDate.format('ddd');  // Get the current day name (e.g., 'Mon', 'Tue', etc.)
 
@@ -432,7 +430,7 @@ const Menu: React.FC<AppProps> = ({ initialData }) => {
     </>
   }
   const goBack = () => {
-    navigate('/search/');
+    navigate(-1);
   };
 
   return (
