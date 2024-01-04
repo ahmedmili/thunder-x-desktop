@@ -64,7 +64,7 @@ function SearchProduit() {
     return (
         <form className="search-filter-container" autoComplete="off">
             <div className="search-filter-container__input">
-                <input autoComplete="off" type="text" className="search-input" name="search" id="search" placeholder="Qu’est ce qu’on vous apporte ?" value={active} onChange={clickHandle}/>
+                <input autoComplete="off" type="search" className="search-input" name="search" id="search" placeholder="Qu’est ce qu’on vous apporte ?" value={active} onChange={clickHandle}/>
                 <SearchIcon className="text-search-icon" />
                 <span className="search-icon"></span>
             </div>

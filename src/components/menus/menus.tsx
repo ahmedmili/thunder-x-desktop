@@ -33,13 +33,12 @@ import FavorIcon from '../../assets/profile/ArchivedCommands/favor.svg';
 import FavorActiveIcon from '../../assets/profile/ArchivedCommands/favor-active.svg';
 import ClosedSupplier from '../Popups/ClosedSupplier/ClosedSupplier';
 
-
 const Menu: React.FC<AppProps> = ({ initialData }) => {
   const { t } = useTranslation();
   const dispatch = useAppDispatch();
   const navigate = useNavigate();
   const location = useLocation();
-  const [loading, setLoading] = useState((typeof window != 'undefined') ? true : false);
+  const [loading, setLoading] = useState(true);
 
   const [currentPage, setCurrentPage] = useState<{ [key: string]: number }>({});
   const productsPerPage = 4;
@@ -58,7 +57,6 @@ const Menu: React.FC<AppProps> = ({ initialData }) => {
   const idNumber = id?.split('-')[0];
   const [categories, setCategories] = useState<any>("");
   const [isLoggedIn, setIsLoggedIn] = useState<any>(typeof window != 'undefined' ? localStorageService.getUserToken() : false);
-
   var currentDate = moment();
   var today = currentDate.format('ddd');  // Get the current day name (e.g., 'Mon', 'Tue', etc.)
 
@@ -117,26 +115,6 @@ const Menu: React.FC<AppProps> = ({ initialData }) => {
     }
 
   }, [])
-
-  // assure '/' in the end of url
-  useEffect(() => {
-    const { pathname } = location;
-    if (!pathname.endsWith('/') && pathname !== '/') {
-      navigate(`${pathname}/`);
-    }
-  }, [location, navigate]);
-
-  // add product id into url
-  const handleUrlProductId = (id: number) => {
-    const locationPath = location.pathname;
-    if (Number(productId) != id) {
-      let locationArray = locationPath.split("/");
-      locationArray[4] = id.toString();
-      const newURL = locationArray.join("/");
-      navigate(newURL, { replace: true });
-    }
-  }
-
   const removeUrlProductId = () => {
     const locationPath = location.pathname;
 
@@ -146,7 +124,6 @@ const Menu: React.FC<AppProps> = ({ initialData }) => {
     navigate(newURL, { replace: true });
 
   }
-
   const handlePopup = () => {
     setShowOptionsPopup(!showOptionsPopup)
     showOptionsPopup && removeUrlProductId()
@@ -158,13 +135,12 @@ const Menu: React.FC<AppProps> = ({ initialData }) => {
       [menuItemId]: pageNumber,
     }));
   };
-
   const getSupplierById = async () => {
     let data: any;
     try {
       if (typeof window != "undefined") {
         data = await supplierServices.getSupplierById(Number(idNumber!))
-        data = data.data
+        data = data.data;         
         if (isLoggedIn?.length! > 0) {
           let favList :any = await userService.getClientFavorits(); 
           favList = favList.data.data.map((i: any) => Number(i.id))
@@ -177,6 +153,9 @@ const Menu: React.FC<AppProps> = ({ initialData }) => {
         }
       }
       else data = initialData.supplierResponse
+
+      let categories = data.data.categorys.map((item:any)=>item.name)?.join(' - ')
+      setCategories(categories)
       setDisplayedRestaurant(data.data)
     } catch (error) {
       throw error
@@ -190,17 +169,13 @@ const Menu: React.FC<AppProps> = ({ initialData }) => {
         if (data.status === 200) {
           data = data.data
           setMenuData(data.data);
-          setFiltreddMenuData(data.data)
-          let categories = data.data.map((item:any)=>item.name)?.join(' - ')
-          setCategories(categories)
+          setFiltreddMenuData(data.data)         
         }
       }
       else {
         data = initialData.menuResponse.data
         setMenuData(data);
-        setFiltreddMenuData(data)
-        let categories = data.data.map((item:any)=>item.name)?.join(' - ')
-        setCategories(categories)
+        setFiltreddMenuData(data)    
       }
     } catch (error) {
       throw error
@@ -235,7 +210,7 @@ const Menu: React.FC<AppProps> = ({ initialData }) => {
     await getSupplierById()
     await getMenu()
     handleFilter()
-    getSupplierIsOpen()
+    await getSupplierIsOpen()
     setLoading(false);
   };
 
@@ -259,13 +234,12 @@ const Menu: React.FC<AppProps> = ({ initialData }) => {
 
   // close options
   const handleChooseOptions = (selectedMenuItem: any | null) => {
-    if (isOpen) {
-      showOptionsPopup === false && handleUrlProductId(selectedMenuItem.id)
-      dispatch(setProduct(selectedMenuItem))
-      handlePopup()
-    } else {
-      handleClosedWarnModal()
-    }
+    const locationPath = location.pathname;
+    let locationArray = locationPath.split("/");
+    locationArray[4] = selectedMenuItem.id.toString();
+    locationArray[1] = 'product';
+    const newURL = locationArray.join("/");    
+    navigate(newURL);
   };
 
   const getTruncatedName = (name: string, MAX_NAME_LENGTH: number) => {
@@ -515,6 +489,7 @@ const Menu: React.FC<AppProps> = ({ initialData }) => {
                         variant="rectangular"
                         width={'100%'}
                         height={46}
+                        style={{backgroundColor: '#B2E9F0',borderRadius:10}}
                       />
                     </div>  
                   </div>                
@@ -565,9 +540,9 @@ const Menu: React.FC<AppProps> = ({ initialData }) => {
                     </div>
                     <div className="supplier-infos_ratings-count">                    
                       <div className='rate-gouping'>
-                          {isLoggedIn ?
-                            <div className="favor" style={(favor) ? { backgroundImage: `url(${FavorActiveIcon})` } : { backgroundImage: `url(${FavorIcon})` }} onClick={updatefavorite}>
-                            </div> : ""
+                        { isLoggedIn ?
+                          <div className="favor" style={(favor) ? { backgroundImage: `url(${FavorActiveIcon})` } : { backgroundImage: `url(${FavorIcon})` }} onClick={updatefavorite}>
+                          </div> : ""
                         }   
                         {
                           displayedRestaurant?.bonus ? (
