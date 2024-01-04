@@ -1,50 +1,39 @@
-import ArrowBackIosIcon from "@mui/icons-material/ArrowBackIos";
-import ArrowForwardIosIcon from "@mui/icons-material/ArrowForwardIos";
-import React, { Suspense, useEffect, useRef, useState } from "react";
-import { Col, Container, Row } from "react-bootstrap";
-import { useTranslation } from "react-i18next";
-import Skeleton from "@mui/material/Skeleton";
 import Box from "@mui/material/Box";
-import { useSelector } from "react-redux";
+import Skeleton from "@mui/material/Skeleton";
+import React, { Suspense, useEffect, useRef, useState } from "react";
+import { Col, Row } from "react-bootstrap";
+import { useTranslation } from "react-i18next";
+import { useDispatch, useSelector } from "react-redux";
+import { useLocation, useNavigate } from "react-router-dom";
+import {
+  adsHomeSelector,
+  categoriesHomeSelector,
+  homeLoadingSelector,
+  homeRefresh,
+  popularHomeSelector,
+  recommendedHomeSelector,
+  setRefresh,
+} from "../../Redux/slices/home";
 import { useAppSelector } from "../../Redux/store";
-import { AdsCarousel } from "../../components/adsCarousel/adsCarousel";
-import CategoriesCarousel from "../../components/categoriesCarousel/categoriesCarousel";
-import SupplierCard from "../../components/supplierCard/SupplierCard";
+import MessangerBtnIcon from "../../assets/profile/Discuter/messanger-btn.svg";
+import Map from "../../components/Location/Location";
+import Messanger from "../../components/Popups/Messanger/Messanger";
+import { FilterAds } from "../../components/filter-ads/FilterAds";
+import FilterCategories from "../../components/filter-categories/FilterCategories";
+import OffersList from "../../components/offersList/OffersList";
+import PopularList from "../../components/popular-list/PopularList";
+import RecommandedList from "../../components/recommanded-list/RecommandedList";
+import SupplierWhiteCard from "../../components/supplier-white-card/SupplierWhiteCard";
+import { supplierServices } from "../../services/api/suppliers.api";
+import { localStorageService } from "../../services/localStorageService";
+import { checkSsr } from "../../utils/utils";
+import BtnReset from "./components/btn-reset/BtnReset";
 import Categories from "./components/categories/Categories";
 import Cle from "./components/cle/Cle";
 import PriceSlide from "./components/priceSlider/PriceSlide";
 import SearchProduit from "./components/produitSearch/ProduitSearch";
 import Trie from "./components/trie/Trie";
 import "./filterPage.scss";
-import { useNavigate } from "react-router-dom";
-import { localStorageService } from "../../services/localStorageService";
-import { supplierServices } from "../../services/api/suppliers.api";
-import {
-  setSearchQuery,
-  setfilterRestaurants,
-} from "../../Redux/slices/restaurantSlice";
-import { useDispatch } from "react-redux";
-import Spinner from "../../components/spinner/Spinner";
-import Messanger from "../../components/Popups/Messanger/Messanger";
-import MessangerBtnIcon from "../../assets/profile/Discuter/messanger-btn.svg";
-import { fetchMessages } from "../../Redux/slices/messanger";
-import {
-  adsHomeSelector,
-  categoriesHomeSelector,
-  homeLoadingSelector,
-  popularHomeSelector,
-  recommendedHomeSelector,
-  homeRefresh,
-  setRefresh,
-} from "../../Redux/slices/home";
-import OffersList from "../../components/offersList/OffersList";
-import RecommandedList from "../../components/recommanded-list/RecommandedList";
-import { FilterAds } from "../../components/filter-ads/FilterAds";
-import PopularList from "../../components/popular-list/PopularList";
-import FilterCategories from "../../components/filter-categories/FilterCategories";
-import SupplierWhiteCard from "../../components/supplier-white-card/SupplierWhiteCard";
-import BtnReset from "./components/btn-reset/BtnReset";
-import { checkSsr } from "../../utils/utils";
 
 function FilterPage() {
   const restaurantsList = useAppSelector(
@@ -81,55 +70,63 @@ function FilterPage() {
 
   const [messangerPopup, setMessangerPopup] = useState<boolean>(false)
 
+  const showMapState = useAppSelector((state) => state.location.showMap);
 
-  const unReadMessages =  useAppSelector((state) => state.messanger.unReadedMessages)
+  const unReadMessages = useAppSelector((state) => state.messanger.unReadedMessages)
   const [unReadedQt, setUnReadedQt] = useState<number>(unReadMessages)
 
+  const navLocation = useLocation()
 
-  // const handleSsr = () => {
-  //   let isSsr = checkSsr()
-  //   isSsr ? setSsrLoading(true) : setSsrLoading(false)
-  //   setSsrLoading(isSsr)
-  //   setTimeout(() => {
-  //     let currentLocation = localStorageService.getCurrentLocation()
-  //     let isSsr = checkSsr()
-  //     if (isSsr) {
-  //       setSsrLoading(true)
 
-  //     } else {
-  //       if (currentLocation) {
-  //         setSsrLoading(false)
-  //         navigate('/search', { replace: true })
-  //       } else {
-  //         setSsrLoading(false)
-  //       }
-  //     }
-  //   }, 1000 * 3)
-  // }
+  const handleSsr = () => {
+    let isSsr = checkSsr()
+    isSsr ? setSsrLoading(true) : setSsrLoading(false)
+    setSsrLoading(isSsr)
+    setTimeout(() => {
+      let currentLocation = localStorageService.getCurrentLocation()
+      let isSsr = checkSsr()
+      if (isSsr) {
+        setSsrLoading(true)
 
-  // useEffect(() => {
-  //   handleSsr()
-  // }, [])
+      } else {
+        const searchParams = new URLSearchParams(location.search);
+        if (!(isEmptySearchParams(searchParams))) {
+          let lat = searchParams.has('lat') ? searchParams.get('lat') as string : null
+          let lng = searchParams.has('lng') ? searchParams.get('lng') as string : null
+          if ((lng && lat) || currentLocation) {
+            const { pathname } = navLocation;
+            let coords = (lng && lat) ? {
+              latitude: lat,
+              longitude: lng
+            } : currentLocation && JSON.parse(currentLocation
+            ).coords;
+            searchParams.set('lat', coords.latitude.toString());
+            searchParams.set('lng', coords.longitude.toString());
+            searchSupplier()
+            const newURL = pathname != '/' ? `${pathname}?${searchParams.toString()}` : `/search/?${searchParams.toString()}`;
+            navigate(newURL, { replace: true })
 
-  // const navigateToHome = () => {
-  //   const currenLocation = localStorageService.getCurrentLocation()
-  //   let path = '';
-  //   currenLocation ? path = '/search' : path = '/'
-  //   navigate(path, { replace: true })
-  // }
+          } else {
+            dispatch({ type: "SET_SHOW", payload: true })
+          }
+        } else {
+          navigateToHome()
+        }
 
-  // useEffect(() => {
-  //   const currentLocation = JSON.parse(
-  //     localStorageService.getCurrentLocation()!
-  //   )?.coords;
-  //   if (currentLocation) {
-  //     searchSupplier();
-  //   }
-  //   else {
-  //     // navigate('/')
-  //     navigateToHome()
-  //   }
-  // }, []);
+      }
+    }, 1000 * 3)
+  }
+
+  useEffect(() => {
+    handleSsr()
+  }, [])
+
+  const navigateToHome = () => {
+    const currenLocation = localStorageService.getCurrentLocation()
+    let path = '';
+    currenLocation ? path = '/search' : path = '/'
+    navigate(path, { replace: true })
+  }
 
   useEffect(() => {
     if (recommanded.length) {
@@ -162,9 +159,28 @@ function FilterPage() {
       setIsLoadFilter(false);
     } else {
       setHasFilter(true);
-      const currentLocation = JSON.parse(
-        localStorageService.getCurrentLocation()!
-      ).coords;
+      const current_location = localStorageService.getCurrentLocation()
+      var currentLocation: any;
+
+      if (current_location) {
+        currentLocation = JSON.parse(current_location
+        ).coords;
+      } else {
+        let lat = searchParams.has("lat") ? searchParams.get("lat") as string : null;
+        let lng = searchParams.has("lng") ? searchParams.get("lng") as string : null;
+        if (lat && lng) {
+          currentLocation = {
+            latitude: lat,
+            longitude: lng
+          }
+        } else {
+          currentLocation = {
+            latitude: 0,
+            longitude: 0
+          }
+          dispatch({ type: "SET_SHOW", payload: true })
+        }
+      }
       const payload = {
         order_by: "popular",
         max_price: 100,
@@ -175,21 +191,12 @@ function FilterPage() {
         delivery_price: 0,
         filter: "",
       };
-      if (searchParams.has("category")) {
-        payload.category_id = searchParams.get("category") as string;
-      }
-      if (searchParams.has("order")) {
-        payload.order_by = searchParams.get("order") as string;
-      }
-      if (searchParams.has("min_price")) {
-        payload.min_price = Number(searchParams.get("min_price"));
-      }
-      if (searchParams.has("max_price")) {
-        payload.max_price = Number(searchParams.get("max_price"));
-      }
-      if (searchParams.has("filter")) {
-        payload.filter = searchParams.get("filter") as string;
-      }
+
+      searchParams.has("category") && (payload.category_id = searchParams.get("category") as string);
+      searchParams.has("order") && (payload.order_by = searchParams.get("order") as string);
+      searchParams.has("min_price") && (payload.min_price = Number(searchParams.get("min_price")));
+      searchParams.has("max_price") && (payload.max_price = Number(searchParams.get("max_price")));
+      searchParams.has("filter") && (payload.filter = searchParams.get("filter") as string);
       setIsLoadFilter(true);
       supplierServices
         .getSuppliersByFilters(payload)
@@ -206,6 +213,7 @@ function FilterPage() {
         .catch((error) => {
           setIsLoadFilter(false);
         });
+
     }
   };
   const isEmptySearchParams = (searchParams: any) => {
@@ -644,6 +652,15 @@ function FilterPage() {
               messangerPopup &&
               <Messanger className='discuterMessangerPopup' close={handleMessangerPopup} />
             }
+            {showMapState && (
+              <div
+                className="mapOverPlay">
+                <div
+                  onClick={(e) => e.stopPropagation()}>
+                  <Map forced={true} />
+                </div>
+              </div>
+            )}
           </>
         ) : (
           <SkeletonEffect />
