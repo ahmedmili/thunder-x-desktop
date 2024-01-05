@@ -20,7 +20,6 @@ function Trie() {
         const searchParams = new URLSearchParams(location.search);
         if (searchParams.has('search')) {
             let params = paramsService.fetchParams(searchParams)
-            // console.log(params)
             if (params.order) {
                 const order_id: any = params.order;
                 setActive(order_id);
@@ -66,14 +65,12 @@ function Trie() {
         setActive(searchQuery)
         const searchParams = new URLSearchParams(location.search);
         let params = searchParams.has("search") ? paramsService.fetchParams(searchParams) : {}
-        console.log("params : ", params)
 
         params = {
             ...params,
             order_by: searchQuery
         }
         let newParams = paramsService.handleUriParams(params)
-        console.log("newParams", newParams)
         if (searchParams.has('search')) {
             searchParams.set("search", newParams)
         }
@@ -81,7 +78,7 @@ function Trie() {
             searchParams.append('search', newParams);
         }
         navigate(`/search/?${searchParams.toString()}`, {
-            replace: true,
+            replace: false,
         });
         dispatch(setRefresh(true));
     }
