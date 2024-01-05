@@ -5,6 +5,7 @@ import { Col, Row } from "react-bootstrap";
 import { useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
 import { useLocation, useNavigate } from "react-router-dom";
+
 import {
   adsHomeSelector,
   categoriesHomeSelector,
@@ -26,7 +27,7 @@ import RecommandedList from "../../components/recommanded-list/RecommandedList";
 import SupplierWhiteCard from "../../components/supplier-white-card/SupplierWhiteCard";
 import { supplierServices } from "../../services/api/suppliers.api";
 import { localStorageService } from "../../services/localStorageService";
-import { checkSsr } from "../../utils/utils";
+import { arrayToObject, checkSsr } from "../../utils/utils";
 import BtnReset from "./components/btn-reset/BtnReset";
 import Categories from "./components/categories/Categories";
 import Cle from "./components/cle/Cle";
@@ -35,6 +36,7 @@ import SearchProduit from "./components/produitSearch/ProduitSearch";
 import Trie from "./components/trie/Trie";
 import "./filterPage.scss";
 import { AppProps } from "../../services/types";
+import { cryptoData } from "../../utils/cyrupto";
 
 function FilterPage({ initialData }: AppProps) {
 
@@ -80,6 +82,25 @@ function FilterPage({ initialData }: AppProps) {
   const navLocation = useLocation()
 
 
+  const handleUriParams = (data: any): string => {
+    const searchParams = new URLSearchParams(location.search);
+    data.order_by && searchParams.set('order', data.order_by)
+    data.category && searchParams.set('order', data.category)
+    data.min_price && searchParams.set('order', data.min_price)
+    data.max_price && searchParams.set('order', data.max_price)
+    data.filter && searchParams.set('order', data.filter)
+    data.lat && searchParams.set('lat', data.lat)
+    data.lng && searchParams.set('order', data.lng)
+    const cryptedParams = cryptoData.hashData(searchParams.toString())
+    return cryptedParams
+  }
+
+  const clearSearchParams = (searchParams: URLSearchParams): void => {
+    searchParams.forEach((value, key) => {
+      searchParams.delete(key);
+    });
+  };
+
   const handleSsr = () => {
     let isSsr = checkSsr()
     isSsr ? setSsrLoading(true) : setSsrLoading(false)
@@ -93,23 +114,45 @@ function FilterPage({ initialData }: AppProps) {
       } else {
         const searchParams = new URLSearchParams(location.search);
         if (!(isEmptySearchParams(searchParams))) {
-          let lat = searchParams.has('lat') ? searchParams.get('lat') as string : null
-          let lng = searchParams.has('lng') ? searchParams.get('lng') as string : null
-          if ((lng && lat) || currentLocation) {
-            const { pathname } = navLocation;
-            let coords = (lng && lat) ? {
-              latitude: lat,
-              longitude: lng
-            } : currentLocation && JSON.parse(currentLocation
-            ).coords;
-            searchParams.set('lat', coords.latitude.toString());
-            searchParams.set('lng', coords.longitude.toString());
-            searchSupplier()
+          let searchParam = searchParams.has('search') ? searchParams.get('search') : null
+          if (searchParam) {
+            // covert search coded params to json object
+            let realDataString = cryptoData.unHashData(`${searchParam}`)
+            let dataTable = realDataString.replaceAll('=', ":").split("&")
+            let resultObject: Record<string, string> = arrayToObject(dataTable);
+            // fetch lat and long from params
+            let lat = resultObject.lat ? resultObject.lat : null
+            let lng = resultObject.lng ? resultObject.lng : null
+            if ((lng && lat) || currentLocation) {
+              let coords = (lng && lat) ? {
+                latitude: lat,
+                longitude: lng
+              } : currentLocation && JSON.parse(currentLocation
+              ).coords;
 
-            const newURL = pathname !== '/' ? `${pathname}?${searchParams.toString()}` : `/search/?${searchParams.toString()}`;
-            navigate(newURL, { replace: true });
+              resultObject = {
+                ...resultObject,
+                lat: coords.latitude.toString(),
+                lng: coords.longitude.toString(),
+              }
+              const newCryptedParams = handleUriParams(resultObject)
+              // console.log('resultObject', JSON.stringify(resultObject).replaceAll(':', '='))
+              // const newParams = cryptoData.hashData(resultObject.toString())
+              // searchParams.set('search', coords.latitude.toString());
+              searchSupplier()
+              // const cryptedParams = cryptoData.hashData(searchParams.toString())
+              // clearSearchParams(searchParams)
+              // searchParams.set('search', newCryptedParams)
+              // const { pathname } = navLocation;
+              // const newURL = pathname !== '/' ? `${pathname}?${searchParams.toString()}` : `/search/?${searchParams.toString()}`;
+              // const realData = cryptoData.unHashData(cryptedUrl)
+              // navigate(newURL, { replace: true });
+            } else {
+              // dispatch({ type: "SET_SHOW", payload: true })
+            }
+
           } else {
-            // dispatch({ type: "SET_SHOW", payload: true })
+            console.log("error")
           }
         } else {
           navigateToHome()
@@ -153,6 +196,7 @@ function FilterPage({ initialData }: AppProps) {
       searchSupplier();
     }
   }, [refresh]);
+
   const searchSupplier = () => {
     const searchParams = new URLSearchParams(location.search);
     if (isEmptySearchParams(searchParams)) {
@@ -168,8 +212,11 @@ function FilterPage({ initialData }: AppProps) {
         currentLocation = JSON.parse(current_location
         ).coords;
       } else {
+
         let lat = searchParams.has("lat") ? searchParams.get("lat") as string : null;
         let lng = searchParams.has("lng") ? searchParams.get("lng") as string : null;
+        // const realData = cryptoData.unHashData(searchParams.toString())
+        // console.log('realData:',realData)
         if (lat && lng) {
           currentLocation = {
             latitude: lat,
@@ -218,6 +265,7 @@ function FilterPage({ initialData }: AppProps) {
 
     }
   };
+
   const isEmptySearchParams = (searchParams: any) => {
     const iterator = searchParams.entries();
     return iterator.next().done;
