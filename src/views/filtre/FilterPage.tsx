@@ -34,8 +34,10 @@ import PriceSlide from "./components/priceSlider/PriceSlide";
 import SearchProduit from "./components/produitSearch/ProduitSearch";
 import Trie from "./components/trie/Trie";
 import "./filterPage.scss";
+import { AppProps } from "../../services/types";
 
-function FilterPage() {
+function FilterPage({ initialData }: AppProps) {
+
   const restaurantsList = useAppSelector(
     (state) => state.restaurant.filterRestaurants
   );
@@ -50,7 +52,7 @@ function FilterPage() {
 
   const recommanded = useSelector(recommendedHomeSelector);
   const popular = useSelector(popularHomeSelector);
-  const isLoading = useSelector(homeLoadingSelector);
+  const isLoading = initialData ? false : useSelector(homeLoadingSelector);
   const refresh = useSelector(homeRefresh);
   const [isload, setIsLoading] = useState<boolean>(false);
   const [isloadFilter, setIsLoadFilter] = useState<boolean>(false);
@@ -65,7 +67,7 @@ function FilterPage() {
   const [newSuppliers, setNewuppliers] = useState<any>(false);
   const [bestRatedSuppliers, setBestRatedSuppliers] = useState<any>(false);
 
-  const [searchSuppliersList, setSearchSuppliersList] = useState<any>();
+  const [searchSuppliersList, setSearchSuppliersList] = useState<Array<any>>(initialData ? initialData.data.suppliers : []);
   const [ssrLoading, setSsrLoading] = useState<boolean>(true)
 
   const [messangerPopup, setMessangerPopup] = useState<boolean>(false)
@@ -103,11 +105,11 @@ function FilterPage() {
             searchParams.set('lat', coords.latitude.toString());
             searchParams.set('lng', coords.longitude.toString());
             searchSupplier()
-            const newURL = pathname != '/' ? `${pathname}?${searchParams.toString()}` : `/search/?${searchParams.toString()}`;
-            navigate(newURL, { replace: true })
 
+            const newURL = pathname !== '/' ? `${pathname}?${searchParams.toString()}` : `/search/?${searchParams.toString()}`;
+            navigate(newURL, { replace: true });
           } else {
-            dispatch({ type: "SET_SHOW", payload: true })
+            // dispatch({ type: "SET_SHOW", payload: true })
           }
         } else {
           navigateToHome()
@@ -154,7 +156,7 @@ function FilterPage() {
   const searchSupplier = () => {
     const searchParams = new URLSearchParams(location.search);
     if (isEmptySearchParams(searchParams)) {
-      setSearchSuppliersList("");
+      setSearchSuppliersList([]);
       setHasFilter(false);
       setIsLoadFilter(false);
     } else {
@@ -178,7 +180,7 @@ function FilterPage() {
             latitude: 0,
             longitude: 0
           }
-          dispatch({ type: "SET_SHOW", payload: true })
+          // dispatch({ type: "SET_SHOW", payload: true })
         }
       }
       const payload = {
@@ -503,7 +505,7 @@ function FilterPage() {
                     <SearchProduit />
                     {hasFilter && !isloadFilter ? <BtnReset></BtnReset> : ""}
                   </div>
-                  {searchSuppliersList?.length && !isloadFilter && hasFilter ? (
+                  {(searchSuppliersList?.length && !isloadFilter && hasFilter) || (initialData) ? (
                     <div className="row search-list">
                       {searchSuppliersList.map(function (supp: any) {
                         return (
@@ -514,7 +516,7 @@ function FilterPage() {
                       })}
                     </div>
                   ) : (
-                    ""
+                    <></>
                   )}
                   {isloadFilter ? (
                     <>

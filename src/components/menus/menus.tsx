@@ -140,9 +140,9 @@ const Menu: React.FC<AppProps> = ({ initialData }) => {
     try {
       if (typeof window != "undefined") {
         data = await supplierServices.getSupplierById(Number(idNumber!))
-        data = data.data;         
+        data = data.data;
         if (isLoggedIn?.length! > 0) {
-          let favList :any = await userService.getClientFavorits(); 
+          let favList: any = await userService.getClientFavorits();
           favList = favList.data.data.map((i: any) => Number(i.id))
           if (favList.includes(Number(idNumber))) {
             setFavor(true)
@@ -154,7 +154,7 @@ const Menu: React.FC<AppProps> = ({ initialData }) => {
       }
       else data = initialData.supplierResponse
 
-      let categories = data.data.categorys.map((item:any)=>item.name)?.join(' - ')
+      let categories = data.data.categorys.map((item: any) => item.name)?.join(' - ')
       setCategories(categories)
       setDisplayedRestaurant(data.data)
     } catch (error) {
@@ -169,17 +169,17 @@ const Menu: React.FC<AppProps> = ({ initialData }) => {
         if (data.status === 200) {
           data = data.data
           setMenuData(data.data);
-          setFiltreddMenuData(data.data)         
+          setFiltreddMenuData(data.data)
         }
       }
       else {
         data = initialData.menuResponse.data
         setMenuData(data);
-        setFiltreddMenuData(data)    
+        setFiltreddMenuData(data)
       }
     } catch (error) {
       throw error
-    }    
+    }
   };
 
   const getSupplierIsOpen = async () => {
@@ -203,7 +203,7 @@ const Menu: React.FC<AppProps> = ({ initialData }) => {
     }
   }
   useEffect(() => {
-    fetchData();    
+    fetchData();
   }, [])
   const fetchData = async () => {
     setLoading(true);
@@ -238,7 +238,7 @@ const Menu: React.FC<AppProps> = ({ initialData }) => {
     let locationArray = locationPath.split("/");
     locationArray[4] = selectedMenuItem.id.toString();
     locationArray[1] = 'product';
-    const newURL = locationArray.join("/");    
+    const newURL = locationArray.join("/");
     navigate(newURL);
   };
 
@@ -257,40 +257,40 @@ const Menu: React.FC<AppProps> = ({ initialData }) => {
   const handleFilter = () => {
     if (selectedOption === "All") {
       if (searchTerms.length) {
-        let filteredData = menuData.map((menu) => {         
+        let filteredData = menuData.map((menu) => {
           return {
             ...menu,
-            products : menu.products.filter(product =>
+            products: menu.products.filter(product =>
               product.name.toLowerCase().includes((searchTerms || '').toLowerCase())
             )
           }
-        }).filter((item:any)=>item.products.length)
-        setFiltreddMenuData(filteredData)       
+        }).filter((item: any) => item.products.length)
+        setFiltreddMenuData(filteredData)
       }
       else {
-        setFiltreddMenuData(menuData)        
+        setFiltreddMenuData(menuData)
       }
     }
     else {
       if (searchTerms.length) {
-        let filtredData = menuData.map((menu) => {         
+        let filtredData = menuData.map((menu) => {
           return {
             ...menu,
-            products : menu.products.filter(product =>
+            products: menu.products.filter(product =>
               product.name.toLowerCase().includes((searchTerms || '').toLowerCase())
             )
           }
         }).filter((data) => {
           return data.name === selectedOption && data.products.length
-        })        
-        setFiltreddMenuData(filtredData);        
+        })
+        setFiltreddMenuData(filtredData);
       }
       else {
         let filtredData = menuData.filter((data) => {
           return data.name === selectedOption
         })
-        setFiltreddMenuData(filtredData)        
-      }      
+        setFiltreddMenuData(filtredData)
+      }
     }
   }
 
@@ -299,7 +299,7 @@ const Menu: React.FC<AppProps> = ({ initialData }) => {
   }, [selectedOption, menuData])
 
   const handleSearch = (event: any) => {
-    setSearchTerms(event?.target?.value);   
+    setSearchTerms(event?.target?.value);
   }
   useEffect(() => {
     handleFilter()
@@ -312,120 +312,120 @@ const Menu: React.FC<AppProps> = ({ initialData }) => {
           <CircularProgress sx={{ alignSelf: 'center', my: '2rem' }} />
         ) :
           (
-            filtreddMenuData.length ? 
-            filtreddMenuData.map((menuItem: MenuData) => {
-              const menuItemId = menuItem.id;
-              const menuItemProducts = menuItem.products;
-              const isDiscount = menuItem.is_discount
-              const discountVal = isDiscount ? menuItem.discount_value : 0
-              const indexOfLastProduct = currentPage[menuItemId]
-                ? currentPage[menuItemId] * productsPerPage
-                : productsPerPage;
-              const indexOfFirstProduct = indexOfLastProduct - productsPerPage;
-              const displayedProducts = menuItemProducts.slice(
-                indexOfFirstProduct,
-                indexOfLastProduct
-              );
-              return (
-                <div key={menuItemId} className={`menu-item-container`}>
-                  <div className="menu-item-header">
-                    <span className='menu-item-header-title'>
-                      {menuItem.name}
-                    </span>
-                    <div className='menu-item-header-info-container'>
-                      {
-                        !isDiscount &&
-                        <span className='menu-item-header-choix'>
-                          {menuItemProducts.length} choix
-                        </span>
-                      }
-                      {
-                        isDiscount && <span className='discount-label'>
-                          {discountVal} %
-                        </span>
-                      }
+            filtreddMenuData.length ?
+              filtreddMenuData.map((menuItem: MenuData) => {
+                const menuItemId = menuItem.id;
+                const menuItemProducts = menuItem.products;
+                const isDiscount = menuItem.is_discount
+                const discountVal = isDiscount ? menuItem.discount_value : 0
+                const indexOfLastProduct = currentPage[menuItemId]
+                  ? currentPage[menuItemId] * productsPerPage
+                  : productsPerPage;
+                const indexOfFirstProduct = indexOfLastProduct - productsPerPage;
+                const displayedProducts = menuItemProducts.slice(
+                  indexOfFirstProduct,
+                  indexOfLastProduct
+                );
+                return (
+                  <div key={menuItemId} className={`menu-item-container`}>
+                    <div className="menu-item-header">
+                      <span className='menu-item-header-title'>
+                        {menuItem.name}
+                      </span>
+                      <div className='menu-item-header-info-container'>
+                        {
+                          !isDiscount &&
+                          <span className='menu-item-header-choix'>
+                            {menuItemProducts.length} choix
+                          </span>
+                        }
+                        {
+                          isDiscount && <span className='discount-label'>
+                            {discountVal} %
+                          </span>
+                        }
+                      </div>
+
                     </div>
 
-                  </div>
-                  
-                  <div className='product-container'>
-                    <div className="product-grid">
-                      {displayedProducts.map((product) => (
-                        <div key={product.id} className="product-card">
-                          <div className='info-container' >
-                            <h4 className="product-title" >
-                              {getTruncatedName(product.name, 10)}
-                            </h4>
-                            <p className="product-price">
-                              {`${t('price')}: ${Math.round(product.price)} DT`}
-                            </p>
-                            <p className="product-description" dangerouslySetInnerHTML={{ __html: product.description }}></p>
-                            <div className='labels-container'>
-                              {
-                                product.is_popular ?
-                                  <span className='popular-label'>Popular</span> : <></>
-                              }
-                              {
-                                product.discount_value && product.discount_value > 0 ?
-                                  <span className='discount-label'>{product.discount_value} {product.discount_type === "PERCENTAGE" ? "%" : ""} </span> : <></>
-                              }
+                    <div className='product-container'>
+                      <div className="product-grid">
+                        {displayedProducts.map((product) => (
+                          <div key={product.id} className="product-card">
+                            <div className='info-container' >
+                              <h4 className="product-title" >
+                                {getTruncatedName(product.name, 10)}
+                              </h4>
+                              <p className="product-price">
+                                {`${t('price')}: ${Math.round(product.price)} DT`}
+                              </p>
+                              <p className="product-description" dangerouslySetInnerHTML={{ __html: product.description }}></p>
+                              <div className='labels-container'>
+                                {
+                                  product.is_popular ?
+                                    <span className='popular-label'>Popular</span> : <></>
+                                }
+                                {
+                                  product.discount_value && product.discount_value > 0 ?
+                                    <span className='discount-label'>{product.discount_value} {product.discount_type === "PERCENTAGE" ? "%" : ""} </span> : <></>
+                                }
+                              </div>
+                              <button className="product-button"
+                                onClick={() => {
+                                  handleChooseOptions(product);
+                                }}>
+                                <AddIcon className="product-button-icon" />
+                              </button>
                             </div>
-                            <button className="product-button"
-                              onClick={() => {
-                                handleChooseOptions(product);
-                              }}>
-                              <AddIcon className="product-button-icon" />
-                            </button>
+                            <div className="product-image-blc">
+                              <img loading="lazy" src={
+                                product.image[0]?.path ?
+                                  product.image[0]?.path :
+                                  displayedRestaurant?.images[0].pivot.type === "principal" ?
+                                    displayedRestaurant?.images[0].path :
+                                    displayedRestaurant?.images[1].path
+                              } alt='product photo' className="product-image" />
+                            </div>
+
                           </div>
-                          <div className="product-image-blc">
-                            <img loading="lazy" src={
-                              product.image[0]?.path ?
-                                product.image[0]?.path :
-                                displayedRestaurant?.images[0].pivot.type === "principal" ?
-                                  displayedRestaurant?.images[0].path :
-                                  displayedRestaurant?.images[1].path
-                            } alt='product photo' className="product-image" />
-                          </div>
-                          
-                        </div>
-                      ))}
+                        ))}
+                      </div>
                     </div>
+
+                    <div className="pagination-blc">
+                      {
+                        menuItemProducts.length > productsPerPage ? (
+                          <Pagination
+                            style={{ marginTop: '1rem' }}
+                            count={Math.ceil(menuItemProducts.length / productsPerPage)}
+                            page={currentPage[menuItemId] || 1}
+                            onChange={(event, page) =>
+                              handlePaginationClick(page, menuItemId)
+                            }
+                          />
+                        ) : (
+                          <div className='epmty-pagination'>
+
+                          </div>
+                        )
+                      }
+                    </div>
+
+
                   </div>
-
-                  <div className="pagination-blc">
-                    {
-                      menuItemProducts.length > productsPerPage ? (
-                        <Pagination
-                          style={{ marginTop: '1rem' }}
-                          count={Math.ceil(menuItemProducts.length / productsPerPage)}
-                          page={currentPage[menuItemId] || 1}
-                          onChange={(event, page) =>
-                            handlePaginationClick(page, menuItemId)
-                          }
-                        />
-                      ) : (
-                        <div className='epmty-pagination'>
-
-                        </div>
-                      )
-                    }
+                );
+              }
+              )
+              :
+              <>
+                <div className="result-not-found">
+                  <div className="result-not-found__title">Oups !</div>
+                  <div className="result-not-found__text">
+                    Aucun résultat correspondant à vos critères de recherche{" "}
                   </div>
-                  
-
+                  <div className="result-not-found__icon"></div>
                 </div>
-              );
-            }
-            ) 
-            :
-            <>
-              <div className="result-not-found">
-                <div className="result-not-found__title">Oups !</div>
-                <div className="result-not-found__text">
-                  Aucun résultat correspondant à vos critères de recherche{" "}
-                </div>
-                <div className="result-not-found__icon"></div>
-              </div>
-            </>
+              </>
           )}
     </>
   }
@@ -467,11 +467,11 @@ const Menu: React.FC<AppProps> = ({ initialData }) => {
                           width={'100%'}
                           height={20}
                         />
-                    </div>
+                      </div>
                     </div>
                     <div className="loading-supplier">
                       {[...Array(3)].map((_, index) => (
-                        <div className='icons-loader'>
+                        <div className='icons-loader' key={index+20}>
                           <Skeleton
                             variant="rectangular"
                             width={40}
@@ -482,138 +482,139 @@ const Menu: React.FC<AppProps> = ({ initialData }) => {
                             width={160}
                             height={10}
                           />
-                        </div>     
+                        </div>
                       ))
                       }
                       <Skeleton
                         variant="rectangular"
                         width={'100%'}
                         height={46}
-                        style={{backgroundColor: '#B2E9F0',borderRadius:10}}
+                        style={{ backgroundColor: '#B2E9F0', borderRadius: 10 }}
                       />
-                    </div>  
-                  </div>                
+                    </div>
+                  </div>
                 </div>
               </>
-            : 
-            <div className="supplier-infos-area">
-              <div className="background-container">
-                <img loading="lazy" src={displayedRestaurant?.images[0].path} alt="restaurant image" className="background" />
-              </div>
-              <div className="supplier-infos-blc">
-                <div className="supplier-title-area">
-                  <div className="supplier-logo">
-                    <img loading="lazy" src={displayedRestaurant?.images[0].pivot.type === "principal" ? displayedRestaurant?.images[0].path : displayedRestaurant?.images[1].path} alt="" />
+              :
+              <div className="supplier-infos-area">
+                <div className="background-container">
+                  <img loading="lazy" src={displayedRestaurant?.images[0].path} alt="restaurant image" className="background" />
+                </div>
+                <div className="supplier-infos-blc">
+                  <div className="supplier-title-area">
+                    <div className="supplier-logo">
+                      <img loading="lazy" src={displayedRestaurant?.images[0].pivot.type === "principal" ? displayedRestaurant?.images[0].path : displayedRestaurant?.images[1].path} alt="" />
+                    </div>
+                    <div className="supplier-title-blc">
+                      <h1 className="supplier-title">{displayedRestaurant?.name}</h1>
+                      <p className="supplier-desc">
+                        {categories}
+                      </p>
+                    </div>
                   </div>
-                  <div className="supplier-title-blc">
-                    <h1 className="supplier-title">{displayedRestaurant?.name}</h1>
-                    <p className="supplier-desc">
-                      {categories}
-                    </p>
+                  <div className="supplier-infos_list-wrapper">
+                    <div className="supplier-infos_list-blc">
+                      <div className="supplier-infos_list">
+                        <ul>
+                          <li>
+                            <p className="supplier-infos_list-item location">
+                              {displayedRestaurant?.city + ' ' + displayedRestaurant?.street + ' ' + displayedRestaurant?.postcode}
+                            </p>
+                          </li>
+                          <li>
+                            <p className={`supplier-infos_list-item time-work ${isOpen ? 'open' : 'close'}`}>
+                              {
+                                isOpen ?
+                                  <span>{t("supplier.opentime")} {closeTime}</span>
+                                  :
+                                  <span>{t("closed")}</span>
+                              }
+                            </p>
+                          </li>
+                          <li>
+                            <p className="supplier-infos_list-item shipping-cost">
+                              Frais de livraison: {displayedRestaurant?.delivery_price} Dt
+                            </p>
+                          </li>
+                        </ul>
+                      </div>
+                      <div className="supplier-infos_ratings-count">
+                        <div className='rate-gouping'>
+                          {isLoggedIn ?
+                            <div className="favor" style={(favor) ? { backgroundImage: `url(${FavorActiveIcon})` } : { backgroundImage: `url(${FavorIcon})` }} onClick={updatefavorite}>
+                            </div> : ""
+                          }
+                          {
+                            displayedRestaurant?.bonus ? (
+                              <div className='gift-icon' style={(displayedRestaurant?.bonus > 0) ? { backgroundImage: `url(${ActiveGiftIcon})` } : { backgroundImage: `url(${GiftIcon})` }}></div>
+                            ) : (
+                              <div className='gift-icon' style={{ backgroundImage: `url(${GiftIcon})` }}></div>
+                            )
+                          }
+                        </div>
+                        <div className="stars">
+                          {
+                            (displayedRestaurant?.star && (displayedRestaurant?.star > 0)) && (<span className='star-number'> {displayedRestaurant?.star}</span>)
+                          }
+                          {[...Array(5)].map((_, index) => (
+                            <span key={index + 1}>
+                              {(displayedRestaurant?.star && (displayedRestaurant?.star >= index + 1))
+                                ? <Star className='starIcon' style={{ visibility: 'visible' }} /> : <StarBorderIcon className='starIcon' style={{ visibility: 'visible' }} />
+                              }
+                            </span>
+                          ))}
+                        </div>
+                        <div className='time'>
+                          {`${Number(displayedRestaurant?.medium_time) - 10}-${Number(displayedRestaurant?.medium_time + 10)}min`}
+                        </div>
+                      </div>
+                    </div>
+                    <div className="supplier-info-search">
+                      <button className="btn btn-search"></button>
+                      <div className="search-blc">
+                        <input type="search" value={searchTerms} className="form-control" placeholder="Qu’est ce qu’on vous apporte ?" onInput={handleSearch} />
+                      </div>
+                    </div>
                   </div>
                 </div>
-                <div className="supplier-infos_list-wrapper">
-                  <div className="supplier-infos_list-blc">
-                    <div className="supplier-infos_list">
-                      <ul>
-                        <li>
-                          <p className="supplier-infos_list-item location">
-                            {displayedRestaurant?.city +' '+displayedRestaurant?.street+' '+displayedRestaurant?.postcode} 
-                          </p>
-                        </li>
-                        <li>
-                          <p className={`supplier-infos_list-item time-work ${isOpen ? 'open': 'close'}`}>
-                            {
-                              isOpen ?
-                              <span>{t("supplier.opentime")} {closeTime}</span>
-                              :
-                              <span>{t("closed")}</span>
-                            }
-                          </p>
-                        </li>
-                        <li>
-                          <p className="supplier-infos_list-item shipping-cost">
-                            Frais de livraison: {displayedRestaurant?.delivery_price} Dt
-                          </p>
-                        </li>
-                      </ul>
-                    </div>
-                    <div className="supplier-infos_ratings-count">                    
-                      <div className='rate-gouping'>
-                        { isLoggedIn ?
-                          <div className="favor" style={(favor) ? { backgroundImage: `url(${FavorActiveIcon})` } : { backgroundImage: `url(${FavorIcon})` }} onClick={updatefavorite}>
-                          </div> : ""
-                        }   
-                        {
-                          displayedRestaurant?.bonus ? (
-                            <div className='gift-icon' style={(displayedRestaurant?.bonus > 0) ? { backgroundImage: `url(${ActiveGiftIcon})` } : { backgroundImage: `url(${GiftIcon})` }}></div>
-                          ) : (
-                            <div className='gift-icon' style={{ backgroundImage: `url(${GiftIcon})` }}></div>
-                          )
-                        }
-                      </div>
-                      <div className="stars">
-                        {
-                          (displayedRestaurant?.star && (displayedRestaurant?.star > 0)) && (<span className='star-number'> {displayedRestaurant?.star}</span>)
-                        }
-                        {[...Array(5)].map((_, index) => (
-                          <span key={index + 1}>                          
-                            {(displayedRestaurant?.star && (displayedRestaurant?.star >= index + 1))
-                              ? <Star className='starIcon' style={{ visibility: 'visible' }} /> : <StarBorderIcon className='starIcon'  style={{ visibility: 'visible' }} />  
-                            }
-                          </span>
-                        ))}                     
-                      </div>                      
-                      <div className='time'>
-                        {`${Number(displayedRestaurant?.medium_time) - 10}-${Number(displayedRestaurant?.medium_time + 10)}min`}
-                      </div>
-                    </div>
-                  </div>
-                  <div className="supplier-info-search">
-                    <button className="btn btn-search"></button>
-                    <div className="search-blc">
-                      <input type="search" value={searchTerms} className="form-control" placeholder="Qu’est ce qu’on vous apporte ?" onInput={handleSearch}/>
-                    </div>
-                  </div>
-                </div>
               </div>
-            </div>
-          }          
+          }
           <div className="categories-filters filers">
             {
               loading ?
                 <div className='loading-container'>
                   {[...Array(4)].map((_, index) => (
                     <Skeleton
+                      key={index + 5}
                       variant="rectangular"
                       width={180}
                       height={46}
                     />
-                  ))}                  
-                </div>                
-                : 
-              menuData.length != 0 && (
-                <>
-                  <div className={`select ${selectedOption == "All" ? "selected" : ""}`}  >
-                    <input type="radio" value="All" id='All' name='type' checked={selectedOption === "1"} onChange={handleOptionChange} />
-                    <label htmlFor="All">{t('supplier.allProducts')}</label>
-                  </div>
-                  {
-                    menuData.map((data, index) => {
-                      return (
-                        <React.Fragment key={index}>
-                          <div className={`select ${selectedOption == data.name ? "selected" : ""}`}  >
-                            <input type="radio" value={data.name} id={data.name} name='type' checked={selectedOption === data.name} onChange={handleOptionChange} />
-                            <label htmlFor={data.name}>{data.name}</label>
-                          </div>
-                        </React.Fragment>
-                      )
+                  ))}
+                </div>
+                :
+                menuData.length != 0 && (
+                  <>
+                    <div className={`select ${selectedOption == "All" ? "selected" : ""}`}  >
+                      <input type="radio" value="All" id='All' name='type' checked={selectedOption === "1"} onChange={handleOptionChange} />
+                      <label htmlFor="All">{t('supplier.allProducts')}</label>
+                    </div>
+                    {
+                      menuData.map((data, index) => {
+                        return (
+                          <React.Fragment key={index}>
+                            <div className={`select ${selectedOption == data.name ? "selected" : ""}`}  >
+                              <input type="radio" value={data.name} id={data.name} name='type' checked={selectedOption === data.name} onChange={handleOptionChange} />
+                              <label htmlFor={data.name}>{data.name}</label>
+                            </div>
+                          </React.Fragment>
+                        )
 
-                    })
-                  }
+                      })
+                    }
 
-                </>
-              )
+                  </>
+                )
             }
           </div>
           {
@@ -626,23 +627,36 @@ const Menu: React.FC<AppProps> = ({ initialData }) => {
                     height={56}
                   />
                 </div>
-                <div className='loading-menu'>             
+                <div className='loading-menu'>
                   {[...Array(4)].map((_, index) => (
                     <Skeleton
+                      key={index}
                       variant="rectangular"
                       width={375}
                       height={160}
                     />
-                  ))}                  
-                </div> 
-              </>                           
-            : 
+                  ))}
+                </div>
+              </>
+              :
               <div className="supplier-main-menu">
                 <Product />
               </div>
           }
-        
 
+          <div className={'bulles'}>
+            <button className={'messangerPopupBtn'} onClick={handleMessangerPopup} style={{ backgroundImage: `url(${MessangerBtnIcon})` }}>
+              {unReadedQt > 0 && (
+                <div className={'messangerBullNotifIcon'}>
+                  {unReadedQt}
+                </div>
+              )}
+            </button>
+          </div>
+          {
+            messangerPopup &&
+            <Messanger className='discuterMessangerPopup' close={handleMessangerPopup} />
+          }
         </Container>
       </div>
 

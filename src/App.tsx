@@ -91,9 +91,8 @@ function App({ initialData }: AppProps) {
   }, []);
 
   useEffect(() => {
-    if (!region.id) {
-      dispatch({ type: "SET_SHOW", payload: true })
-    }
+    !region.id ? dispatch({ type: "SET_SHOW", payload: true }) : dispatch({ type: "SET_SHOW", payload: false })
+
   }, [region]);
 
   useEffect(() => {
@@ -290,12 +289,12 @@ function App({ initialData }: AppProps) {
               (!location || !(typeof window != undefined)) ?
                 <Route index element={<HomePage initialData={initialData} />} />
                 :
-                <Route index element={<FilterPage />} />
+                <Route index element={<FilterPage initialData={initialData} />} />
             }
             <Route path="/restaurant/:id/:search?/:productId?/*" element={<Menu initialData={initialData} />} />
             <Route path="/product/:id/:search?/:productId/*" element={<MenuOptions initialData={initialData} />} />
             <Route path="/cart/*" element={<CartPage />} />
-            <Route path="/search/:search?/*" element={<FilterPage />} />
+            <Route path="/search/:search?/*" element={<FilterPage initialData={initialData}  />} />
 
           </Route>
 

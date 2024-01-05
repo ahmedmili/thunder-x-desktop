@@ -3,7 +3,8 @@ import express from 'express';
 import fs from 'node:fs/promises';
 import path, { dirname } from "path";
 import { fileURLToPath } from "url";
-
+import url from 'url';
+import querystring from 'querystring';
 // Constants
 const isProduction = process.env.VITE_NODE_ENV === 'production'
 const port = process.env.PORT || 3212
@@ -79,14 +80,12 @@ const ssrHome = async () => {
   return { status, data }
 }
 
-
 async function getSupplierById(supplierId) {
   try {
     const response = await axios.get(apiUrl + "getSupplierById/" + supplierId);
     const { status, data } = response;
     return { status, data };
   } catch (error) {
-    console.error('Error', error);
     throw error;
   }
 }
@@ -102,7 +101,6 @@ async function getMenu(supplier_id) {
     const { status, data } = response;
     return { status, data };
   } catch (error) {
-    console.error('Error', error);
     throw error;
   }
 }
@@ -118,22 +116,42 @@ async function getProduct(supplier_id) {
     const { status, data } = response;
     return { status, data };
   } catch (error) {
-    console.error('Error', error);
     throw error;
   }
 }
+
+const searchSuppliersByFilter = async (query) => {
+  const payload = {
+    order_by: query.order ? query.order : "popular",
+    max_price: query.max_price ? query.max_price : 100,
+    min_price: query.min_price ? query.min_price : 0,
+    lat: query.lat ? query.lat : 10.6088898,
+    long: query.lng ? query.lng : 35.8466943,
+    category_id: query.category ? query.category : "",
+    delivery_price: query.delivery_price ? query.delivery_price : 0,
+    filter: query.filter ? query.filter : "",
+  };
+  try {
+    const { success, data } = await axios.post(`${apiUrl}search_supplier_filters`, payload);
+    return { success, data }
+  } catch (error) {
+    throw error
+  }
+
+}
+
 const prepareTemplate = async (req, res) => {
   try {
     var data
-    var url = req.originalUrl
+    var reqUrl = req.originalUrl
+    // console.log('url : ', reqUrl)
     switch (true) {
-      case (req.originalUrl === '/'):
+      case (reqUrl === '/'):
         var response = await ssrHome()
         data = response.data
         break;
-      case (req.originalUrl.includes('/restaurant/')):
-        url = req.originalUrl
-        let testUrl = url.split('/')
+      case (reqUrl.includes('/restaurant/')):
+        let testUrl = reqUrl.split('/')
         var supplierData = testUrl[2]
         var supplier_id = supplierData.split('-')[0]
         if (testUrl[4].length > 0) {
@@ -141,7 +159,7 @@ const prepareTemplate = async (req, res) => {
           supplierData = testUrl[2]
           supplier_id = supplierData.split('-')[0]
           testUrl[1] = "product"
-          url = testUrl.join("/")
+          reqUrl = testUrl.join("/")
           let product_id = testUrl[4]
 
           var supplierResponse = await getSupplierById(supplier_id)
@@ -165,23 +183,34 @@ const prepareTemplate = async (req, res) => {
           }
         }
         break;
-      case (req.originalUrl.includes('/product/')):
+      case (reqUrl.includes('/product/')):
 
+        break;
+      case (reqUrl.includes('/search/')):
+        // Assuming req is your Express request object
+        const parsedUrl = url.parse(req.originalUrl);
+        const queryParams = querystring.parse(parsedUrl.query);
+        var response = await searchSuppliersByFilter(queryParams)
+        data = {
+          status: 200,
+          data: response.data,
+
+        }
         break;
       default:
         break;
     }
 
-    const template = await vite.transformIndexHtml(url, baseTemplate);
+    const template = await vite.transformIndexHtml(reqUrl, baseTemplate);
     const cssAssets = await stylesheets;
-    const appHtml = await render(url, data && data.data);
+    const appHtml = await render(reqUrl, data && data.data);
 
 
     const html = template
       .replace(`<!--app-head-->`, cssAssets)
       .replace(`<!--app-html-->`, appHtml.html ?? "")
 
-      res.status(200).set({ 'Content-Type': 'text/html' }).end(html)
+    res.status(200).set({ 'Content-Type': 'text/html' }).end(html)
   } catch (e) {
     vite?.ssrFixStacktrace(e)
     console.error(e.stack)

@@ -7,9 +7,10 @@ import App from './App';
 import store from './Redux/store';
 import i18n from "./i18n";
 import "./app.scss"
+import { useEffect } from 'react';
 
 export function render(url: string, initialData?: any) {
-
+    // console.log('initialData : ', initialData)
   const html = ReactDOMServer.renderToString(
     <Provider store={store}>
       <GoogleOAuthProvider clientId="766339492046-2vqen18b95q35487bvqgj5n3f4lse9rq.apps.googleusercontent.com">
