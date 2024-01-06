@@ -9,7 +9,7 @@ const handleUriParams = (data: any): string => {
     data.max_price && searchParams.set('max_price', data.max_price)
     data.filter && searchParams.set('filter', data.filter)
     data.lat && searchParams.set('lat', data.lat)
-    data.lng && searchParams.set('order', data.lng)
+    data.lng && searchParams.set('lng', data.lng)
     searchParams.has('search') && searchParams.delete('search')
     const cryptedParams = cryptoData.hashData(searchParams.toString())
     return cryptedParams

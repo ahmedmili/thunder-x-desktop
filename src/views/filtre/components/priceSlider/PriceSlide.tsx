@@ -71,12 +71,8 @@ function PriceSlide() {
                 }
             }
             let newParams = paramsService.handleUriParams(params)
-            if (searchParams.has('search')) {
-                searchParams.set("search", newParams)
-            }
-            else {
-                searchParams.append('search', newParams);
-            }
+            searchParams.has('search') ? searchParams.set("search", newParams):searchParams.append('search', newParams);
+
             navigate(`/search/?${searchParams.toString()}`, {
                 replace: false,
             });

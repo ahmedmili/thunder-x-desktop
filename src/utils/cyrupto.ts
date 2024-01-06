@@ -17,10 +17,6 @@ const unHashData = (encryptedData: string, secretKey: string = sucret_Key): stri
     // Decrypt the data using the secret key
     const decryptedBytes = CryptoJS.AES.decrypt(encryptedData, secretKey);
     const decryptedData = decryptedBytes.toString(CryptoJS.enc.Utf8);
-    // const bytes = CryptoJS.AES.decrypt(encryptedData, secretKey);
-    // const decryptedData = bytes.toString(CryptoJS.enc.Utf8);
-    console.log("decryptedBytes : ", decryptedBytes)
-    console.log("decryptedData : ", decryptedData)
     return decryptedData
 
 }
