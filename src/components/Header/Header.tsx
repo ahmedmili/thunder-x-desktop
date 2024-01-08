@@ -67,7 +67,7 @@ const Header = () => {
     };
   }, []);
 
-  
+
 
   const handleCart = async () => {
     showProfile && setShowProfile(false)
@@ -200,15 +200,7 @@ const Header = () => {
               </Row>
 
               {/*  Thunder logo section  */}
-              {showMapState && (
-                <div
-                  className="mapOverPlay">
-                  <div
-                    onClick={(e) => e.stopPropagation()}>
-                    <Map />
-                  </div>
-                </div>
-              )}
+              
             </Container>
 
           </div>
@@ -225,9 +217,18 @@ const Header = () => {
                 <div className="position">
 
                   <LocationOnIcon className='position-icon' />
+                  <Box className="headerLocalisationMessageContainer" onClick={() => dispatch({ type: "SET_SHOW", payload: true })}>
+                    <a href="#" className="top-bar-location" >
+                      {location
+                          ? location.coords.label
+                          : t('entrezAdress')}
+                      {/* {t('entrezAdress')} */}
+                    </a>
+                  </Box >
+                  {/*                   
                   {location
                     ? location?.coords.label
-                    : t('no_location_detected')}
+                    : t('no_location_detected')} */}
 
                 </div>
 
@@ -277,6 +278,15 @@ const Header = () => {
           </>
         )
       }
+      {showMapState && (
+                <div
+                  className="mapOverPlay">
+                  <div
+                    onClick={(e) => e.stopPropagation()}>
+                    <Map />
+                  </div>
+                </div>
+              )}
     </>
   )
 
