@@ -1,0 +1,29 @@
+@import '../../../scss/extend';
+
+@mixin min-height-media-query($max-height) {
+    @media screen and (max-height: #{$max-height}) {
+        @content;
+    }
+}
+
+.popup-overlay {
+    height: 100vh;
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: rgba(0, 0, 0, 0.527);
+    position: fixed;
+    top: 0;
+    right: 0;
+}
+
+.spinner {
+    display: flex;
+    flex-direction: column;
+    gap: 22px;
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+}

@@ -206,7 +206,7 @@ const FilterCategories: React.FC<FilterCategoriesProps> = ({
               return (
                 <div key={category.id}>
                   <Box className={`category-box ${category.selected ? 'selected' : '' } ${category.id == selectedCategories ? 'check' : ''}`}
-                        onClick={() => handleCategoryClick(category.id)}
+                        onDoubleClick={() => handleCategoryClick(category.id)}
                         >
                           <Box>
                             <img

@@ -511,6 +511,56 @@
         }
     }
 }
+.loading-menu{
+    display: flex;
+    gap: 10px;
+    margin-bottom: 65px;
+    .MuiSkeleton-rectangular {
+        border-radius: 15px;
+    }
+}
+.loading-category{
+    margin-bottom: 65px;
+    .MuiSkeleton-rectangular {
+        border-radius: 15px;
+    }
+}
+.result-not-found {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    &__title {
+        font-family: Poppins;
+        font-size: 20px;
+        font-weight: 700;
+        line-height: 30px;
+        letter-spacing: 0em;
+        color: $dark_Gray;
+        text-align: center;
+        margin-bottom: 6px;
+    }
+
+    &__text {
+        font-family: Poppins;
+        font-size: 16px;
+        font-weight: 500;
+        line-height: 24px;
+        letter-spacing: 0em;
+        text-align: center;
+        color: $light_Gray;
+        margin-bottom: 75px;
+    }
+
+    &__icon {
+        width: 200px;
+        height: 200px;
+        margin: auto;
+        background-image: url("/src/assets/icons/result-not-found.svg");
+        background-size: contain;
+        background-position: center;
+        background-repeat: no-repeat;
+    }
+}
 
 /* -- supplier-infos-area -- */
 
@@ -588,6 +638,7 @@
                         background-position: center;
                         background-repeat: no-repeat;
                         border-radius: 50%;
+                        min-width: 40px;
                     }
                     &.location {
                         &::before {
@@ -599,6 +650,13 @@
                         &::before {
                             background-image: url('./../../assets/time-work-icn.svg');
                             background-size: 25px auto;
+                        }
+                        &.close {
+                            color: $color-apricot;
+                            font-family: 'Poppins-Bold', serif;
+                            &::before {
+                                background-color: $color-apricot;
+                            }
                         }
                     }
                     &.shipping-cost {
@@ -625,7 +683,7 @@
         }
         .rate-gouping {
             @include flex(flex, center, flex-end);
-            margin: 0 0 40px;
+            margin: 0 0 24px;
 
             .star-number {
                 color: $dark_Gray;
@@ -637,11 +695,45 @@
                 color: $orange_color;
             }
             .gift-icon {
+                @include dimensions(28px, 34px);
+                background-position: center;
+                background-repeat: no-repeat;
+                background-size: 21px;
+                color: $color-blue-eastern;
+            }
+            .favor{
                 @include dimensions(23px, 29px);
                 background-position: center;
                 background-repeat: no-repeat;
-                background-size: cover;
-                color: $color-blue-eastern;
+                background-size: contain;
+                margin-top: 5px;
+                margin-right: 10px;
+                &:hover{
+                    cursor: pointer;
+                }
+            }
+        }
+        .stars{
+            text-align: end;
+            margin: 0 0 29px;
+            display: flex;
+            align-items: center;
+            justify-content: flex-end;
+            .starIcon{
+                height: 28px;
+                width: 28px;
+                color: $orange_color;
+            }
+            .star-number{
+                color: $dark_002;                
+                font-family: Poppins;
+                font-size: 20px;
+                font-style: normal;
+                font-weight: 500;
+                line-height: 28px;
+                margin-right: 13px;
+                display: inline-block;
+                margin-top: 5px;
             }
         }
         .supplier-info-search {
@@ -670,6 +762,36 @@
                     font-weight: weight(regular);
                 }
             }
+        }
+    }
+    .loading-supplier{
+      display: flex;
+      flex-direction: column;
+      gap: 25px;  
+        .MuiSkeleton-rectangular {
+            border-radius: 15px;
+        }
+        .icons-loader{
+            display: flex;
+            gap: 10px;
+            align-items: center;
+            .MuiSkeleton-rectangular {
+                border-radius: 50px;
+            }
+        }
+    }
+    .loading-supplier-name{
+        display: flex;
+        margin-bottom: 20px;
+        .MuiSkeleton-rectangular {
+            border-radius: 10px;
+        }
+    }
+    .loading-supplier-details{
+        width: 80%;
+        .MuiSkeleton-rectangular {
+            margin-bottom: 15px;
+            margin-left: 15px;
         }
     }
 }
@@ -736,6 +858,13 @@
 
         .select {
             min-width: 180px;
+        }
+    }
+    .loading-container{
+        display: flex;
+        gap: 20px;
+        .MuiSkeleton-rectangular{
+            border-radius: 5px;
         }
     }
 }
@@ -814,7 +943,7 @@
                         &.time-work {
                             &::before {
                                 background-size: 20px auto;
-                            }
+                            }                           
                         }
                         &.shipping-cost {
                             &::before {

@@ -20,6 +20,7 @@ import PicturesList from "../components/picture-list/PicturesList";
 import { api } from "../services/axiosApi";
 import { IUser } from "../services/types";
 import { FormValues, generateForm } from "../utils/formUtils";
+import { localStorageService } from "../services/localStorageService";
 
 const Register = () => {
   const { t } = useTranslation()
@@ -45,6 +46,11 @@ const Register = () => {
       fetchHomeData(1, location?.coords.longitude, location?.coords.latitude)
     );
   }, []);
+
+  const navigateToHome = () => {
+    const currentLocation = localStorageService.getCurrentLocation()
+    currentLocation ? navigate('/search') : navigate('/')
+}
 
   const fields = [
     {
@@ -149,7 +155,8 @@ const Register = () => {
 
   const saveUser = (user: IUser, token: string) => {
     dispatch(setUserCredentials({ user, token }));
-    navigate('/');
+    // navigate('/');
+    navigateToHome()
   }
 
   const onSubmit = async (

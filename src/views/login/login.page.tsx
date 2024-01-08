@@ -21,6 +21,7 @@ import { setUserCredentials } from "../../Redux/slices/userSlice";
 import { userService } from "../../services/api/user.api";
 import { IUser } from "../../services/types";
 import { toast } from "react-toastify";
+import { localStorageService } from "../../services/localStorageService";
 
 const LoginPage = () => {
   const [showPassword, setShowPassword] = useState(false);
@@ -35,6 +36,10 @@ const LoginPage = () => {
     setShowPassword((password) => !password)
   }
 
+  const navigateToHome = () => {
+    const currentLocation = localStorageService.getCurrentLocation()
+    currentLocation ? navigate('/search') : navigate('/')
+  }
 
   const fields = [
     {
@@ -82,7 +87,8 @@ const LoginPage = () => {
 
   const saveUser = (user: IUser, token: string) => {
     dispatch(setUserCredentials({ user, token }));
-    navigate('/');
+    // navigate('/');
+    navigateToHome()
   }
 
   const onSubmitHandler = async (values: any) => {

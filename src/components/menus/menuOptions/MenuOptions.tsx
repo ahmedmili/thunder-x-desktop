@@ -1,8 +1,12 @@
 import React, { RefObject, useEffect, useReducer, useRef, useState } from 'react';
 import { useTranslation } from 'react-i18next';
+import { Add as AddIcon, Star } from '@mui/icons-material';
+import StarBorderIcon from '@mui/icons-material/StarBorder';
+import { userService } from "../../../services/api/user.api";
 import { useSelector } from 'react-redux';
-import { useLocation, useParams } from 'react-router-dom';
+import { useLocation, useNavigate, useParams } from 'react-router-dom';
 import { toast } from 'react-toastify';
+import Skeleton from "@mui/material/Skeleton";
 import { RootState } from '../../../Redux/slices';
 import { addItem, setDeliveryPrice, setSupplier } from '../../../Redux/slices/cart/cartSlice';
 import { useAppDispatch, useAppSelector } from '../../../Redux/store';
@@ -16,7 +20,8 @@ import KeyboardArrowUpOutlinedIcon from '@mui/icons-material/KeyboardArrowUpOutl
 import ShoppingCartOutlinedIcon from '@mui/icons-material/ShoppingCartOutlined';
 import { supplierServices } from '../../../services/api/suppliers.api';
 import { localStorageService } from '../../../services/localStorageService';
-import { AppProps, Option, Restaurant } from '../../../services/types';
+import {  Option, Restaurant } from '../../../services/types';
+import { scrollToTop } from '../../../utils/utils';
 
 import { fetchMessages } from '../../../Redux/slices/messanger';
 import MessangerBtnIcon from '../../../assets/profile/Discuter/messanger-btn.svg';
@@ -24,7 +29,12 @@ import SupplierIcn from './../../../assets/supplier-icn.png';
 import menuImg from './../../../assets/menu-1.png';
 import Messanger from '../../Popups/Messanger/Messanger';
 import SameSupplierWarn from '../../Popups/SameSupplierWarn/SameSupplierWarn';
-
+import moment from 'moment';
+import ActiveGiftIcon from '../../../assets/profile/ArchivedCommands/activeGift.svg';
+import GiftIcon from '../../../assets/profile/ArchivedCommands/gift.svg';
+import FavorIcon from '../../../assets/profile/ArchivedCommands/favor.svg';
+import FavorActiveIcon from '../../../assets/profile/ArchivedCommands/favor-active.svg';
+import { AppProps, MenuData } from '../../../services/types';
 // Define the initial state
 const initialState = {
     optionslist: [],
@@ -84,27 +94,36 @@ const reducer = (state: any, action: any) => {
 function MenuOptions({ initialData }: AppProps) {
 
     const { t } = useTranslation();
-    const { productId } = useParams<{ productId: string }>();
+    const { id, search, productId } = useParams<{ id: string, search?: string, productId?: string }>();
     const packRef: RefObject<HTMLFormElement> = useRef(null);
     const [productCount, setProductCount] = useState<number>(1);
     const [allContent, setAllContent] = useState<any[]>(initialData ? initialData.productResponse?.data.product : []);
     const [product, setProduct] = useState<any>(initialData ? initialData.productResponse?.data.product : {})
-    const [supplierId, setSupplierId] = useState<number>(initialData ? initialData.productResponse?.data.product.menu[0].supplier_id : 0)
-    const [productSupplier, setProductSupplier] = useState<Restaurant>(initialData ? initialData.supplierResponse?.data : null)
+    const [supplierId, setSupplierId] = useState<number>(initialData ? initialData.productResponse?.data.product.menu[0].supplier_id : Number(id?.split('-')[0]))
+    const [productSupplier, setProductSupplier] = useState<any>(initialData ? initialData.supplierResponse?.data : null)
     const [state, dispatch] = useReducer(reducer, initialState);
-
+    const [favor, setFavor] = useState<boolean>(false)
     const usedispatch = useAppDispatch();
     const location = useLocation();
     const { items } = useSelector((state: RootState) => state.cart);
     const cartItems = useAppSelector((state) => state.cart.items);
     var ssrState: any = {};
-
+    const [closeTime, setCloseTime] = useState<string>('');
+    const [isOpen, setIsOpen] = useState<boolean>(true);
     const [notSameError, setNotSameError] = useState<boolean>(false)
-
+    const navigate = useNavigate();
+    const [menuData, setMenuData] = useState<any[]>([]);
+    const [loading, setLoading] = useState(true);
     // handle messanger
     const unReadMessages = useAppSelector((state) => state.messanger.unReadedMessages)
     const [messangerPopup, setMessangerPopup] = useState<boolean>(false)
     const [unReadedQt, setUnReadedQt] = useState<number>(unReadMessages)
+    const idNumber = id?.split('-')[0];
+    const [categories, setCategories] = useState<any>("");
+    const [isLoggedIn, setIsLoggedIn] = useState<any>(typeof window != 'undefined' ? localStorageService.getUserToken() : false);
+    var currentDate = moment();
+    var today = currentDate.format('ddd');
+
     useEffect(() => {
         setUnReadedQt(unReadMessages)
     }, [unReadMessages])
@@ -123,20 +142,82 @@ function MenuOptions({ initialData }: AppProps) {
      */
 
     useEffect(() => {
-        let locationArray = location.pathname.split('/');
-        locationArray[1] = "restaurant";
-        const newUrl = locationArray.join("/");
-        window.history.pushState({}, '', newUrl);
+        // let locationArray = location.pathname.split('/');
+        // locationArray[1] = "restaurant";
+        // const newUrl = locationArray.join("/");
+        // window.history.pushState({}, '', newUrl);
     }, [])
 
     const getSupplier = async (id: number) => {
         const { status, data } = await supplierServices.getSupplierById(id)
-        status === 200 && setProductSupplier(data.data)
+        if (status === 200) {
+            setProductSupplier(data.data)
+            let categories = data.data.categorys.map((item:any)=>item.name)?.join(' - ')
+            setCategories(categories)
+             if (isLoggedIn?.length! > 0) {
+                let favList :any = await userService.getClientFavorits();
+                favList = favList.data.data.map((i: any) => Number(i.id))
+                if (favList.includes(Number(id))) {
+                    setFavor(true)
+                }
+                else {
+                    setFavor(false)
+                }
+            }
+        }
+
     }
+    const getMenu = async () => {
+        var data: any;
+        try {
+        if (typeof window != "undefined") {
+            data = await productService.getMenu(idNumber)
+            if (data.status === 200) {
+                data = data.data
+                let otherProducts : any[] = [];
+                data.data.map((menu: any) => {
+                    menu.products.map((product: any) => {
+                        if (Number(product.id) !== supplierId && otherProducts.length <6) {
+                            otherProducts.push(product)
+                        }
+                    })
+                })
+                setMenuData(otherProducts);
+            }
+        }
+        else {
+            data = initialData.menuResponse.data
+            setMenuData(data);
+        }
+        } catch (error) {
+        throw error
+        }
+  };
+    const getSupplierIsOpen = async () => {
+        const { status, data } = await supplierServices.getSupplierISoPENById(supplierId)
+        data.data.is_open === 1 ? setIsOpen(true) : setIsOpen(false)
+    }
+    useEffect(() => {
+        const schedules = productSupplier ? productSupplier.schedules : []
+        var currentDayObject = schedules.find((day: any) => day.day === today);
+        if (currentDayObject) {
+        let closeTimeArray = currentDayObject.to.toString().split(':')
+        let closeTime = `${closeTimeArray[0]}:${closeTimeArray[1]}`
+        setCloseTime(closeTime)
+        }
+    }, [productSupplier])
 
     useEffect(() => {
-        supplierId != 0 && getSupplier(supplierId)
-    }, [supplierId])
+       fetchData()
+    }, [id, search, productId]);
+    const fetchData = async () => {
+        setLoading(true);
+        await getProduct();
+        await getSupplier(supplierId);
+        await getMenu()
+        await getSupplierIsOpen()
+        setLoading(false);
+    };
 
     const getProduct = async () => {
         try {
@@ -144,7 +225,7 @@ function MenuOptions({ initialData }: AppProps) {
 
                 const { status, data } = await productService.getProduct(Number(productId));
                 if (status === 200) {
-                    setSupplierId(data.data.product.menu[0].supplier_id);
+                    // setSupplierId(data.data.product.menu[0].supplier_id);
                     setProduct(data.data.product);
 
                     let optionslist = data.data.product.options;
@@ -186,7 +267,7 @@ function MenuOptions({ initialData }: AppProps) {
 
                 }
             } else {
-                setSupplierId(initialData.productResponse?.data.product.menu[0].supplier_id);
+                // setSupplierId(initialData.productResponse?.data.product.menu[0].supplier_id);
                 setProduct(initialData.productResponse?.data.product);
 
                 let optionslist = initialData.productResponse?.data.product.options;
@@ -230,10 +311,6 @@ function MenuOptions({ initialData }: AppProps) {
         } finally {
         }
     };
-
-    useEffect(() => {
-        getProduct();
-    }, []);
 
     useEffect(() => {
         state.packet?.forEach((item: any) => item.checked = false);
@@ -455,243 +532,305 @@ function MenuOptions({ initialData }: AppProps) {
         setNotSameError(!notSameError)
     }
 
+    const goBack = () => {
+        const updatedURL = `/restaurant/${id}/${search}/`;
+        navigate(updatedURL, { replace: true });
+    };
+    const handleChooseOptions = (selectedMenuItem: any | null) => {
+        const prodId = selectedMenuItem.id;
+        const updatedURL = `/product/${id}/${search}/${prodId}/`;
+        navigate(updatedURL);
+    };
+    useEffect(() => {
+        scrollToTop()
+    }, [id, search, productId])
+    const handleFavorsAdd = async () => {
+    const response = await userService.addfavorite(Number(idNumber))
+    response.data.success && setFavor(true)
+  }
+  const deletefavorite = async () => {
+    const response = await userService.deletefavorite(Number(idNumber))
+    response.data.success && setFavor(false)
+  }
+  const updatefavorite = () => {
+    if (favor) {
+      deletefavorite()
+    }
+    else {
+      handleFavorsAdd();
+    }
+  }
+  const getTruncatedName = (name: string, MAX_NAME_LENGTH: number) => {
+    return name.length > MAX_NAME_LENGTH
+      ? `${name.slice(0, MAX_NAME_LENGTH)}...`
+      : name;
+  };
     return (
+
         <div className="menue-options-container" onClick={(e) => e.stopPropagation()}>
 
             <Container>
                 <div className="btn-back-blc">
-                    <Button className="btn-back" variant="link">Retour</Button>
+                    <Button className="btn-back" variant="link" onClick={goBack}>Retour</Button>
                 </div>
-
-                <div className="supplier-details-header">
-                    <div className="supplier-title-area">
-                        <div className="supplier-logo">
-                            <img src={SupplierIcn} alt="supplier icn" />
-                        </div>
-                        <div className="supplier-title-blc">
-                            <h1 className="supplier-title">L’instant café & restaurant</h1>
-                            <p className="supplier-desc">Restaurant - chiken  Grillade  hamburger  pate  pizza  sandwich  salade</p>
-                        </div>
-                    </div>
-                    <div className="supplier-infos_list">
-                        <ul>
-                            <li>
-                                <p className="supplier-infos_list-item location">Khzema sousse</p>
-                            </li>
-                            <li>
-                                <p className="supplier-infos_list-item time-work">Ouvert jusqu’à 22:00 PM</p>
-                            </li>
-                            <li>
-                                <p className="supplier-infos_list-item shipping-cost">Frais de livraison: 3 Dt</p>
-                            </li>
-                            <li>
-                                <div className="time">1123-1143min</div>
-                            </li>
-                        </ul>
-                    </div>
-                </div>
-
-                <div className="supplier-details-body">
-                    <div className="modal-content-image">
-                        <div className="modal-content-image-inner"
-                            style={{ backgroundImage: `url(${(product.image?.length > 0) ? product.image[0].path : productSupplier?.images[0].path})`, }}>
-                        </div>
-                    </div>
-                    <div className="modal-content-options">
-                        <div className="options-info">
-
-                            <h2 className="menu-title" dangerouslySetInnerHTML={{ __html: product?.name }}></h2>
-                            <p className='menu-price'>
-                                A partir de {product.price}
-                            </p>
-                            <div className='menu-description' dangerouslySetInnerHTML={{ __html: product?.description }}></div>
-
-                        </div>
-                        <div className="menu-options">
-                            {
-                                state.optionslist.length === 0 ? (
-                                    <>
-                                    </>
-                                ) : allContent.map((options, index) => {
-                                    return (
-                                        <React.Fragment key={index}>
-                                            <div className="menu-options-blc">
-                                                <div className='menu-options-header'>
-                                                    <div className="option-name">Choisissez votre {Object.keys(options)[0]}</div>
-                                                    {
-
-                                                        Object.keys(options)[0] === "packet" && <div className="option-obligatoir">Obligatoire</div>
-                                                    }
-
-                                                    {
-                                                        Object.keys(options)[0] === "sauce" && state.sauce_max?.max > 0 && <div className="option-max">{"MAX " + state.sauce_max?.max}</div>
-                                                    }
-                                                    {
-                                                        Object.keys(options)[0] === "viande" && state.viande_max?.max > 0 && <div className="option-max">{"MAX " + state.viande_max?.max}</div>
-                                                    }
-                                                    {
-                                                        Object.keys(options)[0] === "extra" && state.extra_max?.max > 0 && <div className="option-max">{"MAX " + state.extra_max?.max}</div>
-                                                    }
-                                                    {
-                                                        Object.keys(options)[0] === "supplement" && state.supplement_max?.max > 0 && <div className="option-max">{"MAX " + state.supplement_max?.max}</div>
-                                                    }
-                                                </div>
-                                                <form>
-                                                    {state[Object.keys(options)[0]].map((option: any, index: number) => (
-                                                        <div key={index} className="options-list">
-                                                            <div className="checkBox">
-                                                                <input type='checkbox' name={option.id} id={option.id} value={option.id || ''} onChange={(e) => selectOption(Object.keys(options)[0], index, e)} checked={option?.checked}>
-                                                                </input>
-                                                                <div className="custom-checkbox"></div>
-                                                                <label htmlFor={option.id}>{option.name} </label>
-                                                            </div>
-                                                            <span className='option-price'>{option.price} DT</span>
-                                                        </div>
-                                                    ))}
-                                                </form>
-                                            </div>
-                                        </React.Fragment>)
-                                })
-                            }
-
-
-                        </div >
-
-
-                        <div className="buttons btns-group">
-                            <div className="count-container">
-                                <input type="number" name="product-count" id="product-count" value={productCount} onChange={(e) => { (parseInt(e.target.value) >= 1) && setProductCount(parseInt(e.target.value)) }} />
-                                <div className="count-buttons">
-                                    <button className="btn counter-more" onClick={() => handleCount("add")} ></button>
-                                    <button className="btn counter-minus" onClick={() => handleCount("remove")} ></button>
+                {
+                    loading ?
+                        <>
+                            <div className='loading-container'>
+                                <Skeleton
+                                    variant="rectangular"
+                                    width={'100%'}
+                                    height={271}
+                                />
+                            </div>
+                            <div className='loading-menu-container'>
+                                <Skeleton
+                                    variant="rectangular"
+                                    width={'50%'}
+                                    height={945}
+                                />
+                                <div className="right-loaders">
+                                    <Skeleton
+                                        variant="rectangular"
+                                        width={'50%'}
+                                        height={22}
+                                    />
+                                    <Skeleton
+                                        variant="rectangular"
+                                        width={'50%'}
+                                        height={10}
+                                    />
+                                    <Skeleton
+                                        variant="rectangular"
+                                        width={'50%'}
+                                        height={10}
+                                        style={{marginBottom: 20,borderRadius:10}}
+                                    />
+                                    {[...Array(3)].map((_, index) => (
+                                        <>
+                                            <Skeleton
+                                                variant="rectangular"
+                                                width={'100%'}
+                                                height={49}
+                                                style={{backgroundColor: '#3BB3C480',borderRadius:10, marginTop: 50}}
+                                            />
+                                            {[...Array(3)].map((_, index) => (
+                                                <>
+                                                    <Skeleton
+                                                        variant="rectangular"
+                                                        width={'100%'}
+                                                        height={22}
+                                                    />
+                                                </>
+                                            ))}
+                                        </>
+                                    ))}
                                 </div>
                             </div>
+                        </>
+                    :
+                    <>
+                        <div className="supplier-details-header">
+                            <div className="supplier-title-area">
+                                <div className="supplier-logo">
+                                    <img src={productSupplier?.images[0].pivot.type === "principal" ? productSupplier?.images[0].path : productSupplier?.images[1].path} alt="supplier icn" />
+                                </div>
+                                <div className="supplier-title-blc">
+                                    <h1 className="supplier-title">{productSupplier?.name}</h1>
+                                    <p className="supplier-desc">{categories}</p>
+                                </div>
+                                <div className="supplier-infos_ratings-count">
+                                    <div className='rate-gouping'>
+                                        { isLoggedIn ?
+                                        <div className="favor" style={(favor) ? { backgroundImage: `url(${FavorActiveIcon})` } : { backgroundImage: `url(${FavorIcon})` }} onClick={updatefavorite}>
+                                        </div> : ""
+                                        }
+                                        {
+                                        productSupplier?.bonus ? (
+                                            <div className='gift-icon' style={(productSupplier?.bonus > 0) ? { backgroundImage: `url(${ActiveGiftIcon})` } : { backgroundImage: `url(${GiftIcon})` }}></div>
+                                        ) : (
+                                            <div className='gift-icon' style={{ backgroundImage: `url(${GiftIcon})` }}></div>
+                                        )
+                                        }
+                                    </div>
+                                    <div className="stars">
+                                        {
+                                        (productSupplier?.star && (productSupplier?.star > 0)) && (<span className='star-number'> {productSupplier?.star}</span>)
+                                        }
+                                        {[...Array(5)].map((_, index) => (
+                                        <span key={index + 1}>
+                                            {(productSupplier?.star && (productSupplier?.star >= index + 1))
+                                            ? <Star className='starIcon' style={{ visibility: 'visible' }} /> : <StarBorderIcon className='starIcon'  style={{ visibility: 'visible' }} />
+                                            }
+                                        </span>
+                                        ))}
+                                    </div>
+                                </div>
+                                </div>
+                            <div className="supplier-infos_list">
+                                <ul>
+                                    <li>
+                                        <p className="supplier-infos_list-item location">
+                                            {productSupplier?.city +' '+productSupplier?.street+' '+productSupplier?.postcode}
+                                        </p>
+                                    </li>
+                                    <li>
+                                        <p  className={`supplier-infos_list-item time-work ${isOpen ? 'open': 'close'}`}>
+                                            {
+                                                isOpen ?
+                                                <span>{t("supplier.opentime")} {closeTime}</span>
+                                                :
+                                                <span>{t("closed")}</span>
+                                            }
+                                        </p>
+                                    </li>
+                                    <li>
+                                        <p className="supplier-infos_list-item shipping-cost">Frais de livraison: {productSupplier?.delivery_price} Dt</p>
+                                    </li>
+                                    <li>
+                                        <div className="time">{`${Number(productSupplier?.medium_time) - 10}-${Number(productSupplier?.medium_time + 10)}min`}</div>
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
+                        <div className="supplier-details-body">
+                            <div className="modal-content-image">
+                                <div className="modal-content-image-inner"
+                                    style={{ backgroundImage: `url(${(product.image?.length > 0) ? product.image[0].path : productSupplier?.images[0].path})`, }}>
+                                </div>
+                            </div>
+                            <div className="modal-content-options">
+                                <div className="options-info">
 
-                            <button className="add-to-cart-button" onClick={() => {
-                                addToCart()
-                            }}>
-                                {t('add_to_cart')}
+                                    <h2 className="menu-title" dangerouslySetInnerHTML={{ __html: product?.name }}></h2>
+                                    <p className='menu-price'>
+                                        A partir de {product.price}
+                                    </p>
+                                    <div className='menu-description' dangerouslySetInnerHTML={{ __html: product?.description }}></div>
+
+                                </div>
+                                <div className="menu-options">
+                                    {
+                                        state.optionslist.length === 0 ? (
+                                            <>
+                                            </>
+                                        ) : allContent.map((options, index) => {
+                                            return (
+                                                <React.Fragment key={index}>
+                                                    <div className="menu-options-blc">
+                                                        <div className='menu-options-header'>
+                                                            <div className="option-name">Choisissez votre {Object.keys(options)[0]}</div>
+                                                            {
+
+                                                                Object.keys(options)[0] === "packet" && <div className="option-obligatoir">Obligatoire</div>
+                                                            }
+
+                                                            {
+                                                                Object.keys(options)[0] === "sauce" && state.sauce_max?.max > 0 && <div className="option-max">{"MAX " + state.sauce_max?.max}</div>
+                                                            }
+                                                            {
+                                                                Object.keys(options)[0] === "viande" && state.viande_max?.max > 0 && <div className="option-max">{"MAX " + state.viande_max?.max}</div>
+                                                            }
+                                                            {
+                                                                Object.keys(options)[0] === "extra" && state.extra_max?.max > 0 && <div className="option-max">{"MAX " + state.extra_max?.max}</div>
+                                                            }
+                                                            {
+                                                                Object.keys(options)[0] === "supplement" && state.supplement_max?.max > 0 && <div className="option-max">{"MAX " + state.supplement_max?.max}</div>
+                                                            }
+                                                        </div>
+                                                        <form>
+                                                            {state[Object.keys(options)[0]].map((option: any, index: number) => (
+                                                                <div key={index} className="options-list">
+                                                                    <div className="checkBox">
+                                                                        <input type='checkbox' name={option.id} id={option.id} value={option.id || ''} onChange={(e) => selectOption(Object.keys(options)[0], index, e)} checked={option?.checked}>
+                                                                        </input>
+                                                                        <label htmlFor={option.id} className="custom-checkbox"></label>
+                                                                        <label htmlFor={option.id}>{option.name} </label>
+                                                                    </div>
+                                                                    <span className='option-price'>{option.price} DT</span>
+                                                                </div>
+                                                            ))}
+                                                        </form>
+                                                    </div>
+                                                </React.Fragment>)
+                                        })
+                                    }
+
+
+                                </div >
+
+
+                                <div className="buttons btns-group">
+                                    <div className="count-container">
+                                        <input type="number" name="product-count" id="product-count" value={productCount} onChange={(e) => { (parseInt(e.target.value) >= 1) && setProductCount(parseInt(e.target.value)) }} />
+                                        <div className="count-buttons">
+                                            <button className="btn counter-more" onClick={() => handleCount("add")} ></button>
+                                            <button className="btn counter-minus" onClick={() => handleCount("remove")} ></button>
+                                        </div>
+                                    </div>
+
+                                    <button className="add-to-cart-button" onClick={() => {
+                                        addToCart()
+                                    }}>
+                                        {t('add_to_cart')}
+                                    </button>
+
+                                </div>
+                            </div>
+                        </div>
+                        <div className="menu-container">
+                            <div className="menu-title-blc">
+                                <h3 className="menu-title">Produits achetés ensemble</h3>
+                            </div>
+                            {
+                                menuData.length ?
+                                    <>
+                                        <div className="menu-grid">
+                                            {
+                                                menuData.map((product) => (
+                                                    <div className="product-card">
+                                                        <div className="info-container">
+                                                            <h4 className="product-title">{getTruncatedName(product.name, 10)}</h4>
+                                                            <p className="product-price">{`${t('price')}: ${Math.round(product.price)} DT`}</p>
+                                                            <p className="product-description">
+                                                                <p>{product.name}</p>
+                                                            </p>
+                                                            <div className="labels-container"></div>
+                                                            <button className="product-button"  onClick={() => {
+                                                                handleChooseOptions(product);
+                                                            }}>
+                                                                <AddIcon className="product-button-icon" />
+                                                            </button>
+                                                        </div>
+                                                        <div className="product-image-blc">
+                                                            <img loading="lazy" src={
+                                                                product.image[0]?.path ?
+                                                                    product.image[0]?.path :
+                                                                    productSupplier?.images[0].pivot.type === "principal" ?
+                                                                    productSupplier?.images[0].path :
+                                                                    productSupplier?.images[1].path
+                                                                } alt='product photo' className="product-image" />
+                                                        </div>
+                                                    </div>
+                                                ))
+                                            }
+                                        </div>
+                                    </>
+                                : ''
+                            }
+                        </div>
+                        <div className='bulles'>
+                            <button className='messanger-popup-btn' onClick={handleMessangerPopup} style={{ backgroundImage: `url(${MessangerBtnIcon})` }}>
+                                {unReadedQt > 0 && (
+                                    <div className='messanger-bull-notif-icon'>
+                                        {unReadedQt}
+                                    </div>
+                                )}
                             </button>
-
+                            {/* <button className='phone-popup-btn' onClick={handlePhonePopup} style={{ backgroundImage: `url(${PhoneBtnIcon})` }}></button> */}
                         </div>
-                    </div>
-                </div>
-
-                <div className="menu-container">
-                    <div className="menu-title-blc">
-                        <h3 className="menu-title">Produits achetés ensemble</h3>
-                    </div>
-
-                    <div className="menu-grid">
-                        <div className="product-card">
-                            <div className="info-container">
-                                <h4 className="product-title">Lasagne Bo...</h4>
-                                <p className="product-price">Prix: 13 DT</p>
-                                <p className="product-description">
-                                    <p>Lasagne Bolognaise</p>
-                                </p>
-                                <div className="labels-container"></div>
-                                <button className="product-button">
-                                    <svg className="MuiSvgIcon-root MuiSvgIcon-fontSizeMedium product-button-icon css-vubbuv" focusable="false" aria-hidden="true" viewBox="0 0 24 24" data-testid="AddIcon"><path d="M19 13h-6v6h-2v-6H5v-2h6V5h2v6h6v2z"></path></svg>
-                                </button>
-                            </div>
-                            <div className="product-image-blc">
-                                <img loading="lazy" src={menuImg} alt="product photo" className="product-image" />
-                            </div>
-                        </div>
-                        <div className="product-card">
-                            <div className="info-container">
-                                <h4 className="product-title">Lasagne Bo...</h4>
-                                <p className="product-price">Prix: 13 DT</p>
-                                <p className="product-description">
-                                    <p>Lasagne Bolognaise</p>
-                                </p>
-                                <div className="labels-container"></div>
-                                <button className="product-button">
-                                    <svg className="MuiSvgIcon-root MuiSvgIcon-fontSizeMedium product-button-icon css-vubbuv" focusable="false" aria-hidden="true" viewBox="0 0 24 24" data-testid="AddIcon"><path d="M19 13h-6v6h-2v-6H5v-2h6V5h2v6h6v2z"></path></svg>
-                                </button>
-                            </div>
-                            <div className="product-image-blc">
-                                <img loading="lazy" src={menuImg} alt="product photo" className="product-image" />
-                            </div>
-                        </div>
-                        <div className="product-card">
-                            <div className="info-container">
-                                <h4 className="product-title">Lasagne Bo...</h4>
-                                <p className="product-price">Prix: 13 DT</p>
-                                <p className="product-description">
-                                    <p>Lasagne Bolognaise</p>
-                                </p>
-                                <div className="labels-container"></div>
-                                <button className="product-button">
-                                    <svg className="MuiSvgIcon-root MuiSvgIcon-fontSizeMedium product-button-icon css-vubbuv" focusable="false" aria-hidden="true" viewBox="0 0 24 24" data-testid="AddIcon"><path d="M19 13h-6v6h-2v-6H5v-2h6V5h2v6h6v2z"></path></svg>
-                                </button>
-                            </div>
-                            <div className="product-image-blc">
-                                <img loading="lazy" src={menuImg} alt="product photo" className="product-image" />
-                            </div>
-                        </div>
-                        <div className="product-card">
-                            <div className="info-container">
-                                <h4 className="product-title">Lasagne Bo...</h4>
-                                <p className="product-price">Prix: 13 DT</p>
-                                <p className="product-description">
-                                    <p>Lasagne Bolognaise</p>
-                                </p>
-                                <div className="labels-container"></div>
-                                <button className="product-button">
-                                    <svg className="MuiSvgIcon-root MuiSvgIcon-fontSizeMedium product-button-icon css-vubbuv" focusable="false" aria-hidden="true" viewBox="0 0 24 24" data-testid="AddIcon"><path d="M19 13h-6v6h-2v-6H5v-2h6V5h2v6h6v2z"></path></svg>
-                                </button>
-                            </div>
-                            <div className="product-image-blc">
-                                <img loading="lazy" src={menuImg} alt="product photo" className="product-image" />
-                            </div>
-                        </div>
-                        <div className="product-card">
-                            <div className="info-container">
-                                <h4 className="product-title">Lasagne Bo...</h4>
-                                <p className="product-price">Prix: 13 DT</p>
-                                <p className="product-description">
-                                    <p>Lasagne Bolognaise</p>
-                                </p>
-                                <div className="labels-container"></div>
-                                <button className="product-button">
-                                    <svg className="MuiSvgIcon-root MuiSvgIcon-fontSizeMedium product-button-icon css-vubbuv" focusable="false" aria-hidden="true" viewBox="0 0 24 24" data-testid="AddIcon"><path d="M19 13h-6v6h-2v-6H5v-2h6V5h2v6h6v2z"></path></svg>
-                                </button>
-                            </div>
-                            <div className="product-image-blc">
-                                <img loading="lazy" src={menuImg} alt="product photo" className="product-image" />
-                            </div>
-                        </div>
-                        <div className="product-card">
-                            <div className="info-container">
-                                <h4 className="product-title">Lasagne Bo...</h4>
-                                <p className="product-price">Prix: 13 DT</p>
-                                <p className="product-description">
-                                    <p>Lasagne Bolognaise</p>
-                                </p>
-                                <div className="labels-container"></div>
-                                <button className="product-button">
-                                    <svg className="MuiSvgIcon-root MuiSvgIcon-fontSizeMedium product-button-icon css-vubbuv" focusable="false" aria-hidden="true" viewBox="0 0 24 24" data-testid="AddIcon"><path d="M19 13h-6v6h-2v-6H5v-2h6V5h2v6h6v2z"></path></svg>
-                                </button>
-                            </div>
-                            <div className="product-image-blc">
-                                <img loading="lazy" src={menuImg} alt="product photo" className="product-image" />
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-                <div className='bulles'>
-                    <button className='messanger-popup-btn' onClick={handleMessangerPopup} style={{ backgroundImage: `url(${MessangerBtnIcon})` }}>
-                        {unReadedQt > 0 && (
-                            <div className='messanger-bull-notif-icon'>
-                                {unReadedQt}
-                            </div>
-                        )}
-                    </button>
-                    {/* <button className='phone-popup-btn' onClick={handlePhonePopup} style={{ backgroundImage: `url(${PhoneBtnIcon})` }}></button> */}
-                </div>
+                    </>
+                }
             </Container>
 
             {

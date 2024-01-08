@@ -171,37 +171,31 @@
 
 .cat-carousel {
     display: flex;
-    width: 100%;
-    align-items: center;
-    justify-content: space-around;
+    min-width: 100vw;
+    justify-content: start;
     gap: 37px;
-    margin-bottom: 54px;
+    overflow-x: hidden;
+    padding: 170px 0 0 0;
 }
 
 .filter-page-skeleton {
     display: flex;
     gap: 36px;
+    padding-top: 54px;
 
     .left-side {
-        padding: 0 5px 0 30px;
-        display: flex;
-        align-items: start;
-        margin-top: -270px;
+        padding: 0 5px 0 53px;
     }
 
     .right-side {
         width: 70vw;
 
-        .search-bar {
-            display: flex;
-            gap: 13px;
-        }
+       
 
-        .ads {
-            display: flex;
-            gap: 23px;
-            padding: 20px;
-        }
+        
+    // .main-content{
+     
+    // }
     }
 }
 

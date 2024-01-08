@@ -3,6 +3,7 @@ import React, { RefObject, Suspense, useEffect, useReducer, useRef, useState } f
 import './closedSupplier.scss'
 import { useTranslation } from "react-i18next";
 import { useNavigate } from "react-router-dom";
+import { localStorageService } from "../../../services/localStorageService";
 
 
 interface Props {
@@ -20,8 +21,14 @@ const ClosedSupplier: React.FC<Props> = ({ message, confirmButtonText, closeButt
         close();
     };
 
+    const navigateToHome = () => {
+        const currentLocation = localStorageService.getCurrentLocation()
+        currentLocation ? navigate('/search') : navigate('/')
+      }
+
     const defaultAccept = () => {
-        navigate('/')
+        // navigate('/')
+        navigateToHome()
     }
     return (
         <>
