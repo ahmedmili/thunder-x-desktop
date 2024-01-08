@@ -294,7 +294,7 @@ function App({ initialData }: AppProps) {
             <Route path="/restaurant/:id/:search?/:productId?/*" element={<Menu initialData={initialData} />} />
             <Route path="/product/:id/:search?/:productId/*" element={<MenuOptions initialData={initialData} />} />
             <Route path="/cart/*" element={<CartPage />} />
-            <Route path="/search/:search?/*" element={<FilterPage initialData={initialData}  />} />
+            <Route path="/search/:search?/*" element={<FilterPage initialData={initialData} />} />
 
           </Route>
 

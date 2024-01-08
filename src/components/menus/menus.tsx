@@ -471,7 +471,7 @@ const Menu: React.FC<AppProps> = ({ initialData }) => {
                     </div>
                     <div className="loading-supplier">
                       {[...Array(3)].map((_, index) => (
-                        <div className='icons-loader' key={index+20}>
+                        <div className='icons-loader' key={index + 20}>
                           <Skeleton
                             variant="rectangular"
                             width={40}
@@ -533,7 +533,7 @@ const Menu: React.FC<AppProps> = ({ initialData }) => {
                           </li>
                           <li>
                             <p className="supplier-infos_list-item shipping-cost">
-                              Frais de livraison: {displayedRestaurant?.delivery_price} Dt
+                              {t('supplier.delivPrice')} {displayedRestaurant?.delivery_price} Dt
                             </p>
                           </li>
                         </ul>

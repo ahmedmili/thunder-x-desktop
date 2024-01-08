@@ -7,6 +7,7 @@ import { useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { homeRefresh, setRefresh } from "../../../../Redux/slices/home";
 import { paramsService } from "../../../../utils/params";
+import { useTranslation } from "react-i18next";
 function Trie() {
     const [active, setActive] = useState<any>()
     const [collpased, setCollapse] = useState(false)
@@ -15,7 +16,7 @@ function Trie() {
     const navigate = useNavigate();
     const dispatch = useDispatch();
     const refresh = useSelector(homeRefresh)
-
+    const { t } = useTranslation()
     useEffect(() => {
         const searchParams = new URLSearchParams(location.search);
         if (searchParams.has('search')) {
@@ -46,15 +47,15 @@ function Trie() {
     const lists = [
         {
             id: 'created_at',
-            name: "Nouveau sur thunder"
+            name: t('searchPage.created_at')
         },
         {
             id: 'popular',
-            name: "Les plus populaires"
+            name: t('searchPage.populaires')
         },
         {
             id: 'stars',
-            name: "Les mieux notés",
+            name: t('searchPage.mieux'),
         },
     ]
     const toggleCollapse = () => {
@@ -89,7 +90,7 @@ function Trie() {
                         return (
                             <li key={index} className="trie-filter-container__list__item">
                                 <div className="form-check">
-                                    <input className="radio-btn" type="radio" name="trie" id={`flexRadioDefault${index}`} onChange={() => clickHandle(data.id)} checked={active == data?.id} /> {/* Self-closing tag */}
+                                    <input className="radio-btn" type="radio" name="trie" id={`flexRadioDefault${index}`} onChange={() => clickHandle(data.id)} checked={active == data?.id} />
                                     <label className={`form-label`} htmlFor={`flexRadioDefault${index}`}>
                                         {data.name}
                                     </label>

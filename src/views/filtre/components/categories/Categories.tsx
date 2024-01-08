@@ -6,6 +6,7 @@ import { useAppDispatch, useAppSelector } from '../../../../Redux/store';
 import { homeRefresh, setRefresh } from "../../../../Redux/slices/home";
 import { useSelector } from "react-redux";
 import { paramsService } from "../../../../utils/params";
+import { useTranslation } from "react-i18next";
 interface FilterCategoriesProps {
   onCategorySelect: () => void;
   ssrCategories?: any;
@@ -23,7 +24,8 @@ const Categories: React.FC<FilterCategoriesProps> = ({
   const [selected, setSelected] = useState();
   const dispatch = useAppDispatch();
   const refresh = useSelector(homeRefresh)
-
+  const { t } = useTranslation()
+  
   useEffect(() => {
     if (refresh) {
       checkSelectedCategory()
@@ -139,7 +141,7 @@ const Categories: React.FC<FilterCategoriesProps> = ({
         category: categoryId
       }
       let newParams = paramsService.handleUriParams(params)
-      searchParams.has('search') ? searchParams.set("search", newParams):searchParams.append('search', newParams);
+      searchParams.has('search') ? searchParams.set("search", newParams) : searchParams.append('search', newParams);
 
       navigate(`/search/?${searchParams.toString()}`, {
         replace: false,
@@ -158,7 +160,7 @@ const Categories: React.FC<FilterCategoriesProps> = ({
           className={`categories-filter-container__title  ${collpased ? "collapsed" : ""
             }`}
         >
-          Catégories
+          {t('searchPage.Categories')}
         </h1>
         <ChevronRightIcon
           className={`categories-filter-container__collapse-icon  ${collpased ? "close" : "open"

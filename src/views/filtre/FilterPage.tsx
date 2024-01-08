@@ -63,7 +63,6 @@ function FilterPage({ initialData }: AppProps) {
   const categories = useSelector(categoriesHomeSelector);
   const itemsPerPage = 8;
   const totalPages = Math.ceil(allRestaurantsList.length / itemsPerPage);
-  const { t } = useTranslation();
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const suppliersListRef = useRef(null);
@@ -79,6 +78,7 @@ function FilterPage({ initialData }: AppProps) {
 
   const unReadMessages = useAppSelector((state) => state.messanger.unReadedMessages)
   const [unReadedQt, setUnReadedQt] = useState<number>(unReadMessages)
+  const { t } = useTranslation()
 
   const navLocation = useLocation()
 
@@ -279,13 +279,13 @@ function FilterPage({ initialData }: AppProps) {
             )}
             <div className="main-content__col-offers">
               <h3 className="main-content__col-offers__title">
-                Offres du jour
+                {t('searchPage.todayOffre')}
               </h3>
               <OffersList listType="discount" restaurants={recommanded} />
             </div>
             <div className="main-content__col-offers">
               <h3 className="main-content__col-offers__title">
-                Recommandé pour vous
+                {t('recommendedForYou')}
               </h3>
               <RecommandedList
                 listType="recommanded"
@@ -299,19 +299,19 @@ function FilterPage({ initialData }: AppProps) {
             )}
             {bestRatedSuppliers.length ? <div className="main-content__col-offers">
               <h3 className="main-content__col-offers__title">
-                Les mieux notés
+                {t('searchPage.mieux')}
               </h3>
               <OffersList listType="recommanded" restaurants={bestRatedSuppliers} />
             </div> : ''}
             {newSuppliers.length ? <div className="main-content__col-offers">
               <h3 className="main-content__col-offers__title">
-                Nouveau sur Thunder
+                {t('searchPage.created_at')}
               </h3>
               <OffersList listType="recommanded" restaurants={newSuppliers} />
             </div> : ''}
             <div className="main-content__col-offers">
               <h3 className="main-content__col-offers__title">
-                Marques populaires
+                {t('searchPage.popularMarks')}
               </h3>
               <PopularList listType="popular" restaurants={popular} />
             </div>
@@ -511,7 +511,7 @@ function FilterPage({ initialData }: AppProps) {
               {originCategories ? (
                 <FilterCategories onCategorySelect={searchSupplier} />
               ) : (
-                ""
+                <></>
               )}
             </div>
             <div className="content container-fluid">
@@ -646,7 +646,7 @@ function FilterPage({ initialData }: AppProps) {
                       </div>
                     </>
                   ) : (
-                    ""
+                    <></>
                   )}
                   {recommanded.length &&
                     !isloadFilter &&
@@ -655,20 +655,20 @@ function FilterPage({ initialData }: AppProps) {
                       <div>{renderItems()}</div>
                     </div>
                   ) : (
-                    ""
+                    <></>
                   )}
                   {hasFilter && !isloadFilter && !searchSuppliersList?.length ? (
                     <>
                       <div className="result-not-found">
                         <div className="result-not-found__title">Oups !</div>
                         <div className="result-not-found__text">
-                          Aucun résultat correspondant à vos critères de recherche{" "}
+                          {t('searchPage.noResult')}
                         </div>
                         <div className="result-not-found__icon"></div>
                       </div>
                     </>
                   ) : (
-                    ""
+                    <></>
                   )}
                 </Col>
               </Row>
