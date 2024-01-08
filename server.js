@@ -5,12 +5,17 @@ import path, { dirname } from "path";
 import { fileURLToPath } from "url";
 import url from 'url';
 import querystring from 'querystring';
+import CryptoJS from 'crypto-js';
+import dotenv from 'dotenv';
+
+dotenv.config();
+
 // Constants
 const isProduction = process.env.VITE_NODE_ENV === 'production'
 const port = process.env.PORT || 3212
 const base = process.env.BASE || '/'
+const sucret_Key = process.env.VITE_CRYPTO_SUCRET_KEY || 'thunder-x-2024'
 const apiUrl = 'https://api.thunder.webify.pro/api/'
-
 // Cached production assets
 const templateHtml = isProduction
   ? await fs.readFile('./dist/client/index.html', 'utf-8')
@@ -120,16 +125,41 @@ async function getProduct(supplier_id) {
   }
 }
 
+const arrayToObject = (array) => {
+  const resultObject = {};
+  array.forEach((item) => {
+    const [key, value] = item.split(':');
+    resultObject[key] = value;
+  });
+  return resultObject
+}
+const unHashData = (encryptedData, secretKey = sucret_Key) => {
+  // Decrypt the data using the secret key
+  const decryptedBytes = CryptoJS.AES.decrypt(encryptedData, secretKey);
+  const decryptedData = decryptedBytes.toString(CryptoJS.enc.Utf8);
+  return decryptedData
+
+}
+
+const fetchParams = (query) => {
+  let realDataString = unHashData(`${query}`)
+  let dataTable = realDataString.replaceAll('=', ":").split("&")
+  let resultObject = arrayToObject(dataTable);
+  return resultObject
+}
+
+
 const searchSuppliersByFilter = async (query) => {
+  const search = query.search ? fetchParams(query.search) : {}
   const payload = {
-    order_by: query.order ? query.order : "popular",
-    max_price: query.max_price ? query.max_price : 100,
-    min_price: query.min_price ? query.min_price : 0,
-    lat: query.lat ? query.lat : 10.6088898,
-    long: query.lng ? query.lng : 35.8466943,
-    category_id: query.category ? query.category : "",
-    delivery_price: query.delivery_price ? query.delivery_price : 0,
-    filter: query.filter ? query.filter : "",
+    order_by: search.order ? search.order : "popular",
+    max_price: search.max_price ? search.max_price : 100,
+    min_price: search.min_price ? search.min_price : 0,
+    lat: search.lat ? search.lat : 10.6088898,
+    long: search.lng ? search.lng : 35.8466943,
+    category_id: search.category ? search.category : "",
+    delivery_price: search.delivery_price ? search.delivery_price : 0,
+    filter: search.filter ? search.filter : "",
   };
   try {
     const { success, data } = await axios.post(`${apiUrl}search_supplier_filters`, payload);
@@ -139,6 +169,7 @@ const searchSuppliersByFilter = async (query) => {
   }
 
 }
+
 
 const prepareTemplate = async (req, res) => {
   try {
