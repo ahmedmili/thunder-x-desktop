@@ -1127,6 +1127,28 @@ const CartPage: React.FC = () => {
                             </div>
                         </div>
                         )}
+
+                      <div className="message-validation-area d-none">
+                        <h2 className="message-validation-title">
+                          Commande validé !
+                        </h2>
+                        <div className="message-validation_img-blc commande-valide"></div>
+                        {/*
+                          .commande-valide
+                          .commande-nnvalide
+                          .paiement-valide
+                          .paiement-nnvalide
+                        */}
+                        <div className="message-validation_desc">
+                          <p>
+                            Vous serez alerté lorsque le livreur arrive prés de chez vous.
+                          </p>
+                        </div>
+                        <div className="btns-group">
+                          <button className="btn btn-valid">Je commande</button>
+                        </div>
+                      </div>
+
                     </div>
 
                     {/* 

@@ -1642,7 +1642,59 @@
   }
 }
 
+/* -- message-validation-area -- */
 
+.message-validation-area {
+  .message-validation-title {
+    @include fonts(32px, 32px, $Ocean_Teal);
+    font-family: 'Poppins-Bold', serif;
+    margin: 0 0 100px;
+    text-align: center;
+  }
+  .message-validation_img-blc {
+    margin: 0 auto 100px;
+    @include dimensions(260px, 230px);
+    background-repeat: no-repeat;
+    background-position: center;
+    background-size: 260px auto;
+
+    &.commande-valide {
+      background-image: url('./../../assets/panier/commande-valide-icn.png');
+    }
+    &.commande-nnvalide {
+      background-image: url('./../../assets/panier/commande-nnvalide-icn.png');
+    }
+    &.paiement-valide {
+      background-image: url('./../../assets/panier/paiement-valide-icn.png');
+    }
+    &.paiement-nnvalide {
+      background-image: url('./../../assets/panier/paiement-nnvalide-icn.png');
+    }
+  }
+  .message-validation_desc {
+    p {
+      @include fonts(17px, 25px, $dark_Gray);
+      font-family: 'Poppins-Medium', serif;
+      text-align: center;
+      margin: 0;
+    }
+  }
+  .btns-group {
+    @include flex;
+    margin: 87px 0 0;
+
+    .btn {
+      &.btn-valid {
+        background-color: $orange_color;
+        min-width: 270px;
+        height: 43px;
+        border-radius: 55px;
+        @include fonts(17px, 25px, $color-white);
+        font-family: 'Poppins-SemiBold', serif;
+      }
+    }
+  }
+}
 
 /* # $Mobile ::
 ------------------------------------*/
