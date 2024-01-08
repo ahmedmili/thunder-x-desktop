@@ -1,13 +1,13 @@
 
 
-import { useEffect, useRef, useState } from "react"
-import "./trie.scss"
 import ChevronRightIcon from '@mui/icons-material/ChevronRight';
-import { useNavigate } from "react-router-dom";
+import { useEffect, useRef, useState } from "react";
+import { useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
+import { useNavigate } from "react-router-dom";
 import { homeRefresh, setRefresh } from "../../../../Redux/slices/home";
 import { paramsService } from "../../../../utils/params";
-import { useTranslation } from "react-i18next";
+import "./trie.scss";
 function Trie() {
     const [active, setActive] = useState<any>()
     const [collpased, setCollapse] = useState(false)
@@ -33,7 +33,7 @@ function Trie() {
             const searchParams = new URLSearchParams(location.search);
             let params = paramsService.fetchParams(searchParams)
             if (!params.order) {
-                setActive("")
+                // setActive("")
             }
         }
     }, [refresh]);
@@ -71,8 +71,8 @@ function Trie() {
             ...params,
             order_by: searchQuery
         }
-
         let newParams = paramsService.handleUriParams(params)
+
         searchParams.has('search') ? searchParams.set("search", newParams) : searchParams.append('search', newParams);
 
         navigate(`/search/?${searchParams.toString()}`, {

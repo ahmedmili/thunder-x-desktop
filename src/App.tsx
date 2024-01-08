@@ -41,6 +41,8 @@ const Header = lazy(() => import("./components/Header/Header"));
 const Footer = lazy(() => import("./components/footer/footer"));
 
 
+import { useSelector } from "react-redux";
+import SpinnerPopup from "./components/Popups/Spinner/SpinnerPopup";
 import Annonces from "./components/layout/Profile/All_Annonces/All_Annonces";
 import ArchivedCommands from "./components/layout/Profile/Archivedcommands/ArchivedCommands";
 import ConfigPage from "./components/layout/Profile/ConfigPage/ConfigPage";
@@ -50,8 +52,6 @@ import Feedback from "./components/layout/Profile/Feedback/Feedback";
 import FidelitePage from "./components/layout/Profile/FidelitePage/FidelitePage";
 import Menu from "./components/menus/menus";
 import Verify from "./views/Verify";
-import SpinnerPopup from "./components/Popups/Spinner/SpinnerPopup";
-import { useSelector } from "react-redux";
 //lazy loading pages
 const Profile = lazy(() => import("./components/layout/Profile/Profile"));
 const HomePage = lazy(() => import("./views/home/home.page"));

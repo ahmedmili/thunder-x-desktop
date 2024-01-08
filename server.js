@@ -1,12 +1,11 @@
 import axios from 'axios';
+import CryptoJS from 'crypto-js';
+import dotenv from 'dotenv';
 import express from 'express';
 import fs from 'node:fs/promises';
 import path, { dirname } from "path";
-import { fileURLToPath } from "url";
-import url from 'url';
 import querystring from 'querystring';
-import CryptoJS from 'crypto-js';
-import dotenv from 'dotenv';
+import url, { fileURLToPath } from 'url';
 
 dotenv.config();
 
@@ -150,6 +149,7 @@ const fetchParams = (query) => {
 
 
 const searchSuppliersByFilter = async (query) => {
+  if (!query.search) return null
   const search = query.search ? fetchParams(query.search) : {}
   const payload = {
     order_by: search.order ? search.order : "popular",
@@ -220,12 +220,15 @@ const prepareTemplate = async (req, res) => {
         // Assuming req is your Express request object
         const parsedUrl = url.parse(req.originalUrl);
         const queryParams = querystring.parse(parsedUrl.query);
-        var response = await searchSuppliersByFilter(queryParams)
-        data = {
-          status: 200,
-          data: response.data,
 
-        }
+        var response = await searchSuppliersByFilter(queryParams)
+        response ?
+          data = {
+            status: 200,
+            data: response.data,
+
+          } :
+          data = null
         break;
       default:
         break;

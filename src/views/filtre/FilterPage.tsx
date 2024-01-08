@@ -1,4 +1,3 @@
-import Box from "@mui/material/Box";
 import Skeleton from "@mui/material/Skeleton";
 import React, { Suspense, useEffect, useRef, useState } from "react";
 import { Col, Row } from "react-bootstrap";
@@ -21,6 +20,8 @@ import Map from "../../components/Location/Location";
 import Messanger from "../../components/Popups/Messanger/Messanger";
 import AdsSkeletons from "../../components/Skeletons/FilterPage/AdsSkeletons/AdsSkeletons";
 import ProductsSkeletons from "../../components/Skeletons/FilterPage/ProductsSkeletons/ProductsSkeletons";
+import SearchSkeletons from "../../components/Skeletons/FilterPage/SearchSkeleton/SearchSkeletons";
+import SideBar from "../../components/Skeletons/FilterPage/SideBar/SideBar";
 import { FilterAds } from "../../components/filter-ads/FilterAds";
 import FilterCategories from "../../components/filter-categories/FilterCategories";
 import OffersList from "../../components/offersList/OffersList";
@@ -29,7 +30,9 @@ import RecommandedList from "../../components/recommanded-list/RecommandedList";
 import SupplierWhiteCard from "../../components/supplier-white-card/SupplierWhiteCard";
 import { supplierServices } from "../../services/api/suppliers.api";
 import { localStorageService } from "../../services/localStorageService";
-import { arrayToObject, checkSsr } from "../../utils/utils";
+import { AppProps } from "../../services/types";
+import { paramsService } from "../../utils/params";
+import { checkSsr } from "../../utils/utils";
 import BtnReset from "./components/btn-reset/BtnReset";
 import Categories from "./components/categories/Categories";
 import Cle from "./components/cle/Cle";
@@ -37,11 +40,6 @@ import PriceSlide from "./components/priceSlider/PriceSlide";
 import SearchProduit from "./components/produitSearch/ProduitSearch";
 import Trie from "./components/trie/Trie";
 import "./filterPage.scss";
-import { AppProps } from "../../services/types";
-import { cryptoData } from "../../utils/cyrupto";
-import { paramsService } from "../../utils/params";
-import SideBar from "../../components/Skeletons/FilterPage/SideBar/SideBar";
-import SearchSkeletons from "../../components/Skeletons/FilterPage/SearchSkeleton/SearchSkeletons";
 
 function FilterPage({ initialData }: AppProps) {
 
@@ -135,6 +133,7 @@ function FilterPage({ initialData }: AppProps) {
       }
     }
   }
+
   const handleSsr = () => {
     let isSsr = checkSsr()
     isSsr ? setSsrLoading(true) : setSsrLoading(false)
@@ -192,7 +191,11 @@ function FilterPage({ initialData }: AppProps) {
       setHasFilter(false);
       setIsLoadFilter(false);
     } else {
-      setHasFilter(true);
+      const expectedKeys = ['lat', 'lng'];
+      let resultObject = paramsService.fetchParams(searchParams)
+      const hasUnexpectedKeys = Object.keys(resultObject).some(key => !expectedKeys.includes(key));
+
+      setHasFilter(hasUnexpectedKeys);
       const current_location = localStorageService.getCurrentLocation()
       var currentLocation: any;
 
