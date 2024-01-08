@@ -19,6 +19,8 @@ import { useAppSelector } from "../../Redux/store";
 import MessangerBtnIcon from "../../assets/profile/Discuter/messanger-btn.svg";
 import Map from "../../components/Location/Location";
 import Messanger from "../../components/Popups/Messanger/Messanger";
+import AdsSkeletons from "../../components/Skeletons/FilterPage/AdsSkeletons/AdsSkeletons";
+import ProductsSkeletons from "../../components/Skeletons/FilterPage/ProductsSkeletons/ProductsSkeletons";
 import { FilterAds } from "../../components/filter-ads/FilterAds";
 import FilterCategories from "../../components/filter-categories/FilterCategories";
 import OffersList from "../../components/offersList/OffersList";
@@ -38,6 +40,8 @@ import "./filterPage.scss";
 import { AppProps } from "../../services/types";
 import { cryptoData } from "../../utils/cyrupto";
 import { paramsService } from "../../utils/params";
+import SideBar from "../../components/Skeletons/FilterPage/SideBar/SideBar";
+import SearchSkeletons from "../../components/Skeletons/FilterPage/SearchSkeleton/SearchSkeletons";
 
 function FilterPage({ initialData }: AppProps) {
 
@@ -326,164 +330,72 @@ function FilterPage({ initialData }: AppProps) {
     );
   };
 
+
   // skeletopn compnent
   const SkeletonEffect: React.FC = () => {
     return (
       <>
-        <div className="cat-carousel" style={{
-          paddingTop: '70px'
-        }} >
+        <div className="cat-carousel" >
 
-          <Skeleton height={268} style={{
-            flex: '1'
+          <Skeleton variant="rectangular" height={189} style={{
+            borderRadius: "15px",
+            minWidth: '173px'
           }} />
-          <Skeleton height={268} style={{
-            flex: '1'
+          <Skeleton variant="rectangular" height={189} style={{
+            borderRadius: "15px",
+            minWidth: '173px'
           }} />
-          <Skeleton height={268} style={{
-            flex: '1'
+          <Skeleton variant="rectangular" height={189} style={{
+            borderRadius: "15px",
+            minWidth: '173px'
           }} />
-          <Skeleton height={268} style={{
-            flex: '1'
+          <Skeleton variant="rectangular" height={189} style={{
+            borderRadius: "15px",
+            minWidth: '173px'
           }} />
-          <Skeleton height={268} style={{
-            flex: '1'
+          <Skeleton variant="rectangular" height={189} style={{
+            borderRadius: "15px",
+            minWidth: '173px'
           }} />
+          <Skeleton variant="rectangular" height={189} style={{
+            borderRadius: "15px",
+            minWidth: '173px'
+          }} />
+          <Skeleton variant="rectangular" height={189} style={{
+            borderRadius: "15px",
+            minWidth: '173px'
+          }} />
+          <Skeleton variant="rectangular" height={189} style={{
+            borderRadius: "15px",
+            minWidth: '173px'
+          }} />
+          <Skeleton variant="rectangular" height={189} style={{
+            borderRadius: "15px",
+            minWidth: '173px'
+          }} />
+          <Skeleton variant="rectangular" height={189} style={{
+            borderRadius: "15px",
+            minWidth: '173px'
+          }} />
+          <Skeleton variant="rectangular" height={189} style={{
+            borderRadius: "15px",
+            minWidth: '173px'
+          }} />
+
 
 
         </div>
 
         <div className="filter-page-skeleton">
 
-
-          <div className="left-side" >
-            <Skeleton height={1275} width={361} />
-
-          </div>
+          <SideBar />
 
           < div className="right-side" >
+            <SearchSkeletons />
+            <AdsSkeletons />
 
-
-            <div className="search-bar" >
-              <Skeleton height={75} style={{
-                flex: 3,
-                backgroundColor: "#B2E9F0"
-              }}
-              />
-              <Skeleton height={75} style={{
-                flex: '1',
-                backgroundColor: "##1F94A4"
-              }} />
-            </div>
-
-            <div className="ads" >
-              <Skeleton height={230} style={{
-                flex: 1,
-              }}
-              />
-              <Skeleton height={230} style={{
-                flex: 1,
-              }}
-              />
-              <Skeleton height={230} style={{
-                flex: 1,
-              }}
-              />
-
-            </div>
             <div className="main-content">
-              <div className="row">
-                <div className="col-3">
-                  <Skeleton
-                    variant="rectangular"
-                    width={"100%"}
-                    height={118}
-                  />
-                  <Box sx={{ pt: 0.5 }} className="mt-4">
-                    <Skeleton height={20} />
-                    <Skeleton width="60%" className="mt-2" height={20} />
-                  </Box>
-                </div>
-                <div className="col-3">
-                  <Skeleton
-                    variant="rectangular"
-                    width={"100%"}
-                    height={118}
-                  />
-                  <Box sx={{ pt: 0.5 }} className="mt-4">
-                    <Skeleton height={20} />
-                    <Skeleton width="60%" className="mt-2" height={20} />
-                  </Box>
-                </div>
-                <div className="col-3">
-                  <Skeleton
-                    variant="rectangular"
-                    width={"100%"}
-                    height={118}
-                  />
-                  <Box sx={{ pt: 0.5 }} className="mt-4">
-                    <Skeleton height={20} />
-                    <Skeleton width="60%" className="mt-2" height={20} />
-                  </Box>
-                </div>
-                <div className="col-3">
-                  <Skeleton
-                    variant="rectangular"
-                    width={"100%"}
-                    height={118}
-                  />
-                  <Box sx={{ pt: 0.5 }} className="mt-4">
-                    <Skeleton height={20} />
-                    <Skeleton width="60%" className="mt-2" height={20} />
-                  </Box>
-                </div>
-              </div>
-              <div className="row">
-                <div className="col-3">
-                  <Skeleton
-                    variant="rectangular"
-                    width={"100%"}
-                    height={118}
-                  />
-                  <Box sx={{ pt: 0.5 }} className="mt-4">
-                    <Skeleton height={20} />
-                    <Skeleton width="60%" className="mt-2" height={20} />
-                  </Box>
-                </div>
-                <div className="col-3">
-                  <Skeleton
-                    variant="rectangular"
-                    width={"100%"}
-                    height={118}
-                  />
-                  <Box sx={{ pt: 0.5 }} className="mt-4">
-                    <Skeleton height={20} />
-                    <Skeleton width="60%" className="mt-2" height={20} />
-                  </Box>
-                </div>
-                <div className="col-3">
-                  <Skeleton
-                    variant="rectangular"
-                    width={"100%"}
-                    height={118}
-                  />
-                  <Box sx={{ pt: 0.5 }} className="mt-4">
-                    <Skeleton height={20} />
-                    <Skeleton width="60%" className="mt-2" height={20} />
-                  </Box>
-                </div>
-                <div className="col-3">
-                  <Skeleton
-                    variant="rectangular"
-                    width={"100%"}
-                    height={118}
-                  />
-                  <Box sx={{ pt: 0.5 }} className="mt-4">
-                    <Skeleton height={20} />
-                    <Skeleton width="60%" className="mt-2" height={20} />
-                  </Box>
-                </div>
-              </div>
+              <ProductsSkeletons />
             </div>
 
           </div >
@@ -552,110 +464,18 @@ function FilterPage({ initialData }: AppProps) {
                   )}
                   {isloadFilter ? (
                     <>
-                      <div className="row">
-                        <div className="col-3">
-                          <Skeleton
-                            variant="rectangular"
-                            width={"100%"}
-                            height={118}
-                          />
-                          <Box sx={{ pt: 0.5 }} className="mt-4">
-                            <Skeleton height={20} />
-                            <Skeleton width="60%" className="mt-2" height={20} />
-                          </Box>
-                        </div>
-                        <div className="col-3">
-                          <Skeleton
-                            variant="rectangular"
-                            width={"100%"}
-                            height={118}
-                          />
-                          <Box sx={{ pt: 0.5 }} className="mt-4">
-                            <Skeleton height={20} />
-                            <Skeleton width="60%" className="mt-2" height={20} />
-                          </Box>
-                        </div>
-                        <div className="col-3">
-                          <Skeleton
-                            variant="rectangular"
-                            width={"100%"}
-                            height={118}
-                          />
-                          <Box sx={{ pt: 0.5 }} className="mt-4">
-                            <Skeleton height={20} />
-                            <Skeleton width="60%" className="mt-2" height={20} />
-                          </Box>
-                        </div>
-                        <div className="col-3">
-                          <Skeleton
-                            variant="rectangular"
-                            width={"100%"}
-                            height={118}
-                          />
-                          <Box sx={{ pt: 0.5 }} className="mt-4">
-                            <Skeleton height={20} />
-                            <Skeleton width="60%" className="mt-2" height={20} />
-                          </Box>
-                        </div>
+                      <AdsSkeletons />
+                      <div className="main-content">
+                        <ProductsSkeletons />
                       </div>
-                      <div className="row">
-                        <div className="col-3">
-                          <Skeleton
-                            variant="rectangular"
-                            width={"100%"}
-                            height={118}
-                          />
-                          <Box sx={{ pt: 0.5 }} className="mt-4">
-                            <Skeleton height={20} />
-                            <Skeleton width="60%" className="mt-2" height={20} />
-                          </Box>
-                        </div>
-                        <div className="col-3">
-                          <Skeleton
-                            variant="rectangular"
-                            width={"100%"}
-                            height={118}
-                          />
-                          <Box sx={{ pt: 0.5 }} className="mt-4">
-                            <Skeleton height={20} />
-                            <Skeleton width="60%" className="mt-2" height={20} />
-                          </Box>
-                        </div>
-                        <div className="col-3">
-                          <Skeleton
-                            variant="rectangular"
-                            width={"100%"}
-                            height={118}
-                          />
-                          <Box sx={{ pt: 0.5 }} className="mt-4">
-                            <Skeleton height={20} />
-                            <Skeleton width="60%" className="mt-2" height={20} />
-                          </Box>
-                        </div>
-                        <div className="col-3">
-                          <Skeleton
-                            variant="rectangular"
-                            width={"100%"}
-                            height={118}
-                          />
-                          <Box sx={{ pt: 0.5 }} className="mt-4">
-                            <Skeleton height={20} />
-                            <Skeleton width="60%" className="mt-2" height={20} />
-                          </Box>
-                        </div>
-                      </div>
+                      <ProductsSkeletons />
                     </>
-                  ) : (
-                    <></>
-                  )}
-                  {recommanded.length &&
+                  ) : (recommanded.length &&
                     !isloadFilter &&
-                    !hasFilter ? (
+                    !hasFilter) && (
                     <div>
                       <div>{renderItems()}</div>
                     </div>
-                  ) : (
-                    <></>
                   )}
                   {hasFilter && !isloadFilter && !searchSuppliersList?.length ? (
                     <>
@@ -663,16 +483,17 @@ function FilterPage({ initialData }: AppProps) {
                         <div className="result-not-found__title">Oups !</div>
                         <div className="result-not-found__text">
                           {t('searchPage.noResult')}
-                        </div>
+                        </div >
                         <div className="result-not-found__icon"></div>
-                      </div>
+                      </div >
                     </>
                   ) : (
                     <></>
-                  )}
-                </Col>
-              </Row>
-            </div>
+                  )
+                  }
+                </Col >
+              </Row >
+            </div >
             <div className={'bulles'}>
               <button className={'messangerPopupBtn'} onClick={handleMessangerPopup} style={{ backgroundImage: `url(${MessangerBtnIcon})` }}>
                 {unReadedQt > 0 && (
@@ -686,22 +507,24 @@ function FilterPage({ initialData }: AppProps) {
               messangerPopup &&
               <Messanger className='discuterMessangerPopup' close={handleMessangerPopup} />
             }
-            {showMapState && (
-              <div
-                className="mapOverPlay">
+            {
+              showMapState && (
                 <div
-                  onClick={(e) => e.stopPropagation()}>
-                  <Map forced={true} />
+                  className="mapOverPlay">
+                  <div
+                    onClick={(e) => e.stopPropagation()}>
+                    <Map forced={true} />
+                  </div>
                 </div>
-              </div>
-            )}
+              )
+            }
           </>
         ) : (
           <SkeletonEffect />
 
         )}
       </>
-    </Suspense>
+    </Suspense >
 
   );
 }

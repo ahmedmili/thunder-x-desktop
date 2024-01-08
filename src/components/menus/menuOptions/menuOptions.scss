@@ -30,9 +30,7 @@
 
     .modal-content-image {
         flex: 1.5;
-        display: flex;
-        justify-content: center;
-        align-items: center;
+        @include flex;
         max-width: 429px;
         overflow: hidden;
         margin-right: 2.5rem;
@@ -43,8 +41,7 @@
             background-size: cover;
             background-position: center;
             background-repeat: no-repeat;
-            width: 429px;
-            height: 365.856px;
+            @include dimensions(429px, 365px);
         }
     }
 
@@ -119,9 +116,7 @@
             }
 
             .options-list {
-                display: flex;
-                align-items: center;
-                justify-content: space-between;
+                @include flex(flex, center, space-between);
                 padding: 5px;
 
                 .checkBox {
@@ -176,58 +171,44 @@
                     font-weight: weight(regular);
                 }
             }
-
         }
-
     }
-
     .buttons {
         width: 100%;
         height: auto;
-        display: flex;
-        justify-content: space-around;
-        align-items: center;
+        @include flex(flex, center, space-around);
 
         .add-to-cart-button {
-            width: 253px;
-            height: 95px;
+            @include dimensions(253px, 95px);
             border-radius: 55px;
             background: $orange_color;
             text-align: center;
-            color: white;
-            font-family: Poppins;
+            color: $color-white;
+            font-family: 'Poppins-SemiBold', serif;
             font-size: 20px;
-            font-style: normal;
-            font-weight: 600;
             line-height: normal;
 
             .cart-icon {
-                width: 34.624px;
-                height: 34.99px;
+                @include dimensions(34px, 34px);
             }
         }
 
         .count-container {
             position: relative;
-            border: 1px solid $orange_color;
+            @include border(1px, $orange_color);
             border-radius: 55px;
-            width: 253px;
-            height: 95px;
+            @include dimensions(253px, 95px);
             display: flex;
 
             .count-buttons {
-                display: flex;
-                justify-content: center;
-                align-items: center;
+                @include flex;
                 flex-direction: column;
                 gap: 20px;
 
                 button {
-
                     .count-more,
                     .count-less {
-                        width: 24px;
-                        height: 24px;
+                        @include dimensions(24px, 24px);
                         color: $light_Gray;
                     }
                 }
@@ -240,15 +221,12 @@
                 background-color: transparent;
                 border: none;
                 color: $light_Gray;
-                font-family: Poppins;
+                font-family: 'Poppins-SemiBold', serif;
                 font-size: 24px;
-                font-style: normal;
-                font-weight: 600;
                 line-height: normal;
                 padding-right: 41px;
                 text-align: center;
                 appearance: none;
-                /* Remove default styling */
                 -webkit-appearance: none;
 
                 &:hover {
@@ -276,8 +254,7 @@
 
         .messanger-popup-btn,
         .phone-popup-btn {
-            width: 64px;
-            height: 64px;
+            @include dimensions(64px, 64px);
             background-position: center;
             background-repeat: no-repeat;
             background-size: cover;
@@ -292,15 +269,13 @@
                 position: absolute;
                 right: 0;
                 top: 3px;
-                color: white;
-                background-color: #FBC000;
+                color: $color-white;
+                background-color: $orange_color;
                 border-radius: 50%;
                 padding: 5px;
                 font-size: 11px;
                 margin: 0;
-                display: flex;
-                align-items: center;
-                justify-content: center;
+                @include flex;
             }
         }
 
@@ -324,6 +299,7 @@
     .supplier-title-area {
         margin: 0 0 33px;
         display: flex;
+        align-items: center;
         gap: 40px;
 
         .supplier-logo {
@@ -333,7 +309,6 @@
             flex-shrink: 0;
 
             img {
-                width: 100%;
                 @include dimensions(100%, 100%);
                 object-fit: cover;
                 border-radius: 15px;
@@ -611,21 +586,14 @@
                 width: 57%;
 
                 .product-title {
-                    margin: 0 0 4px 0;
-                    max-width: 135.927px;
-                    height: 19.674px;
                     @include fonts(18px, 18px, $dark_Gray);
-                    font-family: 'Poppins-Bold', serif;
-                    font-style: normal;
-                    font-weight: weight(semiBold);
+                    font-family: 'Poppins-SemiBold', serif;
+                    margin: 0 0 10px;
                 }
                 .product-description {
-                    margin: 0 0 4px 0;
-                    max-width: 149.043px;
-                    height: 39.674px;
-                    font-family: 'Poppins-Bold', serif;
+                    margin: 0;
+                    font-family: 'Poppins', serif;
                     @include fonts(15px, 20px, $dark_Gray);
-                    font-style: normal;
                     font-weight: weight(regular);
                     overflow-y: auto;
                     scrollbar-width: none;
@@ -636,6 +604,9 @@
                     }
                     &::-webkit-scrollbar-track {
                         background-color: transparent;
+                    }
+                    p {
+                        margin: 0;
                     }
                 }
 
@@ -660,13 +631,9 @@
                     }
                 }
                 .product-price {
-                    margin: 0;
-                    max-width: 149.043px;
-                    height: 19.674px;
-                    font-family: 'Poppins-Bold', serif;
+                    margin: 0 0 10px;
+                    font-family: 'Poppins-SemiBold', serif;
                     @include fonts(15px, 15px, $Ocean_Teal);
-                    font-style: normal;
-                    font-weight: weight(semiBold);
                 }
                 .product-button {
                     position: absolute;
@@ -695,9 +662,11 @@
                         border-radius: 50%;
                         background-color: $primary_color;
                     }
-
                     &:hover {
                         cursor: pointer;
+                    }
+                    svg {
+                        fill: $color-white;
                     }
                 }
             }
@@ -708,19 +677,228 @@
 /* # $Mobile ::
 ------------------------------------*/
 
+@media (max-width: 1440px) {
+    .supplier-details-header {
+        padding: 30px;
+        margin: 0 0 45px;
+
+        .supplier-title-area {
+            margin: 0 0 27px;
+            gap: 30px;
+
+            .supplier-logo {
+                @include dimensions(65px, 65px);
+            }
+            .supplier-title-blc {
+                .supplier-title {
+                    @include fontSize(30px, 30px);
+                }
+                .supplier-desc {
+                    @include fontSize(11px, 11px);
+                }
+            }
+        }
+        .supplier-infos_list {
+            .supplier-infos_list-item {
+                @include fontSize(13px, 13px);
+
+                &::before {
+                    @include dimensions(30px, 30px);
+                }
+                &.location {
+                    &::before {
+                        background-size: 12px auto;
+                    }
+                }
+                &.time-work {
+                    &::before {
+                        background-size: 20px auto;
+                    }
+                }
+                &.shipping-cost {
+                    &::before {
+                        background-size: 20px auto;
+                    }
+                }
+            }
+            .time {
+                min-width: 150px;
+                height: 35px;
+                @include fontSize(14px, 14px);
+            }
+        }
+    }
+    .supplier-details-body {
+        grid-template-columns: 640px 1fr;
+        grid-gap: 55px;
+        margin: 0 0 65px;
+
+        .modal-content-image {
+            .modal-content-image-inner {
+                height: 755px;
+                border-radius: 7px;
+            }
+        }
+    }
+    .menue-options-container {
+        .modal-content-options {
+            .options-info {
+                .menu-title {
+                    @include fontSize(26px, 26px);
+                }
+                .menu-price {
+                    @include fontSize(12px, 12px);
+                }
+                .menu-description {
+                    margin: 0;
+
+                    p {
+                        @include fontSize(12px, 12px);
+                    }
+                }
+            }
+            .menu-options {
+                .menu-options-header {
+                    margin: 0 0 16px;
+                    height: 45px;
+
+                    .option-name {
+                        @include fontSize(13px, 20px);
+                    }
+                    .option-obligatoir {
+                        min-width: 100px;
+                        height: 30px;
+                        @include fontSize(13px, 13px);
+                    }
+                }
+                .options-list {
+                    .checkBox {
+                        label {
+                            @include fontSize(12px, 12px);
+                        }
+                        .custom-checkbox {
+                            @include dimensions(16px, 16px);
+                            border-radius: 4px;
+                        }
+                    }
+                    .option-price {
+                        @include fontSize(12px, 12px);
+                    }
+                }
+            }
+        }
+    }
+    .menu-options-blc {
+        padding: 28px 0 0;
+        margin: 0 0 20px;
+    }
+    .buttons {
+        &.btns-group {
+            .count-container {
+                width: 170px;
+
+                .count-buttons {
+                    .btn {
+                        &.counter-minus {
+                            left: 25px;
+                        }
+                        &.counter-more {
+                            right: 25px;
+                        }
+                    }
+                }
+            }
+        }
+    }
+    .buttons {
+        &.btns-group {
+            .add-to-cart-button {
+                width: initial;
+                min-width: 190px;
+                @include fontSize(12px, 12px);
+            }
+        }
+    }
+    .menu-container {
+        .menu-grid {
+            gap: 40px;
+
+            .product-card {
+                .info-container {
+                    .product-button {
+                        min-width: 24px;
+                        height: 24px;
+                        font-size: 16px;
+
+                        &::after {
+                            min-width: 35px;
+                            height: 35px;
+                        }
+                    }
+                }
+            }
+        }
+        .menu-title-blc {
+            margin: 0 0 30px;
+
+            .menu-title {
+                @include fontSize(25px, 25px);
+            }
+        }
+    }
+}
+@media (max-width: 1200px) {
+    .supplier-details-body {
+        grid-template-columns: 550px 1fr;
+        grid-gap: 45px;
+        margin: 0 0 50px;
+
+        .modal-content-image {
+            .modal-content-image-inner {
+                height: 600px;
+            }
+        }
+    }
+}
+@media (max-width: 1050px) {
+    .supplier-details-body {
+        grid-template-columns: 550px 1fr;
+        grid-gap: 45px;
+        margin: 0 0 50px;
+    }
+    .buttons {
+        &.btns-group {
+            .add-to-cart-button {
+                min-width: 160px;
+            }
+            .count-container {
+                width: 130px;
+
+                .count-buttons {
+                    .btn {
+                        &.counter-more {
+                            right: 10px;
+                        }
+                        &.counter-minus {
+                            left: 10px;
+                        }
+                    }
+                }
+            }
+        }
+    }
+}
 @media only screen and (max-width: 991px) {
 
     .menue-options-container {
         .buttons {
             .add-to-cart-button {
-                width: 253px;
-                height: 60px;
+                @include dimensions(253px, 60px);
                 font-size: 16px;
             }
 
             .count-container {
-                width: 200px;
-                height: 60px;
+                @include dimensions(200px, 60px);
 
                 .count-buttons {
                     gap: 2px;
@@ -793,23 +971,16 @@
 
                 .menu-options-header {
                     .option-name {
-                        width: 80%;
-                        height: 22.629px;
+                        @include dimensions(80%, 22px);
                         font-size: 13.086px;
                     }
-
                     .option-max {
-                        width: 59px;
-                        height: 19px;
+                        @include dimensions(59px, 19px);
                     }
-
                     .option-obligatoir {
-                        width: 96px;
-                        height: 19px;
+                        @include dimensions(96px, 19px);
                     }
-
                 }
-
                 .options-list {
                     .checkBox {
                         label {
@@ -830,19 +1001,15 @@
             gap: 20px;
 
             .add-to-cart-button {
-                width: 253px;
-                height: 60px;
+                @include dimensions(253px, 60px);
                 font-size: 16px;
 
                 .cart-icon {
-                    width: 20px;
-                    height: 20.99px;
+                    @include dimensions(20px, 20px);
                 }
             }
-
             .count-container {
-                width: 200px;
-                height: 60px;
+                @include dimensions(200px, 60px);
 
                 .count-buttons {
                     gap: 9px;
@@ -851,13 +1018,11 @@
 
                         .count-more,
                         .count-less {
-                            width: 18px;
-                            height: 18px;
+                            @include dimensions(18px, 18px);
                             color: $light_Gray;
                         }
                     }
                 }
-
                 input[type="number"] {
                     padding: 0;
                     font-size: 18px;
@@ -946,30 +1111,25 @@
             gap: 20px;
 
             .add-to-cart-button {
-                width: 253px;
-                height: 50px;
+                @include dimensions(253px, 50px);
                 font-size: 12px;
 
                 .cart-icon {
-                    width: 16px;
-                    height: 16px;
+                    @include dimensions(16px, 16px);
                     margin-right: 3px;
                 }
             }
 
             .count-container {
-                width: 200px;
-                height: 50px;
+                @include dimensions(200px, 50px);
 
                 .count-buttons {
                     gap: 0;
 
                     button {
-
                         .count-more,
                         .count-less {
-                            width: 18px;
-                            height: 18px;
+                            @include dimensions(18px, 18px);
                             color: $light_Gray;
                         }
                     }

@@ -193,6 +193,7 @@ function MenuOptions({ initialData }: AppProps) {
             throw error
         }
     };
+
     const getSupplierIsOpen = async () => {
         const { status, data } = await supplierServices.getSupplierISoPENById(supplierId)
         data.data.is_open === 1 ? setIsOpen(true) : setIsOpen(false)
@@ -563,6 +564,7 @@ function MenuOptions({ initialData }: AppProps) {
             ? `${name.slice(0, MAX_NAME_LENGTH)}...`
             : name;
     };
+
     return (
 
         <div className="menue-options-container" onClick={(e) => e.stopPropagation()}>
@@ -603,6 +605,7 @@ function MenuOptions({ initialData }: AppProps) {
                                         width={'50%'}
                                         height={10}
                                         style={{ marginBottom: 20, borderRadius: 10 }}
+
                                     />
                                     {[...Array(3)].map((_, index) => (
                                         <>
@@ -641,7 +644,7 @@ function MenuOptions({ initialData }: AppProps) {
                                         <div className='rate-gouping'>
                                             {isLoggedIn ?
                                                 <div className="favor" style={(favor) ? { backgroundImage: `url(${FavorActiveIcon})` } : { backgroundImage: `url(${FavorIcon})` }} onClick={updatefavorite}>
-                                                </div> : <></>
+                                                </div> : ""
                                             }
                                             {
                                                 productSupplier?.bonus ? (
@@ -675,15 +678,16 @@ function MenuOptions({ initialData }: AppProps) {
                                         <li>
                                             <p className={`supplier-infos_list-item time-work ${isOpen ? 'open' : 'close'}`}>
                                                 {
-                                                    isOpen ?
-                                                        <span>{t("supplier.opentime")} {closeTime}</span>
-                                                        :
-                                                        <span>{t("closed")}</span>
+                                                    productSupplier?.bonus ? (
+                                                        <div className='gift-icon' style={(productSupplier?.bonus > 0) ? { backgroundImage: `url(${ActiveGiftIcon})` } : { backgroundImage: `url(${GiftIcon})` }}></div>
+                                                    ) : (
+                                                        <div className='gift-icon' style={{ backgroundImage: `url(${GiftIcon})` }}></div>
+                                                    )
                                                 }
                                             </p>
                                         </li>
                                         <li>
-                                            <p className="supplier-infos_list-item shipping-cost">{t('supplier.delivPrice')}: {productSupplier?.delivery_price} Dt</p>
+                                            <p className="supplier-infos_list-item shipping-cost">Frais de livraison: {productSupplier?.delivery_price} Dt</p>
                                         </li>
                                         <li>
                                             <div className="time">{`${Number(productSupplier?.medium_time) - 10}-${Number(productSupplier?.medium_time + 10)}min`}</div>
@@ -717,7 +721,7 @@ function MenuOptions({ initialData }: AppProps) {
                                                     <React.Fragment key={index}>
                                                         <div className="menu-options-blc">
                                                             <div className='menu-options-header'>
-                                                                <div className="option-name">{t('supplier.Choose')} {Object.keys(options)[0]}</div>
+                                                                <div className="option-name">{t('')} {Object.keys(options)[0]}</div>
                                                                 {
 
                                                                     Object.keys(options)[0] === "packet" && <div className="option-obligatoir">{t('supplier.Mandatory')}</div>

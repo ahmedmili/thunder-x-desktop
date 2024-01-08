@@ -10,13 +10,13 @@ import {
   setSupplier
 } from "../../Redux/slices/cart/cartSlice";
 
-import CartSVG from '../../assets/panier/cart.svg';
-import PayCashSVG from '../../assets/panier/pay-cash.svg';
+import CartSVG from '../../assets/card-icn.svg';
+import PayCashSVG from '../../assets/money-icn.svg';
 
-import bagPaperShoppingIcn from '../../assets/panier/bag-paper-shopping-icn.png';
-import dinnerFurnitureIcn from '../../assets/panier/dinner-furniture-icn.png';
+import bagPaperShoppingIcn from '../../assets/panier/take-away-icn.svg';
+import dinnerFurnitureIcn from '../../assets/panier/onthespot-icn.svg';
 import empty from '../../assets/panier/empty.png';
-import scooterTransportIcn from '../../assets/panier/scooter-transport-icn.png';
+import scooterTransportIcn from '../../assets/panier/ondelivery-icn.svg';
 
 import KeyboardArrowDownOutlinedIcon from '@mui/icons-material/KeyboardArrowDownOutlined';
 import KeyboardArrowUpOutlinedIcon from '@mui/icons-material/KeyboardArrowUpOutlined';
@@ -53,6 +53,8 @@ import Messanger from "../../components/Popups/Messanger/Messanger";
 import { fetchMessages } from "../../Redux/slices/messanger";
 import MinCostError from "../../components/Popups/MinCostError/MinCostError";
 import { toast } from "react-toastify";
+import SupplierImg from '../../assets/menu-1.png';
+
 
 const CartPage: React.FC = () => {
   const { t } = useTranslation();
@@ -178,11 +180,52 @@ const CartPage: React.FC = () => {
 
     return (
       <>
-        <div className="supplier-name">
-          <span >{item.supplier_data.supplier_name}</span>
+
+        <div className="supplier-desc-header">
+          <div className="supplier-name">
+            <span >{item.supplier_data.supplier_name}</span>
+          </div>
+
+          <div className="show-all-link-blc">
+            <a className="show-all-link">
+              Tout afficher
+            </a>
+          </div>
         </div>
+
+        <div className="supplier-desc-body">
+          <div className="supplier-name-blc">
+            <div className="supplier-img-blc">
+              <img src={SupplierImg} alt="Supplier Img" />
+            </div>
+            <div className="supplier-title-blc">
+              <h4 className="supplier-title">{item.product.name}</h4>
+              <div className="total-price">
+                <span >{item.unitePrice.toFixed(2)} DT</span>
+              </div>
+            </div>
+          </div>
+          <div className="count-container">
+            <input readOnly={true} type="number" name="product-count" id="product-count" value={count} />
+            <div className="count-buttons">
+              <button className="btn count-more" onClick={handleIncreaseQuantity}></button>
+              <button className="btn count-less" onClick={handleDecreaseQuantity}></button>
+            </div>
+          </div>
+          <div className="total-price-area">
+            <div className="total-price">
+              <span>
+                {item.total.toFixed(2)} DT
+              </span>
+            </div>
+            <div>
+              <button type="button" className="remove-btn" onClick={remove}></button>
+            </div>
+          </div>
+
+        </div>
+
         <div className="info-text">
-          <span className="title">{item.product.name}</span>
           {item.options.length ?
             (<Accordion className="link-accordion">
               <AccordionSummary
@@ -212,34 +255,34 @@ const CartPage: React.FC = () => {
             </Accordion>)
             : ""
           }
+        </div>
 
-        </div>
-        <div className="total-price">
-          <span >{item.unitePrice.toFixed(2)} DT</span>
-        </div>
-        <div className="quantite">
-          <div className="count-container">
-            <input readOnly={true} type="number" name="product-count" id="product-count" value={count} />
-            <div className="count-buttons">
-              <button onClick={handleIncreaseQuantity} >
-                <KeyboardArrowUpOutlinedIcon className="count-more" />
-              </button>
-              <button onClick={handleDecreaseQuantity} >
-                <KeyboardArrowDownOutlinedIcon className="count-less" />
-              </button>
+        {/*
+          <div className="total-price">
+            <span >{item.unitePrice.toFixed(2)} DT</span>
+          </div>
+          <div className="quantite">
+            <div className="count-container">
+              <input readOnly={true} type="number" name="product-count" id="product-count" value={count} />
+              <div className="count-buttons">
+                <button onClick={handleIncreaseQuantity} >
+                  <KeyboardArrowUpOutlinedIcon className="count-more" />
+                </button>
+                <button onClick={handleDecreaseQuantity} >
+                  <KeyboardArrowDownOutlinedIcon className="count-less" />
+                </button>
+              </div>
+            </div>
+            <div className="total-price">
+              <span>
+                {item.total.toFixed(2)} DT
+              </span>
+            </div>
+            <div>
+              <button type="button" className="remove-btn" onClick={remove}></button>
             </div>
           </div>
-          <div className="total-price">
-            <span>
-              {item.total.toFixed(2)} DT
-            </span>
-          </div>
-          <div>
-            <button type="button" className="remove-btn" onClick={remove}>
-              <CloseIcon className='close-icon'></CloseIcon>
-            </button>
-          </div>
-        </div>
+        */}
       </>
     )
   }
@@ -769,6 +812,7 @@ const CartPage: React.FC = () => {
       {
         cartItems.length > 0 && supplier ? (
           <div className="cart-page-container">
+            {/*
             <Container fluid>
               <Row className="header">
                 <div className="image-container">
@@ -777,7 +821,18 @@ const CartPage: React.FC = () => {
                 </div>
               </Row>
             </Container>
-            <Container>
+            */}
+            <Container className="cart-page-cont">
+
+            <ul className="breadcrumb-area">
+              <li>
+                <a className="breadcrumb-link">Accueil</a>
+              </li>
+              <li>
+                <a className="breadcrumb-link active">Panier</a>
+              </li>
+            </ul>
+
               <Row>
                 <Col>
                   <main>
@@ -788,58 +843,60 @@ const CartPage: React.FC = () => {
                           <div className="cart-items__title">
                             {t('cartPage.product')}
                           </div>
-                          <ul className="cart-items__list" >
+                          <div className="cart-items__list">
                             {
                               cartItems.map((item: any, index: number) => {
                                 return (
-                                  <li className="cart-items__list__product" key={index}>
+                                  <div className="cart-items__list__product" key={index}>
                                     <ArticleProvider item={item} remove={() => removeItemsWithIndex(index)} />
-                                  </li>
+                                  </div>
                                 )
                               })
                             }
-                          </ul>
+                          </div>
                         </div>
-                        <div className="devider">
-                        </div>
+
                         <div className="commentaire-section">
-                          <span>{t('cartPage.commentaire')}</span>
+                          <label>{t('cartPage.commentaire')}</label>
                           <textarea name="commentaire" id="commentaire" cols={30} rows={10} value={aComment} onChange={(e) => handleCommentChange(e.target.value)} placeholder="Ex:sandwich"></textarea>
                         </div>
 
-                        <div className="devider">
-                        </div>
-                        <div className="promos-list">
-                          <ul>
-                            {
-                              promosList.length !== 0 && (
-                                <>
-                                  {
-                                    promosList.map((promo: any, index: number) => {
-                                      return (
-                                        <button key={index} className="promo-button" onClick={() => {
-                                          selectCoupon(promo)
-                                        }}>
-                                          {promo.title}
-                                        </button>
-                                      )
+                        <div className="promos-area">
+                          <label>{t('cart.PromosCode')}</label>
 
-                                    })
-                                  }
-                                </>
-                              )
-                            }
-                          </ul>
-                        </div>
-                        {/* promo start */}
-                        <div className="promo-container">
-                          <span>{t('cart.PromosCode')}</span>
-                          <textarea name="code_promo" id="code_promo" placeholder="Code promo" value={promo} onChange={(e) => handlePromoChange(e.target.value)} ></textarea>
-                          <button disabled={!couponExiste} style={{ backgroundColor: `${promoApplied ? "red" : "#FBC000"}` }} className={(couponExiste) ? "button" : "button disabled"} onClick={checkPromoCode}>
-                            {promoApplied ? t('Annuler') : t('cartPage.appliquer')}
-                          </button>
-                        </div>
-                        <div className="devider">
+                          <div className="promos-wrapper">
+                            <div className="promos-list">
+                              <ul>
+                                {
+                                  promosList.length !== 0 && (
+                                    <>
+                                      {
+                                        promosList.map((promo: any, index: number) => {
+                                          return (
+                                            <li>
+                                              <button key={index} className={(!couponExiste) ? "promo-button" : "promo-button active"} onClick={() => {
+                                                selectCoupon(promo)
+                                              }}>
+                                                {promo.title}
+                                              </button>
+                                            </li>
+                                          )
+
+                                        })
+                                      }
+                                    </>
+                                  )
+                                }
+                              </ul>
+                            </div>
+                            <div className="promo-container">
+
+                              <textarea name="code_promo" id="code_promo" placeholder="Code promo" value={promo} onChange={(e) => handlePromoChange(e.target.value)} ></textarea>
+                              <button disabled={!couponExiste} className={(couponExiste) ? "button" : "button disabled"} onClick={checkPromoCode}>
+                                {promoApplied ? t('Annuler') : t('cartPage.appliquer')}
+                              </button>
+                            </div>
+                          </div>
                         </div>
                         {/* promo end */}
                         {/* gift start */}
@@ -850,7 +907,7 @@ const CartPage: React.FC = () => {
                             <div className="promo-container">
                               <span>{t('repasGratuit')}</span>
                               <textarea name="code_promo" readOnly id="gift_ammount" placeholder="0" value={`${giftAmmount.toFixed(3)}`} ></textarea>
-                              <button style={{ backgroundColor: `${giftApplied ? "red" : "#FBC000"}` }} className={"button"} onClick={() => giftApplied ? clearGift() : applyGift()}>
+                              <button style={{ backgroundColor: `${giftApplied ? "red" : "#3BB3C4"}` }} className={"button"} onClick={() => giftApplied ? clearGift() : applyGift()}>
                                 {giftApplied ? t('Annuler') : t('cartPage.appliquer')}
                               </button>
                             </div>
@@ -861,18 +918,22 @@ const CartPage: React.FC = () => {
                         }
                         {/* gift end */}
                         {/* bonus start */}
-                        <div className="promo-container">
-                          <span>{t('cartPage.bonus')}</span>
-                          <textarea name="bonus" id="bonus" placeholder="Bonnus" value={bonus.toFixed(2) + ' pts'}></textarea>
-                          <button style={{ backgroundColor: `${appliedBonus > 0 ? "red" : '#FBC000'}` }} className={(bonus < 5000 || limitReachedBonus) ? "button disabled" : "button"} disabled={(bonus < 5000 || limitReachedBonus)} onClick={() => applyBonus()}>
-                            {appliedBonus > 0 ? t('Annuler') : t('cartPage.appliquer')}
-                          </button>
+                        <div className="bonus-area">
+                          <label>{t('cartPage.bonus')}</label>
+                          <div className="bonus-wrapper">
+                            <div className="promo-container">
+                              <textarea name="bonus" id="bonus" placeholder="Bonnus" value={bonus.toFixed(2) + ' pts'}></textarea>
+                              <button style={{ backgroundColor: `${appliedBonus > 0 ? "red" : '#3BB3C4'}` }} className={(bonus < 5000 || limitReachedBonus) ? "button disabled" : "button"} disabled={(bonus < 5000 || limitReachedBonus)} onClick={() => applyBonus()}>
+                                {appliedBonus > 0 ? t('Annuler') : t('cartPage.appliquer')}
+                              </button>
+                            </div>
+                            <ul>
+                              <li>
+                                <p className="bonus-message">{t('cartPage.bonusMsg')}</p>
+                              </li>
+                            </ul>
+                          </div>
                         </div>
-                        <ul>
-                          <li>
-                            <p className="bonus-message">{t('cartPage.bonusMsg')}</p>
-                          </li>
-                        </ul>
                         {/* bonus end */}
                         <div className="buttons">
                           <button className="cancel">
@@ -887,38 +948,97 @@ const CartPage: React.FC = () => {
                       {
                         currentStep == 2 && (<div className="card-paiment">
                           <div className="paiment-container">
-                            <span className="title">{t('cartPage.payMode')}</span>
-                            <div className="method">
-                              <img loading="lazy" className="icon" src={PayCashSVG} alt="My SVG" />
-                              <label htmlFor="espece">{t('cartPage.espece')}</label>
-                              <input className="form-check-input" type="radio" name="pay" id="espece" checked={payMode === 1} onClick={() => setPayMode(1)} />
-                            </div>
-                            <div className="method">
-                              <img loading="lazy" className="cart" src={CartSVG} alt="My SVG" />
-                              <label htmlFor="bnc-cart">{t('cartPage.bankPay')}</label>
-                              <input className="form-check-input" type="radio" name="pay" id="bnc-cart" checked={payMode === 2} onClick={() => setPayMode(2)} />
+                            <h2 className="title">{t('cartPage.payMode')}</h2>
+                            <div className="method-group">
+                              <div className={`method ${payMode === 1 ? "active" : ""}`}>
+                                <img loading="lazy" className="icon" src={PayCashSVG} alt="My SVG" />
+                                <label htmlFor="espece">{t('cartPage.espece')}</label>
+                                <input className="form-check-input" type="radio" name="pay" id="espece" checked={payMode === 1} onClick={() => setPayMode(1)} />
+                              </div>
+                              <div className={`method ${payMode === 2 ? "active" : ""}`}>
+                                <img loading="lazy" className="cart" src={CartSVG} alt="My SVG" />
+                                <label htmlFor="bnc-cart">{t('cartPage.bankPay')}</label>
+                                <input className="form-check-input" type="radio" name="pay" id="bnc-cart" checked={payMode === 2} onClick={() => setPayMode(2)} />
+                              </div>
                             </div>
                           </div>
-                          <div className="devider">
-                          </div>
-                          <div className="deliv-details">
-                            <div className={`select ${selectedOption == 1 ? "selected" : ""}`}  >
-                              <img loading="lazy" className="icon1" src={dinnerFurnitureIcn} alt="sur place icon" onClick={() => handleOptionChange(1)} />
-                              <input type="radio" value="1" id='domicile' name='type' checked={selectedOption === 1} />
-                              <label htmlFor="domicile"  >{t('cartPage.surPalce')}</label>
-                            </div>
-                            <div className={`select ${selectedOption == 2 ? "selected" : ""}`}  >
-                              <img loading="lazy" className="icon2" src={bagPaperShoppingIcn} alt="a emporter icon" onClick={() => handleOptionChange(2)} />
 
-                              <input type="radio" value="2" id='travail' name='type' checked={selectedOption === 2} />
-                              <label htmlFor="travail">{t('cartPage.emporter')}</label>
+                          <div className="deliv-details">
+                            <div className={`select ${selectedOption == 1 ? "selected" : ""}`}>
+                              <div className="deliv-details_header">
+                                <div className="deliv-details_img-blc icon1">
+                                  <img loading="lazy" src={dinnerFurnitureIcn} alt="sur place icon" onClick={() => handleOptionChange(1)} />
+                                </div>
+                                <div className="deliv-details_header-desc">
+                                  <time>20 MIN</time>
+                                  <div className="deliv-type">{t('cartPage.surPalce')}</div>
+                                </div>
+                              </div>
+                              <p className="deliv-details_description">
+                                Rue Imem moslem, Khzema, Sousse
+                              </p>
+                              <button className="btn btn-deliv">livrer ici</button>
+                              <input type="radio" value="1" id='domicile' name='type' checked={selectedOption === 1} />
                             </div>
-                            <div className={`select ${selectedOption == 3 ? "selected" : ""}`}  >
-                              <img loading="lazy" className="icon3" src={scooterTransportIcn} alt="Livraison icon" onClick={() => handleOptionChange(3)} />
+                            <div className={`select ${selectedOption == 2 ? "selected" : ""}`}>
+                              <div className="deliv-details_header">
+                                <div className="deliv-details_img-blc icon2">
+                                  <img loading="lazy" src={bagPaperShoppingIcn} alt="a emporter icon" onClick={() => handleOptionChange(2)} />
+                                </div>
+                                <div className="deliv-details_header-desc">
+                                  <time>20 MIN</time>
+                                  <div className="deliv-type">{t('cartPage.emporter')}</div>
+                                </div>
+                              </div>
+                              <p className="deliv-details_description">
+                                Rue Imem moslem, Khzema, Sousse
+                              </p>
+                              <button className="btn btn-deliv">livrer ici</button>
+                              <input type="radio" value="2" id='travail' name='type' checked={selectedOption === 2} />
+
+                            </div>
+                            <div className={`select ${selectedOption == 3 ? "selected" : ""}`}>
+                              <div className="deliv-details_header">
+                                <div className="deliv-details_img-blc icon3">
+                                  <img loading="lazy" src={scooterTransportIcn} alt="Livraison icon" onClick={() => handleOptionChange(3)} />
+                                </div>
+                                <div className="deliv-details_header-desc">
+                                  <time>20 MIN</time>
+                                  <div className="deliv-type">{t('cartPage.delivery')}</div>
+                                </div>
+                              </div>
+                              <p className="deliv-details_description">
+                                Rue Imem moslem, Khzema, Sousse
+                              </p>
+                              <button className="btn btn-deliv">livrer ici</button>
                               <input type="radio" value="3" id='autre' name='type' checked={selectedOption === 3} />
-                              <label htmlFor="autre">{t('cartPage.delivery')}</label>
+
                             </div>
                           </div>
+
+                          <div className="order-recovery-area">
+                            <h3 className="order-recovery-title">
+                              Sélectionner l’option de la récupération de la commande
+                            </h3>
+
+                            <div className="order-recovery-select-blc">
+                              <div className="order-recovery-select-item active">
+                                <span>
+                                  Le plus vite
+                                  possible
+                                  20-40 minutes
+                                </span>
+                              </div>
+                              <div className="order-recovery-select-item">
+                                <span>
+                                  Modifier
+                                  la planification
+                                </span>
+                              </div>
+                            </div>
+                          </div>
+
+
                           {
                             selectedOption == 2 && (
                               <>
@@ -951,24 +1071,35 @@ const CartPage: React.FC = () => {
                             )
                           }
                           <div className="deliv-to">
-                            <span className="title">{t('cartPage.delivto')}</span>
+                            <h3 className="title">{t('cartPage.delivto')}</h3>
+                            <div className="deliv-infos-group">
+                              <div className="info-container">
+                                <label htmlFor="client-name">{t('cartPage.client')} : </label>
+                                <input type="text" name="client-name" value={name} placeholder="Client Name" onChange={(e) => setName(e.target.value)} />
+                              </div>
+                              <div className="info-container">
+                                <label htmlFor="client-name">{t('cartPage.phoneNumber2')}</label>
+                                <input type="text" name="" value={phoneNumber} placeholder="phone number" onChange={(e) => setPhoneNumber(e.target.value)} />
+                              </div>
+                            </div>
                             <div className="info-container">
-                              <label htmlFor="client-name">{t('cartPage.client')} : </label>
-                              <input type="text" name="client-name" value={name} placeholder="Client Name" onChange={(e) => setName(e.target.value)} />
+                              <label htmlFor="client-name">Adresse de livraison</label>
+                              <div className="adress">
+                                {/*
+                                  <p className="title" style={{ margin: 0 }} >
+                                    {t('profile.mesConfig.delivAdress')} :
+                                  </p>
+                                */}
+                                <p className="adress-text">
+                                  {userPosition?.coords.label}
+                                </p>
+                                <button className="btn btn-edit"></button>
+                              </div>
                             </div>
-
-                            <div className="info-container">
-                              <label htmlFor="client-name">{t('cartPage.phoneNumber2')}</label>
-                              <input type="text" name="" value={phoneNumber} placeholder="phone number" onChange={(e) => setPhoneNumber(e.target.value)} />
+                            <div className="message-validation">
+                              Vous recevrez un message de validation
                             </div>
-                            <div className="adress">
-                              <p className="title" style={{ margin: 0 }} >
-                                {t('profile.mesConfig.delivAdress')} :
-                              </p>
-                              <p className="adress-text">
-                                {userPosition?.coords.label}
-                              </p>
-                            </div>
+                          </div>
 
                             <div className="buttons">
                               <button className="continue" onClick={navigateToHome}>
@@ -994,68 +1125,162 @@ const CartPage: React.FC = () => {
                                 {t('cartPage.commander')}
                               </button>
                             </div>
-
-                          </div>
                         </div>
                         )}
+
+                      <div className="message-validation-area d-none">
+                        <h2 className="message-validation-title">
+                          Commande validé !
+                        </h2>
+                        <div className="message-validation_img-blc commande-valide"></div>
+                        {/*
+                          .commande-valide
+                          .commande-nnvalide
+                          .paiement-valide
+                          .paiement-nnvalide
+                        */}
+                        <div className="message-validation_desc">
+                          <p>
+                            Vous serez alerté lorsque le livreur arrive prés de chez vous.
+                          </p>
+                        </div>
+                        <div className="btns-group">
+                          <button className="btn btn-valid">Je commande</button>
+                        </div>
+                      </div>
+
                     </div>
 
                     {/* 
                       order datails
                     */}
                     <div className="summair-container">
-                      <span>{t('cartPage.total')}</span>
+                      <h3 className="summair-title">{t('cartPage.total')}</h3>
                       <div className={`info`}>
 
-                        <div className="sous-total">
-                          <span className="title">{t('profile.commands.sousTotal')}</span>
-                          <span className="value">{sousTotal.toFixed(2)} DT</span>
-                        </div>
-                        <div className="panier">
-                          <span>{t('cartPage.yourCart')}</span>
-                          {appliedBonus > 0 &&
-                            (
-                              <div className="panie-row">
-                                <span>{t('cartPage.bonus')}</span>
-                                <span> - {(appliedBonus / 1000).toFixed(2)} DT</span>
-                              </div>
-                            )
-                          }
-                          {
-                            promoReduction > 0 && (
-                              <div className="panie-row">
-                                <span>{t('cartPage.Coupon')}</span>
-                                <span> - {(promoReduction).toFixed(2)} DT</span>
-                              </div>
-                            )
-
-                          }
-                          {
-                            discountValue > 0 && (
-                              <div className="panie-row">
-                                <span>{t('cart.discount')}</span>
-                                <span> - {(discountValue).toFixed(2)} DT</span>
-                              </div>
-                            )
-                          }
-                          {
-                            giftAmmount > 0 && (
-                              <div className="panie-row">
-                                <span>{t('Repas Gratuit')}</span>
-                                <span> - {(giftAmmount).toFixed(2)} DT</span>
-                              </div>
-                            )
-                          }
-                          <div className="panie-row">
-                            <span>{t('supplier.delivPrice')}</span>
-                            <span>{Number(deliveryPrice).toFixed(2)} DT</span>
+                        <div className="info-customer-area">
+                          <div className="info-customer-title-blc">
+                            <h4 className="info-customer-title">
+                              Livraison à
+                            </h4>
+                            <a className="edit-info-customer-link">Modifié</a>
                           </div>
-                          <div className="panie-row"></div>
+                          <div className="customer-infos-area">
+                            <div className="customer-info_name">Toumi marwa</div>
+                            <div className="customer-info_mobile">Mobile : <span>27380570</span></div>
+                            <div className="customer-info_adresse">
+                              304 rue med abdou cité riadh sousse
+                            </div>
+                          </div>
                         </div>
 
-                        <div className="a-payer">
-                          <span className="title">A payer</span>
-                          <span className="value">{total.toFixed(2)} DT</span>
+                        <div className="payment-method">
+                          <h4 className="payment-method-title">
+                            Mode de paiement
+                          </h4>
+                          <div className="payment-method-status">
+                            <span className="payment-method-status_txt cash">
+                              En espèces à la livraison
+                            </span>
+                          </div>
+                        </div>
+
+                        <div className="calculate-total-price">
+
+                          <div className="supplier-name-blc">
+                            <div className="supplier-img-blc">
+                              <img src={SupplierImg} alt="Supplier Img" />
+                            </div>
+                            <div className="supplier-title-blc">
+                              <h4 className="supplier-title">Naan au choix</h4>
+                              <div className="supplier-adresse">
+                                Sahloul, Sousse
+                              </div>
+                            </div>
+                          </div>
+
+                          <div className="products-count-area">
+                            <div className="product-id">
+                              X1
+                            </div>
+                            <div className="product-name">
+                              Sandwich
+                            </div>
+                            <div className="count-container">
+                              <input readOnly={true} type="number" name="product-count" id="product-count" value="1" />
+                              <div className="count-buttons">
+                                <button className="btn count-more" ></button>
+                                <button className="btn count-less" ></button>
+                              </div>
+                            </div>
+                            <div className="product-price">
+                              10.00 DT
+                            </div>
+                          </div>
+
+                          <div className="price-total-area">
+                            <div className="sous-total">
+                              <div className="title">{t('profile.commands.sousTotal')}</div>
+                              <div className="value">{sousTotal.toFixed(2)} DT</div>
+                            </div>
+                            <div className="sous-total">
+                              <div className="title">Forfait</div>
+                              <div className="value">0.00 DT</div>
+                            </div>
+                            <div className="sous-total">
+                              <div className="title">Code promo</div>
+                              <div className="value">7.00 DT</div>
+                            </div>
+                            <div className="sous-total">
+                              <div className="title">Bonus</div>
+                              <div className="value">0.00 DT</div>
+                            </div>
+
+                              {/*<span>{t('cartPage.yourCart')}</span>*/}
+                              {appliedBonus > 0 &&
+                                (
+                                  <div className="panie-row">
+                                    <span>{t('cartPage.bonus')}</span>
+                                    <span> - {(appliedBonus / 1000).toFixed(2)} DT</span>
+                                  </div>
+                                )
+                              }
+                              {
+                                promoReduction > 0 && (
+                                  <div className="panie-row">
+                                    <span>{t('cartPage.Coupon')}</span>
+                                    <span> - {(promoReduction).toFixed(2)} DT</span>
+                                  </div>
+                                )
+
+                              }
+                              {
+                                discountValue > 0 && (
+                                  <div className="panie-row">
+                                    <span>{t('cart.discount')}</span>
+                                    <span> - {(discountValue).toFixed(2)} DT</span>
+                                  </div>
+                                )
+                              }
+                              {
+                                giftAmmount > 0 && (
+                                  <div className="panie-row">
+                                    <span>{t('Repas Gratuit')}</span>
+                                    <span> - {(giftAmmount).toFixed(2)} DT</span>
+                                  </div>
+                                )
+                              }
+
+                            <div className="sous-total">
+                                <div className="title">{t('supplier.delivPrice')}</div>
+                                <div className="value">{Number(deliveryPrice).toFixed(2)} DT</div>
+                              </div>
+                          </div>
+
+                          <div className="a-payer">
+                            <span className="title">A payer</span>
+                            <span className="value">{total.toFixed(2)} DT</span>
+                          </div>
                         </div>
                         {/* <div className="button-container">
                           <button type="button"
