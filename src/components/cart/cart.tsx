@@ -77,7 +77,6 @@ export const Cart: React.FC<CartProps> = ({ items, closeButton }) => {
         );
       }
     };
-
     return (
       <section className='article-provider'>
         {/* Use the props here */}
@@ -87,7 +86,7 @@ export const Cart: React.FC<CartProps> = ({ items, closeButton }) => {
           </div>
           <div className="product-info">
             <div className='name'>{props.name}</div>
-            <div className='unit-total'>{props.price != props.default_price && <span className='default-price'> {Number(props.default_price).toFixed(2)}DT </span>}   {Number(props.price).toFixed(2)} DT</div>
+            <div className='unit-total'>{props.price != props.default_price && props.default_price && <span className='default-price'> {Number(props.default_price).toFixed(2)}DT </span>}   {Number(props.price).toFixed(2)} DT</div>
             <div className="description" dangerouslySetInnerHTML={{ __html: props.description }}></div>
 
           </div>
