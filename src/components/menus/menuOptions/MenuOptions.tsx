@@ -123,7 +123,7 @@ function MenuOptions({ initialData }: AppProps) {
     const [isLoggedIn, setIsLoggedIn] = useState<any>(typeof window != 'undefined' ? localStorageService.getUserToken() : false);
     var currentDate = moment();
     var today = currentDate.format('ddd');
-    
+
     useEffect(() => {
         setUnReadedQt(unReadMessages)
     }, [unReadMessages])
@@ -153,9 +153,9 @@ function MenuOptions({ initialData }: AppProps) {
         if (status === 200) {
             setProductSupplier(data.data)
             let categories = data.data.categorys.map((item:any)=>item.name)?.join(' - ')
-            setCategories(categories)            
+            setCategories(categories)
              if (isLoggedIn?.length! > 0) {
-                let favList :any = await userService.getClientFavorits(); 
+                let favList :any = await userService.getClientFavorits();
                 favList = favList.data.data.map((i: any) => Number(i.id))
                 if (favList.includes(Number(id))) {
                     setFavor(true)
@@ -165,7 +165,7 @@ function MenuOptions({ initialData }: AppProps) {
                 }
             }
         }
-        
+
     }
     const getMenu = async () => {
         var data: any;
@@ -191,7 +191,7 @@ function MenuOptions({ initialData }: AppProps) {
         }
         } catch (error) {
         throw error
-        }    
+        }
   };
     const getSupplierIsOpen = async () => {
         const { status, data } = await supplierServices.getSupplierISoPENById(supplierId)
@@ -206,7 +206,7 @@ function MenuOptions({ initialData }: AppProps) {
         setCloseTime(closeTime)
         }
     }, [productSupplier])
-   
+
     useEffect(() => {
        fetchData()
     }, [id, search, productId]);
@@ -531,12 +531,12 @@ function MenuOptions({ initialData }: AppProps) {
     const handleSameSupplierModal = () => {
         setNotSameError(!notSameError)
     }
-    
+
     const goBack = () => {
         const updatedURL = `/restaurant/${id}/${search}/`;
         navigate(updatedURL, { replace: true });
     };
-    const handleChooseOptions = (selectedMenuItem: any | null) => {  
+    const handleChooseOptions = (selectedMenuItem: any | null) => {
         const prodId = selectedMenuItem.id;
         const updatedURL = `/product/${id}/${search}/${prodId}/`;
         navigate(updatedURL);
@@ -565,8 +565,8 @@ function MenuOptions({ initialData }: AppProps) {
       ? `${name.slice(0, MAX_NAME_LENGTH)}...`
       : name;
   };
-    return (        
-               
+    return (
+
         <div className="menue-options-container" onClick={(e) => e.stopPropagation()}>
 
             <Container>
@@ -581,31 +581,31 @@ function MenuOptions({ initialData }: AppProps) {
                                     variant="rectangular"
                                     width={'100%'}
                                     height={271}
-                                />                            
+                                />
                             </div>
                             <div className='loading-menu-container'>
                                 <Skeleton
                                     variant="rectangular"
                                     width={'50%'}
                                     height={945}
-                                />                            
-                                <div className="right-loaders">                                    
+                                />
+                                <div className="right-loaders">
                                     <Skeleton
                                         variant="rectangular"
                                         width={'50%'}
                                         height={22}
-                                    /> 
+                                    />
                                     <Skeleton
                                         variant="rectangular"
                                         width={'50%'}
                                         height={10}
-                                    /> 
+                                    />
                                     <Skeleton
                                         variant="rectangular"
                                         width={'50%'}
                                         height={10}
                                         style={{marginBottom: 20,borderRadius:10}}
-                                    /> 
+                                    />
                                     {[...Array(3)].map((_, index) => (
                                         <>
                                             <Skeleton
@@ -613,21 +613,21 @@ function MenuOptions({ initialData }: AppProps) {
                                                 width={'100%'}
                                                 height={49}
                                                 style={{backgroundColor: '#3BB3C480',borderRadius:10, marginTop: 50}}
-                                            /> 
+                                            />
                                             {[...Array(3)].map((_, index) => (
                                                 <>
                                                     <Skeleton
                                                         variant="rectangular"
                                                         width={'100%'}
                                                         height={22}
-                                                    />                                              
+                                                    />
                                                 </>
-                                            ))} 
+                                            ))}
                                         </>
-                                    ))}                                                                                                       
+                                    ))}
                                 </div>
                             </div>
-                        </>                        
+                        </>
                     :
                     <>
                         <div className="supplier-details-header">
@@ -639,12 +639,12 @@ function MenuOptions({ initialData }: AppProps) {
                                     <h1 className="supplier-title">{productSupplier?.name}</h1>
                                     <p className="supplier-desc">{categories}</p>
                                 </div>
-                                <div className="supplier-infos_ratings-count">                    
+                                <div className="supplier-infos_ratings-count">
                                     <div className='rate-gouping'>
                                         { isLoggedIn ?
                                         <div className="favor" style={(favor) ? { backgroundImage: `url(${FavorActiveIcon})` } : { backgroundImage: `url(${FavorIcon})` }} onClick={updatefavorite}>
                                         </div> : ""
-                                        }   
+                                        }
                                         {
                                         productSupplier?.bonus ? (
                                             <div className='gift-icon' style={(productSupplier?.bonus > 0) ? { backgroundImage: `url(${ActiveGiftIcon})` } : { backgroundImage: `url(${GiftIcon})` }}></div>
@@ -658,13 +658,13 @@ function MenuOptions({ initialData }: AppProps) {
                                         (productSupplier?.star && (productSupplier?.star > 0)) && (<span className='star-number'> {productSupplier?.star}</span>)
                                         }
                                         {[...Array(5)].map((_, index) => (
-                                        <span key={index + 1}>                          
+                                        <span key={index + 1}>
                                             {(productSupplier?.star && (productSupplier?.star >= index + 1))
-                                            ? <Star className='starIcon' style={{ visibility: 'visible' }} /> : <StarBorderIcon className='starIcon'  style={{ visibility: 'visible' }} />  
+                                            ? <Star className='starIcon' style={{ visibility: 'visible' }} /> : <StarBorderIcon className='starIcon'  style={{ visibility: 'visible' }} />
                                             }
                                         </span>
-                                        ))}                     
-                                    </div> 
+                                        ))}
+                                    </div>
                                 </div>
                                 </div>
                             <div className="supplier-infos_list">
@@ -691,7 +691,7 @@ function MenuOptions({ initialData }: AppProps) {
                                         <div className="time">{`${Number(productSupplier?.medium_time) - 10}-${Number(productSupplier?.medium_time + 10)}min`}</div>
                                     </li>
                                 </ul>
-                            </div>                   
+                            </div>
                         </div>
                         <div className="supplier-details-body">
                             <div className="modal-content-image">
@@ -811,13 +811,13 @@ function MenuOptions({ initialData }: AppProps) {
                                                                     productSupplier?.images[1].path
                                                                 } alt='product photo' className="product-image" />
                                                         </div>
-                                                    </div>  
+                                                    </div>
                                                 ))
-                                            }                                                         
-                                        </div> 
+                                            }
+                                        </div>
                                     </>
                                 : ''
-                            }                    
+                            }
                         </div>
                         <div className='bulles'>
                             <button className='messanger-popup-btn' onClick={handleMessangerPopup} style={{ backgroundImage: `url(${MessangerBtnIcon})` }}>
