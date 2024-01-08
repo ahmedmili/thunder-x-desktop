@@ -175,7 +175,6 @@ const prepareTemplate = async (req, res) => {
   try {
     var data
     var reqUrl = req.originalUrl
-    // console.log('url : ', reqUrl)
     switch (true) {
       case (reqUrl === '/'):
         var response = await ssrHome()
