@@ -20,7 +20,7 @@ import KeyboardArrowUpOutlinedIcon from '@mui/icons-material/KeyboardArrowUpOutl
 import ShoppingCartOutlinedIcon from '@mui/icons-material/ShoppingCartOutlined';
 import { supplierServices } from '../../../services/api/suppliers.api';
 import { localStorageService } from '../../../services/localStorageService';
-import {  Option, Restaurant } from '../../../services/types';
+import { Option, Restaurant } from '../../../services/types';
 import { scrollToTop } from '../../../utils/utils';
 
 import { fetchMessages } from '../../../Redux/slices/messanger';
@@ -152,10 +152,10 @@ function MenuOptions({ initialData }: AppProps) {
         const { status, data } = await supplierServices.getSupplierById(id)
         if (status === 200) {
             setProductSupplier(data.data)
-            let categories = data.data.categorys.map((item:any)=>item.name)?.join(' - ')
+            let categories = data.data.categorys.map((item: any) => item.name)?.join(' - ')
             setCategories(categories)
-             if (isLoggedIn?.length! > 0) {
-                let favList :any = await userService.getClientFavorits();
+            if (isLoggedIn?.length! > 0) {
+                let favList: any = await userService.getClientFavorits();
                 favList = favList.data.data.map((i: any) => Number(i.id))
                 if (favList.includes(Number(id))) {
                     setFavor(true)
@@ -170,29 +170,30 @@ function MenuOptions({ initialData }: AppProps) {
     const getMenu = async () => {
         var data: any;
         try {
-        if (typeof window != "undefined") {
-            data = await productService.getMenu(idNumber)
-            if (data.status === 200) {
-                data = data.data
-                let otherProducts : any[] = [];
-                data.data.map((menu: any) => {
-                    menu.products.map((product: any) => {
-                        if (Number(product.id) !== supplierId && otherProducts.length <6) {
-                            otherProducts.push(product)
-                        }
+            if (typeof window != "undefined") {
+                data = await productService.getMenu(idNumber)
+                if (data.status === 200) {
+                    data = data.data
+                    let otherProducts: any[] = [];
+                    data.data.map((menu: any) => {
+                        menu.products.map((product: any) => {
+                            if (Number(product.id) !== supplierId && otherProducts.length < 6) {
+                                otherProducts.push(product)
+                            }
+                        })
                     })
-                })
-                setMenuData(otherProducts);
+                    setMenuData(otherProducts);
+                }
             }
-        }
-        else {
-            data = initialData.menuResponse.data
-            setMenuData(data);
-        }
+            else {
+                data = initialData.menuResponse.data
+                setMenuData(data);
+            }
         } catch (error) {
-        throw error
+            throw error
         }
-  };
+    };
+
     const getSupplierIsOpen = async () => {
         const { status, data } = await supplierServices.getSupplierISoPENById(supplierId)
         data.data.is_open === 1 ? setIsOpen(true) : setIsOpen(false)
@@ -201,14 +202,14 @@ function MenuOptions({ initialData }: AppProps) {
         const schedules = productSupplier ? productSupplier.schedules : []
         var currentDayObject = schedules.find((day: any) => day.day === today);
         if (currentDayObject) {
-        let closeTimeArray = currentDayObject.to.toString().split(':')
-        let closeTime = `${closeTimeArray[0]}:${closeTimeArray[1]}`
-        setCloseTime(closeTime)
+            let closeTimeArray = currentDayObject.to.toString().split(':')
+            let closeTime = `${closeTimeArray[0]}:${closeTimeArray[1]}`
+            setCloseTime(closeTime)
         }
     }, [productSupplier])
 
     useEffect(() => {
-       fetchData()
+        fetchData()
     }, [id, search, productId]);
     const fetchData = async () => {
         setLoading(true);
@@ -429,7 +430,6 @@ function MenuOptions({ initialData }: AppProps) {
             return option; // Return unchanged objects
         });
 
-        // setDisplayedContent(newContent)
         calculateTotal();
     }
 
@@ -515,7 +515,6 @@ function MenuOptions({ initialData }: AppProps) {
         usedispatch(setDeliveryPrice(productSupplier!.delivery_price));
         usedispatch(setSupplier(productSupplier));
         localStorageService.setSupplier(productSupplier);
-        // localStorageService.setBonus(productSupplier!.bonus);
         usedispatch(addItem(obj));
         getProduct()
     }
@@ -545,26 +544,27 @@ function MenuOptions({ initialData }: AppProps) {
         scrollToTop()
     }, [id, search, productId])
     const handleFavorsAdd = async () => {
-    const response = await userService.addfavorite(Number(idNumber))
-    response.data.success && setFavor(true)
-  }
-  const deletefavorite = async () => {
-    const response = await userService.deletefavorite(Number(idNumber))
-    response.data.success && setFavor(false)
-  }
-  const updatefavorite = () => {
-    if (favor) {
-      deletefavorite()
+        const response = await userService.addfavorite(Number(idNumber))
+        response.data.success && setFavor(true)
     }
-    else {
-      handleFavorsAdd();
+    const deletefavorite = async () => {
+        const response = await userService.deletefavorite(Number(idNumber))
+        response.data.success && setFavor(false)
     }
-  }
-  const getTruncatedName = (name: string, MAX_NAME_LENGTH: number) => {
-    return name.length > MAX_NAME_LENGTH
-      ? `${name.slice(0, MAX_NAME_LENGTH)}...`
-      : name;
-  };
+    const updatefavorite = () => {
+        if (favor) {
+            deletefavorite()
+        }
+        else {
+            handleFavorsAdd();
+        }
+    }
+    const getTruncatedName = (name: string, MAX_NAME_LENGTH: number) => {
+        return name.length > MAX_NAME_LENGTH
+            ? `${name.slice(0, MAX_NAME_LENGTH)}...`
+            : name;
+    };
+
     return (
 
         <div className="menue-options-container" onClick={(e) => e.stopPropagation()}>
@@ -604,7 +604,8 @@ function MenuOptions({ initialData }: AppProps) {
                                         variant="rectangular"
                                         width={'50%'}
                                         height={10}
-                                        style={{marginBottom: 20,borderRadius:10}}
+                                        style={{ marginBottom: 20, borderRadius: 10 }}
+
                                     />
                                     {[...Array(3)].map((_, index) => (
                                         <>
@@ -612,7 +613,7 @@ function MenuOptions({ initialData }: AppProps) {
                                                 variant="rectangular"
                                                 width={'100%'}
                                                 height={49}
-                                                style={{backgroundColor: '#3BB3C480',borderRadius:10, marginTop: 50}}
+                                                style={{ backgroundColor: '#3BB3C480', borderRadius: 10, marginTop: 50 }}
                                             />
                                             {[...Array(3)].map((_, index) => (
                                                 <>
@@ -628,208 +629,209 @@ function MenuOptions({ initialData }: AppProps) {
                                 </div>
                             </div>
                         </>
-                    :
-                    <>
-                        <div className="supplier-details-header">
-                            <div className="supplier-title-area">
-                                <div className="supplier-logo">
-                                    <img src={productSupplier?.images[0].pivot.type === "principal" ? productSupplier?.images[0].path : productSupplier?.images[1].path} alt="supplier icn" />
-                                </div>
-                                <div className="supplier-title-blc">
-                                    <h1 className="supplier-title">{productSupplier?.name}</h1>
-                                    <p className="supplier-desc">{categories}</p>
-                                </div>
-                                <div className="supplier-infos_ratings-count">
-                                    <div className='rate-gouping'>
-                                        { isLoggedIn ?
-                                        <div className="favor" style={(favor) ? { backgroundImage: `url(${FavorActiveIcon})` } : { backgroundImage: `url(${FavorIcon})` }} onClick={updatefavorite}>
-                                        </div> : ""
-                                        }
-                                        {
-                                        productSupplier?.bonus ? (
-                                            <div className='gift-icon' style={(productSupplier?.bonus > 0) ? { backgroundImage: `url(${ActiveGiftIcon})` } : { backgroundImage: `url(${GiftIcon})` }}></div>
-                                        ) : (
-                                            <div className='gift-icon' style={{ backgroundImage: `url(${GiftIcon})` }}></div>
-                                        )
-                                        }
+                        :
+                        <>
+                            <div className="supplier-details-header">
+                                <div className="supplier-title-area">
+                                    <div className="supplier-logo">
+                                        <img src={productSupplier?.images[0].pivot.type === "principal" ? productSupplier?.images[0].path : productSupplier?.images[1].path} alt="supplier icn" />
                                     </div>
-                                    <div className="stars">
-                                        {
-                                        (productSupplier?.star && (productSupplier?.star > 0)) && (<span className='star-number'> {productSupplier?.star}</span>)
-                                        }
-                                        {[...Array(5)].map((_, index) => (
-                                        <span key={index + 1}>
-                                            {(productSupplier?.star && (productSupplier?.star >= index + 1))
-                                            ? <Star className='starIcon' style={{ visibility: 'visible' }} /> : <StarBorderIcon className='starIcon'  style={{ visibility: 'visible' }} />
+                                    <div className="supplier-title-blc">
+                                        <h1 className="supplier-title">{productSupplier?.name}</h1>
+                                        <p className="supplier-desc">{categories}</p>
+                                    </div>
+                                    <div className="supplier-infos_ratings-count">
+                                        <div className='rate-gouping'>
+                                            {isLoggedIn ?
+                                                <div className="favor" style={(favor) ? { backgroundImage: `url(${FavorActiveIcon})` } : { backgroundImage: `url(${FavorIcon})` }} onClick={updatefavorite}>
+                                                </div> : ""
                                             }
-                                        </span>
-                                        ))}
-                                    </div>
-                                </div>
-                                </div>
-                            <div className="supplier-infos_list">
-                                <ul>
-                                    <li>
-                                        <p className="supplier-infos_list-item location">
-                                            {productSupplier?.city +' '+productSupplier?.street+' '+productSupplier?.postcode}
-                                        </p>
-                                    </li>
-                                    <li>
-                                        <p  className={`supplier-infos_list-item time-work ${isOpen ? 'open': 'close'}`}>
                                             {
-                                                isOpen ?
-                                                <span>{t("supplier.opentime")} {closeTime}</span>
-                                                :
-                                                <span>{t("closed")}</span>
+                                                productSupplier?.bonus ? (
+                                                    <div className='gift-icon' style={(productSupplier?.bonus > 0) ? { backgroundImage: `url(${ActiveGiftIcon})` } : { backgroundImage: `url(${GiftIcon})` }}></div>
+                                                ) : (
+                                                    <div className='gift-icon' style={{ backgroundImage: `url(${GiftIcon})` }}></div>
+                                                )
                                             }
+                                        </div>
+                                        <div className="stars">
+                                            {
+                                                (productSupplier?.star && (productSupplier?.star > 0)) && (<span className='star-number'> {productSupplier?.star}</span>)
+                                            }
+                                            {[...Array(5)].map((_, index) => (
+                                                <span key={index + 1}>
+                                                    {(productSupplier?.star && (productSupplier?.star >= index + 1))
+                                                        ? <Star className='starIcon' style={{ visibility: 'visible' }} /> : <StarBorderIcon className='starIcon' style={{ visibility: 'visible' }} />
+                                                    }
+                                                </span>
+                                            ))}
+                                        </div>
+                                    </div>
+                                </div>
+                                <div className="supplier-infos_list">
+                                    <ul>
+                                        <li>
+                                            <p className="supplier-infos_list-item location">
+                                                {productSupplier?.city + ' ' + productSupplier?.street + ' ' + productSupplier?.postcode}
+                                            </p>
+                                        </li>
+                                        <li>
+                                            <p className={`supplier-infos_list-item time-work ${isOpen ? 'open' : 'close'}`}>
+                                                {
+                                                    productSupplier?.bonus ? (
+                                                        <div className='gift-icon' style={(productSupplier?.bonus > 0) ? { backgroundImage: `url(${ActiveGiftIcon})` } : { backgroundImage: `url(${GiftIcon})` }}></div>
+                                                    ) : (
+                                                        <div className='gift-icon' style={{ backgroundImage: `url(${GiftIcon})` }}></div>
+                                                    )
+                                                }
+                                            </p>
+                                        </li>
+                                        <li>
+                                            <p className="supplier-infos_list-item shipping-cost">Frais de livraison: {productSupplier?.delivery_price} Dt</p>
+                                        </li>
+                                        <li>
+                                            <div className="time">{`${Number(productSupplier?.medium_time) - 10}-${Number(productSupplier?.medium_time + 10)}min`}</div>
+                                        </li>
+                                    </ul>
+                                </div>
+                            </div>
+                            <div className="supplier-details-body">
+                                <div className="modal-content-image">
+                                    <div className="modal-content-image-inner"
+                                        style={{ backgroundImage: `url(${(product.image?.length > 0) ? product.image[0].path : productSupplier?.images[0].path})`, }}>
+                                    </div>
+                                </div>
+                                <div className="modal-content-options">
+                                    <div className="options-info">
+
+                                        <h2 className="menu-title" dangerouslySetInnerHTML={{ __html: product?.name }}></h2>
+                                        <p className='menu-price'>
+                                            {t('supplier.startAt')} {product.price}
                                         </p>
-                                    </li>
-                                    <li>
-                                        <p className="supplier-infos_list-item shipping-cost">Frais de livraison: {productSupplier?.delivery_price} Dt</p>
-                                    </li>
-                                    <li>
-                                        <div className="time">{`${Number(productSupplier?.medium_time) - 10}-${Number(productSupplier?.medium_time + 10)}min`}</div>
-                                    </li>
-                                </ul>
-                            </div>
-                        </div>
-                        <div className="supplier-details-body">
-                            <div className="modal-content-image">
-                                <div className="modal-content-image-inner"
-                                    style={{ backgroundImage: `url(${(product.image?.length > 0) ? product.image[0].path : productSupplier?.images[0].path})`, }}>
-                                </div>
-                            </div>
-                            <div className="modal-content-options">
-                                <div className="options-info">
+                                        <div className='menu-description' dangerouslySetInnerHTML={{ __html: product?.description }}></div>
 
-                                    <h2 className="menu-title" dangerouslySetInnerHTML={{ __html: product?.name }}></h2>
-                                    <p className='menu-price'>
-                                        A partir de {product.price}
-                                    </p>
-                                    <div className='menu-description' dangerouslySetInnerHTML={{ __html: product?.description }}></div>
+                                    </div>
+                                    <div className="menu-options">
+                                        {
+                                            state.optionslist.length === 0 ? (
+                                                <>
+                                                </>
+                                            ) : allContent.map((options, index) => {
+                                                return (
+                                                    <React.Fragment key={index}>
+                                                        <div className="menu-options-blc">
+                                                            <div className='menu-options-header'>
+                                                                <div className="option-name">{t('')} {Object.keys(options)[0]}</div>
+                                                                {
 
-                                </div>
-                                <div className="menu-options">
-                                    {
-                                        state.optionslist.length === 0 ? (
-                                            <>
-                                            </>
-                                        ) : allContent.map((options, index) => {
-                                            return (
-                                                <React.Fragment key={index}>
-                                                    <div className="menu-options-blc">
-                                                        <div className='menu-options-header'>
-                                                            <div className="option-name">Choisissez votre {Object.keys(options)[0]}</div>
-                                                            {
+                                                                    Object.keys(options)[0] === "packet" && <div className="option-obligatoir">{t('supplier.Mandatory')}</div>
+                                                                }
 
-                                                                Object.keys(options)[0] === "packet" && <div className="option-obligatoir">Obligatoire</div>
-                                                            }
-
-                                                            {
-                                                                Object.keys(options)[0] === "sauce" && state.sauce_max?.max > 0 && <div className="option-max">{"MAX " + state.sauce_max?.max}</div>
-                                                            }
-                                                            {
-                                                                Object.keys(options)[0] === "viande" && state.viande_max?.max > 0 && <div className="option-max">{"MAX " + state.viande_max?.max}</div>
-                                                            }
-                                                            {
-                                                                Object.keys(options)[0] === "extra" && state.extra_max?.max > 0 && <div className="option-max">{"MAX " + state.extra_max?.max}</div>
-                                                            }
-                                                            {
-                                                                Object.keys(options)[0] === "supplement" && state.supplement_max?.max > 0 && <div className="option-max">{"MAX " + state.supplement_max?.max}</div>
-                                                            }
-                                                        </div>
-                                                        <form>
-                                                            {state[Object.keys(options)[0]].map((option: any, index: number) => (
-                                                                <div key={index} className="options-list">
-                                                                    <div className="checkBox">
-                                                                        <input type='checkbox' name={option.id} id={option.id} value={option.id || ''} onChange={(e) => selectOption(Object.keys(options)[0], index, e)} checked={option?.checked}>
-                                                                        </input>
-                                                                        <label htmlFor={option.id} className="custom-checkbox"></label>
-                                                                        <label htmlFor={option.id}>{option.name} </label>
+                                                                {
+                                                                    Object.keys(options)[0] === "sauce" && state.sauce_max?.max > 0 && <div className="option-max">{"MAX " + state.sauce_max?.max}</div>
+                                                                }
+                                                                {
+                                                                    Object.keys(options)[0] === "viande" && state.viande_max?.max > 0 && <div className="option-max">{"MAX " + state.viande_max?.max}</div>
+                                                                }
+                                                                {
+                                                                    Object.keys(options)[0] === "extra" && state.extra_max?.max > 0 && <div className="option-max">{"MAX " + state.extra_max?.max}</div>
+                                                                }
+                                                                {
+                                                                    Object.keys(options)[0] === "supplement" && state.supplement_max?.max > 0 && <div className="option-max">{"MAX " + state.supplement_max?.max}</div>
+                                                                }
+                                                            </div>
+                                                            <form>
+                                                                {state[Object.keys(options)[0]].map((option: any, index: number) => (
+                                                                    <div key={index} className="options-list">
+                                                                        <div className="checkBox">
+                                                                            <input type='checkbox' name={option.id} id={option.id} value={option.id || ''} onChange={(e) => selectOption(Object.keys(options)[0], index, e)} checked={option?.checked}>
+                                                                            </input>
+                                                                            <label htmlFor={option.id} className="custom-checkbox"></label>
+                                                                            <label htmlFor={option.id}>{option.name} </label>
+                                                                        </div>
+                                                                        <span className='option-price'>{option.price} DT</span>
                                                                     </div>
-                                                                    <span className='option-price'>{option.price} DT</span>
-                                                                </div>
-                                                            ))}
-                                                        </form>
-                                                    </div>
-                                                </React.Fragment>)
-                                        })
-                                    }
+                                                                ))}
+                                                            </form>
+                                                        </div>
+                                                    </React.Fragment>)
+                                            })
+                                        }
 
 
-                                </div >
+                                    </div >
 
 
-                                <div className="buttons btns-group">
-                                    <div className="count-container">
-                                        <input type="number" name="product-count" id="product-count" value={productCount} onChange={(e) => { (parseInt(e.target.value) >= 1) && setProductCount(parseInt(e.target.value)) }} />
-                                        <div className="count-buttons">
-                                            <button className="btn counter-more" onClick={() => handleCount("add")} ></button>
-                                            <button className="btn counter-minus" onClick={() => handleCount("remove")} ></button>
+                                    <div className="buttons btns-group">
+                                        <div className="count-container">
+                                            <input type="number" name="product-count" id="product-count" value={productCount} onChange={(e) => { (parseInt(e.target.value) >= 1) && setProductCount(parseInt(e.target.value)) }} />
+                                            <div className="count-buttons">
+                                                <button className="btn counter-more" onClick={() => handleCount("add")} ></button>
+                                                <button className="btn counter-minus" onClick={() => handleCount("remove")} ></button>
+                                            </div>
                                         </div>
+
+                                        <button className="add-to-cart-button" onClick={() => {
+                                            addToCart()
+                                        }}>
+                                            {t('add_to_cart')}
+                                        </button>
+
                                     </div>
-
-                                    <button className="add-to-cart-button" onClick={() => {
-                                        addToCart()
-                                    }}>
-                                        {t('add_to_cart')}
-                                    </button>
-
                                 </div>
                             </div>
-                        </div>
-                        <div className="menu-container">
-                            <div className="menu-title-blc">
-                                <h3 className="menu-title">Produits achetés ensemble</h3>
-                            </div>
-                            {
-                                menuData.length ?
-                                    <>
-                                        <div className="menu-grid">
-                                            {
-                                                menuData.map((product) => (
-                                                    <div className="product-card">
-                                                        <div className="info-container">
-                                                            <h4 className="product-title">{getTruncatedName(product.name, 10)}</h4>
-                                                            <p className="product-price">{`${t('price')}: ${Math.round(product.price)} DT`}</p>
-                                                            <p className="product-description">
-                                                                <p>{product.name}</p>
-                                                            </p>
-                                                            <div className="labels-container"></div>
-                                                            <button className="product-button"  onClick={() => {
-                                                                handleChooseOptions(product);
-                                                            }}>
-                                                                <AddIcon className="product-button-icon" />
-                                                            </button>
-                                                        </div>
-                                                        <div className="product-image-blc">
-                                                            <img loading="lazy" src={
-                                                                product.image[0]?.path ?
-                                                                    product.image[0]?.path :
-                                                                    productSupplier?.images[0].pivot.type === "principal" ?
-                                                                    productSupplier?.images[0].path :
-                                                                    productSupplier?.images[1].path
+                            <div className="menu-container">
+                                <div className="menu-title-blc">
+                                    <h3 className="menu-title">{t('searchPage.purchasedTogether')}</h3>
+                                </div>
+                                {
+                                    menuData.length ?
+                                        <>
+                                            <div className="menu-grid">
+                                                {
+                                                    menuData.map((product) => (
+                                                        <div className="product-card">
+                                                            <div className="info-container">
+                                                                <h4 className="product-title">{getTruncatedName(product.name, 10)}</h4>
+                                                                <p className="product-price">{`${t('price')}: ${Math.round(product.price)} DT`}</p>
+                                                                <p className="product-description">
+                                                                    <p>{product.name}</p>
+                                                                </p>
+                                                                <div className="labels-container"></div>
+                                                                <button className="product-button" onClick={() => {
+                                                                    handleChooseOptions(product);
+                                                                }}>
+                                                                    <AddIcon className="product-button-icon" />
+                                                                </button>
+                                                            </div>
+                                                            <div className="product-image-blc">
+                                                                <img loading="lazy" src={
+                                                                    product.image[0]?.path ?
+                                                                        product.image[0]?.path :
+                                                                        productSupplier?.images[0].pivot.type === "principal" ?
+                                                                            productSupplier?.images[0].path :
+                                                                            productSupplier?.images[1].path
                                                                 } alt='product photo' className="product-image" />
+                                                            </div>
                                                         </div>
-                                                    </div>
-                                                ))
-                                            }
+                                                    ))
+                                                }
+                                            </div>
+                                        </>
+                                        : ''
+                                }
+                            </div>
+                            <div className='bulles'>
+                                <button className='messanger-popup-btn' onClick={handleMessangerPopup} style={{ backgroundImage: `url(${MessangerBtnIcon})` }}>
+                                    {unReadedQt > 0 && (
+                                        <div className='messanger-bull-notif-icon'>
+                                            {unReadedQt}
                                         </div>
-                                    </>
-                                : ''
-                            }
-                        </div>
-                        <div className='bulles'>
-                            <button className='messanger-popup-btn' onClick={handleMessangerPopup} style={{ backgroundImage: `url(${MessangerBtnIcon})` }}>
-                                {unReadedQt > 0 && (
-                                    <div className='messanger-bull-notif-icon'>
-                                        {unReadedQt}
-                                    </div>
-                                )}
-                            </button>
-                            {/* <button className='phone-popup-btn' onClick={handlePhonePopup} style={{ backgroundImage: `url(${PhoneBtnIcon})` }}></button> */}
-                        </div>
-                    </>
+                                    )}
+                                </button>
+                                {/* <button className='phone-popup-btn' onClick={handlePhonePopup} style={{ backgroundImage: `url(${PhoneBtnIcon})` }}></button> */}
+                            </div>
+                        </>
                 }
             </Container>
 

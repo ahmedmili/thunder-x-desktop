@@ -5,6 +5,8 @@ import { useNavigate } from "react-router-dom";
 import { useAppDispatch, useAppSelector } from '../../../../Redux/store';
 import { homeRefresh, setRefresh } from "../../../../Redux/slices/home";
 import { useSelector } from "react-redux";
+import { paramsService } from "../../../../utils/params";
+import { useTranslation } from "react-i18next";
 interface FilterCategoriesProps {
   onCategorySelect: () => void;
   ssrCategories?: any;
@@ -22,12 +24,13 @@ const Categories: React.FC<FilterCategoriesProps> = ({
   const [selected, setSelected] = useState();
   const dispatch = useAppDispatch();
   const refresh = useSelector(homeRefresh)
-
-  useEffect(() => {    
+  const { t } = useTranslation()
+  
+  useEffect(() => {
     if (refresh) {
       checkSelectedCategory()
-    }    
-  }, [refresh]); 
+    }
+  }, [refresh]);
 
   var cats = ssrCategories
     ? ssrCategories
@@ -40,57 +43,69 @@ const Categories: React.FC<FilterCategoriesProps> = ({
       setContentHeight(contentRef?.current?.scrollHeight);
     }, 300);
   }, [collpased, datas]);
+
   useEffect(() => {
     if (cats && cats?.length > 0) {
       let all: any = cats.filter(
         (category: any) => category.description !== "Promo"
       );
       const searchParams = new URLSearchParams(location.search);
-      if (searchParams.has("category")) {
-        const categoryId: any = parseInt(
-          searchParams.get("category") as string
-        );
-        all = all.map((item: any) => ({
-          ...item,
-          show:
-            item.id == categoryId ||
-            item.children.find((c: any) => c.id == categoryId)
-              ? true
-              : false,
-        }));
+      if (searchParams.has("search")) {
+        let params = paramsService.fetchParams(searchParams)
+
+        if (params.category) {
+          const categoryId: any = parseInt(
+            params.category as string
+          );
+          all = all.map((item: any) => ({
+            ...item,
+            show:
+              item.id == categoryId ||
+                item.children.find((c: any) => c.id == categoryId)
+                ? true
+                : false,
+          }));
+        }
       }
       setData(all);
     }
   }, [cats]);
+
   useEffect(() => {
     if (!loaded && datas?.length) {
       const searchParams = new URLSearchParams(location.search);
-      if (searchParams.has("category")) {
-        const categoryId: any = parseInt(
-          searchParams.get("category") as string
-        );
-        setSelected(categoryId);
+      if (searchParams.has("search")) {
+        let params = paramsService.fetchParams(searchParams)
+        if (params.category) {
+          const categoryId: any = parseInt(
+            params.category as string
+          );
+          setSelected(categoryId);
+        }
+        setLoaded(true);
       }
-      setLoaded(true);
     }
   }, [datas]);
-  const checkSelectedCategory = ()=>{
+
+  const checkSelectedCategory = () => {
     const searchParams = new URLSearchParams(location.search);
-    const cat :any = searchParams.get("category");
-    if (Number(selected)!== Number(cat)) {
+    let params = paramsService.fetchParams(searchParams)
+
+    const cat: any = params.category;
+    if (Number(selected) !== Number(cat)) {
       setSelected(Number(cat) as any);
       let all: any = cats.filter(
         (category: any) => category.description !== "Promo"
       );
       all = all.map((item: any) => ({
-          ...item,
-          show:
-            Number(item.id )== Number(cat) ||
+        ...item,
+        show:
+          Number(item.id) == Number(cat) ||
             item.children.find((c: any) => Number(c.id) == Number(cat))
-              ? true
-              : false,
+            ? true
+            : false,
       }));
-      setData(all);   
+      setData(all);
     }
   }
 
@@ -119,10 +134,18 @@ const Categories: React.FC<FilterCategoriesProps> = ({
   };
   const handleRadioChange = (categoryId: any) => {
     const searchParams = new URLSearchParams(location.search);
-    if (searchParams.has("category")) {
-      searchParams.set("category", categoryId);
-    } else {
-      searchParams.append("category", categoryId);
+    if (searchParams.has("search")) {
+      let params = paramsService.fetchParams(searchParams)
+      params = {
+        ...params,
+        category: categoryId
+      }
+      let newParams = paramsService.handleUriParams(params)
+      searchParams.has('search') ? searchParams.set("search", newParams) : searchParams.append('search', newParams);
+
+      navigate(`/search/?${searchParams.toString()}`, {
+        replace: false,
+      });
     }
     navigate(`/search/?${searchParams.toString()}`, {
       replace: false,
@@ -130,97 +153,92 @@ const Categories: React.FC<FilterCategoriesProps> = ({
     setSelected(categoryId);
     dispatch(setRefresh(true));
   };
-  if (datas?.length) {  
+  if (datas?.length) {
     return (
-    <div className="categories-filter-container">
-      <h1
-        className={`categories-filter-container__title  ${
-          collpased ? "collapsed" : ""
-        }`}
-      >
-        Catégories
-      </h1>
-      <ChevronRightIcon
-        className={`categories-filter-container__collapse-icon  ${
-          collpased ? "close" : "open"
-        }`}
-        onClick={toggleCollapse}
-      ></ChevronRightIcon>
-      <ul
-        className={`categories-filter-container__list  ${
-          collpased ? "hide" : "show"
-        }`}
-        ref={contentRef}
-        style={{ maxHeight: collpased ? "0px" : `${contentHeight}px` }}
-      >
-        {datas?.map((data: any, index: any) => {
-          return (
-            <li key={index} className="categories-filter-container__list__item">
-              <div className="form-check">
-                <input
-                  className="radio-btn"
-                  type="radio"
-                  name="categorie"
-                  id={`category-check-${index}`}
-                  onChange={() => handleRadioChange(data.id)}
-                  checked={selected === data.id}
-                />
-                <label
-                  className={`form-label`}
-                  htmlFor={`category-check-${index}`}
-                >
-                  {data.name}
-                </label>
+      <div className="categories-filter-container">
+        <h1
+          className={`categories-filter-container__title  ${collpased ? "collapsed" : ""
+            }`}
+        >
+          {t('searchPage.Categories')}
+        </h1>
+        <ChevronRightIcon
+          className={`categories-filter-container__collapse-icon  ${collpased ? "close" : "open"
+            }`}
+          onClick={toggleCollapse}
+        ></ChevronRightIcon>
+        <ul
+          className={`categories-filter-container__list  ${collpased ? "hide" : "show"
+            }`}
+          ref={contentRef}
+          style={{ maxHeight: collpased ? "0px" : `${contentHeight}px` }}
+        >
+          {datas?.map((data: any, index: any) => {
+            return (
+              <li key={index} className="categories-filter-container__list__item">
+                <div className="form-check">
+                  <input
+                    className="radio-btn"
+                    type="radio"
+                    name="categorie"
+                    id={`category-check-${index}`}
+                    onChange={() => handleRadioChange(data.id)}
+                    checked={selected === data.id}
+                  />
+                  <label
+                    className={`form-label`}
+                    htmlFor={`category-check-${index}`}
+                  >
+                    {data.name}
+                  </label>
+                  {data.children?.length ? (
+                    <ChevronRightIcon
+                      className={`toggle-icon  ${data.show == true ? "open" : "close"
+                        }`}
+                      onClick={() => toggleCategorie(event, index)}
+                    ></ChevronRightIcon>
+                  ) : ''}
+                </div>
                 {data.children?.length ? (
-                  <ChevronRightIcon
-                    className={`toggle-icon  ${
-                      data.show == true ? "open" : "close"
-                    }`}
-                    onClick={() => toggleCategorie(event, index)}
-                  ></ChevronRightIcon>
+                  <ul
+                    className={`categories-filter-container__list categories-filter-container__list--sub ${data.show ? "show" : "hide"
+                      }`}
+                    style={{
+                      height: `${data.show ? data?.children?.length * 39 : 0}px`,
+                    }}
+                  >
+                    {data.children?.map((c: any, i: any) => {
+                      return (
+                        <li
+                          key={index + "-" + i}
+                          className="categories-filter-container__list__item categories-filter-container__list__item--sub"
+                        >
+                          <div className="form-check">
+                            <input
+                              className="radio-btn"
+                              type="radio"
+                              name="categorie"
+                              id={`child-${index}-${i}`}
+                              onChange={() => handleRadioChange(c.id)}
+                              checked={selected === c.id}
+                            />
+                            <label
+                              className={`form-label`}
+                              htmlFor={`child-${index}-${i}`}
+                            >
+                              {c.name}
+                            </label>
+                          </div>
+                        </li>
+                      );
+                    })}
+                  </ul>
                 ) : ''}
-              </div>
-              {data.children?.length ? (
-                <ul
-                  className={`categories-filter-container__list categories-filter-container__list--sub ${
-                    data.show ? "show" : "hide"
-                  }`}
-                  style={{
-                    height: `${data.show ? data?.children?.length * 39 : 0}px`,
-                  }}
-                >
-                  {data.children?.map((c: any, i: any) => {
-                    return (
-                      <li
-                        key={index + "-" + i}
-                        className="categories-filter-container__list__item categories-filter-container__list__item--sub"
-                      >
-                        <div className="form-check">
-                          <input
-                            className="radio-btn"
-                            type="radio"
-                            name="categorie"
-                            id={`child-${index}-${i}`}
-                            onChange={() => handleRadioChange(c.id)}
-                            checked={selected === c.id}
-                          />
-                          <label
-                            className={`form-label`}
-                            htmlFor={`child-${index}-${i}`}
-                          >
-                            {c.name}
-                          </label>
-                        </div>
-                      </li>
-                    );
-                  })}
-                </ul>
-              ): ''}
-            </li>
-          );
-        })}
-      </ul>
-    </div>
+              </li>
+            );
+          })}
+        </ul>
+      </div>
     );
   }
   else {

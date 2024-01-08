@@ -14,6 +14,7 @@ import { localStorageService } from '../../services/localStorageService';
 import './FilterCategories.scss';
 import Slider from "react-slick";
 import { homeRefresh, setRefresh } from "../../Redux/slices/home";
+import { paramsService } from '../../utils/params';
 
 
 interface Category {
@@ -46,191 +47,234 @@ const FilterCategories: React.FC<FilterCategoriesProps> = ({
   const [selectedSubCategories, setSelectedSubCategories] = useState("");
   const [loaded, setLoaded] = useState(false);
   const refresh = useSelector(homeRefresh)
-   
+
 
   useEffect(() => {
     if (cats && cats.length > 0) {
-      const all : any = cats.filter((category: any) => category.description !== "Promo")
-      setCategories(all)   
+      const all: any = cats.filter((category: any) => category.description !== "Promo")
+      setCategories(all)
     }
   }, [cats])
-  
+
   useEffect(() => {
     if (!loaded && categories.length) {
       const searchParams = new URLSearchParams(location.search);
-      if (searchParams.has('category')) {
-        const selectted: any = parseInt(searchParams.get('category') as string)
-        handleInitialState(selectted)
+
+      if (searchParams.has('search')) {
+        let params = paramsService.fetchParams(searchParams)
+
+        if (params.category) {
+          const selectted: any = parseInt(params.category)
+          handleInitialState(selectted)
+        }
       }
       setLoaded(true)
-    }   
+    }
   }, [categories]);
-  
+
   const handleCategoryClick = (categoryId: string) => {
-      if (Number(categoryId) == Number(selectedSubCategories)) {
+    if (Number(categoryId) == Number(selectedSubCategories)) {
       setSelectedSubCategories("");
-      const updatedCategories :any = categories.map((category: any) => ({
+      const updatedCategories: any = categories.map((category: any) => ({
         ...category,
         image: category.image,
-        selected: (Number(category.id) === Number(selectedCategories) ) ? true : false,
+        selected: (Number(category.id) === Number(selectedCategories)) ? true : false,
       }));
       setCategories(updatedCategories);
       const searchParams = new URLSearchParams(location.search);
-      searchParams.set('category', selectedCategories);
-      navigate(`/search/?${searchParams.toString()}`, {      
+      let params = searchParams.has("search") ? paramsService.fetchParams(searchParams) : {}
+      params = {
+          ...params,
+          category: selectedCategories
+      }
+      let newParams = paramsService.handleUriParams(params)
+      if (searchParams.has('search')) {
+        searchParams.set("search", newParams)
+      }
+      else {
+        searchParams.append('search', newParams);
+      }
+      navigate(`/search/?${searchParams.toString()}`, {
         replace: false,
       });
     }
     else if (categoryId == selectedCategories) {
       setCategories(cats.filter((category: any) => category.description !== "Promo"))
       const searchParams = new URLSearchParams(location.search);
-      searchParams.delete('category');
-      navigate(`/search/?${searchParams.toString()}`, {      
+      let params = searchParams.has("search") ? paramsService.fetchParams(searchParams) : {}
+      params = {
+          ...params,
+          category: ""
+      }
+      let newParams = paramsService.handleUriParams(params)
+      if (searchParams.has('search')) {
+        searchParams.set("search", newParams)
+      }
+      else {
+        searchParams.append('search', newParams);
+      }
+      // searchParams.delete('category');
+      navigate(`/search/?${searchParams.toString()}`, {
         replace: false,
       });
       setSelectedCategories("");
     }
     else {
       const searchParams = new URLSearchParams(location.search);
-      if (searchParams.has('category')) {
-        searchParams.set('category', categoryId);
+      let params = searchParams.has("search") ? paramsService.fetchParams(searchParams) : {}
+      params = {
+          ...params,
+          category: categoryId
+      }
+      let newParams = paramsService.handleUriParams(params)
+      if (searchParams.has('search')) {
+        searchParams.set("search", newParams)
       }
       else {
-        searchParams.append('category', categoryId);
+        searchParams.append('search', newParams);
       }
-      navigate(`/search/?${searchParams.toString()}`, {      
+
+      navigate(`/search/?${searchParams.toString()}`, {
         replace: false,
       });
-      
-      const updatedCategories :any = categories.map((category: any) => ({
+
+      const updatedCategories: any = categories.map((category: any) => ({
         ...category,
         image: category.image,
-        selected: (Number(category.id) === Number(categoryId) || category.children.find((c:any)=>Number(c.id) === Number(categoryId))) ? true : false,
+        selected: (Number(category.id) === Number(categoryId) || category.children.find((c: any) => Number(c.id) === Number(categoryId))) ? true : false,
       }));
-      let subCategories :any = categories.find((cat: any) => Number(cat.id) == Number(categoryId) && cat.children.length > 0)
+      let subCategories: any = categories.find((cat: any) => Number(cat.id) == Number(categoryId) && cat.children.length > 0)
       if (subCategories) {
-        const result :any = [{ ...subCategories, selected: true }, ...subCategories.children]
+        const result: any = [{ ...subCategories, selected: true }, ...subCategories.children]
         setCategories(result);
-      }    
+      }
       else {
         setCategories(updatedCategories);
       }
       let selected = cats.find((c: any) => (c.children.length > 0 && c.children.find((c: any) => Number(c.id) === Number(categoryId))))
       if (selected) {
-        setSelectedCategories(selected.id);    
+        setSelectedCategories(selected.id);
         setSelectedSubCategories(categoryId);
-      }        
+      }
       else {
         setSelectedCategories(categoryId);
         setSelectedSubCategories("");
-      }  
-    }
-    dispatch(setRefresh(true));   
-  };
-  const handleInitialState = (categoryId: any) => {      
-      const updatedCategories :any = cats.map((category: any) => ({
-        ...category,
-        image: category.image,
-        selected: (Number(category.id) === Number(categoryId) || category.children.find((c:any)=>Number(c.id) === Number(categoryId))) ? true : false,
-      }));
-      let subCategories :any = categories.find((cat: any) => Number(cat.id) == Number(categoryId) && cat.children.length > 0)
-      if (subCategories) {
-        const result :any = [{ ...subCategories, selected: true }, ...subCategories.children]
-        setCategories(result);
-      }    
-      else {       
-        let selected = cats.find((c: any) => (c.children.length > 0 && c.children.find((c: any) => Number(c.id) === Number(categoryId))))
-        if (selected) {
-          const clids = selected.children.map((c: any) =>
-          ({
-            ...c,
-            image: c.image,
-            selected: (Number(c.id) === Number(categoryId) ) ? true : false,
-          }))
-          const result :any = [{ ...selected, selected: true }, ...clids]
-          setCategories(result);          
-        }
-        else {
-          setCategories(updatedCategories);
-        }
       }
+    }
+    dispatch(setRefresh(true));
+  };
+  const handleInitialState = (categoryId: any) => {
+    const updatedCategories: any = cats.map((category: any) => ({
+      ...category,
+      image: category.image,
+      selected: (Number(category.id) === Number(categoryId) || category.children.find((c: any) => Number(c.id) === Number(categoryId))) ? true : false,
+    }));
+    let subCategories: any = categories.find((cat: any) => Number(cat.id) == Number(categoryId) && cat.children.length > 0)
+    if (subCategories) {
+      const result: any = [{ ...subCategories, selected: true }, ...subCategories.children]
+      setCategories(result);
+    }
+    else {
       let selected = cats.find((c: any) => (c.children.length > 0 && c.children.find((c: any) => Number(c.id) === Number(categoryId))))
       if (selected) {
-        setSelectedCategories(selected.id);    
-        setSelectedSubCategories(categoryId);
-      }        
-      else {
-        setSelectedCategories(categoryId);
-        setSelectedSubCategories("");
+        const clids = selected.children.map((c: any) =>
+        ({
+          ...c,
+          image: c.image,
+          selected: (Number(c.id) === Number(categoryId)) ? true : false,
+        }))
+        const result: any = [{ ...selected, selected: true }, ...clids]
+        setCategories(result);
       }
+      else {
+        setCategories(updatedCategories);
+      }
+    }
+    let selected = cats.find((c: any) => (c.children.length > 0 && c.children.find((c: any) => Number(c.id) === Number(categoryId))))
+    if (selected) {
+      setSelectedCategories(selected.id);
+      setSelectedSubCategories(categoryId);
+    }
+    else {
+      setSelectedCategories(categoryId);
+      setSelectedSubCategories("");
+    }
   }
-  useEffect(() => {    
+  useEffect(() => {
     if (refresh) {
       checkSelectedCategory()
-    }    
+    }
   }, [refresh]);
-   const checkSelectedCategory = ()=>{
+  const checkSelectedCategory = () => {
     const searchParams = new URLSearchParams(location.search);
-    const cat: any = searchParams.get("category");
-    if (!searchParams.has("category")) {
+    let params = paramsService.fetchParams(searchParams)
+
+    const cat: any = params.category;
+    if (!params.category) {
       setCategories(cats.filter((category: any) => category.description !== "Promo"))
       const searchParams = new URLSearchParams(location.search);
-      searchParams.delete('category');
-      navigate(`/search/?${searchParams.toString()}`, {      
+      let params = searchParams.has("search") ? paramsService.fetchParams(searchParams) : {}
+      params = {
+          ...params,
+          category: ""
+      }
+      let newParams = paramsService.handleUriParams(params)
+      searchParams.has('search')?  searchParams.set('search',newParams):searchParams.append('search',newParams);
+      navigate(`/search/?${searchParams.toString()}`, {
         replace: false,
       });
       setSelectedCategories("");
       setSelectedCategories("");
     }
-    else if ((Number(selectedCategories)!== Number(cat)) && Number(selectedSubCategories)!== Number(cat)) {
+    else if ((Number(selectedCategories) !== Number(cat)) && Number(selectedSubCategories) !== Number(cat)) {
       handleInitialState(cat)
     }
   }
   return (
-    <div className='container-categories-filter'>   
+    <div className='container-categories-filter'>
       <Slider
-          {...{
-            "variableWidth": true,
-            "dots": false,
-            "arrows": false,            
-            "infinite": false,
-            "slidesToScroll": 1,
-            "centerMode": false,
-            "centerPadding": "100px",
-            "autoplay": false,
-            "speed": 500,
-            "autoplaySpeed": 2000,
-            "cssEase": "linear",
-            }}>
-            {categories.map(function(category : any) {
-              return (
-                <div key={category.id}>
-                  <Box className={`category-box ${category.selected ? 'selected' : '' } ${category.id == selectedCategories ? 'check' : ''}`}
-                        onDoubleClick={() => handleCategoryClick(category.id)}
-                        >
-                          <Box>
-                            <img
-                              src={
-                                typeof category.image === 'string'
-                                  ? category.image
-                                  : undefined
-                              }
-                              loading='lazy'
-                              alt={category.name}
-                            />
-                          </Box>
-                          <Typography
-                            variant="h6"
-                            align="center"
+        {...{
+          "variableWidth": true,
+          "dots": false,
+          "arrows": false,
+          "infinite": false,
+          "slidesToScroll": 1,
+          "centerMode": false,
+          "centerPadding": "100px",
+          "autoplay": false,
+          "speed": 500,
+          "autoplaySpeed": 2000,
+          "cssEase": "linear",
+        }}>
+        {categories.map(function (category: any) {
+          return (
+            <div key={category.id}>
+              <Box className={`category-box ${category.selected ? 'selected' : ''} ${category.id == selectedCategories ? 'check' : ''}`}
+                onDoubleClick={() => handleCategoryClick(category.id)}
+              >
+                <Box>
+                  <img
+                    src={
+                      typeof category.image === 'string'
+                        ? category.image
+                        : undefined
+                    }
+                    loading='lazy'
+                    alt={category.name}
+                  />
+                </Box>
+                <Typography
+                  variant="h6"
+                  align="center"
 
-                            className={'category-name'}>
-                            {category.name}
-                          </Typography>
-                        </Box>
-                </div>
-              );
-            })}
-        </Slider>    
+                  className={'category-name'}>
+                  {category.name}
+                </Typography>
+              </Box>
+            </div>
+          );
+        })}
+      </Slider>
     </div>
   );
 };

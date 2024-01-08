@@ -8,37 +8,39 @@ import { useAppDispatch } from "../../../../Redux/store";
 import { homeRefresh, setRefresh } from "../../../../Redux/slices/home";
 import { debounce } from 'lodash';
 import { useSelector } from "react-redux";
+import { useTranslation } from "react-i18next";
 
 function SearchProduit() {
     const dispatch = useAppDispatch();
     const [active, setActive] = useState("");
     const navigate = useNavigate();
     const refresh = useSelector(homeRefresh)
+    const { t } = useTranslation()
     useEffect(() => {
         const searchParams = new URLSearchParams(location.search);
-        if (searchParams.has("filter") && searchParams.get("filter")!="") {
+        if (searchParams.has("filter") && searchParams.get("filter") != "") {
             const filter: any = searchParams.get("filter");
             setActive(filter);
-        }    
+        }
         else {
             setActive("");
         }
     }, []);
-    useEffect(() => {    
+    useEffect(() => {
         if (refresh) {
             const searchParams = new URLSearchParams(location.search);
             if (!searchParams.has('filter')) {
                 setActive("");
             }
-        }    
+        }
     }, [refresh]);
 
     function clickHandle(event: any) {
         setActive(event.target.value);
         handleInputChange(event)
     }
-    const handleInputChange = debounce((event) => {  
-        if (event.target.value !="") {
+    const handleInputChange = debounce((event) => {
+        if (event.target.value != "") {
             const searchParams = new URLSearchParams(location.search);
             if (searchParams.has('filter')) {
                 searchParams.set('filter', event.target.value);
@@ -46,7 +48,7 @@ function SearchProduit() {
             else {
                 searchParams.append('filter', event.target.value);
             }
-            navigate(`/search/?${searchParams.toString()}`, {      
+            navigate(`/search/?${searchParams.toString()}`, {
                 replace: false,
             });
         }
@@ -54,17 +56,18 @@ function SearchProduit() {
             const searchParams = new URLSearchParams(location.search);
             if (searchParams.has('filter')) {
                 searchParams.delete('filter');
-                navigate(`/search/?${searchParams.toString()}`, {      
+                navigate(`/search/?${searchParams.toString()}`, {
                     replace: false,
                 });
-            }           
-        }        
+            }
+        }
         dispatch(setRefresh(true));
-    }, 500); 
+    }, 500);
+    
     return (
         <form className="search-filter-container" autoComplete="off">
             <div className="search-filter-container__input">
-                <input autoComplete="off" type="search" className="search-input" name="search" id="search" placeholder="Qu’est ce qu’on vous apporte ?" value={active} onChange={clickHandle}/>
+                <input autoComplete="off" type="search" className="search-input" name="search" id="search" placeholder={`${t('searchPage.question')}`} value={active} onChange={clickHandle} />
                 <SearchIcon className="text-search-icon" />
                 <span className="search-icon"></span>
             </div>

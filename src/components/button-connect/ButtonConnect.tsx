@@ -29,7 +29,7 @@ const ButtonConnect = ({ icon, text, provider }: ButtonConnectProps) => {
           const user = res?.data.data.user
           token && login(token, user)
         }).catch((e) => {
-          console.log(e)
+          console.error(e)
         });
         break;
       case 'fcb':
@@ -38,7 +38,7 @@ const ButtonConnect = ({ icon, text, provider }: ButtonConnectProps) => {
           const user = res?.data.data.user
           token && login(token, user)
         }).catch((e) => {
-          console.log(e)
+          console.error(e)
         });;
         break;
       default:
