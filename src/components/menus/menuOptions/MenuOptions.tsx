@@ -577,7 +577,6 @@ function MenuOptions({ initialData }: AppProps) {
                     </div>
                 </div>
 
-
                 <div className="menu-container">
                     <div className="menu-title-blc">
                         <h3 className="menu-title">Produits achetés ensemble</h3>
@@ -681,10 +680,7 @@ function MenuOptions({ initialData }: AppProps) {
                             </div>
                         </div>
                     </div>
-
-
                 </div>
-
 
                 <div className='bulles'>
                     <button className='messanger-popup-btn' onClick={handleMessangerPopup} style={{ backgroundImage: `url(${MessangerBtnIcon})` }}>
