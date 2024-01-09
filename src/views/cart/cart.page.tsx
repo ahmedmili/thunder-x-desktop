@@ -177,15 +177,14 @@ const CartPage: React.FC = () => {
   };
 
   const ArticleProvider: React.FC<Article> = ({ item, remove }) => {
-    const [count, setCount] = useState<number>(item.quantity)
 
     return (
       <>
 
         <div className="supplier-desc-header">
-          <div className="supplier-name">
+          {/* <div className="supplier-name">
             <span >{item.supplier_data.supplier_name}</span>
-          </div>
+          </div> */}
 
           <div className="show-all-link-blc">
             <a className="show-all-link">
@@ -197,7 +196,7 @@ const CartPage: React.FC = () => {
         <div className="supplier-desc-body">
           <div className="supplier-name-blc">
             <div className="supplier-img-blc">
-              <img src={SupplierImg} alt="Supplier Img" />
+              <img src={item.product.image[0].path} alt="Supplier Img" />
             </div>
             <div className="supplier-title-blc">
               <h4 className="supplier-title">{item.product.name}</h4>
@@ -261,9 +260,9 @@ const CartPage: React.FC = () => {
     )
   }
 
-  // useEffect(() => {
-  //   console.log('cartItems :', cartItems)
-  // }, [cartItems])
+  useEffect(() => {
+    console.log('cartItems :', cartItems)
+  }, [cartItems])
   // useEffect(() => {
   //   console.log('user :', user)
   // }, [user])
@@ -819,6 +818,9 @@ const CartPage: React.FC = () => {
                             {t('cartPage.product')}
                           </div>
                           <div className="cart-items__list">
+                            <h1 className="supplier-name">
+                              {supplier.name}
+                            </h1>
                             {
                               cartItems.map((item: any, index: number) => {
                                 return (
@@ -888,7 +890,6 @@ const CartPage: React.FC = () => {
                             <div className="devider">
                             </div>
                           </>
-
                         }
                         {/* gift end */}
                         {/* bonus start */}
@@ -941,7 +942,7 @@ const CartPage: React.FC = () => {
                             <div className={`select ${selectedOption == 1 ? "selected" : ""}`}>
                               <div className="deliv-details_header">
                                 <div className="deliv-details_img-blc icon1">
-                                  <img loading="lazy" src={dinnerFurnitureIcn} alt="sur place icon" onClick={() => handleOptionChange(1)} />
+                                  <img loading="lazy" src={dinnerFurnitureIcn} alt="sur place icon" /* onClick={() => handleOptionChange(1)} */ />
                                 </div>
                                 <div className="deliv-details_header-desc">
                                   <time>20 MIN</time>
@@ -951,7 +952,7 @@ const CartPage: React.FC = () => {
                               <p className="deliv-details_description">
                                 Rue Imem moslem, Khzema, Sousse
                               </p>
-                              <button className="btn btn-deliv">livrer ici</button>
+                              <button /* onClick={() => handleOptionChange(1)}*/ className="btn btn-deliv">livrer ici</button>
                               <input type="radio" value="1" id='domicile' name='type' checked={selectedOption === 1} />
                             </div>
                             <div className={`select ${selectedOption == 2 ? "selected" : ""}`}>
@@ -967,9 +968,8 @@ const CartPage: React.FC = () => {
                               <p className="deliv-details_description">
                                 Rue Imem moslem, Khzema, Sousse
                               </p>
-                              <button className="btn btn-deliv">livrer ici</button>
+                              <button onClick={() => handleOptionChange(2)} className="btn btn-deliv">livrer ici</button>
                               <input type="radio" value="2" id='travail' name='type' checked={selectedOption === 2} />
-
                             </div>
                             <div className={`select ${selectedOption == 3 ? "selected" : ""}`}>
                               <div className="deliv-details_header">
@@ -984,38 +984,37 @@ const CartPage: React.FC = () => {
                               <p className="deliv-details_description">
                                 Rue Imem moslem, Khzema, Sousse
                               </p>
-                              <button className="btn btn-deliv">livrer ici</button>
+                              <button className="btn btn-deliv" onClick={() => handleOptionChange(3)}>livrer ici</button>
                               <input type="radio" value="3" id='autre' name='type' checked={selectedOption === 3} />
 
                             </div>
                           </div>
-
-                          <div className="order-recovery-area">
-                            <h3 className="order-recovery-title">
-                              Sélectionner l’option de la récupération de la commande
-                            </h3>
-
-                            <div className="order-recovery-select-blc">
-                              <div className="order-recovery-select-item active">
-                                <span>
-                                  Le plus vite
-                                  possible
-                                  20-40 minutes
-                                </span>
-                              </div>
-                              <div className="order-recovery-select-item">
-                                <span>
-                                  Modifier
-                                  la planification
-                                </span>
-                              </div>
-                            </div>
-                          </div>
-
-
                           {
-                            selectedOption == 2 && (
+                            (selectedOption == 1 || selectedOption == 2) ?
                               <>
+
+                                <div className="order-recovery-area">
+                                  <h3 className="order-recovery-title">
+                                    Sélectionner l’option de la récupération de la commande
+                                  </h3>
+
+                                  <div className="order-recovery-select-blc">
+                                    <div className="order-recovery-select-item active">
+                                      <span>
+                                        Le plus vite
+                                        possible
+                                        20-40 minutes
+                                      </span>
+                                    </div>
+                                    <div className="order-recovery-select-item">
+                                      <span>
+                                        Modifier
+                                        la planification
+                                      </span>
+                                    </div>
+                                  </div>
+                                </div>
+
                                 <TimePicker
                                   className="time-picker"
                                   onChange={(newTime) => {
@@ -1040,12 +1039,11 @@ const CartPage: React.FC = () => {
                                   format="h:m a"
                                   disableClock={true}
                                 />
-
                               </>
-                            )
+                              : <></>
                           }
                           <div className="deliv-to">
-                            <h3 className="title">{t('cartPage.delivto')}</h3>
+                            <h3 className="title">{selectedOption === 3 ? t('cartPage.delivto') : "Emportée par"}</h3>
                             <div className="deliv-infos-group">
                               <div className="info-container">
                                 <label htmlFor="client-name">{t('cartPage.client')} : </label>
@@ -1056,20 +1054,17 @@ const CartPage: React.FC = () => {
                                 <input type="text" name="" value={phoneNumber} placeholder="phone number" onChange={(e) => setPhoneNumber(e.target.value)} />
                               </div>
                             </div>
-                            <div className="info-container">
-                              <label htmlFor="client-name">Adresse de livraison</label>
-                              <div className="adress">
-                                {/*
-                                  <p className="title" style={{ margin: 0 }} >
-                                    {t('profile.mesConfig.delivAdress')} :
+                            {
+
+                              selectedOption === 3 && <div className="info-container">
+                                <label htmlFor="client-name">{t('adress.delivAddress')}</label>
+                                <div className="adress">
+                                  <p className="adress-text">
+                                    {userPosition?.coords.label}
                                   </p>
-                                */}
-                                <p className="adress-text">
-                                  {userPosition?.coords.label}
-                                </p>
-                                <button className="btn btn-edit"></button>
-                              </div>
-                            </div>
+                                  <button className="btn btn-edit"></button>
+                                </div>
+                              </div>}
                             <div className="message-validation">
                               Vous recevrez un message de validation
                             </div>
@@ -1137,7 +1132,7 @@ const CartPage: React.FC = () => {
                             <h4 className="info-customer-title">
                               {userPosition ? userPosition.coords.label : ""}
                             </h4>
-                            <a className="edit-info-customer-link">{t('update')}</a>
+                            <a className="edit-info-customer-link" onClick={() => dispatch({ type: "SET_SHOW", payload: true })} >{t('update')}</a>
                           </div>
                           <div className="customer-infos-area">
                             <div className="customer-info_name"> {`${user.firstname} ${user.lastname}`}</div>
@@ -1162,7 +1157,7 @@ const CartPage: React.FC = () => {
                         <div className="calculate-total-price">
                           <div className="supplier-name-blc">
                             <div className="supplier-img-blc">
-                              <img src={SupplierImg} alt="Supplier Img" />
+                              <img src={supplier.images[0].pivot.type === "principal" ? supplier.images[1].path : supplier.images[0].path} alt="Supplier Img" />
                             </div>
                             <div className="supplier-title-blc">
                               <h4 className="supplier-title">{cartItems[0].supplier_data.supplier_name}</h4>
@@ -1201,62 +1196,49 @@ const CartPage: React.FC = () => {
                           <div className="price-total-area">
                             <div className="sous-total">
                               <div className="title">{t('profile.commands.sousTotal')}</div>
-                              <div className="value">{sousTotal.toFixed(2)} DT</div>
+                              <div className="value">{sousTotal ? sousTotal.toFixed(2) : "0.00"} DT</div>
                             </div>
-                            <div className="sous-total">
-                              <div className="title">Forfait</div>
-                              <div className="value">0.00 DT</div>
-                            </div>
-                            <div className="sous-total">
-                              <div className="title">Code promo</div>
-                              <div className="value">7.00 DT</div>
-                            </div>
-                            <div className="sous-total">
-                              <div className="title">Bonus</div>
-                              <div className="value">0.00 DT</div>
-                            </div>
-
-                            {/*<span>{t('cartPage.yourCart')}</span>*/}
-                            {appliedBonus > 0 &&
-                              (
-                                <div className="panie-row">
-                                  <span>{t('cartPage.bonus')}</span>
-                                  <span> - {(appliedBonus / 1000).toFixed(2)} DT</span>
+                            {
+                              (discountValue && discountValue > 0) ?
+                                <div className="sous-total">
+                                  <div className="title">{t('cart.discount')}</div>
+                                  <div className="value">{discountValue ? (discountValue).toFixed(2) : "0.00"} DT</div>
                                 </div>
-                              )
+                                : <></>
                             }
                             {
-                              promoReduction > 0 && (
-                                <div className="panie-row">
-                                  <span>{t('cartPage.Coupon')}</span>
-                                  <span> - {(promoReduction).toFixed(2)} DT</span>
+                              (promoReduction && promoReduction > 0) ?
+                                <div className="sous-total">
+                                  <div className="title">{t('cartPage.Coupon')}</div>
+                                  <div className="value">{promoReduction ? (promoReduction).toFixed(2) : "0.00"} DT</div>
                                 </div>
-                              )
-
+                                : <></>
                             }
                             {
-                              discountValue > 0 && (
-                                <div className="panie-row">
-                                  <span>{t('cart.discount')}</span>
-                                  <span> - {(discountValue).toFixed(2)} DT</span>
+                              (appliedBonus && appliedBonus > 0) ?
+                                <div className="sous-total">
+                                  <div className="title">{t('cartPage.bonus')}</div>
+                                  <div className="value">{appliedBonus ? (appliedBonus / 1000).toFixed(2) : "0.00"} DT</div>
                                 </div>
-                              )
+                                : <></>
                             }
                             {
-                              giftAmmount > 0 && (
-                                <div className="panie-row">
-                                  <span>{t('Repas Gratuit')}</span>
-                                  <span> - {(giftAmmount).toFixed(2)} DT</span>
+                              (giftAmmount && giftAmmount > 0) ?
+                                <div className="sous-total">
+                                  <div className="title">{t('repasGratuit')}</div>
+                                  <div className="value">{giftAmmount ? (giftAmmount).toFixed(2) : "0.00"} DT</div>
                                 </div>
-                              )
+                                : <></>
                             }
-
-                            <div className="sous-total">
-                              <div className="title">{t('supplier.delivPrice')}</div>
-                              <div className="value">{Number(deliveryPrice).toFixed(2)} DT</div>
-                            </div>
+                            {
+                              (deliveryPrice && deliveryPrice > 0) ?
+                                <div className="sous-total">
+                                  <div className="title">{t('supplier.delivPrice')}</div>
+                                  <div className="value">{Number(deliveryPrice).toFixed(2)} DT</div>
+                                </div>
+                                : <></>
+                            }
                           </div>
-
                           <div className="a-payer">
                             <span className="title">{t('toPay')}</span>
                             <span className="value">{total.toFixed(2)} DT</span>
