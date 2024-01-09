@@ -202,7 +202,7 @@ const Header = () => {
               {/*  Thunder logo section  */}
               {showMapState && (
                 <div
-                  className="mapOverPlay">
+                  className="mapOverPlay test">
                   <div
                     onClick={(e) => e.stopPropagation()}>
                     <Map />
