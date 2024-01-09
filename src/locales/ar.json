@@ -288,7 +288,6 @@
   "supplier.startAt": "من:",
   "supplier.Choose": "اختر",
   "supplier.Mandatory": "إلزامي ",
-
   "supplier.allProducts": "جميع المنتجات",
   "popup.payment.invalidePayment": "الدفع غير صحيح!",
   "popup.payment.validePayment": "الدفع صحيح!",
@@ -316,7 +315,6 @@
   "Reset": "إعادة تعيين",
   "searchPage.purchasedTogether": "المنتجات المشتراة معًا",
   "Retour": "عودة ",
-
   "product": "منتج",
   "repasGratuit": "وجبة مجانية",
   "joinUs": "انضم إلينا واربح المال بسهولة",
