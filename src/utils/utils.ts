@@ -45,3 +45,12 @@ export const checkSsr = (): boolean => {
     return isSsr
 }
 
+export const arrayToObject = (array: string[]): Record<string, string> => {
+    const resultObject: Record<string, string> = {};
+    array.forEach((item: string) => {
+        const [key, value] = item.split(':');
+        resultObject[key] = value;
+    });
+    return resultObject
+}
+

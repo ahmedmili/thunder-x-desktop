@@ -201,9 +201,10 @@
             // &:nth-child(2) {
             //     @include fontSize(45px, 45px);
 
-                .headerMessageSyle2 {
-                    @include fontSize(45px, 45px);
-                }
+            .headerMessageSyle2 {
+                @include fontSize(45px, 45px);
+            }
+
             // }
         }
 
@@ -278,7 +279,7 @@
     border-radius: 0px 0px 20px 20px;
     transition: box-shadow 0.3s ease-in-out;
 
-    > .container {
+    >.container {
         @include flex(flex, center, space-between);
         padding: 0;
     }
@@ -361,6 +362,19 @@
             @include flex(flex, center, end);
             gap: 7px;
             margin-right: 10px;
+
+            .headerLocalisationMessageContainer {
+                padding: 0;
+                margin: 0px;
+
+                .top-bar-location {
+                    color: #484848;
+                    font-family: 'Poppins-Medium', serif;
+
+               
+
+                }
+            }
 
             .position-icon {
                 font-size: 21px;
@@ -522,6 +536,7 @@
                 @include dimensions(160px, 60px);
             }
         }
+
         .header-buttons {
             .LoadingButton {
                 min-width: 113px;
@@ -529,6 +544,7 @@
                 font-size: 12px;
             }
         }
+
         .info {
             gap: 15px;
 
@@ -543,6 +559,7 @@
             }
         }
     }
+
     .home-section-one {
         .headerAppBar2 {
             padding-top: 100px;
@@ -557,12 +574,15 @@
             }
         }
     }
+
     .header {
         .imageBuilderContainer {
+
             &::before,
             &::after {
                 display: none;
             }
+
             .imageBuilder {
                 background-position: center;
                 @include dimensions(450px, 480px);
@@ -578,6 +598,7 @@
             }
         }
     }
+
     .headerLocalisationMessageContainer {
         a {
             @include fontSize(14px, 14px);

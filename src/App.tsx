@@ -41,6 +41,8 @@ const Header = lazy(() => import("./components/Header/Header"));
 const Footer = lazy(() => import("./components/footer/footer"));
 
 
+import { useSelector } from "react-redux";
+import SpinnerPopup from "./components/Popups/Spinner/SpinnerPopup";
 import Annonces from "./components/layout/Profile/All_Annonces/All_Annonces";
 import ArchivedCommands from "./components/layout/Profile/Archivedcommands/ArchivedCommands";
 import ConfigPage from "./components/layout/Profile/ConfigPage/ConfigPage";
@@ -50,8 +52,6 @@ import Feedback from "./components/layout/Profile/Feedback/Feedback";
 import FidelitePage from "./components/layout/Profile/FidelitePage/FidelitePage";
 import Menu from "./components/menus/menus";
 import Verify from "./views/Verify";
-import SpinnerPopup from "./components/Popups/Spinner/SpinnerPopup";
-import { useSelector } from "react-redux";
 //lazy loading pages
 const Profile = lazy(() => import("./components/layout/Profile/Profile"));
 const HomePage = lazy(() => import("./views/home/home.page"));
@@ -91,9 +91,8 @@ function App({ initialData }: AppProps) {
   }, []);
 
   useEffect(() => {
-    if (!region.id) {
-      dispatch({ type: "SET_SHOW", payload: true })
-    }
+    !region.id ? dispatch({ type: "SET_SHOW", payload: true }) : dispatch({ type: "SET_SHOW", payload: false })
+
   }, [region]);
 
   useEffect(() => {
@@ -290,12 +289,12 @@ function App({ initialData }: AppProps) {
               (!location || !(typeof window != undefined)) ?
                 <Route index element={<HomePage initialData={initialData} />} />
                 :
-                <Route index element={<FilterPage />} />
+                <Route index element={<FilterPage initialData={initialData} />} />
             }
             <Route path="/restaurant/:id/:search?/:productId?/*" element={<Menu initialData={initialData} />} />
             <Route path="/product/:id/:search?/:productId/*" element={<MenuOptions initialData={initialData} />} />
             <Route path="/cart/*" element={<CartPage />} />
-            <Route path="/search/:search?/*" element={<FilterPage />} />
+            <Route path="/search/:search?/*" element={<FilterPage initialData={initialData} />} />
 
           </Route>
 

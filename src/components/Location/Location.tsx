@@ -38,10 +38,11 @@ interface AdressComponentProps {
 
 interface MapProps {
   className?: string;
+  forced?: boolean
 
 }
 
-const Map: React.FC<MapProps> = ({ className }) => {
+const Map: React.FC<MapProps> = ({ className, forced = false }) => {
   const { t } = useTranslation();
   const [clientAdressTable, setClientAdressTable] = useState([]);
   const dispatch = useAppDispatch();
@@ -77,7 +78,7 @@ const Map: React.FC<MapProps> = ({ className }) => {
   }, []);
 
   const userItem = localStorageService.getUser();
-  
+
   const cancel = () => {
     if (searchType === "") {
       const location = localStorageService.getCurrentLocation()
@@ -90,8 +91,7 @@ const Map: React.FC<MapProps> = ({ className }) => {
         }
       }
       else {
-        // console.log("you dont have location");
-        dispatch({ type: "SET_SHOW", payload: false })
+        forced ? console.log("you dont have location") : dispatch({ type: "SET_SHOW", payload: false })
 
       }
     }
@@ -99,6 +99,7 @@ const Map: React.FC<MapProps> = ({ className }) => {
       setSearchType("")
     }
   };
+
   return (
     <>
       <div className={`location-container ${className ? className : ""}`}>
