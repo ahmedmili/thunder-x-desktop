@@ -1,4 +1,4 @@
-import { cryptoData } from "./cyrupto";
+import { cryptoData } from "./crpyto";
 import { arrayToObject } from "./utils";
 
 const handleUriParams = (data: any): string => {

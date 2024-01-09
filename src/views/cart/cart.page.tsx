@@ -154,29 +154,30 @@ const CartPage: React.FC = () => {
     item: FoodItem,
     remove: () => void
   }
+  const handleIncreaseQuantity = (item: FoodItem) => {
+    dispatch(
+      changeItemQuantity({
+        itemId: Number(item.product.id),
+        quantity: item.quantity + 1,
+      })
+    );
+    // setCount(item.quantity + 1)
 
-  const ArticleProvider: React.FC<Article> = ({ item, remove }) => {
-    const [count, setCount] = useState<number>(item.quantity)
-    const handleIncreaseQuantity = () => {
+  };
+  const handleDecreaseQuantity = (item: FoodItem) => {
+    if (item.quantity > 1) {
       dispatch(
         changeItemQuantity({
           itemId: Number(item.product.id),
-          quantity: item.quantity + 1,
+          quantity: item.quantity - 1,
         })
       );
-    };
+      // setCount(item.quantity - 1)
+    }
+  };
 
-
-    const handleDecreaseQuantity = () => {
-      if (count > 1) {
-        dispatch(
-          changeItemQuantity({
-            itemId: Number(item.product.id),
-            quantity: item.quantity - 1,
-          })
-        );
-      }
-    };
+  const ArticleProvider: React.FC<Article> = ({ item, remove }) => {
+    const [count, setCount] = useState<number>(item.quantity)
 
     return (
       <>
@@ -206,10 +207,10 @@ const CartPage: React.FC = () => {
             </div>
           </div>
           <div className="count-container">
-            <input readOnly={true} type="number" name="product-count" id="product-count" value={count} />
+            <input readOnly={true} type="number" name="product-count" id="product-count" value={item.quantity} />
             <div className="count-buttons">
-              <button className="btn count-more" onClick={handleIncreaseQuantity}></button>
-              <button className="btn count-less" onClick={handleDecreaseQuantity}></button>
+              <button className="btn count-more" onClick={() => handleIncreaseQuantity(item)}></button>
+              <button className="btn count-less" onClick={() => handleDecreaseQuantity(item)}></button>
             </div>
           </div>
           <div className="total-price-area">
@@ -253,41 +254,25 @@ const CartPage: React.FC = () => {
                 }
               </AccordionDetails>
             </Accordion>)
-            : ""
+            : <></>
           }
         </div>
-
-        {/*
-          <div className="total-price">
-            <span >{item.unitePrice.toFixed(2)} DT</span>
-          </div>
-          <div className="quantite">
-            <div className="count-container">
-              <input readOnly={true} type="number" name="product-count" id="product-count" value={count} />
-              <div className="count-buttons">
-                <button onClick={handleIncreaseQuantity} >
-                  <KeyboardArrowUpOutlinedIcon className="count-more" />
-                </button>
-                <button onClick={handleDecreaseQuantity} >
-                  <KeyboardArrowDownOutlinedIcon className="count-less" />
-                </button>
-              </div>
-            </div>
-            <div className="total-price">
-              <span>
-                {item.total.toFixed(2)} DT
-              </span>
-            </div>
-            <div>
-              <button type="button" className="remove-btn" onClick={remove}></button>
-            </div>
-          </div>
-        */}
       </>
     )
   }
 
-
+  // useEffect(() => {
+  //   console.log('cartItems :', cartItems)
+  // }, [cartItems])
+  // useEffect(() => {
+  //   console.log('user :', user)
+  // }, [user])
+  // useEffect(() => {
+  //   console.log('userPosition :', userPosition)
+  // }, [userPosition])
+  useEffect(() => {
+    console.log('supplier :', supplier)
+  }, [supplier])
 
   // handle submit and command creation
   const submitOrder = async (
@@ -812,26 +797,16 @@ const CartPage: React.FC = () => {
       {
         cartItems.length > 0 && supplier ? (
           <div className="cart-page-container">
-            {/*
-            <Container fluid>
-              <Row className="header">
-                <div className="image-container">
-                  <img loading="lazy" src={supplier ? supplier.images[0].path : ""} alt="supplier image" className="background-image" />
-                  <span>{t('cartPage.monPanier')}</span>
-                </div>
-              </Row>
-            </Container>
-            */}
             <Container className="cart-page-cont">
 
-            <ul className="breadcrumb-area">
-              <li>
-                <a className="breadcrumb-link">Accueil</a>
-              </li>
-              <li>
-                <a className="breadcrumb-link active">Panier</a>
-              </li>
-            </ul>
+              <ul className="breadcrumb-area">
+                <li>
+                  <a className="breadcrumb-link">Accueil</a>
+                </li>
+                <li>
+                  <a className="breadcrumb-link active">Panier</a>
+                </li>
+              </ul>
 
               <Row>
                 <Col>
@@ -890,7 +865,6 @@ const CartPage: React.FC = () => {
                               </ul>
                             </div>
                             <div className="promo-container">
-
                               <textarea name="code_promo" id="code_promo" placeholder="Code promo" value={promo} onChange={(e) => handlePromoChange(e.target.value)} ></textarea>
                               <button disabled={!couponExiste} className={(couponExiste) ? "button" : "button disabled"} onClick={checkPromoCode}>
                                 {promoApplied ? t('Annuler') : t('cartPage.appliquer')}
@@ -1101,30 +1075,30 @@ const CartPage: React.FC = () => {
                             </div>
                           </div>
 
-                            <div className="buttons">
-                              <button className="continue" onClick={navigateToHome}>
-                                {t('cartPage.continueAchats')}
-                              </button>
-                              <button className="commander"
-                                onClick={() =>
-                                  submitOrder(
-                                    cartItems,
-                                    deliveryOption,
-                                    name,
-                                    phoneNumber,
-                                    aComment,
-                                    total,
-                                    appliedBonus,
-                                    dispatch,
-                                    userPosition,
-                                    supplier.id,
-                                    deliveryPrice
-                                  )
-                                }
-                              >
-                                {t('cartPage.commander')}
-                              </button>
-                            </div>
+                          <div className="buttons">
+                            <button className="continue" onClick={navigateToHome}>
+                              {t('cartPage.continueAchats')}
+                            </button>
+                            <button className="commander"
+                              onClick={() =>
+                                submitOrder(
+                                  cartItems,
+                                  deliveryOption,
+                                  name,
+                                  phoneNumber,
+                                  aComment,
+                                  total,
+                                  appliedBonus,
+                                  dispatch,
+                                  userPosition,
+                                  supplier.id,
+                                  deliveryPrice
+                                )
+                              }
+                            >
+                              {t('cartPage.commander')}
+                            </button>
+                          </div>
                         </div>
                         )}
 
@@ -1161,63 +1135,69 @@ const CartPage: React.FC = () => {
                         <div className="info-customer-area">
                           <div className="info-customer-title-blc">
                             <h4 className="info-customer-title">
-                              Livraison à
+                              {userPosition ? userPosition.coords.label : ""}
                             </h4>
-                            <a className="edit-info-customer-link">Modifié</a>
+                            <a className="edit-info-customer-link">{t('update')}</a>
                           </div>
                           <div className="customer-infos-area">
-                            <div className="customer-info_name">Toumi marwa</div>
-                            <div className="customer-info_mobile">Mobile : <span>27380570</span></div>
+                            <div className="customer-info_name"> {`${user.firstname} ${user.lastname}`}</div>
+                            <div className="customer-info_mobile">{t('mobile')} : <span>{user.tel}</span></div>
                             <div className="customer-info_adresse">
-                              304 rue med abdou cité riadh sousse
+                              {userPosition?.coords.label}
                             </div>
                           </div>
                         </div>
 
                         <div className="payment-method">
                           <h4 className="payment-method-title">
-                            Mode de paiement
+                            {t('cartPage.payMode')}
                           </h4>
                           <div className="payment-method-status">
                             <span className="payment-method-status_txt cash">
-                              En espèces à la livraison
+                              {payMode == 1 ? t('cartPage.espece') : t('cartPage.bankPay')}
                             </span>
                           </div>
                         </div>
 
                         <div className="calculate-total-price">
-
                           <div className="supplier-name-blc">
                             <div className="supplier-img-blc">
                               <img src={SupplierImg} alt="Supplier Img" />
                             </div>
                             <div className="supplier-title-blc">
-                              <h4 className="supplier-title">Naan au choix</h4>
+                              <h4 className="supplier-title">{cartItems[0].supplier_data.supplier_name}</h4>
                               <div className="supplier-adresse">
-                                Sahloul, Sousse
+                                {supplier.street}, {supplier.city}
                               </div>
                             </div>
                           </div>
+                          {
+                            cartItems.map((item: FoodItem, index: number) => {
+                              return <React.Fragment key={index}>
+                                <div className="products-count-area">
+                                  <div className="product-id">
+                                    X{item.quantity}
+                                  </div>
+                                  <div className="product-name">
+                                    {item.product.name}
+                                  </div>
+                                  <div className="count-container">
+                                    <input readOnly={true} type="number" name="product-count" id="product-count" value={item.quantity} />
+                                    <div className="count-buttons">
+                                      <button className="btn count-more" onClick={() => handleIncreaseQuantity(item)}  ></button>
+                                      <button className="btn count-less" onClick={() => handleDecreaseQuantity(item)}   ></button>
+                                    </div>
+                                  </div>
+                                  <div className="product-price">
+                                    {item.total.toFixed(2)}DT
+                                  </div>
+                                </div>
 
-                          <div className="products-count-area">
-                            <div className="product-id">
-                              X1
-                            </div>
-                            <div className="product-name">
-                              Sandwich
-                            </div>
-                            <div className="count-container">
-                              <input readOnly={true} type="number" name="product-count" id="product-count" value="1" />
-                              <div className="count-buttons">
-                                <button className="btn count-more" ></button>
-                                <button className="btn count-less" ></button>
-                              </div>
-                            </div>
-                            <div className="product-price">
-                              10.00 DT
-                            </div>
+                              </React.Fragment>
+                            })
+                          }
+                          <div className="devider">
                           </div>
-
                           <div className="price-total-area">
                             <div className="sous-total">
                               <div className="title">{t('profile.commands.sousTotal')}</div>
@@ -1236,58 +1216,52 @@ const CartPage: React.FC = () => {
                               <div className="value">0.00 DT</div>
                             </div>
 
-                              {/*<span>{t('cartPage.yourCart')}</span>*/}
-                              {appliedBonus > 0 &&
-                                (
-                                  <div className="panie-row">
-                                    <span>{t('cartPage.bonus')}</span>
-                                    <span> - {(appliedBonus / 1000).toFixed(2)} DT</span>
-                                  </div>
-                                )
-                              }
-                              {
-                                promoReduction > 0 && (
-                                  <div className="panie-row">
-                                    <span>{t('cartPage.Coupon')}</span>
-                                    <span> - {(promoReduction).toFixed(2)} DT</span>
-                                  </div>
-                                )
+                            {/*<span>{t('cartPage.yourCart')}</span>*/}
+                            {appliedBonus > 0 &&
+                              (
+                                <div className="panie-row">
+                                  <span>{t('cartPage.bonus')}</span>
+                                  <span> - {(appliedBonus / 1000).toFixed(2)} DT</span>
+                                </div>
+                              )
+                            }
+                            {
+                              promoReduction > 0 && (
+                                <div className="panie-row">
+                                  <span>{t('cartPage.Coupon')}</span>
+                                  <span> - {(promoReduction).toFixed(2)} DT</span>
+                                </div>
+                              )
 
-                              }
-                              {
-                                discountValue > 0 && (
-                                  <div className="panie-row">
-                                    <span>{t('cart.discount')}</span>
-                                    <span> - {(discountValue).toFixed(2)} DT</span>
-                                  </div>
-                                )
-                              }
-                              {
-                                giftAmmount > 0 && (
-                                  <div className="panie-row">
-                                    <span>{t('Repas Gratuit')}</span>
-                                    <span> - {(giftAmmount).toFixed(2)} DT</span>
-                                  </div>
-                                )
-                              }
+                            }
+                            {
+                              discountValue > 0 && (
+                                <div className="panie-row">
+                                  <span>{t('cart.discount')}</span>
+                                  <span> - {(discountValue).toFixed(2)} DT</span>
+                                </div>
+                              )
+                            }
+                            {
+                              giftAmmount > 0 && (
+                                <div className="panie-row">
+                                  <span>{t('Repas Gratuit')}</span>
+                                  <span> - {(giftAmmount).toFixed(2)} DT</span>
+                                </div>
+                              )
+                            }
 
                             <div className="sous-total">
-                                <div className="title">{t('supplier.delivPrice')}</div>
-                                <div className="value">{Number(deliveryPrice).toFixed(2)} DT</div>
-                              </div>
+                              <div className="title">{t('supplier.delivPrice')}</div>
+                              <div className="value">{Number(deliveryPrice).toFixed(2)} DT</div>
+                            </div>
                           </div>
 
                           <div className="a-payer">
-                            <span className="title">A payer</span>
+                            <span className="title">{t('toPay')}</span>
                             <span className="value">{total.toFixed(2)} DT</span>
                           </div>
                         </div>
-                        {/* <div className="button-container">
-                          <button type="button"
-                            onClick={goNextStep}>
-                            {t('cartPage.paymentContinue')}
-                          </button>
-                        </div> */}
                       </div>
                     </div>
 
