@@ -1,19 +1,18 @@
 @import '../../scss/extend';
 
 .location-container {
-  padding-top: 37px 0;
   position: relative;
   min-height: 500px;
   scrollbar-width: thin;
   scrollbar-color: transparent transparent;
-  width: 1000px;
+  width: 635px;
   box-shadow: 1px 2px 4px 2px rgba(0, 0, 0, 0.2);
   background-color: $color-white;
   border-radius: 25px;
   display: flex;
   flex-direction: column;
   z-index: 999;
-  padding: 15px;
+  padding: 30px;
 
   .container {
     max-height: calc(100vh - 70px);
@@ -33,7 +32,6 @@
       background: $Off-White;
     }
   }
-
   .cancel-icon-container {
     position: absolute;
     top: 29px;
@@ -50,7 +48,7 @@
     .cancel-icon {
       border-radius: 50%;
       font-size: 25px;
-      color: $orange_color;
+      color: $dark_Gray;
       transition: color ease-out 0.5s;
 
       &:hover {
@@ -59,9 +57,7 @@
 
     }
   }
-
   .form {
-    margin-top: 37px;
     @include flex(flex, start, center);
     flex-direction: column;
     gap: 5px;
@@ -112,13 +108,10 @@
       width: 80%;
     }
   }
-
-
   .location-filtre {
-    margin-top: 11px;
+    margin: 0;
     padding: 0;
     width: 100%;
-    margin-bottom: 12px;
     display: flex;
     gap: 10px;
 
@@ -187,14 +180,24 @@
     }
   }
 
-  .saved-adresses-title {
-    width: 100%;
-    color: $dark_Gray;
-    font-family: 'Poppins-Medium', serif;
-    font-size: 15px;
-    line-height: normal;
-    margin: 15px auto 5px auto;
-  }
+  .saved-adresses-area{
+    margin: 15px 0 0;
+
+    .saved-adresses-title {
+      font-family: 'Poppins-Medium', serif;
+      @include fonts(15px, 15px, $dark_Gray);
+      margin: 0 0 20px;
+    }
+    .location-filtre {
+      .select {
+        border-color: $color-blue-pelorous;
+      }
+      .selected {
+        background-color: $color-blue-pelorous;
+      }
+    }
+  } 
+  
 
   .adresses-container {
     overflow-y: auto;
@@ -290,6 +293,194 @@
 
     .container {
       max-height: max-content;
+    }
+  }
+}
+
+
+/* -- modal-container -- */
+
+.modal-container {
+  .modal-title {
+    @include fonts(32px, 32px, $dark_Gray);
+    font-family: 'Poppins-Bold', serif;
+    margin: 0 0 50px;
+  }
+}
+
+.modal-location {
+  margin: 0;
+  padding: 0;
+
+  .form {
+    margin: 0;
+
+    .adresses_container {
+      display: block;
+      width: 100%;
+      margin: 0;
+
+      .location-search-input-container {
+        padding: 0;
+
+        .location-search-inpute {
+          background-color: $color-gray-gallery-2;
+          border-radius: 15px;
+          border: 0;
+          height: 53px;
+          padding: 0 15px;
+
+          &::before {
+            margin: 0;
+          }
+          input {
+            &[type=text] {
+              background-color: transparent;
+              @include fonts(16px, 16px, $dark_Gray);
+              font-family: 'Poppins-Medium', serif;
+              padding-left: 15px;
+            }
+          }
+        }
+      }
+    }
+  }
+  .container-map {
+    .map-container {
+      .map-and-button {
+        padding: 0;
+      }
+    }
+  }
+  .current-position {
+    padding: 33px 0;
+    margin: 0 0 30px;
+    border-top: 1px solid $light_Gray;
+    border-bottom: 1px solid $light_Gray;
+    position: relative;
+
+    .current-position_input-blc {
+      background-image: url('./../../assets/current-position-icn.svg');
+      background-repeat: no-repeat;
+      background-size: 18px auto;
+      background-position: left center;
+      padding: 0 50px;
+
+      .form-control {
+        padding-left: 0;
+        @include fonts(16px, 16px, $dark_Gray);
+        font-family: 'Poppins-Medium', serif;
+        border: 0;
+
+        &::-webkit-input-placeholder {
+          color: $dark_Gray;
+        }
+        &::-moz-placeholder {
+          color: $dark_Gray;
+        }
+        &:-ms-input-placeholder {
+          color: $dark_Gray;
+        }
+        &:-moz-placeholder {
+          color: $dark_Gray;
+        }
+      }
+    }
+    .btn {
+      &.btn-edit {
+        position: absolute;
+        top: 33px;
+        right: 0;
+        background-image: url('./../../assets/edit-black.svg');
+        background-repeat: no-repeat;
+        background-position: center;
+        background-size: 14px auto;
+        background-color: $color-gray-gallery-2;
+        @include dimensions(34px, 34px);
+        border-radius: 50%;
+      }
+    }
+  } 
+  .select-map-area {
+    display: flex;
+        
+    &::before {
+      content: '';
+      display: block;
+      background-image: url('./../../assets/select-icn.svg');
+      background-repeat: no-repeat;
+      background-position: center;
+      background-size: 17px auto;
+      background-color: $color-blue-pelorous;
+      @include dimensions(28px, 28px);
+      border-radius: 50%;
+    }
+    .btn {
+      &.btn-select-map {
+        @include fonts(16px, 16px, $dark_Gray);
+        font-family: 'Poppins-Medium', serif;
+        padding-left: 20px;
+      }
+    }
+  }
+  .btns-group {
+    @include flex;
+
+    .btn {
+      &.btn-next {
+        @include fonts(16px, 16px, $color-white);
+        font-family: 'Poppins-SemiBold', serif;
+        min-width: 400px;
+        height: 43px;
+        border-radius: 55px;
+        background-color: $color-yellow-saffron;
+      }
+    }
+  }
+}
+
+/* -- address-notfound-area -- */
+
+.address-notfound-area  {
+  margin: 15px 0 0;
+  width: 100%;
+
+  .address-notfound-msg-err {
+    @include fonts(13px, 13px, $color-apricot-2);
+    font-family: 'Poppins-Medium', serif;
+    margin: 0 0 15px;
+  }
+  .address-notfound-content {
+    background-image: url('./../../assets/address-not-found-icn.svg');
+    background-repeat: no-repeat;
+    background-position: top center;
+    background-size: 163px auto;
+    padding: 155px 0 0;
+
+    p {
+      margin: 0 0 22px;
+      @include fonts(22px, 22px, $dark_Gray);
+      font-family: 'Poppins-SemiBold', serif;
+      text-align: center;
+    }
+    .btns-group {
+      @include flex(flex, center, center);
+      gap: 17px;
+      
+      .btn {
+        &.btn-adress {
+          background-color: $color-blue-pelorous;
+          min-width: 100px;
+          width: initial;
+          height: 27px;
+          border-radius: 20px;
+          @include fonts(14px, 14px, $color-white);
+          font-family: 'Poppins-Regular', serif;
+          font-weight: weight(regular);
+          margin: 0;
+          justify-content: center;
+        }
+      }
     }
   }
 }

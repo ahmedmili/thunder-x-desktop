@@ -126,20 +126,35 @@ const Map: React.FC<MapProps> = ({ className, forced = false }) => {
     })
 
     return (
-      <Container>
-        <h1 className="text-center">{t('adress.add')}</h1>
-        <Row>
-          <Col className='col-5'>
+      <Container className="modal-container modal-location">
+        <h1 className="modal-title text-center">{t('adress.add')}</h1>
+        <div className="modal-location_wrap">
+          <div className='modal-location_wrap-blc'>
             <div className="form">
 
-              {/*  search location input */}
-              <label>{t('adress.delivAddress')}</label>
+              {/*
+                <label>{t('adress.delivAddress')}</label>
+              */}
               <div className="adresses_container">
                 <AutocompleteInput initLocation={true} />
               </div>
+
+              <div className="address-notfound-area d-none">
+                <div className="address-notfound-msg-err">
+                  Cette adresse est introuvable. Réssayer ?
+                </div>
+                <div className="address-notfound-content">
+                  <p>Disponible à :</p>
+                  <div className="btns-group">
+                    <button className="btn btn-adress">Sousse</button>
+                    <button className="btn btn-adress">Monastir</button>
+                    <button className="btn btn-adress">Mahdia</button>
+                  </div>
+                </div>
+              </div>
             </div>
             {clientAdressTable.length > 0 &&
-              <>
+              <div className="saved-adresses-area">
                 <p className="saved-adresses-title">{t('adress.savedAdress')}</p>
                 <div className="location-filtre">
                   <div className={`select ${selectedOption == 1 ? "selected" : ""}`}  >
@@ -155,14 +170,13 @@ const Map: React.FC<MapProps> = ({ className, forced = false }) => {
                     <label htmlFor="autre">{t("autre")}</label>
                   </div>
                 </div>
-              </>
+              </div>
             }
             {filtredPositions.length > 0 ? (
               <>
                 {/* <center>
                 </center> */}
                 <div className="adresses-container">
-
                   {filtredPositions.map((element) => (
                     <>
                       <AdressComponent
@@ -186,11 +200,27 @@ const Map: React.FC<MapProps> = ({ className, forced = false }) => {
               </div>
             )
             }
-          </Col>
-          <Col className='col-7'>
+          </div>
+
+          <div className="current-position">
+            <div className="current-position_input-blc">
+              <input className="form-control" type="text" placeholder="Position actuelle" />
+            </div>
+            <button className="btn btn-edit"></button>
+          </div>
+
+          <div className="select-map-area">
+            <button className="btn btn-select-map">Sélectionner sur la carte</button>
+          </div>
+
+          <div className='modal-location_wrap-blc'>
             <MapCard cancel={cancel} />
-          </Col>
-        </Row>
+          </div>
+
+          <div className="btns-group">
+            <button className="btn btn-next">Continuer</button>
+          </div>
+        </div>
       </Container>
     )
   }
