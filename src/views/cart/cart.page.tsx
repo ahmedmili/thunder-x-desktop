@@ -40,6 +40,7 @@ import Messanger from "../../components/Popups/Messanger/Messanger";
 import MinCostError from "../../components/Popups/MinCostError/MinCostError";
 import WarnPopup from "../../components/Popups/WarnPopup/WarnPopup";
 import PaymentPopup from "../../components/Popups/payment/PaymentPopup";
+import TimePickerComponent from "../../components/TimePicker/TimePicker";
 import { LocationService } from "../../services/api/Location.api";
 import { adressService } from "../../services/api/adress.api";
 import { cartService } from "../../services/api/cart.api";
@@ -48,7 +49,6 @@ import { supplierServices } from "../../services/api/suppliers.api";
 import { userService } from "../../services/api/user.api";
 import { localStorageService } from "../../services/localStorageService";
 import "./cart.page.scss";
-import TimePickerComponent from "../../components/TimePicker/TimePicker";
 
 const CartPage: React.FC = () => {
   const { t } = useTranslation();
@@ -83,6 +83,7 @@ const CartPage: React.FC = () => {
   const [popupType, setPopupType] = React.useState<string>("");
   const [showPopup, setShowPopup] = React.useState<boolean>(false);
   const [showServicePopup, setShowServicePopup] = React.useState<boolean>(false);
+  const [showAuthWarnPopup, setShowAuthWarnPopup] = React.useState<boolean>(false);
 
   // promo vars
   const [promo, setPromo] = React.useState<string>("");
@@ -385,6 +386,8 @@ const CartPage: React.FC = () => {
             throw error
           }
         }
+      } else {
+        setShowAuthWarnPopup(true)
       }
     } catch (e) {
       throw e
@@ -423,6 +426,9 @@ const CartPage: React.FC = () => {
 
   const handleServicePopup = () => {
     setShowServicePopup((current) => !current)
+  }
+  const handleAuthWarnPopup = () => {
+    setShowAuthWarnPopup((current) => !current)
   }
 
   // remove order
@@ -831,7 +837,7 @@ const CartPage: React.FC = () => {
                       {currentStep == 1 && (<>
                         <div className="cart-items">
                           <div className="cart-items__title">
-                            {t('cartPage.product')}
+                            {t('cartPage.yourCart')}
                           </div>
                           <div className="cart-items__list">
                             <h1 className="supplier-name">
@@ -1130,8 +1136,8 @@ const CartPage: React.FC = () => {
                             <a className="edit-info-customer-link" onClick={() => dispatch({ type: "SET_SHOW", payload: true })} >{t('update')}</a>
                           </div>
                           <div className="customer-infos-area">
-                            <div className="customer-info_name"> {`${user.firstname} ${user.lastname}`}</div>
-                            <div className="customer-info_mobile">{t('mobile')} : <span>{phoneNumber}</span></div>
+                            <div className="customer-info_name">{user ? `${user.firstname} ${user.lastname} ` : t('cartPage.visitor')} </div>
+                            <div className="customer-info_mobile">{t('mobile')} : <span>{phoneNumber ? phoneNumber : ""}</span></div>
                             <div className="customer-info_adresse">
                               {userPosition?.coords.label}
                             </div>
@@ -1274,7 +1280,12 @@ const CartPage: React.FC = () => {
             }
             {
               showServicePopup && (
-                <WarnPopup message="Ce service n'est pas disponible dans votre ville" closeButtonText={t('continuer')} confirmButtonText={t('Modal.finishCommand.dropOldCommand')} close={handleServicePopup} accept={dropOrder} />
+                <WarnPopup message={t('searchPage.warnServiceMessage')} closeButtonText={t('continuer')} confirmButtonText={t('Modal.finishCommand.dropOldCommand')} close={handleServicePopup} accept={dropOrder} />
+              )
+            }
+            {
+              showAuthWarnPopup && (
+                <WarnPopup message={t('searchPage.warnAuthMessage')} closeButtonText={t('Annuler')} confirmButtonText={t('login2')} close={handleAuthWarnPopup} accept={() => navigate('/login/')} />
               )
             }
           </div >

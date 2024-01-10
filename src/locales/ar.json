@@ -238,6 +238,7 @@
   "cartPage.addComment": "أضف تعليقًا",
   "cartPage.phoneNumber2": "رقم الهاتف :",
   "cartPage.name": "اسم",
+  "cartPage.visitor": "الزائر",
   "cartPage.client": "العملاء",
   "cartPage.delivto": "التسليم إلى",
   "cartPage.emporter": "لتأخذ",
@@ -324,6 +325,9 @@
   "searchPage.question": "ماذا يمكننا أن نقدم لك ؟",
   "Reset": "إعادة تعيين",
   "searchPage.purchasedTogether": "المنتجات المشتراة معًا",
+  "searchPage.warnAuthMessage": "لإطلاق طلبك، يجب عليك تسجيل الدخول أو إنشاء حساب جديد",
+  "searchPage.warnServiceMessage": "ترجمة إلى العربية: هذه الخدمة غير متاحة في مدينتك",
+
   "update": "التعديل",
   "toPay": "للدفع",
   "Retour": "عودة ",
