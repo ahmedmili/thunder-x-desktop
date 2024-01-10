@@ -38,11 +38,19 @@ const Header = () => {
   const [showProfile, setShowProfile] = useState<boolean>(false); // Add state variable for showing/hiding the cart
   const [scrolling, setScrolling] = useState<boolean>(false);
   const [notifsQts, setNotifsQts] = useState<number>(msg_notifs);
+  const [orderTracking, setOrderTracking] = useState<boolean>(false);
 
   const dispatch = useAppDispatch();
   const navigate = useNavigate();
   const routerLocation = useLocation();
   const { t } = useTranslation();
+
+  const orderTrackingToggle = () => {
+    setOrderTracking(true);
+  }
+  const closeOrderTrackingToggle = () => {
+    setOrderTracking(false);
+  }
 
   const handleScroll = () => {
     // Check if the user has scrolled down more than a certain threshold
@@ -247,12 +255,12 @@ const Header = () => {
                 </button>
 
                 <div className="order-tracking-area">
-                  <button className="btn btn-order-tracking"></button>
+                  <button className="btn btn-order-tracking" onClick={orderTrackingToggle}></button>
 
-                  <div className="order-tracking-wrapper">
+                  <div className={`order-tracking-wrapper ${orderTracking ? 'active' : ''}`}>
                     <div className="order-tracking_header">
                       <h3 className="order-tracking_header-title">Suivi de mes commandes</h3>
-                      <button className="close"></button>
+                      <button className="close" onClick={closeOrderTrackingToggle}></button>
                     </div>
                     <div className="order-tracking_body">
                       <div className="being-processed-area">
