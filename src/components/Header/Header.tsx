@@ -200,7 +200,7 @@ const Header = () => {
               </Row>
 
               {/*  Thunder logo section  */}
-              
+
             </Container>
 
           </div>
@@ -225,7 +225,7 @@ const Header = () => {
                       {/* {t('entrezAdress')} */}
                     </a>
                   </Box >
-                  {/*                   
+                  {/*
                   {location
                     ? location?.coords.label
                     : t('no_location_detected')} */}

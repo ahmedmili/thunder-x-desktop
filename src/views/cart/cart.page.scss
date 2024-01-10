@@ -22,11 +22,9 @@
       position: relative;
       padding: 0;
 
-
       img {
         object-fit: cover;
-        width: 100%;
-        height: 100%;
+        @include dimensions;
         border-bottom-left-radius: 177px;
       }
 
@@ -35,21 +33,18 @@
         top: 50%;
         left: 40vw;
         text-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
-        font-family: Poppins;
+        font-family: 'Poppins-SemiBold', serif;
         font-size: 40px;
-        font-style: normal;
-        font-weight: 600;
         line-height: normal;
-        color: white;
+        color: $color-white;
       }
     }
   }
 
   .btn-back {
-    color: #24A6A4;
-    font-family: Poppins;
+    color: $Ocean_Teal;
+    font-family: 'Poppins-SemiBold', serif;
     font-size: 14px;
-    font-weight: 600;
     padding-left: 50px;
     background-repeat: no-repeat;
     background-position: left center;
@@ -88,7 +83,10 @@
         padding: 0;
       }
 
-
+      .devider {
+        @include dimensions(100%, 1px);
+        background-color: $color-gray-gallery-2;
+      }
 
       .commentaire-section {
         @include flex(flex, center, flex-start);
@@ -104,7 +102,7 @@
           background-color: $color-white;
           @include fonts(13px, 13px, $dark_Gray);
           font-family: 'Poppins-Regular', serif;
-          font-weight: 400;
+          font-weight: weight(regular);
           width: calc(83% - 25px);
           height: 89px;
           padding: 26px;
@@ -139,9 +137,8 @@
           background-color: $color-white;
           @include fonts(13px, 13px, $dark_Gray);
           font-family: 'Poppins-Regular', serif;
-          font-weight: 400;
-          width: 100%;
-          height: 43px;
+          font-weight: weight(regular);
+          @include dimensions(100%, 43px);
           padding: 6px 12px;
           margin: 0;
 
@@ -184,21 +181,17 @@
 
         input[type='text'] {
           padding: 20px;
-          width: 222px;
-          height: 43px;
+          @include dimensions(222px, 43px);
           outline: none;
           border-radius: 55px;
-          border: 1px solid $orange_color;
-          background: #FFF;
-
+          @include border(1px, $orange_color);
+          background: $color-white;
           font-size: 14px;
 
           &::placeholder {
             color: $orange_color;
-            font-family: Poppins;
+            font-family: 'Poppins-Medium', serif;
             font-size: 17px;
-            font-style: normal;
-            font-weight: 500;
             line-height: normal;
             text-align: center;
           }
@@ -249,7 +242,7 @@
               transition: all 0.3s ease-in;
               @include fonts(13px, 13px, $dark_Gray);
               font-family: 'Poppins-Regular', serif;
-              font-weight: 400;
+              font-weight: weight(regular);
               letter-spacing: -0.39px;
 
               &:hover {
@@ -277,9 +270,8 @@
               background-color: $color-white;
               @include fonts(13px, 13px, $dark_Gray);
               font-family: 'Poppins-Regular', serif;
-              font-weight: 400;
-              width: 100%;
-              height: 43px;
+              font-weight: weight(regular);
+              @include dimensions(100%, 43px);
               padding: 6px 12px;
               margin: 0;
 
@@ -322,9 +314,8 @@
               background-color: $color-white;
               @include fonts(13px, 13px, $dark_Gray);
               font-family: 'Poppins-Regular', serif;
-              font-weight: 400;
-              width: 100%;
-              height: 43px;
+              font-weight: weight(regular);
+              @include dimensions(100%, 43px);
               padding: 13px 12px;
               margin: 0;
 
@@ -365,11 +356,10 @@
 
       .method {
         @include flex(flex, center, space-between);
-        border: 1px solid $light_Gray;
+        @include border(1px, $light_Gray);
         border-radius: 15px;
-        height: 67px;
         padding: 20px 25px;
-        width: 100%;
+        @include dimensions(100%, 67px);
 
         label {
           @include fonts(16px, 16px, $dark_Gray);
@@ -456,10 +446,8 @@
         label {
           cursor: pointer;
           color: $light_Gray;
-          font-family: Poppins;
+          font-family: 'Poppins-SemiBold', serif;
           font-size: 20px;
-          font-style: normal;
-          font-weight: 600;
           line-height: normal;
           transition: all ease-in-out 0.5s;
         }
@@ -698,12 +686,10 @@
       button {
         min-width: 292px;
         height: 50px;
-        display: flex;
-        justify-content: center;
-        align-items: center;
+        @include flex;
         font-family: Poppins;
         font-size: 17px;
-        font-weight: 500;
+        font-weight: weight(medium);
         border-radius: 55px;
         padding-inline: 36px;
 
@@ -724,7 +710,7 @@
 
       .continue {
         border-radius: 55px;
-        border: 1px solid $orange_color;
+        @include border(1px, $orange_color);
         color: $orange_color;
       }
     }
@@ -757,19 +743,15 @@
 
           span {
             color: $dark_Gray;
-            font-family: Poppins;
+            font-family: 'Poppins-SemiBold', serif;
             font-size: 16px;
-            font-style: normal;
-            font-weight: 600;
             line-height: normal;
           }
 
           .value {
             color: $Ocean_Teal;
-            font-family: Poppins;
+            font-family: 'Poppins-SemiBold', serif;
             font-size: 16px;
-            font-style: normal;
-            font-weight: 600;
             line-height: normal;
           }
         }
@@ -780,28 +762,22 @@
           gap: 15px;
           padding-bottom: 22px;
           margin-bottom: 12px;
-          border-bottom: solid 1px black;
+          border-bottom: solid 1px $dark_002;
 
           span {
             color: $dark_Gray;
-            font-family: Poppins;
+            font-family: 'Poppins-SemiBold', serif;
             font-size: 16px;
-            font-style: normal;
-            font-weight: 600;
             line-height: normal;
           }
 
           .panie-row {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
+            @include flex(flex, center, space-between);
 
             span {
               color: $Ocean_Teal;
-              font-family: Poppins;
+              font-family: 'Poppins-SemiBold', serif;
               font-size: 16px;
-              font-style: normal;
-              font-weight: 600;
               line-height: normal;
             }
           }
@@ -815,10 +791,8 @@
 
           span {
             color: $dark_Gray;
-            font-family: Poppins;
+            font-family: 'Poppins-SemiBold', serif;
             font-size: 16px;
-            font-style: normal;
-            font-weight: 600;
             line-height: normal;
           }
 
@@ -828,21 +802,16 @@
         }
 
         .button-container {
-          display: flex;
-          justify-content: center;
-          align-items: center;
+          @include flex;
 
           button {
-            width: 216px;
-            height: 43px;
+            @include dimensions(216px, 43px);
             text-align: center;
             border-radius: 55px;
             background: $orange_color;
-            color: #FFF;
-            font-family: Poppins;
+            color: $color-white;
+            font-family: 'Poppins-Medium', serif;
             font-size: 17px;
-            font-style: normal;
-            font-weight: 500;
             line-height: normal;
 
             &:hover {
@@ -1064,14 +1033,12 @@
 
       .messanger-popup-btn,
       .phone-popup-btn {
-        width: 64px;
-        height: 64px;
+        @include dimensions(64px, 64px);
         background-position: center;
         background-repeat: no-repeat;
         background-size: cover;
         background-color: transparent;
         border: navajowhite;
-
       }
 
       .messanger-popup-btn {
@@ -1081,15 +1048,13 @@
           position: absolute;
           right: 0;
           top: 3px;
-          color: white;
-          background-color: #FBC000;
+          color: $color-white;
+          background-color: $orange_color;
           border-radius: 50%;
           padding: 5px;
           font-size: 11px;
           margin: 0;
-          display: flex;
-          align-items: center;
-          justify-content: center;
+          @include flex;
         }
       }
 
@@ -1112,12 +1077,9 @@
 .noDataFound {
   width: 100%;
   min-height: 80vh;
-  display: flex;
   flex-direction: column;
-  justify-content: center;
-  align-items: center;
+  @include flex;
   padding-bottom: 196px;
-
   margin: 105px 0 0 auto;
 
   .empty-container-tab {
@@ -1127,20 +1089,14 @@
     background: $Off-White;
 
     .empty-header {
-      width: 100%;
-      height: 21px;
+      @include dimensions(100%, 21px);
       background-color: $Ocean_Teal;
     }
 
-
     p {
       margin: 17px auto 21px 34px;
-      color: $dark_Gray;
-      font-family: Poppins;
-      font-size: 18px;
-      font-style: normal;
-      font-weight: 600;
-      line-height: 20px;
+      font-family: 'Poppins-SemiBold', serif;
+      @include fonts(18px, 20px, $dark_Gray);
     }
   }
 
@@ -1151,14 +1107,11 @@
   .emptyButton {
     border-radius: 55px;
     background-color: $orange_color;
-    width: 271px;
-    height: 55px;
+    @include dimensions(271px, 55px);
     text-align: center;
-    color: #FFF;
-    font-family: Poppins;
+    color: $color-white;
+    font-family: 'Poppins-SemiBold', serif;
     font-size: 20px;
-    font-style: normal;
-    font-weight: 600;
     line-height: normal;
 
     &:hover {
@@ -1323,12 +1276,12 @@
 
 .cart-items {
   width: 100%;
-  font-family: Poppins;
+  font-family: 'Poppins-Regular', serif;
 
   &__title {
-    color: #484848;
+    color: $dark_Gray;
     font-size: 18px;
-    font-weight: 600;
+    font-weight: weight(semiBold);
     margin-bottom: 36px;
   }
 
@@ -1342,16 +1295,14 @@
     margin-bottom: 30px;
 
     &__product {
-      display: flex;
-      justify-content: space-between;
-      align-items: flex-start;
+      @include flex(flex, flex-start, space-between);
       width: 100%;
       gap: 25px;
 
       .supplier-name {
-        color: #24A6A4;
+        color: $Ocean_Teal;
         font-size: 17px;
-        font-weight: 500;
+        font-weight: weight(medium);
         width: 17%;
       }
 
@@ -1359,24 +1310,24 @@
         width: 21%;
 
         .title {
-          color: #484848;
+          color: $dark_Gray;
           font-size: 18px;
-          font-weight: 600;
+          font-weight: weight(semiBold);
           line-height: 1;
           margin-bottom: 14px;
           display: block;
         }
 
         .description {
-          color: #484848;
+          color: $dark_Gray;
           font-size: 15px;
-          font-weight: 400;
+          font-weight: weight(regular);
           line-height: 1.2;
           margin-top: 7px;
           display: block;
 
           &--title {
-            font-weight: 600;
+            font-weight: weight(semiBold);
           }
 
           >span {
@@ -1400,18 +1351,16 @@
 
               p {
                 margin: 0;
-                color: #958E8E;
-                font-family: Poppins;
+                color: $light_Gray;
+                font-family: 'Poppins-Regular', serif;
                 font-size: 15px;
-                font-style: normal;
-                font-weight: 400;
+                font-weight: weight(regular);
                 line-height: 149.5%;
                 position: relative;
                 padding-right: 15px;
 
                 &:after {
-                  width: 8px;
-                  height: 10px;
+                  @include dimensions(8px, 10px);
                   content: '';
                   background-size: contain;
                   background-position: center;
@@ -1442,9 +1391,9 @@
       }
 
       .total-price {
-        color: #24A6A4;
+        color: $Ocean_Teal;
         font-size: 16px;
-        font-weight: 500;
+        font-weight: weight(medium);
         line-height: 1;
       }
 
@@ -1475,7 +1424,7 @@
 
   input {
     border-radius: 7px;
-    border: 1px solid $light_Gray;
+    @include border(1px, $light_Gray);
     background-color: $color-white;
     @include dimensions(97px, 34px);
     @include fonts(17px, 17px, $shade-reddish-orange);
@@ -1603,8 +1552,7 @@
         gap: 8px;
 
         button {
-          width: 246px;
-          height: 43px;
+          @include dimensions(246px, 43px);
           font-size: 17px;
         }
       }
@@ -1660,15 +1608,12 @@
                 }
 
                 img {
-                  width: 43px;
-                  height: 70px;
-
+                  @include dimensions(43px, 70px);
                 }
               }
 
               button {
-                width: 34px;
-                height: 34px;
+                @include dimensions(34px, 34px);
                 font-size: 15px;
                 margin-right: -2px;
                 margin-left: -4px;
@@ -1686,8 +1631,7 @@
 
                       .count-more,
                       .count-less {
-                        width: 14px;
-                        height: 14px;
+                        @include dimensions(14px, 14px);
                       }
                     }
                   }
@@ -1728,16 +1672,14 @@
           gap: 10px;
 
           .button {
-            width: 173px;
-            height: 43px;
+            @include dimensions(173px, 43px);
             border-radius: 55px;
             font-size: 15px;
           }
 
           input[type='text'] {
             padding: 20px;
-            width: 173px;
-            height: 43px;
+            @include dimensions(173px, 43px);
             font-size: 15px;
 
             &::placeholder {
@@ -1757,8 +1699,7 @@
           }
 
           .button {
-            width: 173px;
-            height: 43px;
+            @include dimensions(173px, 43px);
             font-size: 15px;
           }
         }
@@ -1793,8 +1734,7 @@
           }
 
           .icon {
-            width: 30px;
-            height: 30px;
+            @include dimensions(30px, 30px);
           }
 
           .form-check-input[type="radio"] {
@@ -1868,8 +1808,7 @@
         max-width: 339px;
 
         .info {
-          width: 266px;
-          height: 391px;
+          @include dimensions(266px, 391px);
         }
 
       }
@@ -1924,13 +1863,10 @@
             }
           }
 
-
-
           tbody {
             .ariticle-info-container {
               button {
-                width: 24px;
-                height: 24px;
+                @include dimensions(24px, 24px);
                 font-size: 13px;
                 margin-right: 0px;
                 margin-left: 0px;
@@ -1952,8 +1888,7 @@
                 padding-left: 5px;
 
                 img {
-                  width: 28px;
-                  height: 62px;
+                  @include dimensions(28px, 62px);
                   object-fit: cover;
                 }
 
@@ -2002,8 +1937,7 @@
           }
 
           .button {
-            width: 110px;
-            height: 43px;
+            @include dimensions(110px, 43px);
             font-size: 15px;
           }
         }
@@ -2017,8 +1951,7 @@
       .paiment-container {
         .method {
           .icon {
-            width: 25px;
-            height: 19px;
+            @include dimensions(25px, 19px);
           }
 
           label {
@@ -2074,8 +2007,7 @@
         height: 100%;
 
         .info {
-          width: 248px;
-          height: 300px;
+          @include dimensions(248px, 300px);
 
           .sous-total {
             padding-bottom: 9px;

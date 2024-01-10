@@ -2,7 +2,6 @@ import React, { MouseEventHandler, useEffect, useState } from "react";
 import {
   changeItemQuantity,
   clearCart,
-  removeItem,
   removeItemWithIndex,
   setCodePromo,
   setComment,
@@ -13,32 +12,32 @@ import {
 import CartSVG from '../../assets/card-icn.svg';
 import PayCashSVG from '../../assets/money-icn.svg';
 
-import bagPaperShoppingIcn from '../../assets/panier/take-away-icn.svg';
-import dinnerFurnitureIcn from '../../assets/panier/onthespot-icn.svg';
 import empty from '../../assets/panier/empty.png';
 import scooterTransportIcn from '../../assets/panier/ondelivery-icn.svg';
+import dinnerFurnitureIcn from '../../assets/panier/onthespot-icn.svg';
+import bagPaperShoppingIcn from '../../assets/panier/take-away-icn.svg';
 
-import KeyboardArrowDownOutlinedIcon from '@mui/icons-material/KeyboardArrowDownOutlined';
-import KeyboardArrowUpOutlinedIcon from '@mui/icons-material/KeyboardArrowUpOutlined';
 import { RootState, useAppDispatch, useAppSelector } from "../../Redux/store";
 
 import 'react-clock/dist/Clock.css';
-import TimePicker from 'react-time-picker';
-import 'react-time-picker/dist/TimePicker.css';
+
+
 
 import { useTranslation } from "react-i18next";
 import { useNavigate } from "react-router-dom";
-// import { toast } from "react-toastify";
 import * as z from "zod";
 import { logout } from "../../Redux/slices/userSlice";
 import { FoodItem } from "../../services/types";
 
-import CloseIcon from '@mui/icons-material/Close';
 import Accordion from '@mui/material/Accordion';
 import AccordionDetails from '@mui/material/AccordionDetails';
 import AccordionSummary from '@mui/material/AccordionSummary';
 import { Col, Container, Row } from "react-bootstrap";
+import { toast } from "react-toastify";
+import { fetchMessages } from "../../Redux/slices/messanger";
 import MessangerBtnIcon from '../../assets/profile/Discuter/messanger-btn.svg';
+import Messanger from "../../components/Popups/Messanger/Messanger";
+import MinCostError from "../../components/Popups/MinCostError/MinCostError";
 import WarnPopup from "../../components/Popups/WarnPopup/WarnPopup";
 import PaymentPopup from "../../components/Popups/payment/PaymentPopup";
 import { LocationService } from "../../services/api/Location.api";
@@ -49,12 +48,7 @@ import { supplierServices } from "../../services/api/suppliers.api";
 import { userService } from "../../services/api/user.api";
 import { localStorageService } from "../../services/localStorageService";
 import "./cart.page.scss";
-import Messanger from "../../components/Popups/Messanger/Messanger";
-import { fetchMessages } from "../../Redux/slices/messanger";
-import MinCostError from "../../components/Popups/MinCostError/MinCostError";
-import { toast } from "react-toastify";
-import SupplierImg from '../../assets/menu-1.png';
-
+import TimePickerComponent from "../../components/TimePicker/TimePicker";
 
 const CartPage: React.FC = () => {
   const { t } = useTranslation();
@@ -84,6 +78,7 @@ const CartPage: React.FC = () => {
   const [total, setTotal] = useState<number>(0)
   // const [delivPrice, setDelivPrice] = useState<number>(0)
   const [aComment, setAComment] = React.useState<string>(comment ? comment : "");
+  const [showTimer, setShowTimer] = React.useState<boolean>(false);
 
   const [popupType, setPopupType] = React.useState<string>("");
   const [showPopup, setShowPopup] = React.useState<boolean>(false);
@@ -177,14 +172,11 @@ const CartPage: React.FC = () => {
   };
 
   const ArticleProvider: React.FC<Article> = ({ item, remove }) => {
-
     return (
       <>
 
         <div className="supplier-desc-header">
-          {/* <div className="supplier-name">
-            <span >{item.supplier_data.supplier_name}</span>
-          </div> */}
+
 
           <div className="show-all-link-blc">
             <a className="show-all-link">
@@ -195,9 +187,14 @@ const CartPage: React.FC = () => {
 
         <div className="supplier-desc-body">
           <div className="supplier-name-blc">
-            <div className="supplier-img-blc">
-              <img src={item.product.image[0].path} alt="Supplier Img" />
-            </div>
+            {
+              item.product.image.length > 0 && (
+                <div className="supplier-img-blc">
+                  <img src={item.product.image[0].path} alt="Supplier Img" />
+                </div>
+              )
+            }
+
             <div className="supplier-title-blc">
               <h4 className="supplier-title">{item.product.name}</h4>
               <div className="total-price">
@@ -260,18 +257,6 @@ const CartPage: React.FC = () => {
     )
   }
 
-  useEffect(() => {
-    console.log('cartItems :', cartItems)
-  }, [cartItems])
-  // useEffect(() => {
-  //   console.log('user :', user)
-  // }, [user])
-  // useEffect(() => {
-  //   console.log('userPosition :', userPosition)
-  // }, [userPosition])
-  useEffect(() => {
-    console.log('supplier :', supplier)
-  }, [supplier])
 
   // handle submit and command creation
   const submitOrder = async (
@@ -302,13 +287,34 @@ const CartPage: React.FC = () => {
 
 
     try {
-      var year = takeAwayDate.getFullYear();
-      var month = (takeAwayDate.getMonth() + 1).toString().padStart(2, '0');
-      var day = takeAwayDate.getDate().toString().padStart(2, '0');
-      var hours = takeAwayDate.getHours().toString().padStart(2, '0');
-      var minutes = takeAwayDate.getMinutes().toString().padStart(2, '0');
+      var year;
+      var month;
+      var day;
+      var hours;
+      var minutes;
       var seconds = "00";
-      var formattedDate = year + '-' + month + '-' + day + ' ' + hours + ':' + minutes + ':' + seconds;
+      var formattedDate;
+
+      if (takeAwayDate instanceof Date) {
+        year = takeAwayDate.getFullYear();
+        month = (takeAwayDate.getMonth() + 1).toString().padStart(2, '0');
+        day = takeAwayDate.getDate().toString().padStart(2, '0');
+        hours = takeAwayDate.getHours().toString().padStart(2, '0');
+        minutes = takeAwayDate.getMinutes().toString().padStart(2, '0');
+        formattedDate = year + '-' + month + '-' + day + ' ' + hours + ':' + minutes + ':' + seconds;
+      } else if (typeof (takeAwayDate) === 'object') {
+        year = takeAwayDate.year();
+        month = (takeAwayDate.month() + 1).toString().padStart(2, '0');
+        day = takeAwayDate.date().toString().padStart(2, '0');
+        hours = takeAwayDate.hour().toString().padStart(2, '0');
+        minutes = takeAwayDate.minute().toString().padStart(2, '0');
+
+        formattedDate = year + '-' + month + '-' + day + ' ' + hours + ':' + minutes + ':' + seconds;
+      } else {
+        console.error('Invalid date type');
+
+      }
+
       const order = {
         addresse_id: 1,
         supplier_id: supplier,
@@ -708,23 +714,33 @@ const CartPage: React.FC = () => {
       case 1:
         take_away_plan = "default"
         setIsDelevery("surplace")
-        setTakeAwayDate(new Date(new Date().getTime() + 30 * 60000))
+        // setTakeAwayDate(new Date(new Date().getTime() + 30 * 60000))
         break;
       case 2:
         take_away_plan = "default"
         setIsDelevery("pickup")
-        setTakeAwayDate(new Date(new Date().getTime() + 30 * 60000))
+        // setTakeAwayDate(new Date(new Date().getTime() + 30 * 60000))
         break;
       case 3:
         take_away_plan = "plan"
         setIsDelevery("delivery")
-        setTakeAwayDate(new Date(new Date().getTime() + 30 * 60000))
+        // setTakeAwayDate(new Date(new Date().getTime() + 30 * 60000))
         break;
       default:
         take_away_plan = "plan"
         break;
     }
   }, [selectedOption])
+
+  const handleSelectedDate = (date: Date) => {
+    setTakeAwayDate(new Date(date))
+  }
+
+  useEffect(() => {
+    !showTimer && setTakeAwayDate(new Date(new Date().getTime() + 30 * 60000))
+  }, [showTimer])
+
+
 
   useEffect(() => {
     getSousTotal()
@@ -989,58 +1005,32 @@ const CartPage: React.FC = () => {
 
                             </div>
                           </div>
+                          <div className="order-recovery-area">
+                            <h3 className="order-recovery-title">
+                              Sélectionner l’option de la récupération de la commande
+                            </h3>
+
+                            <div className="order-recovery-select-blc">
+                              <div className={`order-recovery-select-item ${showTimer ? "" : "active"}`} onClick={() => setShowTimer(false)}>
+                                <span>
+                                  Le plus vite
+                                  possible
+                                  20-40 minutes
+                                </span>
+                              </div>
+                              <div className={`order-recovery-select-item ${!showTimer ? "" : "active"}`} onClick={() => setShowTimer(true)}>
+                                <span>
+                                  Modifier
+                                  la planification
+                                </span>
+                              </div>
+                            </div>
+                          </div>
                           {
-                            (selectedOption == 1 || selectedOption == 2) ?
-                              <>
-
-                                <div className="order-recovery-area">
-                                  <h3 className="order-recovery-title">
-                                    Sélectionner l’option de la récupération de la commande
-                                  </h3>
-
-                                  <div className="order-recovery-select-blc">
-                                    <div className="order-recovery-select-item active">
-                                      <span>
-                                        Le plus vite
-                                        possible
-                                        20-40 minutes
-                                      </span>
-                                    </div>
-                                    <div className="order-recovery-select-item">
-                                      <span>
-                                        Modifier
-                                        la planification
-                                      </span>
-                                    </div>
-                                  </div>
-                                </div>
-
-                                <TimePicker
-                                  className="time-picker"
-                                  onChange={(newTime) => {
-                                    // Parse the selected time and create a Date object
-                                    if (newTime !== null) {
-                                      const [hours, minutes] = newTime.split(':');
-                                      const selectedDate = new Date();
-                                      selectedDate.setHours(parseInt(hours, 10));
-                                      selectedDate.setMinutes(parseInt(minutes, 10));
-                                      const formattedTime = selectedDate.toLocaleString('en-US', {
-                                        hour: 'numeric',
-                                        minute: 'numeric',
-                                        month: 'numeric',
-                                        day: 'numeric',
-                                        year: 'numeric',
-                                      });
-                                      const parsedDate = new Date(formattedTime);
-                                      setTakeAwayDate(parsedDate);
-                                    }
-                                  }}
-                                  value={takeAwayDate}
-                                  format="h:m a"
-                                  disableClock={true}
-                                />
-                              </>
-                              : <></>
+                            (showTimer) &&
+                            <>
+                              <TimePickerComponent setSelectedDate={handleSelectedDate} />
+                            </>
                           }
                           <div className="deliv-to">
                             <h3 className="title">{selectedOption === 3 ? t('cartPage.delivto') : "Emportée par"}</h3>
@@ -1062,7 +1052,7 @@ const CartPage: React.FC = () => {
                                   <p className="adress-text">
                                     {userPosition?.coords.label}
                                   </p>
-                                  <button className="btn btn-edit"></button>
+                                  <button onClick={() => dispatch({ type: "SET_SHOW", payload: true })} className="btn btn-edit"></button>
                                 </div>
                               </div>}
                             <div className="message-validation">
@@ -1136,7 +1126,7 @@ const CartPage: React.FC = () => {
                           </div>
                           <div className="customer-infos-area">
                             <div className="customer-info_name"> {`${user.firstname} ${user.lastname}`}</div>
-                            <div className="customer-info_mobile">{t('mobile')} : <span>{user.tel}</span></div>
+                            <div className="customer-info_mobile">{t('mobile')} : <span>{phoneNumber}</span></div>
                             <div className="customer-info_adresse">
                               {userPosition?.coords.label}
                             </div>
