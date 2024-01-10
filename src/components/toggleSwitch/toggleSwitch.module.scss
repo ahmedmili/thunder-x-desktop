@@ -1,143 +1,151 @@
-  .SwitchesContainer {
-    padding: 5px;
-    width: 265px;
-    position: relative;
-    display: flex;
-    background: #24A6A4;
-    line-height: 39px;
-    border-radius: 3rem;
+@import '../../scss/extend';
 
-    .SwitchInput {
-      visibility: hidden;
-      position: absolute;
-      top: 0;
+.SwitchesContainer {
+  padding: 5px;
+  width: 265px;
+  position: relative;
+  display: flex;
+  align-items: center;
+  background-color: $color-blue-pelorous;
+  line-height: 39px;
+  border-radius: 3rem;
+  height: 43px;
+
+  .SwitchInput {
+    visibility: hidden;
+    position: absolute;
+    top: 0;
+  }
+  .SwitchLabel {
+    width: 50%;
+    padding: 0;
+    margin: 0;
+    text-align: center;
+    cursor: pointer;
+    color: $color-white;
+    font-size: 14px;
+    font-family: Poppins;
+
+    &.emporter{
+      background-image: url('/src/assets/icons/delivery.svg');
+      background-size: 16px;
+      background-position: 0px;
+      background-repeat: no-repeat;
+      left: 16px;
+      margin-left: 14px;
     }
+  }
+  .SwitchWrapper {
+    position: absolute;
+    top: 0px;
+    left: 0px;
+    bottom: 0px;
+    padding: 0;
+    width: 116px;
+    z-index: 3;
+    transition: transform 0.5s cubic-bezier(0.77, 0, 0.175, 1);
 
-    .SwitchLabel {
-      width: 50%;
-      padding: 0;
-      margin: 0;
-      text-align: center;
-      cursor: pointer;
-      color: white;
-      font-size: 14px;
-      font-family: Poppins;
-      &.emporter{
-        background-image: url(/src/assets/icons/delivery.svg);
-        background-size: 16px;
-        background-position: 0px;
-        background-repeat: no-repeat;
-        left: 16px;
-        margin-left: 14px;
+    .Switch {
+      padding: 5px;
+      border-radius: 3rem;
+      background-color: $color-apricot-2;
+      @include dimensions(150px, 100%);
+
+      .SwitchText {
+        text-align: center;
+        opacity: 0;
+        display: block;
+        color: $color-white;
+        transition: opacity 0.2s cubic-bezier(0.77, 0, 0.175, 1) 0.125s;
+        will-change: opacity;
+        position: absolute;
+        top: 3px;
+        left: 40px;
+        font-size: 14px;
+        font-family: Poppins;
+        width: 100px;
+
+        &.emporter {
+          padding-left: 23px;
+          background-image: url('/src/assets/icons/delivery.svg');
+          background-size: 16px;
+          background-position: left;
+          background-repeat: no-repeat;
+          left: 16px;
+        }
       }
+    }
+  }
+
+  .SwitchTextIcon {
+    font-size: 16px;
+    margin-right: 15px;
+  }
+}
+
+
+/* # $Mobile ::
+------------------------------------*/
+
+@media only screen and (max-width:1200px) {
+  .SwitchesContainer {
+    padding: 3px;
+    .SwitchWrapper {
+      width: 107.361px;
+    }
+    .SwitchLabel {
+      font-size: 14px;
     }
     .SwitchWrapper {
-      position: absolute;
-      top: 0px;
-      left: 0px;
-      bottom: 0px;
-      padding: 0;
-      width: 116px;
-      z-index: 3;
-      transition: transform 0.5s cubic-bezier(0.77, 0, 0.175, 1);
       .Switch {
-        padding: 5px;
-        border-radius: 3rem;
-        background: #FBC000;
-        height: 100%;
-        width: 150px;
         .SwitchText {
-          text-align: center;
-          opacity: 0;
-          display: block;
-          color: white;
-          transition: opacity 0.2s cubic-bezier(0.77, 0, 0.175, 1) 0.125s;
-          will-change: opacity;
-          position: absolute;
-          top: 5px;
-          left: 40px;
           font-size: 14px;
-          font-family: Poppins;
-          width: 100px;
-          &.emporter{
-            padding-left: 23px;
-            background-image: url(/src/assets/icons/delivery.svg);
-            background-size: 16px;
-            background-position: left;
-            background-repeat: no-repeat;
-            left: 16px;
-          }
-        }
-      }
-    }
-
-    .SwitchTextIcon {
-      font-size: 16px;
-      margin-right: 15px;
-    }
-  }
-
-
-
-  @media only screen and (max-width:1200px) {
-    .SwitchesContainer {
-      padding: 3px;
-      .SwitchWrapper {
-        width: 107.361px;
-      }
-      .SwitchLabel {
-        font-size: 14px;
-      }
-      .SwitchWrapper {
-        .Switch {
-          .SwitchText {
-            font-size: 14px;
-          }
         }
       }
     }
   }
+}
 
-  @media only screen and (max-width:768px) {
-    .SwitchesContainer {
+@media only screen and (max-width:768px) {
+  .SwitchesContainer {
+    padding: 0;
+    .SwitchWrapper {
+      width: 107.361px;
+    }
+    .SwitchLabel {
+      font-size: 11px;
+    }
+    .SwitchWrapper {
+      .Switch {
+        .SwitchText {
+          font-size: 11px;
+        }
+      }
+    }
+  }
+}
+
+@media only screen and (max-width: 576px) {
+  .SwitchesContainer {
+    width: 10rem;
+    line-height: 1rem;
+
+    .SwitchWrapper {
+      width: 50px;
+
+      .Switch {
+        .SwitchText {
+          font-size: 6px;
+        }
+      }
+    }
+    .SwitchLabel {
       padding: 0;
-      .SwitchWrapper {
-        width: 107.361px;
-      }
-      .SwitchLabel {
-        font-size: 11px;
-      }
-      .SwitchWrapper {
-        .Switch {
-          .SwitchText {
-            font-size: 11px;
-          }
-        }
-      }
+      font-size: 6px;
+    }
+    .SwitchTextIcon {
+      margin-right: 2px;
+      font-size: 8px;
     }
   }
-
-  @media only screen and (max-width: 576px) {
-    .SwitchesContainer {
-      width: 10rem;
-      line-height: 1rem;
-
-      .SwitchWrapper {
-        width: 50px;
-
-        .Switch {
-          .SwitchText {
-            font-size: 6px;
-          }
-        }
-      }
-      .SwitchLabel {
-        padding: 0;
-        font-size: 6px;
-      }
-      .SwitchTextIcon {
-        margin-right: 2px;
-        font-size: 8px;
-      }
-    }
-  }
+}

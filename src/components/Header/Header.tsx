@@ -21,6 +21,8 @@ import { UserCart } from '../UserCart/UserCart';
 import { Cart } from '../cart/cart';
 import SearchBar from "../searchBar/searchBar";
 
+import menuImg from './../../assets/menu-1.png';
+
 const Header = () => {
   const msg_notifs = useAppSelector((state) => state.messanger.unReadedMessages);
   const logged_in = localStorageService.getUserToken() !== null;
@@ -212,11 +214,12 @@ const Header = () => {
                 onClick={navigateToHome} >
                 <a href="#" className={`logoMain minimizedlogoMain`}></a>
               </div>
-
+              
               <div className='info'>
+                <div className="switches-area">
+                  <Switches />
+                </div>
                 <div className="position">
-
-                  <LocationOnIcon className='position-icon' />
                   <Box className="headerLocalisationMessageContainer" onClick={() => dispatch({ type: "SET_SHOW", payload: true })}>
                     <a href="#" className="top-bar-location" >
                       {location
@@ -243,20 +246,132 @@ const Header = () => {
                   {cartItems.length}
                 </button>
 
+                <div className="order-tracking-area">
+                  <button className="btn btn-order-tracking"></button>
+
+                  <div className="order-tracking-wrapper">
+                    <div className="order-tracking_header">
+                      <h3 className="order-tracking_header-title">Suivi de mes commandes</h3>
+                      <button className="close"></button>
+                    </div>
+                    <div className="order-tracking_body">
+                      <div className="being-processed-area">
+                        <div className="being-processed_desc">
+                          <h4>En cours de traitement</h4>
+                          <p>
+                            La commande est en attente d’acceptation de la part du restaurant
+                          </p>
+                        </div>
+                        <div className="being-processed_steps-area">
+                          <div className="step-item active"></div>
+                          <div className="step-item"></div>
+                          <div className="step-item"></div>
+                        </div>
+                      </div>
+                      <div className="processing-status-area">
+                        <div className="status-icn"></div>
+                        <div className="processing-status-desc">
+                          <h4>En cours de traitement</h4>
+                          <p>
+                            La commande est en attente d’acceptation de la part du restaurant
+                          </p>
+                        </div>
+                      </div>
+                      <div className="supplier-info-area">
+                        <div className="supplier-info_img-blc">
+                          <img src={menuImg} alt="suplier" />
+                        </div>
+                        <div className="supplier-desc">
+                          <h4>Restaurant Zahra</h4>
+                          <p>
+                            Sahloul, Sousse
+                          </p>
+                        </div>
+                      </div>
+                      <div className="total-price-calculate">
+                        <div className="total-price-blc">
+                          <div className="total-price-blc_wrapper">
+                            <div className="product-name">
+                              <div className="product-name_counter">X1</div>
+                              <div className="product-name_item">Sandwich</div>
+                            </div>
+                            <div className="price">10.00 DT</div>
+                          </div>
+                        </div>
+                        <div className="total-price-blc">
+                          <div className="total-price-blc_wrapper">
+                            <div className="total-price_label">Sous-total</div>
+                            <div className="price">10.00 DT</div>
+                          </div>
+                          <div className="total-price-blc_wrapper">
+                            <div className="total-price_label">Frais de livraison</div>
+                            <div className="price">3.00 DT</div>
+                          </div>
+                        </div>
+                        <div className="total-price-blc">
+                          <div className="total-price-blc_wrapper">
+                            <div className="total-price_label">Total</div>
+                            <div className="price">20.00 DT</div>
+                          </div>
+                        </div>
+                      </div>
+                      <div className="panier-blc">
+                        <h4 className="panier-title">
+                          Paiement
+                        </h4>
+                        <div className="paiement-status-list">
+                          <ul>
+                            <li>
+                              <div className="paiement-status_icon"></div>
+                              <div className="paiement-status-desc">
+                                <p className="paiement-status-item">En espéce à la livraison</p>
+                              </div>
+                            </li>
+                            <li>
+                              <div className="paiement-status_icon"></div>
+                              <div className="paiement-status-desc">
+                                <p className="paiement-status-item">Bonus</p>
+                                <div className="price">0.00</div>
+                              </div>
+                              
+                            </li>
+                            <li>
+                              <div className="paiement-status_icon"></div>
+                              <div className="paiement-status-desc">
+                                <p className="paiement-status-item">Repas gratuit</p>
+                              </div>
+                            </li>
+                            <li>
+                              <div className="paiement-status_icon"></div>
+                              <div className="paiement-status-desc">
+                                <p className="paiement-status-item">Code promo</p>
+                                <div className="price">AZ12UH</div>
+                              </div>
+                            </li>
+                          </ul>
+                        </div>
+                      </div>
+                      <div className="btns-group">
+                        <button className="btn btn-cancel-order">Annuler la comamnde</button>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
                 {!logged_in && (
                   <div className="header-buttons">
-                    <div
+                    <a
                       onClick={() => navigate('/register')}
                       className='LoadingButton header-signup'
                     >
                       {t('signup')}
-                    </div>
-                    <div
+                    </a>
+                    <button
                       onClick={() => navigate('/login')}
                       className='LoadingButton '
                     >
                       {t('login')}
-                    </div>
+                    </button>
                   </div>
                 )}
               </div>

@@ -63,22 +63,17 @@
     gap: 5px;
 
     h1 {
-      color: $dark_Gray;
       font-family: 'Poppins-SemiBold', serif;
-      font-size: 24px;
-      line-height: 36px;
+      @include fonts(24px, 36px, $dark_Gray);
       letter-spacing: 0em;
       text-align: center;
     }
-
     label {
       font-family: 'Poppins-Regular', serif;
-      font-size: 15px;
       font-weight: weight(regular);
-      line-height: 23px;
+      @include fonts(15px, 23px, $dark_Gray);
       letter-spacing: 0em;
       text-align: left;
-      color: $dark_Gray;
       margin-left: 10px;
     }
 
@@ -241,8 +236,7 @@
           line-height: normal;
 
           .position-icon {
-            width: 20px;
-            height: 27.5px;
+            @include dimensions(20px, 27px);
             background-position: center;
             background-repeat: no-repeat;
             object-fit: cover;
@@ -509,8 +503,7 @@
     .location-filtre {
       .select {
         cursor: pointer;
-        height: 29.836px;
-        width: 97.376px;
+        @include dimensions(97px, 29px);
         gap: 10px;
 
         label {
@@ -560,8 +553,7 @@
     .location-filtre {
       .select {
         cursor: pointer;
-        height: 29.836px;
-        width: 62.804px;
+        @include dimensions(62px, 29px);
         gap: 10px;
 
         label {
