@@ -481,7 +481,11 @@
                 box-shadow: 0px 4px 20px 0px #9F999940;
                 border-radius: 15px;
                 padding: 0 0 40px;
+                display: none;
 
+                &.active {
+                    display: block;
+                }
                 .order-tracking_header {
                     border-bottom: 1px solid $color-gray-alto-2;
                     padding: 40px 35px 27px;
