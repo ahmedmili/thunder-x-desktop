@@ -816,10 +816,10 @@ const CartPage: React.FC = () => {
 
               <ul className="breadcrumb-area">
                 <li>
-                  <a className="breadcrumb-link">Accueil</a>
+                  <a className="breadcrumb-link">{t('home')}</a>
                 </li>
                 <li>
-                  <a className="breadcrumb-link active">Panier</a>
+                  <a className="breadcrumb-link active">{t('cartPage.yourCart')}</a>
                 </li>
               </ul>
 
@@ -883,7 +883,7 @@ const CartPage: React.FC = () => {
                               </ul>
                             </div>
                             <div className="promo-container">
-                              <textarea name="code_promo" id="code_promo" placeholder="Code promo" value={promo} onChange={(e) => handlePromoChange(e.target.value)} ></textarea>
+                              <textarea name="code_promo" id="code_promo" placeholder={`${t('cart.PromosCode')}`} value={promo} onChange={(e) => handlePromoChange(e.target.value)} ></textarea>
                               <button disabled={!couponExiste} className={(couponExiste) ? "button" : "button disabled"} onClick={checkPromoCode}>
                                 {promoApplied ? t('Annuler') : t('cartPage.appliquer')}
                               </button>
@@ -913,7 +913,7 @@ const CartPage: React.FC = () => {
                           <label>{t('cartPage.bonus')}</label>
                           <div className="bonus-wrapper">
                             <div className="promo-container">
-                              <textarea name="bonus" id="bonus" placeholder="Bonnus" value={bonus.toFixed(2) + ' pts'}></textarea>
+                              <textarea name="bonus" id="bonus" placeholder={`${t('cartPage.bonus')}`} value={bonus.toFixed(2) + ' pts'}></textarea>
                               <button style={{ backgroundColor: `${appliedBonus > 0 ? "red" : '#3BB3C4'}` }} className={(bonus < 5000 || limitReachedBonus) ? "button disabled" : "button"} disabled={(bonus < 5000 || limitReachedBonus)} onClick={() => applyBonus()}>
                                 {appliedBonus > 0 ? t('Annuler') : t('cartPage.appliquer')}
                               </button>
@@ -1007,21 +1007,26 @@ const CartPage: React.FC = () => {
                           </div>
                           <div className="order-recovery-area">
                             <h3 className="order-recovery-title">
-                              Sélectionner l’option de la récupération de la commande
+                              {t('mismatchModal.selectOption')}
                             </h3>
 
                             <div className="order-recovery-select-blc">
                               <div className={`order-recovery-select-item ${showTimer ? "" : "active"}`} onClick={() => setShowTimer(false)}>
                                 <span>
-                                  Le plus vite
-                                  possible
-                                  20-40 minutes
+
+                                  {`${t('mismatchModal.selectOption.option2.fastest')}
+                                  ${t('mismatchModal.selectOption.option2.possible')}
+                                  20-40 ${t('mismatchModal.selectOption.option2.minutes')} `}
                                 </span>
                               </div>
                               <div className={`order-recovery-select-item ${!showTimer ? "" : "active"}`} onClick={() => setShowTimer(true)}>
                                 <span>
-                                  Modifier
-                                  la planification
+                                  {
+                                    `
+                                    ${t('mismatchModal.selectOption.option1.Modifier')}
+                                    ${t('mismatchModal.selectOption.option1.Planning')}
+                                    `
+                                  }
                                 </span>
                               </div>
                             </div>
@@ -1037,11 +1042,11 @@ const CartPage: React.FC = () => {
                             <div className="deliv-infos-group">
                               <div className="info-container">
                                 <label htmlFor="client-name">{t('cartPage.client')} : </label>
-                                <input type="text" name="client-name" value={name} placeholder="Client Name" onChange={(e) => setName(e.target.value)} />
+                                <input type="text" name="client-name" value={name} placeholder={`${t('cart.clientName')}`} onChange={(e) => setName(e.target.value)} />
                               </div>
                               <div className="info-container">
                                 <label htmlFor="client-name">{t('cartPage.phoneNumber2')}</label>
-                                <input type="text" name="" value={phoneNumber} placeholder="phone number" onChange={(e) => setPhoneNumber(e.target.value)} />
+                                <input type="text" name="" value={phoneNumber} placeholder={`${t('cartPage.phoneNumber')}`} onChange={(e) => setPhoneNumber(e.target.value)} />
                               </div>
                             </div>
                             {
@@ -1056,7 +1061,7 @@ const CartPage: React.FC = () => {
                                 </div>
                               </div>}
                             <div className="message-validation">
-                              Vous recevrez un message de validation
+                              {t('mismatchModal.validationMessageTitle')}
                             </div>
                           </div>
 
@@ -1089,7 +1094,7 @@ const CartPage: React.FC = () => {
 
                       <div className="message-validation-area d-none">
                         <h2 className="message-validation-title">
-                          Commande validé !
+                          {t('mismatchModal.commandValidate')}
                         </h2>
                         <div className="message-validation_img-blc commande-valide"></div>
                         {/*
@@ -1100,11 +1105,11 @@ const CartPage: React.FC = () => {
                         */}
                         <div className="message-validation_desc">
                           <p>
-                            Vous serez alerté lorsque le livreur arrive prés de chez vous.
+                            {t('mismatchModal.alerte')}
                           </p>
                         </div>
                         <div className="btns-group">
-                          <button className="btn btn-valid">Je commande</button>
+                          <button className="btn btn-valid">{t('cart.payment.iCommand')}</button>
                         </div>
                       </div>
 
