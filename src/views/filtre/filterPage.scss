@@ -77,30 +77,21 @@
                 justify-content: center;
 
                 &__title {
-                    font-family: Poppins;
-                    font-size: 20px;
-                    font-weight: 700;
-                    line-height: 30px;
+                    font-family: 'Poppins-Bold', serif;
+                    @include fonts(20px, 30px, $dark_Gray);
                     letter-spacing: 0em;
-                    color: $dark_Gray;
                     text-align: center;
                     margin-bottom: 6px;
                 }
-
                 &__text {
-                    font-family: Poppins;
-                    font-size: 16px;
-                    font-weight: 500;
-                    line-height: 24px;
+                    font-family: 'Poppins-Medium', serif;
+                    @include fonts(16px, 24px, $light_Gray);
                     letter-spacing: 0em;
                     text-align: center;
-                    color: $light_Gray;
                     margin-bottom: 75px;
                 }
-
                 &__icon {
-                    width: 200px;
-                    height: 200px;
+                    @include dimensions(200px, 200px);
                     margin: auto;
                     background-image: url("/src/assets/icons/result-not-found.svg");
                     background-size: contain;
@@ -153,10 +144,8 @@
     &__col-offers {
         &__title {
             color: $dark_Gray;
-            font-family: Poppins;
+            font-family: 'Poppins-SemiBold', serif;
             font-size: 24px;
-            font-style: normal;
-            font-weight: 600;
             line-height: normal;
             margin-bottom: 37px;
         }
@@ -167,8 +156,6 @@
     margin-bottom: 51px;
     margin-top: 121px;
 }
-
-
 .cat-carousel {
     display: flex;
     min-width: 100vw;
@@ -177,7 +164,6 @@
     overflow-x: hidden;
     padding: 170px 0 0 0;
 }
-
 .filter-page-skeleton {
     display: flex;
     gap: 36px;
@@ -186,16 +172,8 @@
     .left-side {
         padding: 0 5px 0 53px;
     }
-
     .right-side {
         width: 70vw;
-
-       
-
-        
-    // .main-content{
-     
-    // }
     }
 }
 
@@ -244,3 +222,13 @@
     right: 55px;
     z-index: 999;
   }
+
+  /* # $Mobile ::
+------------------------------------*/
+
+@media (max-width: 1440px) {
+    .category-bar {
+        margin-bottom: 40px;
+        margin-top: 100px;
+    }
+}
