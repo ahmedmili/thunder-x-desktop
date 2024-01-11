@@ -304,6 +304,9 @@
   "adress.add": "Ajouter un adress de livraison",
   "adress.takeAdressFromCart": "Indique votre adress sur la carte",
   "adress.initLocation": "Emplacement initial",
+  "adress.adressIntrouvable": "Cette adresse est introuvable. Réssayer ?",
+
+
   "supplier.opentime": "Ouvert jusqu’à",
   "supplier.delivPrice": "Frais de livraison :",
   "supplier.startAt": "A partir de :",
@@ -335,6 +338,7 @@
   "searchPage.question": "Qu’est ce qu’on vous apporte ?",
   "searchPage.purchasedTogether": "Produits achetés ensemble",
 
+  "AvailabelAt": "Disponible à",
   "Reset": "Reset",
   "Retour": "Retour",
   "product": "produit",

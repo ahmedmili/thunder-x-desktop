@@ -283,6 +283,8 @@
   "adress.takeAdressFromCart": "حدد عنوانك على الخريطة",
   "adress.initLocation": "الموقع الأولي",
   "adress.currentPos": " الموقع الحالي",
+  "adress.adressIntrouvable": "هذا العنوان غير موجود. هل ترغب في المحاولة مرة أخرى ؟",
+
   "supplier.opentime": "مفتوح حتى",
   "supplier.delivPrice": "تكلفة التسليم:",
   "supplier.startAt": "من:",
@@ -313,6 +315,8 @@
   "searchPage.popularMarks": "العلامات الشهيرة",
   "searchPage.question": "ماذا يمكننا أن نقدم لك ؟",
   "Reset": "إعادة تعيين",
+  "AvailabelAt": "متاح في",
+
   "searchPage.purchasedTogether": "المنتجات المشتراة معًا",
   "Retour": "عودة ",
   "product": "منتج",

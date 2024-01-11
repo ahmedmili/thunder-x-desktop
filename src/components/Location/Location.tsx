@@ -47,21 +47,18 @@ const Map: React.FC<MapProps> = ({ className, forced = false }) => {
   const [clientAdressTable, setClientAdressTable] = useState([]);
   const dispatch = useAppDispatch();
   const [searchType, setSearchType] = useState("");
+  const [showMapComponent, setShowMapComponent] = useState<boolean>(false);
   const region = useSelector(regionHomeSelector);
   const location = localStorageService.getCurrentLocation()
   const isLoading = useSelector(homeLoadingSelector);
 
 
   useEffect(() => {
-    // Function to disable scrolling
     const disableScroll = (e: any) => {
       e.preventDefault();
     };
 
-    // Add an event listener to the window to prevent scrolling
     window.addEventListener('scroll', disableScroll);
-
-    // Clean up the event listener when the component unmounts
     return () => {
       window.removeEventListener('scroll', disableScroll);
     };
@@ -78,7 +75,9 @@ const Map: React.FC<MapProps> = ({ className, forced = false }) => {
   }, []);
 
   const userItem = localStorageService.getUser();
-
+  const handleShowMapComponent = () => {
+    setShowMapComponent((current) => !current)
+  }
   const cancel = () => {
     if (searchType === "") {
       const location = localStorageService.getCurrentLocation()
@@ -138,13 +137,12 @@ const Map: React.FC<MapProps> = ({ className, forced = false }) => {
               <div className="adresses_container">
                 <AutocompleteInput initLocation={true} />
               </div>
-
               <div className="address-notfound-area d-none">
                 <div className="address-notfound-msg-err">
-                  Cette adresse est introuvable. Réssayer ?
+                  {t('adress.adressIntrouvable')}
                 </div>
                 <div className="address-notfound-content">
-                  <p>Disponible à :</p>
+                  <p>{t('AvailabelAt')} :</p>
                   <div className="btns-group">
                     <button className="btn btn-adress">Sousse</button>
                     <button className="btn btn-adress">Monastir</button>
@@ -152,6 +150,12 @@ const Map: React.FC<MapProps> = ({ className, forced = false }) => {
                   </div>
                 </div>
               </div>
+            </div>
+            <div className="current-position">
+              <div className="current-position_input-blc">
+                <input readOnly className="form-control" type="text" placeholder="Position actuelle" />
+              </div>
+              {/* <button className="btn btn-edit"></button> */}
             </div>
             {clientAdressTable.length > 0 &&
               <div className="saved-adresses-area">
@@ -192,34 +196,33 @@ const Map: React.FC<MapProps> = ({ className, forced = false }) => {
               </>
 
             ) : (
-              <div className="Text-container">
+              <></>
+              // <div className="Text-container">
 
-                <h6 style={{ display: userItem ? "inline" : "none" }}>
-                  {t('adress.noAdress')}
-                </h6>
-              </div>
+              //   <h6 style={{ display: userItem ? "inline" : "none" }}>
+              //     {t('adress.noAdress')}
+              //   </h6>
+              // </div>
             )
             }
           </div>
 
-          <div className="current-position">
-            <div className="current-position_input-blc">
-              <input className="form-control" type="text" placeholder="Position actuelle" />
-            </div>
-            <button className="btn btn-edit"></button>
-          </div>
 
           <div className="select-map-area">
-            <button className="btn btn-select-map">Sélectionner sur la carte</button>
+            <button onClick={handleShowMapComponent} className="btn btn-select-map">{t('adress.cartSelect')}</button>
           </div>
+          {
+            showMapComponent &&
+            <div className='modal-location_wrap-blc'>
+              <MapCard cancel={cancel} />
+            </div>
+          }
 
-          <div className='modal-location_wrap-blc'>
-            <MapCard cancel={cancel} />
-          </div>
-
-          <div className="btns-group">
-            <button className="btn btn-next">Continuer</button>
-          </div>
+          {/* <div className="btns-group" style={{
+            marginTop: `${showMapComponent ? "0" : "40px"}`
+          }}>
+            <button className="btn btn-next">{t('continuer')}</button>
+          </div> */}
         </div>
       </Container>
     )
