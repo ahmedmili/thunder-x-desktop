@@ -7,10 +7,8 @@
     margin-bottom: 32px;
     &__title {
         color: $dark_Gray;
-        font-family: Poppins;
+        font-family: 'Poppins-SemiBold', serif;
         font-size: 17px;
-        font-style: normal;
-        font-weight: 600;
         line-height: normal;
         margin-bottom: 24px;
         transition: all 0.3s ease-in-out;
@@ -33,35 +31,36 @@
                 gap: 10px;
                 padding-left: 18px;
                 margin-bottom: 12px;
+
                 .radio-btn {
                     appearance: none;
                     -webkit-appearance: none;
                     -moz-appearance: none;
-                    width: 19px;
-                    height: 19px;
-                    border: none;
-                    border-radius: 5px;
-                    background-color: rgba($color-blue-pelorous, 0.58);
+                    @include dimensions(20px, 20px);
+                    @include border(2px, $color-morning-glory);
+                    border-radius: 50%;
+                    background-color: $color-white;
+
                     &:checked {
                         position: relative;
+                        border-color: $color-apricot;
+
                         &:after {
                             content: "";
-                            width: 19px;
-                            height: 19px;
-                            background-color: $color-blue-eastern;
+                            @include dimensions(10px, 10px);
+                            background-color: $color-apricot;
                             position: absolute;
-                            left: 0;
-                            top: 0;
-                            border-radius: 5px;
+                            border-radius: 50%;
+                            position: absolute;
+                            left: 3px;
+                            top: 3px;
                         }
                     }
                 }
                 .form-label {
                     color: $dark_Gray;
-                    font-family: Poppins;
+                    font-family: 'Poppins-Medium', serif;
                     font-size: 18px;
-                    font-style: normal;
-                    font-weight: 500;
                     line-height: normal;
                     margin-bottom: 0;                   
                 }
@@ -81,7 +80,7 @@
             &--sub {
                 .form-check {
                     .form-label {    
-                        font-weight: 400;
+                        font-weight: weight(regular);
                     }
                 }
             }

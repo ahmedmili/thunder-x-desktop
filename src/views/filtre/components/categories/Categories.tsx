@@ -178,7 +178,7 @@ const Categories: React.FC<FilterCategoriesProps> = ({
               <li key={index} className="categories-filter-container__list__item">
                 <div className="form-check">
                   <input
-                    className="radio-btn"
+                    className="radio-btn test"
                     type="radio"
                     name="categorie"
                     id={`category-check-${index}`}

@@ -56,7 +56,6 @@
 
         .imageBuilder {
             background-image: url('/src/assets/home/home-section-one-img.png');
-            // background-image: none;
             background-size: contain;
             background-repeat: no-repeat;
             background-position: bottom right;
@@ -849,6 +848,7 @@
 
 /* # $Mobile ::
 ------------------------------------*/
+/* -- max-width -- */
 @media (max-width: 1440px) {
     .fixedHeaderContainer2 {
         padding: 12px 28px;
@@ -861,7 +861,6 @@
                 @include dimensions(160px, 60px);
             }
         }
-
         .header-buttons {
             .LoadingButton {
                 min-width: 113px;
@@ -869,7 +868,6 @@
                 font-size: 12px;
             }
         }
-
         .info {
             gap: 15px;
 
@@ -884,7 +882,6 @@
             }
         }
     }
-
     .home-section-one {
         .headerAppBar2 {
             padding-top: 100px;
@@ -899,7 +896,6 @@
             }
         }
     }
-
     .header {
         .imageBuilderContainer {
 
@@ -923,7 +919,6 @@
             }
         }
     }
-
     .headerLocalisationMessageContainer {
         a {
             @include fontSize(14px, 14px);
@@ -1165,6 +1160,35 @@
 
                 a {
                     font-size: 6.33px;
+                }
+            }
+        }
+    }
+}
+
+/* -- max-height -- */
+
+@media (max-height: 890px) {
+    .fixedHeaderContainer2 {
+        .info {
+            .order-tracking-area {
+                .order-tracking-wrapper {
+                    .order-tracking_body {
+                        max-height: 490px;
+                    }
+                }
+            }
+        }
+    }
+}
+@media (max-height: 700px) {
+    .fixedHeaderContainer2 {
+        .info {
+            .order-tracking-area {
+                .order-tracking-wrapper {
+                    .order-tracking_body {
+                        max-height: 300px;
+                    }
                 }
             }
         }
