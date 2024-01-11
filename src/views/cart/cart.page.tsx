@@ -49,6 +49,7 @@ import { supplierServices } from "../../services/api/suppliers.api";
 import { userService } from "../../services/api/user.api";
 import { localStorageService } from "../../services/localStorageService";
 import "./cart.page.scss";
+import moment from "moment";
 
 const CartPage: React.FC = () => {
   const { t } = useTranslation();
@@ -124,6 +125,8 @@ const CartPage: React.FC = () => {
   const [minCost, setMinCost] = useState<number>(0)
   const [isClosed, setIsClosed] = useState<number>(1)
   const [minCostError, setMinCostError] = useState<boolean>(false)
+  const [closeTime, setCloseTime] = useState<string>('');
+  const [openTime, setOpenTime] = useState<string>('');
 
 
 
@@ -134,6 +137,10 @@ const CartPage: React.FC = () => {
   const unReadMessages = useAppSelector((state) => state.messanger.unReadedMessages)
   const [messangerPopup, setMessangerPopup] = useState<boolean>(false)
   const [unReadedQt, setUnReadedQt] = useState<number>(unReadMessages)
+  var currentDate = moment();
+
+  var today = currentDate.format('ddd');  // Get the current day name (e.g., 'Mon', 'Tue', etc.)
+
   useEffect(() => {
     setUnReadedQt(unReadMessages)
   }, [unReadMessages])
@@ -144,6 +151,19 @@ const CartPage: React.FC = () => {
   useEffect(() => {
     fetchMessages()
   }, [])
+
+  useEffect(() => {
+    const schedules = supplier.schedules
+    var currentDayObject = schedules.find((day: any) => day.day === today);
+    if (currentDayObject) {
+      let closeTimeArray = currentDayObject.to.toString().split(':')
+      let closeTime = `${closeTimeArray[0]}:${closeTimeArray[1]}`
+      setCloseTime(closeTime)
+      let openTimeArray = currentDayObject.from.toString().split(':')
+      let openTime = `${closeTimeArray[0]}:${closeTimeArray[1]}`
+      setOpenTime(openTime)
+    }
+  }, [supplier])
 
   // article component 
   interface Article {
@@ -720,17 +740,14 @@ const CartPage: React.FC = () => {
       case 1:
         take_away_plan = "default"
         setIsDelevery("surplace")
-        // setTakeAwayDate(new Date(new Date().getTime() + 30 * 60000))
         break;
       case 2:
         take_away_plan = "default"
         setIsDelevery("pickup")
-        // setTakeAwayDate(new Date(new Date().getTime() + 30 * 60000))
         break;
       case 3:
         take_away_plan = "plan"
         setIsDelevery("delivery")
-        // setTakeAwayDate(new Date(new Date().getTime() + 30 * 60000))
         break;
       default:
         take_away_plan = "plan"
@@ -972,7 +989,9 @@ const CartPage: React.FC = () => {
                                 </div>
                               </div>
                               <p className="deliv-details_description">
-                                Rue Imem moslem, Khzema, Sousse
+                                {`${supplier.street},
+                              ${supplier.region}
+                              ,${supplier.city}`}
                               </p>
                               <button /* onClick={() => handleOptionChange(1)}*/ className="btn btn-deliv">livrer ici</button>
                               <input type="radio" value="1" id='domicile' name='type' checked={selectedOption === 1} />
@@ -988,7 +1007,9 @@ const CartPage: React.FC = () => {
                                 </div>
                               </div>
                               <p className="deliv-details_description">
-                                Rue Imem moslem, Khzema, Sousse
+                                {`${supplier.street},
+                                ${supplier.region},
+                                ${supplier.city}`}
                               </p>
                               <button onClick={() => handleOptionChange(2)} className="btn btn-deliv">livrer ici</button>
                               <input type="radio" value="2" id='travail' name='type' checked={selectedOption === 2} />
@@ -1004,7 +1025,7 @@ const CartPage: React.FC = () => {
                                 </div>
                               </div>
                               <p className="deliv-details_description">
-                                Rue Imem moslem, Khzema, Sousse
+                                {userPosition?.coords.label}
                               </p>
                               <button className="btn btn-deliv" onClick={() => handleOptionChange(3)}>livrer ici</button>
                               <input type="radio" value="3" id='autre' name='type' checked={selectedOption === 3} />
@@ -1040,7 +1061,7 @@ const CartPage: React.FC = () => {
                           {
                             (showTimer) &&
                             <>
-                              <TimePickerComponent setSelectedDate={handleSelectedDate} />
+                              <TimePickerComponent setSelectedDate={handleSelectedDate} openTime={openTime} closeTime={closeTime} />
                             </>
                           }
                           <div className="deliv-to">
