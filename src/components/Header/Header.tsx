@@ -39,6 +39,11 @@ const Header = () => {
   const [scrolling, setScrolling] = useState<boolean>(false);
   const [notifsQts, setNotifsQts] = useState<number>(msg_notifs);
   const [orderTracking, setOrderTracking] = useState<boolean>(false);
+  const [searchVisible, setSearchVisible] = useState<boolean>(false);
+
+  const searHandleToggle = () => {
+    setSearchVisible(!searchVisible);
+  };
 
   const dispatch = useAppDispatch();
   const navigate = useNavigate();
@@ -247,6 +252,15 @@ const Header = () => {
                   {/* <PermIdentityOutlinedIcon className='account-icon' /> */}
                   <span className='account-icon'></span>
                 </button>
+
+                <div className={`search-blc ${searchVisible ? 'active' : ''}`}>
+                  {searchVisible && (
+                    <div className="search-input-blc">
+                      <input type="search" className="form-control" placeholder="Search" /> 
+                    </div>
+                  )}
+                  <button className="btn btn-search" onClick={searHandleToggle}></button>
+                </div>
 
                 <button onClick={handleCart} className="cart-item">
                   {/* <ShoppingCartOutlinedIcon className='cart-icon' /> */}

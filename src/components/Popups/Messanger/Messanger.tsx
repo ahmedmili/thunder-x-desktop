@@ -16,6 +16,7 @@ interface MessangerProps {
 }
 const Messanger: React.FC<MessangerProps> = ({ className }) => {
 
+    const [notifsVisible, setNotifsVisible] = useState(false);
     const messages = useAppSelector(messagesSelector)
     const [canalMessages, setCanalMessages] = useState<Message[]>([])
     const messageRef = useRef<HTMLTextAreaElement | null>(null);
@@ -28,6 +29,13 @@ const Messanger: React.FC<MessangerProps> = ({ className }) => {
         if (canal.current) {
             canal.current.scrollTop = canal.current.scrollHeight;
         }
+    };
+
+
+    // notifsVisible, setNotifsVisible
+
+    const handleNotifsToggle = () => {
+        setNotifsVisible(!notifsVisible);
     };
 
     // send new message
@@ -119,6 +127,17 @@ const Messanger: React.FC<MessangerProps> = ({ className }) => {
                 <div className='messanger-logo-container'>
                     <div className='messanger-logo' style={{ backgroundImage: ` url(${Profile})` }}></div>
                     <p>Thunder Express</p>
+                </div>
+                <div className="btns-group">
+                    <div className="btn-more-blc">
+                        <button className="btn btn-more" onClick={handleNotifsToggle}></button>
+                        
+                        {notifsVisible && (
+                            <div className="active-notifs">
+                                <button className="btn btn-notifs">Activer les notifications</button>
+                            </div>
+                        )}
+                    </div>
                 </div>
             </header >
             <main className='messsanger-body'>
