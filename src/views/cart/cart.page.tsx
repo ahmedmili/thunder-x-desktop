@@ -32,6 +32,9 @@ import { FoodItem } from "../../services/types";
 import Accordion from '@mui/material/Accordion';
 import AccordionDetails from '@mui/material/AccordionDetails';
 import AccordionSummary from '@mui/material/AccordionSummary';
+import moment from "moment";
+import 'moment/locale/en-gb'; // Import English locale
+import 'moment/locale/fr'; // Import French locale
 import { Col, Container, Row } from "react-bootstrap";
 import { toast } from "react-toastify";
 import { fetchMessages } from "../../Redux/slices/messanger";
@@ -49,12 +52,7 @@ import { supplierServices } from "../../services/api/suppliers.api";
 import { userService } from "../../services/api/user.api";
 import { localStorageService } from "../../services/localStorageService";
 import "./cart.page.scss";
-import moment from "moment";
-import 'moment/locale/en-gb'; // Import English locale
-import 'moment/locale/fr'; // Import French locale
 
-import { Console } from "console";
-import { setRestaurants } from "../../Redux/slices/restaurantSlice";
 
 const CartPage: React.FC = () => {
   const { t } = useTranslation();
@@ -164,7 +162,9 @@ const CartPage: React.FC = () => {
   useEffect(() => {
     fetchMessages()
   }, [])
-
+  useEffect(() => {
+    !supplier_id && navigate('/')
+  }, [])
 
 
   useEffect(() => {
@@ -366,8 +366,6 @@ const CartPage: React.FC = () => {
 
   useEffect(() => {
     const availableTime = isForcedStatusEnabled(takeAwayDate)
-    // console.log('takeAwayDate', takeAwayDate)
-    // console.log('availableTime', availableTime)
     if ((!availableTime || forced_status === 'CLOSE' || isClosed === 0) && forced_status != 'AUTO') {
       setDisabled(true)
     } else {
@@ -428,7 +426,6 @@ const CartPage: React.FC = () => {
         formattedDate = year + '-' + month + '-' + day + ' ' + hours + ':' + minutes + ':' + seconds;
       } else {
         console.error('Invalid date type');
-
       }
 
       const order = {
@@ -436,6 +433,7 @@ const CartPage: React.FC = () => {
         supplier_id: supplier,
         extraDeliveryCost: extraDeliveryCost,
         delivery_price: isDelevery == "delivery" ? Math.round(deliveryPrice) : 0,
+        delivery_date: formattedDate,
         mode_pay: payMode,
         applied_bonus: applied_bonus,
         total_price: total,
@@ -488,19 +486,18 @@ const CartPage: React.FC = () => {
         } else if (isClosed === 0 || forced_status === "CLOSE ") {
           toast.warn("This restaurant is currently closed, please complete your order later.")
         } else {
-          // console.log('order sucess : ', order)
-          // try {
-          //   const { status, data } = await cartService.createOrder(order);
-          //   if (status === 200) {
-          //     dropOrder()
-          //     setPopupType('command_success')
-          //     handlePopup()
-          //   } else {
-          //     toast.warn("something went wrong")
-          //   }
-          // } catch (error) {
-          //   throw error
-          // }
+          try {
+            const { status, data } = await cartService.createOrder(order);
+            if (status === 200) {
+              dropOrder()
+              setPopupType('command_success')
+              handlePopup()
+            } else {
+              toast.warn("something went wrong")
+            }
+          } catch (error) {
+            throw error
+          }
         }
       } else {
         setShowAuthWarnPopup(true)
@@ -553,7 +550,7 @@ const CartPage: React.FC = () => {
     dispatch(setDeliveryPrice(0));
     dispatch(setComment(""));
     dispatch(setCodePromo(""));
-    dispatch(setSupplier([]));
+    // dispatch(setSupplier([]));
   }
 
   //  get gifts
@@ -798,7 +795,7 @@ const CartPage: React.FC = () => {
   // get supplier request
   const getSupplierById = async () => {
     const { status, data } = await supplierServices.getSupplierById(supplier_id)
-    dispatch(setSupplier(data.data))
+    data.data && dispatch(setSupplier(data.data))
     max_distance = data.data?.max_distance;
     setMinCost(data?.data.min_cost);
     setIsClosed(data?.status);
@@ -866,7 +863,7 @@ const CartPage: React.FC = () => {
     getSousTotal()
     localStorageService.setCart(cartItems);
     if (cartItems.length == 0) {
-      dispatch(setSupplier(null));
+      // dispatch(setSupplier(null));
       dispatch(setDeliveryPrice(null));
     }
   }, [cartItems]);
@@ -947,7 +944,7 @@ const CartPage: React.FC = () => {
                 <Col>
                   <main>
                     <div className={`product-detail-container`}>
-                      {currentStep == 2 && (<button className="btn-back" onClick={goPrevStep}>Retour</button>)}
+                      {/* {currentStep == 2 && (<button className="btn-back" onClick={goPrevStep}>Retour</button>)} */}
                       {currentStep == 1 && (<>
                         <div className="cart-items">
                           <div className="cart-items__title">
@@ -1161,7 +1158,7 @@ const CartPage: React.FC = () => {
                             </>
                           }
                           <div className="deliv-to">
-                            <h3 className="title">{selectedOption === 3 ? t('cartPage.delivto') : "Emportée par"}</h3>
+                            <h3 className="title">{selectedOption === 3 ? t('cartPage.delivto') : t('cartPage.emportePar')}</h3>
                             <div className="deliv-infos-group">
                               <div className="info-container">
                                 <label htmlFor="client-name">{t('cartPage.client')} : </label>
@@ -1250,9 +1247,9 @@ const CartPage: React.FC = () => {
                         <div className="info-customer-area">
                           <div className="info-customer-title-blc">
                             <h4 className="info-customer-title">
-                              {userPosition ? userPosition.coords.label : ""}
+                              {selectedOption === 3 ? t('cartPage.delivto') : t('cartPage.emportePar')}
                             </h4>
-                            <a className="edit-info-customer-link" onClick={() => dispatch({ type: "SET_SHOW", payload: true })} >{t('update')}</a>
+                            <a className="edit-info-customer-link" onClick={goPrevStep} >{t('update')}</a>
                           </div>
                           <div className="customer-infos-area">
                             <div className="customer-info_name">{user ? `${user.firstname} ${user.lastname} ` : t('cartPage.visitor')} </div>

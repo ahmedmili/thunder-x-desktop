@@ -3,7 +3,6 @@ import {
     LocalizationProvider
 } from '@mui/x-date-pickers';
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
-import { DemoContainer } from '@mui/x-date-pickers/internals/demo';
 import 'dayjs/locale/en';
 import { useEffect, useState } from 'react';
 import './timePicker.scss';
@@ -42,10 +41,6 @@ const TimePickerComponent: React.FC<TimepickerProps> = ({ className, setSelected
                     maxDateTime = dayMaxDateTime;
                 }
             });
-            console.log('Date', minDateTime.format('D'))
-            console.log('minDateTime', minDateTime.hour())
-            console.log('maxDateTime', maxDateTime.hour())
-
             setMinTime(minDateTime);
             setMaxTime(maxDateTime);
         } else {
@@ -98,7 +93,6 @@ const TimePickerComponent: React.FC<TimepickerProps> = ({ className, setSelected
                     setCurrentDateTime(selectedTime)
                 } else {
                     console.warn('Selected time is outside the allowed range.');
-                    // setCurrentDateTime(null); // Set to null to cancel the selection
                     setCurrentDateTime(dayjs()); // Set to default time
                 }
             } else {
@@ -107,7 +101,6 @@ const TimePickerComponent: React.FC<TimepickerProps> = ({ className, setSelected
                     setCurrentDateTime(selectedTime)
                 } else {
                     console.warn('Selected time is outside the allowed range.');
-                    // setCurrentDateTime(null); // Set to null to cancel the selection
                     setCurrentDateTime(dayjs()); // Set to default time
 
                 }

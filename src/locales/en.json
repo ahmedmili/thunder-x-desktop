@@ -327,6 +327,8 @@
   "cartPage.Quantite": "Quantity",
   "cartPage.product": "Product",
   "cartPage.monPanier": "My cart",
+  "cartPage.delivto": "Delivery to",
+  "cartPage.emportePar": "Carried away by",
   "cart.payment.toPayment": "Go to Payment",
   "cart.payment.noCommands": "You have not placed any orders yet",
   "cart.payment.iCommand": "Order",
@@ -336,7 +338,6 @@
   "cart.PromosCode": "Promo code",
   "cart.clientName": "Client Name",
   "cart.delivPlanedAt": "Scheduled delivery on ",
-
   "searchPage.created_at": "New in Thunder.",
   "searchPage.populaires": "The most popular",
   "searchPage.mieux": "The highest-rated.",
