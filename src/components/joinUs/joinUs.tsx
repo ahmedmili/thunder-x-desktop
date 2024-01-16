@@ -1,11 +1,20 @@
-import './joinUs.scss';
-import { Container, Button } from 'react-bootstrap'
+import { Button, Container } from 'react-bootstrap';
+import { useTranslation } from 'react-i18next';
 import JoinUsImgOne from './../../assets/joinus-img-1.jpg';
 import JoinUsImgTwo from './../../assets/joinus-img-2.jpg';
-import { useTranslation } from 'react-i18next';
+import './joinUs.scss';
 
 export const JoinUs = () => {
     const { t } = useTranslation()
+    const delivUrl = 'https://thunder-express.com/devenir-livreur';
+    const supplierUrl = 'https://thunder-express.com/devenir-partenaire';
+
+    const becomeDeliv = () => {
+        window.open(delivUrl, '_blank');
+    }
+    const becomeSupplier = () => {
+        window.open(supplierUrl, '_blank');
+    }
     return (
         <div className="joinus-area">
             <Container>
@@ -17,9 +26,9 @@ export const JoinUs = () => {
                         <div className="joinus-description">
                             <h3>{t('beLiv')}</h3>
                             <p>
-                               {t('getStableJob')}
+                                {t('getStableJob')}
                             </p>
-                            <Button className="btn-yellow" variant="primary">{t('joinTeam')}</Button>
+                            <Button onClick={becomeDeliv} className="btn-yellow" variant="primary">{t('joinTeam')}</Button>
                         </div>
                         <div className="joinus-img-blc">
                             <img src={JoinUsImgOne} alt="" />
@@ -32,9 +41,9 @@ export const JoinUs = () => {
                         <div className="joinus-description">
                             <h3>{t('bePartnaire')}</h3>
                             <p>
-                            {t('partnaireDesc')}
+                                {t('partnaireDesc')}
                             </p>
-                            <Button className="btn-yellow" variant="primary">{t('join')}</Button>
+                            <Button onClick={becomeSupplier} className="btn-yellow" variant="primary">{t('join')}</Button>
                         </div>
                     </div>
 
