@@ -355,7 +355,7 @@
         .position {
             font-family: 'Poppins-Medium', serif;
             @include fonts(15px, 15px, $color-white);
-            @include flex(flex, center, center);
+            @include flex(flex, center, flex-start);
             gap: 7px;
             margin-right: 10px;
             border-radius: 55px;

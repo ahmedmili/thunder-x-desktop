@@ -101,8 +101,6 @@ function App({ initialData }: AppProps) {
         const lat = resultObject.lat;
         const lng = resultObject.lng;
         (lng && lat) ? dispatch({ type: "SET_SHOW", payload: false }) : dispatch({ type: "SET_SHOW", payload: true })
-        console.log('lat', lat)
-        console.log('lng', lng)
       }
     } else {
       dispatch({ type: "SET_SHOW", payload: false })

@@ -194,7 +194,6 @@ function FilterPage({ initialData }: AppProps) {
       const expectedKeys = ['lat', 'lng'];
       let resultObject = paramsService.fetchParams(searchParams)
       const hasUnexpectedKeys = Object.keys(resultObject).some(key => !expectedKeys.includes(key));
-
       setHasFilter(hasUnexpectedKeys);
       const current_location = localStorageService.getCurrentLocation()
       var currentLocation: any;
@@ -232,6 +231,7 @@ function FilterPage({ initialData }: AppProps) {
         filter: "",
       };
       let params = paramsService.fetchParams(searchParams)
+
       params.category && (payload.category_id = params.category);
       params.order && (payload.order_by = params.order);
       params.min_price && (payload.min_price = Number(params.min_price));
@@ -246,7 +246,9 @@ function FilterPage({ initialData }: AppProps) {
             setSearchSuppliersList(filtredList);
           }
           else {
+
             setSearchSuppliersList(res.data.data.suppliers);
+
           }
           setIsLoadFilter(false);
         })
@@ -277,58 +279,58 @@ function FilterPage({ initialData }: AppProps) {
   const renderItems = () => {
     return (
       <>
-        {
-          <div className="main-content">
-            {ads && (
-              <div className="main-content__col-ads">
-                <FilterAds data={ads} slides={3} />
-              </div>
-            )}
-            <div className="main-content__col-offers">
-              <h3 className="main-content__col-offers__title">
-                {t('searchPage.todayOffre')}
-              </h3>
-              <OffersList listType="discount" restaurants={recommanded} />
+
+        <div className="main-content">
+          {ads && (
+            <div className="main-content__col-ads">
+              <FilterAds data={ads} slides={3} />
             </div>
-            <div className="main-content__col-offers">
-              <h3 className="main-content__col-offers__title">
-                {t('recommendedForYou')}
-              </h3>
-              <RecommandedList
-                listType="recommanded"
-                restaurants={recommanded}
-              ></RecommandedList>
-            </div>
-            {ads2 && (
-              <div className="main-content__col-ads">
-                <FilterAds data={ads2} slides={1} />
-              </div>
-            )}
-            {bestRatedSuppliers.length ? <div className="main-content__col-offers">
-              <h3 className="main-content__col-offers__title">
-                {t('searchPage.mieux')}
-              </h3>
-              <OffersList listType="recommanded" restaurants={bestRatedSuppliers} />
-            </div> : ''}
-            {newSuppliers.length ? <div className="main-content__col-offers">
-              <h3 className="main-content__col-offers__title">
-                {t('searchPage.created_at')}
-              </h3>
-              <OffersList listType="recommanded" restaurants={newSuppliers} />
-            </div> : ''}
-            <div className="main-content__col-offers">
-              <h3 className="main-content__col-offers__title">
-                {t('searchPage.popularMarks')}
-              </h3>
-              <PopularList listType="popular" restaurants={popular} />
-            </div>
-            {ads3 && (
-              <div className="main-content__col-ads">
-                <FilterAds data={ads3} slides={2} center={true} arrows={true} />
-              </div>
-            )}
+          )}
+          <div className="main-content__col-offers">
+            <h3 className="main-content__col-offers__title">
+              {t('searchPage.todayOffre')}
+            </h3>
+            <OffersList listType="discount" restaurants={recommanded} />
           </div>
-        }
+          <div className="main-content__col-offers">
+            <h3 className="main-content__col-offers__title">
+              {t('recommendedForYou')}
+            </h3>
+            <RecommandedList
+              listType="recommanded"
+              restaurants={recommanded}
+            ></RecommandedList>
+          </div>
+          {ads2 && (
+            <div className="main-content__col-ads">
+              <FilterAds data={ads2} slides={1} />
+            </div>
+          )}
+          {bestRatedSuppliers.length ? <div className="main-content__col-offers">
+            <h3 className="main-content__col-offers__title">
+              {t('searchPage.mieux')}
+            </h3>
+            <OffersList listType="recommanded" restaurants={bestRatedSuppliers} />
+          </div> : <></>}
+          {newSuppliers.length ? <div className="main-content__col-offers">
+            <h3 className="main-content__col-offers__title">
+              {t('searchPage.created_at')}
+            </h3>
+            <OffersList listType="recommanded" restaurants={newSuppliers} />
+          </div> : <></>}
+          <div className="main-content__col-offers">
+            <h3 className="main-content__col-offers__title">
+              {t('searchPage.popularMarks')}
+            </h3>
+            <PopularList listType="popular" restaurants={popular} />
+          </div>
+          {ads3 && (
+            <div className="main-content__col-ads">
+              <FilterAds data={ads3} slides={2} center={true} arrows={true} />
+            </div>
+          )}
+        </div>
+
       </>
     );
   };

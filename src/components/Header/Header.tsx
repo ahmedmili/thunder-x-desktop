@@ -120,13 +120,7 @@ const Header = () => {
                   <div className='info'>
                     <div className="position">
                       <LocationOnIcon className='position-icon' />
-                      {/* {location
-                        ? location?.coords.label
-                        :
-                        t('no_location_detected')
-                      } */}
                       {t('no_location_detected')}
-
                     </div>
                     <button onClick={handleCart} className="cart-item">
                       <span className='cart-icon'></span>
@@ -189,7 +183,7 @@ const Header = () => {
                         <Switches />
                       </div>
                     }
-                    <Box className="headerLocalisationMessageContainer" /* onClick={() => dispatch({ type: "SET_SHOW", payload: true })} */>
+                    <Box className="headerLocalisationMessageContainer"  onClick={() => dispatch({ type: "SET_SHOW", payload: true })} >
                       <a href="#" >
                         <span className="localisationIcon" >
                           {/* <PinDropIcon className="pin-icon" /> */}
