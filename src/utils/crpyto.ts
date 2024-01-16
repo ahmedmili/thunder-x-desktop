@@ -1,7 +1,7 @@
 // import crypto from 'crypto-browserify';
 import CryptoJS from 'crypto-js';
 
-const sucret_Key = import.meta.env.VITE_CRYPTO_SUCRET_KEY;
+const sucret_Key = import.meta.env.VITE_CRYPTO_SUCRET_KEY || "thunder-x-2024";
 const algorithm_key = import.meta.env.VITE_CRYPTO_ALGORITHME_KEY
 
 const hashData = (originalData: string, secretKey: string = sucret_Key): string => {
