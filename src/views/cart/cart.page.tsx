@@ -50,6 +50,11 @@ import { userService } from "../../services/api/user.api";
 import { localStorageService } from "../../services/localStorageService";
 import "./cart.page.scss";
 import moment from "moment";
+import 'moment/locale/en-gb'; // Import English locale
+import 'moment/locale/fr'; // Import French locale
+
+import { Console } from "console";
+import { setRestaurants } from "../../Redux/slices/restaurantSlice";
 
 const CartPage: React.FC = () => {
   const { t } = useTranslation();
@@ -72,7 +77,7 @@ const CartPage: React.FC = () => {
   //util vars
   const [name, setName] = React.useState(user?.firstname || "");
   const [phoneNumber, setPhoneNumber] = React.useState(user?.tel || "");
-
+  const supplier_id = supplier.id || cartItems[0].supplier_data.supplier_id
   const [payMode, setPayMode] = useState<number>(1)
 
   const [sousTotal, setSousTotal] = useState<number>(0)
@@ -118,13 +123,20 @@ const CartPage: React.FC = () => {
   // var extraDeliveryCost = 0;
   var max_distance: number = 5;
   var distance: number = 0;
-  var discount = 0
-
+  var discount = 0;
+  const [disabled, setDisabled] = useState<boolean>(false);
   var take_away_plan = 'default';
   const [takeAwayDate, setTakeAwayDate] = useState(new Date());
   const [minCost, setMinCost] = useState<number>(0)
   const [isClosed, setIsClosed] = useState<number>(1)
   const [minCostError, setMinCostError] = useState<boolean>(false)
+  const [selectOrderChose, setSelectOrderChose] = useState<string>("")
+
+  const forced_status = supplier.forced_status
+  const forced_status_hours = supplier.forced_status_hours
+  const forced_status_at = supplier.forced_status_at
+
+  const schedules = supplier.schedules ? supplier.schedules : [];
   const [closeTime, setCloseTime] = useState<string>('');
   const [openTime, setOpenTime] = useState<string>('');
 
@@ -141,6 +153,7 @@ const CartPage: React.FC = () => {
 
   var today = currentDate.format('ddd');  // Get the current day name (e.g., 'Mon', 'Tue', etc.)
 
+
   useEffect(() => {
     setUnReadedQt(unReadMessages)
   }, [unReadMessages])
@@ -152,17 +165,66 @@ const CartPage: React.FC = () => {
     fetchMessages()
   }, [])
 
+
+
   useEffect(() => {
-    const schedules = supplier.schedules
-    var currentDayObject = schedules.find((day: any) => day.day === today);
-    if (currentDayObject) {
-      let closeTimeArray = currentDayObject.to.toString().split(':')
-      let closeTime = `${closeTimeArray[0]}:${closeTimeArray[1]}`
-      setCloseTime(closeTime)
-      let openTimeArray = currentDayObject.from.toString().split(':')
-      let openTime = `${closeTimeArray[0]}:${closeTimeArray[1]}`
-      setOpenTime(openTime)
+    var message = `${t('mismatchModal.selectOption.option2.fastest')}
+    ${t('mismatchModal.selectOption.option2.possible')}
+    20-40 ${t('mismatchModal.selectOption.option2.minutes')} `
+
+    if (forced_status === "OPEN") {
+      if (schedules && schedules.length) {
+        var currentDayObject = schedules.find((day: any) => day.day === today);
+        if (currentDayObject) {
+          const closeTimeArray = currentDayObject.to.toString().split(':')
+          const closeTime = `${closeTimeArray[0]}:${closeTimeArray[1]}`
+          const openTimeArray = currentDayObject.from.toString().split(':')
+          const openTime = `${openTimeArray[0]}:${openTimeArray[1]}`
+          setOpenTime(openTime)
+          setCloseTime(closeTime)
+
+        }
+      } else {
+        const closeTimeArray = supplier.starttime.toString().split(':')
+        const closeTime = `${closeTimeArray[0]}:${closeTimeArray[1]}`
+        const openTimeArray = supplier.closetime.toString().split(':')
+        const openTime = `${openTimeArray[0]}:${openTimeArray[1]}`
+        setOpenTime(openTime)
+        setCloseTime(closeTime)
+      }
+    } else if (forced_status === "CLOSE") {
+      message = t('closedNow')
+
+    } else if (forced_status === "AUTO") {
+      var currentDayObject = schedules.find((day: any) => day.day === today);
+      const valideDate = isForcedStatusEnabled(takeAwayDate)
+      if (!valideDate) {
+        if (schedules && schedules.length) {
+          const nextDay = currentDate.add(1, 'days');
+          const nextDayName = nextDay.format('dddd');
+          const nextDayNumber = nextDay.format('DDD');
+          const nextMonth = nextDay.format('MM');
+          var currentDayObject = schedules.find((day: any) => day.day === nextDay.format('ddd'));
+          const openTimeArray = currentDayObject.from.toString().split(':')
+          const closeTimeArray = currentDayObject.to.toString().split(':')
+          const dateString = `${nextDayNumber}/${nextMonth} `
+          const openTime = `${openTimeArray[0]}:${openTimeArray[1]}`
+          const closeTime = `${closeTimeArray[0]}:${closeTimeArray[1]}`
+          setOpenTime(openTime)
+          setCloseTime(closeTime)
+
+
+          message = `${t('cart.delivPlanedAt')} ${t(`weekDays.names.${nextDayName}`)} ${dateString} a ${openTime}
+          `
+        }
+      } else {
+        var message = `${t('mismatchModal.selectOption.option2.fastest')}
+        ${t('mismatchModal.selectOption.option2.possible')}
+        20-40 ${t('mismatchModal.selectOption.option2.minutes')} `
+      }
+
     }
+    setSelectOrderChose(message)
   }, [supplier])
 
   // article component 
@@ -277,8 +339,41 @@ const CartPage: React.FC = () => {
       </>
     )
   }
+  const handleShowTimer = () => {
+    if (forced_status === "CLOSE" || forced_status === "OPEN")
+      return 0;
+    else setShowTimer(true)
+  }
 
+  const isForcedStatusEnabled = (dateString: any) => {
+    if (forced_status != 'AUTO') {
+      const forcedAt = new Date(forced_status_at)
+      const forcedEnd = new Date(forced_status_at)
+      forcedEnd.setHours(forcedEnd.getHours() + forced_status_hours);
 
+      const date = new Date(dateString);
+      return ((date > forcedAt) && (date < forcedEnd))
+    } else {
+      var currentDayObject = schedules.find((day: any) => day.day === today);
+      const forcedAt = new Date()
+      const forcedEnd = new Date(currentDayObject.to)
+      forcedEnd.setHours(forcedEnd.getHours() + forced_status_hours);
+
+      const date = new Date(dateString);
+      return ((date > forcedAt) && (date < forcedEnd))
+    }
+  }
+
+  useEffect(() => {
+    const availableTime = isForcedStatusEnabled(takeAwayDate)
+    // console.log('takeAwayDate', takeAwayDate)
+    // console.log('availableTime', availableTime)
+    if ((!availableTime || forced_status === 'CLOSE' || isClosed === 0) && forced_status != 'AUTO') {
+      setDisabled(true)
+    } else {
+      setDisabled(false)
+    }
+  }, [closeTime, openTime, takeAwayDate])
   // handle submit and command creation
   const submitOrder = async (
     cartItems: FoodItem[],
@@ -390,21 +485,22 @@ const CartPage: React.FC = () => {
 
         if (Number(minCost) > sousTotal) {
           setMinCostError(true)
-        } else if (isClosed === 0) {
+        } else if (isClosed === 0 || forced_status === "CLOSE ") {
           toast.warn("This restaurant is currently closed, please complete your order later.")
         } else {
-          try {
-            const { status, data } = await cartService.createOrder(order);
-            if (status === 200) {
-              dropOrder()
-              setPopupType('command_success')
-              handlePopup()
-            } else {
-              toast.warn("something went wrong")
-            }
-          } catch (error) {
-            throw error
-          }
+          // console.log('order sucess : ', order)
+          // try {
+          //   const { status, data } = await cartService.createOrder(order);
+          //   if (status === 200) {
+          //     dropOrder()
+          //     setPopupType('command_success')
+          //     handlePopup()
+          //   } else {
+          //     toast.warn("something went wrong")
+          //   }
+          // } catch (error) {
+          //   throw error
+          // }
         }
       } else {
         setShowAuthWarnPopup(true)
@@ -439,7 +535,7 @@ const CartPage: React.FC = () => {
     if (value === 3) {
       setSelectedOption(value);
     } else {
-      const take_away = await commandService.isdelivery(supplier.id)
+      const take_away = await commandService.isdelivery(supplier_id)
       take_away === 1 ? setSelectedOption(value) : handleServicePopup();
     }
   };
@@ -457,7 +553,7 @@ const CartPage: React.FC = () => {
     dispatch(setDeliveryPrice(0));
     dispatch(setComment(""));
     dispatch(setCodePromo(""));
-    dispatch(setSupplier(null));
+    dispatch(setSupplier([]));
   }
 
   //  get gifts
@@ -701,7 +797,8 @@ const CartPage: React.FC = () => {
   }
   // get supplier request
   const getSupplierById = async () => {
-    const { status, data } = await supplierServices.getSupplierById(supplier.id)
+    const { status, data } = await supplierServices.getSupplierById(supplier_id)
+    dispatch(setSupplier(data.data))
     max_distance = data.data?.max_distance;
     setMinCost(data?.data.min_cost);
     setIsClosed(data?.status);
@@ -711,7 +808,7 @@ const CartPage: React.FC = () => {
   const getDistance = async () => {
     if (cartItems.length > 0) {
       let obj = {
-        supplier_id: supplier.id,
+        supplier_id: supplier_id,
         lat: userPosition?.coords.latitude,
         long: userPosition?.coords.longitude,
       };
@@ -1041,12 +1138,11 @@ const CartPage: React.FC = () => {
                               <div className={`order-recovery-select-item ${showTimer ? "" : "active"}`} onClick={() => setShowTimer(false)}>
                                 <span>
 
-                                  {`${t('mismatchModal.selectOption.option2.fastest')}
-                                  ${t('mismatchModal.selectOption.option2.possible')}
-                                  20-40 ${t('mismatchModal.selectOption.option2.minutes')} `}
+                                  {selectOrderChose}
                                 </span>
                               </div>
-                              <div className={`order-recovery-select-item ${!showTimer ? "" : "active"}`} onClick={() => setShowTimer(true)}>
+
+                              <div className={`order-recovery-select-item ${!showTimer ? "" : "active"}`} onClick={handleShowTimer}>
                                 <span>
                                   {
                                     `
@@ -1061,7 +1157,7 @@ const CartPage: React.FC = () => {
                           {
                             (showTimer) &&
                             <>
-                              <TimePickerComponent setSelectedDate={handleSelectedDate} openTime={openTime} closeTime={closeTime} />
+                              <TimePickerComponent schedules={(schedules && forced_status === "AUTO") ? schedules : null} setSelectedDate={handleSelectedDate} openTime={openTime} closeTime={closeTime} />
                             </>
                           }
                           <div className="deliv-to">
@@ -1096,7 +1192,9 @@ const CartPage: React.FC = () => {
                             <button className="continue" onClick={navigateToHome}>
                               {t('cartPage.continueAchats')}
                             </button>
-                            <button className="commander"
+                            <button disabled={disabled} style={{
+                              opacity: disabled ? 0.5 : 1
+                            }} className="commander"
                               onClick={() =>
                                 submitOrder(
                                   cartItems,
@@ -1108,7 +1206,7 @@ const CartPage: React.FC = () => {
                                   appliedBonus,
                                   dispatch,
                                   userPosition,
-                                  supplier.id,
+                                  supplier_id,
                                   deliveryPrice
                                 )
                               }

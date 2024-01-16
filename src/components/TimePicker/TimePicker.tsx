@@ -9,18 +9,78 @@ import { useEffect, useState } from 'react';
 import './timePicker.scss';
 
 import dayjs, { Dayjs } from 'dayjs';
+import { Schedule } from '../../services/types';
+import { getHoursAndMinutes } from '../../utils/utils';
 
 interface TimepickerProps {
-    openTime?: string,
-    closeTime?: string,
-    className?: string,
-    setSelectedDate: (date: Date) => void
+    openTime?: string;
+    closeTime?: string;
+    className?: string;
+    schedules?: Schedule[];
+    setSelectedDate: (date: Date) => void;
 }
 
-const TimePickerComponent: React.FC<TimepickerProps> = ({ className, setSelectedDate, openTime = "08:30", closeTime = "18:00" }) => {
+const TimePickerComponent: React.FC<TimepickerProps> = ({ className, setSelectedDate, schedules, openTime = "08:30", closeTime = "18:00" }) => {
     const [currentDateTime, setCurrentDateTime] = useState<Dayjs | null>(dayjs()); // Initialize with Dayjs object
+    const [minTime, setMinTime] = useState<Dayjs | null>(null); // Initialize with Dayjs object
+    const [maxTime, setMaxTime] = useState<Dayjs | null>(null); // Initialize with Dayjs object
+
+    const calculateMinMaxTime = () => {
+        let minDateTime = dayjs();
+        let maxDateTime = dayjs();
+        if (schedules) {
+            schedules.forEach(day => {
+                const { hours: openH, minutes: openM } = getHoursAndMinutes(day.from);
+                const { hours: closeH, minutes: closeM } = getHoursAndMinutes(day.to);
+                const selectedDate = currentDateTime?.format('D')
+                const dayMinDateTime = dayjs().set('date', parseInt(selectedDate!)).set('hour', openH).set('minute', openM);
+                const dayMaxDateTime = dayjs().set('date', parseInt(selectedDate!)).set('hour', closeH).set('minute', closeM).set('second', 59);
+
+                minDateTime = dayMinDateTime;
+
+                if (!maxDateTime || dayMaxDateTime.isAfter(maxDateTime)) {
+                    maxDateTime = dayMaxDateTime;
+                }
+            });
+            console.log('Date', minDateTime.format('D'))
+            console.log('minDateTime', minDateTime.hour())
+            console.log('maxDateTime', maxDateTime.hour())
+
+            setMinTime(minDateTime);
+            setMaxTime(maxDateTime);
+        } else {
+            // No schedules provided, use default open and close times
+            const { hours: openH, minutes: openM } = getHoursAndMinutes(openTime);
+            const { hours: closeH, minutes: closeM } = getHoursAndMinutes(closeTime);
+
+            minDateTime = dayjs().set('hour', openH).set('minute', openM);
+            maxDateTime = dayjs().set('hour', closeH).set('minute', closeM).set('second', 59);
+
+            setMinTime(minDateTime);
+            setMaxTime(maxDateTime);
+        }
+    };
+
+    useEffect(() => {
+        calculateMinMaxTime();
+    }, [schedules, currentDateTime]);
 
 
+    const isForcedStatusEnabled = (dateString: any) => {
+        if (schedules) {
+
+            var currentDayObject = schedules.find((day: any) => day.day === currentDateTime?.format('ddd'));
+            const now = dayjs();
+            const { hours: openH, minutes: openM } = getHoursAndMinutes(currentDayObject!.from);
+            const { hours: closeH, minutes: closeM } = getHoursAndMinutes(currentDayObject!.to);
+            const date = dayjs(dateString);
+            const valideHours = ((Number(date.format('H')) > Number(openH)) && (Number(date.format('M')) > Number(openM))) && ((Number(date.format('H')) < Number(closeH)) && (Number(date.format('M')) < Number(closeM)))
+            const moreThanNow = (now.format('D') === date.format('D')) ? (Number(date.format('H')) > Number(now.format('H')) && (Number(date.format('M')) > Number(now.format('M')))) : true
+            return (valideHours)
+        } else {
+            return (true)
+        }
+    }
 
     const handleTimeChange = (time: Date | null) => {
         let openArray = openTime.split(":")
@@ -31,17 +91,26 @@ const TimePickerComponent: React.FC<TimepickerProps> = ({ className, setSelected
             closeH: closeArray[0],
             closeM: closeArray[1]
         }
-        const minTime = dayjs().set('hour', parseInt(JobTime.openH)).set('minute', parseInt(JobTime.openM)).set('second', 0);
-        const maxTime = dayjs().set('hour', parseInt(JobTime.closeH)).set('minute', parseInt(JobTime.closeM)).set('second', 0);
         if (time) {
             const selectedTime = dayjs(time);
-
-            if ((selectedTime.hour() >= parseInt(JobTime.openH) && selectedTime.minute() >= parseInt(JobTime.openM)) &&  selectedTime.isBefore(maxTime)) {
+            if (schedules === null) {
+                if ((selectedTime.hour() >= parseInt(JobTime.openH) && (selectedTime.minute() >= parseInt(JobTime.openM))) && (selectedTime.hour() <= parseInt(JobTime.closeH) && (selectedTime.minute() <= parseInt(JobTime.closeM)))) {
+                    setCurrentDateTime(selectedTime)
+                } else {
+                    console.warn('Selected time is outside the allowed range.');
+                    // setCurrentDateTime(null); // Set to null to cancel the selection
+                    setCurrentDateTime(dayjs()); // Set to default time
+                }
             } else {
-                console.warn('Selected time is outside the allowed range.');
-                setCurrentDateTime(null); // Set to null to cancel the selection
+                const validate = isForcedStatusEnabled(time)
+                if (validate) {
+                    setCurrentDateTime(selectedTime)
+                } else {
+                    console.warn('Selected time is outside the allowed range.');
+                    // setCurrentDateTime(null); // Set to null to cancel the selection
+                    setCurrentDateTime(dayjs()); // Set to default time
 
-                // setCurrentDateTime(dayjs().set('hour', 12).set('minute', 59).set('second', 0)); // Set to default time
+                }
             }
         }
     };
@@ -51,20 +120,21 @@ const TimePickerComponent: React.FC<TimepickerProps> = ({ className, setSelected
     }, [currentDateTime]);
 
     return (
-        <div className={`time-picker-container ${className} `} >
+        <div className={`time-picker-container ${className}`}>
             <LocalizationProvider dateAdapter={AdapterDayjs}>
-                <DemoContainer components={['TimePicker']}>
-                    <DateTimePicker
-                        className='time-picker-input'
-                        label="Basic time picker"
-                        format="YYYY-MM-DD HH:mm:ss"
-                        ampmInClock={true}
-                        ampm={false}
-                        onChange={handleTimeChange}
-                        value={currentDateTime}
+                <DateTimePicker
+                    className='time-picker-input'
+                    label="Basic time picker"
+                    format="YYYY-MM-DD HH:mm:ss"
+                    ampmInClock={true}
+                    ampm={false}
+                    onChange={handleTimeChange}
+                    value={currentDateTime!}
+                    minTime={minTime}
+                    maxTime={maxTime}
+                    disablePast={true}
 
-                    />
-                </DemoContainer>
+                />
             </LocalizationProvider>
         </div>
     );

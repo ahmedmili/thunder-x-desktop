@@ -315,6 +315,8 @@
   "cart.discount": "قيمة الخصم",
   "cart.PromosCode": "رمز الخصم",
   "cart.clientName": "اسم العميل",
+  "cart.delivPlanedAt": "التسليم المجدول في ",
+
   "searchPage.created_at": "thunder جديد في",
   "searchPage.populaires": "الأكثر شهرة",
   "searchPage.mieux": "الأعلى تقييمًا",
@@ -327,7 +329,6 @@
   "searchPage.purchasedTogether": "المنتجات المشتراة معًا",
   "searchPage.warnAuthMessage": "لإطلاق طلبك، يجب عليك تسجيل الدخول أو إنشاء حساب جديد",
   "searchPage.warnServiceMessage": "ترجمة إلى العربية: هذه الخدمة غير متاحة في مدينتك",
-
   "update": "التعديل",
   "toPay": "للدفع",
   "Retour": "عودة ",
@@ -344,5 +345,12 @@
   "mobile.menu.description": "استمتع بفوائد خاصة في أماكنك ومطاعمك المفضلة!",
   "mobile.menu.download_button": "تحميل التطبيق",
   "mobile.menu.web_button": "المتابعة على الويب",
-  "mobile.": "جوال"
+  "mobile.": "جوال",
+  "weekDays.names.Monday": "الاثنين",
+  "weekDays.names.Tuesday": "الثلاثاء",
+  "weekDays.names.Wednesday": "الأربعاء",
+  "weekDays.names.Thursday": "الخميس",
+  "weekDays.names.Friday": "الجمعة",
+  "weekDays.names.Saturday": "السبت",
+  "weekDays.names.Sunday": "الأحد"
 }

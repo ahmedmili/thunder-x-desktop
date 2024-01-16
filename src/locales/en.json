@@ -335,6 +335,8 @@
   "product": "product",
   "cart.PromosCode": "Promo code",
   "cart.clientName": "Client Name",
+  "cart.delivPlanedAt": "Scheduled delivery on ",
+
   "searchPage.created_at": "New in Thunder.",
   "searchPage.populaires": "The most popular",
   "searchPage.mieux": "The highest-rated.",
@@ -346,7 +348,6 @@
   "searchPage.purchasedTogether": "Products purchased together",
   "searchPage.warnAuthMessage": "To place your order, you must log in or create a new account",
   "searchPage.warnServiceMessage": "This service is not available in your city.",
-
   "update": "update",
   "toPay": "To pay",
   "Reset": "Reset",
@@ -363,5 +364,12 @@
   "mobile.menu.description": "Enjoy special benefits at your favorite places and restaurants!",
   "mobile.menu.download_button": "Download the application",
   "mobile.menu.web_button": "Continue on the web",
-  "mobile.": "Mobile"
+  "mobile.": "Mobile",
+  "weekDays.names.Monday": "Monday",
+  "weekDays.names.Tuesday": "Tuesday",
+  "weekDays.names.Wednesday": "Wednesday",
+  "weekDays.names.Thursday": "Thursday",
+  "weekDays.names.Friday": "Friday",
+  "weekDays.names.Saturday": "Saturday",
+  "weekDays.names.Sunday": "Sunday"
 }
