@@ -6,20 +6,24 @@
     .newsLetterContainer {
         @include flex(flex, center, space-around);
     }
+
     .newsLetterDescription {
         .newsLetterTitle {
             font-family: 'Poppins-Bold', serif;
             @include fonts(30px, 35px, $color-blue-pelorous);
             margin: 0 0 15px;
         }
+
         .newsLetterDesc {
             font-family: 'Poppins-Medium', serif;
             @include fonts(16px, 26px, $dark_Gray);
             margin: 0 0 30px;
         }
+
         .emailWrapper {
             position: relative;
             width: 500px;
+
             .formControl {
                 background-color: $color-gray-mercury-2;
                 @include dimensions(500px, 50px);
@@ -27,6 +31,7 @@
                 padding-left: 50px;
                 padding-right: 200px;
             }
+
             .btnEmailSubmit {
                 position: absolute;
                 top: 0;
@@ -36,7 +41,7 @@
                 border-radius: 55px;
                 font-family: 'Poppins-Bold', serif;
                 @include fonts(15px, 15px, $color-white);
-    
+
                 .icon {
                     @include dimensions(18px, 18px);
                     background-image: url('./../../../src/assets/arrow-submit-icn.svg');
@@ -46,8 +51,14 @@
                     margin: 0 0 0 7px;
                 }
             }
+
+            .newsLetterErrorsMessage {
+                color: red;
+                padding: 20px 0 0 20px
+            }
         }
     }
+
     .newsLetterImg {
         @include flex;
         @include dimensions(440px, 400px);
@@ -72,6 +83,7 @@
                 margin: 0 0 10px;
                 @include fontSize(24px, 28px);
             }
+
             .newsLetterDesc {
                 margin: 0 0 25px;
                 @include fontSize(13px, 23px);
