@@ -355,7 +355,7 @@
         .position {
             font-family: 'Poppins-Medium', serif;
             @include fonts(15px, 15px, $color-white);
-            @include flex(flex, center, flex-start);
+            @include flex(flex, center, center);
             gap: 7px;
             margin-right: 10px;
             border-radius: 55px;
@@ -363,7 +363,7 @@
             height: 43px;
             min-width: 270px;
             background-color: $color-gray-alto;
-            background-image: url('./../../assets/position-icn.svg');
+            // background-image: url('./../../assets/position-icn.svg');
             background-repeat: no-repeat;
             background-position: 22px center;
             background-size: 15px auto;
