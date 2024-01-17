@@ -3,9 +3,7 @@
 import { MouseEventHandler, useEffect, useRef, useState } from 'react';
 import { useAppDispatch, useAppSelector } from '../../../Redux/store';
 import { LocationService } from '../../../services/api/Location.api';
-// import { toast } from 'react-toastify';
 import './mapCard.scss';
-import EditPen from '../../../assets/edit-pen.svg'
 
 import { useTranslation } from 'react-i18next';
 import { localStorageService } from '../../../services/localStorageService';
@@ -16,8 +14,8 @@ import { ErrorMessage, Field, Form, Formik, FormikHelpers } from 'formik';
 import { useSelector } from "react-redux";
 import * as Yup from 'yup';
 import {
-  regionHomeSelector,
-  homeLoadingSelector
+    homeLoadingSelector,
+    regionHomeSelector
 } from "../../../Redux/slices/home";
 
 

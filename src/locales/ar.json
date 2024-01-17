@@ -284,6 +284,7 @@
   "adress.initLocation": "الموقع الأولي",
   "adress.currentPos": " الموقع الحالي",
   "adress.adressIntrouvable": "هذا العنوان غير موجود. هل ترغب في المحاولة مرة أخرى ؟",
+  "adress.browserLocationAcessRequest": "الرجاء السماح بالوصول إلى موقعك",
 
   "supplier.opentime": "مفتوح حتى",
   "supplier.delivPrice": "تكلفة التسليم:",

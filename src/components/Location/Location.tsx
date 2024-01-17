@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { Badge, Col, Container, Row, Stack } from "react-bootstrap";
+import { Container } from "react-bootstrap";
 import { useTranslation } from "react-i18next";
 import { useSelector } from "react-redux";
 import "react-toastify/dist/ReactToastify.css";
@@ -17,8 +17,8 @@ import {
 } from "../../Redux/slices/home";
 import { LocationService } from "../../services/api/Location.api";
 import { localStorageService } from "../../services/localStorageService";
-import MapCard from "./mapCard/MapCard";
 import AutocompleteInput from "./AutocompleteInput/AutocompleteInput";
+import MapCard from "./mapCard/MapCard";
 
 declare global {
   interface Window {
@@ -26,6 +26,12 @@ declare global {
   }
 }
 
+type Position = {
+  coords: {
+    latitude: number;
+    longitude: number;
+  };
+};
 
 interface AdressComponentProps {
   type: string;
@@ -51,7 +57,9 @@ const Map: React.FC<MapProps> = ({ className, forced = false }) => {
   const region = useSelector(regionHomeSelector);
   const location = localStorageService.getCurrentLocation()
   const isLoading = useSelector(homeLoadingSelector);
+  const userLocation = useAppSelector((state) => state.location.position);
 
+  const [mapDisabled, setMapState] = useState<boolean>(false);
 
   useEffect(() => {
     const disableScroll = (e: any) => {
@@ -63,6 +71,10 @@ const Map: React.FC<MapProps> = ({ className, forced = false }) => {
       window.removeEventListener('scroll', disableScroll);
     };
   }, []);
+
+  const handleMapState = (value: any) => {
+    setMapState(value)
+  }
 
   // read client adresses
   useEffect(() => {
@@ -124,6 +136,30 @@ const Map: React.FC<MapProps> = ({ className, forced = false }) => {
       return pos.type == selectedOption;
     })
 
+    const getCurrentPosition = () => {
+
+      navigator.geolocation.getCurrentPosition(
+        (position: Position) => {
+          handleMapState(false);
+          let pos = position.coords
+          const { latitude, longitude } = pos;
+          LocationService.geoCode(latitude, longitude).then(data => {
+            dispatch({
+              type: "SET_LOCATION",
+              payload: {
+                ...data
+              },
+            });
+          });
+        },
+        (error: GeolocationPositionError) => {
+          handleMapState(true);
+          setTimeout(() => {
+            handleMapState(false);
+          }, 2000);
+        }
+      );
+    };
     return (
       <Container className="modal-container modal-location">
         <h1 className="modal-title text-center">{t('adress.add')}</h1>
@@ -152,11 +188,13 @@ const Map: React.FC<MapProps> = ({ className, forced = false }) => {
               </div>
             </div>
             <div className="current-position">
-              <div className="current-position_input-blc">
-                <input readOnly className="form-control" type="text" placeholder="Position actuelle" />
+              <div className="current-position_input-blc" onClick={getCurrentPosition}>
+                <input readOnly className="form-control" type="text" placeholder={`${userLocation ? userLocation.coords.label : t('adress.currentPos')} `} />
               </div>
-              {/* <button className="btn btn-edit"></button> */}
             </div>
+            {mapDisabled && (
+              <div className='error'>{t('adress.browserLocationAcessRequest')}</div>
+            )}
             {clientAdressTable.length > 0 &&
               <div className="saved-adresses-area">
                 <p className="saved-adresses-title">{t('adress.savedAdress')}</p>
@@ -178,8 +216,6 @@ const Map: React.FC<MapProps> = ({ className, forced = false }) => {
             }
             {filtredPositions.length > 0 ? (
               <>
-                {/* <center>
-                </center> */}
                 <div className="adresses-container">
                   {filtredPositions.map((element) => (
                     <>
@@ -197,12 +233,6 @@ const Map: React.FC<MapProps> = ({ className, forced = false }) => {
 
             ) : (
               <></>
-              // <div className="Text-container">
-
-              //   <h6 style={{ display: userItem ? "inline" : "none" }}>
-              //     {t('adress.noAdress')}
-              //   </h6>
-              // </div>
             )
             }
           </div>
@@ -217,12 +247,6 @@ const Map: React.FC<MapProps> = ({ className, forced = false }) => {
               <MapCard cancel={cancel} />
             </div>
           }
-
-          {/* <div className="btns-group" style={{
-            marginTop: `${showMapComponent ? "0" : "40px"}`
-          }}>
-            <button className="btn btn-next">{t('continuer')}</button>
-          </div> */}
         </div>
       </Container>
     )
@@ -256,9 +280,6 @@ const Map: React.FC<MapProps> = ({ className, forced = false }) => {
               <div className="position-icon" style={{ backgroundImage: `url(${HomeLocation})` }} ></div>
               <span>{type}</span>
             </div>
-            {/* <button className="edit-button">
-              <div className="edit-icon" style={{ backgroundImage: `url(${EditPen})` }} ></div>
-            </button> */}
           </div>
           <p className="position-name">
             {street}, <br /> {region}
