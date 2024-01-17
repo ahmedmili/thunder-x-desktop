@@ -1,4 +1,4 @@
-@import '../../../_colors.scss';
+@import '../../../scss/extend';
 
 @keyframes popup-animation {
     0% {
@@ -13,88 +13,57 @@
 }
 
 .phone-input-popup-container {
-    height: 100vh;
-    width: 100%;
+    @include dimensions(100%, 100vh);
     background: rgba(72, 72, 72, 0.60);
     position: fixed;
     top: 0;
     right: 0;
     z-index: 999;
-    display: flex;
-    justify-content: center;
-    align-items: center;
+    @include flex;
 
     .phone-popup-box {
-        width: 594px;
-        height: 489px;
-        background-color: white;
+        @include dimensions(560px, 490px);
+        background-color: $color-white;
         border-radius: 25px;
-        display: flex;
-        flex-direction: column;
-        justify-content: center;
-        align-items: center;
-        gap: 95px;
+        display: block;
         animation: popup-animation 1s ease-in-out;
         position: relative;
+        padding: 80px;
 
         .phone-input-popup-close {
             position: absolute;
-            top: 15px;
-            right: 15px;
-            width: 20px;
-            height: 20px;
-            color: #FBC000;
-            background-color: transparent;
-            border: none;
-            font-size: 20px;
+            top: 60px;
+            right: 27px;
+            @include dimensions(15px, 15px);
+            background-image: url('./../../../assets/close-button-black.svg');
+            background-position: center;
+            background-repeat: no-repeat;
+            background-size: 15px auto;
         }
-
         .input-text-zone {
-            display: flex;
-            flex-direction: column;
-            gap: 15px;
+            display: block;
+            margin: 0 0 68px;
 
             label {
-                color: #484848;
-                font-family: Poppins;
-                font-size: 16px;
-                font-style: normal;
-                font-weight: 500;
-                line-height: normal;
+                @include fonts(17px, 17px, $dark_Gray);
+                font-family: 'Poppins-Medium', serif;
+                margin: 0 0 15px;
             }
-
             .input-box {
-
                 input[type="number"]::-webkit-inner-spin-button,
                 input[type="number"]::-webkit-outer-spin-button,
                 input[type="number"] {
                     -webkit-appearance: none;
                     appearance: none;
                     margin: 0;
-                    /* Optional: You can adjust the margin if needed */
                 }
-
                 .phone-input {
-                    border: none;
-                    border-radius: 7px;
-                    border: 2px solid #8ACDCC;
-                    width: 100%;
-                    height: 49px;
-                    padding: 12px 15px;
-                    font-family: Poppins;
-                    font-size: 20px;
-                    font-style: normal;
-                    font-weight: 600;
-                    line-height: normal;
-
-                    &::placeholder {
-                        color: #958E8E;
-                        font-family: Poppins;
-                        font-size: 20px;
-                        font-style: normal;
-                        font-weight: 600;
-                        line-height: normal;
-                    }
+                    border-radius: 10px;
+                    @include border(2px, $color-blue-pelorous);
+                    @include dimensions(100%, 49px);
+                    @include fonts(17px, 17px, $light_Gray);
+                    font-family: 'Poppins-Medium', serif;
+                    font-weight: weight(medium);
 
                     &:focus {
                         outline: none;
@@ -102,7 +71,6 @@
                 }
             }
         }
-
         .input-numbers-keys-zone {
             display: grid;
             grid-template-columns: repeat(3, 1fr);
@@ -112,21 +80,17 @@
             button {
                 border-radius: 5px;
                 border: none;
-                padding: 6px 47px;
-                color: #24A6A4;
-                font-family: Poppins;
-                font-size: 18px;
-                font-style: normal;
-                font-weight: 600;
-                line-height: normal;
-            }
+                @include dimensions(100%, 40px);
+                @include flex;
+                @include fonts(17px, 17px, $color-blue-eastern);
+                padding: 5px;
 
-            .number-key {
-                background: rgba(46, 181, 178, 0.34);
-            }
-
-            .number-delete {
-                background-color: transparent;
+                &.number-key {
+                    background-color: #2EB1C354;
+                }
+                &.number-delete {
+                    background-color: transparent;
+                }
             }
         }
     }
