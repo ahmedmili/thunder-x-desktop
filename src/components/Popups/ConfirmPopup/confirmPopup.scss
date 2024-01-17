@@ -1,4 +1,4 @@
-@import '../../../_colors.scss';
+@import '../../../scss/extend';
 @import '../../../animations';
 
 @mixin min-height-media-query($max-height) {
@@ -20,71 +20,62 @@
 }
 
 .confirm-popup-container {
-    display: flex;
-    flex-direction: column;
-    gap: 22px;
     position: fixed;
     top: 50%;
     left: 50%;
     transform: translate(-50%, -50%);
-    width: 817px;
-    height: 284px;
+    @include dimensions(817px, 284px);
     border-radius: 25px;
-    background: #FFF;
-    padding: 65px 65px 56px 65px;
+    background: $color-white;
+    padding: 65px;
+    display: block;
 
-    .confirm-message {
-        color: #484848;
-        font-family: Poppins;
-        font-size: 20px;
-        font-style: normal;
-        font-weight: 500;
-        line-height: normal;
+    .close-button {
+        position: absolute;
+        top: 27px;
+        right: 30px;
+        padding: 5px;
+        border: none;
+        @include dimensions(15px, 15px);
+        background-color: transparent;
+        background-image: url('./../../../assets/close-button-black.svg');
+        background-position: center;
+        background-repeat: no-repeat;
+        background-size: 15px auto;
     }
-
+    .confirm-message {
+        @include fonts(20px, 30px, $dark_Gray);
+        font-family: 'Poppins-Medium', serif;
+        margin: 0 0 35px;
+        padding: 0 15px 0 0;
+    }
     .buttons {
         display: flex;
-        gap: 50px;
+        gap: 55px;
         width: 100%;
 
         button {
-            flex: 1;
-            color: #FFF;
-            font-family: Poppins;
-            font-size: 18px;
-            font-style: normal;
-            font-weight: 600;
-            line-height: normal;
-            border-radius: 50px;
-            border: none;
-            height: 58px;
-        }
+            @include flex;
+            @include dimensions(100%, 43px);
+            @include fonts(17px, 17px, $color-white);
+            font-family: 'Poppins-SemiBold', serif;
 
-        .confirm-accept {
-            background: #FBC000;
-        }
-
-        .confirm-refuse {
-            background: #BCBAB1;
+            &.confirm-accept {
+                background-color: $color-yellow-saffron;
+            }
+            &.confirm-refuse {
+                background-color: $color-gray-alto;
+            }
         }
     }
-
 }
+
+/* # $Mobile ::
+------------------------------------*/
 
 @media only screen and (max-width:992px) {
     .confirm-popup-container {
         width: 70vw;
         height: 284px;
-    }
-}
-
-@media only screen and (max-width:786px) {
-    .confirm-popup-container {
-        padding: 67px 41px 56px 41px;
-
-        .confirm-message {
-            font-size: 17px;
-            margin: 0;
-        }
     }
 }

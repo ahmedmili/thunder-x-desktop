@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react'
-import CoverImage from '../../../.../../../assets/profile/ArchivedCommands/cover.svg'
+import CoverImage from '../../../.../../../assets/archived-commands-bg.png'
 import CommandsList from './CommandsList/CommandsList'
 import './archivedCommands.scss'
 import { useTranslation } from 'react-i18next'
@@ -26,16 +26,20 @@ function ArchivedCommands() {
     return (
         <div className='archived-commands-container'>
             <header>
-                <p className='title'>{t('orderTrackingPage.archivedCommands')}</p>
-                <div className='archivedC-image' style={{ backgroundImage: ` url(${CoverImage})` }}></div>
-
+                {/* 
+                    <p className='title'>{t('orderTrackingPage.archivedCommands')}</p>
+                    <div className='archivedC-image' style={{ backgroundImage: ` url(${CoverImage})` }}></div>
+                */}
+                <div className="archived-commands_img-blc">
+                    <img src={CoverImage} alt="Cover Image" />
+                </div>
                 <nav>
                     <ul>
                         <li>
-                            <span onClick={() => handleNav(1)} className={`list-item-text ${nav === 1 && "active"}`}>{t('orderTrackingPage.currentCommands')}</span>
+                            <button onClick={() => handleNav(1)} className={`list-item-text ${nav === 1 && "active"}`}>{t('orderTrackingPage.currentCommands')}</button>
                         </li>
                         <li>
-                            <span onClick={() => handleNav(2)} className={`list-item-text ${nav === 2 && "active"}`} >{t('orderTrackingPage.oldCommands')}</span>
+                            <button onClick={() => handleNav(2)} className={`list-item-text ${nav === 2 && "active"}`} >{t('orderTrackingPage.oldCommands')}</button>
                         </li>
                     </ul>
                 </nav>

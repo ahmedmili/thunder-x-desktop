@@ -30,8 +30,8 @@
         display: flex;
         flex-direction: column;
         align-items: center;
-        gap: 28px;
-        padding: 110px 15px 15px;
+        gap: 15px;
+        padding: 110px 15px 35px;
 
         .image {
             @include dimensions(116px, 116px);
