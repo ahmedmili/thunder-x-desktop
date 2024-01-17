@@ -53,4 +53,8 @@ export const arrayToObject = (array: string[]): Record<string, string> => {
     });
     return resultObject
 }
+export const convertStringToNumber = (product: any, quantity: any): number => {
 
+    const totalPrice = Number(product.price) * quantity;
+    return Number(totalPrice.toFixed(2));
+}

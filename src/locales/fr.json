@@ -185,6 +185,7 @@
   "orderTrackingPage.price": "Prix",
   "orderTrackingPage.importedReady": "En attente de récupération auprès de restaurant",
   "orderTrackingPage.isReady": "la commande est préte",
+  "orderTrackingPage.BankTaxes": "Bank taxs",
   "createAccSubtitle": "S’inscrire et créer facilement votre compte",
   "createAcc": "Créer votre compte",
   "firstName": "Prénom",

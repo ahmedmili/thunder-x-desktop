@@ -26,6 +26,7 @@ import { Product } from '../../../../../services/types';
 import SignaleProblem from '../../../../Popups/SignaleProblem/SignaleProblem';
 import CommandsFooter from '../Footer/Footer';
 import WarnPopup from '../../../../Popups/WarnPopup/WarnPopup';
+import { convertStringToNumber } from '../../../../../utils/utils';
 
 interface CommandsListProps {
     data: any
@@ -58,7 +59,34 @@ interface CommandProps {
 const Command: React.FC<CommandProps> = ({ removeCommand, data }) => {
     const [total, setTotal] = useState<number>(0)
     const [showCancleConfirm, setShowCancleConfirm] = useState<boolean>(false)
+    const [tax, setTax] = useState<number>(0)
+
     const { t } = useTranslation()
+
+
+    const calculSomme = (products: any) => {
+        const totalCost = products.reduce((accumulator: any, currentItem: any) => {
+            let itemCost: any;
+            if (currentItem.computed_value.discount_value > 0) {
+                const discountPrice = (currentItem.price * currentItem.computed_value.discount_value) / 100;
+                itemCost = (currentItem.price - discountPrice) * currentItem.quantity;
+            } else {
+                itemCost = currentItem.price * currentItem.quantity;
+            }
+            return accumulator + itemCost;
+        }, 0);
+        return totalCost;
+    }
+
+    const calculTax = (command: any) => {
+        const totalPrice = parseFloat(command?.total_price);
+        const totalProducts = calculSomme(command?.products);
+        const deliveryPrice = parseFloat(command.delivery_price);
+        const bonus = command.bonus > 0 ? (command.bonus / 1000) : 0;
+        const gift = command.gift_ammount > 0 ? command.gift_ammount : 0;
+        const tax = (totalPrice + bonus + gift) - (totalProducts + deliveryPrice);
+        return tax;
+    }
 
     const calculeData = () => {
         let total = 0;
@@ -75,15 +103,17 @@ const Command: React.FC<CommandProps> = ({ removeCommand, data }) => {
     }
 
     useEffect(() => {
+        const tax = calculTax(data)
+        setTax(tax)
         calculeData()
     }, [data])
 
-    const handleConfrmModal = ( )=>{
+    const handleConfrmModal = () => {
         setShowCancleConfirm(!showCancleConfirm)
     }
-    const dropCommand = (id:number) =>{
+    const dropCommand = (id: number) => {
         removeCommand(id)
-    } 
+    }
     return (
         <div className='command-product-container'>
             <h3 className='title'> {t('profile.commands.command')}</h3>
@@ -91,7 +121,7 @@ const Command: React.FC<CommandProps> = ({ removeCommand, data }) => {
             {/* total */}
             <div className='total'>
                 <span>{t('cartPage.total')}</span>
-                <span className='total-value'>{(data.total_price - data.total_price_coupon).toFixed(2)} DT</span>
+                <span className='total-value'>{Number(data.total_price).toFixed(2)} DT</span>
             </div>
             {/* sous Total */}
             <div className='sous-total'>
@@ -135,6 +165,15 @@ const Command: React.FC<CommandProps> = ({ removeCommand, data }) => {
                     {data.mode_pay === 1 ? t('cartPage.espece') : t('cartPage.bankPay')}
                 </span>
             </div>
+            {/* tax section */}
+            {
+                (tax > 0) && (
+                    <div className='tax'>
+                        <span>{t('orderTrackingPage.BankTaxes')}</span>
+                        <span className='left-price'>-{tax.toFixed(2)} dt</span>
+                    </div>
+                )
+            }
             {/* bonus discount */}
             {
                 (data.bonus > 0) && (
@@ -144,6 +183,7 @@ const Command: React.FC<CommandProps> = ({ removeCommand, data }) => {
                     </div>
                 )
             }
+
             {/* gift discount */}
             {
                 data.gift_ammount > 0 && (
@@ -167,7 +207,7 @@ const Command: React.FC<CommandProps> = ({ removeCommand, data }) => {
             {
                 showCancleConfirm && (
 
-                    <WarnPopup close={handleConfrmModal} accept={() => dropCommand(data.command_id)} closeButtonText={t('Annuler')} confirmButtonText={t('delete')}  message='' />
+                    <WarnPopup close={handleConfrmModal} accept={() => dropCommand(data.command_id)} closeButtonText={t('Annuler')} confirmButtonText={t('delete')} message='' />
                 )
             }
         </div>
@@ -294,6 +334,22 @@ const CurrentCommands: React.FC<CommandsListProps> = ({ removeCommand, goToPasse
         }
     }
 
+    // const calculTax = (command: any) => {
+    //     const totalPrice = parseFloat(command?.total_price);
+    //     const gift = command.gift_ammount > 0 ? command.gift_ammount : 0;
+    //     let totalProducts: any = 0;
+    //     for (let product of command.products) {
+    //         totalProducts += convertStringToNumber(product, product?.quantity);
+    //     }
+    //     const tax = (totalPrice + gift) - totalProducts;
+    //     console.log("totalPrice:",totalPrice)
+    //     console.log("gift:",gift)
+    //     console.log("totalProducts:",totalProducts)
+    //     return tax;
+    // }
+
+
+
     return (
 
         <>
@@ -303,7 +359,7 @@ const CurrentCommands: React.FC<CommandsListProps> = ({ removeCommand, goToPasse
                 </header>
                 <main className={`current-command-main `}>
                     <div className='supplier-info'>
-                        <img src={supplier.images[0].path} loading="lazy" alt="supplier logo" />
+                        <img src={supplier.images[0].length && supplier.images[0].path} loading="lazy" alt="supplier logo" />
                         <div className='name-rate'>
                             <p className='supplier-name'>{supplier.name}</p>
                             {(supplier.star && supplier.star > 0) && <p className='supplier-rates'><StarIcon className='rate-icon' /> {supplier.star.toFixed(1)}</p>}

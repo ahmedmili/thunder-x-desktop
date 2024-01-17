@@ -187,6 +187,8 @@
   "orderTrackingPage.price": "Price:",
   "orderTrackingPage.importedReady": "Waiting for pickup from the restaurant",
   "orderTrackingPage.isReady": "The order is ready",
+  "orderTrackingPage.BankTaxes": "Impôts bancaires",
+
   "createAccSubtitle": "Sign up and easily create your account",
   "createAcc": "Create your account",
   "firstName": "First name",
@@ -306,7 +308,6 @@
   "adress.initLocation": "Initial Location",
   "adress.adressIntrouvable": "This address is not found. Retry ?",
   "adress.browserLocationAcessRequest": "Please allow access to your location",
-
   "supplier.opentime": "Open up to",
   "supplier.delivPrice": "Shipping costs:",
   "supplier.startAt": "From :",
