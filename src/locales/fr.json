@@ -124,6 +124,7 @@
   "profile.commands.livRecherche": "En recherche d’un livreur",
   "profile.commands.sousTotal": "Sous-total",
   "profile.commands.annuler": "Annuler la comamnde",
+  "profile.commands.annuler.warnMessage": "Etes vous sure de vouloir supprimer la commande définitivement ?",
   "profile.commands.sousMessage": "La commande est en attente d’acceptation de la part du restaurant",
   "profile.commands.sousMessage2": "La commande est en cours de prépaartion",
   "profile.commands.sousMessage3": "La commande livré dans 15 minutes",

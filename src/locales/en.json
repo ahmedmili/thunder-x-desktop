@@ -121,6 +121,7 @@
   "profile.commands.livRecherche": "Looking for a deliverer",
   "profile.commands.sousTotal": "Sub-total",
   "profile.commands.annuler": "Cancel Command",
+  "profile.commands.annuler.warnMessage": "Are you sure you want to delete the order permanently",
   "profile.commands.sousMessage": "The order is pending acceptance by the restaurant",
   "profile.commands.sousMessage2": "The order is being prepared",
   "profile.commands.sousMessage3": "The order will be delivered in 15 minutes",
@@ -188,7 +189,6 @@
   "orderTrackingPage.importedReady": "Waiting for pickup from the restaurant",
   "orderTrackingPage.isReady": "The order is ready",
   "orderTrackingPage.BankTaxes": "Impôts bancaires",
-
   "createAccSubtitle": "Sign up and easily create your account",
   "createAcc": "Create your account",
   "firstName": "First name",
