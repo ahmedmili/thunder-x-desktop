@@ -62,3 +62,14 @@
 .popularRestos {
   margin: 0 0 150px;
 }
+
+
+/* # $Mobile ::
+------------------------------------*/
+
+@media (max-width: 1440px) {
+  .discuterMessangerPopup {
+    bottom: 85px;
+    right: 30px;
+  }
+}

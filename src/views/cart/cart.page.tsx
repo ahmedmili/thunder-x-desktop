@@ -2,7 +2,6 @@ import React, { MouseEventHandler, useEffect, useState } from "react";
 import {
   changeItemQuantity,
   clearCart,
-  removeItem,
   removeItemWithIndex,
   setCodePromo,
   setComment,
@@ -13,34 +12,35 @@ import {
 import CartSVG from '../../assets/card-icn.svg';
 import PayCashSVG from '../../assets/money-icn.svg';
 
-import bagPaperShoppingIcn from '../../assets/panier/take-away-icn.svg';
-import dinnerFurnitureIcn from '../../assets/panier/onthespot-icn.svg';
 import empty from '../../assets/panier/empty.png';
 import scooterTransportIcn from '../../assets/panier/ondelivery-icn.svg';
+import dinnerFurnitureIcn from '../../assets/panier/onthespot-icn.svg';
+import bagPaperShoppingIcn from '../../assets/panier/take-away-icn.svg';
 
-import KeyboardArrowDownOutlinedIcon from '@mui/icons-material/KeyboardArrowDownOutlined';
-import KeyboardArrowUpOutlinedIcon from '@mui/icons-material/KeyboardArrowUpOutlined';
 import { RootState, useAppDispatch, useAppSelector } from "../../Redux/store";
 
 import 'react-clock/dist/Clock.css';
-import TimePicker from 'react-time-picker';
-import 'react-time-picker/dist/TimePicker.css';
+
+
 
 import { useTranslation } from "react-i18next";
 import { useNavigate } from "react-router-dom";
-// import { toast } from "react-toastify";
 import * as z from "zod";
 import { logout } from "../../Redux/slices/userSlice";
 import { FoodItem } from "../../services/types";
 
-import CloseIcon from '@mui/icons-material/Close';
 import Accordion from '@mui/material/Accordion';
 import AccordionDetails from '@mui/material/AccordionDetails';
 import AccordionSummary from '@mui/material/AccordionSummary';
 import { Col, Container, Row } from "react-bootstrap";
+import { toast } from "react-toastify";
+import { fetchMessages } from "../../Redux/slices/messanger";
 import MessangerBtnIcon from '../../assets/profile/Discuter/messanger-btn.svg';
+import Messanger from "../../components/Popups/Messanger/Messanger";
+import MinCostError from "../../components/Popups/MinCostError/MinCostError";
 import WarnPopup from "../../components/Popups/WarnPopup/WarnPopup";
 import PaymentPopup from "../../components/Popups/payment/PaymentPopup";
+import TimePickerComponent from "../../components/TimePicker/TimePicker";
 import { LocationService } from "../../services/api/Location.api";
 import { adressService } from "../../services/api/adress.api";
 import { cartService } from "../../services/api/cart.api";
@@ -49,12 +49,7 @@ import { supplierServices } from "../../services/api/suppliers.api";
 import { userService } from "../../services/api/user.api";
 import { localStorageService } from "../../services/localStorageService";
 import "./cart.page.scss";
-import Messanger from "../../components/Popups/Messanger/Messanger";
-import { fetchMessages } from "../../Redux/slices/messanger";
-import MinCostError from "../../components/Popups/MinCostError/MinCostError";
-import { toast } from "react-toastify";
-import SupplierImg from '../../assets/menu-1.png';
-
+import moment from "moment";
 
 const CartPage: React.FC = () => {
   const { t } = useTranslation();
@@ -84,10 +79,12 @@ const CartPage: React.FC = () => {
   const [total, setTotal] = useState<number>(0)
   // const [delivPrice, setDelivPrice] = useState<number>(0)
   const [aComment, setAComment] = React.useState<string>(comment ? comment : "");
+  const [showTimer, setShowTimer] = React.useState<boolean>(false);
 
   const [popupType, setPopupType] = React.useState<string>("");
   const [showPopup, setShowPopup] = React.useState<boolean>(false);
   const [showServicePopup, setShowServicePopup] = React.useState<boolean>(false);
+  const [showAuthWarnPopup, setShowAuthWarnPopup] = React.useState<boolean>(false);
 
   // promo vars
   const [promo, setPromo] = React.useState<string>("");
@@ -128,6 +125,8 @@ const CartPage: React.FC = () => {
   const [minCost, setMinCost] = useState<number>(0)
   const [isClosed, setIsClosed] = useState<number>(1)
   const [minCostError, setMinCostError] = useState<boolean>(false)
+  const [closeTime, setCloseTime] = useState<string>('');
+  const [openTime, setOpenTime] = useState<string>('');
 
 
 
@@ -138,6 +137,10 @@ const CartPage: React.FC = () => {
   const unReadMessages = useAppSelector((state) => state.messanger.unReadedMessages)
   const [messangerPopup, setMessangerPopup] = useState<boolean>(false)
   const [unReadedQt, setUnReadedQt] = useState<number>(unReadMessages)
+  var currentDate = moment();
+
+  var today = currentDate.format('ddd');  // Get the current day name (e.g., 'Mon', 'Tue', etc.)
+
   useEffect(() => {
     setUnReadedQt(unReadMessages)
   }, [unReadMessages])
@@ -149,42 +152,52 @@ const CartPage: React.FC = () => {
     fetchMessages()
   }, [])
 
+  useEffect(() => {
+    const schedules = supplier.schedules
+    var currentDayObject = schedules.find((day: any) => day.day === today);
+    if (currentDayObject) {
+      let closeTimeArray = currentDayObject.to.toString().split(':')
+      let closeTime = `${closeTimeArray[0]}:${closeTimeArray[1]}`
+      setCloseTime(closeTime)
+      let openTimeArray = currentDayObject.from.toString().split(':')
+      let openTime = `${closeTimeArray[0]}:${closeTimeArray[1]}`
+      setOpenTime(openTime)
+    }
+  }, [supplier])
+
   // article component 
   interface Article {
     item: FoodItem,
     remove: () => void
   }
+  const handleIncreaseQuantity = (item: FoodItem) => {
+    dispatch(
+      changeItemQuantity({
+        itemId: Number(item.product.id),
+        quantity: item.quantity + 1,
+      })
+    );
+    // setCount(item.quantity + 1)
 
-  const ArticleProvider: React.FC<Article> = ({ item, remove }) => {
-    const [count, setCount] = useState<number>(item.quantity)
-    const handleIncreaseQuantity = () => {
+  };
+  const handleDecreaseQuantity = (item: FoodItem) => {
+    if (item.quantity > 1) {
       dispatch(
         changeItemQuantity({
           itemId: Number(item.product.id),
-          quantity: item.quantity + 1,
+          quantity: item.quantity - 1,
         })
       );
-    };
+      // setCount(item.quantity - 1)
+    }
+  };
 
-
-    const handleDecreaseQuantity = () => {
-      if (count > 1) {
-        dispatch(
-          changeItemQuantity({
-            itemId: Number(item.product.id),
-            quantity: item.quantity - 1,
-          })
-        );
-      }
-    };
-
+  const ArticleProvider: React.FC<Article> = ({ item, remove }) => {
     return (
       <>
 
         <div className="supplier-desc-header">
-          <div className="supplier-name">
-            <span >{item.supplier_data.supplier_name}</span>
-          </div>
+
 
           <div className="show-all-link-blc">
             <a className="show-all-link">
@@ -195,9 +208,14 @@ const CartPage: React.FC = () => {
 
         <div className="supplier-desc-body">
           <div className="supplier-name-blc">
-            <div className="supplier-img-blc">
-              <img src={SupplierImg} alt="Supplier Img" />
-            </div>
+            {
+              item.product.image.length > 0 && (
+                <div className="supplier-img-blc">
+                  <img src={item.product.image[0].path} alt="Supplier Img" />
+                </div>
+              )
+            }
+
             <div className="supplier-title-blc">
               <h4 className="supplier-title">{item.product.name}</h4>
               <div className="total-price">
@@ -206,10 +224,10 @@ const CartPage: React.FC = () => {
             </div>
           </div>
           <div className="count-container">
-            <input readOnly={true} type="number" name="product-count" id="product-count" value={count} />
+            <input readOnly={true} type="number" name="product-count" id="product-count" value={item.quantity} />
             <div className="count-buttons">
-              <button className="btn count-more" onClick={handleIncreaseQuantity}></button>
-              <button className="btn count-less" onClick={handleDecreaseQuantity}></button>
+              <button className="btn count-more" onClick={() => handleIncreaseQuantity(item)}></button>
+              <button className="btn count-less" onClick={() => handleDecreaseQuantity(item)}></button>
             </div>
           </div>
           <div className="total-price-area">
@@ -253,40 +271,12 @@ const CartPage: React.FC = () => {
                 }
               </AccordionDetails>
             </Accordion>)
-            : ""
+            : <></>
           }
         </div>
-
-        {/*
-          <div className="total-price">
-            <span >{item.unitePrice.toFixed(2)} DT</span>
-          </div>
-          <div className="quantite">
-            <div className="count-container">
-              <input readOnly={true} type="number" name="product-count" id="product-count" value={count} />
-              <div className="count-buttons">
-                <button onClick={handleIncreaseQuantity} >
-                  <KeyboardArrowUpOutlinedIcon className="count-more" />
-                </button>
-                <button onClick={handleDecreaseQuantity} >
-                  <KeyboardArrowDownOutlinedIcon className="count-less" />
-                </button>
-              </div>
-            </div>
-            <div className="total-price">
-              <span>
-                {item.total.toFixed(2)} DT
-              </span>
-            </div>
-            <div>
-              <button type="button" className="remove-btn" onClick={remove}></button>
-            </div>
-          </div>
-        */}
       </>
     )
   }
-
 
 
   // handle submit and command creation
@@ -318,13 +308,34 @@ const CartPage: React.FC = () => {
 
 
     try {
-      var year = takeAwayDate.getFullYear();
-      var month = (takeAwayDate.getMonth() + 1).toString().padStart(2, '0');
-      var day = takeAwayDate.getDate().toString().padStart(2, '0');
-      var hours = takeAwayDate.getHours().toString().padStart(2, '0');
-      var minutes = takeAwayDate.getMinutes().toString().padStart(2, '0');
+      var year;
+      var month;
+      var day;
+      var hours;
+      var minutes;
       var seconds = "00";
-      var formattedDate = year + '-' + month + '-' + day + ' ' + hours + ':' + minutes + ':' + seconds;
+      var formattedDate;
+
+      if (takeAwayDate instanceof Date) {
+        year = takeAwayDate.getFullYear();
+        month = (takeAwayDate.getMonth() + 1).toString().padStart(2, '0');
+        day = takeAwayDate.getDate().toString().padStart(2, '0');
+        hours = takeAwayDate.getHours().toString().padStart(2, '0');
+        minutes = takeAwayDate.getMinutes().toString().padStart(2, '0');
+        formattedDate = year + '-' + month + '-' + day + ' ' + hours + ':' + minutes + ':' + seconds;
+      } else if (typeof (takeAwayDate) === 'object') {
+        year = takeAwayDate.year();
+        month = (takeAwayDate.month() + 1).toString().padStart(2, '0');
+        day = takeAwayDate.date().toString().padStart(2, '0');
+        hours = takeAwayDate.hour().toString().padStart(2, '0');
+        minutes = takeAwayDate.minute().toString().padStart(2, '0');
+
+        formattedDate = year + '-' + month + '-' + day + ' ' + hours + ':' + minutes + ':' + seconds;
+      } else {
+        console.error('Invalid date type');
+
+      }
+
       const order = {
         addresse_id: 1,
         supplier_id: supplier,
@@ -395,6 +406,8 @@ const CartPage: React.FC = () => {
             throw error
           }
         }
+      } else {
+        setShowAuthWarnPopup(true)
       }
     } catch (e) {
       throw e
@@ -433,6 +446,9 @@ const CartPage: React.FC = () => {
 
   const handleServicePopup = () => {
     setShowServicePopup((current) => !current)
+  }
+  const handleAuthWarnPopup = () => {
+    setShowAuthWarnPopup((current) => !current)
   }
 
   // remove order
@@ -724,23 +740,30 @@ const CartPage: React.FC = () => {
       case 1:
         take_away_plan = "default"
         setIsDelevery("surplace")
-        setTakeAwayDate(new Date(new Date().getTime() + 30 * 60000))
         break;
       case 2:
         take_away_plan = "default"
         setIsDelevery("pickup")
-        setTakeAwayDate(new Date(new Date().getTime() + 30 * 60000))
         break;
       case 3:
         take_away_plan = "plan"
         setIsDelevery("delivery")
-        setTakeAwayDate(new Date(new Date().getTime() + 30 * 60000))
         break;
       default:
         take_away_plan = "plan"
         break;
     }
   }, [selectedOption])
+
+  const handleSelectedDate = (date: Date) => {
+    setTakeAwayDate(new Date(date))
+  }
+
+  useEffect(() => {
+    !showTimer && setTakeAwayDate(new Date(new Date().getTime() + 30 * 60000))
+  }, [showTimer])
+
+
 
   useEffect(() => {
     getSousTotal()
@@ -812,26 +835,16 @@ const CartPage: React.FC = () => {
       {
         cartItems.length > 0 && supplier ? (
           <div className="cart-page-container">
-            {/*
-            <Container fluid>
-              <Row className="header">
-                <div className="image-container">
-                  <img loading="lazy" src={supplier ? supplier.images[0].path : ""} alt="supplier image" className="background-image" />
-                  <span>{t('cartPage.monPanier')}</span>
-                </div>
-              </Row>
-            </Container>
-            */}
             <Container className="cart-page-cont">
 
-            <ul className="breadcrumb-area">
-              <li>
-                <a className="breadcrumb-link">Accueil</a>
-              </li>
-              <li>
-                <a className="breadcrumb-link active">Panier</a>
-              </li>
-            </ul>
+              <ul className="breadcrumb-area">
+                <li>
+                  <a className="breadcrumb-link">{t('home')}</a>
+                </li>
+                <li>
+                  <a className="breadcrumb-link active">{t('cartPage.yourCart')}</a>
+                </li>
+              </ul>
 
               <Row>
                 <Col>
@@ -841,9 +854,12 @@ const CartPage: React.FC = () => {
                       {currentStep == 1 && (<>
                         <div className="cart-items">
                           <div className="cart-items__title">
-                            {t('cartPage.product')}
+                            {t('cartPage.yourCart')}
                           </div>
                           <div className="cart-items__list">
+                            <h1 className="supplier-name">
+                              {supplier.name}
+                            </h1>
                             {
                               cartItems.map((item: any, index: number) => {
                                 return (
@@ -890,8 +906,7 @@ const CartPage: React.FC = () => {
                               </ul>
                             </div>
                             <div className="promo-container">
-
-                              <textarea name="code_promo" id="code_promo" placeholder="Code promo" value={promo} onChange={(e) => handlePromoChange(e.target.value)} ></textarea>
+                              <textarea name="code_promo" id="code_promo" placeholder={`${t('cart.PromosCode')}`} value={promo} onChange={(e) => handlePromoChange(e.target.value)} ></textarea>
                               <button disabled={!couponExiste} className={(couponExiste) ? "button" : "button disabled"} onClick={checkPromoCode}>
                                 {promoApplied ? t('Annuler') : t('cartPage.appliquer')}
                               </button>
@@ -914,7 +929,6 @@ const CartPage: React.FC = () => {
                             <div className="devider">
                             </div>
                           </>
-
                         }
                         {/* gift end */}
                         {/* bonus start */}
@@ -922,7 +936,7 @@ const CartPage: React.FC = () => {
                           <label>{t('cartPage.bonus')}</label>
                           <div className="bonus-wrapper">
                             <div className="promo-container">
-                              <textarea name="bonus" id="bonus" placeholder="Bonnus" value={bonus.toFixed(2) + ' pts'}></textarea>
+                              <textarea name="bonus" id="bonus" placeholder={`${t('cartPage.bonus')}`} value={bonus.toFixed(2) + ' pts'}></textarea>
                               <button style={{ backgroundColor: `${appliedBonus > 0 ? "red" : '#3BB3C4'}` }} className={(bonus < 5000 || limitReachedBonus) ? "button disabled" : "button"} disabled={(bonus < 5000 || limitReachedBonus)} onClick={() => applyBonus()}>
                                 {appliedBonus > 0 ? t('Annuler') : t('cartPage.appliquer')}
                               </button>
@@ -967,7 +981,7 @@ const CartPage: React.FC = () => {
                             <div className={`select ${selectedOption == 1 ? "selected" : ""}`}>
                               <div className="deliv-details_header">
                                 <div className="deliv-details_img-blc icon1">
-                                  <img loading="lazy" src={dinnerFurnitureIcn} alt="sur place icon" onClick={() => handleOptionChange(1)} />
+                                  <img loading="lazy" src={dinnerFurnitureIcn} alt="sur place icon" /* onClick={() => handleOptionChange(1)} */ />
                                 </div>
                                 <div className="deliv-details_header-desc">
                                   <time>20 MIN</time>
@@ -975,9 +989,11 @@ const CartPage: React.FC = () => {
                                 </div>
                               </div>
                               <p className="deliv-details_description">
-                                Rue Imem moslem, Khzema, Sousse
+                                {`${supplier.street},
+                              ${supplier.region}
+                              ,${supplier.city}`}
                               </p>
-                              <button className="btn btn-deliv">livrer ici</button>
+                              <button /* onClick={() => handleOptionChange(1)}*/ className="btn btn-deliv">livrer ici</button>
                               <input type="radio" value="1" id='domicile' name='type' checked={selectedOption === 1} />
                             </div>
                             <div className={`select ${selectedOption == 2 ? "selected" : ""}`}>
@@ -991,11 +1007,12 @@ const CartPage: React.FC = () => {
                                 </div>
                               </div>
                               <p className="deliv-details_description">
-                                Rue Imem moslem, Khzema, Sousse
+                                {`${supplier.street},
+                                ${supplier.region},
+                                ${supplier.city}`}
                               </p>
-                              <button className="btn btn-deliv">livrer ici</button>
+                              <button onClick={() => handleOptionChange(2)} className="btn btn-deliv">livrer ici</button>
                               <input type="radio" value="2" id='travail' name='type' checked={selectedOption === 2} />
-
                             </div>
                             <div className={`select ${selectedOption == 3 ? "selected" : ""}`}>
                               <div className="deliv-details_header">
@@ -1008,129 +1025,103 @@ const CartPage: React.FC = () => {
                                 </div>
                               </div>
                               <p className="deliv-details_description">
-                                Rue Imem moslem, Khzema, Sousse
+                                {userPosition?.coords.label}
                               </p>
-                              <button className="btn btn-deliv">livrer ici</button>
+                              <button className="btn btn-deliv" onClick={() => handleOptionChange(3)}>livrer ici</button>
                               <input type="radio" value="3" id='autre' name='type' checked={selectedOption === 3} />
 
                             </div>
                           </div>
-
                           <div className="order-recovery-area">
                             <h3 className="order-recovery-title">
-                              Sélectionner l’option de la récupération de la commande
+                              {t('mismatchModal.selectOption')}
                             </h3>
 
                             <div className="order-recovery-select-blc">
-                              <div className="order-recovery-select-item active">
+                              <div className={`order-recovery-select-item ${showTimer ? "" : "active"}`} onClick={() => setShowTimer(false)}>
                                 <span>
-                                  Le plus vite
-                                  possible
-                                  20-40 minutes
+
+                                  {`${t('mismatchModal.selectOption.option2.fastest')}
+                                  ${t('mismatchModal.selectOption.option2.possible')}
+                                  20-40 ${t('mismatchModal.selectOption.option2.minutes')} `}
                                 </span>
                               </div>
-                              <div className="order-recovery-select-item">
+                              <div className={`order-recovery-select-item ${!showTimer ? "" : "active"}`} onClick={() => setShowTimer(true)}>
                                 <span>
-                                  Modifier
-                                  la planification
+                                  {
+                                    `
+                                    ${t('mismatchModal.selectOption.option1.Modifier')}
+                                    ${t('mismatchModal.selectOption.option1.Planning')}
+                                    `
+                                  }
                                 </span>
                               </div>
                             </div>
                           </div>
-
-
                           {
-                            selectedOption == 2 && (
-                              <>
-                                <TimePicker
-                                  className="time-picker"
-                                  onChange={(newTime) => {
-                                    // Parse the selected time and create a Date object
-                                    if (newTime !== null) {
-                                      const [hours, minutes] = newTime.split(':');
-                                      const selectedDate = new Date();
-                                      selectedDate.setHours(parseInt(hours, 10));
-                                      selectedDate.setMinutes(parseInt(minutes, 10));
-                                      const formattedTime = selectedDate.toLocaleString('en-US', {
-                                        hour: 'numeric',
-                                        minute: 'numeric',
-                                        month: 'numeric',
-                                        day: 'numeric',
-                                        year: 'numeric',
-                                      });
-                                      const parsedDate = new Date(formattedTime);
-                                      setTakeAwayDate(parsedDate);
-                                    }
-                                  }}
-                                  value={takeAwayDate}
-                                  format="h:m a"
-                                  disableClock={true}
-                                />
-
-                              </>
-                            )
+                            (showTimer) &&
+                            <>
+                              <TimePickerComponent setSelectedDate={handleSelectedDate} openTime={openTime} closeTime={closeTime} />
+                            </>
                           }
                           <div className="deliv-to">
-                            <h3 className="title">{t('cartPage.delivto')}</h3>
+                            <h3 className="title">{selectedOption === 3 ? t('cartPage.delivto') : "Emportée par"}</h3>
                             <div className="deliv-infos-group">
                               <div className="info-container">
                                 <label htmlFor="client-name">{t('cartPage.client')} : </label>
-                                <input type="text" name="client-name" value={name} placeholder="Client Name" onChange={(e) => setName(e.target.value)} />
+                                <input type="text" name="client-name" value={name} placeholder={`${t('cart.clientName')}`} onChange={(e) => setName(e.target.value)} />
                               </div>
                               <div className="info-container">
                                 <label htmlFor="client-name">{t('cartPage.phoneNumber2')}</label>
-                                <input type="text" name="" value={phoneNumber} placeholder="phone number" onChange={(e) => setPhoneNumber(e.target.value)} />
+                                <input type="text" name="" value={phoneNumber} placeholder={`${t('cartPage.phoneNumber')}`} onChange={(e) => setPhoneNumber(e.target.value)} />
                               </div>
                             </div>
-                            <div className="info-container">
-                              <label htmlFor="client-name">Adresse de livraison</label>
-                              <div className="adress">
-                                {/*
-                                  <p className="title" style={{ margin: 0 }} >
-                                    {t('profile.mesConfig.delivAdress')} :
+                            {
+
+                              selectedOption === 3 && <div className="info-container">
+                                <label htmlFor="client-name">{t('adress.delivAddress')}</label>
+                                <div className="adress">
+                                  <p className="adress-text">
+                                    {userPosition?.coords.label}
                                   </p>
-                                */}
-                                <p className="adress-text">
-                                  {userPosition?.coords.label}
-                                </p>
-                                <button className="btn btn-edit"></button>
-                              </div>
-                            </div>
+                                  <button onClick={() => dispatch({ type: "SET_SHOW", payload: true })} className="btn btn-edit"></button>
+                                </div>
+                              </div>}
                             <div className="message-validation">
-                              Vous recevrez un message de validation
+                              {t('mismatchModal.validationMessageTitle')}
                             </div>
                           </div>
 
-                            <div className="buttons">
-                              <button className="continue" onClick={navigateToHome}>
-                                {t('cartPage.continueAchats')}
-                              </button>
-                              <button className="commander"
-                                onClick={() =>
-                                  submitOrder(
-                                    cartItems,
-                                    deliveryOption,
-                                    name,
-                                    phoneNumber,
-                                    aComment,
-                                    total,
-                                    appliedBonus,
-                                    dispatch,
-                                    userPosition,
-                                    supplier.id,
-                                    deliveryPrice
-                                  )
-                                }
-                              >
-                                {t('cartPage.commander')}
-                              </button>
-                            </div>
+                          <div className="buttons">
+                            <button className="continue" onClick={navigateToHome}>
+                              {t('cartPage.continueAchats')}
+                            </button>
+                            <button className="commander"
+                              onClick={() =>
+                                submitOrder(
+                                  cartItems,
+                                  deliveryOption,
+                                  name,
+                                  phoneNumber,
+                                  aComment,
+                                  total,
+                                  appliedBonus,
+                                  dispatch,
+                                  userPosition,
+                                  supplier.id,
+                                  deliveryPrice
+                                )
+                              }
+                            >
+                              {t('cartPage.commander')}
+                            </button>
+                          </div>
                         </div>
                         )}
 
                       <div className="message-validation-area d-none">
                         <h2 className="message-validation-title">
-                          Commande validé !
+                          {t('mismatchModal.commandValidate')}
                         </h2>
                         <div className="message-validation_img-blc commande-valide"></div>
                         {/*
@@ -1141,11 +1132,11 @@ const CartPage: React.FC = () => {
                         */}
                         <div className="message-validation_desc">
                           <p>
-                            Vous serez alerté lorsque le livreur arrive prés de chez vous.
+                            {t('mismatchModal.alerte')}
                           </p>
                         </div>
                         <div className="btns-group">
-                          <button className="btn btn-valid">Je commande</button>
+                          <button className="btn btn-valid">{t('cart.payment.iCommand')}</button>
                         </div>
                       </div>
 
@@ -1161,133 +1152,120 @@ const CartPage: React.FC = () => {
                         <div className="info-customer-area">
                           <div className="info-customer-title-blc">
                             <h4 className="info-customer-title">
-                              Livraison à
+                              {userPosition ? userPosition.coords.label : ""}
                             </h4>
-                            <a className="edit-info-customer-link">Modifié</a>
+                            <a className="edit-info-customer-link" onClick={() => dispatch({ type: "SET_SHOW", payload: true })} >{t('update')}</a>
                           </div>
                           <div className="customer-infos-area">
-                            <div className="customer-info_name">Toumi marwa</div>
-                            <div className="customer-info_mobile">Mobile : <span>27380570</span></div>
+                            <div className="customer-info_name">{user ? `${user.firstname} ${user.lastname} ` : t('cartPage.visitor')} </div>
+                            <div className="customer-info_mobile">{t('mobile')} : <span>{phoneNumber ? phoneNumber : ""}</span></div>
                             <div className="customer-info_adresse">
-                              304 rue med abdou cité riadh sousse
+                              {userPosition?.coords.label}
                             </div>
                           </div>
                         </div>
 
                         <div className="payment-method">
                           <h4 className="payment-method-title">
-                            Mode de paiement
+                            {t('cartPage.payMode')}
                           </h4>
                           <div className="payment-method-status">
                             <span className="payment-method-status_txt cash">
-                              En espèces à la livraison
+                              {payMode == 1 ? t('cartPage.espece') : t('cartPage.bankPay')}
                             </span>
                           </div>
                         </div>
 
                         <div className="calculate-total-price">
-
                           <div className="supplier-name-blc">
                             <div className="supplier-img-blc">
-                              <img src={SupplierImg} alt="Supplier Img" />
+                              <img src={supplier.images[0].pivot.type === "principal" ? supplier.images[1].path : supplier.images[0].path} alt="Supplier Img" />
                             </div>
                             <div className="supplier-title-blc">
-                              <h4 className="supplier-title">Naan au choix</h4>
+                              <h4 className="supplier-title">{cartItems[0].supplier_data.supplier_name}</h4>
                               <div className="supplier-adresse">
-                                Sahloul, Sousse
+                                {supplier.street}, {supplier.city}
                               </div>
                             </div>
                           </div>
+                          {
+                            cartItems.map((item: FoodItem, index: number) => {
+                              return <React.Fragment key={index}>
+                                <div className="products-count-area">
+                                  <div className="product-id">
+                                    X{item.quantity}
+                                  </div>
+                                  <div className="product-name">
+                                    {item.product.name}
+                                  </div>
+                                  <div className="count-container">
+                                    <input readOnly={true} type="number" name="product-count" id="product-count" value={item.quantity} />
+                                    <div className="count-buttons">
+                                      <button className="btn count-more" onClick={() => handleIncreaseQuantity(item)}  ></button>
+                                      <button className="btn count-less" onClick={() => handleDecreaseQuantity(item)}   ></button>
+                                    </div>
+                                  </div>
+                                  <div className="product-price">
+                                    {item.total.toFixed(2)}DT
+                                  </div>
+                                </div>
 
-                          <div className="products-count-area">
-                            <div className="product-id">
-                              X1
-                            </div>
-                            <div className="product-name">
-                              Sandwich
-                            </div>
-                            <div className="count-container">
-                              <input readOnly={true} type="number" name="product-count" id="product-count" value="1" />
-                              <div className="count-buttons">
-                                <button className="btn count-more" ></button>
-                                <button className="btn count-less" ></button>
-                              </div>
-                            </div>
-                            <div className="product-price">
-                              10.00 DT
-                            </div>
+                              </React.Fragment>
+                            })
+                          }
+                          <div className="devider">
                           </div>
-
                           <div className="price-total-area">
                             <div className="sous-total">
                               <div className="title">{t('profile.commands.sousTotal')}</div>
-                              <div className="value">{sousTotal.toFixed(2)} DT</div>
+                              <div className="value">{sousTotal ? sousTotal.toFixed(2) : "0.00"} DT</div>
                             </div>
-                            <div className="sous-total">
-                              <div className="title">Forfait</div>
-                              <div className="value">0.00 DT</div>
-                            </div>
-                            <div className="sous-total">
-                              <div className="title">Code promo</div>
-                              <div className="value">7.00 DT</div>
-                            </div>
-                            <div className="sous-total">
-                              <div className="title">Bonus</div>
-                              <div className="value">0.00 DT</div>
-                            </div>
-
-                              {/*<span>{t('cartPage.yourCart')}</span>*/}
-                              {appliedBonus > 0 &&
-                                (
-                                  <div className="panie-row">
-                                    <span>{t('cartPage.bonus')}</span>
-                                    <span> - {(appliedBonus / 1000).toFixed(2)} DT</span>
-                                  </div>
-                                )
-                              }
-                              {
-                                promoReduction > 0 && (
-                                  <div className="panie-row">
-                                    <span>{t('cartPage.Coupon')}</span>
-                                    <span> - {(promoReduction).toFixed(2)} DT</span>
-                                  </div>
-                                )
-
-                              }
-                              {
-                                discountValue > 0 && (
-                                  <div className="panie-row">
-                                    <span>{t('cart.discount')}</span>
-                                    <span> - {(discountValue).toFixed(2)} DT</span>
-                                  </div>
-                                )
-                              }
-                              {
-                                giftAmmount > 0 && (
-                                  <div className="panie-row">
-                                    <span>{t('Repas Gratuit')}</span>
-                                    <span> - {(giftAmmount).toFixed(2)} DT</span>
-                                  </div>
-                                )
-                              }
-
-                            <div className="sous-total">
-                                <div className="title">{t('supplier.delivPrice')}</div>
-                                <div className="value">{Number(deliveryPrice).toFixed(2)} DT</div>
-                              </div>
+                            {
+                              (discountValue && discountValue > 0) ?
+                                <div className="sous-total">
+                                  <div className="title">{t('cart.discount')}</div>
+                                  <div className="value">{discountValue ? (discountValue).toFixed(2) : "0.00"} DT</div>
+                                </div>
+                                : <></>
+                            }
+                            {
+                              (promoReduction && promoReduction > 0) ?
+                                <div className="sous-total">
+                                  <div className="title">{t('cartPage.Coupon')}</div>
+                                  <div className="value">{promoReduction ? (promoReduction).toFixed(2) : "0.00"} DT</div>
+                                </div>
+                                : <></>
+                            }
+                            {
+                              (appliedBonus && appliedBonus > 0) ?
+                                <div className="sous-total">
+                                  <div className="title">{t('cartPage.bonus')}</div>
+                                  <div className="value">{appliedBonus ? (appliedBonus / 1000).toFixed(2) : "0.00"} DT</div>
+                                </div>
+                                : <></>
+                            }
+                            {
+                              (giftAmmount && giftAmmount > 0) ?
+                                <div className="sous-total">
+                                  <div className="title">{t('repasGratuit')}</div>
+                                  <div className="value">{giftAmmount ? (giftAmmount).toFixed(2) : "0.00"} DT</div>
+                                </div>
+                                : <></>
+                            }
+                            {
+                              (deliveryPrice && deliveryPrice > 0) ?
+                                <div className="sous-total">
+                                  <div className="title">{t('supplier.delivPrice')}</div>
+                                  <div className="value">{Number(deliveryPrice).toFixed(2)} DT</div>
+                                </div>
+                                : <></>
+                            }
                           </div>
-
                           <div className="a-payer">
-                            <span className="title">A payer</span>
+                            <span className="title">{t('toPay')}</span>
                             <span className="value">{total.toFixed(2)} DT</span>
                           </div>
                         </div>
-                        {/* <div className="button-container">
-                          <button type="button"
-                            onClick={goNextStep}>
-                            {t('cartPage.paymentContinue')}
-                          </button>
-                        </div> */}
                       </div>
                     </div>
 
@@ -1323,7 +1301,12 @@ const CartPage: React.FC = () => {
             }
             {
               showServicePopup && (
-                <WarnPopup message="Ce service n'est pas disponible dans votre ville" closeButtonText={t('continuer')} confirmButtonText={t('Modal.finishCommand.dropOldCommand')} close={handleServicePopup} accept={dropOrder} />
+                <WarnPopup message={t('searchPage.warnServiceMessage')} closeButtonText={t('continuer')} confirmButtonText={t('Modal.finishCommand.dropOldCommand')} close={handleServicePopup} accept={dropOrder} />
+              )
+            }
+            {
+              showAuthWarnPopup && (
+                <WarnPopup message={t('searchPage.warnAuthMessage')} closeButtonText={t('Annuler')} confirmButtonText={t('login2')} close={handleAuthWarnPopup} accept={() => navigate('/login/')} />
               )
             }
           </div >

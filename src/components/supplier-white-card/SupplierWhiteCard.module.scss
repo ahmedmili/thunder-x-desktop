@@ -41,7 +41,7 @@
             height: 100%;
             border-radius: 15px;
             border: 1px solid rgba(149, 142, 142, 0.30);
-            background: #FFF;
+            background: $color-white;
             box-shadow: 0px 4px 4px 0px rgba(0, 0, 0, 0.09);
 
             .imageContainer {
@@ -60,9 +60,7 @@
                         font-size: 11px;
                         color: $color-white;
                         margin: 0;                        
-                        font-family: Poppins;
-                        font-style: normal;
-                        font-weight: 600;
+                        font-family: 'Poppins-SemiBold', serif;
                         line-height: normal;
                     }
                 }
@@ -83,9 +81,8 @@
 
                         h3 {
                             text-decoration: none;
-                            @include fonts(16px, 16px, black);
-                            font-family: 'Poppins';
-                            font-weight: 700;
+                            @include fonts(16px, 16px, $dark_002);
+                            font-family: 'Poppins-Bold', serif;
                             margin: 0;
                             white-space: nowrap;
                             overflow: hidden;
@@ -115,11 +112,10 @@
                         @include flex(flex, center, space-between);
                         flex-wrap: nowrap;
                         color: $light_Gray;
-                        font-family: Poppins;
+                        font-family: 'Poppins-SemiBold', serif;
                         font-size: 12px;
-                        font-style: normal;
-                        font-weight: 600;
                         line-height: 149.5%;
+
                         span {
                             white-space: nowrap;
                             display: flex;
@@ -127,7 +123,7 @@
                             align-items: center;
                             span {                                
                                 margin: 0 ;
-                                color: #FBC301;
+                                color: $color-yellow-amber;
                                 margin-left: 5px
                             }
                         }
@@ -136,10 +132,10 @@
                             @include flex;
                             background-color: $color-blue-pelorous;
                             border-radius: 30px;
-                            padding: 0.2rem 0.5rem;
+                            padding: 0.2rem 1rem;
                             z-index: 1;
                             height: 27px;
-                            width: 80px;
+                            min-width: 80px;
                         
                             p {
                                 margin: 0;
@@ -160,10 +156,8 @@
                     }
 
                     .option {
-                        font-family: Poppins;
+                        font-family: 'Poppins-SemiBold', serif;
                         font-size: 15px;
-                        font-style: normal;
-                        font-weight: 600;
                         line-height: 149.5%;
                         @include fonts(14px, 14px, $Ocean_Teal);
                         margin: 0 0 12px;
@@ -269,9 +263,7 @@
                                 p {
                                     font-size: 5px;
                                 }
-
                             }
-
                             span {
 
                                 span {
@@ -279,7 +271,6 @@
                                 }
                             }
                         }
-
                         .option {
                             font-size: 9px;
                         }

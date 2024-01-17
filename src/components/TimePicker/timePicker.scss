@@ -1,0 +1,16 @@
+@import '../../scss/extend';
+
+.time-picker-container {
+    @include dimensions(100%, 100%);
+    @include flex(flex, center, center);
+    flex-direction: column;
+
+    .time-picker-input {
+        @include dimensions(25vw, 100%);
+        min-width: auto;
+        // border-color: black;
+        // border-width: 5px;
+        // border-style: double;
+
+    }
+}

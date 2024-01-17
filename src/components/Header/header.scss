@@ -56,7 +56,6 @@
 
         .imageBuilder {
             background-image: url('/src/assets/home/home-section-one-img.png');
-            // background-image: none;
             background-size: contain;
             background-repeat: no-repeat;
             background-position: bottom right;
@@ -364,7 +363,7 @@
             height: 43px;
             min-width: 270px;
             background-color: $color-gray-alto;
-            background-image: url('./../../assets/position-icn.svg');
+            // background-image: url('./../../assets/position-icn.svg');
             background-repeat: no-repeat;
             background-position: 22px center;
             background-size: 15px auto;
@@ -846,9 +845,48 @@
     }
 }
 
+/* -- search-blc -- */
+
+.search-blc {
+    position: relative;
+    @include dimensions(20px, 20px);
+
+    &.active {
+        @include dimensions(295px, 43px);
+
+        .btn {
+            &.btn-search {
+                position: absolute;
+                top: 10px;
+                right: 18px;
+            }
+        }
+    }
+    .search-input-blc {
+        .form-control {
+            background-color: $color-gray-alto;
+            font-family: 'Poppins-Medium', serif;
+            @include fonts(17px, 17px, $dark_Gray);
+            @include dimensions(295px, 43px);
+            border-radius: 55px;
+            padding: 9px 40px 9px 30px;
+        }
+    }
+    .btn {
+        &.btn-search {
+            
+            @include dimensions(22px, 22px);
+            background-image: url('./../../assets/search-icn.svg');
+            background-repeat: no-repeat;
+            background-position: center;
+            background-size: 22px auto;
+        }
+    }
+}
 
 /* # $Mobile ::
 ------------------------------------*/
+/* -- max-width -- */
 @media (max-width: 1440px) {
     .fixedHeaderContainer2 {
         padding: 12px 28px;
@@ -861,7 +899,6 @@
                 @include dimensions(160px, 60px);
             }
         }
-
         .header-buttons {
             .LoadingButton {
                 min-width: 113px;
@@ -869,7 +906,6 @@
                 font-size: 12px;
             }
         }
-
         .info {
             gap: 15px;
 
@@ -884,7 +920,6 @@
             }
         }
     }
-
     .home-section-one {
         .headerAppBar2 {
             padding-top: 100px;
@@ -899,7 +934,6 @@
             }
         }
     }
-
     .header {
         .imageBuilderContainer {
 
@@ -923,7 +957,6 @@
             }
         }
     }
-
     .headerLocalisationMessageContainer {
         a {
             @include fontSize(14px, 14px);
@@ -931,7 +964,7 @@
     }
 }
 
-@media only screen and (max-width:1200px) {
+@media (max-width:1200px) {
     .head1 {
         .demiCercle {
             top: 22px;
@@ -988,6 +1021,9 @@
                 display: inline-block;
             }
         }
+    }
+    .switches-area {
+        height: 35px;
     }
 }
 
@@ -1165,6 +1201,35 @@
 
                 a {
                     font-size: 6.33px;
+                }
+            }
+        }
+    }
+}
+
+/* -- max-height -- */
+
+@media (max-height: 890px) {
+    .fixedHeaderContainer2 {
+        .info {
+            .order-tracking-area {
+                .order-tracking-wrapper {
+                    .order-tracking_body {
+                        max-height: 490px;
+                    }
+                }
+            }
+        }
+    }
+}
+@media (max-height: 700px) {
+    .fixedHeaderContainer2 {
+        .info {
+            .order-tracking-area {
+                .order-tracking-wrapper {
+                    .order-tracking_body {
+                        max-height: 300px;
+                    }
                 }
             }
         }

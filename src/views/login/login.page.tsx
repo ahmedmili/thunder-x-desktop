@@ -79,8 +79,8 @@ const LoginPage = () => {
       .email(`${t('auth.email.type')}`)
       .label("Email"),
     password: Yup.string()
-      .min(8, `${t('auth.password.length.min')}`)
-      .max(20, `${t('auth.password.length.max')}`)
+      .min(8, `${t('auth.password.min')}`)
+      .max(20, `${t('auth.password.max')}`)
       .required(`${t('auth.password.required')}`)
       .label("Password"),
   });

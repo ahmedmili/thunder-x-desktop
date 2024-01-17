@@ -249,7 +249,7 @@ const FilterCategories: React.FC<FilterCategoriesProps> = ({
         {categories.map(function (category: any) {
           return (
             <div key={category.id}>
-              <Box className={`category-box ${category.selected ? 'selected' : ''} ${category.id == selectedCategories ? 'check' : ''}`}
+              <Box className={`category-box test ${category.selected ? 'selected' : ''} ${category.id == selectedCategories ? 'check' : ''}`}
                 onDoubleClick={() => handleCategoryClick(category.id)}
               >
                 <Box>

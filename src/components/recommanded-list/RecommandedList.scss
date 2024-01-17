@@ -1,23 +1,25 @@
 @import '../../scss/extend';
+
 .recommanded-list{
     margin-bottom: 37px;
     margin-inline: -10px;
+
     .prev-recommanded-arrow{
         display: block;
-        width: 45px;
-        height: 45px;
+        @include dimensions(45px, 45px);
         background-color: $color-white;
         border-radius: 50%;
         box-shadow: 0px 6px 4px 1px rgba(0, 0, 0, 0.25);
         z-index: 9;
         left: -12px;
-        top: 41%;
+        top: 47%;
         background-image: url("/src/assets/icons/arrow-prev.svg");
         background-repeat: no-repeat;
         background-position: center;
         background-size: 20px;
         transition: all 0.2s ease-in-out;
         opacity: 0;
+
         &::before {
             display: none;
         }
@@ -27,8 +29,7 @@
     }
     .next-arrow {
         display: block;
-        width: 45px;
-        height: 45px;
+        @include dimensions(45px, 45px);
         background-color: $color-white;
         border-radius: 50%;
         box-shadow: 0px 6px 4px 1px rgba(0, 0, 0, 0.25);
@@ -37,8 +38,9 @@
         background-position: center;
         background-size: 20px;
         right: -12px;
-        top: 41%;
+        top: 47%;
         transition: all 0.2s ease-in-out;
+
         &::before{
             display: none;
         }

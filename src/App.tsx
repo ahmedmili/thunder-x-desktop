@@ -52,6 +52,7 @@ import Feedback from "./components/layout/Profile/Feedback/Feedback";
 import FidelitePage from "./components/layout/Profile/FidelitePage/FidelitePage";
 import Menu from "./components/menus/menus";
 import Verify from "./views/Verify";
+import { paramsService } from "./utils/params";
 //lazy loading pages
 const Profile = lazy(() => import("./components/layout/Profile/Profile"));
 const HomePage = lazy(() => import("./views/home/home.page"));
@@ -91,12 +92,23 @@ function App({ initialData }: AppProps) {
   }, []);
 
   useEffect(() => {
-    !region.id ? dispatch({ type: "SET_SHOW", payload: true }) : dispatch({ type: "SET_SHOW", payload: false })
+    const current_location = localStorageService.getCurrentLocation();
+    const searchParams = new URLSearchParams(window.location.search);
+    if (!current_location) {
+      if (searchParams.has('search')) {
+        // fetch lat and long from params
+        let resultObject = paramsService.fetchParams(searchParams)
+        const lat = resultObject.lat;
+        const lng = resultObject.lng;
+        (lng && lat) ? dispatch({ type: "SET_SHOW", payload: false }) : dispatch({ type: "SET_SHOW", payload: true })
+      }
+    } else {
+      dispatch({ type: "SET_SHOW", payload: false })
+    }
 
-  }, [region]);
+  }, [location]);
 
   useEffect(() => {
-
     eventEmitter.on("homeDataChanged", updateHomeData);
     return () => {
       eventEmitter.off("homeDataChanged", updateHomeData);
@@ -293,7 +305,10 @@ function App({ initialData }: AppProps) {
             }
             <Route path="/restaurant/:id/:search?/:productId?/*" element={<Menu initialData={initialData} />} />
             <Route path="/product/:id/:search?/:productId/*" element={<MenuOptions initialData={initialData} />} />
-            <Route path="/cart/*" element={<CartPage />} />
+            <Route element={<ProtectedRoute children={undefined} />}>
+              <Route path="/cart/*" element={<CartPage />} />
+            </Route>
+
             <Route path="/search/:search?/*" element={<FilterPage initialData={initialData} />} />
 
           </Route>
@@ -323,22 +338,18 @@ function App({ initialData }: AppProps) {
     </>
   );
 }
-
 const ProtectedRoute = ({ children }: { children: React.ReactNode }) => {
-  const isAuthenticated = useAppSelector((state) => state.user.isAuthenticated);
-  const [passable, setPassable] = useState<boolean>(true)
-
-  useEffect(() => {
-    setPassable(isAuthenticated)
-  }, [isAuthenticated])
+  const user = localStorageService.getUser();
+  const token = localStorageService.getUserToken();
+  const passable = !(!token || !user);
 
   if (!passable) {
-    return <Navigate to="/unauthorized" replace />;
-  } else {
-    return children ? <>{children}</> : <Outlet />;
+    // return <Navigate to="/unauthorized" replace />;
+    return <Navigate to="/login" replace />;
   }
-}
+  return children ? <>{children}</> : <Outlet />;
 
+};
 export const verifyToken = (token: string): boolean => {
   try {
     const decoded: { exp: number } = jwt_decode(token);

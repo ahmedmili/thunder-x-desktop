@@ -16,6 +16,7 @@ interface MessangerProps {
 }
 const Messanger: React.FC<MessangerProps> = ({ className }) => {
 
+    const [notifsVisible, setNotifsVisible] = useState(false);
     const messages = useAppSelector(messagesSelector)
     const [canalMessages, setCanalMessages] = useState<Message[]>([])
     const messageRef = useRef<HTMLTextAreaElement | null>(null);
@@ -28,6 +29,13 @@ const Messanger: React.FC<MessangerProps> = ({ className }) => {
         if (canal.current) {
             canal.current.scrollTop = canal.current.scrollHeight;
         }
+    };
+
+
+    // notifsVisible, setNotifsVisible
+
+    const handleNotifsToggle = () => {
+        setNotifsVisible(!notifsVisible);
     };
 
     // send new message
@@ -120,6 +128,18 @@ const Messanger: React.FC<MessangerProps> = ({ className }) => {
                     <div className='messanger-logo' style={{ backgroundImage: ` url(${Profile})` }}></div>
                     <p>Thunder Express</p>
                 </div>
+                <div className="btns-group">
+                    <div className="btn-more-blc">
+                        <button className="btn btn-more" onClick={handleNotifsToggle}></button>
+                        
+                        {notifsVisible && (
+                            <div className="active-notifs">
+                                <button className="btn btn-notifs">Activer les notifications</button>
+                            </div>
+                        )}
+                    </div>
+                    <button className="btn btn-arrow-toggle"></button>
+                </div>
             </header >
             <main className='messsanger-body'>
                 <div className="wave-container" style={{ backgroundImage: `url(${Wave})` }} >
@@ -142,11 +162,10 @@ const Messanger: React.FC<MessangerProps> = ({ className }) => {
                                                         )
                                                     }
                                                     <div className='client-message-container'>
+                                                        <span>{message.date && date(message.date.toString())}</span>
                                                         <p>
                                                             {message.message}
                                                         </p>
-                                                        <span>{message.date && date(message.date.toString())}</span>
-
                                                     </div>
                                                 </div>
                                             ) : (
@@ -184,6 +203,7 @@ const Messanger: React.FC<MessangerProps> = ({ className }) => {
                     </section>
                     <section className='input-section'>
                         <textarea ref={messageRef} className='input' name="input" id="input" placeholder='Envoyer votre message' cols={30} rows={5}></textarea>
+                        <button className="btn btn-msg-submit notif-active"></button>
                     </section>
                 </div>
             </main >
