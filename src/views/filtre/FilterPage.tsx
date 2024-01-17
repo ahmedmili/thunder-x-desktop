@@ -231,6 +231,7 @@ function FilterPage({ initialData }: AppProps) {
         filter: "",
       };
       let params = paramsService.fetchParams(searchParams)
+
       params.category && (payload.category_id = params.category);
       params.order_by ? (payload.order_by = params.order_by) : '';
       params.min_price && (payload.min_price = Number(params.min_price));
