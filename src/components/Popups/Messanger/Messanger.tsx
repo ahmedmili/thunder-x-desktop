@@ -138,6 +138,7 @@ const Messanger: React.FC<MessangerProps> = ({ className }) => {
                             </div>
                         )}
                     </div>
+                    <button className="btn btn-arrow-toggle"></button>
                 </div>
             </header >
             <main className='messsanger-body'>
@@ -161,11 +162,10 @@ const Messanger: React.FC<MessangerProps> = ({ className }) => {
                                                         )
                                                     }
                                                     <div className='client-message-container'>
+                                                        <span>{message.date && date(message.date.toString())}</span>
                                                         <p>
                                                             {message.message}
                                                         </p>
-                                                        <span>{message.date && date(message.date.toString())}</span>
-
                                                     </div>
                                                 </div>
                                             ) : (
@@ -203,6 +203,7 @@ const Messanger: React.FC<MessangerProps> = ({ className }) => {
                     </section>
                     <section className='input-section'>
                         <textarea ref={messageRef} className='input' name="input" id="input" placeholder='Envoyer votre message' cols={30} rows={5}></textarea>
+                        <button className="btn btn-msg-submit notif-active"></button>
                     </section>
                 </div>
             </main >

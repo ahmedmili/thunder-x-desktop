@@ -8,6 +8,8 @@ import RepasFooter from './MonRepas/Footer/Footer'
 import RepasList from './MonRepas/RepasList/RepasList'
 import Parainage from './Parainage/Parainage'
 import './fidelitePage.scss'
+import fideliteImage from './../../../../assets/fidelite-header-bg.png'
+
 
 function FidelitePage() {
 
@@ -66,22 +68,29 @@ function FidelitePage() {
     return (
         <div className='fidelite-container'>
             <header>
-                <p className='title'>{t('profile.fidelite.title')}</p>
-                <div className='header-imgs-container'>
-                    <div className='archivedC-image' style={{ backgroundImage: ` url(${CoverImage})` }}></div>
-                    <div className='archivedC-image' style={{ backgroundImage: ` url(${CoverImage2})` }}></div>
+                {/* 
+                    <p className='title'>{t('profile.fidelite.title')}</p>
+                    <div className='header-imgs-container'>
+                        <div className='archivedC-image' style={{ backgroundImage: ` url(${CoverImage})` }}></div>
+                        <div className='archivedC-image' style={{ backgroundImage: ` url(${CoverImage2})` }}></div>
+                    </div>
+                */}
+                <div className="header-bg">
+                    <div className="header-bg_img-blc">
+                        <img src={fideliteImage} alt="fidelite Image" />
+                    </div>
                 </div>
 
                 <nav>
                     <ul>
                         <li>
-                            <span onClick={() => handleNav(1)} className={`list-item-text ${nav === 1 && "active"}`} >{t('profile.fidelite.freeRepas')}</span>
+                            <button onClick={() => handleNav(1)} className={`list-item-text ${nav === 1 && "active"}`} >{t('profile.fidelite.freeRepas')}</button>
                         </li>
                         <li>
-                            <span onClick={() => handleNav(2)} className={`list-item-text ${nav === 2 && "active"}`}>{t('profile.fidelite.myBonus')}</span>
+                            <button onClick={() => handleNav(2)} className={`list-item-text ${nav === 2 && "active"}`}>{t('profile.fidelite.myBonus')}</button>
                         </li>
                         <li>
-                            <span onClick={() => handleNav(3)} className={`list-item-text ${nav === 3 && "active"}`}>{t('profile.fidelite.Parrainage')}</span>
+                            <button onClick={() => handleNav(3)} className={`list-item-text ${nav === 3 && "active"}`}>{t('profile.fidelite.Parrainage')}</button>
                         </li>
                     </ul>
                 </nav>
@@ -90,7 +99,7 @@ function FidelitePage() {
 
             {
                 nav === 1 && (
-                    <main style={{ backgroundColor: "white" }}>
+                    <main>
                         <RepasList />
                         <RepasFooter Ftitle={t('profile.fidelite.footer.repas.title')} Fbody={t('profile.fidelite.footer.repas.body')} />
                     </main>
@@ -100,7 +109,7 @@ function FidelitePage() {
             {
                 nav === 2 && (
 
-                    <main style={{ backgroundColor: "white" }}>
+                    <main>
                         <Bonus />
                         {/* <RepasFooter Ftitle={t('profile.fidelite.footer.bonus.title')} Fbody={t('profile.fidelite.footer.bonus.body')} /> */}
                     </main>
