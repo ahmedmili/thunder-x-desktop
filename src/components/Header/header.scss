@@ -363,7 +363,7 @@
             height: 43px;
             min-width: 270px;
             background-color: $color-gray-alto;
-            background-image: url('./../../assets/position-icn.svg');
+            // background-image: url('./../../assets/position-icn.svg');
             background-repeat: no-repeat;
             background-position: 22px center;
             background-size: 15px auto;
@@ -964,7 +964,7 @@
     }
 }
 
-@media only screen and (max-width:1200px) {
+@media (max-width:1200px) {
     .head1 {
         .demiCercle {
             top: 22px;
@@ -1021,6 +1021,9 @@
                 display: inline-block;
             }
         }
+    }
+    .switches-area {
+        height: 35px;
     }
 }
 

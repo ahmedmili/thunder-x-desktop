@@ -14,6 +14,9 @@
   "header.plus": "أكثر من مجرد",
   "header.nourriture": "طعام",
   "home.categorie": "ماذا يمكننا أن نحضر لك؟",
+  "newsLetter.abonnez": "اشترك في النشرة الإخبارية",
+  "newsLetter.beUpToDate": "ابقَ على اطلاع",
+  "newsLetter.sAbonner": "الاشتراك",
   "Enregistrer": "تسجيل",
   "Envoyer": "إرسال",
   "loading": "تحميل",
@@ -327,7 +330,6 @@
   "searchPage.purchasedTogether": "المنتجات المشتراة معًا",
   "searchPage.warnAuthMessage": "لإطلاق طلبك، يجب عليك تسجيل الدخول أو إنشاء حساب جديد",
   "searchPage.warnServiceMessage": "ترجمة إلى العربية: هذه الخدمة غير متاحة في مدينتك",
-
   "update": "التعديل",
   "toPay": "للدفع",
   "Retour": "عودة ",
