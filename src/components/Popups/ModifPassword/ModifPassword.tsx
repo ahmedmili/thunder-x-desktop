@@ -88,26 +88,26 @@ const ModifPassword: React.FC<Props> = ({ close }) => {
     return (
         <div className="popup-container" >
             <div className="popup-box">
-                <button onClick={close} className="close-button">X</button>
+                <button onClick={close} className="close-button"></button>
                 <form onSubmit={handleSubmit}>
                     <div className="input-container">
                         <label htmlFor="old-password">Ancien mot de passe</label>
                         <div className="input">
-                            <input className="password-input" type={showPassword ? "text" : "password"} name="old-password" placeholder="Entrer ici" onChange={(e) => setPassword(e.target.value)} />
+                            <input className="password-input form-control" type={showPassword ? "text" : "password"} name="old-password" placeholder="Entrer ici" onChange={(e) => setPassword(e.target.value)} />
                             {showPassword ? <VisibilityIcon onClick={() => handleDisplayPW(1)} className="visible-icon" /> : <VisibilityOffIcon onClick={() => handleDisplayPW(1)} className="visible-icon" />}
                         </div>
                     </div>
                     <div className="input-container">
                         <label htmlFor="new-password">Mot de passe</label>
                         <div className="input">
-                            <input className="password-input" type={showNewPassword ? "text" : "password"} name="new-password" placeholder="Entrer ici" onChange={(e) => setNewPassword(e.target.value)} />
+                            <input className="password-input form-control" type={showNewPassword ? "text" : "password"} name="new-password" placeholder="Entrer ici" onChange={(e) => setNewPassword(e.target.value)} />
                             {showNewPassword ? <VisibilityIcon onClick={() => handleDisplayPW(2)} className="visible-icon" /> : <VisibilityOffIcon onClick={() => handleDisplayPW(2)} className="visible-icon" />}
                         </div>
                     </div>
                     <div className="input-container">
                         <label htmlFor="confirm-password">Confirmation du mot de passe</label>
                         <div className="input">
-                            <input className="password-input" type={showNewPassword ? "text" : "password"} name="confirm-password" placeholder="Entrer ici" onChange={(e) => setConfirmPassword(e.target.value)} />
+                            <input className="password-input form-control" type={showNewPassword ? "text" : "password"} name="confirm-password" placeholder="Entrer ici" onChange={(e) => setConfirmPassword(e.target.value)} />
                         </div>
 
                     </div>
