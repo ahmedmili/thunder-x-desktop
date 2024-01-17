@@ -163,6 +163,7 @@ const AutocompleteInput: React.FC<AutocompleteInputProps> = ({ initLocation, ret
                     </div>
                 )
             }
+
             {
                 location && !region && !isLoading &&
                 (
@@ -170,7 +171,7 @@ const AutocompleteInput: React.FC<AutocompleteInputProps> = ({ initLocation, ret
                         <div className="store-img"></div>
                         <div className="stores-container">
                             <h2>Disponible à :</h2>
-                            <Stack direction="horizontal" gap={2}>
+                            <Stack direction="horizontal" className='dispo-stask' gap={2}>
                                 <Badge pill className="store-badge">Sousse</Badge>
                                 <Badge pill className="store-badge">Monastir</Badge>
                                 <Badge pill className="store-badge">Mahdia</Badge>

@@ -3,9 +3,7 @@
 import { MouseEventHandler, useEffect, useRef, useState } from 'react';
 import { useAppDispatch, useAppSelector } from '../../../Redux/store';
 import { LocationService } from '../../../services/api/Location.api';
-// import { toast } from 'react-toastify';
 import './mapCard.scss';
-import EditPen from '../../../assets/edit-pen.svg'
 
 import { useTranslation } from 'react-i18next';
 import { localStorageService } from '../../../services/localStorageService';
@@ -16,8 +14,8 @@ import { ErrorMessage, Field, Form, Formik, FormikHelpers } from 'formik';
 import { useSelector } from "react-redux";
 import * as Yup from 'yup';
 import {
-  regionHomeSelector,
-  homeLoadingSelector
+    homeLoadingSelector,
+    regionHomeSelector
 } from "../../../Redux/slices/home";
 
 
@@ -193,12 +191,12 @@ function MapCard(props: { cancel: MouseEventHandler<HTMLButtonElement> | undefin
                                     {locationChanged && <h1>{t("adress.adressSelected")}</h1>}
                                     <h1>{userPosition?.coords.label}</h1>
                                 </div>
-                                <div className='buttons'>
+                                {/* <div className='buttons'>
                                     <button type="button" onClick={getPosition}>
                                         <div className="icon"></div>
                                         <p>{t('adress.currentPos')}</p>
                                     </button>
-                                </div>
+                                </div> */}
                             </div>
                             {mapDisabled && (
                                 <div className='error'>Veuillez autoriser l'accès à votre position</div>
@@ -279,7 +277,7 @@ function MapCard(props: { cancel: MouseEventHandler<HTMLButtonElement> | undefin
                         </>
                     )}
                     <div className='map-continue-btn'>
-                        {logged_in && showForm === false && region && !isLoading && (
+                        {logged_in && !showForm && region && !isLoading && (
                             <button type="button" className="submit-cart" onClick={() => setShowForm(true)} >
                                 {t("continuer")}
                             </button>

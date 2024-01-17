@@ -32,6 +32,7 @@
       background: $Off-White;
     }
   }
+
   .cancel-icon-container {
     position: absolute;
     top: 29px;
@@ -57,6 +58,7 @@
 
     }
   }
+
   .form {
     @include flex(flex, start, center);
     flex-direction: column;
@@ -68,6 +70,7 @@
       letter-spacing: 0em;
       text-align: center;
     }
+
     label {
       font-family: 'Poppins-Regular', serif;
       font-weight: weight(regular);
@@ -103,8 +106,9 @@
       width: 80%;
     }
   }
+
   .location-filtre {
-    margin: 0;
+    margin: 11px 0 31px 0;
     padding: 0;
     width: 100%;
     display: flex;
@@ -175,7 +179,7 @@
     }
   }
 
-  .saved-adresses-area{
+  .saved-adresses-area {
     margin: 15px 0 0;
 
     .saved-adresses-title {
@@ -183,25 +187,30 @@
       @include fonts(15px, 15px, $dark_Gray);
       margin: 0 0 20px;
     }
+
     .location-filtre {
       .select {
         border-color: $color-blue-pelorous;
       }
+
       .selected {
         background-color: $color-blue-pelorous;
       }
     }
-  } 
-  
+  }
+
 
   .adresses-container {
-    overflow-y: auto;
-    @include dimensions(100%, 251px);
+    overflow: scroll;
+    width: 100%;
+    min-height: 125px;
+    max-height: 232px;
     margin: 0 auto;
-    padding: 0px 16px 0 0;
+    padding: 0px 16px 6px 0;
 
     &::-webkit-scrollbar {
       width: 9px;
+      height: 0px;
     }
 
     &::-webkit-scrollbar-track {
@@ -327,6 +336,7 @@
           &::before {
             margin: 0;
           }
+
           input {
             &[type=text] {
               background-color: transparent;
@@ -339,6 +349,7 @@
       }
     }
   }
+
   .container-map {
     .map-container {
       .map-and-button {
@@ -346,12 +357,14 @@
       }
     }
   }
+
   .current-position {
-    padding: 33px 0;
-    margin: 0 0 30px;
-    border-top: 1px solid $light_Gray;
-    border-bottom: 1px solid $light_Gray;
+    padding: 33px 0 23px;
+    margin: 46px 0 0;
+    border-top: 1px solid #958E8E;
+    /* border-bottom: 1px solid #958E8E; */
     position: relative;
+    width: 100%;
 
     .current-position_input-blc {
       background-image: url('./../../assets/current-position-icn.svg');
@@ -360,26 +373,38 @@
       background-position: left center;
       padding: 0 50px;
 
+      &:hover {
+        cursor: pointer;
+      }
+
       .form-control {
         padding-left: 0;
         @include fonts(16px, 16px, $dark_Gray);
         font-family: 'Poppins-Medium', serif;
         border: 0;
 
+        &:hover {
+          cursor: pointer;
+        }
+
         &::-webkit-input-placeholder {
           color: $dark_Gray;
         }
+
         &::-moz-placeholder {
           color: $dark_Gray;
         }
+
         &:-ms-input-placeholder {
           color: $dark_Gray;
         }
+
         &:-moz-placeholder {
           color: $dark_Gray;
         }
       }
     }
+
     .btn {
       &.btn-edit {
         position: absolute;
@@ -394,10 +419,15 @@
         border-radius: 50%;
       }
     }
-  } 
+  }
+
   .select-map-area {
+    // border-top: 1px solid #958E8E;
+    padding: 35px 0 0 0;
+    margin-top: 32px;
+
     display: flex;
-        
+
     &::before {
       content: '';
       display: block;
@@ -409,6 +439,7 @@
       @include dimensions(28px, 28px);
       border-radius: 50%;
     }
+
     .btn {
       &.btn-select-map {
         @include fonts(16px, 16px, $dark_Gray);
@@ -417,6 +448,7 @@
       }
     }
   }
+
   .btns-group {
     @include flex;
 
@@ -435,7 +467,7 @@
 
 /* -- address-notfound-area -- */
 
-.address-notfound-area  {
+.address-notfound-area {
   margin: 15px 0 0;
   width: 100%;
 
@@ -444,6 +476,7 @@
     font-family: 'Poppins-Medium', serif;
     margin: 0 0 15px;
   }
+
   .address-notfound-content {
     background-image: url('./../../assets/address-not-found-icn.svg');
     background-repeat: no-repeat;
@@ -457,10 +490,11 @@
       font-family: 'Poppins-SemiBold', serif;
       text-align: center;
     }
+
     .btns-group {
       @include flex(flex, center, center);
       gap: 17px;
-      
+
       .btn {
         &.btn-adress {
           background-color: $color-blue-pelorous;

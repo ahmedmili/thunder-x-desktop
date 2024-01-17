@@ -304,6 +304,9 @@
   "adress.currentPos": "Current location",
   "adress.takeAdressFromCart": "Indicate your address on the map",
   "adress.initLocation": "Initial Location",
+  "adress.adressIntrouvable": "This address is not found. Retry ?",
+  "adress.browserLocationAcessRequest": "Please allow access to your location",
+
   "supplier.opentime": "Open up to",
   "supplier.delivPrice": "Shipping costs:",
   "supplier.startAt": "From :",
@@ -352,6 +355,7 @@
   "update": "update",
   "toPay": "To pay",
   "Reset": "Reset",
+  "AvailabelAt": "Available at",
   "Retour": "Return",
   "repasGratuit": "Free Meal",
   "joinUs": "JOIN US AND EARN MONEY EASILY",
