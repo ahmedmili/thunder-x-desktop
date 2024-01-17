@@ -120,13 +120,7 @@ const Header = () => {
                   <div className='info'>
                     <div className="position">
                       <LocationOnIcon className='position-icon' />
-                      {/* {location
-                        ? location?.coords.label
-                        :
-                        t('no_location_detected')
-                      } */}
                       {t('no_location_detected')}
-
                     </div>
                     <button onClick={handleCart} className="cart-item">
                       <span className='cart-icon'></span>
@@ -189,7 +183,7 @@ const Header = () => {
                         <Switches />
                       </div>
                     }
-                    <Box className="headerLocalisationMessageContainer" onClick={() => dispatch({ type: "SET_SHOW", payload: true })}>
+                    <Box className="headerLocalisationMessageContainer"  onClick={() => dispatch({ type: "SET_SHOW", payload: true })} >
                       <a href="#" >
                         <span className="localisationIcon" >
                           {/* <PinDropIcon className="pin-icon" /> */}
@@ -227,25 +221,19 @@ const Header = () => {
                 onClick={navigateToHome} >
                 <a href="#" className={`logoMain minimizedlogoMain`}></a>
               </div>
-              
+
               <div className='info'>
                 <div className="switches-area">
                   <Switches />
                 </div>
                 <div className="position">
-                  <Box className="headerLocalisationMessageContainer" onClick={() => dispatch({ type: "SET_SHOW", payload: true })}>
+                  <Box className="headerLocalisationMessageContainer" onClick={() => dispatch({ type: "SET_SHOW", payload: true })} >
                     <a href="#" className="top-bar-location" >
                       {location
-                          ? location.coords.label
-                          : t('entrezAdress')}
-                      {/* {t('entrezAdress')} */}
+                        ? location.coords.label
+                        : t('entrezAdress')}
                     </a>
                   </Box >
-                  {/*
-                  {location
-                    ? location?.coords.label
-                    : t('no_location_detected')} */}
-
                 </div>
 
                 <button onClick={handleUserCart} className={`account ${!logged_in && 'loggedin-account'}`}  >
@@ -256,7 +244,7 @@ const Header = () => {
                 <div className={`search-blc ${searchVisible ? 'active' : ''}`}>
                   {searchVisible && (
                     <div className="search-input-blc">
-                      <input type="search" className="form-control" placeholder="Search" /> 
+                      <input type="search" className="form-control" placeholder="Search" />
                     </div>
                   )}
                   <button className="btn btn-search" onClick={searHandleToggle}></button>
@@ -355,7 +343,7 @@ const Header = () => {
                                 <p className="paiement-status-item">Bonus</p>
                                 <div className="price">0.00</div>
                               </div>
-                              
+
                             </li>
                             <li>
                               <div className="paiement-status_icon"></div>
@@ -416,14 +404,14 @@ const Header = () => {
         )
       }
       {showMapState && (
-                <div
-                  className="mapOverPlay">
-                  <div
-                    onClick={(e) => e.stopPropagation()}>
-                    <Map />
-                  </div>
-                </div>
-              )}
+        <div
+          className="mapOverPlay">
+          <div
+            onClick={(e) => e.stopPropagation()}>
+            <Map />
+          </div>
+        </div>
+      )}
     </>
   )
 

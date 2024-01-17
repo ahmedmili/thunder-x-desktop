@@ -78,6 +78,7 @@
           text-align: center;
           @include fonts(15px, 24px, $white2);
         }
+
         &::-webkit-input-placeholder {
           text-align: left;
         }
@@ -129,8 +130,14 @@
   }
 
   .stores-container {
+
     text-align: center;
     margin-block: 15px;
+
+    .dispo-stask {
+      align-items: center;
+      justify-content: center;
+    }
 
     .store-badge {
       width: 100.72px;

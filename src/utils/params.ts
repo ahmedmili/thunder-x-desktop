@@ -3,7 +3,7 @@ import { arrayToObject } from "./utils";
 
 const handleUriParams = (data: any): string => {
     const searchParams = new URLSearchParams(location.search);
-    data.order_by && searchParams.set('order', data.order_by);
+    data.order_by && searchParams.set('order_by', data.order_by);
     data.category && searchParams.set('category', data.category);
     data.min_price && searchParams.set('min_price', data.min_price);
     data.max_price && searchParams.set('max_price', data.max_price);

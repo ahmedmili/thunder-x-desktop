@@ -52,6 +52,7 @@ import Feedback from "./components/layout/Profile/Feedback/Feedback";
 import FidelitePage from "./components/layout/Profile/FidelitePage/FidelitePage";
 import Menu from "./components/menus/menus";
 import Verify from "./views/Verify";
+import { paramsService } from "./utils/params";
 //lazy loading pages
 const Profile = lazy(() => import("./components/layout/Profile/Profile"));
 const HomePage = lazy(() => import("./views/home/home.page"));
@@ -91,12 +92,30 @@ function App({ initialData }: AppProps) {
   }, []);
 
   useEffect(() => {
-    !region.id ? dispatch({ type: "SET_SHOW", payload: true }) : dispatch({ type: "SET_SHOW", payload: false })
+    const current_location = localStorageService.getCurrentLocation();
+    const searchParams = new URLSearchParams(window.location.search);
+    if (!current_location) {
+      if (searchParams.has('search')) {
+        // fetch lat and long from params
+        let resultObject = paramsService.fetchParams(searchParams)
+        const lat = resultObject.lat;
+        const lng = resultObject.lng;
+        (lng && lat) ? dispatch({ type: "SET_SHOW", payload: false }) : dispatch({ type: "SET_SHOW", payload: true })  
+        if (lng && lat) {
+          setLocationFromArray(lat,lng)
+        }
+      }
+    } else {
+      dispatch({ type: "SET_SHOW", payload: false })
+    }
 
-  }, [region]);
+  }, [location]);
+  const setLocationFromArray = async(lat:any, lng:any) => {
+    let current_location = await LocationService.geoCode(lat, lng);
+    dispatch({ type: "SET_LOCATION", payload: current_location })
+  }
 
   useEffect(() => {
-
     eventEmitter.on("homeDataChanged", updateHomeData);
     return () => {
       eventEmitter.off("homeDataChanged", updateHomeData);
