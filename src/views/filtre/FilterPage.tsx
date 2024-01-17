@@ -14,6 +14,7 @@ import {
   recommendedHomeSelector,
   setRefresh,
 } from "../../Redux/slices/home";
+import { handleMessanger } from "../../Redux/slices/messanger";
 import { useAppSelector } from "../../Redux/store";
 import MessangerBtnIcon from "../../assets/profile/Discuter/messanger-btn.svg";
 import Map from "../../components/Location/Location";
@@ -74,12 +75,14 @@ function FilterPage({ initialData }: AppProps) {
   const [searchSuppliersList, setSearchSuppliersList] = useState<Array<any>>(initialData ? initialData.data.suppliers : []);
   const [ssrLoading, setSsrLoading] = useState<boolean>(true)
 
-  const [messangerPopup, setMessangerPopup] = useState<boolean>(false)
 
   const showMapState = useAppSelector((state) => state.location.showMap);
+  const isConnected = localStorageService.getUserToken()
 
   const unReadMessages = useAppSelector((state) => state.messanger.unReadedMessages)
+  const isMessagesOpen = useAppSelector((state) => state.messanger.isOpen)
   const [unReadedQt, setUnReadedQt] = useState<number>(unReadMessages)
+
   const { t } = useTranslation()
 
   const navLocation = useLocation()
@@ -171,7 +174,7 @@ function FilterPage({ initialData }: AppProps) {
   }, [recommanded]);
 
   const handleMessangerPopup = () => {
-    setMessangerPopup(!messangerPopup)
+    dispatch(handleMessanger())
   }
   useEffect(() => {
     setUnReadedQt(unReadMessages)
@@ -501,17 +504,22 @@ function FilterPage({ initialData }: AppProps) {
                 </Col >
               </Row >
             </div >
-            <div className={'bulles'}>
-              <button className={'messangerPopupBtn'} onClick={handleMessangerPopup} style={{ backgroundImage: `url(${MessangerBtnIcon})` }}>
-                {unReadedQt > 0 && (
-                  <div className={'messangerBullNotifIcon'}>
-                    {unReadedQt}
-                  </div>
-                )}
-              </button>
-            </div>
             {
-              messangerPopup &&
+              (isConnected) && (
+
+                <div className={'bulles'}>
+                  <button className={'messangerPopupBtn'} onClick={handleMessangerPopup} style={{ backgroundImage: `url(${MessangerBtnIcon})` }}>
+                    {unReadedQt > 0 && (
+                      <div className={'messangerBullNotifIcon'}>
+                        {unReadedQt}
+                      </div>
+                    )}
+                  </button>
+                </div>
+              )
+            }
+            {
+              (isMessagesOpen) &&
               <Messanger className='discuterMessangerPopup' close={handleMessangerPopup} />
             }
             {
