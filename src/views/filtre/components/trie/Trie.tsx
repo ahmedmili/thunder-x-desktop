@@ -20,9 +20,9 @@ function Trie() {
     useEffect(() => {
         const searchParams = new URLSearchParams(location.search);
         if (searchParams.has('search')) {
-            let params = paramsService.fetchParams(searchParams)
-            if (params.order) {
-                const order_id: any = params.order;
+            let params = paramsService.fetchParams(searchParams);            
+            if (params.order_by) {
+                const order_id: any = params.order_by;
                 setActive(order_id);
             }
         }
@@ -32,8 +32,8 @@ function Trie() {
         if (refresh) {
             const searchParams = new URLSearchParams(location.search);
             let params = paramsService.fetchParams(searchParams)
-            if (!params.order) {
-                // setActive("")
+            if (!params.order_by) {
+                setActive("")
             }
         }
     }, [refresh]);
@@ -71,7 +71,7 @@ function Trie() {
             ...params,
             order_by: searchQuery
         }
-        let newParams = paramsService.handleUriParams(params)
+        let newParams = paramsService.handleUriParams(params);
 
         searchParams.has('search') ? searchParams.set("search", newParams) : searchParams.append('search', newParams);
 

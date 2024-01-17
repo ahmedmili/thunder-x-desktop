@@ -9,6 +9,7 @@ import { homeRefresh, setRefresh } from "../../../../Redux/slices/home";
 import { debounce } from 'lodash';
 import { useSelector } from "react-redux";
 import { useTranslation } from "react-i18next";
+import { paramsService } from "../../../../utils/params";
 
 function SearchProduit() {
     const dispatch = useAppDispatch();
@@ -18,8 +19,9 @@ function SearchProduit() {
     const { t } = useTranslation()
     useEffect(() => {
         const searchParams = new URLSearchParams(location.search);
-        if (searchParams.has("filter") && searchParams.get("filter") != "") {
-            const filter: any = searchParams.get("filter");
+        let params = paramsService.fetchParams(searchParams); 
+        if (params.filter && params.filter != "") {
+            const filter: any = params.filter;
             setActive(filter);
         }
         else {
@@ -29,7 +31,8 @@ function SearchProduit() {
     useEffect(() => {
         if (refresh) {
             const searchParams = new URLSearchParams(location.search);
-            if (!searchParams.has('filter')) {
+            let params = paramsService.fetchParams(searchParams); 
+            if (!params.filter || params.filter == "") {
                 setActive("");
             }
         }
@@ -38,31 +41,33 @@ function SearchProduit() {
     function clickHandle(event: any) {
         setActive(event.target.value);
         handleInputChange(event)
-    }
+    }    
     const handleInputChange = debounce((event) => {
         if (event.target.value != "") {
             const searchParams = new URLSearchParams(location.search);
-            if (searchParams.has('filter')) {
-                searchParams.set('filter', event.target.value);
+            let params = searchParams.has("search") ? paramsService.fetchParams(searchParams) : {}
+            params = {
+                ...params,
+                filter: event.target.value
             }
-            else {
-                searchParams.append('filter', event.target.value);
-            }
+            let newParams = paramsService.handleUriParams(params);
+            searchParams.has('search') ? searchParams.set("search", newParams) : searchParams.append('search', newParams);
             navigate(`/search/?${searchParams.toString()}`, {
                 replace: false,
             });
         }
         else {
             const searchParams = new URLSearchParams(location.search);
-            if (searchParams.has('filter')) {
-                searchParams.delete('filter');
+            let params = searchParams.has("search") ? paramsService.fetchParams(searchParams) : {}
+            if (params.filter) {
+                delete params.filter;
                 navigate(`/search/?${searchParams.toString()}`, {
                     replace: false,
                 });
             }
         }
         dispatch(setRefresh(true));
-    }, 500);
+    }, 700);
     
     return (
         <form className="search-filter-container" autoComplete="off">
