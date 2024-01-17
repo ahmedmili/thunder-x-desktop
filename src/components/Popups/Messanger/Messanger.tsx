@@ -112,12 +112,9 @@ const Messanger: React.FC<MessangerProps> = ({ className }) => {
     useEffect(() => {
         getMessages()
         document.addEventListener('keydown', sendMessage);
-        dispatch(handleMessanger())
         dispatch(initUnReadedMessage())
         return () => {
             document.removeEventListener('keydown', sendMessage);
-            dispatch(handleMessanger())
-
         }
     }, [])
 
@@ -131,7 +128,7 @@ const Messanger: React.FC<MessangerProps> = ({ className }) => {
                 <div className="btns-group">
                     <div className="btn-more-blc">
                         <button className="btn btn-more" onClick={handleNotifsToggle}></button>
-                        
+
                         {notifsVisible && (
                             <div className="active-notifs">
                                 <button className="btn btn-notifs">Activer les notifications</button>
@@ -203,7 +200,7 @@ const Messanger: React.FC<MessangerProps> = ({ className }) => {
                     </section>
                     <section className='input-section'>
                         <textarea ref={messageRef} className='input' name="input" id="input" placeholder='Envoyer votre message' cols={30} rows={5}></textarea>
-                        <button className="btn btn-msg-submit notif-active"></button>
+                        {/* <button className="btn btn-msg-submit notif-active"></button> */}
                     </section>
                 </div>
             </main >
