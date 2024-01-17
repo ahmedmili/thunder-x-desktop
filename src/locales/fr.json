@@ -367,5 +367,31 @@
   "mobile.menu.description": "Bénéficiez d'avantages spéciaux dans vos lieux et restaurants favoris!",
   "mobile.menu.download_button": "Télécharger l'application",
   "mobile.menu.web_button": "Continuer sur le web",
-  "mobile.": "Mobile"
+  "mobile.": "Mobile",
+  "calendar":{
+    "days": {
+      "Su" :"Sam",
+      "Mo": "Lun",
+      "Tu":"Mar",
+      "We": "Mer",
+      "Th":"Jeu",
+      "Fr":"Ven",
+      "Sa" :"Sam"
+    },
+    "months":{
+      "January" :"Janvier",
+      "February" :"Février",
+      "March" :"Mars",
+      "April":"Avril",
+      "May":"Mai",
+      "June": "Juin",
+      "July" :"Juillet",
+      "August":"Août",
+      "September":"Septembre",
+      "October": "Octobre",
+      "November":"Novembre",
+      "December":"Décembre"   
+    },
+    "btnLabel": "Ok"
+  }
 }

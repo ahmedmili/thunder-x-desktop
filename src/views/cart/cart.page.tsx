@@ -121,7 +121,7 @@ const CartPage: React.FC = () => {
   var discount = 0
 
   var take_away_plan = 'default';
-  const [takeAwayDate, setTakeAwayDate] = useState(new Date());
+  const [takeAwayDate, setTakeAwayDate] = useState<any>(new Date());
   const [minCost, setMinCost] = useState<number>(0)
   const [isClosed, setIsClosed] = useState<number>(1)
   const [minCostError, setMinCostError] = useState<boolean>(false)

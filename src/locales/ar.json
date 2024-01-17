@@ -346,5 +346,31 @@
   "mobile.menu.description": "استمتع بفوائد خاصة في أماكنك ومطاعمك المفضلة!",
   "mobile.menu.download_button": "تحميل التطبيق",
   "mobile.menu.web_button": "المتابعة على الويب",
-  "mobile.": "جوال"
+  "mobile.": "جوال",
+  "calendar":{
+    "days": {
+      "Su" :"Su",
+      "Mo": "Mo",
+      "Tu":"Mar",
+      "We": "We",
+      "Th":"Th",
+      "Fr":"Fr",
+      "Sa" :"Sa"
+    },
+    "months":{
+      "January" :"January",
+      "February" :"February",
+      "March" :"March",
+      "April":"April",
+      "May":"May",
+      "June": "June",
+      "July" :"July",
+      "August":"August",
+      "September":"September",
+      "October": "October",
+      "November":"November",
+      "December":"December"   
+    },
+    "btnLabel": "Ok"
+  }
 }

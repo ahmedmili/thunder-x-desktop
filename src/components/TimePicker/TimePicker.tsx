@@ -1,14 +1,17 @@
 import {
     DateTimePicker,
-    LocalizationProvider
+    LocalizationProvider,
+    PickersCalendarHeaderProps
 } from '@mui/x-date-pickers';
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import { DemoContainer } from '@mui/x-date-pickers/internals/demo';
 import 'dayjs/locale/en';
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import './timePicker.scss';
 
+
 import dayjs, { Dayjs } from 'dayjs';
+import { useTranslation } from 'react-i18next';
 
 interface TimepickerProps {
     openTime?: string,
@@ -18,8 +21,10 @@ interface TimepickerProps {
 }
 
 const TimePickerComponent: React.FC<TimepickerProps> = ({ className, setSelectedDate, openTime = "08:30", closeTime = "18:00" }) => {
-    const [currentDateTime, setCurrentDateTime] = useState<Dayjs | null>(dayjs()); // Initialize with Dayjs object
-
+    const [currentDateTime, setCurrentDateTime] = useState<any>(dayjs()); // Initialize with Dayjs object
+    const { t } = useTranslation();
+     const [open, setOpen] = useState(false);
+    const [view, setView] = useState<any>('day');
 
 
     const handleTimeChange = (time: Date | null) => {
@@ -45,24 +50,60 @@ const TimePickerComponent: React.FC<TimepickerProps> = ({ className, setSelected
             }
         }
     };
-
     useEffect(() => {
         setSelectedDate(currentDateTime ? currentDateTime.toDate() : new Date(new Date().getTime() + 30 * 60000)); // Convert Dayjs to Date before passing to the callback
-    }, [currentDateTime]);
-
+    }, [currentDateTime]);    
+    function setFormat(_day: string, date: any) {        
+        return t('calendar.days.'+_day);
+    }
+    const CustomCalendarHeader = (props: PickersCalendarHeaderProps<Dayjs>) => {
+        const { currentMonth } = props;
+        return <div className='calendar-header'> <button className='btn-prev' onClick={goPrevMonth}></button>
+            <button className='btn-month' onClick={handleButtonClick}>{t('calendar.months.' + currentMonth.format("MMMM")) + ' ' +currentMonth.format("YYYY")} </button>
+            <button className='btn-next'onClick={goNextMonth}></button>
+        </div>;
+    };    
+    const handleButtonClick = () => {
+        if(view=='day')
+            setView('year');
+        else
+            setView('day');
+    };
+    const handleClose = () => {
+        setView('day');
+    }
+    const goNextMonth = () => {
+        const nextMonth = currentDateTime.add(1, 'month');
+        const beginningOfMonth = nextMonth.startOf('month');
+        setCurrentDateTime(beginningOfMonth);        
+    }
+    const goPrevMonth = () => {
+        const prevMonth = currentDateTime.subtract(1, 'month');
+        const beginningOfMonth = prevMonth.startOf('month');
+        setCurrentDateTime(beginningOfMonth);
+    }
     return (
         <div className={`time-picker-container ${className} `} >
             <LocalizationProvider dateAdapter={AdapterDayjs}>
                 <DemoContainer components={['TimePicker']}>
                     <DateTimePicker
                         className='time-picker-input'
-                        label="Basic time picker"
+                        label=""
+                        openTo={view}
                         format="YYYY-MM-DD HH:mm:ss"
                         ampmInClock={true}
                         ampm={false}
                         onChange={handleTimeChange}
                         value={currentDateTime}
-
+                        onClose={handleClose}
+                        onYearChange={handleClose}
+                        dayOfWeekFormatter={(_day: string, date: any) => setFormat(_day, date)}             
+                        slots={{
+                            calendarHeader: CustomCalendarHeader
+                        }} 
+                        localeText={{
+                            okButtonLabel: ''+t('calendar.btnLabel')+''
+                        }}
                     />
                 </DemoContainer>
             </LocalizationProvider>
