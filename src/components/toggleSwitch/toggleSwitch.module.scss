@@ -89,17 +89,22 @@
 
 @media only screen and (max-width:1200px) {
   .SwitchesContainer {
+    @include dimensions(210px, 35px);
     padding: 3px;
-    .SwitchWrapper {
-      width: 107.361px;
-    }
+
     .SwitchLabel {
-      font-size: 14px;
+      font-size: 12px;
     }
     .SwitchWrapper {
+      width: 107px;
+
       .Switch {
+        width: 100%;
+
         .SwitchText {
-          font-size: 14px;
+          font-size: 12px;
+          top: -2px;
+          left: 9px;
         }
       }
     }
@@ -118,7 +123,7 @@
     .SwitchWrapper {
       .Switch {
         .SwitchText {
-          font-size: 11px;
+          font-size: 10px;
         }
       }
     }
