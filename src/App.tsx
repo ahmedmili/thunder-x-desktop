@@ -100,13 +100,20 @@ function App({ initialData }: AppProps) {
         let resultObject = paramsService.fetchParams(searchParams)
         const lat = resultObject.lat;
         const lng = resultObject.lng;
-        (lng && lat) ? dispatch({ type: "SET_SHOW", payload: false }) : dispatch({ type: "SET_SHOW", payload: true })
+        (lng && lat) ? dispatch({ type: "SET_SHOW", payload: false }) : dispatch({ type: "SET_SHOW", payload: true })  
+        if (lng && lat) {
+          setLocationFromArray(lat,lng)
+        }
       }
     } else {
       dispatch({ type: "SET_SHOW", payload: false })
     }
 
   }, [location]);
+  const setLocationFromArray = async(lat:any, lng:any) => {
+    let current_location = await LocationService.geoCode(lat, lng);
+    dispatch({ type: "SET_LOCATION", payload: current_location })
+  }
 
   useEffect(() => {
     eventEmitter.on("homeDataChanged", updateHomeData);
