@@ -6,8 +6,8 @@ import './joinUs.scss';
 
 export const JoinUs = () => {
     const { t } = useTranslation()
-    const delivUrl = 'https://thunder-express.com/devenir-livreur';
-    const supplierUrl = 'https://thunder-express.com/devenir-partenaire';
+    const delivUrl = import.meta.env.VITE_THUNDER_X_DELIV_URL;
+    const supplierUrl = import.meta.env.VITE_THUNDER_X_SUPPLIER_URL;
 
     const becomeDeliv = () => {
         window.open(delivUrl, '_blank');
