@@ -12,32 +12,27 @@
 }
 
 .fidelite-container {
-    height: 100vh;
-    width: 100%;
+    @include dimensions(100%, 100vh);
     padding: 0;
     animation: fadeIn 1s;
 
     header {
         .title {
-            color: #484848;
-            font-family: Poppins;
+            color: $dark_Gray;
+            font-family: 'Poppins-Bold', serif;
             font-size: 24px;
-            font-style: normal;
-            font-weight: 700;
             line-height: normal;
         }
         .header-imgs-container {
-            display: flex;
+            @include flex;
             gap: 15px;
-            justify-content: center;
-            align-items: center;
-            height: 335.896px;
+            height: 335px;
 
             .archivedC-image {
                 background-position: center;
                 background-repeat: no-repeat;
                 background-size: cover;
-                background-color: #1F94A4;
+                background-color: $color-blue-eastern;
                 height: 100%;
                 flex: 1;
                 border-radius: 25px;

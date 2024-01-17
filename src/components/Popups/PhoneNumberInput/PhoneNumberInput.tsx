@@ -37,11 +37,11 @@ const {t} = useTranslation()
         <div className="phone-input-popup-container" >
 
             <div className="phone-popup-box">
-                <button className="phone-input-popup-close" onClick={close} >X</button>
+                <button className="phone-input-popup-close" onClick={close}></button>
                 <div className="input-text-zone">
                     <label htmlFor="phoneNumber">{t('Verifier.phone')}</label>
                     <div className="input-box">
-                        <input value={phone} onChange={(e) => handlePhoneChange(e.target.value)} placeholder="27380570" className="phone-input" type="number" name="phoneNumber" id="phoneNumber" />
+                        <input value={phone} onChange={(e) => handlePhoneChange(e.target.value)} placeholder="27380570" className="phone-input form-control" type="number" name="phoneNumber" id="phoneNumber" />
                     </div>
                 </div>
                 <div className="input-numbers-keys-zone">
