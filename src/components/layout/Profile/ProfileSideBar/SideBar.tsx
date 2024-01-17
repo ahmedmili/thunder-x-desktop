@@ -91,13 +91,17 @@ const SideBar = () => {
       <div className={`side-bar ${isDivVisible ? "visible-bar" : ""}`}>
         <header className='sideBar-header'>
           <div className="image" style={{ backgroundImage: `url(${profileImg})` }}></div>
-          <div className='info'>
-            <div className="name">{fullName}</div>
-            <div className="icons">
-              <div className="icon" style={{ backgroundImage: `url(${phoneIcon})` }}></div>
-              <div className="icon" style={{ backgroundImage: `url(${lockIcon})` }}></div>
+          
+            <div className='info'>
+              <div className="name">{fullName}</div>
+              {/* 
+                <div className="icons">
+                  <div className="icon" style={{ backgroundImage: `url(${phoneIcon})` }}></div>
+                  <div className="icon" style={{ backgroundImage: `url(${lockIcon})` }}></div>
+                </div>
+              */}
             </div>
-          </div>
+          
         </header>
 
         <nav className='sideBar-nav'>

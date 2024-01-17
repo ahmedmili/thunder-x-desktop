@@ -26,7 +26,7 @@ const ConfirmPopup: React.FC<Props> = ({ title, close, accept }) => {
 
             </div>
             <div className="confirm-popup-container">
-
+                <button className="close-button"></button>
                 <p className="confirm-message">
                     {title}
                 </p>

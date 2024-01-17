@@ -151,8 +151,19 @@ const DesactiveAccount: React.FC<DesactiveAccountProps> = ({ type }) => {
   return (
     <>
       <section className="desactive-account-section">
-        <div className='desactive-header-cover' style={{ backgroundImage: `url(${Cover})` }}>
+        {/* 
+          <div className='desactive-header-cover' style={{ backgroundImage: `url(${Cover})` }}></div>
+        */}
 
+        <div className="shoose-option-radio">
+          <div className='option-radio'>
+            <input className='form-check-input' value='DeactivateAccount' type="radio" name="shooseOption" id="DeactivateAccount" />
+            <label htmlFor="DeactivateAccount">Désactiver mon compte</label>
+          </div>
+          <div className='option-radio'>
+            <input className='form-check-input' value='DeleteAccount' type="radio" name="shooseOption" id="DeleteAccount" />
+            <label htmlFor="DeleteAccount">Supprimer mon compte</label>
+          </div>
         </div>
 
         <div className='desactive-body'>
