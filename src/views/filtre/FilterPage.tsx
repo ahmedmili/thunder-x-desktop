@@ -233,7 +233,7 @@ function FilterPage({ initialData }: AppProps) {
       let params = paramsService.fetchParams(searchParams)
 
       params.category && (payload.category_id = params.category);
-      params.order && (payload.order_by = params.order);
+      params.order_by ? (payload.order_by = params.order_by) : '';
       params.min_price && (payload.min_price = Number(params.min_price));
       params.max_price && (payload.max_price = Number(params.max_price));
       params.filter && (payload.filter = params.filter);
@@ -260,8 +260,10 @@ function FilterPage({ initialData }: AppProps) {
   };
 
   const isEmptySearchParams = (searchParams: any) => {
-    const iterator = searchParams.entries();
-    return iterator.next().done;
+    const expectedKeys = ['lat', 'lng'];
+    let resultObject = paramsService.fetchParams(searchParams)
+    const hasUnexpectedKeys = Object.keys(resultObject).some(key => !expectedKeys.includes(key));
+    return !hasUnexpectedKeys
   };
   useEffect(() => {
     setAds(homeData.HOME_1);

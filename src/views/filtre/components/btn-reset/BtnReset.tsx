@@ -2,18 +2,28 @@
 
 import { useState } from "react"
 import "./BtnReset.scss"
-import { useNavigate } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import { useAppDispatch } from "../../../../Redux/store";
 import { setRefresh } from "../../../../Redux/slices/home";
 import { useTranslation } from "react-i18next";
+import { paramsService } from "../../../../utils/params";
 function BtnReset() {
     const navigate = useNavigate();
+    const navLocation = useLocation()
     const dispatch = useAppDispatch();
     const { t } = useTranslation()
     function clickHandle() {
-        navigate(`/search/`, {
-            replace: false,
-        });
+        const searchParams = new URLSearchParams(location.search);
+        let resultObject = paramsService.fetchParams(searchParams);
+        let newParams :any = {
+            lat: resultObject.lat,
+            lng: resultObject.lng
+        }
+        newParams = paramsService.handleUriParams(newParams);
+        searchParams.set('search', newParams);
+        const { pathname } = navLocation;
+        const newURL = pathname !== '/' ? `${pathname}?${searchParams.toString()}` : `/search/?${searchParams.toString()}`;
+        navigate(newURL);   
         dispatch(setRefresh(true));
     }
     return (
