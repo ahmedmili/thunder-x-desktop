@@ -264,6 +264,7 @@
   "cartPage.product": "Articles dans le panier",
   "cartPage.monPanier": "Mon Panier",
   "cartPage.delivto": "Livraison à",
+  "cartPage.emportePar": "Emportée par",
   "cartPage.deliveryOptions.delivery": "Livraison",
   "cartPage.deliveryOptions.pickup": "Ramassage",
   "cartPage.deliveryOptions.surPlace": "Sur place",
@@ -339,6 +340,7 @@
   "cart.discount": "valeur de réduction",
   "cart.PromosCode": "Code promo",
   "cart.clientName": "Nom du client",
+  "cart.delivPlanedAt": "Livraison planifié le ",
   "searchPage.created_at": "Nouveau sur thunder",
   "searchPage.populaires": "Les plus populaires",
   "searchPage.Categories": "Catégories",
@@ -393,5 +395,13 @@
       "December":"Décembre"   
     },
     "btnLabel": "Ok"
-  }
+  },
+  "mobile": "Mobile",
+  "weekDays.names.Monday": "Lundi",
+  "weekDays.names.Tuesday": "Mardi",
+  "weekDays.names.Wednesday": "Mercredi",
+  "weekDays.names.Thursday": "Jeudi",
+  "weekDays.names.Friday": "Vendredi",
+  "weekDays.names.Saturday": "Samedi",
+  "weekDays.names.Sunday": "Dimanche "
 }

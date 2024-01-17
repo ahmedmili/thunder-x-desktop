@@ -244,6 +244,8 @@
   "cartPage.visitor": "الزائر",
   "cartPage.client": "العملاء",
   "cartPage.delivto": "التسليم إلى",
+  "cartPage.emportePar": "محمولة بواسطة",
+
   "cartPage.emporter": "لتأخذ",
   "cartPage.surPalce": "في الموقع",
   "cartPage.phoneNumber": "رقم الهاتف",
@@ -318,6 +320,8 @@
   "cart.discount": "قيمة الخصم",
   "cart.PromosCode": "رمز الخصم",
   "cart.clientName": "اسم العميل",
+  "cart.delivPlanedAt": "التسليم المجدول في ",
+
   "searchPage.created_at": "thunder جديد في",
   "searchPage.populaires": "الأكثر شهرة",
   "searchPage.mieux": "الأعلى تقييمًا",
@@ -349,28 +353,35 @@
   "mobile.": "جوال",
   "calendar":{
     "days": {
-      "Su" :"Su",
-      "Mo": "Mo",
-      "Tu":"Mar",
-      "We": "We",
-      "Th":"Th",
-      "Fr":"Fr",
-      "Sa" :"Sa"
-    },
+      "Su" :"الأحد",
+      "Mo":  "الاثنين",
+      "Tu":"الثلاثاء",
+      "We": "الأربعاء",
+      "Th":"الخميس",
+      "Fr": "الجمعة",
+      "Sa" : "السبت"
+    }, 
     "months":{
-      "January" :"January",
-      "February" :"February",
-      "March" :"March",
-      "April":"April",
-      "May":"May",
-      "June": "June",
-      "July" :"July",
-      "August":"August",
-      "September":"September",
-      "October": "October",
-      "November":"November",
-      "December":"December"   
+      "January" :"جانفي",
+      "February" :"فيفري",
+      "March" :"مارس",
+      "April":"افريل",
+      "May":"ماي",
+      "June": "جوان",
+      "July" :"جويلية",
+      "August":"اوت",
+      "September":"سبتمبر",
+      "October": "اكتوبر",
+      "November":"نوفمبر",
+      "December":"ديسمبر"   
     },
-    "btnLabel": "Ok"
-  }
+    "btnLabel": "تأكيد"
+  },
+  "weekDays.names.Monday": "الاثنين",
+  "weekDays.names.Tuesday": "الثلاثاء",
+  "weekDays.names.Wednesday": "الأربعاء",
+  "weekDays.names.Thursday": "الخميس",
+  "weekDays.names.Friday": "الجمعة",
+  "weekDays.names.Saturday": "السبت",
+  "weekDays.names.Sunday": "الأحد"
 }
