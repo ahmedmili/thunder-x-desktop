@@ -70,8 +70,13 @@ const ConfigPage = () => {
   }
 
   return (
-    <>
+    <div className="profile-page-wrapper">
+      <h1 className="profile-title-page">
+        Mes configurations
+      </h1>
       <div className={`config-page `}>
+        
+
         <SettingSection settingIndex={1} actionListener={handleselect} title={t('profile.mesConfig.modifAccount')} className={`${selectedSetting === 1 ? "active" : ""}`} />
         {
           selectedSetting === 1 &&
@@ -139,7 +144,7 @@ const ConfigPage = () => {
 
       </div>
 
-    </>
+    </div>
   );
 };
 

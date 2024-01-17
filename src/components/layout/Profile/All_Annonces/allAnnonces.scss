@@ -13,6 +13,7 @@
 .annonces-section {
     width: 100%;
     animation: fadeIn 1s;
+    margin: 125px 0 0;
 
     h1 {
         font-family: 'Poppins-Medium', serif;
@@ -66,6 +67,15 @@
                 @include fonts(12px, 12px, $color-blue-eastern);
                 font-family: 'Poppins-Regular', serif;
                 font-weight: weight(regular);
+            }
+            &.active {
+                background-color: $color-blue-pelorous;
+
+                .title, 
+                .body, 
+                .time {
+                    color: $color-white;
+                }
             }
         }
     }

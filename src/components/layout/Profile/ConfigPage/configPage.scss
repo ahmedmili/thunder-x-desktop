@@ -38,6 +38,16 @@
         opacity: 1;
     }
 }
+.profile-page-wrapper {
+    padding: 125px 0 0;
+    
+    .profile-title-page {
+        margin: 0 0 43px;
+        @include fonts(20px, 20px, $dark_Gray);
+        font-family: 'Poppins-SemiBold', serif;
+    }
+}
+
 .config-page {
     border-radius: 15px;
     background: $color-white;
@@ -46,7 +56,7 @@
     margin: 0;
     animation: fadeIn 1s ease-in-out;
     transition: height 1s ease-in-out;
-
+    
     &::-webkit-scrollbar {
         width: 0;
     }
@@ -66,13 +76,13 @@
             .icon {
                 @include dimensions(35px, 35px);
                 color: $dark_Gray;
-                rotate: 90deg;
+                rotate: 180deg;
                 transition: rotate 0.5s ease-in-out;
             }
         }
         .active {
             .icon {
-                rotate: 180deg;
+                rotate: 0deg;
             }
         }
         &:not(:last-child) {
