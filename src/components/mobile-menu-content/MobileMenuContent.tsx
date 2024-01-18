@@ -15,7 +15,7 @@ const MobileMenuContent = ({ isMobileMenuOpen, toggleMobileMenu, donwloadApp }: 
   const { t } = useTranslation();
   const [backgroundClass, setBackgroundClass] = useState("");
   useEffect(() => {
-    const classes = ["bg-1", "bg-2", "bg-3"];
+    const classes = ["bg-1", "bg-2", "bg-3", "bg-4"];
     const randomClass = classes[Math.floor(Math.random() * classes.length)];
     setBackgroundClass(randomClass);
   }, []);
