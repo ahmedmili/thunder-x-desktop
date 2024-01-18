@@ -144,14 +144,6 @@ function MenuOptions({ initialData }: AppProps) {
      * url handling part
      *
      */
-
-    useEffect(() => {
-        // let locationArray = location.pathname.split('/');
-        // locationArray[1] = "restaurant";
-        // const newUrl = locationArray.join("/");
-        // window.history.pushState({}, '', newUrl);
-    }, [])
-
     const getSupplier = async (id: number) => {
         const { status, data } = await supplierServices.getSupplierById(id)
         if (status === 200) {
@@ -218,6 +210,7 @@ function MenuOptions({ initialData }: AppProps) {
     useEffect(() => {
         fetchData()
     }, [id, search, productId]);
+
     const fetchData = async () => {
         setLoading(true);
         await getProduct();
@@ -549,6 +542,9 @@ function MenuOptions({ initialData }: AppProps) {
         localStorageService.setSupplier(productSupplier);
         usedispatch(addItem(obj));
         getProduct()
+        setTimeout(() => {
+            navigate(-1)
+        }, 2500)
     }
 
     useEffect(() => {
