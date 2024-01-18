@@ -136,14 +136,6 @@ function MenuOptions({ initialData }: AppProps) {
      * url handling part
      *
      */
-
-    useEffect(() => {
-        // let locationArray = location.pathname.split('/');
-        // locationArray[1] = "restaurant";
-        // const newUrl = locationArray.join("/");
-        // window.history.pushState({}, '', newUrl);
-    }, [])
-
     const getSupplier = async (id: number) => {
         const { status, data } = await supplierServices.getSupplierById(id)
         if (status === 200) {
@@ -179,8 +171,8 @@ function MenuOptions({ initialData }: AppProps) {
                                 if (Number(p.id) !== Number(product.id)) {
                                     otherProducts.push(p)
                                 }
-                            })                            
-                        }                        
+                            })
+                        }
                     })
                     setMenuData(otherProducts);
                 }
@@ -211,6 +203,7 @@ function MenuOptions({ initialData }: AppProps) {
     useEffect(() => {
         fetchData()
     }, [id, search, productId]);
+
     const fetchData = async () => {
         setLoading(true);
         await getProduct();
@@ -219,15 +212,15 @@ function MenuOptions({ initialData }: AppProps) {
         await getSupplierIsOpen()
         setLoading(false);
     };
-     const fetchMenuData = async () => {
-        setLoading(true);        
+    const fetchMenuData = async () => {
+        setLoading(true);
         await getMenu()
         await getSupplierIsOpen()
         setLoading(false);
     };
     useEffect(() => {
-        if(product)
-        fetchMenuData()
+        if (product)
+            fetchMenuData()
     }, [product]);
 
     const getProduct = async () => {
@@ -527,6 +520,9 @@ function MenuOptions({ initialData }: AppProps) {
         localStorageService.setSupplier(productSupplier);
         usedispatch(addItem(obj));
         getProduct()
+        setTimeout(() => {
+            navigate(-1)
+        }, 2500)
     }
 
     useEffect(() => {
