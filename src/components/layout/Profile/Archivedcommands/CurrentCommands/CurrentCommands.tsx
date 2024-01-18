@@ -24,9 +24,9 @@ import traitementD from "../../../../../assets/profile/ArchivedCommands/traiteme
 import { commandService } from '../../../../../services/api/command.api';
 import { Product } from '../../../../../services/types';
 import SignaleProblem from '../../../../Popups/SignaleProblem/SignaleProblem';
-import CommandsFooter from '../Footer/Footer';
 import WarnPopup from '../../../../Popups/WarnPopup/WarnPopup';
-import { convertStringToNumber } from '../../../../../utils/utils';
+import CommandsFooter from '../Footer/Footer';
+import eventEmitter from '../../../../../services/thunderEventsService';
 
 interface CommandsListProps {
     data: any
@@ -34,25 +34,25 @@ interface CommandsListProps {
     goToPassedCommands: any;
 }
 
-
+interface CommandsData {
+    products: [],
+    total_price: number,
+    is_delivery: number,
+    delivery_price: number
+    command_id: number,
+    bonus: number,
+    gift_ammount: number,
+    total_price_coupon: number,
+    mode_pay: number,
+    coupon: {
+        type: string,
+        value: number,
+        delivery_fixed: number,
+    },
+}
 interface CommandProps {
     removeCommand: any;
-    data: {
-        products: [],
-        total_price: number,
-        is_delivery: number,
-        delivery_price: number
-        command_id: number,
-        bonus: number,
-        gift_ammount: number,
-        total_price_coupon: number,
-        mode_pay: number,
-        coupon: {
-            type: string,
-            value: number,
-            delivery_fixed: number,
-        },
-    }
+    data: CommandsData
 
 }
 
@@ -62,7 +62,6 @@ const Command: React.FC<CommandProps> = ({ removeCommand, data }) => {
     const [tax, setTax] = useState<number>(0)
 
     const { t } = useTranslation()
-
 
     const calculSomme = (products: any) => {
         const totalCost = products.reduce((accumulator: any, currentItem: any) => {
@@ -218,23 +217,43 @@ const Command: React.FC<CommandProps> = ({ removeCommand, data }) => {
 const CurrentCommands: React.FC<CommandsListProps> = ({ removeCommand, goToPassedCommands, data }) => {
 
     const { t } = useTranslation()
-    const supplier = data.supplier
-    const delivery = data.delivery
-    const toAdress = data.to_adresse
-    const cycle = data.cycle
-    const isReady = data.is_ready
-    const isDelevery = data.is_delivery
-    const take_away_date = data.take_away_date
-    const lat = supplier.localisation.lat;
-    const long = supplier.localisation.long;
-    const position = supplier.street + " " + supplier.region + " " + supplier.city
+    const [commandData, setCommandData] = useState<any>(data)
     const [status, setStatus] = useState<number>(0)
-
-
     const [messsage, setMessage] = useState<string>('')
     const [time, setTime] = useState<string>('')
     const [date, setDate] = useState<string>('')
     const [problemPopup, setProblemPopup] = useState<boolean>(false)
+
+    const supplier = commandData.supplier
+    const delivery = commandData.delivery
+    const toAdress = commandData.to_adresse
+    const cycle = commandData.cycle
+    const isReady = commandData.is_ready
+    const isDelevery = commandData.is_delivery
+    const take_away_date = commandData.take_away_date
+    const lat = supplier.localisation.lat;
+    const long = supplier.localisation.long;
+    const position = supplier.street + " " + supplier.region + " " + supplier.city
+
+    const id = data.id
+
+    const updateCurrentCommands = async () => {
+        const { status, data } = await commandService.myCommands()
+        const commandsList = data.data
+        const commands = data.success ? commandsList.filter((cmd: any) => {
+            return cmd.id == id
+        }) : [];
+        commands.length && setCommandData(commands[0])
+    }
+
+    useEffect(() => {
+        eventEmitter.on('COMMAND_UPDATED', updateCurrentCommands)
+        eventEmitter.on('COMMAND_ASSIGNED', updateCurrentCommands)
+        return () => {
+            eventEmitter.off('COMMAND_UPDATED', updateCurrentCommands)
+            eventEmitter.off('COMMAND_ASSIGNED', updateCurrentCommands)
+        }
+    }, [])
 
     const handleProblemPopup = () => {
         setProblemPopup(current => !current)
@@ -247,6 +266,7 @@ const CurrentCommands: React.FC<CommandsListProps> = ({ removeCommand, goToPasse
             throw error
         }
     }
+
     useEffect(() => {
         if (take_away_date != null) {
             const [datePart, timePart] = take_away_date.split(' ');
@@ -316,30 +336,34 @@ const CurrentCommands: React.FC<CommandsListProps> = ({ removeCommand, goToPasse
         } : getProgressDescription(cycle)
         setStatus(status)
         setMessage(message)
+    }, [commandData])
+    
+    useEffect(() => {
+        const { message, status } = isReady ? {
+            message: t('orderTrackingPage.isReady'),
+            status: 6
+        } : getProgressDescription(cycle)
+        setStatus(status)
+        setMessage(message)
     }, [])
 
     const commanddata: CommandProps = {
         removeCommand: removeCommand,
         data: {
-            command_id: data.id,
-            delivery_price: data.delivery_price,
-            products: data.products,
-            total_price: data.total_price,
-            bonus: data.bonus,
-            gift_ammount: Number(data.gift_ammount),
-            total_price_coupon: Number(data.total_price_coupon),
-            mode_pay: data.mode_pay,
-            coupon: data.coupon,
+            command_id: id,
+            delivery_price: commandData.delivery_price,
+            products: commandData.products,
+            total_price: commandData.total_price,
+            bonus: commandData.bonus,
+            gift_ammount: Number(commandData.gift_ammount),
+            total_price_coupon: Number(commandData.total_price_coupon),
+            mode_pay: commandData.mode_pay,
+            coupon: commandData.coupon,
             is_delivery: isDelevery,
         }
     }
 
-
-
-
-
     return (
-
         <>
             <div className="current-commands-container">
                 <header className={` current-command-header `}>
@@ -486,7 +510,7 @@ const CurrentCommands: React.FC<CommandsListProps> = ({ removeCommand, goToPasse
 
             {
                 problemPopup &&
-                <SignaleProblem command_id={data.id} action={submitProblem} close={handleProblemPopup} />
+                <SignaleProblem command_id={id} action={submitProblem} close={handleProblemPopup} />
             }
         </>
 
