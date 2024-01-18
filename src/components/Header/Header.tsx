@@ -419,7 +419,7 @@ const Header = () => {
                                           <div className="product-name_counter">X{prod.quantity}</div>
                                           <div className="product-name_item">{prod.name}</div>
                                         </div>
-                                        <div className="price">{(prod.price * prod.quantity).toFixed(2)} Dt</div>
+                                        <div className="price">{(Number(prod.price) * Number(prod.quantity)).toFixed(2)} Dt</div>
                                       </div>
                                     </div>
                                   )
@@ -433,13 +433,13 @@ const Header = () => {
                                 </div>
                                 <div className="total-price-blc_wrapper">
                                     <div className="total-price_label">{ t('supplier.delivPrice')}</div>
-                                  <div className="price">{commands[0].coupon.delivery_fixed === 1 ? commands[0].delivery_price : (commands[0].delivery_price - commands[0].total_price_coupon).toFixed(2)} DT</div>
+                                  <div className="price">{commands[0].coupon.delivery_fixed === 1 ? commands[0].delivery_price : (Number(commands[0].delivery_price) - Number(commands[0].total_price_coupon)).toFixed(2) } DT</div>
                                 </div>
                               </div>
                               <div className="total-price-blc">
                                 <div className="total-price-blc_wrapper">
                                     <div className="total-price_label">{t('cartPage.total') }</div>
-                                  <div className="price">{(commands[0].total_price - commands[0].total_price_coupon).toFixed(2)} DT</div>
+                                  <div className="price">{(Number(commands[0].total_price) - Number(commands[0].total_price_coupon)).toFixed(2)} DT</div>
                                 </div>
                               </div>
                             </div>
@@ -456,23 +456,23 @@ const Header = () => {
                                     </div>
                                   </li>
                                   {
-                                    (commands[0].bonus > 0) && (                                      
+                                    (Number(commands[0].bonus) > 0) && (                                      
                                       <li>
                                         <div className="paiement-status_icon"></div>
                                         <div className="paiement-status-desc">
                                             <p className="paiement-status-item">{ t("cartPage.bonus")}</p>
-                                          <div className="price">{(commands[0].bonus / 1000).toFixed(2)} Dt</div>
+                                          <div className="price">{(Number(commands[0].bonus) / 1000).toFixed(2)} Dt</div>
                                         </div>
                                       </li>
                                     )
                                   }    
                                     {
-                                      commands[0].gift_ammount > 0 && (
+                                      Number(commands[0].gift_ammount) > 0 && (
                                         <li>
                                           <div className="paiement-status_icon"></div>
                                           <div className="paiement-status-desc">
                                             <p className="paiement-status-item">{ t('repasGratuit')}</p>
-                                            <div className="price">{(commands[0].gift_ammount / 1000).toFixed(2)} dt</div>
+                                            <div className="price">{(Number(commands[0].gift_ammount) / 1000).toFixed(2)} dt</div>
                                           </div>
                                         </li>
                                       )}
@@ -482,7 +482,7 @@ const Header = () => {
                                       <div className="paiement-status_icon"></div>
                                         <div className="paiement-status-desc">
                                             <p className="paiement-status-item">{t('cart.PromosCode') }</p>
-                                        <div className="price">{(commands[0].total_price_coupon).toFixed(2)} dt</div>
+                                        <div className="price">{Number(commands[0].total_price_coupon).toFixed(2)} dt</div>
                                       </div>
                                     </li>
                                     )
@@ -554,7 +554,7 @@ const Header = () => {
                                                 <div className="product-name_counter">X{prod.quantity}</div>
                                                 <div className="product-name_item">{prod.name}</div>
                                               </div>
-                                              <div className="price">{(prod.price * prod.quantity).toFixed(2)} Dt</div>
+                                              <div className="price">{(Number(prod.price) * Number(prod.quantity)).toFixed(2)} Dt</div>
                                             </div>
                                           </div>
                                         )
@@ -567,13 +567,13 @@ const Header = () => {
                                       </div>
                                       <div className="total-price-blc_wrapper">
                                           <div className="total-price_label">{ t('supplier.delivPrice')}</div>
-                                        <div className="price">{command.coupon.delivery_fixed === 1 ? command.delivery_price : (command.delivery_price - command.total_price_coupon).toFixed(2)} DT</div>
+                                        <div className="price">{command.coupon.delivery_fixed === 1 ? command.delivery_price : (Number(command.delivery_price) - Number(command.total_price_coupon)).toFixed(2)} DT</div>
                                       </div>
                                     </div>
                                     <div className="total-price-blc">
                                       <div className="total-price-blc_wrapper">
                                           <div className="total-price_label">{t('cartPage.total') }</div>
-                                        <div className="price">{(command.total_price - command.total_price_coupon).toFixed(2)} DT</div>
+                                        <div className="price">{(Number(command.total_price) - Number(command.total_price_coupon)).toFixed(2)} DT</div>
                                       </div>
                                     </div>
                                   </div>
@@ -590,12 +590,12 @@ const Header = () => {
                                           </div>
                                         </li>
                                         {
-                                          (command.bonus > 0) && (                                      
+                                          (Number(command.bonus) > 0) && (                                      
                                             <li>
                                               <div className="paiement-status_icon"></div>
                                               <div className="paiement-status-desc">
                                                   <p className="paiement-status-item">{ t("cartPage.bonus")}</p>
-                                                <div className="price">{(command.bonus / 1000).toFixed(2)} Dt</div>
+                                                <div className="price">{(Number(command.bonus) / 1000).toFixed(2)} Dt</div>
                                               </div>
                                             </li>
                                           )
@@ -606,17 +606,17 @@ const Header = () => {
                                                 <div className="paiement-status_icon"></div>
                                                 <div className="paiement-status-desc">
                                                   <p className="paiement-status-item">{ t('repasGratuit')}</p>
-                                                  <div className="price">{(command.gift_ammount / 1000).toFixed(2)} dt</div>
+                                                  <div className="price">{(Number(command.gift_ammount) / 1000).toFixed(2)} dt</div>
                                                 </div>
                                               </li>
                                             )}
                                         {
-                                          command.total_price_coupon > 0 && (
+                                          Number(command?.total_price_coupon) > 0 && (
                                           <li>
                                             <div className="paiement-status_icon"></div>
                                               <div className="paiement-status-desc">
                                                   <p className="paiement-status-item">{t('cart.PromosCode') }</p>
-                                              <div className="price">{(command.total_price_coupon).toFixed(2)} dt</div>
+                                              <div className="price">{Number(command?.total_price_coupon).toFixed(2)} dt</div>
                                             </div>
                                           </li>
                                           )
