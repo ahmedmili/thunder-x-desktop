@@ -39,6 +39,8 @@ const cartSlice = createSlice({
   initialState,
   reducers: {
     setSupplier: (state, action) => {
+      localStorageService.setSupplier(action.payload)
+
       state.supplier = action.payload;
     },
     setDeliveryPrice: (state, action) => {

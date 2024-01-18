@@ -6,25 +6,28 @@ import { useAppSelector } from '../../../Redux/store';
 import { useEffect, useState } from 'react';
 import Messanger from '../../Popups/Messanger/Messanger';
 import MessangerBtnIcon from '../../../assets/profile/Discuter/messanger-btn.svg';
-import { fetchMessages } from '../../../Redux/slices/messanger';
+import { fetchMessages, handleMessanger } from '../../../Redux/slices/messanger';
+import { useDispatch } from 'react-redux';
 
 const Profile = () => {
 
+  const dispatch = useDispatch()
   // handle messanger
   const unReadMessages = useAppSelector((state) => state.messanger.unReadedMessages)
-  const [messangerPopup, setMessangerPopup] = useState<boolean>(false)
+  const isMessagesOpen = useAppSelector((state) => state.messanger.isOpen)
+
   const [unReadedQt, setUnReadedQt] = useState<number>(unReadMessages)
   useEffect(() => {
     setUnReadedQt(unReadMessages)
   }, [unReadMessages])
 
   const handleMessangerPopup = () => {
-    setMessangerPopup(!messangerPopup)
+    dispatch(handleMessanger())
   }
-  
+
   useEffect(() => {
     fetchMessages()
-}, [])
+  }, [])
 
   return (
     <>
@@ -44,11 +47,10 @@ const Profile = () => {
               </div>
             )}
           </button>
-          {/* <button className='phone-popup-btn' onClick={handlePhonePopup} style={{ backgroundImage: `url(${PhoneBtnIcon})` }}></button> */}
         </div>
 
         {
-          messangerPopup && <Messanger className="discuter-messanger-popup" close={handleMessangerPopup} />
+          isMessagesOpen && <Messanger className="discuter-messanger-popup" close={handleMessangerPopup} />
         }
       </div>
     </>
