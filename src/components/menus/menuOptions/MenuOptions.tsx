@@ -91,7 +91,9 @@ function MenuOptions({ initialData }: AppProps) {
 
     const { t } = useTranslation();
     const { id, search, productId } = useParams<{ id: string, search?: string, productId?: string }>();
-    const packRef: RefObject<HTMLFormElement> = useRef(null);
+    // const packRef: RefObject<HTMLFormElement> = useRef(null);
+    const packRef: any = useRef(null);
+
     const [productCount, setProductCount] = useState<number>(1);
     const [allContent, setAllContent] = useState<any[]>(initialData ? initialData.productResponse?.data.product : []);
     const [product, setProduct] = useState<any>(initialData ? initialData.productResponse?.data.product : {})
@@ -119,6 +121,12 @@ function MenuOptions({ initialData }: AppProps) {
     const [isLoggedIn, setIsLoggedIn] = useState<any>(typeof window != 'undefined' ? localStorageService.getUserToken() : false);
     var currentDate = moment();
     var today = currentDate.format('ddd');
+
+    const [champWarn, setChampWarn] = useState<boolean>(false)  // viande  sauce extra supplement
+    const [viandeWarn, setViandeWarn] = useState<boolean>(false)
+    const [sauceWarn, setSauceWarn] = useState<boolean>(false)
+    const [extraWarn, setExtraWarn] = useState<boolean>(false)
+    const [supplementWarn, setSupplementWarn] = useState<boolean>(false)
 
     useEffect(() => {
         setUnReadedQt(unReadMessages)
@@ -172,15 +180,14 @@ function MenuOptions({ initialData }: AppProps) {
                     data = data.data
                     let otherProducts: any[] = [];
                     let menuId = product?.menu[0]?.id;
-                    console.log(product.menu[0], 'product');
                     data.data.map((menu: any) => {
                         if (menu.id == menuId) {
                             menu.products.map((p: any) => {
                                 if (Number(p.id) !== Number(product.id)) {
                                     otherProducts.push(p)
                                 }
-                            })                            
-                        }                        
+                            })
+                        }
                     })
                     setMenuData(otherProducts);
                 }
@@ -219,15 +226,15 @@ function MenuOptions({ initialData }: AppProps) {
         await getSupplierIsOpen()
         setLoading(false);
     };
-     const fetchMenuData = async () => {
-        setLoading(true);        
+    const fetchMenuData = async () => {
+        setLoading(true);
         await getMenu()
         await getSupplierIsOpen()
         setLoading(false);
     };
     useEffect(() => {
-        if(product)
-        fetchMenuData()
+        if (product)
+            fetchMenuData()
     }, [product]);
 
     const getProduct = async () => {
@@ -413,6 +420,7 @@ function MenuOptions({ initialData }: AppProps) {
                     default:
                         break;
                 }
+
                 if (!((type == "pate") || (type == 'packet' || (type == 'free')))) {
                     let ok = true;
                     if (max !== -1 && event.target.checked == true) {
@@ -423,12 +431,24 @@ function MenuOptions({ initialData }: AppProps) {
                             event.target.checked = false;
                             ok = false
                         }
+                        type === 'sauce' && setSauceWarn(true)
+                        type === 'extra' && setExtraWarn(true)
+                        type === 'viande' && setViandeWarn(true)
+                        type === 'supplement' && setSupplementWarn(true)
+
                     }
                     if (ok) {
                         updatedOption[type][index].checked = event.target.checked;
+                        type === 'sauce' && setSauceWarn(false)
+                        type === 'extra' && setExtraWarn(false)
+                        type === 'viande' && setViandeWarn(false)
+                        type === 'supplement' && setSupplementWarn(false)
+
                     }
                 } else if ((type == "pate") || (type == 'packet')) {
                     updatedOption[type].forEach((item: any) => item.checked = false);
+                    setChampWarn(false)
+
                     updatedOption[type][index].checked = event.target.checked;
                 } else {
                     updatedOption[type][index].checked = event.target.checked;
@@ -498,6 +518,8 @@ function MenuOptions({ initialData }: AppProps) {
         packs.length > 0 && opts.push(packs);
         if (state.packet.length > 0) {
             if (packs.length <= 0) {
+                // setShampWarn
+                setChampWarn(true)
                 packRef.current && packRef.current.scrollIntoView({ behavior: 'smooth' });
                 return false;
             }
@@ -661,20 +683,12 @@ function MenuOptions({ initialData }: AppProps) {
                                                     <div className='gift-icon' style={(productSupplier?.bonus > 0) ? { backgroundImage: `url(${ActiveGiftIcon})` } : { backgroundImage: `url(${GiftIcon})` }}></div>
                                                 ) : (
                                                     <></>
-                                                    // <div className='gift-icon' style={{ backgroundImage: `url(${GiftIcon})` }}></div>
                                                 )
                                             }
                                         </div>
-                                        <div className="stars">
-                                            {/* {
-                                                (productSupplier?.star && (productSupplier?.star > 0)) && (<span className='star-number'> {productSupplier?.star}</span>)
-                                            } */}
-                                            {/* {[...Array(5)].map((_, index) => ( */}
-                                            <span >
-                                                {/* {(productSupplier?.star && (productSupplier?.star >= index + 1))
-                                                        ? <Star className='starIcon' style={{ visibility: 'visible' }} /> : <StarBorderIcon className='starIcon' style={{ visibility: 'visible' }} />
-                                                    } */}
+                                        <div ref={packRef} className="stars">
 
+                                            <span >
                                                 <Rating
                                                     size='large'
                                                     name="simple-controlled"
@@ -683,12 +697,10 @@ function MenuOptions({ initialData }: AppProps) {
                                                         fontSize: "24px"
                                                     }}
                                                     onChange={(event, newValue) => {
-                                                        // setValue(newValue);
                                                         console.log("newValue : ", newValue)
                                                     }}
                                                 />
                                             </span>
-                                            {/* ))} */}
                                         </div>
                                     </div>
                                 </div>
@@ -740,20 +752,20 @@ function MenuOptions({ initialData }: AppProps) {
                                                                 <div className="option-name">{t('')} {Object.keys(options)[0]}</div>
                                                                 {
 
-                                                                    Object.keys(options)[0] === "packet" && <div className="option-obligatoir">{t('supplier.Mandatory')}</div>
+                                                                    Object.keys(options)[0] === "packet" && <div className={`option-obligatoir ${champWarn ? 'warn' : ''}`}>{t('supplier.Mandatory')}</div>
                                                                 }
 
                                                                 {
-                                                                    Object.keys(options)[0] === "sauce" && state.sauce_max?.max > 0 && <div className="option-max">{"MAX " + state.sauce_max?.max}</div>
+                                                                    Object.keys(options)[0] === "sauce" && state.sauce_max?.max > 0 && <div className={`option-max  ${sauceWarn ? 'warn' : ''}`}  >{"MAX " + state.sauce_max?.max}</div>
                                                                 }
                                                                 {
-                                                                    Object.keys(options)[0] === "viande" && state.viande_max?.max > 0 && <div className="option-max">{"MAX " + state.viande_max?.max}</div>
+                                                                    Object.keys(options)[0] === "viande" && state.viande_max?.max > 0 && <div className={`option-max  ${viandeWarn ? 'warn' : ''}`} >{"MAX " + state.viande_max?.max}</div>
                                                                 }
                                                                 {
-                                                                    Object.keys(options)[0] === "extra" && state.extra_max?.max > 0 && <div className="option-max">{"MAX " + state.extra_max?.max}</div>
+                                                                    Object.keys(options)[0] === "extra" && state.extra_max?.max > 0 && <div className={`option-max  ${extraWarn ? 'warn' : ''}`}>{"MAX " + state.extra_max?.max}</div>
                                                                 }
                                                                 {
-                                                                    Object.keys(options)[0] === "supplement" && state.supplement_max?.max > 0 && <div className="option-max">{"MAX " + state.supplement_max?.max}</div>
+                                                                    Object.keys(options)[0] === "supplement" && state.supplement_max?.max > 0 && <div className={`option-max  ${supplementWarn ? 'warn' : ''}`}>{"MAX " + state.supplement_max?.max}</div>
                                                                 }
                                                             </div>
                                                             <form>
