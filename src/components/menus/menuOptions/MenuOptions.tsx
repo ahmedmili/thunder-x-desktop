@@ -175,12 +175,16 @@ function MenuOptions({ initialData }: AppProps) {
                 if (data.status === 200) {
                     data = data.data
                     let otherProducts: any[] = [];
+                    let menuId = product?.menu[0]?.id;
+                    console.log(product.menu[0], 'product');
                     data.data.map((menu: any) => {
-                        menu.products.map((product: any) => {
-                            if (Number(product.id) !== supplierId && otherProducts.length < 6) {
-                                otherProducts.push(product)
-                            }
-                        })
+                        if (menu.id == menuId) {
+                            menu.products.map((p: any) => {
+                                if (Number(p.id) !== Number(product.id)) {
+                                    otherProducts.push(p)
+                                }
+                            })                            
+                        }                        
                     })
                     setMenuData(otherProducts);
                 }
@@ -219,6 +223,16 @@ function MenuOptions({ initialData }: AppProps) {
         await getSupplierIsOpen()
         setLoading(false);
     };
+     const fetchMenuData = async () => {
+        setLoading(true);        
+        await getMenu()
+        await getSupplierIsOpen()
+        setLoading(false);
+    };
+    useEffect(() => {
+        if(product)
+        fetchMenuData()
+    }, [product]);
 
     const getProduct = async () => {
         try {
