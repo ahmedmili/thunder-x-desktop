@@ -337,7 +337,7 @@ const CurrentCommands: React.FC<CommandsListProps> = ({ removeCommand, goToPasse
         setStatus(status)
         setMessage(message)
     }, [commandData])
-    
+
     useEffect(() => {
         const { message, status } = isReady ? {
             message: t('orderTrackingPage.isReady'),
