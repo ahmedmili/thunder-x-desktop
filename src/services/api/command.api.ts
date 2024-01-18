@@ -66,7 +66,6 @@ async function isdelivery(supplier_id: number) {
 }
 
 async function validatecommand(command_id: number) {
-
     try {
         const response = await api.post(
             "signaler_command",
@@ -79,6 +78,19 @@ async function validatecommand(command_id: number) {
     }
 }
 
+async function getOnlinePayTax() {
+    try {
+        const response = await api.get("settings/tax_card");
+        const { status, data } = response;
+        return { status, data };
+    } catch (error) {
+        throw error;
+    }
+}
+
+// getOnlinePayTax(){
+//     return this.http.get(`${this.url}/settings/tax_card`, {observe: 'response'});
+//   }
 export const commandService = {
     myCommands,
     passedCommands,
@@ -86,4 +98,5 @@ export const commandService = {
     signalerCommand,
     validatecommand,
     isdelivery,
+    getOnlinePayTax,
 };
