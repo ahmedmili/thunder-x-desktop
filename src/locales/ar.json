@@ -137,6 +137,7 @@
   "profile.commands.livRecherche": "البحث عن مُسلّم",
   "profile.commands.sousTotal": "المجموع الجزئي",
   "profile.commands.annuler": "إلغاء الطلب",
+  "profile.commands.annuler.warnMessage": "هل أنت متأكد من رغبتك في حذف الطلب نهائيًا؟",
   "profile.commands.sousMessage": "الطلب في انتظار موافقة المطعم",
   "profile.commands.sousMessage2": "الطلب قيد التحضير",
   "profile.commands.sousMessage3": "الطلب سيتم توصيله في 15 دقيقة",
@@ -169,6 +170,7 @@
   "orderTrackingPage.price": "السعر:",
   "orderTrackingPage.importedReady": "في انتظار الاستلام من المطعم",
   "orderTrackingPage.isReady": "الطلب جاهز",
+  "orderTrackingPage.BankTaxes": "ضرائب البنوك",
   "orderTrackingPage.oldCommands": "طلباتي السابقة",
   "orderTrackingPage.currentCommands": "تتبع طلباتي",
   "orderTrackingPage.archivedCommands": "أرشيف الطلبات",
@@ -300,7 +302,6 @@
   "adress.currentPos": " الموقع الحالي",
   "adress.adressIntrouvable": "هذا العنوان غير موجود. هل ترغب في المحاولة مرة أخرى ؟",
   "adress.browserLocationAcessRequest": "الرجاء السماح بالوصول إلى موقعك",
-
   "supplier.opentime": "مفتوح حتى",
   "supplier.delivPrice": "تكلفة التسليم:",
   "supplier.startAt": "من:",
@@ -335,7 +336,6 @@
   "searchPage.question": "ماذا يمكننا أن نقدم لك ؟",
   "Reset": "إعادة تعيين",
   "AvailabelAt": "متاح في",
-
   "searchPage.purchasedTogether": "منتجات مماثلة",
   "searchPage.warnAuthMessage": "لإطلاق طلبك، يجب عليك تسجيل الدخول أو إنشاء حساب جديد",
   "searchPage.warnServiceMessage": "ترجمة إلى العربية: هذه الخدمة غير متاحة في مدينتك",

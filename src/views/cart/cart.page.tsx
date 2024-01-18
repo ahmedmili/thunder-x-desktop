@@ -138,6 +138,7 @@ const CartPage: React.FC = () => {
   const [closeTime, setCloseTime] = useState<string>('');
   const [openTime, setOpenTime] = useState<string>('');
 
+  const [tax, setTax] = useState<number>(0)
 
 
   const dispatch = useAppDispatch();
@@ -151,6 +152,17 @@ const CartPage: React.FC = () => {
 
   var today = currentDate.format('ddd');  // Get the current day name (e.g., 'Mon', 'Tue', etc.)
 
+  const getOnlinePayTax = async () => {
+    const { status, data } = await commandService.getOnlinePayTax()
+    const tax = data.data.tax_card
+    const onlinePayTax = (total * tax) / 100;
+    setTax(onlinePayTax)
+
+  }
+
+  useEffect(() => {
+    getOnlinePayTax()
+  }, [payMode])
 
   useEffect(() => {
     setUnReadedQt(unReadMessages)
@@ -162,6 +174,7 @@ const CartPage: React.FC = () => {
   useEffect(() => {
     fetchMessages()
   }, [])
+
   useEffect(() => {
     !supplier_id && navigate('/')
   }, [])
@@ -1265,7 +1278,7 @@ const CartPage: React.FC = () => {
                             {t('cartPage.payMode')}
                           </h4>
                           <div className="payment-method-status">
-                            <span className="payment-method-status_txt cash">
+                            <span className={`payment-method-status_txt ${payMode == 1 ? 'cash' : 'card'}`}>
                               {payMode == 1 ? t('cartPage.espece') : t('cartPage.bankPay')}
                             </span>
                           </div>
@@ -1315,6 +1328,14 @@ const CartPage: React.FC = () => {
                               <div className="title">{t('profile.commands.sousTotal')}</div>
                               <div className="value">{sousTotal ? sousTotal.toFixed(2) : "0.00"} DT</div>
                             </div>
+                            {
+                              (payMode == 2 && tax > 0) ?
+                                <div className="sous-total">
+                                  <div className="title">{t('orderTrackingPage.BankTaxes')}</div>
+                                  <div className="value">{`${tax} DT`}</div>
+                                </div>
+                                : <></>
+                            }
                             {
                               (discountValue && discountValue > 0) ?
                                 <div className="sous-total">

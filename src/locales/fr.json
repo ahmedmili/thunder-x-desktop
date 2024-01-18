@@ -102,8 +102,9 @@
   "profile.mesConfig.politiques": "Politiques de confidentialité",
   "profile.mesConfig.theme": "Sélectionner le théme",
   "profile.mesConfig.deleteAccount": "Supprimer mon compte",
+  "profile.commands.acceptation": "En attente d'acceptation",
   "profile.commands.traitement": "En cours de traitement",
-  "profile.commands.prépaartion": "En cours de prépaartion",
+  "profile.commands.prépaartion": "En cours de prépartion",
   "profile.commands.livraison": "En cours de livraison",
   "profile.commands.signal.title": "Signaler un probléme ",
   "profile.commands.signal.question": "Vous avez un problème qui concerne votre commande ?",
@@ -124,6 +125,7 @@
   "profile.commands.livRecherche": "En recherche d’un livreur",
   "profile.commands.sousTotal": "Sous-total",
   "profile.commands.annuler": "Annuler la comamnde",
+  "profile.commands.annuler.warnMessage": "Etes vous sure de vouloir supprimer la commande définitivement ?",
   "profile.commands.sousMessage": "La commande est en attente d’acceptation de la part du restaurant",
   "profile.commands.sousMessage2": "La commande est en cours de prépaartion",
   "profile.commands.sousMessage3": "La commande livré dans 15 minutes",
@@ -185,6 +187,7 @@
   "orderTrackingPage.price": "Prix",
   "orderTrackingPage.importedReady": "En attente de récupération auprès de restaurant",
   "orderTrackingPage.isReady": "la commande est préte",
+  "orderTrackingPage.BankTaxes": "Bank taxs",
   "createAccSubtitle": "S’inscrire et créer facilement votre compte",
   "createAcc": "Créer votre compte",
   "firstName": "Prénom",
@@ -406,5 +409,6 @@
   "weekDays.names.Thursday": "Jeudi",
   "weekDays.names.Friday": "Vendredi",
   "weekDays.names.Saturday": "Samedi",
-  "weekDays.names.Sunday": "Dimanche "
+  "weekDays.names.Sunday": "Dimanche ",
+  "header.commands":"Suivi de mes commandes"
 }
