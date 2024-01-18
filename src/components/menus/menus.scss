@@ -752,6 +752,8 @@
                 }
             }
             .search-blc {
+                width: 100%;
+                height: fit-content;
                 .form-control {
                     background-color: $color-blue-blizzard;
                     height: 45px;

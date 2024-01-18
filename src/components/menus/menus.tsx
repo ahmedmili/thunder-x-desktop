@@ -350,7 +350,7 @@ const Menu: React.FC<AppProps> = ({ initialData }) => {
 
                     <div className='product-container'>
                       <div className="product-grid">
-                        {displayedProducts.map((product) => (
+                        {menuItemProducts.map((product) => (
                           <div key={product.id} className="product-card">
                             <div className='info-container' >
                               <h4 className="product-title" >
@@ -392,7 +392,7 @@ const Menu: React.FC<AppProps> = ({ initialData }) => {
                       </div>
                     </div>
 
-                    <div className="pagination-blc">
+                    {/* <div className="pagination-blc">
                       {
                         menuItemProducts.length > productsPerPage ? (
                           <Pagination
@@ -409,7 +409,7 @@ const Menu: React.FC<AppProps> = ({ initialData }) => {
                           </div>
                         )
                       }
-                    </div>
+                    </div> */}
 
 
                   </div>

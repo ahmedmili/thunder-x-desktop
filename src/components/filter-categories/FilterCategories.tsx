@@ -80,7 +80,7 @@ const FilterCategories: React.FC<FilterCategoriesProps> = ({
     if (startTime) {
       const endTime :any = new Date();
       const duration = endTime - startTime;     
-      if (duration > 500) {
+      if (duration > 300) {
         setIsDragging(true);
       } else {
          setIsDragging(false);
