@@ -30,6 +30,7 @@ import MessangerBtnIcon from '../../../assets/profile/Discuter/messanger-btn.svg
 import { AppProps } from '../../../services/types';
 import Messanger from '../../Popups/Messanger/Messanger';
 import SameSupplierWarn from '../../Popups/SameSupplierWarn/SameSupplierWarn';
+import { Rating } from '@mui/material';
 // Define the initial state
 const initialState = {
     optionslist: [],
@@ -651,16 +652,29 @@ function MenuOptions({ initialData }: AppProps) {
                                             }
                                         </div>
                                         <div className="stars">
-                                            {
+                                            {/* {
                                                 (productSupplier?.star && (productSupplier?.star > 0)) && (<span className='star-number'> {productSupplier?.star}</span>)
-                                            }
-                                            {[...Array(5)].map((_, index) => (
-                                                <span key={index + 1}>
-                                                    {(productSupplier?.star && (productSupplier?.star >= index + 1))
+                                            } */}
+                                            {/* {[...Array(5)].map((_, index) => ( */}
+                                            <span >
+                                                {/* {(productSupplier?.star && (productSupplier?.star >= index + 1))
                                                         ? <Star className='starIcon' style={{ visibility: 'visible' }} /> : <StarBorderIcon className='starIcon' style={{ visibility: 'visible' }} />
-                                                    }
-                                                </span>
-                                            ))}
+                                                    } */}
+
+                                                <Rating
+                                                    size='large'
+                                                    name="simple-controlled"
+                                                    value={productSupplier?.star}
+                                                    style={{
+                                                        fontSize: "24px"
+                                                    }}
+                                                    onChange={(event, newValue) => {
+                                                        // setValue(newValue);
+                                                        console.log("newValue : ", newValue)
+                                                    }}
+                                                />
+                                            </span>
+                                            {/* ))} */}
                                         </div>
                                     </div>
                                 </div>
