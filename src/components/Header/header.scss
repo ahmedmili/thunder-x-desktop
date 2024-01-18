@@ -589,6 +589,7 @@
                         display: flex;
                         align-items: center;
                         gap: 20px;
+                        cursor: pointer;
 
                         .status-icn {
                             background-image: url('./../../assets/order-tracking/step-one-active.svg');
@@ -777,6 +778,44 @@
                             }
                         }
                     }
+                    &.accordion{                       
+                        .supplier-info-area{
+                            width: 100%;
+                        }
+                    }
+                }
+                .MuiAccordion-root{
+                    box-shadow: none;     
+                    &::before{
+                        display: none;
+                    }               
+                    .MuiAccordionSummary-root{
+                        padding: 0;
+                        .MuiAccordionSummary-content{
+                            margin: 0;
+                            &.Mui-expanded{
+                                margin: 0;
+                            }
+                        }
+                        .MuiAccordionSummary-expandIconWrapper{
+                            position: absolute;
+                            right: 20px;   
+                            transform: rotate(-90deg);
+                            .MuiSvgIcon-root{
+                                font-size: 23px;
+                            }
+                            &.Mui-expanded{
+                                transform: rotate(0deg);
+                            }
+                        }
+                    }
+                    &.Mui-expanded{
+                        margin-top: 0;
+                    }
+                }
+                .MuiAccordionDetails-root{
+                    padding: 0;
+                    border-bottom: 1px solid $color-gray-alto-2;
                 }
             }
             

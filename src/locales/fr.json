@@ -102,8 +102,9 @@
   "profile.mesConfig.politiques": "Politiques de confidentialité",
   "profile.mesConfig.theme": "Sélectionner le théme",
   "profile.mesConfig.deleteAccount": "Supprimer mon compte",
+  "profile.commands.acceptation": "En attente d'acceptation",
   "profile.commands.traitement": "En cours de traitement",
-  "profile.commands.prépaartion": "En cours de prépaartion",
+  "profile.commands.prépaartion": "En cours de prépartion",
   "profile.commands.livraison": "En cours de livraison",
   "profile.commands.signal.title": "Signaler un probléme ",
   "profile.commands.signal.question": "Vous avez un problème qui concerne votre commande ?",
@@ -408,5 +409,6 @@
   "weekDays.names.Thursday": "Jeudi",
   "weekDays.names.Friday": "Vendredi",
   "weekDays.names.Saturday": "Samedi",
-  "weekDays.names.Sunday": "Dimanche "
+  "weekDays.names.Sunday": "Dimanche ",
+  "header.commands":"Suivi de mes commandes"
 }
