@@ -1,40 +1,36 @@
-import React, { RefObject, useEffect, useReducer, useRef, useState } from 'react';
-import { useTranslation } from 'react-i18next';
 import { Add as AddIcon, Star } from '@mui/icons-material';
 import StarBorderIcon from '@mui/icons-material/StarBorder';
-import { userService } from "../../../services/api/user.api";
+import Skeleton from "@mui/material/Skeleton";
+import React, { RefObject, useEffect, useReducer, useRef, useState } from 'react';
+import { Button, Container } from 'react-bootstrap';
+import { useTranslation } from 'react-i18next';
 import { useSelector } from 'react-redux';
 import { useLocation, useNavigate, useParams } from 'react-router-dom';
 import { toast } from 'react-toastify';
-import Skeleton from "@mui/material/Skeleton";
 import { RootState } from '../../../Redux/slices';
 import { addItem, setDeliveryPrice, setSupplier } from '../../../Redux/slices/cart/cartSlice';
 import { useAppDispatch, useAppSelector } from '../../../Redux/store';
 import { productService } from '../../../services/api/product.api';
-import { Container, Button } from 'react-bootstrap';
+import { userService } from "../../../services/api/user.api";
 // import { toast } from 'react-toastify';
 import './menuOptions.scss';
 
-import KeyboardArrowDownOutlinedIcon from '@mui/icons-material/KeyboardArrowDownOutlined';
-import KeyboardArrowUpOutlinedIcon from '@mui/icons-material/KeyboardArrowUpOutlined';
-import ShoppingCartOutlinedIcon from '@mui/icons-material/ShoppingCartOutlined';
 import { supplierServices } from '../../../services/api/suppliers.api';
 import { localStorageService } from '../../../services/localStorageService';
-import { Option, Restaurant } from '../../../services/types';
+import { Option } from '../../../services/types';
 import { scrollToTop } from '../../../utils/utils';
 
+import moment from 'moment';
 import { fetchMessages } from '../../../Redux/slices/messanger';
+import ActiveGiftIcon from '../../../assets/profile/ArchivedCommands/activeGift.svg';
+import FavorActiveIcon from '../../../assets/profile/ArchivedCommands/favor-active.svg';
+import FavorIcon from '../../../assets/profile/ArchivedCommands/favor.svg';
+import GiftIcon from '../../../assets/profile/ArchivedCommands/gift.svg';
 import MessangerBtnIcon from '../../../assets/profile/Discuter/messanger-btn.svg';
-import SupplierIcn from './../../../assets/supplier-icn.png';
-import menuImg from './../../../assets/menu-1.png';
+import { AppProps } from '../../../services/types';
 import Messanger from '../../Popups/Messanger/Messanger';
 import SameSupplierWarn from '../../Popups/SameSupplierWarn/SameSupplierWarn';
-import moment from 'moment';
-import ActiveGiftIcon from '../../../assets/profile/ArchivedCommands/activeGift.svg';
-import GiftIcon from '../../../assets/profile/ArchivedCommands/gift.svg';
-import FavorIcon from '../../../assets/profile/ArchivedCommands/favor.svg';
-import FavorActiveIcon from '../../../assets/profile/ArchivedCommands/favor-active.svg';
-import { AppProps, MenuData } from '../../../services/types';
+import { Rating } from '@mui/material';
 // Define the initial state
 const initialState = {
     optionslist: [],
@@ -664,21 +660,35 @@ function MenuOptions({ initialData }: AppProps) {
                                                 productSupplier?.bonus ? (
                                                     <div className='gift-icon' style={(productSupplier?.bonus > 0) ? { backgroundImage: `url(${ActiveGiftIcon})` } : { backgroundImage: `url(${GiftIcon})` }}></div>
                                                 ) : (
-                                                    <div className='gift-icon' style={{ backgroundImage: `url(${GiftIcon})` }}></div>
+                                                    <></>
+                                                    // <div className='gift-icon' style={{ backgroundImage: `url(${GiftIcon})` }}></div>
                                                 )
                                             }
                                         </div>
                                         <div className="stars">
-                                            {
+                                            {/* {
                                                 (productSupplier?.star && (productSupplier?.star > 0)) && (<span className='star-number'> {productSupplier?.star}</span>)
-                                            }
-                                            {[...Array(5)].map((_, index) => (
-                                                <span key={index + 1}>
-                                                    {(productSupplier?.star && (productSupplier?.star >= index + 1))
+                                            } */}
+                                            {/* {[...Array(5)].map((_, index) => ( */}
+                                            <span >
+                                                {/* {(productSupplier?.star && (productSupplier?.star >= index + 1))
                                                         ? <Star className='starIcon' style={{ visibility: 'visible' }} /> : <StarBorderIcon className='starIcon' style={{ visibility: 'visible' }} />
-                                                    }
-                                                </span>
-                                            ))}
+                                                    } */}
+
+                                                <Rating
+                                                    size='large'
+                                                    name="simple-controlled"
+                                                    value={productSupplier?.star}
+                                                    style={{
+                                                        fontSize: "24px"
+                                                    }}
+                                                    onChange={(event, newValue) => {
+                                                        // setValue(newValue);
+                                                        console.log("newValue : ", newValue)
+                                                    }}
+                                                />
+                                            </span>
+                                            {/* ))} */}
                                         </div>
                                     </div>
                                 </div>
@@ -690,18 +700,10 @@ function MenuOptions({ initialData }: AppProps) {
                                             </p>
                                         </li>
                                         <li>
-                                            <p className={`supplier-infos_list-item time-work ${isOpen ? 'open' : 'close'}`}>
-                                                {
-                                                    productSupplier?.bonus ? (
-                                                        <div className='gift-icon' style={(productSupplier?.bonus > 0) ? { backgroundImage: `url(${ActiveGiftIcon})` } : { backgroundImage: `url(${GiftIcon})` }}></div>
-                                                    ) : (
-                                                        <div className='gift-icon' style={{ backgroundImage: `url(${GiftIcon})` }}></div>
-                                                    )
-                                                }
-                                            </p>
+                                            <p className={`supplier-infos_list-item time-work`}>  {isOpen ? `${t('supplier.opentime')} ${closeTime}` : `${t('closed')}`}</p>
                                         </li>
                                         <li>
-                                            <p className="supplier-infos_list-item shipping-cost">Frais de livraison: {productSupplier?.delivery_price} Dt</p>
+                                            <p className="supplier-infos_list-item shipping-cost">{t('supplier.delivPrice')}: {productSupplier?.delivery_price} Dt</p>
                                         </li>
                                         <li>
                                             <div className="time">{`${Number(productSupplier?.medium_time) - 10}-${Number(productSupplier?.medium_time + 10)}min`}</div>

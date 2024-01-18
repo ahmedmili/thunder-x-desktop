@@ -2,6 +2,7 @@ import { Col, Container, Row } from "react-bootstrap";
 import { useNavigate } from 'react-router-dom';
 import { useAppDispatch, useAppSelector } from '../../Redux/store';
 import './header.scss';
+import eventEmitter from '../../services/thunderEventsService';
 
 import LocationOnIcon from '@mui/icons-material/LocationOn';
 import { Box } from '@mui/material';
@@ -22,6 +23,16 @@ import { Cart } from '../cart/cart';
 import SearchBar from "../searchBar/searchBar";
 
 import menuImg from './../../assets/menu-1.png';
+import { commandService } from "../../services/api/command.api";
+
+import delivA from "./../../assets/profile/ArchivedCommands/deliv-A-1.svg";
+import doneA from "./../../assets/profile/ArchivedCommands/done-A-1.svg";
+import preparatinA from "./../../assets/profile/ArchivedCommands/preparatin-A-1.svg";
+import traitementA from "./../../assets/profile/ArchivedCommands/traitement-A-1.svg";
+import Accordion from '@mui/material/Accordion';
+import AccordionDetails from '@mui/material/AccordionDetails';
+import AccordionSummary from '@mui/material/AccordionSummary';
+import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 
 const Header = () => {
   const msg_notifs = useAppSelector((state) => state.messanger.unReadedMessages);
@@ -40,6 +51,8 @@ const Header = () => {
   const [notifsQts, setNotifsQts] = useState<number>(msg_notifs);
   const [orderTracking, setOrderTracking] = useState<boolean>(false);
   const [searchVisible, setSearchVisible] = useState<boolean>(false);
+  const [commands, setCommands] = useState<any>([]);
+  const [expanded, setExpanded] = useState<string | false>('panel1');
 
   const searHandleToggle = () => {
     setSearchVisible(!searchVisible);
@@ -74,6 +87,7 @@ const Header = () => {
   }, [msg_notifs])
 
   useEffect(() => {
+    getCurrentCommands()
     if (typeof window != 'undefined') {
       window.addEventListener('scroll', handleScroll);
     }
@@ -97,16 +111,91 @@ const Header = () => {
       navigate('/login')
     }
   };
+   const calculeSubTotal = (products:any) => {
+        let total = 0;
+        for (let index = 0; index < products.length; index++) {
+            const product: any = products[index]
+            const price = product.price
+            const quantity = product.quantity
+            const result = quantity! * price
+            total = total + result
+
+        }
+        return total
+    }
 
   const navigateToHome = () => {
     const currentLocation = localStorageService.getCurrentLocation()
     currentLocation ? navigate('/search') : navigate('/')
   }
-
-
+  const getCurrentCommands = async () => {
+    const { status, data } = await commandService.myCommands()
+    const commands = data.data
+    data.success && setCommands(commands)
+  }
+  const getProgressDescription = (cycle: string): { message: string, status: number } => {
+        switch (cycle) {
+          case 'PENDING':
+              return {
+                  message: t('profile.commands.acceptation'),
+                  status: 1
+              };
+          case 'VERIFY':
+              return {
+                  message: t('profile.commands.acceptation'),
+                  status: 2
+              };
+          case 'AUTHORIZED':
+              return {
+                  message: t('profile.commands.prépaartion'),
+                  status: 3
+              };
+          case 'PRE_ASSIGN_ADMIN':
+              return {
+                  message: t('profile.commands.prépaartion'),
+                  status: 4
+              };
+          case 'PRE_ASSIGN':
+              return {
+                  message: t('profile.commands.prépaartion'),
+                  status: 4
+              };
+          case 'ASSIGNED':
+              return {
+                  message: t('profile.commands.prépaartion'),
+                  status: 5
+              };
+          case 'INPROGRESS':
+              return {
+                  message: t('profile.commands.livraison'),
+                  status: 6
+              };
+          default:
+              return {
+                  message: '',
+                  status: -1
+              };
+        }
+    };
+  async function dropCommand(id: any): Promise<void> {
+    const { status, data } = await commandService.removecommand(id)
+    data.success && getCurrentCommands()
+  }
+  const handleChange =
+  (panel: string) => (event: React.SyntheticEvent, newExpanded: boolean) => {
+    setExpanded(newExpanded ? panel : false);
+    };
+  function goCommandsPage() {
+    navigate("/profile/archivedCommands/")
+  } 
+  useEffect(() => {
+    eventEmitter.on('COMMAND_UPDATED', () => { getCurrentCommands() })
+    return () => {
+      eventEmitter.off('COMMAND_UPDATED', () => { getCurrentCommands() })
+    }
+  }, [])
   return (
     <>
-
       {
         (routerLocation.pathname == "/" && !location) ? (
           <div className="overflow-hidden home-section-one">
@@ -255,118 +344,296 @@ const Header = () => {
                   <span className='cart-icon'></span>
                   {cartItems.length}
                 </button>
-
-                <div className="order-tracking-area">
-                  <button className="btn btn-order-tracking" onClick={orderTrackingToggle}></button>
-
-                  <div className={`order-tracking-wrapper ${orderTracking ? 'active' : ''}`}>
-                    <div className="order-tracking_header">
-                      <h3 className="order-tracking_header-title">Suivi de mes commandes</h3>
-                      <button className="close" onClick={closeOrderTrackingToggle}></button>
-                    </div>
-                    <div className="order-tracking_body">
-                      <div className="being-processed-area">
-                        <div className="being-processed_desc">
-                          <h4>En cours de traitement</h4>
-                          <p>
-                            La commande est en attente d’acceptation de la part du restaurant
-                          </p>
-                        </div>
-                        <div className="being-processed_steps-area">
-                          <div className="step-item active"></div>
-                          <div className="step-item"></div>
-                          <div className="step-item"></div>
-                        </div>
-                      </div>
-                      <div className="processing-status-area">
-                        <div className="status-icn"></div>
-                        <div className="processing-status-desc">
-                          <h4>En cours de traitement</h4>
-                          <p>
-                            La commande est en attente d’acceptation de la part du restaurant
-                          </p>
-                        </div>
-                      </div>
-                      <div className="supplier-info-area">
-                        <div className="supplier-info_img-blc">
-                          <img src={menuImg} alt="suplier" />
-                        </div>
-                        <div className="supplier-desc">
-                          <h4>Restaurant Zahra</h4>
-                          <p>
-                            Sahloul, Sousse
-                          </p>
-                        </div>
-                      </div>
-                      <div className="total-price-calculate">
-                        <div className="total-price-blc">
-                          <div className="total-price-blc_wrapper">
-                            <div className="product-name">
-                              <div className="product-name_counter">X1</div>
-                              <div className="product-name_item">Sandwich</div>
+                {(logged_in && commands.length) ? 
+                  (
+                  <div className="order-tracking-area">
+                    <button className="btn btn-order-tracking" onClick={orderTrackingToggle}></button>
+                    {
+                        commands.length ==1 ? 
+                        <div className={`order-tracking-wrapper ${orderTracking ? 'active' : ''}`}>
+                          <div className="order-tracking_header">
+                              <h3 className="order-tracking_header-title">{t('header.commands') }</h3>
+                            <button className="close" onClick={closeOrderTrackingToggle}></button>
+                          </div>
+                          <div className="order-tracking_body">
+                            {/* <div className="being-processed-area">
+                              <div className="being-processed_desc">
+                                  <h4>{getProgressDescription(commands[0].cycle).message}</h4>
+                                  {
+                                    getProgressDescription(commands[0].cycle).status <= 2 && <p>{t('profile.commands.sousMessage')}</p>
+                                  }
+                                  {
+                                    getProgressDescription(commands[0].cycle).status > 2 && getProgressDescription(commands[0].cycle).status < 6 && !commands[0].isReady && <p>{t('profile.commands.sousMessage2')}</p>
+                                  }
+                                  {
+                                    getProgressDescription(commands[0].cycle).status == 6 && commands[0].is_delivery && commands[0].isReady ? <p>{t('profile.commands.sousMessage3')}</p> : !commands[0].is_delivery && commands[0].isReady ? <p className="description">{t('orderTrackingPage.importedReady')}</p> : <></>
+                                  }
+                              </div>
+                              <div className="being-processed_steps-area">
+                                <div className="step-item active"></div>
+                                <div className="step-item"></div>
+                                <div className="step-item"></div>
+                              </div>
+                            </div> */}
+                            <div className="processing-status-area" onClick={goCommandsPage}>
+                                { (getProgressDescription(commands[0].cycle).status === 1 || getProgressDescription(commands[0].cycle).status === 2) ? <img loading="lazy" src={traitementA} alt="traitement logo" className='traitement-logo' /> 
+                                 : (getProgressDescription(commands[0].cycle).status <= 5 && getProgressDescription(commands[0].cycle).status > 2) ? <img loading="lazy" src={preparatinA} alt="preparation logo" className='preparation-logo' />
+                                 :
+                                  commands[0].is_delivery === 1 ? (
+                                    <img loading="lazy" src={(getProgressDescription(commands[0].cycle).status === 6) ? delivA : ''} alt="deliv logo" className='deliv-logo' />
+                                  ) : (
+                                    <img loading="lazy" src={(getProgressDescription(commands[0].cycle).status === 6) ? doneA : ''} alt="deliv logo" className='deliv-logo' />
+                                  )
+                                } 
+                              {/* <div className="status-icn"></div> */}
+                              <div className="processing-status-desc">
+                                <h4>{getProgressDescription(commands[0].cycle).message}</h4>
+                                  {
+                                    getProgressDescription(commands[0].cycle).status <= 2 && <p>{t('profile.commands.sousMessage')}</p>
+                                  }
+                                  {
+                                    getProgressDescription(commands[0].cycle).status > 2 && getProgressDescription(commands[0].cycle).status < 6 && !commands[0].isReady && <p>{t('profile.commands.sousMessage2')}</p>
+                                  }
+                                  {
+                                    getProgressDescription(commands[0].cycle).status == 6 && commands[0].is_delivery ? <p>{t('profile.commands.sousMessage3')}</p> : !commands[0].is_delivery && commands[0].isReady ? <p className="description">{t('orderTrackingPage.importedReady')}</p> : <></>
+                                  }
+                              </div>
                             </div>
-                            <div className="price">10.00 DT</div>
+                            <div className="supplier-info-area">
+                              <div className="supplier-info_img-blc">
+                                <img src={menuImg} alt="suplier" />
+                              </div>
+                              <div className="supplier-desc">
+                                  <h4>{commands[0].supplier.name}</h4>
+                                <p>
+                                  {commands[0].supplier.city}, {commands[0].supplier.region}
+                                </p>
+                            </div>
+                            </div>
+                            <div className="total-price-calculate">
+                                {commands[0].products.map(function (prod: any) {
+                                  return (
+                                    <div key={prod.id} className="total-price-blc">
+                                      <div className="total-price-blc_wrapper">
+                                        <div className="product-name">
+                                          <div className="product-name_counter">X{prod.quantity}</div>
+                                          <div className="product-name_item">{prod.name}</div>
+                                        </div>
+                                        <div className="price">{(Number(prod.price) * Number(prod.quantity)).toFixed(2)} Dt</div>
+                                      </div>
+                                    </div>
+                                  )
+                                })
+                                }                               
+                               
+                              <div className="total-price-blc">
+                                <div className="total-price-blc_wrapper">
+                                    <div className="total-price_label">{t('profile.commands.sousTotal') }</div>
+                                  <div className="price">{calculeSubTotal(commands[0].products).toFixed(2)}</div>
+                                </div>
+                                <div className="total-price-blc_wrapper">
+                                    <div className="total-price_label">{ t('supplier.delivPrice')}</div>
+                                  <div className="price">{commands[0].coupon.delivery_fixed === 1 ? commands[0].delivery_price : (Number(commands[0].delivery_price) - Number(commands[0].total_price_coupon)).toFixed(2) } DT</div>
+                                </div>
+                              </div>
+                              <div className="total-price-blc">
+                                <div className="total-price-blc_wrapper">
+                                    <div className="total-price_label">{t('cartPage.total') }</div>
+                                  <div className="price">{(Number(commands[0].total_price) - Number(commands[0].total_price_coupon)).toFixed(2)} DT</div>
+                                </div>
+                              </div>
+                            </div>
+                            <div className="panier-blc">
+                              <h4 className="panier-title">
+                                {t('cart.payment.payment')}
+                              </h4>
+                              <div className="paiement-status-list">
+                                <ul>
+                                  <li>
+                                    <div className="paiement-status_icon"></div>
+                                    <div className="paiement-status-desc">
+                                      <p className="paiement-status-item"> {commands[0].mode_pay === 1 ? t('cartPage.espece') : t('cartPage.bankPay')}</p>
+                                    </div>
+                                  </li>
+                                  {
+                                    (Number(commands[0].bonus) > 0) && (                                      
+                                      <li>
+                                        <div className="paiement-status_icon"></div>
+                                        <div className="paiement-status-desc">
+                                            <p className="paiement-status-item">{ t("cartPage.bonus")}</p>
+                                          <div className="price">{(Number(commands[0].bonus) / 1000).toFixed(2)} Dt</div>
+                                        </div>
+                                      </li>
+                                    )
+                                  }    
+                                    {
+                                      Number(commands[0].gift_ammount) > 0 && (
+                                        <li>
+                                          <div className="paiement-status_icon"></div>
+                                          <div className="paiement-status-desc">
+                                            <p className="paiement-status-item">{ t('repasGratuit')}</p>
+                                            <div className="price">{(Number(commands[0].gift_ammount) / 1000).toFixed(2)} dt</div>
+                                          </div>
+                                        </li>
+                                      )}
+                                  {
+                                    commands[0].total_price_coupon > 0 && (
+                                    <li>
+                                      <div className="paiement-status_icon"></div>
+                                        <div className="paiement-status-desc">
+                                            <p className="paiement-status-item">{t('cart.PromosCode') }</p>
+                                        <div className="price">{Number(commands[0].total_price_coupon).toFixed(2)} dt</div>
+                                      </div>
+                                    </li>
+                                    )
+                                  }
+                                </ul>
+                              </div>
+                            </div>
+                              {/* {commands[0].cycle == 'PENDING' && (
+                                <div className="btns-group">
+                                  <button className="btn btn-cancel-order" onClick={() => dropCommand(commands[0].id)}>{t('profile.commands.annuler') }</button>
+                              </div>
+                              )}  */}
                           </div>
                         </div>
-                        <div className="total-price-blc">
-                          <div className="total-price-blc_wrapper">
-                            <div className="total-price_label">Sous-total</div>
-                            <div className="price">10.00 DT</div>
+                          : commands.length > 1 ? (
+                        <div className={`order-tracking-wrapper ${orderTracking ? 'active' : ''}`}>
+                          <div className="order-tracking_header">
+                            <h3 className="order-tracking_header-title">{t('header.commands') }</h3>
+                            <button className="close" onClick={closeOrderTrackingToggle}></button>
                           </div>
-                          <div className="total-price-blc_wrapper">
-                            <div className="total-price_label">Frais de livraison</div>
-                            <div className="price">3.00 DT</div>
-                          </div>
+                          {
+                            commands.map(function (command: any) {
+                              return (
+                              <Accordion expanded={expanded === 'panel'+command.id} onChange={handleChange('panel'+command.id)}>
+                                <AccordionSummary expandIcon={<ExpandMoreIcon />} className="order-tracking_body accordion"> 
+                                <div className="supplier-info-area">
+                                  <div className="supplier-info_img-blc">
+                                    <img src={menuImg} alt="suplier" />
+                                  </div>
+                                  <div className="supplier-desc">
+                                    <h4>{command.supplier.name}</h4>
+                                    <p>
+                                      {command.supplier.city}, {command.supplier.region}
+                                    </p>
+                                    </div>
+                                  </div>
+                                </AccordionSummary>
+                                <AccordionDetails className="order-tracking_body">
+                                  <div className="processing-status-area" onClick={goCommandsPage}>
+                                    { (getProgressDescription(command.cycle).status === 1 || getProgressDescription(command.cycle).status === 2) ? <img loading="lazy" src={traitementA} alt="traitement logo" className='traitement-logo' /> 
+                                    : (getProgressDescription(command.cycle).status <= 5 && getProgressDescription(command.cycle).status > 2) ? <img loading="lazy" src={preparatinA} alt="preparation logo" className='preparation-logo' />
+                                    :
+                                      command.is_delivery === 1 ? (
+                                        <img loading="lazy" src={(getProgressDescription(command.cycle).status === 6) ? delivA : ''} alt="deliv logo" className='deliv-logo' />
+                                      ) : (
+                                        <img loading="lazy" src={(getProgressDescription(command.cycle).status === 6) ? doneA : ''} alt="deliv logo" className='deliv-logo' />
+                                      )
+                                    } 
+                                    <div className="processing-status-desc">
+                                      <h4>{getProgressDescription(command.cycle).message}</h4>
+                                        {
+                                          getProgressDescription(command.cycle).status <= 2 && <p>{t('profile.commands.sousMessage')}</p>
+                                        }
+                                        {
+                                          getProgressDescription(command.cycle).status > 2 && getProgressDescription(command.cycle).status < 6 && !command.isReady && <p>{t('profile.commands.sousMessage2')}</p>
+                                        }
+                                        {
+                                          getProgressDescription(command.cycle).status == 6 && command.is_delivery ? <p>{t('profile.commands.sousMessage3')}</p> : !command.is_delivery && command.isReady ? <p className="description">{t('orderTrackingPage.importedReady')}</p> : <></>
+                                        }
+                                    </div>
+                                    
+                                  </div>
+                                  <div className="total-price-calculate">
+                                      {command.products.map(function (prod: any) {
+                                        return (
+                                          <div key={prod.id} className="total-price-blc">
+                                            <div className="total-price-blc_wrapper">
+                                              <div className="product-name">
+                                                <div className="product-name_counter">X{prod.quantity}</div>
+                                                <div className="product-name_item">{prod.name}</div>
+                                              </div>
+                                              <div className="price">{(Number(prod.price) * Number(prod.quantity)).toFixed(2)} Dt</div>
+                                            </div>
+                                          </div>
+                                        )
+                                      })
+                                      }  
+                                    <div className="total-price-blc">
+                                      <div className="total-price-blc_wrapper">
+                                          <div className="total-price_label">{t('profile.commands.sousTotal') }</div>
+                                        <div className="price">{calculeSubTotal(command.products).toFixed(2)}</div>
+                                      </div>
+                                      <div className="total-price-blc_wrapper">
+                                          <div className="total-price_label">{ t('supplier.delivPrice')}</div>
+                                        <div className="price">{command.coupon.delivery_fixed === 1 ? command.delivery_price : (Number(command.delivery_price) - Number(command.total_price_coupon)).toFixed(2)} DT</div>
+                                      </div>
+                                    </div>
+                                    <div className="total-price-blc">
+                                      <div className="total-price-blc_wrapper">
+                                          <div className="total-price_label">{t('cartPage.total') }</div>
+                                        <div className="price">{(Number(command.total_price) - Number(command.total_price_coupon)).toFixed(2)} DT</div>
+                                      </div>
+                                    </div>
+                                  </div>
+                                  <div className="panier-blc">
+                                    <h4 className="panier-title">
+                                      {t('cart.payment.payment')}
+                                    </h4>
+                                    <div className="paiement-status-list">
+                                      <ul>
+                                        <li>
+                                          <div className="paiement-status_icon"></div>
+                                          <div className="paiement-status-desc">
+                                            <p className="paiement-status-item"> {command.mode_pay === 1 ? t('cartPage.espece') : t('cartPage.bankPay')}</p>
+                                          </div>
+                                        </li>
+                                        {
+                                          (Number(command.bonus) > 0) && (                                      
+                                            <li>
+                                              <div className="paiement-status_icon"></div>
+                                              <div className="paiement-status-desc">
+                                                  <p className="paiement-status-item">{ t("cartPage.bonus")}</p>
+                                                <div className="price">{(Number(command.bonus) / 1000).toFixed(2)} Dt</div>
+                                              </div>
+                                            </li>
+                                          )
+                                        }    
+                                          {
+                                            command.gift_ammount > 0 && (
+                                              <li>
+                                                <div className="paiement-status_icon"></div>
+                                                <div className="paiement-status-desc">
+                                                  <p className="paiement-status-item">{ t('repasGratuit')}</p>
+                                                  <div className="price">{(Number(command.gift_ammount) / 1000).toFixed(2)} dt</div>
+                                                </div>
+                                              </li>
+                                            )}
+                                        {
+                                          Number(command?.total_price_coupon) > 0 && (
+                                          <li>
+                                            <div className="paiement-status_icon"></div>
+                                              <div className="paiement-status-desc">
+                                                  <p className="paiement-status-item">{t('cart.PromosCode') }</p>
+                                              <div className="price">{Number(command?.total_price_coupon).toFixed(2)} dt</div>
+                                            </div>
+                                          </li>
+                                          )
+                                        }
+                                      </ul>
+                                    </div>
+                                  </div>
+                                </AccordionDetails>
+                              </Accordion> 
+                              )
+                            })
+                          }                                                   
                         </div>
-                        <div className="total-price-blc">
-                          <div className="total-price-blc_wrapper">
-                            <div className="total-price_label">Total</div>
-                            <div className="price">20.00 DT</div>
-                          </div>
-                        </div>
-                      </div>
-                      <div className="panier-blc">
-                        <h4 className="panier-title">
-                          Paiement
-                        </h4>
-                        <div className="paiement-status-list">
-                          <ul>
-                            <li>
-                              <div className="paiement-status_icon"></div>
-                              <div className="paiement-status-desc">
-                                <p className="paiement-status-item">En espéce à la livraison</p>
-                              </div>
-                            </li>
-                            <li>
-                              <div className="paiement-status_icon"></div>
-                              <div className="paiement-status-desc">
-                                <p className="paiement-status-item">Bonus</p>
-                                <div className="price">0.00</div>
-                              </div>
-
-                            </li>
-                            <li>
-                              <div className="paiement-status_icon"></div>
-                              <div className="paiement-status-desc">
-                                <p className="paiement-status-item">Repas gratuit</p>
-                              </div>
-                            </li>
-                            <li>
-                              <div className="paiement-status_icon"></div>
-                              <div className="paiement-status-desc">
-                                <p className="paiement-status-item">Code promo</p>
-                                <div className="price">AZ12UH</div>
-                              </div>
-                            </li>
-                          </ul>
-                        </div>
-                      </div>
-                      <div className="btns-group">
-                        <button className="btn btn-cancel-order">Annuler la comamnde</button>
-                      </div>
-                    </div>
-                  </div>
-                </div>
+                        ) : ''
+                    }                    
+                  </div>) : ''
+                }
 
                 {!logged_in && (
                   <div className="header-buttons">

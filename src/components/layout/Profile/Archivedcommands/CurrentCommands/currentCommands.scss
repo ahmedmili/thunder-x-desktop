@@ -40,6 +40,7 @@
     .description,
     .promo,
     .bonus,
+    .tax,
     .command-graph,
     .deliv-assigned {
         margin-left: 30px;
@@ -253,6 +254,7 @@
                 }
 
 
+                .tax,
                 .bonus,
                 .repas,
                 .payment-methode,
@@ -274,6 +276,11 @@
                         margin-right: 18px;
                         margin-left: auto;
                     }
+                }
+
+                .tax {
+                    padding-left: 35px;
+                    font-weight: 400;
                 }
 
                 .payment-methode {

@@ -153,7 +153,7 @@ const OldCommands: React.FC<CommandsListProps> = ({ data, feedbacksList }) => {
                                 products.map((product: any, index: number) => {
                                     const productData: ProductProps = {
                                         data: {
-                                            img: product.computed_value ? product.computed_value.image[0].path :
+                                            img: (product.computed_value && product.computed_value.image[0].path) ? product.computed_value.image[0].path :
                                                 supplier.images[0]?.pivot.type === "principal" ?
                                                     supplier.images[0].path :
                                                     supplier.images[1].path,
