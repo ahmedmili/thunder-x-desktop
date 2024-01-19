@@ -1,10 +1,9 @@
 import i18n from 'i18next';
 import { initReactI18next } from 'react-i18next';
-// import LanguageDetector from 'i18next-browser-languagedetector';
 
+import arTranslation from './locales/ar.json';
 import enTranslation from './locales/en.json';
 import frTranslation from './locales/fr.json';
-import arTranslation from './locales/ar.json';
 interface LanguageDetectorInterface {
   type: 'languageDetector';
   async: boolean;
@@ -16,7 +15,6 @@ interface LanguageDetectorInterface {
 const defaultLanguage = 'fr';
 
 if (typeof window !== 'undefined') {
-  // Code to execute when window is defined
 }
 
 const languageDetector: LanguageDetectorInterface = {
@@ -35,7 +33,6 @@ const languageDetector: LanguageDetectorInterface = {
 };
 
 i18n
-  // .use(LanguageDetector)
   .use(languageDetector)
   .use(initReactI18next)
   .init({

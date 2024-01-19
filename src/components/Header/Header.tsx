@@ -25,7 +25,7 @@ import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import Accordion from '@mui/material/Accordion';
 import AccordionDetails from '@mui/material/AccordionDetails';
 import AccordionSummary from '@mui/material/AccordionSummary';
-import { handleCartState } from "../../Redux/slices/cart/cartSlice";
+import { handleCartState, removeNotifHeaderCart } from "../../Redux/slices/cart/cartSlice";
 import delivA from "./../../assets/profile/ArchivedCommands/deliv-A-1.svg";
 import doneA from "./../../assets/profile/ArchivedCommands/done-A-1.svg";
 import preparatinA from "./../../assets/profile/ArchivedCommands/preparatin-A-1.svg";

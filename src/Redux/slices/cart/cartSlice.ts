@@ -88,7 +88,6 @@ const cartSlice = createSlice({
       state.items = updatedItems;
       localStorageService.setCart(updatedItems)
     },
-    // //////////////
     addNotifHeaderCart: (state, action: PayloadAction<{ items: any[] }>) => {
       const notifHeaderCart = action.payload.items
       state.notifHeaderCart = notifHeaderCart;
