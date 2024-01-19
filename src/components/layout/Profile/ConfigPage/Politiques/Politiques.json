@@ -1,32 +1,98 @@
-[
-    {
-        "body": [
-            "La présente déclaration de confidentialité règle l’utilisation de l'application Thunder Express pour appareils mobiles, créée et développée par la société Webify, qui est une société privée enregistrée en Tunisie et dont le siège social est Immeuble Jaziri Boulevard 14 janvier, Hammam Sousse."
-        ]
-    },
-    {
-        "body": [
-            "La présente déclaration de confidentialité a été élaborée dans le but de garantir et d’attester la conformité avec les exigences légales, et la transparence du traitement des données à caractère personnel, tant des clients de Thunder Express que des personnes concernées et des autorités chargées de la protection des données."
-        ]
-    },
-    {
-        "body": [
-            "Ces données servent uniquement au bon fonctionnement de l’application pour permettre à ses différents composants logiciels, au serveur et à la base de données d'interagir correctement entre eux."
-        ]
-    },
-    {
-        "body": [
-            "Des tiers peuvent-ils visualiser et/ou accéder à des informations collectées par l’application ? \n Les tiers n’ont pas accès aux informations collectées par l’application."
-        ]
-    },
-    {
-        "body": [
-            "Quels sont mes droits d’option de retrait ? \n Vous pouvez utiliser les processus de désinstallation standard disponibles sur votre appareil mobile ou passer par le marché ou le réseau des applications mobiles. "
-        ]
-    },
-    {
-        "body": [
-            "Contactez-nous \n  Pour toutes vos questions relatives à la confidentialité pendant l’utilisation de l’application ou sur nos pratiques, contactez-nous par e-mail et écrivez à l’adresse suivante : admin@thunder-express.com."
-        ]
-    }
-]
+{
+    "ar": [
+        {
+            "body": [
+                "تطبيق Thunder Express على الأجهزة المحمولة، الذي تم إنشاؤه وتطويره بواسطة شركة Webify، وهي شركة خاصة مسجلة في تونس ومقرها Immeuble Jaziri Boulevard 14 janvier، Hammam Sousse"
+            ]
+        },
+        {
+            "body": [
+                "تم إعداد بيان الخصوصية هذا بهدف ضمان وتأكيد الامتثال للمتطلبات القانونية وشفافية معالجة البيانات الشخصية، سواء كان ذلك بالنسبة لعملاء Thunder Express أو للأفراد المعنيين والسلطات المسؤولة عن حماية البيانات "
+            ]
+        },
+        {
+            "body": [
+                "تستخدم هذه البيانات فقط لضمان عمل صحيح للتطبيق والسماح لمكوناته البرمجية المختلفة، والخادم، وقاعدة البيانات بالتفاعل بشكل صحيح مع بعضها البعض"
+            ]
+        },
+        {
+            "body": [
+                "هل يمكن لأطراف ثالثة رؤية و/أو الوصول إلى المعلومات التي يتم جمعها بواسطة التطبيق؟ \n لا تتمكن الأطراف الثالثة من الوصول إلى المعلومات التي يتم جمعها بواسطة التطبيق"
+            ]
+        },
+        {
+            "body": [
+                "ما هي حقوقي فيما يتعلق بالانسحاب؟ \n يمكنك استخدام عمليات الإلغاء القياسية المتاحة على جهازك المحمول أو اللجوء إلى سوق أو شبكة تطبيقات الهواتف المحمولة "
+            ]
+        },
+        {
+            "body": [
+                "تواصل معنا \n لجميع استفساراتك المتعلقة بالخصوصية أثناء استخدام التطبيق أو حول ممارساتنا، يرجى الاتصال بنا عبر البريد الإلكتروني والكتابة إلى العنوان التالي: admin@thunder-express.com"
+            ]
+        }
+    ],
+    "fr": [
+        {
+            "body": [
+                "La présente déclaration de confidentialité règle l’utilisation de l'application Thunder Express pour appareils mobiles, créée et développée par la société Webify, qui est une société privée enregistrée en Tunisie et dont le siège social est Immeuble Jaziri Boulevard 14 janvier, Hammam Sousse."
+            ]
+        },
+        {
+            "body": [
+                "La présente déclaration de confidentialité a été élaborée dans le but de garantir et d’attester la conformité avec les exigences légales, et la transparence du traitement des données à caractère personnel, tant des clients de Thunder Express que des personnes concernées et des autorités chargées de la protection des données."
+            ]
+        },
+        {
+            "body": [
+                "Ces données servent uniquement au bon fonctionnement de l’application pour permettre à ses différents composants logiciels, au serveur et à la base de données d'interagir correctement entre eux."
+            ]
+        },
+        {
+            "body": [
+                "Des tiers peuvent-ils visualiser et/ou accéder à des informations collectées par l’application ? \n Les tiers n’ont pas accès aux informations collectées par l’application."
+            ]
+        },
+        {
+            "body": [
+                "Quels sont mes droits d’option de retrait ? \n Vous pouvez utiliser les processus de désinstallation standard disponibles sur votre appareil mobile ou passer par le marché ou le réseau des applications mobiles. "
+            ]
+        },
+        {
+            "body": [
+                "Contactez-nous \n  Pour toutes vos questions relatives à la confidentialité pendant l’utilisation de l’application ou sur nos pratiques, contactez-nous par e-mail et écrivez à l’adresse suivante : admin@thunder-express.com."
+            ]
+        }
+    ],
+    "en": [
+        {
+            "body": [
+                "This privacy statement governs the use of the Thunder Express mobile application, created and developed by Webify, a private company registered in Tunisia with its headquarters at Immeuble Jaziri Boulevard 14 janvier, Hammam Sousse."
+            ]
+        },
+        {
+            "body": [
+                "This privacy statement has been crafted to ensure compliance with legal requirements and transparency in the processing of personal data, both for Thunder Express customers and for individuals concerned and data protection authorities."
+            ]
+        },
+        {
+            "body": [
+                "These data are solely used for the proper functioning of the application to enable its various software components, server, and database to interact correctly with each other."
+            ]
+        },
+        {
+            "body": [
+                "Can third parties view and/or access information collected by the application? \n Third parties do not have access to information collected by the application."
+            ]
+        },
+        {
+            "body": [
+                "What are my opt-out rights? \n You can use standard uninstallation processes available on your mobile device or go through the mobile app market or network. "
+            ]
+        },
+        {
+            "body": [
+                "Contact Us \n For all your privacy-related questions during the use of the application or about our practices, contact us via email at the following address: admin@thunder-express.com."
+            ]
+        }
+    ]
+}

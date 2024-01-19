@@ -9,10 +9,15 @@ import Header from '../../../../Header/Header';
 import Footer from '../../../../footer/footer';
 import legalsData from './Politiques.json';
 import './politiques.scss';
+import { localStorageService } from '../../../../../services/localStorageService';
 
 interface legalProps {
   bodyText: string[],
 }
+// Define a type for your data structure
+type LegalsData = {
+  [key: string]: { body: string[] }[];
+};
 
 const LegalCart: React.FC<legalProps> = ({ bodyText }) => {
 
@@ -37,7 +42,10 @@ const Politiques = () => {
   const handleContent = () => {
     const startIndex = (currentPage - 1) * itemsPerPage;
     const endIndex = startIndex + itemsPerPage;
-    const displayedContent = legalsData.slice(startIndex, endIndex)
+    const language = localStorageService.getLanguage() || 'fr'
+    const legalsDataJson: LegalsData = legalsData;
+    const selectedLanguageObject = legalsDataJson[language];
+    const displayedContent = selectedLanguageObject.slice(startIndex, endIndex)
     setDisplayedContent(displayedContent)
   }
 
@@ -55,7 +63,10 @@ const Politiques = () => {
   useEffect(() => {
 
     let totalPages: number = 1;
-    totalPages = Math.ceil(legalsData.length / itemsPerPage)
+    const language = localStorageService.getLanguage() || 'fr'
+    const legalsDataJson: LegalsData = legalsData;
+    const selectedLanguageObject = legalsDataJson[language];
+    totalPages = Math.ceil(selectedLanguageObject.length / itemsPerPage)
     setTotalPages(totalPages)
   }, [legalsData])
 

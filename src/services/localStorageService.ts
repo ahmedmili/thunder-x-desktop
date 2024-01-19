@@ -113,6 +113,10 @@ function getDelivery() {
     return localStorage.getItem('delivery');
 }
 
+function getLanguage() {
+    return localStorage.getItem('i18nextLng');
+}
+
 export const localStorageService = {
     setUserTheme,
     getUserTheme,
@@ -141,5 +145,6 @@ export const localStorageService = {
     setSupplier,
     getSupplier,
     setDelivery,
-    getDelivery
+    getDelivery,
+    getLanguage,
 };
