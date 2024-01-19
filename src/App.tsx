@@ -281,12 +281,12 @@ function App({ initialData }: AppProps) {
   }, [])
 
   // Enforce Trailing Slash 
-  useEffect(() => {
-    const { pathname } = navLocation;
-    if (!pathname.endsWith('/') && pathname !== '/') {
-      navigate(`${pathname}/`, { replace: true });
-    }
-  }, [navLocation, Navigate]);
+  // useEffect(() => {
+  //   const { pathname } = navLocation;
+  //   if (!pathname.endsWith('/') && pathname !== '/') {
+  //     navigate(`${pathname}/`, { replace: true });
+  //   }
+  // }, [navLocation, Navigate]);
 
 
   return (
