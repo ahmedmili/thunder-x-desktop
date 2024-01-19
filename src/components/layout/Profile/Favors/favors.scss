@@ -1,4 +1,4 @@
-@import '../../../../colors';
+@import '../../../../scss/extend';
 
 @keyframes fadeIn {
     0% {
@@ -14,30 +14,58 @@
     width: 100%;
     height: 100vh;
     animation: fadeIn 1s;
-    padding-bottom: 10px;
+    padding: 0;
+
     .favors-header {
-        margin-top: 150px;
+        margin: 0 0 30px;
         width: 100%;
-        padding-right: 86px;
+        padding: 0;
 
         .cover-img {
             width: 100%;
-            height: 300px;
+            height: 350px;
             background-position: center;
             background-repeat: no-repeat;
             object-fit: cover;
             margin-bottom: 86px;
         }
+        img {
+            width: 100%;
+        }
     }
 
     .favors-main {
-        width: calc(100% - 86px);
-        display: grid;
-        grid-template-columns: 1fr 1fr;
-        gap: 36px;
-        align-items: center;
-        margin-bottom: 50px;
+        width: 100%;
+        background-color: $color-white;
+        border-radius: 25px;
+        display: block;
+        gap: initial;
+        margin: 0;
+        padding: 35px 40px;
 
+        .favors-main_title-blc {
+            margin: 0 0 64px;
+
+            .favors-main_title {
+                margin: 0;
+                @include fonts(20px, 20px, $dark_Gray);
+                font-family: 'Poppins-Bold', serif;
+            }
+        }
+        .favors-wrapper {
+            padding: 0 25px;
+            .favors-list-desc {
+                margin: 0 0 45px;
+                @include fonts(16px, 16px, $dark_Gray);
+                font-family: 'Poppins-SemiBold', serif;
+            }
+            .favors-list-area {
+                display: grid;
+                grid-template-columns: repeat(2, 1fr);
+                gap: 36px;
+
+            }
+        }
         .supplier-card-grid-container {
             width: 100%;
             display: flex;
@@ -46,10 +74,22 @@
 
             .favors-supplier-card {
                 width: 100%;
+                height: initial;
+
+                .restaurantLink {
+                    .card {
+                        .imageContainer {
+                            height: 160px;
+                        }
+                    }
+                }
             }
         }
     }
 }
+
+/* # $Mobile ::
+------------------------------------*/
 
 @media screen and (max-width : 786px) {
     .favors-main-container {
