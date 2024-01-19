@@ -1,4 +1,3 @@
-// "use client";
 import { CssBaseline } from "@mui/material";
 import "bootstrap/dist/css/bootstrap.min.css";
 import "./app.scss";
@@ -46,15 +45,15 @@ import SpinnerPopup from "./components/Popups/Spinner/SpinnerPopup";
 import Annonces from "./components/layout/Profile/All_Annonces/All_Annonces";
 import ArchivedCommands from "./components/layout/Profile/Archivedcommands/ArchivedCommands";
 import ConfigPage from "./components/layout/Profile/ConfigPage/ConfigPage";
+import Legale from "./components/layout/Profile/ConfigPage/Legale/Legale";
+import Politiques from "./components/layout/Profile/ConfigPage/Politiques/Politiques";
 import Discuter from "./components/layout/Profile/Discuter/Discuter";
 import Favors from "./components/layout/Profile/Favors/Favors";
 import Feedback from "./components/layout/Profile/Feedback/Feedback";
 import FidelitePage from "./components/layout/Profile/FidelitePage/FidelitePage";
 import Menu from "./components/menus/menus";
-import Verify from "./views/Verify";
 import { paramsService } from "./utils/params";
-import Legale from "./components/layout/Profile/ConfigPage/Legale/Legale";
-import Politiques from "./components/layout/Profile/ConfigPage/Politiques/Politiques";
+import Verify from "./views/Verify";
 //lazy loading pages
 const Profile = lazy(() => import("./components/layout/Profile/Profile"));
 const HomePage = lazy(() => import("./views/home/home.page"));
@@ -65,7 +64,6 @@ const UnauthorizePage = lazy(
   () => import("./views/unauthorize/unauthorize.page")
 );
 const CartPage = lazy(() => import("./views/cart/cart.page"));
-// const OrderTrackingPage = lazy(() => import("./views/track/trackorder.page"));
 const ConfirmNumberPage = lazy(() => import("./views/ConfirmNumberPage"));
 const WelcomePage = lazy(() => import("./views/WelcomePage"));
 const ForgotPasswordPage = lazy(() => import("./views/ForgotPasswordPage"));

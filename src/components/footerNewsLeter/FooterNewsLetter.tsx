@@ -81,7 +81,6 @@ export const FooterNewsLeter = () => {
                             />
                             <button
                                 className={style.btnEmailSubmit}
-                            // disabled={isSubmitting}
                             >
                                 {t('newsLetter.sAbonner')}
                                 <span className={style.icon}>

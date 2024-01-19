@@ -1,14 +1,14 @@
 
 import { useEffect, useState } from 'react';
+import { useTranslation } from 'react-i18next';
+import { useNavigate } from 'react-router';
 import thunderLogo from '../../../../../assets/icon.png';
 import LeftArrow from '../../../../../assets/profile/leftArrow.svg';
 import RigthArrow from '../../../../../assets/profile/rigthArrow.svg';
-import legalsData from './Politiques.json';
-import './politiques.scss';
 import Header from '../../../../Header/Header';
 import Footer from '../../../../footer/footer';
-import { useTranslation } from 'react-i18next';
-import { useNavigate } from 'react-router';
+import legalsData from './Politiques.json';
+import './politiques.scss';
 
 interface legalProps {
   bodyText: string[],

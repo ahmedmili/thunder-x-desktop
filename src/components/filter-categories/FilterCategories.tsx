@@ -130,7 +130,6 @@ const FilterCategories: React.FC<FilterCategoriesProps> = ({
         else {
           searchParams.append('search', newParams);
         }
-        // searchParams.delete('category');
         navigate(`/search/?${searchParams.toString()}`, {
           replace: false,
         });

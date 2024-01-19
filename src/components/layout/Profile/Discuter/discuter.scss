@@ -1,4 +1,4 @@
-@import '../../../../colors';
+@import '../../../../scss/extend';
 
 @keyframes fadeIn {
     0% {
@@ -15,10 +15,13 @@
     animation: fadeIn 1s;
 
     .discuter-header {
-        margin-top: 150px;
+        padding: 0;
+        margin: 0 0 30px;
         width: 100%;
-        padding-right: 86px;
 
+        img {
+            width: 100%;
+        }
         .title-message {
             color: #484848;
             font-family: Poppins;
@@ -41,11 +44,11 @@
 
     .discuter-main {
         width: 100%;
-        display: flex;
-        gap: 36px;
-        padding-right: 86px;
-
-
+        display: block;
+        gap: initial;
+        padding: 0;
+        background-color: $color-white;
+        border-radius: 25px;
 
         .aide-service {
             flex: 1;
@@ -57,13 +60,9 @@
             border-radius: 25px;
 
             .title {
-                color: #484848;
-                font-family: Poppins;
-                font-size: 24px;
-                font-style: normal;
-                font-weight: 700;
-                line-height: normal;
-                margin: 0 0 8px 0;
+                @include fonts(20px, 20px, $dark_Gray);
+                font-family: 'Poppins-Bold', serif;
+                margin: 0 0 38px;
             }
 
             .sub-title {
@@ -76,35 +75,51 @@
                 margin: 0 0 42px 0;
 
             }
+            .discuter-wrapper {
+                background-color: $color-gray-concrete;
+                border-radius: 10px;
+                padding: 30px;
+
+                .discuter-desc {
+                    margin: 0 0 35px;
+
+                    .title {
+                        @include fonts(20px, 20px, $dark_Gray);
+                        font-family: 'Poppins-SemiBold', serif;
+                        margin: 0 0 15px;
+                    }
+                    .sub-title {
+                        @include fonts(16px, 16px, $dark_Gray);
+                        font-family: 'Poppins-Medium', serif;
+                        margin: 0;
+                    }
+                }
+            }
 
             .buttons {
                 display: flex;
-                flex-direction: column;
+                flex-direction: initial;
                 width: 100%;
-                gap: 30px;
+                gap: 42px;
                 align-items: start;
 
                 button {
                     border: none;
-                    border-radius: 50px;
-                    height: 69px;
-                    width: 90%;
-                    color: #FFF;
-                    font-family: Poppins;
-                    font-size: 20px;
-                    font-style: normal;
-                    font-weight: 500;
-                    line-height: normal;
+                    border-radius: 25px;
+                    @include dimensions(100%, 55px);
+                    @include fonts(20px, 20px, $color-white);
+                    font-family: 'Poppins-Medium', serif;
+
+                    &.btn1 {
+                        background-color: $color-yellow-saffron-2;
+                    }    
                 }
 
-                .btn1 {
-                    background-color: #FBC000;
-                }
-
+                
                 .support-client {
                     padding: 13px 0;
-                    height: 82px;
-                    background-color: #2EB5B2;
+                    height: 55px;
+                    background-color: $color-blue-pelorous;
                     display: flex;
                     flex-direction: column;
 
@@ -179,6 +194,9 @@
         right: 55px;
     }
 }
+
+/* # $Mobile ::
+------------------------------------*/
 
 @media only screen and (max-height : 800px) {
 
