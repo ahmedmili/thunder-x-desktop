@@ -21,20 +21,19 @@ export const FooterNewsLeter = () => {
     });
     const [formData, setFormData] = useState<FormValues>({ email: '' });
     const [errors, setErrors] = useState<{ [key: string]: string }>({});
-    const [isSubmitting, setIsSubmitting] = useState(false);
+    const [touchedFields, setTouchedFields] = useState<{ [key: string]: boolean }>({});
 
-    useEffect(() => {
-        validationSchema
-            .validate(formData, { abortEarly: false })
-            .then(() => setErrors({}))
-            .catch((validationErrors) => {
-                const newErrors: { [key: string]: string } = {};
-                validationErrors.inner.forEach((error: Yup.ValidationError) => {
-                    newErrors[error.path as string] = error.message;
-                });
-                setErrors(newErrors);
-            });
-    }, [formData]);
+    const handleBlur = (e: React.FocusEvent<HTMLInputElement>) => {
+        setTouchedFields({
+            ...touchedFields,
+            [e.target.name]: true,
+        });
+    };
+
+    const shouldDisplayError = (fieldName: string) => {
+        return touchedFields[fieldName] && !!errors[fieldName];
+    };
+
 
     const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         setFormData({
@@ -44,12 +43,12 @@ export const FooterNewsLeter = () => {
     };
     const handleSubmit = (e: React.FormEvent): void => {
         e.preventDefault();
-        setIsSubmitting(true);
         validationSchema
             .validate(formData, { abortEarly: false })
             .then(() => {
                 // Handle the submission logic here
-                setIsSubmitting(false);
+                setErrors({ email: '' });
+
             })
             .catch((validationErrors) => {
                 const newErrors: { [key: string]: string } = {};
@@ -57,7 +56,6 @@ export const FooterNewsLeter = () => {
                     newErrors[error.path as string] = error.message;
                 });
                 setErrors(newErrors);
-                setIsSubmitting(false);
             });
     };
 
@@ -78,6 +76,7 @@ export const FooterNewsLeter = () => {
                                 placeholder="Votre adresse e-mail"
                                 onChange={handleChange}
                                 isInvalid={!!errors.email}
+                                onBlur={handleBlur}
                             />
                             <button
                                 className={style.btnEmailSubmit}
@@ -87,8 +86,9 @@ export const FooterNewsLeter = () => {
                                 </span>
                             </button>
 
-                            <p className={style.newsLetterErrorsMessage}>{errors.email}</p>
-                        </div>
+                            <p className={style.newsLetterErrorsMessage}>
+                                {shouldDisplayError("email") && errors.email}
+                            </p>                        </div>
                     </div>
                 </form>
                 <div className={style.newsLetterImg}>
