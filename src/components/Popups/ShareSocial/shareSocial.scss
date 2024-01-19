@@ -1,4 +1,4 @@
-@import '../../../_colors.scss';
+@import '../../../scss/extend';
 @import '../../../animations';
 
 @mixin min-height-media-query($max-height) {
@@ -44,14 +44,19 @@
     background: #FFF;
     padding: 35px 22px 46px 22px;
     animation: popup-animation 1s ease-in-out;
+    z-index: 9999;
 
+    .share-social_header {
+        @include flex(flex, center, space-between);
+        margin: 0 0 30px;
+    }
     .close-btn {
-        position: absolute;
-        top: 15px;
-        right: 15px;
-        color: $orange_color;
-        font-size: 18px;
-        font-weight: 400;
+        @include dimensions(25px, 25px);
+        background-image: url('./../../../assets/modale-close-black-icn.svg');
+        background-repeat: no-repeat;
+        background-size: 15px auto;
+        background-position: center;
+        position: static;
 
         &:hover {
             cursor: pointer;
@@ -60,13 +65,9 @@
     }
 
     h3 {
-        color: #484848;
-        font-family: Poppins;
-        font-size: 17px;
-        font-style: normal;
-        font-weight: 500;
-        line-height: normal;
-        margin-bottom: 17px;
+        margin: 0;
+        @include fonts(17px, 17px, $dark_Gray);
+        font-family: 'Poppins-Medium', serif;
     }
 
     .social-buttons-section {
@@ -108,57 +109,28 @@
     }
 
     .code-section {
-        height: 54px;
+        height: 55px;
         padding: 0 10px 0 28px;
-        display: flex;
-        align-items: center;
-        justify-content: space-between;
-        border-radius: 10px;
-        border: 1px solid #D9D9D9;
-        background: #FFF;
+        @include flex(flex, center, space-between);
+        border-radius: 33px;
+        @include border(1px, $color-gray-alto);
+        background-color: $color-white;
 
         input {
             outline: none;
             border: none;
-            color: #484848;
-            font-family: Poppins;
-            font-size: 13px;
-            font-style: normal;
-            font-weight: 500;
-            line-height: normal;
+            @include fonts(13px, 13px, $dark_Gray);
+            font-family: 'Poppins-Medium', serif;
             width: calc(100% - 109px);
         }
 
         .copier-btn {
-            color: #FFF;
-            font-family: Poppins;
-            font-size: 13px;
-            font-style: normal;
-            font-weight: 500;
-            line-height: normal;
-            background-color: $orange_color;
-            width: 109px;
-            height: 34px;
+            @include fonts(13px, 13px, $color-white);
+            font-family: 'Poppins-Medium', serif;
+            background-color: $color-yellow-saffron-2;
+            @include dimensions(109px, 34px);
             border-radius: 25px;
         }
     }
 
 }
-
-// @media only screen and (max-width:992px) {
-//     .confirm-popup-container {
-//         width: 70vw;
-//         height: 284px;
-//     }
-// }
-
-// @media only screen and (max-width:786px) {
-//     .confirm-popup-container {
-//         padding: 67px 41px 56px 41px;
-
-//         .confirm-message {
-//             font-size: 17px;
-//             margin: 0;
-//         }
-//     }
-// }
