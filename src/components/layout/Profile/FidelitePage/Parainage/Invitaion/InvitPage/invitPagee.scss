@@ -1,23 +1,34 @@
-@import '../../../../../../../colors';
+@import '../../../../../../../scss/extend';
 
+main {
+    &.invit-page-container {
+        padding: 0 !important;
+        margin: -40px -75px;
+        background-color: $Off-White !important;
+    }
+}
 .invit-page-container {
+    border-radius: 0;
+    // background: linear-gradient(350deg, #4792A1 -27.75%, #2DDAD7 141.2%);
+    background: transparent;
+    
+    height: initial;
 
-    border-radius: 25px;
-    background: linear-gradient(350deg, #4792A1 -27.75%, #2DDAD7 141.2%);
-    height: 844px;
+    .parrainage-wrapper {
+        background-color: $color-white;
+        border-radius: 25px;
+        padding: 50px 40px;
+    }
 
     h3 {
-        color: #FFF;
-        font-family: Poppins;
-        font-size: 20px;
-        font-style: normal;
-        font-weight: 700;
-        line-height: normal;
+        @include fonts(20px, 20px, $dark_Gray);
+        font-family: 'Poppins-SemiBold', serif;
+        margin: 0 0 35px;
 
         .go-back-icon {
             font-size: 26px;
             font-weight: 700;
-
+            color: $color-blue-pelorous;
         }
     }
 
@@ -30,6 +41,14 @@
     .go-back-icon:hover {
         cursor: pointer;
         color: aliceblue;
+    }
+
+    .invite-friends-wrapper {
+        display: grid;
+        grid-template-columns: 363px 1fr;
+        grid-gap: 45px;
+
+
     }
 
     .money-image-container {
@@ -56,14 +75,14 @@
         display: flex;
         flex-direction: column;
         gap: 19px;
-        margin-bottom: 74px;
+        margin: 0;
 
 
         .code-input-container {
             display: flex;
-            background-color: white;
+            background-color: $color-apricot;
             padding: 2px;
-            width: 272px;
+            width: 100%;
             border-radius: 25px;
 
             input {
@@ -72,31 +91,28 @@
                 color: white;
                 font-size: 20px;
                 font-weight: 700;
-                background-color: $primary_color;
+                background-color: $color-white;
+                font-family: 'Poppins-Bold', serif;
+                @include fonts(16px, 16px, $color-apricot);
                 outline: none;
                 border: none;
-                width: 148px;
+                width: 100%;
             }
 
             .copy-btn {
-                color: $primary_color;
-                font-family: Poppins;
-                font-size: 16px;
-                font-style: normal;
-                font-weight: 500;
-                line-height: normal;
-                display: flex;
-                justify-content: center;
-                align-items: center;
+                font-family: 'Poppins-Medium', serif;
+                @include fonts(16px, 16px, $color-white);
+                @include flex(flex, center, flex-start);
                 gap: 15px;
+                @include dimensions(135px, 50px);
+                padding: 15px;
 
                 .chaine-icon {
                     background-repeat: no-repeat;
                     background-position: center;
                     background-size: cover;
-                    width: 16.491px;
-                    height: 17.203px;
-                    margin-left: 18px;
+                    @include dimensions(16px, 17px);
+                    margin: 0;
                 }
             }
         }
@@ -110,44 +126,32 @@
     }
 
     .notes-section {
-        display: flex;
-        flex-direction: column;
-        gap: 11px;
-        margin-bottom: 44px;
+        display: block;
+        flex-direction: initial;
+        gap: initial;
+        margin: 0 0 50px;
 
         h2 {
-            color: #FFF;
-            font-family: Poppins;
-            font-size: 20px;
-            font-style: normal;
-            font-weight: 700;
-            line-height: normal;
+            @include fonts(20px, 20px, $dark_Gray);
+            font-family: 'Poppins-SemiBold', serif;
+            margin: 0 0 15px;
         }
-
         p {
-            color: #FFF;
-            font-family: Poppins;
-            font-size: 16px;
-            font-style: normal;
-            font-weight: 500;
-            line-height: normal;
+            @include fonts(16px, 24px, $dark_Gray);
+            font-family: 'Poppins-Medium', serif;
+            margin: 0 0 15px;
         }
     }
 
     .social-share-button {
-        height: 67px;
-        border-radius: 20px;
-        background: #FBC000;
-        color: #FFF;
-        font-family: Poppins;
-        font-size: 20px;
-        font-style: normal;
-        font-weight: 500;
-        width: 100%;
-        display: flex;
-        justify-content: start;
-        gap: 75px;
-        padding-left: 62px;
+        border-radius: 25px;
+        background-color: $color-yellow-saffron-2;
+        font-family: 'Poppins-Medium', serif;
+        @include fonts(20px, 20px, $color-white);
+        @include dimensions(100%, 50px);
+        @include flex;
+        gap: 30px;
+        padding: 0;
 
         .social-share-icon {
             background-position: center;
@@ -155,6 +159,14 @@
             background-size: cover;
             width: 21px;
             height: 21px;
+        }
+    }
+
+    .invite-friends-area {
+        .invite-Q {
+            @include fonts(16px, 24px, $dark_Gray);
+            font-family: 'Poppins-SemiBold', serif;
+            margin: 0 0 15px 35px;
         }
     }
 }
