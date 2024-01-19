@@ -2,23 +2,19 @@
 import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useNavigate } from 'react-router';
-// import { toast } from 'react-toastify';
 import { logout } from '../../../../../Redux/slices/userSlice';
 import { useAppDispatch } from '../../../../../Redux/store';
-import Cover from '../../../../../assets/profile/desactive-cover.png';
 import { LocationService } from '../../../../../services/api/Location.api';
 import { userService } from '../../../../../services/api/user.api';
+import { localStorageService } from '../../../../../services/localStorageService';
 import ConfirmPopup from '../../../../Popups/ConfirmPopup/ConfirmPopup';
 import './desactiveAccount.scss';
-import { localStorageService } from '../../../../../services/localStorageService';
 
 interface DesactiveAccountProps {
-  type: string
+
 }
 
-const DesactiveAccount: React.FC<DesactiveAccountProps> = ({ type }) => {
-
-
+const DesactiveAccount: React.FC<DesactiveAccountProps> = ({ }) => {
 
   const { t } = useTranslation()
 
@@ -32,6 +28,8 @@ const DesactiveAccount: React.FC<DesactiveAccountProps> = ({ type }) => {
   const [showConfirm, setShowConfirm] = useState<boolean>(false)
   const [rate, setRate] = useState<number>(3)
   const [avisList, setAvisList] = useState<any[]>(aviDefault)
+  const [selectedOption, setSelectedOption] = useState<string>('DeactivateAccount');
+
 
   const navigate = useNavigate()
   const dispatch = useAppDispatch()
@@ -45,6 +43,9 @@ const DesactiveAccount: React.FC<DesactiveAccountProps> = ({ type }) => {
     currentLocation ? navigate('/search') : navigate('/')
   }
 
+  const handleRadioChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    setSelectedOption(event.target.value);
+  };
 
   const handleAvisList = (index: number) => {
 
@@ -124,7 +125,6 @@ const DesactiveAccount: React.FC<DesactiveAccountProps> = ({ type }) => {
         localStorage.clear();
         localStorage.setItem('lang', lang!);
         dispatch(logout())
-        // navigate('/')
         navigateToHome()
       }
       else {
@@ -136,11 +136,11 @@ const DesactiveAccount: React.FC<DesactiveAccountProps> = ({ type }) => {
   }
 
   const handleSubmit = () => {
-    switch (type) {
-      case 'desactiv':
+    switch (selectedOption) {
+      case 'DeactivateAccount':
         desactiveAccount();
         break;
-      case 'delete':
+      case 'DeleteAccount':
         deleteAccount();
         break;
       default: break;
@@ -151,18 +151,17 @@ const DesactiveAccount: React.FC<DesactiveAccountProps> = ({ type }) => {
   return (
     <>
       <section className="desactive-account-section">
-        {/* 
-          <div className='desactive-header-cover' style={{ backgroundImage: `url(${Cover})` }}></div>
-        */}
 
         <div className="shoose-option-radio">
           <div className='option-radio'>
-            <input className='form-check-input' value='DeactivateAccount' type="radio" name="shooseOption" id="DeactivateAccount" />
-            <label htmlFor="DeactivateAccount">Désactiver mon compte</label>
+            <input className='form-check-input' value='DeactivateAccount' type="radio" name="shooseOption" id="DeactivateAccount" checked={selectedOption === 'DeactivateAccount'}
+              onChange={handleRadioChange} />
+            <label htmlFor="DeactivateAccount">{t('profile.desactive.Desactiveok')}</label>
           </div>
           <div className='option-radio'>
-            <input className='form-check-input' value='DeleteAccount' type="radio" name="shooseOption" id="DeleteAccount" />
-            <label htmlFor="DeleteAccount">Supprimer mon compte</label>
+            <input className='form-check-input' value='DeleteAccount' type="radio" name="shooseOption" id="DeleteAccount" checked={selectedOption === 'DeleteAccount'}
+              onChange={handleRadioChange} />
+            <label htmlFor="DeleteAccount">{t('profile.mesConfig.deleteAccount')}</label>
           </div>
         </div>
 
@@ -218,7 +217,7 @@ const DesactiveAccount: React.FC<DesactiveAccountProps> = ({ type }) => {
         </div>
       </section>
       {
-        showConfirm && <ConfirmPopup accept={handleSubmit} close={handleConfirm} title={type === "desactiv" ? t('profile.desactive.warnMessage') : t('profile.delete.warnMessage')} />
+        showConfirm && <ConfirmPopup accept={handleSubmit} close={handleConfirm} title={selectedOption === "DeactivateAccount" ? t('profile.desactive.warnMessage') : t('profile.delete.warnMessage')} />
       }
     </>
   );
