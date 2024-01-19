@@ -95,10 +95,8 @@ const DesactiveAccount: React.FC<DesactiveAccountProps> = ({ }) => {
             });
           },
           (error: GeolocationPositionError) => {
-            // toast.error(error.message)
           }
         );
-        // navigate('/')
         navigateToHome()
       }
       else {

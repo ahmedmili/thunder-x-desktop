@@ -46,7 +46,6 @@ const Product: React.FC<ProductProps> = ({ data }) => {
 const OldCommands: React.FC<CommandsListProps> = ({ data, feedbacksList }) => {
 
     const { t } = useTranslation()
-    // const theme = useAppSelector((state) => state.home.theme)
     const navigate = useNavigate()
     const supplier = data.supplier
     const delivery = data.delivery

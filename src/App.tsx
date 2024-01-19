@@ -1,4 +1,3 @@
-// "use client";
 import { CssBaseline } from "@mui/material";
 import "bootstrap/dist/css/bootstrap.min.css";
 import "./app.scss";
@@ -51,8 +50,8 @@ import Favors from "./components/layout/Profile/Favors/Favors";
 import Feedback from "./components/layout/Profile/Feedback/Feedback";
 import FidelitePage from "./components/layout/Profile/FidelitePage/FidelitePage";
 import Menu from "./components/menus/menus";
-import Verify from "./views/Verify";
 import { paramsService } from "./utils/params";
+import Verify from "./views/Verify";
 //lazy loading pages
 const Profile = lazy(() => import("./components/layout/Profile/Profile"));
 const HomePage = lazy(() => import("./views/home/home.page"));
@@ -100,9 +99,9 @@ function App({ initialData }: AppProps) {
         let resultObject = paramsService.fetchParams(searchParams)
         const lat = resultObject.lat;
         const lng = resultObject.lng;
-        (lng && lat) ? dispatch({ type: "SET_SHOW", payload: false }) : dispatch({ type: "SET_SHOW", payload: true })  
+        (lng && lat) ? dispatch({ type: "SET_SHOW", payload: false }) : dispatch({ type: "SET_SHOW", payload: true })
         if (lng && lat) {
-          setLocationFromArray(lat,lng)
+          setLocationFromArray(lat, lng)
         }
       }
     } else {
@@ -110,7 +109,7 @@ function App({ initialData }: AppProps) {
     }
 
   }, [location]);
-  const setLocationFromArray = async(lat:any, lng:any) => {
+  const setLocationFromArray = async (lat: any, lng: any) => {
     let current_location = await LocationService.geoCode(lat, lng);
     dispatch({ type: "SET_LOCATION", payload: current_location })
   }

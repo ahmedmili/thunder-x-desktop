@@ -104,13 +104,7 @@ const CommandsList: React.FC<CommandsListProps> = ({ type = "old", goToPassedCom
     useEffect(() => {
         handlenav(loading)
     }, [loading])
-    
-    // useEffect(() => {
-    //     eventEmitter.on('COMMAND_UPDATED', () => { updateCurrentCommands() })
-    //     return () => {
-    //         eventEmitter.off('COMMAND_UPDATED', () => { updateCurrentCommands() })
-    //     }
-    // }, [])
+
 
     const handleContent = () => {
         const startIndex = (currentPage - 1) * itemsPerPage;

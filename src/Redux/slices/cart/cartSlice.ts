@@ -10,6 +10,8 @@ interface CartState {
   supplierMismatch: FoodItem | null;
   supplier: any | null;
   deliveryPrice: number;
+  openHeaderCart: boolean;
+  notifHeaderCart: any;
 
 }
 
@@ -21,6 +23,8 @@ const initialState: CartState = {
   supplierMismatch: null,
   supplier: null,
   deliveryPrice: 0,
+  openHeaderCart: false,
+  notifHeaderCart: []
 };
 
 export const addItem = createAsyncThunk<FoodItem, FoodItem>(
@@ -84,6 +88,17 @@ const cartSlice = createSlice({
       state.items = updatedItems;
       localStorageService.setCart(updatedItems)
     },
+    addNotifHeaderCart: (state, action: PayloadAction<{ items: any[] }>) => {
+      const notifHeaderCart = action.payload.items
+      state.notifHeaderCart = notifHeaderCart;
+    },
+    removeNotifHeaderCart: (state) => {
+      state.notifHeaderCart = [];
+    },
+    handleCartState: (state,) => {
+      state.openHeaderCart = !state.openHeaderCart;
+    },
+    ///////////
     setDeliveryOption: (
       state,
       action: PayloadAction<'delivery' | 'pickup' | 'surplace'>
@@ -148,6 +163,9 @@ export const {
   clearSupplierMismatch,
   setSupplier,
   setDeliveryPrice,
+  handleCartState,
+  removeNotifHeaderCart,
+  addNotifHeaderCart,
 } = cartSlice.actions;
 
 export default cartSlice.reducer;
