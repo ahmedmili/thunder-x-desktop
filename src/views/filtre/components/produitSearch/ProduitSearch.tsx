@@ -57,10 +57,13 @@ function SearchProduit() {
             });
         }
         else {
+            console.log("heeeee");
             const searchParams = new URLSearchParams(location.search);
             let params = searchParams.has("search") ? paramsService.fetchParams(searchParams) : {}
             if (params.filter) {
                 delete params.filter;
+                let newParams = paramsService.handleUriParams(params);
+                searchParams.set("search", newParams);
                 navigate(`/search/?${searchParams.toString()}`, {
                     replace: false,
                 });

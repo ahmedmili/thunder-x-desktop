@@ -137,6 +137,7 @@
   "profile.commands.livRecherche": "البحث عن مُسلّم",
   "profile.commands.sousTotal": "المجموع الجزئي",
   "profile.commands.annuler": "إلغاء الطلب",
+  "profile.commands.annuler.warnMessage": "هل أنت متأكد من رغبتك في حذف الطلب نهائيًا؟",
   "profile.commands.sousMessage": "الطلب في انتظار موافقة المطعم",
   "profile.commands.sousMessage2": "الطلب قيد التحضير",
   "profile.commands.sousMessage3": "الطلب سيتم توصيله في 15 دقيقة",
@@ -169,6 +170,7 @@
   "orderTrackingPage.price": "السعر:",
   "orderTrackingPage.importedReady": "في انتظار الاستلام من المطعم",
   "orderTrackingPage.isReady": "الطلب جاهز",
+  "orderTrackingPage.BankTaxes": "ضرائب البنوك",
   "orderTrackingPage.oldCommands": "طلباتي السابقة",
   "orderTrackingPage.currentCommands": "تتبع طلباتي",
   "orderTrackingPage.archivedCommands": "أرشيف الطلبات",
@@ -244,6 +246,8 @@
   "cartPage.visitor": "الزائر",
   "cartPage.client": "العملاء",
   "cartPage.delivto": "التسليم إلى",
+  "cartPage.emportePar": "محمولة بواسطة",
+
   "cartPage.emporter": "لتأخذ",
   "cartPage.surPalce": "في الموقع",
   "cartPage.phoneNumber": "رقم الهاتف",
@@ -298,7 +302,6 @@
   "adress.currentPos": " الموقع الحالي",
   "adress.adressIntrouvable": "هذا العنوان غير موجود. هل ترغب في المحاولة مرة أخرى ؟",
   "adress.browserLocationAcessRequest": "الرجاء السماح بالوصول إلى موقعك",
-
   "supplier.opentime": "مفتوح حتى",
   "supplier.delivPrice": "تكلفة التسليم:",
   "supplier.startAt": "من:",
@@ -321,6 +324,8 @@
   "cart.discount": "قيمة الخصم",
   "cart.PromosCode": "رمز الخصم",
   "cart.clientName": "اسم العميل",
+  "cart.delivPlanedAt": "التسليم المجدول في ",
+
   "searchPage.created_at": "thunder جديد في",
   "searchPage.populaires": "الأكثر شهرة",
   "searchPage.mieux": "الأعلى تقييمًا",
@@ -331,8 +336,7 @@
   "searchPage.question": "ماذا يمكننا أن نقدم لك ؟",
   "Reset": "إعادة تعيين",
   "AvailabelAt": "متاح في",
-
-  "searchPage.purchasedTogether": "المنتجات المشتراة معًا",
+  "searchPage.purchasedTogether": "منتجات مماثلة",
   "searchPage.warnAuthMessage": "لإطلاق طلبك، يجب عليك تسجيل الدخول أو إنشاء حساب جديد",
   "searchPage.warnServiceMessage": "ترجمة إلى العربية: هذه الخدمة غير متاحة في مدينتك",
   "update": "التعديل",
@@ -351,5 +355,38 @@
   "mobile.menu.description": "استمتع بفوائد خاصة في أماكنك ومطاعمك المفضلة!",
   "mobile.menu.download_button": "تحميل التطبيق",
   "mobile.menu.web_button": "المتابعة على الويب",
-  "mobile.": "جوال"
+  "mobile.": "جوال",
+  "calendar":{
+    "days": {
+      "Su" :"الأحد",
+      "Mo":  "الاثنين",
+      "Tu":"الثلاثاء",
+      "We": "الأربعاء",
+      "Th":"الخميس",
+      "Fr": "الجمعة",
+      "Sa" : "السبت"
+    }, 
+    "months":{
+      "January" :"جانفي",
+      "February" :"فيفري",
+      "March" :"مارس",
+      "April":"افريل",
+      "May":"ماي",
+      "June": "جوان",
+      "July" :"جويلية",
+      "August":"اوت",
+      "September":"سبتمبر",
+      "October": "اكتوبر",
+      "November":"نوفمبر",
+      "December":"ديسمبر"   
+    },
+    "btnLabel": "تأكيد"
+  },
+  "weekDays.names.Monday": "الاثنين",
+  "weekDays.names.Tuesday": "الثلاثاء",
+  "weekDays.names.Wednesday": "الأربعاء",
+  "weekDays.names.Thursday": "الخميس",
+  "weekDays.names.Friday": "الجمعة",
+  "weekDays.names.Saturday": "السبت",
+  "weekDays.names.Sunday": "الأحد"
 }

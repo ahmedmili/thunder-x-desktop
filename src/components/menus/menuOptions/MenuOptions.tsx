@@ -1,40 +1,36 @@
-import React, { RefObject, useEffect, useReducer, useRef, useState } from 'react';
-import { useTranslation } from 'react-i18next';
 import { Add as AddIcon, Star } from '@mui/icons-material';
 import StarBorderIcon from '@mui/icons-material/StarBorder';
-import { userService } from "../../../services/api/user.api";
+import Skeleton from "@mui/material/Skeleton";
+import React, { RefObject, useEffect, useReducer, useRef, useState } from 'react';
+import { Button, Container } from 'react-bootstrap';
+import { useTranslation } from 'react-i18next';
 import { useSelector } from 'react-redux';
 import { useLocation, useNavigate, useParams } from 'react-router-dom';
 import { toast } from 'react-toastify';
-import Skeleton from "@mui/material/Skeleton";
 import { RootState } from '../../../Redux/slices';
 import { addItem, setDeliveryPrice, setSupplier } from '../../../Redux/slices/cart/cartSlice';
 import { useAppDispatch, useAppSelector } from '../../../Redux/store';
 import { productService } from '../../../services/api/product.api';
-import { Container, Button } from 'react-bootstrap';
+import { userService } from "../../../services/api/user.api";
 // import { toast } from 'react-toastify';
 import './menuOptions.scss';
 
-import KeyboardArrowDownOutlinedIcon from '@mui/icons-material/KeyboardArrowDownOutlined';
-import KeyboardArrowUpOutlinedIcon from '@mui/icons-material/KeyboardArrowUpOutlined';
-import ShoppingCartOutlinedIcon from '@mui/icons-material/ShoppingCartOutlined';
 import { supplierServices } from '../../../services/api/suppliers.api';
 import { localStorageService } from '../../../services/localStorageService';
-import { Option, Restaurant } from '../../../services/types';
+import { Option } from '../../../services/types';
 import { scrollToTop } from '../../../utils/utils';
 
+import moment from 'moment';
 import { fetchMessages } from '../../../Redux/slices/messanger';
+import ActiveGiftIcon from '../../../assets/profile/ArchivedCommands/activeGift.svg';
+import FavorActiveIcon from '../../../assets/profile/ArchivedCommands/favor-active.svg';
+import FavorIcon from '../../../assets/profile/ArchivedCommands/favor.svg';
+import GiftIcon from '../../../assets/profile/ArchivedCommands/gift.svg';
 import MessangerBtnIcon from '../../../assets/profile/Discuter/messanger-btn.svg';
-import SupplierIcn from './../../../assets/supplier-icn.png';
-import menuImg from './../../../assets/menu-1.png';
+import { AppProps } from '../../../services/types';
 import Messanger from '../../Popups/Messanger/Messanger';
 import SameSupplierWarn from '../../Popups/SameSupplierWarn/SameSupplierWarn';
-import moment from 'moment';
-import ActiveGiftIcon from '../../../assets/profile/ArchivedCommands/activeGift.svg';
-import GiftIcon from '../../../assets/profile/ArchivedCommands/gift.svg';
-import FavorIcon from '../../../assets/profile/ArchivedCommands/favor.svg';
-import FavorActiveIcon from '../../../assets/profile/ArchivedCommands/favor-active.svg';
-import { AppProps, MenuData } from '../../../services/types';
+import { Rating } from '@mui/material';
 // Define the initial state
 const initialState = {
     optionslist: [],
@@ -95,7 +91,9 @@ function MenuOptions({ initialData }: AppProps) {
 
     const { t } = useTranslation();
     const { id, search, productId } = useParams<{ id: string, search?: string, productId?: string }>();
-    const packRef: RefObject<HTMLFormElement> = useRef(null);
+    // const packRef: RefObject<HTMLFormElement> = useRef(null);
+    const packRef: any = useRef(null);
+
     const [productCount, setProductCount] = useState<number>(1);
     const [allContent, setAllContent] = useState<any[]>(initialData ? initialData.productResponse?.data.product : []);
     const [product, setProduct] = useState<any>(initialData ? initialData.productResponse?.data.product : {})
@@ -124,6 +122,12 @@ function MenuOptions({ initialData }: AppProps) {
     var currentDate = moment();
     var today = currentDate.format('ddd');
 
+    const [champWarn, setChampWarn] = useState<boolean>(false)  // viande  sauce extra supplement
+    const [viandeWarn, setViandeWarn] = useState<boolean>(false)
+    const [sauceWarn, setSauceWarn] = useState<boolean>(false)
+    const [extraWarn, setExtraWarn] = useState<boolean>(false)
+    const [supplementWarn, setSupplementWarn] = useState<boolean>(false)
+
     useEffect(() => {
         setUnReadedQt(unReadMessages)
     }, [unReadMessages])
@@ -140,14 +144,6 @@ function MenuOptions({ initialData }: AppProps) {
      * url handling part
      *
      */
-
-    useEffect(() => {
-        // let locationArray = location.pathname.split('/');
-        // locationArray[1] = "restaurant";
-        // const newUrl = locationArray.join("/");
-        // window.history.pushState({}, '', newUrl);
-    }, [])
-
     const getSupplier = async (id: number) => {
         const { status, data } = await supplierServices.getSupplierById(id)
         if (status === 200) {
@@ -175,12 +171,15 @@ function MenuOptions({ initialData }: AppProps) {
                 if (data.status === 200) {
                     data = data.data
                     let otherProducts: any[] = [];
+                    let menuId = product?.menu[0]?.id;
                     data.data.map((menu: any) => {
-                        menu.products.map((product: any) => {
-                            if (Number(product.id) !== supplierId && otherProducts.length < 6) {
-                                otherProducts.push(product)
-                            }
-                        })
+                        if (menu.id == menuId) {
+                            menu.products.map((p: any) => {
+                                if (Number(p.id) !== Number(product.id)) {
+                                    otherProducts.push(p)
+                                }
+                            })
+                        }
                     })
                     setMenuData(otherProducts);
                 }
@@ -211,6 +210,7 @@ function MenuOptions({ initialData }: AppProps) {
     useEffect(() => {
         fetchData()
     }, [id, search, productId]);
+
     const fetchData = async () => {
         setLoading(true);
         await getProduct();
@@ -219,6 +219,16 @@ function MenuOptions({ initialData }: AppProps) {
         await getSupplierIsOpen()
         setLoading(false);
     };
+    const fetchMenuData = async () => {
+        setLoading(true);
+        await getMenu()
+        await getSupplierIsOpen()
+        setLoading(false);
+    };
+    useEffect(() => {
+        if (product)
+            fetchMenuData()
+    }, [product]);
 
     const getProduct = async () => {
         try {
@@ -403,6 +413,7 @@ function MenuOptions({ initialData }: AppProps) {
                     default:
                         break;
                 }
+
                 if (!((type == "pate") || (type == 'packet' || (type == 'free')))) {
                     let ok = true;
                     if (max !== -1 && event.target.checked == true) {
@@ -413,12 +424,24 @@ function MenuOptions({ initialData }: AppProps) {
                             event.target.checked = false;
                             ok = false
                         }
+                        type === 'sauce' && setSauceWarn(true)
+                        type === 'extra' && setExtraWarn(true)
+                        type === 'viande' && setViandeWarn(true)
+                        type === 'supplement' && setSupplementWarn(true)
+
                     }
                     if (ok) {
                         updatedOption[type][index].checked = event.target.checked;
+                        type === 'sauce' && setSauceWarn(false)
+                        type === 'extra' && setExtraWarn(false)
+                        type === 'viande' && setViandeWarn(false)
+                        type === 'supplement' && setSupplementWarn(false)
+
                     }
                 } else if ((type == "pate") || (type == 'packet')) {
                     updatedOption[type].forEach((item: any) => item.checked = false);
+                    setChampWarn(false)
+
                     updatedOption[type][index].checked = event.target.checked;
                 } else {
                     updatedOption[type][index].checked = event.target.checked;
@@ -488,6 +511,8 @@ function MenuOptions({ initialData }: AppProps) {
         packs.length > 0 && opts.push(packs);
         if (state.packet.length > 0) {
             if (packs.length <= 0) {
+                // setShampWarn
+                setChampWarn(true)
                 packRef.current && packRef.current.scrollIntoView({ behavior: 'smooth' });
                 return false;
             }
@@ -517,6 +542,9 @@ function MenuOptions({ initialData }: AppProps) {
         localStorageService.setSupplier(productSupplier);
         usedispatch(addItem(obj));
         getProduct()
+        setTimeout(() => {
+            navigate(-1)
+        }, 2500)
     }
 
     useEffect(() => {
@@ -650,21 +678,25 @@ function MenuOptions({ initialData }: AppProps) {
                                                 productSupplier?.bonus ? (
                                                     <div className='gift-icon' style={(productSupplier?.bonus > 0) ? { backgroundImage: `url(${ActiveGiftIcon})` } : { backgroundImage: `url(${GiftIcon})` }}></div>
                                                 ) : (
-                                                    <div className='gift-icon' style={{ backgroundImage: `url(${GiftIcon})` }}></div>
+                                                    <></>
                                                 )
                                             }
                                         </div>
-                                        <div className="stars">
-                                            {
-                                                (productSupplier?.star && (productSupplier?.star > 0)) && (<span className='star-number'> {productSupplier?.star}</span>)
-                                            }
-                                            {[...Array(5)].map((_, index) => (
-                                                <span key={index + 1}>
-                                                    {(productSupplier?.star && (productSupplier?.star >= index + 1))
-                                                        ? <Star className='starIcon' style={{ visibility: 'visible' }} /> : <StarBorderIcon className='starIcon' style={{ visibility: 'visible' }} />
-                                                    }
-                                                </span>
-                                            ))}
+                                        <div ref={packRef} className="stars">
+
+                                            <span >
+                                                <Rating
+                                                    size='large'
+                                                    name="simple-controlled"
+                                                    value={productSupplier?.star}
+                                                    style={{
+                                                        fontSize: "24px"
+                                                    }}
+                                                    onChange={(event, newValue) => {
+                                                        console.log("newValue : ", newValue)
+                                                    }}
+                                                />
+                                            </span>
                                         </div>
                                     </div>
                                 </div>
@@ -676,18 +708,10 @@ function MenuOptions({ initialData }: AppProps) {
                                             </p>
                                         </li>
                                         <li>
-                                            <p className={`supplier-infos_list-item time-work ${isOpen ? 'open' : 'close'}`}>
-                                                {
-                                                    productSupplier?.bonus ? (
-                                                        <div className='gift-icon' style={(productSupplier?.bonus > 0) ? { backgroundImage: `url(${ActiveGiftIcon})` } : { backgroundImage: `url(${GiftIcon})` }}></div>
-                                                    ) : (
-                                                        <div className='gift-icon' style={{ backgroundImage: `url(${GiftIcon})` }}></div>
-                                                    )
-                                                }
-                                            </p>
+                                            <p className={`supplier-infos_list-item time-work`}>  {isOpen ? `${t('supplier.opentime')} ${closeTime}` : `${t('closed')}`}</p>
                                         </li>
                                         <li>
-                                            <p className="supplier-infos_list-item shipping-cost">Frais de livraison: {productSupplier?.delivery_price} Dt</p>
+                                            <p className="supplier-infos_list-item shipping-cost">{t('supplier.delivPrice')}: {productSupplier?.delivery_price} Dt</p>
                                         </li>
                                         <li>
                                             <div className="time">{`${Number(productSupplier?.medium_time) - 10}-${Number(productSupplier?.medium_time + 10)}min`}</div>
@@ -724,20 +748,20 @@ function MenuOptions({ initialData }: AppProps) {
                                                                 <div className="option-name">{t('')} {Object.keys(options)[0]}</div>
                                                                 {
 
-                                                                    Object.keys(options)[0] === "packet" && <div className="option-obligatoir">{t('supplier.Mandatory')}</div>
+                                                                    Object.keys(options)[0] === "packet" && <div className={`option-obligatoir ${champWarn ? 'warn' : ''}`}>{t('supplier.Mandatory')}</div>
                                                                 }
 
                                                                 {
-                                                                    Object.keys(options)[0] === "sauce" && state.sauce_max?.max > 0 && <div className="option-max">{"MAX " + state.sauce_max?.max}</div>
+                                                                    Object.keys(options)[0] === "sauce" && state.sauce_max?.max > 0 && <div className={`option-max  ${sauceWarn ? 'warn' : ''}`}  >{"MAX " + state.sauce_max?.max}</div>
                                                                 }
                                                                 {
-                                                                    Object.keys(options)[0] === "viande" && state.viande_max?.max > 0 && <div className="option-max">{"MAX " + state.viande_max?.max}</div>
+                                                                    Object.keys(options)[0] === "viande" && state.viande_max?.max > 0 && <div className={`option-max  ${viandeWarn ? 'warn' : ''}`} >{"MAX " + state.viande_max?.max}</div>
                                                                 }
                                                                 {
-                                                                    Object.keys(options)[0] === "extra" && state.extra_max?.max > 0 && <div className="option-max">{"MAX " + state.extra_max?.max}</div>
+                                                                    Object.keys(options)[0] === "extra" && state.extra_max?.max > 0 && <div className={`option-max  ${extraWarn ? 'warn' : ''}`}>{"MAX " + state.extra_max?.max}</div>
                                                                 }
                                                                 {
-                                                                    Object.keys(options)[0] === "supplement" && state.supplement_max?.max > 0 && <div className="option-max">{"MAX " + state.supplement_max?.max}</div>
+                                                                    Object.keys(options)[0] === "supplement" && state.supplement_max?.max > 0 && <div className={`option-max  ${supplementWarn ? 'warn' : ''}`}>{"MAX " + state.supplement_max?.max}</div>
                                                                 }
                                                             </div>
                                                             <form>

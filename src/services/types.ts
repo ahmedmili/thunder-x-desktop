@@ -247,3 +247,12 @@ export interface Message {
   displayDate?: boolean;
   message: string;
 }
+
+export interface Schedule {
+  created_at: string;
+  day: string;
+  from: string;
+  status: string;
+  to: string;
+  id: number;
+}

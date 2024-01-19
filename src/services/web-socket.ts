@@ -37,15 +37,17 @@ const channelListener = () => {
     switch (data.type_event) {
       case 'PROGRESSING_COMMAND':
         break;
-      case 'COMMAND_ASSIGNED':
-        break;
+
       case 'NEW_ADMIN_MESSAGE':
         eventEmitter.emit('NEW_ADMIN_MESSAGE', data.message);
         break;
-        case 'HOME_DATA_CHANGED':
-          break;
-          case 'COMMAND_UPDATED':
+      case 'HOME_DATA_CHANGED':
+        break;
+      case 'COMMAND_UPDATED':
         eventEmitter.emit('COMMAND_UPDATED', data.message);
+        break;
+      case 'COMMAND_ASSIGNED':
+        eventEmitter.emit('COMMAND_ASSIGNED', data.message);
         break;
       case 'BONUS_UPDATED':
         break;

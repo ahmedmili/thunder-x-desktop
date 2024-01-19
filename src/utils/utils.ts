@@ -1,5 +1,6 @@
 import pointInPolygon from "point-in-polygon";
 import { localStorageService } from "../services/localStorageService";
+import { format } from "date-fns";
 
 
 
@@ -53,4 +54,25 @@ export const arrayToObject = (array: string[]): Record<string, string> => {
     });
     return resultObject
 }
+export const convertStringToNumber = (product: any, quantity: any): number => {
+
+    const totalPrice = Number(product.price) * quantity;
+    return Number(totalPrice.toFixed(2));
+}
+export const formatDate = (date: Date): string => {
+    if (date) {
+        const days = ['Dimanche', 'Lundi', 'Mardi', 'Mercredi', 'Jeudi', 'Vendredi', 'Samedi'];
+        const name = days[date.getDay()];
+        const str = format(date, "dd/MM 'à' HH:mm");
+        return 'le ' + name + ' ' + str
+    }
+    return ''
+}
+
+export const getHoursAndMinutes = (time: string) => {
+    const [hours, minutes] = time.split(':');
+    return { hours: parseInt(hours, 10), minutes: parseInt(minutes, 10) };
+};
+
+
 

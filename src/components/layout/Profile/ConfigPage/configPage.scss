@@ -29,6 +29,7 @@
         height: 100%;
     }
 }
+
 @keyframes fadeIn {
     0% {
         opacity: 0;
@@ -38,9 +39,10 @@
         opacity: 1;
     }
 }
+
 .profile-page-wrapper {
     padding: 125px 0 0;
-    
+
     .profile-title-page {
         margin: 0 0 43px;
         @include fonts(20px, 20px, $dark_Gray);
@@ -56,10 +58,11 @@
     margin: 0;
     animation: fadeIn 1s ease-in-out;
     transition: height 1s ease-in-out;
-    
+
     &::-webkit-scrollbar {
         width: 0;
     }
+
     .setting {
         .header {
             @include flex(flex, center, space-between);
@@ -68,11 +71,13 @@
             &:hover {
                 cursor: pointer;
             }
+
             .title {
                 @include fonts(20px, 20px, $dark_Gray);
                 font-family: 'Poppins-SemiBold', serif;
                 transition: color 0.5s ease-in-out;
             }
+
             .icon {
                 @include dimensions(35px, 35px);
                 color: $dark_Gray;
@@ -80,11 +85,13 @@
                 transition: rotate 0.5s ease-in-out;
             }
         }
+
         .active {
             .icon {
                 rotate: 0deg;
             }
         }
+
         &:not(:last-child) {
             .header {
                 border-bottom: $color-gray-alto solid 1px;
@@ -95,6 +102,7 @@
             }
         }
     }
+
     .longue-container {
         width: 80%;
         min-height: 147px;
@@ -102,14 +110,16 @@
         margin-bottom: -5px;
         animation: LongAnimation 0.5s ease-in;
     }
+
     .theme-container {
         @include dimensions(80%, 90px);
         overflow: hidden;
         animation: ThemeAnimation 0.5s ease-in;
     }
+
     .map-container {
-        @include flex;
-        min-height: 444px;
+        display: block;
+        min-height: 447px;
 
         .location-container {
             padding: 0;
@@ -119,6 +129,7 @@
                     @include fontSize(20px, 20px);
                 }
             }
+
             .location-filtre {
                 margin: 0 0 20px;
                 gap: 45px;
@@ -133,6 +144,7 @@
                     label {
                         @include fontSize(18px, 18px);
                     }
+
                     &.selected {
                         background-color: $color-yellow-saffron;
                         border-color: $color-yellow-saffron;
@@ -140,6 +152,7 @@
                 }
             }
         }
+
         .container-map {
             min-height: 447px;
             padding: 4px 43px 0 20px;
@@ -159,6 +172,7 @@
                 .title {
                     font-size: 15px;
                 }
+
                 .icon {
                     @include dimensions(40px, 33px);
                 }
@@ -177,6 +191,7 @@
                 .title {
                     font-size: 13px;
                 }
+
                 .icon {
                     @include dimensions(23px, 28px);
                 }

@@ -24,8 +24,9 @@ import traitementD from "../../../../../assets/profile/ArchivedCommands/traiteme
 import { commandService } from '../../../../../services/api/command.api';
 import { Product } from '../../../../../services/types';
 import SignaleProblem from '../../../../Popups/SignaleProblem/SignaleProblem';
-import CommandsFooter from '../Footer/Footer';
 import WarnPopup from '../../../../Popups/WarnPopup/WarnPopup';
+import CommandsFooter from '../Footer/Footer';
+import eventEmitter from '../../../../../services/thunderEventsService';
 
 interface CommandsListProps {
     data: any
@@ -33,32 +34,58 @@ interface CommandsListProps {
     goToPassedCommands: any;
 }
 
-
+interface CommandsData {
+    products: [],
+    total_price: number,
+    is_delivery: number,
+    delivery_price: number
+    command_id: number,
+    bonus: number,
+    gift_ammount: number,
+    total_price_coupon: number,
+    mode_pay: number,
+    coupon: {
+        type: string,
+        value: number,
+        delivery_fixed: number,
+    },
+}
 interface CommandProps {
     removeCommand: any;
-    data: {
-        products: [],
-        total_price: number,
-        is_delivery: number,
-        delivery_price: number
-        command_id: number,
-        bonus: number,
-        gift_ammount: number,
-        total_price_coupon: number,
-        mode_pay: number,
-        coupon: {
-            type: string,
-            value: number,
-            delivery_fixed: number,
-        },
-    }
+    data: CommandsData
 
 }
 
 const Command: React.FC<CommandProps> = ({ removeCommand, data }) => {
     const [total, setTotal] = useState<number>(0)
     const [showCancleConfirm, setShowCancleConfirm] = useState<boolean>(false)
+    const [tax, setTax] = useState<number>(0)
+
     const { t } = useTranslation()
+
+    const calculSomme = (products: any) => {
+        const totalCost = products.reduce((accumulator: any, currentItem: any) => {
+            let itemCost: any;
+            if (currentItem.computed_value.discount_value > 0) {
+                const discountPrice = (currentItem.price * currentItem.computed_value.discount_value) / 100;
+                itemCost = (currentItem.price - discountPrice) * currentItem.quantity;
+            } else {
+                itemCost = currentItem.price * currentItem.quantity;
+            }
+            return accumulator + itemCost;
+        }, 0);
+        return totalCost;
+    }
+
+    const calculTax = (command: any) => {
+        const totalPrice = parseFloat(command?.total_price);
+        const totalProducts = calculSomme(command?.products);
+        const deliveryPrice = parseFloat(command.delivery_price);
+        const bonus = command.bonus > 0 ? (command.bonus / 1000) : 0;
+        const gift = command.gift_ammount > 0 ? command.gift_ammount : 0;
+        const tax = (totalPrice + bonus + gift) - (totalProducts + deliveryPrice);
+        return tax;
+    }
 
     const calculeData = () => {
         let total = 0;
@@ -75,15 +102,17 @@ const Command: React.FC<CommandProps> = ({ removeCommand, data }) => {
     }
 
     useEffect(() => {
+        const tax = calculTax(data)
+        setTax(tax)
         calculeData()
     }, [data])
 
-    const handleConfrmModal = ( )=>{
+    const handleConfrmModal = () => {
         setShowCancleConfirm(!showCancleConfirm)
     }
-    const dropCommand = (id:number) =>{
+    const dropCommand = (id: number) => {
         removeCommand(id)
-    } 
+    }
     return (
         <div className='command-product-container'>
             <h3 className='title'> {t('profile.commands.command')}</h3>
@@ -91,7 +120,7 @@ const Command: React.FC<CommandProps> = ({ removeCommand, data }) => {
             {/* total */}
             <div className='total'>
                 <span className="total-txt">{t('cartPage.total')}</span>
-                <span className='total-value'>{(data.total_price - data.total_price_coupon).toFixed(2)} DT</span>
+                <span className='total-value'>{Number(data.total_price).toFixed(2)} DT</span>
             </div>
             {/* sous Total */}
             <div className='sous-total'>
@@ -135,6 +164,15 @@ const Command: React.FC<CommandProps> = ({ removeCommand, data }) => {
                     {data.mode_pay === 1 ? t('cartPage.espece') : t('cartPage.bankPay')}
                 </span>
             </div>
+            {/* tax section */}
+            {
+                (tax > 0) && (
+                    <div className='tax'>
+                        <span >{t('orderTrackingPage.BankTaxes')}</span>
+                        <span className='left-price'>-{tax.toFixed(2)} dt</span>
+                    </div>
+                )
+            }
             {/* bonus discount */}
             {
                 (data.bonus > 0) && (
@@ -144,6 +182,7 @@ const Command: React.FC<CommandProps> = ({ removeCommand, data }) => {
                     </div>
                 )
             }
+
             {/* gift discount */}
             {
                 data.gift_ammount > 0 && (
@@ -167,7 +206,7 @@ const Command: React.FC<CommandProps> = ({ removeCommand, data }) => {
             {
                 showCancleConfirm && (
 
-                    <WarnPopup close={handleConfrmModal} accept={() => dropCommand(data.command_id)} closeButtonText={t('Annuler')} confirmButtonText={t('delete')}  message='' />
+                    <WarnPopup close={handleConfrmModal} accept={() => dropCommand(data.command_id)} closeButtonText={t('Annuler')} confirmButtonText={t('delete')} message={t('profile.commands.annuler.warnMessage')} />
                 )
             }
         </div>
@@ -178,23 +217,43 @@ const Command: React.FC<CommandProps> = ({ removeCommand, data }) => {
 const CurrentCommands: React.FC<CommandsListProps> = ({ removeCommand, goToPassedCommands, data }) => {
 
     const { t } = useTranslation()
-    const supplier = data.supplier
-    const delivery = data.delivery
-    const toAdress = data.to_adresse
-    const cycle = data.cycle
-    const isReady = data.is_ready
-    const isDelevery = data.is_delivery
-    const take_away_date = data.take_away_date
-    const lat = supplier.localisation.lat;
-    const long = supplier.localisation.long;
-    const position = supplier.street + " " + supplier.region + " " + supplier.city
+    const [commandData, setCommandData] = useState<any>(data)
     const [status, setStatus] = useState<number>(0)
-
-
     const [messsage, setMessage] = useState<string>('')
     const [time, setTime] = useState<string>('')
     const [date, setDate] = useState<string>('')
     const [problemPopup, setProblemPopup] = useState<boolean>(false)
+
+    const supplier = commandData.supplier
+    const delivery = commandData.delivery
+    const toAdress = commandData.to_adresse
+    const cycle = commandData.cycle
+    const isReady = commandData.is_ready
+    const isDelevery = commandData.is_delivery
+    const take_away_date = commandData.take_away_date
+    const lat = supplier.localisation.lat;
+    const long = supplier.localisation.long;
+    const position = supplier.street + " " + supplier.region + " " + supplier.city
+
+    const id = data.id
+
+    const updateCurrentCommands = async () => {
+        const { status, data } = await commandService.myCommands()
+        const commandsList = data.data
+        const commands = data.success ? commandsList.filter((cmd: any) => {
+            return cmd.id == id
+        }) : [];
+        commands.length && setCommandData(commands[0])
+    }
+
+    useEffect(() => {
+        eventEmitter.on('COMMAND_UPDATED', updateCurrentCommands)
+        eventEmitter.on('COMMAND_ASSIGNED', updateCurrentCommands)
+        return () => {
+            eventEmitter.off('COMMAND_UPDATED', updateCurrentCommands)
+            eventEmitter.off('COMMAND_ASSIGNED', updateCurrentCommands)
+        }
+    }, [])
 
     const handleProblemPopup = () => {
         setProblemPopup(current => !current)
@@ -207,6 +266,7 @@ const CurrentCommands: React.FC<CommandsListProps> = ({ removeCommand, goToPasse
             throw error
         }
     }
+
     useEffect(() => {
         if (take_away_date != null) {
             const [datePart, timePart] = take_away_date.split(' ');
@@ -276,181 +336,181 @@ const CurrentCommands: React.FC<CommandsListProps> = ({ removeCommand, goToPasse
         } : getProgressDescription(cycle)
         setStatus(status)
         setMessage(message)
+    }, [commandData])
+
+    useEffect(() => {
+        const { message, status } = isReady ? {
+            message: t('orderTrackingPage.isReady'),
+            status: 6
+        } : getProgressDescription(cycle)
+        setStatus(status)
+        setMessage(message)
     }, [])
 
     const commanddata: CommandProps = {
         removeCommand: removeCommand,
         data: {
-            command_id: data.id,
-            delivery_price: data.delivery_price,
-            products: data.products,
-            total_price: data.total_price,
-            bonus: data.bonus,
-            gift_ammount: Number(data.gift_ammount),
-            total_price_coupon: Number(data.total_price_coupon),
-            mode_pay: data.mode_pay,
-            coupon: data.coupon,
+            command_id: id,
+            delivery_price: commandData.delivery_price,
+            products: commandData.products,
+            total_price: commandData.total_price,
+            bonus: commandData.bonus,
+            gift_ammount: Number(commandData.gift_ammount),
+            total_price_coupon: Number(commandData.total_price_coupon),
+            mode_pay: commandData.mode_pay,
+            coupon: commandData.coupon,
             is_delivery: isDelevery,
         }
     }
 
     return (
-
         <>
             <div className="current-commands-container">
-                <div className="current-command-main_wrapper">
-                    <div className="current-command_header">
-                        <div className={`current-command-img`}>
-                            <img src={supplier.images[1].path} loading="lazy" alt="supplier background" />
+                <header className={` current-command-header `}>
+                    <img src={supplier.images[1].path} loading="lazy" alt="supplier background" />
+                </header>
+                <main className={`current-command-main `}>
+                    <div className='supplier-info'>
+                        <img src={supplier.images[0].length && supplier.images[0].path} loading="lazy" alt="supplier logo" />
+                        <div className='name-rate'>
+                            <p className='supplier-name'>{supplier.name}</p>
+                            {(supplier.star && supplier.star > 0) && <p className='supplier-rates'><StarIcon className='rate-icon' /> {supplier.star.toFixed(1)}</p>}
                         </div>
-                        <div className="current-command_desc">
-                            <div className='supplier-info'>
-                                <div className="supplier-info_img">
-                                    <img src={supplier.images[0].path} loading="lazy" alt="supplier logo" />
-                                </div>
-                                <div className='name-rate'>
-                                    <h4 className='supplier-name'>{supplier.name}</h4>
-                                    {(supplier.star && supplier.star > 0) && <div className='supplier-rates'><StarIcon className='rate-icon' /> {supplier.star.toFixed(1)}</div>}
-                                </div>
-                                <button className="btn btn-get-location"></button>
-                            </div>
-                            <div className="command-info">
-                                <div className="title">{messsage}</div>
-                                {
-                                    status <= 2 && <div className="description">{t('profile.commands.sousMessage')}</div>
-                                }
-                                {
-                                    status > 2 && status < 6 && !isReady && <div className="description">{t('profile.commands.sousMessage2')}</div>
-                                }
-                                {
-                                    status == 6 && isDelevery && isReady ? <div className="description">{t('profile.commands.sousMessage3')}</div> : !isDelevery && isReady ? <p className="description">{t('orderTrackingPage.importedReady')}</p> : <></>
-                                }
-                            </div>
-                        </div>
+
                     </div>
-                    <div className={`current-command-main`}>
-                        <div className='command-info'>
-                            <div className='command-graph'>
-                                <div className='time-line'></div>
-                                <img loading="lazy" src={(status === 1 || status === 2) ? traitementB : traitementD} alt="traitement logo" className='traitement-logo' />
-                                <img loading="lazy" src={(status <= 5 && status > 2) ? preparatinA : preparatinD} alt="preparation logo" className='preparation-logo' />
-                                {
-                                    isDelevery === 1 ? (
-                                        <img loading="lazy" src={(status === 6) ? delivA : delivD} alt="deliv logo" className='deliv-logo' />
 
-                                    ) : (
-                                        <img loading="lazy" src={(status === 6) ? doneA : doneD} alt="deliv logo" className='deliv-logo' />
-
-                                    )
-                                }
-                            </div>
-                        </div>
-                        <div className='command-list-product'>
-                            {
-                                (status === 1 || status === 2) && <Command removeCommand={removeCommand} data={commanddata.data} />
-                            }
-                        </div>
-                        <div className='deliv-info-section'>
+                    <div className='command-info'>
+                        <p className="title">{messsage}</p>
+                        {
+                            status <= 2 && <p className="description">{t('profile.commands.sousMessage')}</p>
+                        }
+                        {
+                            status > 2 && status < 6 && !isReady && <p className="description">{t('profile.commands.sousMessage2')}</p>
+                        }
+                        {
+                            status == 6 && isDelevery && isReady ? <p className="description">{t('profile.commands.sousMessage3')}</p> : !isDelevery && isReady ? <p className="description">{t('orderTrackingPage.importedReady')}</p> : <></>
+                        }
+                        <div className='command-graph'>
+                            <div className='time-line'></div>
+                            <img loading="lazy" src={(status === 1 || status === 2) ? traitementA : traitementD} alt="traitement logo" className='traitement-logo' />
+                            <img loading="lazy" src={(status <= 5 && status > 2) ? preparatinA : preparatinD} alt="preparation logo" className='preparation-logo' />
                             {
                                 isDelevery === 1 ? (
-                                    <>
-                                        {
-                                            (status <= 4 && status > 2) && (
-                                                <>
-                                                    <div className='no-deliv-assigned'>
-                                                        <div className='img'></div>
-                                                        <div className='delivery-info'>
-                                                            <p className="title">{t('profile.commands.livRecherche')}</p>
-                                                            <div className='bleck-box'></div>
-                                                            <p className="rate"> <StarIcon className='rate-icon' /> <div className='orange-box'></div></p>
-                                                        </div>
-                                                    </div>
-                                                    <hr />
-                                                </>
-                                            )
-                                        }
-                                        {
-                                            (status >= 5) && (
-                                                <>
-                                                    <div className='deliv-assigned'>
-                                                        <img loading="lazy" src={(delivery && delivery.image.path) ? delivery.image.path : defaultImage} alt="supplier image" />
-                                                        <div className='delivery-info'>
-                                                            <p className="title">{t('profile.commands.votreLiv')}</p>
-                                                            <p className="name">{(delivery && delivery.name) ? delivery.name : "Med Fendri"}</p>
-                                                            <p className="rate"><StarIcon className='rate-icon' /> {(delivery && delivery.star && delivery.star > 0) ? delivery.star : ""}</p>
-                                                        </div>
-                                                    </div>
-                                                    <hr />
-                                                </>
-                                            )
-                                        }
-                                        {
-                                            (status <= 6 && status > 2) && (
+                                    <img loading="lazy" src={(status === 6) ? delivA : delivD} alt="deliv logo" className='deliv-logo' />
 
-                                                <div className='position'>
-                                                    <div className='start-position'>
-                                                        <div className='position-icon' style={{ backgroundImage: `url(${positionIcon}) ` }}></div>
-                                                        <p className='name'>{supplier.name}</p>
-                                                        <p className='position-text' > {position}</p>
-                                                    </div>
-                                                    <div className='delay'>
-                                                        <p className='time-text'> {t('profile.commands.delivTime')} <span>15min</span></p>
-                                                    </div>
-                                                    <div className='start-position'>
-                                                        <div className='position-icon' style={{ backgroundImage: `url(${destinationIcon}) ` }}></div>
-                                                        <p className='name'>{t('home2')}</p>
-                                                        <p className='position-text' > {data.to_adresse}</p>
-                                                    </div>
+                                ) : (
+                                    <img loading="lazy" src={(status === 6) ? doneA : doneD} alt="deliv logo" className='deliv-logo' />
 
-                                                    <div className='time-line'></div>
-                                                </div>
-                                            )
-                                        }
-                                    </>
-                                ) : status > 2 && (
-                                    <>
-                                        <div className="buttons">
-                                            <button className='lieu-button' onClick={openGoogleMap}> <span className='position-icon' style={{ backgroundImage: `url(${positionIconBlue})` }}></span> {t('profile.commands.lieu')}</button>
-                                            {
-                                                status == 6 && (
-
-                                                    <button className='recup-btn'>{t('profile.commands.recupere')}</button>
-                                                )
-                                            }
-
-                                        </div>
-                                        <hr />
-                                        <div className='import-position'>
-                                            <div className='position-icon' style={{ backgroundImage: `url(${positionIcon}) ` }}></div>
-                                            <p className='position-text' > {toAdress}</p>
-                                        </div>
-
-                                        <div className='tacke-away-date'>
-                                            <span>{t('profile.commands.prevu')}:</span>
-                                            <span>{date}</span>
-                                            <span>{time}</span>
-                                        </div>
-
-                                    </>
                                 )
                             }
-
                         </div>
+                        <hr />
+                    </div>
+                    <div className='command-list-product'>
                         {
-                            status == 6 && isDelevery ? (
-                                <div className='buttons'>
-                                    <button className="problem" onClick={handleProblemPopup}>{t('profile.commands.problem')}</button>
-                                </div>
-                            ) : <></>
+                            (status === 1 || status === 2) && <Command removeCommand={removeCommand} data={commanddata.data} />
                         }
                     </div>
-                </div>
-                {status != 6 ? <CommandsFooter /> : <></>}
+                    <div className='deliv-info-section'>
+                        {
+                            isDelevery === 1 ? (
+                                <>
+                                    {
+                                        (status <= 4 && status > 2) && (
+                                            <>
+                                                <div className='no-deliv-assigned'>
+                                                    <div className='img'></div>
+                                                    <div className='delivery-info'>
+                                                        <p className="title">{t('profile.commands.livRecherche')}</p>
+                                                        <div className='bleck-box'></div>
+                                                        <p className="rate"> <StarIcon className='rate-icon' /> <div className='orange-box'></div></p>
+                                                    </div>
+                                                </div>
+                                                <hr />
+                                            </>
+                                        )
+                                    }
+                                    {
+                                        (status >= 5) && (
+                                            <>
+                                                <div className='deliv-assigned'>
+                                                    <img loading="lazy" src={(delivery && delivery.image.path) ? delivery.image.path : defaultImage} alt="supplier image" />
+                                                    <div className='delivery-info'>
+                                                        <p className="title">{t('profile.commands.votreLiv')}</p>
+                                                        <p className="name">{(delivery && delivery.name) ? delivery.name : "Med Fendri"}</p>
+                                                        <p className="rate"><StarIcon className='rate-icon' /> {(delivery && delivery.star && delivery.star > 0) ? delivery.star : ""}</p>
+                                                    </div>
+                                                </div>
+                                                <hr />
+                                            </>
+                                        )
+                                    }
+                                    {
+                                        (status <= 6 && status > 2) && (
+
+                                            <div className='position'>
+                                                <div className='start-position'>
+                                                    <div className='position-icon' style={{ backgroundImage: `url(${positionIcon}) ` }}></div>
+                                                    <p className='name'>{supplier.name}</p>
+                                                    <p className='position-text' > {position}</p>
+                                                </div>
+                                                <div className='delay'>
+                                                    <p className='time-text'> {t('profile.commands.delivTime')} <span>15min</span></p>
+                                                </div>
+                                                <div className='start-position'>
+                                                    <div className='position-icon' style={{ backgroundImage: `url(${destinationIcon}) ` }}></div>
+                                                    <p className='name'>{t('home2')}</p>
+                                                    <p className='position-text' > {data.to_adresse}</p>
+                                                </div>
+
+                                                <div className='time-line'></div>
+                                            </div>
+                                        )
+                                    }
+                                </>
+                            ) : status > 2 && (
+                                <>
+                                    <div className="buttons">
+                                        <button className='lieu-button' onClick={openGoogleMap}> <span className='position-icon' style={{ backgroundImage: `url(${positionIconBlue})` }}></span> {t('profile.commands.lieu')}</button>
+                                        {
+                                            status == 6 && (
+
+                                                <button className='recup-btn'>{t('profile.commands.recupere')}</button>
+                                            )
+                                        }
+
+                                    </div>
+                                    <hr />
+                                    <div className='import-position'>
+                                        <div className='position-icon' style={{ backgroundImage: `url(${positionIcon}) ` }}></div>
+                                        <p className='position-text' > {toAdress}</p>
+                                    </div>
+
+                                    <div className='tacke-away-date'>
+                                        <span>{t('profile.commands.prevu')}:</span>
+                                        <span>{date}</span>
+                                        <span>{time}</span>
+                                    </div>
+
+                                </>
+                            )
+                        }
+
+                    </div>
+                    {
+                        status == 6 && isDelevery ? (
+                            <div className='buttons'>
+                                <button className="problem" onClick={handleProblemPopup}>{t('profile.commands.problem')}</button>
+                            </div>
+                        ) : <></>
+                    }
+                    {status != 6 ? <CommandsFooter /> : <></>}
+                </main >
             </div >
 
             {
                 problemPopup &&
-                <SignaleProblem command_id={data.id} action={submitProblem} close={handleProblemPopup} />
+                <SignaleProblem command_id={id} action={submitProblem} close={handleProblemPopup} />
             }
         </>
 
