@@ -318,6 +318,8 @@
   "popup.payment.invalidePayment": "Invalid payment!",
   "popup.payment.validePayment": "Payment validated !",
   "popup.payment.valideCommand": "Order validated!",
+  "popup.payment.NotvalideCommand": "Order not validated !",
+
   "popup.payment.invalidePayment.msg": "Failed to pay, please try again",
   "popup.payment.validePayment.msg": "You will be alerted when the deliverer arrives near you.",
   "popup.supplier.tryAgain": "this supplier is closed right now , please try again in another time !",

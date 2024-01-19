@@ -42,17 +42,12 @@ const PaymentPopup: React.FC<Props> = ({ close, type }) => {
         default:
             break;
     }
-
     return (
-        <div className="popup-container" onClick={() => {
-            close()
-            type !== "error" && navigate("/", { replace: true })
-        }
-        }>
+        <div className="popup-container">
             <div className="popup-box">
                 <button className="close-btn" onClick={() => {
                     close()
-                    type !== "error" && navigate("/", { replace: true })
+                    // type !== "error" && navigate("/", { replace: true })
                 }
                 }>
                 <CloseIcon className='close-icon'></CloseIcon>

@@ -334,6 +334,7 @@
   "popup.supplier.tryAgain": "Ce fournisseur est actuellement fermé, veuillez réessayer à un autre moment !",
   "popup.payment.validePayment": "Paiement validé !",
   "popup.payment.valideCommand": "Commande validé !",
+  "popup.payment.NotvalideCommand": "Commande non validé !",
   "popup.payment.invalidePayment.msg": "Echec de paiement, veuillez réessayer",
   "popup.payment.validePayment.msg": "Vous serez alerté lorsque le livreur arrive prés de chez vous.",
   "cart.payment.yourCommand": "Votre Commande",
