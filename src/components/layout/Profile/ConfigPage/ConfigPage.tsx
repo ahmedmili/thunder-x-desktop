@@ -10,9 +10,7 @@ import Map from '../../../Location/Location';
 import ModifPassword from '../../../Popups/ModifPassword/ModifPassword';
 import PhoneNumberInput from '../../../Popups/PhoneNumberInput/PhoneNumberInput';
 import DesactiveAccount from './DesactiveAccount/DesactiveAccount';
-import Legale from './Legale/Legale';
 import Longue from './Longue/Longue';
-import Politiques from './Politiques/Politiques';
 import UpdateAccount from './UpdateAccount/UpdateAccount';
 import './configPage.scss';
 
@@ -72,7 +70,7 @@ const ConfigPage = () => {
   return (
     <div className="profile-page-wrapper">
       <h1 className="profile-title-page">
-        Mes configurations
+        {t('profile.mesConfig')}
       </h1>
       <div className={`config-page `}>
 
@@ -87,14 +85,12 @@ const ConfigPage = () => {
         {
           showPWPopup &&
           <>
-            {/* <UpdateAccount /> */}
             <ModifPassword close={showPasswordPopup} />
           </>
         }
         {
           showPhoneInputPopup &&
           <>
-            {/* <updatePhone /> */}
             <PhoneNumberInput close={handlePhonePopup} />
           </>
         }
@@ -112,24 +108,9 @@ const ConfigPage = () => {
           </div>
 
         }
-        <SettingSection settingIndex={4} actionListener={handleselect} title={t('profile.mesConfig.legales')} className={`${selectedSetting === 4 ? "active" : ""}`} />
+        <SettingSection settingIndex={4} actionListener={handleselect} title={t('profile.desactive.Desactive_Drop_account')} className={`${selectedSetting === 4 ? "active" : ""}`} />
         {
           selectedSetting === 4 &&
-          <div className='legal-container'>
-            <Legale />
-          </div>
-        }
-
-        <SettingSection settingIndex={5} actionListener={handleselect} title={t('profile.mesConfig.politiques')} className={`${selectedSetting === 5 ? "active" : ""}`} />
-        {
-          selectedSetting === 5 &&
-          <div className='legal-container'>
-            <Politiques />
-          </div>
-        }
-        <SettingSection settingIndex={6} actionListener={handleselect} title={t('profile.desactive.Desactive_Drop_account')} className={`${selectedSetting === 6 ? "active" : ""}`} />
-        {
-          selectedSetting === 6 &&
           <div className='desactive-container'>
             <DesactiveAccount />
           </div>

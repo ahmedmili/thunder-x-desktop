@@ -1,71 +1,216 @@
-[
-    {
-        "title": "Article 1 : Objet",
-        "body": [
-            "Les présentes CGU ou Conditions Générales d’Utilisation encadrent juridiquement l’utilisation des services de l'application Thunder Express (ci-après dénommée « l’application »).\n",
-            "Constituant le contrat entre la société Thunder Express et l’Utilisateur, l’accès à l’application doit être précédé par l’acceptation de ces CGU. L’accès à cette application signifie l’acceptation des présentes CGU."
-        ]
-    },
-    {
-        "title": "Article 2 : Mentions légales",
-        "body": [
-            "L’édition de l’application Thunder Express est assurée par la société Thunder Express inscrite au RNE sous le numéro de 1772222N, dont le siège social est localisé à Imem Boukhari APP A1, Khzema Ouest 4071."
-        ]
-    },
-    {
-        "title": "Article 3 : Accès à l’application",
-        "body": [
-            " L’application est accessible gratuitement pour tout utilisateur disposant d’un accès à Internet. Tous les frais nécessaires pour l’accès aux services (matériel informatique, connexion Internet…) sont à la charge de l’utilisateur.\n",
-            "L’accès aux services dédiés aux membres s’effectue à l’aide d’un identifiant et d’un mot de passe. Pour des raisons de maintenance ou autres, l’accès à l’application peut être interrompu ou suspendu par l’éditeur sans préavis ni justification."
-        ]
-    },
-    {
-        "title": "Article 4 : Collecte des données",
-        "body": [
-            "Pour la création du compte de l’Utilisateur, la collecte des informations au moment de l’inscription est nécessaire et obligatoire. Le traitement de ces informations s’effectue dans le cadre du respect de la vie privée."
-        ]
-    },
-    {
-        "title": "Article 5 : Propriété intellectuelle",
-        "body": [
-            "Les marques, logos ainsi que les contenus de l’application de Thunder Express (illustrations graphiques, textes…) sont protégés par la loi n° 36 du 24 février 1994 relative à la propriété littéraire et artistique et par les droits d’auteur.\n",
-            "La reproduction et la copie des contenus par l'utilisateur requièrent une autorisation préalable de l’application. Dans ce cas, toute utilisation à des usages commerciaux ou à des fins publicitaires est proscrite."
-        ]
-    },
-    {
-        "title": "Article 6 : Responsabilité",
-        "body": [
-            "En dépit des mises à jour régulières, la responsabilité de l’application ne peut être engagée en cas de modification des dispositions administratives et juridiques apparaissant après la publication. Il en est de même pour l’utilisation et l’interprétation des informations communiquées sur l’application.\n",
-            "L’application décline toute responsabilité concernant les éventuels virus pouvant infecterle matériel informatique de l'utilisateur après l’utilisation ou l’accès à cette application.\n",
-            "La garantie totale de la sécurité et la confidentialité des données est assurée par l’application.Thunder Express s’engage à mettre en œuvre toutes les méthodes requises pour le faire au mieux."
-        ]
-    },
-    {
-        "title": "Article 7 : Cookies",
-        "body": [
-            "Lors de l’ouverture de l’application, l’installation automatique d’un cookie sur le logiciel de navigation de l'utilisateur peut survenir.\n",
-            "Les cookies correspondent à de petits fichiers déposés temporairement sur le disque dur de l’appareil mobile de l'utilisateur.Ces cookies sont nécessaires pour assurer l’accessibilité à l’application. Ces fichiers ne comportentpas d’informations personnelles et ne peuvent pas être utilisés pour l’identification d’une personne.\n",
-            "L’information présente dans les cookies est utilisée pour améliorer l’utilisation de l’application Thunder Express.En utilisant l’application, l’Utilisateur accepte les cookies. Leur désactivation peut s’effectuer via lesparamètres du logiciel de navigation."
-        ]
-    },
-    {
-        "title": "Article 8 : Publication par l’Utilisateur",
-        "body": [
-            "L’application Thunder Express permet aux membres de publier des commentaires. \nDans ses publications, le membre est tenu de respecter les règles de la Netiquette ainsi que les règles de droit en vigueur.\n  L’application dispose du droit d’exercer une modération à priori sur les publications et peut refuser leur mise en ligne sans avoir à fournir de justification. \n",
-            "Le membre garde l’intégralité de ses droits de propriété intellectuelle. Toutefois, toute publication sur l’application implique la délégation du droit non exclusif et gratuit à la société éditrice de représenter, reproduire, modifier, adapter, distribuer et diffuser la publication n’importe où et sur n’importe quel support pour la durée de la propriété intellectuelle. Cela peut se faire directement ou par l’intermédiaire d’un tiers autorisé. Cela concerne notamment le droit d’utilisationde la publication sur le web et sur les réseaux de téléphonie mobile.\n",
-            "À chaque utilisation, l’éditeur s’engage à mentionner le nom du membre à proximité de la publication. L'utilisateur est tenu responsable de tout contenu qu’il met en ligne. Il s’engage à ne pas publier de contenus susceptibles de porter atteinte aux intérêts de tierces personnes. Toutes procédures engagées en justice par un tiers lésé à l’encontre de l’application devront être prises en charge par l’Utilisateur."
-        ]
-    },
-    {
-        "title": "Article 9 : Durée du contrat",
-        "body": [
-            "Le présent contrat est valable pour une durée indéterminée. Le début de l’utilisation des services del’application de Thunder Express marque l’application du contrat à l’égard de l'utilisateur."
-        ]
-    },
-    {
-        "title": "Article 10 : Droit applicable et juridiction compétente",
-        "body": [
-            "Le présent contrat est soumis à la législation tunisienne. L’absence de résolution à l’amiable des cas de litige entre les parties implique le recours aux tribunaux tunisiens compétents pour régler le contentieux."
-        ]
-    }
-]
+{
+    "ar": [
+        {
+            "title": "المادة 1: الغرض",
+            "body": [
+                "تنظم هذه الشروط العامة للاستخدام قانونيًا استخدام خدمات تطبيق Thunder Express (المعروف فيما بعد بـ 'التطبيق').",
+                "تشكل العقد بين شركة Thunder Express والمستخدم، ويجب أن يتم الوصول إلى التطبيق بعد قبول هذه الشروط العامة. يعني الوصول إلى هذا التطبيق قبول هذه الشروط العامة."
+            ]
+        },
+        {
+            "title": "المادة 2: المعلومات القانونية",
+            "body": [
+                "تضمن شركة Thunder Express تحرير تطبيق Thunder Express ومسجلة في السجل الوطني للمؤسسات تحت الرقم 1772222N، ومقرها الرسمي في Imem Boukhari APP A1، Khzema Ouest 4071."
+            ]
+        },
+        {
+            "title": "المادة 3: الوصول إلى التطبيق",
+            "body": [
+                " يمكن للمستخدم الوصول إلى التطبيق مجانًا عبر الإنترنت. جميع التكاليف المتعلقة بالوصول إلى الخدمات (الأجهزة الحاسوبية، الاتصال بالإنترنت...) على المستخدم..\n",
+                "يتم الوصول إلى الخدمات المخصصة للأعضاء باستخدام هوية المستخدم وكلمة مرور. قد يتم تعليق الوصول إلى التطبيق بدون إشعار أو تبرير من قبل الناشر لأسباب صيانة أو غيرها."
+            ]
+        },
+        {
+            "title": "المادة 4: جمع البيانات",
+            "body": [
+                "لإنشاء حساب المستخدم، يكون جمع المعلومات في وقت التسجيل ضروريًا وإلزاميًا. يتم معالجة هذه المعلومات في إطار احترام الخصوصية."
+            ]
+        },
+        {
+            "title": "المادة 5: الملكية الفكرية",
+            "body": [
+                "تحمي العلامات التجارية والشعارات ومحتويات تطبيق Thunder Express (الرسوم البيانية التوضيحية، النصوص...) بموجب القانون رقم 36 الصادر في 24 فبراير 1994 بشأن الملكية الأدبية والفنية وحقوق المؤلف\n",
+                "يتطلب نسخ ونسخ المحتوى بواسطة المستخدم موافقة مسبقة من التطبيق. في هذه الحالة، يتم حظر أي استخدام لأغراض تجارية أو إعلانية."
+            ]
+        },
+        {
+            "title": "المادة 6: المسؤولية",
+            "body": [
+                "على الرغم من التحديثات المنتظمة، لا يمكن محاسبة التطبيق عند تغيير الترتيبات الإدارية والقانونية التي تظهر بعد النشر. الأمر نفسه ينطبق على استخدام وتفسير المعلومات المقدمة على التطبيق.",
+                "يخلي التطبيق نفسه من أي مسؤولية بشأن الفيروسات المحتملة التي قد تصيب أجهزة الحاسوب الخاصة بالمستخدم بعد استخدام أو الوصول إلى هذا التطبيق.",
+                "يتعهد تطبيق Thunder Express بتوفير جميع الوسائل اللازمة لضمان الأمان وسرية البيانات بشكل كامل."
+            ]
+        },
+        {
+            "title": "المادة 7: ملفات تعريف الارتباط (الكوكيز)",
+            "body": [
+                "عند فتح التطبيق، قد يحدث تثبيت تلقائي لملف تعريف الارتباط على برنامج التصفح الخاص بالمستخدم.",
+                "تتناسب ملفات تعريف الارتباط مع ملفات صغيرة يتم وضعها مؤقتًا على القرص الصلب لجهاز المحمول للمستخدم. يتعين أن تكون هذه الملفات ضرورية لضمان إمكانية الوصول إلى التطبيق. هذه الملفات لا تحتوي على معلومات شخصية ولا يمكن استخدامها لتحديد هوية شخص.",
+                "تستخدم المعلومات الموجودة في ملفات تعريف الارتباط لتحسين استخدام تطبيق Thunder Express. من خلال استخدام التطبيق، يقبل المستخدم ملفات تعريف الارتباط. يمكن تعطيلها عبر إعدادات برنامج التصفح."
+            ]
+        },
+        {
+            "title": "المادة 8: نشر المستخدم",
+            "body": [
+                "يسمح تطبيق Thunder Express للأعضاء بنشر تعليقات.",
+                "يجب على العضو في منشوراته أن يحترم قواعد الأخلاق عبر الإنترنت وقوانين الحق النافذة.",
+                "يحتفظ التطبيق بحق ممارسة الرقابة المسبقة على المنشورات ويمكنه رفض نشرها دون الحاجة إلى تقديم تبرير.",
+                "يحتفظ العضو بجميع حقوق ملكيته الفكرية. ومع ذلك، يعني أي نشر على التطبيق تفويض الحق غير الحصري والمجاني إلى الشركة الناشرة لتمثيل، وتكرار، وتعديل، وتكييف، وتوزيع، ونشر المنشور في أي مكان وعلى أي وسائط لمدة معينة من فترة الملكية الفكرية. يمكن أن يتم ذلك مباشرة أو من خلال جهة ثالثة مرخصة. يتعلق ذلك بشكل خاص بحق استخدام المنشور على الويب وعلى شبكات الهاتف المحمول.",
+                "عند كل استخدام، يلتزم الناشر بذكر اسم العضو بالقرب من المنشور. يتحمل المستخدم مسؤولية محتوى كل ما يقوم بنشره. يلتزم بعدم نشر محتوى قد يضر بمصالح الأفراد الآخرين. يجب أن تتم تكاليف أي إجراء قانوني يتخذه طرف متضرر ضد التطبيق على عاتق المستخدم."
+            ]
+        },
+        {
+            "title": "المادة 9: مدة العقد",
+            "body": [
+                "يعتبر هذا العقد ساري المفعول لفترة غير محددة. يشكل بدء استخدام خدمات تطبيق Thunder Express تطبيق العقد بالنسبة للمستخدم."
+            ]
+        },
+        {
+            "title": "المادة 10: القانون المعمول به والقضاء المختص",
+            "body": [
+                "يخضع هذا العقد للتشريعات التونسية. في حالة عدم التوصل إلى تسوية وديّة للنزاعات بين الطرفين، يستلزم اللجوء إلى المحاكم التونسية المختصة لتسوية النزاع."
+            ]
+        }
+    ],
+    "fr": [
+        {
+            "title": "Article 1 : Objet",
+            "body": [
+                "Les présentes CGU ou Conditions Générales d’Utilisation encadrent juridiquement l’utilisation des services de l'application Thunder Express (ci-après dénommée « l’application »).\n",
+                "Constituant le contrat entre la société Thunder Express et l’Utilisateur, l’accès à l’application doit être précédé par l’acceptation de ces CGU. L’accès à cette application signifie l’acceptation des présentes CGU."
+            ]
+        },
+        {
+            "title": "Article 2 : Mentions légales",
+            "body": [
+                "L’édition de l’application Thunder Express est assurée par la société Thunder Express inscrite au RNE sous le numéro de 1772222N, dont le siège social est localisé à Imem Boukhari APP A1, Khzema Ouest 4071."
+            ]
+        },
+        {
+            "title": "Article 3 : Accès à l’application",
+            "body": [
+                " L’application est accessible gratuitement pour tout utilisateur disposant d’un accès à Internet. Tous les frais nécessaires pour l’accès aux services (matériel informatique, connexion Internet…) sont à la charge de l’utilisateur.\n",
+                "L’accès aux services dédiés aux membres s’effectue à l’aide d’un identifiant et d’un mot de passe. Pour des raisons de maintenance ou autres, l’accès à l’application peut être interrompu ou suspendu par l’éditeur sans préavis ni justification."
+            ]
+        },
+        {
+            "title": "Article 4 : Collecte des données",
+            "body": [
+                "Pour la création du compte de l’Utilisateur, la collecte des informations au moment de l’inscription est nécessaire et obligatoire. Le traitement de ces informations s’effectue dans le cadre du respect de la vie privée."
+            ]
+        },
+        {
+            "title": "Article 5 : Propriété intellectuelle",
+            "body": [
+                "Les marques, logos ainsi que les contenus de l’application de Thunder Express (illustrations graphiques, textes…) sont protégés par la loi n° 36 du 24 février 1994 relative à la propriété littéraire et artistique et par les droits d’auteur.\n",
+                "La reproduction et la copie des contenus par l'utilisateur requièrent une autorisation préalable de l’application. Dans ce cas, toute utilisation à des usages commerciaux ou à des fins publicitaires est proscrite."
+            ]
+        },
+        {
+            "title": "Article 6 : Responsabilité",
+            "body": [
+                "En dépit des mises à jour régulières, la responsabilité de l’application ne peut être engagée en cas de modification des dispositions administratives et juridiques apparaissant après la publication. Il en est de même pour l’utilisation et l’interprétation des informations communiquées sur l’application.\n",
+                "L’application décline toute responsabilité concernant les éventuels virus pouvant infecterle matériel informatique de l'utilisateur après l’utilisation ou l’accès à cette application.\n",
+                "La garantie totale de la sécurité et la confidentialité des données est assurée par l’application.Thunder Express s’engage à mettre en œuvre toutes les méthodes requises pour le faire au mieux."
+            ]
+        },
+        {
+            "title": "Article 7 : Cookies",
+            "body": [
+                "Lors de l’ouverture de l’application, l’installation automatique d’un cookie sur le logiciel de navigation de l'utilisateur peut survenir.\n",
+                "Les cookies correspondent à de petits fichiers déposés temporairement sur le disque dur de l’appareil mobile de l'utilisateur.Ces cookies sont nécessaires pour assurer l’accessibilité à l’application. Ces fichiers ne comportentpas d’informations personnelles et ne peuvent pas être utilisés pour l’identification d’une personne.\n",
+                "L’information présente dans les cookies est utilisée pour améliorer l’utilisation de l’application Thunder Express.En utilisant l’application, l’Utilisateur accepte les cookies. Leur désactivation peut s’effectuer via lesparamètres du logiciel de navigation."
+            ]
+        },
+        {
+            "title": "Article 8 : Publication par l’Utilisateur",
+            "body": [
+                "L’application Thunder Express permet aux membres de publier des commentaires. \nDans ses publications, le membre est tenu de respecter les règles de la Netiquette ainsi que les règles de droit en vigueur.\n  L’application dispose du droit d’exercer une modération à priori sur les publications et peut refuser leur mise en ligne sans avoir à fournir de justification. \n",
+                "Le membre garde l’intégralité de ses droits de propriété intellectuelle. Toutefois, toute publication sur l’application implique la délégation du droit non exclusif et gratuit à la société éditrice de représenter, reproduire, modifier, adapter, distribuer et diffuser la publication n’importe où et sur n’importe quel support pour la durée de la propriété intellectuelle. Cela peut se faire directement ou par l’intermédiaire d’un tiers autorisé. Cela concerne notamment le droit d’utilisationde la publication sur le web et sur les réseaux de téléphonie mobile.\n",
+                "À chaque utilisation, l’éditeur s’engage à mentionner le nom du membre à proximité de la publication. L'utilisateur est tenu responsable de tout contenu qu’il met en ligne. Il s’engage à ne pas publier de contenus susceptibles de porter atteinte aux intérêts de tierces personnes. Toutes procédures engagées en justice par un tiers lésé à l’encontre de l’application devront être prises en charge par l’Utilisateur."
+            ]
+        },
+        {
+            "title": "Article 9 : Durée du contrat",
+            "body": [
+                "Le présent contrat est valable pour une durée indéterminée. Le début de l’utilisation des services del’application de Thunder Express marque l’application du contrat à l’égard de l'utilisateur."
+            ]
+        },
+        {
+            "title": "Article 10 : Droit applicable et juridiction compétente",
+            "body": [
+                "Le présent contrat est soumis à la législation tunisienne. L’absence de résolution à l’amiable des cas de litige entre les parties implique le recours aux tribunaux tunisiens compétents pour régler le contentieux."
+            ]
+        }
+    ],
+    "en": [
+        {
+            "title": "Article 1: Purpose",
+            "body": [
+                "These General Terms and Conditions of Use (CGU) legally govern the use of the Thunder Express application services (hereinafter referred to as 'the application').\n",
+                "Constituting the contract between Thunder Express and the User, access to the application must be preceded by the acceptance of these CGU. Accessing this application implies acceptance of these CGU."
+            ]
+        },
+        {
+            "title": "Article 2: Legal Notice",
+            "body": [
+                "The editing of the Thunder Express application is ensured by the company Thunder Express registered in the RNE under the number 1772222N, with its registered office located at Imem Boukhari APP A1, Khzema Ouest 4071."
+            ]
+        },
+        {
+            "title": "Article 3: Access to the Application",
+            "body": [
+                " The application is accessible for free to any user with internet access. All costs necessary for accessing the services (computer hardware, internet connection, etc.) are the responsibility of the user..\n",
+                "Access to services dedicated to members is done using a username and password. For maintenance or other reasons, access to the application may be interrupted or suspended by the editor without notice or justification.."
+            ]
+        },
+        {
+            "title": "Article 4: Data Collection",
+            "body": [
+                "For the creation of the User's account, the collection of information at the time of registration is necessary and mandatory. The processing of this information is done in the context of privacy compliance."
+            ]
+        },
+        {
+            "title": "Article 5: Intellectual Property",
+            "body": [
+                "The trademarks, logos, and content of the Thunder Express application (graphic illustrations, texts, etc.) are protected by Law No. 36 of February 24, 1994, relating to literary and artistic property and copyright. .\n",
+                " Reproduction and copying of content by the user require prior authorization from the application. In this case, any use for commercial or advertising purposes is prohibited"
+            ]
+        },
+        {
+            "title": "Article 6: Responsibility",
+            "body": [
+                "Despite regular updates, the application's responsibility cannot be engaged in case of changes to administrative and legal provisions appearing after publication. The same applies to the use and interpretation of information communicated on the application.\n",
+                "The application disclaims any responsibility regarding potential viruses that may infect the user's computer equipment after using or accessing this application.\n",
+                " The total guarantee of data security and confidentiality is ensured by the application. Thunder Express undertakes to implement all necessary methods to do so to the best of its ability."
+            ]
+        },
+        {
+            "title": "Article 7: Cookies",
+            "body": [
+                "Upon opening the application, the automatic installation of a cookie on the user's browsing software may occur. \n",
+                " Cookies are small files temporarily deposited on the hard drive of the user's mobile device. These cookies are necessary to ensure accessibility to the application. These files do not contain personal information and cannot be used to identify an individual.\n",
+                "The information present in cookies is used to improve the use of the Thunder Express application. By using the application, the user accepts cookies. Disabling them can be done through the settings of the browsing software."
+            ]
+        },
+        {
+            "title": "Article 8: User Publication",
+            "body": [
+                "The Thunder Express application allows members to post comments. In their publications, members must adhere to Netiquette rules and current legal regulations. The application has the right to exercise prior moderation on publications and may refuse to publish them without providing justification.  \n",
+                "The member retains all intellectual property rights. However, any publication on the application involves the delegation of the non-exclusive and free right to the publishing company to represent, reproduce, modify, adapt, distribute, and broadcast the publication anywhere and on any medium for the duration of intellectual property.\n"
+            ]
+        },
+        {
+            "title": "Article 9: Duration of the Contract",
+            "body": [
+                "This contract is valid for an indefinite period. The commencement of using Thunder Express application services marks the application of the contract to the user."
+            ]
+        },
+        {
+            "title": "Article 10: Applicable Law and Jurisdiction",
+            "body": [
+                "This contract is subject to Tunisian law. The absence of amicable resolution of disputes between the parties implies resorting to the competent Tunisian courts to settle the dispute."
+            ]
+        }
+    ]
+}
