@@ -1,4 +1,4 @@
-import { changeItemQuantity, removeItemWithIndex } from '../../Redux/slices/cart/cartSlice'; // Change import statement to changeItemQuantity
+import { changeItemQuantity, removeItemWithIndex } from '../../Redux/slices/cart/cartSlice';
 import { useAppDispatch, useAppSelector } from '../../Redux/store';
 
 import React, { useEffect, useState } from 'react';
@@ -14,9 +14,11 @@ import { useNavigate } from 'react-router-dom';
 import { adressService } from '../../services/api/adress.api';
 import './cart.scss';
 import { localStorageService } from '../../services/localStorageService';
+import { string } from 'prop-types';
 interface CartProps {
   items: FoodItem[];
   closeButton: any
+  type?: string
 }
 
 
@@ -29,12 +31,13 @@ interface Article {
   name: string;
   description: string;
   count: number,
+  type?: string,
   remove: () => void
 
 }
 
 
-export const Cart: React.FC<CartProps> = ({ items, closeButton }) => {
+export const Cart: React.FC<CartProps> = ({ items, closeButton, type }) => {
   const [sousTotal, setSousTotal] = useState<number>(0)
   const [locationName, setLocationName] = useState<string>("")
   const [discount_value, setDiscountValue] = useState<number>(0)
@@ -90,26 +93,41 @@ export const Cart: React.FC<CartProps> = ({ items, closeButton }) => {
             <div className="description" dangerouslySetInnerHTML={{ __html: props.description }}></div>
 
           </div>
-          <button className="remove-btn" onClick={props.remove}>
-            <CloseIcon className='close-icon'></CloseIcon>
-          </button>
+
+          {
+            type != "addToCart" ? (
+              <button className="remove-btn" onClick={props.remove}>
+                <CloseIcon className='close-icon'></CloseIcon>
+              </button>
+            ) : (
+              <div className="notif-count-container">
+                {count}
+              </div>
+            )
+          }
+
         </div>
-        <div className='foot'>
-          <div className="count-container">
-            <input readOnly={true} type="number" name="product-count" id="product-count" value={count} onChange={(e) => { (parseInt(e.target.value) >= 1) && setCount(parseInt(e.target.value)) }} />
+        {
+          type != "addToCart" && (
+            <div className='foot'>
+              <div className="count-container">
+                <input readOnly={true} type="number" name="product-count" id="product-count" value={count} onChange={(e) => { (parseInt(e.target.value) >= 1) && setCount(parseInt(e.target.value)) }} />
 
-            <div className="count-buttons">
-              <button onClick={handleIncreaseQuantity} >
-                <KeyboardArrowUpOutlinedIcon className="count-more" />
-              </button>
-              <button onClick={handleDecreaseQuantity} >
+                <div className="count-buttons">
+                  <button onClick={handleIncreaseQuantity} >
+                    <KeyboardArrowUpOutlinedIcon className="count-more" />
+                  </button>
+                  <button onClick={handleDecreaseQuantity} >
 
-                <KeyboardArrowDownOutlinedIcon className="count-less" />
-              </button>
+                    <KeyboardArrowDownOutlinedIcon className="count-less" />
+                  </button>
+                </div>
+              </div>
+              <span className='total'>{props.total.toFixed(2)} DT</span>
             </div>
-          </div>
-          <span className='total'>{props.total.toFixed(2)} DT</span>
-        </div>
+          )
+        }
+
       </section>
     );
   };
@@ -158,26 +176,34 @@ export const Cart: React.FC<CartProps> = ({ items, closeButton }) => {
   }, [])
 
   return (
-    <div className={`cart-main`}>
+    <div className={`cart-main`} style={type != "addToCart" ? {} : { maxHeight: '21vh' }}>
 
       {
         items.length > 0 ? (
           <>
             <section className="cart-info">
-              <div className="text-info">
-                <span className='title'>{t('cart.payment.yourCommand')}</span>
-                <p className='supplier-name'>{items[0].supplier_data.supplier_name}</p>
-                <p className='position'>{t("cart.payment.delivTo")} {": " + locationName}</p>
-              </div>
-              <button className="close-btn" onClick={closeButton}>
+              {
+                type != "addToCart" && (
+                  <div className="text-info">
+                    <span className='title'>{t('cart.payment.yourCommand')}</span>
+                    <p className='supplier-name'>{items[0].supplier_data.supplier_name}</p>
+                    <p className='position'>{t("cart.payment.delivTo")} {": " + locationName}</p>
+                  </div>
+                )
+              }
+              <button className="close-btn" onClick={closeButton} style={type != "addToCart" ? { justifyContent: 'start' } : { justifyContent: 'end', marginBottom: '12px' }}>
                 <CloseIcon className='close-icon'></CloseIcon>
               </button>
-            </section>
-            <div className='sous-total'>
-              <span>{items.length} {t('product')}</span>
-              <span>{t('profile.commands.sousTotal')} {sousTotal.toFixed(2)} dt</span>
-            </div>
 
+            </section>
+            {
+              type != "addToCart" && (
+                <div className='sous-total'>
+                  <span>{items.length} {t('product')}</span>
+                  <span>{t('profile.commands.sousTotal')} {sousTotal.toFixed(2)} dt</span>
+                </div>
+              )
+            }
 
             {
               items.length > 0 &&
@@ -199,60 +225,77 @@ export const Cart: React.FC<CartProps> = ({ items, closeButton }) => {
                   </div>)
               })
             }
+            {
+              type != "addToCart" && (
+                <>
+                  <section className="price-resume">
+                    <div className="info-text">
+                      <span className='title'>{t('profile.commands.sousTotal')}</span>
+                      <span className='value'>{sousTotal.toFixed(2)} DT</span>
+                    </div>
+                    {
+                      discount_value && discount_value > 0 ?
+                        <div className="info-text">
+                          <span className='title'>{t('cart.discount')}</span>
+                          <span className='value'>-{Number(discount_value).toFixed(2)}DT</span>
+                        </div> : <></>
+                    }
+                    <div className="info-text">
+                      <span className='title'>{t("supplier.delivPrice")}</span>
+                      <span className='value'>{Number(delivPrice).toFixed(2)}DT</span>
+                    </div>
+                  </section>
+                  <section className="price-resume">
+                    <div className="info-text">
+                      <span className='title'>{t("cartPage.total")}</span>
+                      <span className='value'>{(sousTotal + Number(delivPrice)).toFixed(2)} DT</span>
+                    </div>
+                  </section>
+                  <section className='cart-btns' >
+                    <button className='to-panier' onClick={() => {
+                      closeButton()
+                      navigate('/cart')
+                    }
+                    }>
+                      {t('cart.payment.checkCart')}
+                    </button>
+                  </section>
+                </>
+              )
+            }
 
-            <section className="price-resume">
-              <div className="info-text">
-                <span className='title'>{t('profile.commands.sousTotal')}</span>
-                <span className='value'>{sousTotal.toFixed(2)} DT</span>
-              </div>
-              {
-                discount_value && discount_value > 0 ?
-                  <div className="info-text">
-                    <span className='title'>{t('cart.discount')}</span>
-                    <span className='value'>-{Number(discount_value).toFixed(2)}DT</span>
-                  </div> : <></>
-              }
-              <div className="info-text">
-                <span className='title'>{t("supplier.delivPrice")}</span>
-                <span className='value'>{Number(delivPrice).toFixed(2)}DT</span>
-              </div>
-            </section>
-            <section className="price-resume">
-              <div className="info-text">
-                <span className='title'>{t("cartPage.total")}</span>
-                <span className='value'>{(sousTotal + Number(delivPrice)).toFixed(2)} DT</span>
-              </div>
-            </section>
-            <section className='cart-btns' >
-              <button className='to-panier' onClick={() => {
-                closeButton()
-                navigate('/cart')
-              }
-              }>
-                {t('cart.payment.checkCart')}
-              </button>
-            </section>
+
           </>
         ) : (
           <>
-            <section className="cart-info">
-              <div className="text-info">
-                <span className='title'> {t('cart.payment.yourCommand')}</span>
-              </div>
-              <button className="close-btn" onClick={closeButton}>
-                <CloseIcon className='close-icon'></CloseIcon>
-              </button>
-            </section>
-            <section className='empty-cart-main'>
-              <img loading="lazy" src={empty} alt="empty cart" />
-              <p>{t('cart.payment.noCommands')}</p>
-              <button className='emptyButton' onClick={() => {
-                closeButton()
-                navigateToHome()
-              }}>
-                {t('cart.payment.iCommand')}
-              </button>
-            </section>
+            {
+              type != "addToCart" && (
+                <>
+
+
+                  <section className="cart-info">
+                    <div className="text-info">
+                      <span className='title'> {t('cart.payment.yourCommand')}</span>
+                    </div>
+                    <button className="close-btn" onClick={closeButton}>
+                      <CloseIcon className='close-icon'></CloseIcon>
+                    </button>
+                  </section>
+                  <section className='empty-cart-main'>
+                    <img loading="lazy" src={empty} alt="empty cart" />
+                    <p>{t('cart.payment.noCommands')}</p>
+                    <button className='emptyButton' onClick={() => {
+                      closeButton()
+                      navigateToHome()
+                    }}>
+                      {t('cart.payment.iCommand')}
+                    </button>
+                  </section>
+                </>
+
+              )
+            }
+
           </>
         )
       }

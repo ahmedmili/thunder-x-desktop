@@ -1,14 +1,12 @@
-import { Add as AddIcon, Star } from '@mui/icons-material';
-import StarBorderIcon from '@mui/icons-material/StarBorder';
+import { Add as AddIcon } from '@mui/icons-material';
 import Skeleton from "@mui/material/Skeleton";
 import React, { RefObject, useEffect, useReducer, useRef, useState } from 'react';
 import { Button, Container } from 'react-bootstrap';
 import { useTranslation } from 'react-i18next';
 import { useSelector } from 'react-redux';
 import { useLocation, useNavigate, useParams } from 'react-router-dom';
-import { toast } from 'react-toastify';
 import { RootState } from '../../../Redux/slices';
-import { addItem, setDeliveryPrice, setSupplier } from '../../../Redux/slices/cart/cartSlice';
+import { addItem, addNotifHeaderCart, handleCartState, removeNotifHeaderCart, setDeliveryPrice, setSupplier } from '../../../Redux/slices/cart/cartSlice';
 import { useAppDispatch, useAppSelector } from '../../../Redux/store';
 import { productService } from '../../../services/api/product.api';
 import { userService } from "../../../services/api/user.api";
@@ -20,6 +18,7 @@ import { localStorageService } from '../../../services/localStorageService';
 import { Option } from '../../../services/types';
 import { scrollToTop } from '../../../utils/utils';
 
+import { Rating } from '@mui/material';
 import moment from 'moment';
 import { fetchMessages } from '../../../Redux/slices/messanger';
 import ActiveGiftIcon from '../../../assets/profile/ArchivedCommands/activeGift.svg';
@@ -30,7 +29,6 @@ import MessangerBtnIcon from '../../../assets/profile/Discuter/messanger-btn.svg
 import { AppProps } from '../../../services/types';
 import Messanger from '../../Popups/Messanger/Messanger';
 import SameSupplierWarn from '../../Popups/SameSupplierWarn/SameSupplierWarn';
-import { Rating } from '@mui/material';
 // Define the initial state
 const initialState = {
     optionslist: [],
@@ -137,13 +135,7 @@ function MenuOptions({ initialData }: AppProps) {
      *
      */
 
-    useEffect(() => {
-        // let locationArray = location.pathname.split('/');
-        // locationArray[1] = "restaurant";
-        // const newUrl = locationArray.join("/");
-        // window.history.pushState({}, '', newUrl);
-    }, [])
-
+  
     const getSupplier = async (id: number) => {
         const { status, data } = await supplierServices.getSupplierById(id)
         if (status === 200) {
@@ -179,8 +171,8 @@ function MenuOptions({ initialData }: AppProps) {
                                 if (Number(p.id) !== Number(product.id)) {
                                     otherProducts.push(p)
                                 }
-                            })                            
-                        }                        
+                            })
+                        }
                     })
                     setMenuData(otherProducts);
                 }
@@ -219,15 +211,15 @@ function MenuOptions({ initialData }: AppProps) {
         await getSupplierIsOpen()
         setLoading(false);
     };
-     const fetchMenuData = async () => {
-        setLoading(true);        
+    const fetchMenuData = async () => {
+        setLoading(true);
         await getMenu()
         await getSupplierIsOpen()
         setLoading(false);
     };
     useEffect(() => {
-        if(product)
-        fetchMenuData()
+        if (product)
+            fetchMenuData()
     }, [product]);
 
     const getProduct = async () => {
@@ -236,7 +228,6 @@ function MenuOptions({ initialData }: AppProps) {
 
                 const { status, data } = await productService.getProduct(Number(productId));
                 if (status === 200) {
-                    // setSupplierId(data.data.product.menu[0].supplier_id);
                     setProduct(data.data.product);
 
                     let optionslist = data.data.product.options;
@@ -278,7 +269,6 @@ function MenuOptions({ initialData }: AppProps) {
 
                 }
             } else {
-                // setSupplierId(initialData.productResponse?.data.product.menu[0].supplier_id);
                 setProduct(initialData.productResponse?.data.product);
 
                 let optionslist = initialData.productResponse?.data.product.options;
@@ -434,10 +424,10 @@ function MenuOptions({ initialData }: AppProps) {
                     updatedOption[type][index].checked = event.target.checked;
 
                 }
-                return updatedOption; // Return the updated object
+                return updatedOption; 
             }
 
-            return option; // Return unchanged objects
+            return option;
         });
 
         calculateTotal();
@@ -515,18 +505,22 @@ function MenuOptions({ initialData }: AppProps) {
             },
             unitePrice: Number(state.unitPrice)
         };
+        usedispatch(addNotifHeaderCart({ items: [obj] }))
+        usedispatch(handleCartState())
 
         if (items.length > 0 && items[0].supplier_data.supplier_id !== obj.supplier_data.supplier_id) {
             setNotSameError(true)
             return;
         }
-
-        toast.success("item added ")
         usedispatch(setDeliveryPrice(productSupplier!.delivery_price));
         usedispatch(setSupplier(productSupplier));
         localStorageService.setSupplier(productSupplier);
         usedispatch(addItem(obj));
         getProduct()
+        setTimeout(() => {
+            usedispatch(removeNotifHeaderCart())
+            usedispatch(handleCartState())
+        }, 3000)
     }
 
     useEffect(() => {
