@@ -1,35 +1,36 @@
-@import "../../../../../colors";
+@import '../../../../../scss/extend';
 
 .parainage-container {
-    display: flex;
-    flex-direction: column;
-    gap: 37px;
+    display: block;
 
+    .parainage-grid {
+        display: grid;
+        grid-template-columns: repeat(2, 1fr);
+        grid-gap: 42px;
+        margin: 0 0 40px;
+    }
     main {
-
+        &.parainage-code-container {
+            padding: 0 !important;
+            border-radius: 10px;
+        }
         .parainage-header {
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            background: white;
-            border-radius: 25px;
-            height: 97px;
-            // padding: 29px 40px;
+            @include flex(flex, center, space-between);
+            background-color: $color-blue-pelorous;
+            border-radius: 10px;
+            height: 40px;
+            padding: 10px 10px 10px 30px;
 
             p {
-                color: #000;
-                font-family: Poppins;
-                font-size: 18px;
-                font-style: normal;
-                font-weight: 500;
+                margin: 0;
+                @include fonts(14px, 14px, $color-white);
+                font-family: 'Poppins-Bold', serif;
             }
-
             .icon {
-                width: 49.177px;
-                height: 49.177px;
-                transform: rotate(90deg);
-                color: white;
-                background-color: $primary_color;
+                @include dimensions(35px, 35px);
+                transform: rotate(180deg);
+                color: $color-white;
+                background-color: $color-blue-pelorous;
                 border-radius: 50%;
                 transition: transform 0.5s;
 

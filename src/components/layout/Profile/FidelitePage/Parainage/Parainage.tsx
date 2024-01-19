@@ -79,9 +79,12 @@ function Parainage() {
         <div className='parainage-container'>
             {
                 page === 1 && (
-                    <>
-                        <Parent parent={parent} />
-                        <Childs childs={child} />
+                    <>  
+                        <div className="parainage-grid">
+                            <Parent parent={parent} />
+                            <Childs childs={child} />
+                        </div>
+                        
                         <InviteBanner internNavigation={pageNavigateInterne} />
                     </>
                 )

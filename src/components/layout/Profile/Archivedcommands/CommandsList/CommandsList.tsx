@@ -155,18 +155,21 @@ const CommandsList: React.FC<CommandsListProps> = ({ type = "old", goToPassedCom
                                         return (
                                             <React.Fragment key={index}>
                                                 <div className={`command-header  ${selectedCommand === index ? "active-header" : ""}`} key={index} onClick={() => handleSelectCommand(index)}>
-                                                    <span >
+                                                    <div className="command-header_txt">
                                                         Commande N°{command.id}
-                                                    </span>
-                                                    <span >
+                                                    </div>
+                                                    <div className="command-header_txt">
                                                         {command.client.name}
-                                                    </span>
-                                                    <span>
+                                                    </div>
+                                                    <div className="command-header_txt">
                                                         {command.to_adresse}
-                                                    </span>
-                                                    <span>
+                                                    </div>
+                                                    <div className="command-header_txt">
                                                         {command.created_at}
-                                                    </span>
+                                                    </div>
+                                                    <div className="command-status processed">{/* .processed / .preparation / .delivery */}
+                                                        En cours de traitement
+                                                    </div>
                                                     <KeyboardArrowUpOutlinedIcon className='icon' />
                                                 </div>
                                                 {(selectedCommand === index && type === "old") && <OldCommands feedbacksList={feedbacksList} data={command} />}

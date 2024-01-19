@@ -89,6 +89,9 @@ function Parent({ parent }: CodeProps) {
             {
                 show && (parent.firstname != undefined) && (
                     <section className='partnair-display-body'>
+                        <div className="parrainage-list">
+                            <div className="parrainage-list-item"></div>
+                        </div>
                         <div className='partner-logo' style={{ backgroundImage: `url(${Logo})` }}></div>
                         <p> {`${parent.firstname} ${parent.lastname}`}</p>
                     </section>
