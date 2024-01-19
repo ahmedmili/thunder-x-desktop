@@ -163,7 +163,6 @@ const CategoryCarousel: React.FC<CategoryCarouselProps> = ({
               naturalSlideHeight={200}
               totalSlides={categories.length}
               visibleSlides={calculateVisibleSlides()}
-              // visibleSlides={3}
               step={1}
               infinite={true}
               className='categorie-carousel'

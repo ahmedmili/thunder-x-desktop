@@ -158,6 +158,7 @@
   "profile.desactive.avi3": "لم أكن راضيًا عن تجربتي مع التوصيل عبر التطبيق",
   "profile.desactive.avi4": "بتكلفة توصيل أقل من تكلفتكم Thunder Express لقد وجدت بديلًا آخر لـ",
   "profile.desactive.Desactiveok": "تعطيل حسابي",
+  "profile.desactive.Desactive_Drop_account": "تعطيل/إزالة حسابي",
   "profile.desactive.warnMessage": "هل أنت متأكد من رغبتك في تعطيل حسابك مؤقتًا؟",
   "profile.desactive.title": "لماذا ترغب في تعطيل / حذف حسابك؟",
   "profile.desactive.message": "إذا قمت بتعطيل حسابك مؤقتًا، يمكنك استعادته في أي وقت باستخدام اسم المستخدم وكلمة المرور الخاصة بك",
@@ -247,7 +248,6 @@
   "cartPage.client": "العملاء",
   "cartPage.delivto": "التسليم إلى",
   "cartPage.emportePar": "محمولة بواسطة",
-
   "cartPage.emporter": "لتأخذ",
   "cartPage.surPalce": "في الموقع",
   "cartPage.phoneNumber": "رقم الهاتف",
@@ -325,7 +325,6 @@
   "cart.PromosCode": "رمز الخصم",
   "cart.clientName": "اسم العميل",
   "cart.delivPlanedAt": "التسليم المجدول في ",
-
   "searchPage.created_at": "thunder جديد في",
   "searchPage.populaires": "الأكثر شهرة",
   "searchPage.mieux": "الأعلى تقييمًا",
@@ -356,29 +355,29 @@
   "mobile.menu.download_button": "تحميل التطبيق",
   "mobile.menu.web_button": "المتابعة على الويب",
   "mobile.": "جوال",
-  "calendar":{
+  "calendar": {
     "days": {
-      "Su" :"الأحد",
-      "Mo":  "الاثنين",
-      "Tu":"الثلاثاء",
+      "Su": "الأحد",
+      "Mo": "الاثنين",
+      "Tu": "الثلاثاء",
       "We": "الأربعاء",
-      "Th":"الخميس",
+      "Th": "الخميس",
       "Fr": "الجمعة",
-      "Sa" : "السبت"
-    }, 
-    "months":{
-      "January" :"جانفي",
-      "February" :"فيفري",
-      "March" :"مارس",
-      "April":"افريل",
-      "May":"ماي",
+      "Sa": "السبت"
+    },
+    "months": {
+      "January": "جانفي",
+      "February": "فيفري",
+      "March": "مارس",
+      "April": "افريل",
+      "May": "ماي",
       "June": "جوان",
-      "July" :"جويلية",
-      "August":"اوت",
-      "September":"سبتمبر",
+      "July": "جويلية",
+      "August": "اوت",
+      "September": "سبتمبر",
       "October": "اكتوبر",
-      "November":"نوفمبر",
-      "December":"ديسمبر"   
+      "November": "نوفمبر",
+      "December": "ديسمبر"
     },
     "btnLabel": "تأكيد"
   },

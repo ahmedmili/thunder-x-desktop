@@ -75,7 +75,7 @@ const ConfigPage = () => {
         Mes configurations
       </h1>
       <div className={`config-page `}>
-        
+
 
         <SettingSection settingIndex={1} actionListener={handleselect} title={t('profile.mesConfig.modifAccount')} className={`${selectedSetting === 1 ? "active" : ""}`} />
         {
@@ -127,21 +127,13 @@ const ConfigPage = () => {
             <Politiques />
           </div>
         }
-        <SettingSection settingIndex={6} actionListener={handleselect} title={t('profile.desactive.Desactiveok')} className={`${selectedSetting === 6 ? "active" : ""}`} />
+        <SettingSection settingIndex={6} actionListener={handleselect} title={t('profile.desactive.Desactive_Drop_account')} className={`${selectedSetting === 6 ? "active" : ""}`} />
         {
           selectedSetting === 6 &&
           <div className='desactive-container'>
-            <DesactiveAccount type='desactiv' />
+            <DesactiveAccount />
           </div>
         }
-        <SettingSection settingIndex={7} actionListener={handleselect} title={t('profile.mesConfig.deleteAccount')} className={`${selectedSetting === 7 ? "active" : ""}`} />
-        {
-          selectedSetting === 7 &&
-          <div className='desactive-container'>
-            <DesactiveAccount type='delete' />
-          </div>
-        }
-
       </div>
 
     </div>

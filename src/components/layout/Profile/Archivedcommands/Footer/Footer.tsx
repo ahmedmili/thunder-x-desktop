@@ -44,7 +44,6 @@ const CommandsFooter: React.FC<FooterProps> = () => {
                     </button>
                     <button onClick={handleMessangerPopup} className="msg-icon" style={{ backgroundImage: `url(${msgIcon})` }}>
                         {unReadedQt > 0 && (
-                            // <NotificationsOffIcon className='messanger-bull-notif-icon' />
                             <div className='msg-bull-notif-icon'>
                                 {unReadedQt}
                             </div>

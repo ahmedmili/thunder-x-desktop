@@ -38,10 +38,12 @@
             border-radius: 500px;
             background: linear-gradient(180deg, $orange_color 0%, $orange_color 100%);
         }
+
         @media (max-width: 1399.98px) {
             transform: scale(0.8);
             left: 0;
         }
+
         @media (max-width: 1468px) {
             transform: scale(0.8);
             left: -28px;
@@ -68,7 +70,6 @@
             &::before {
                 content: "";
                 @include dimensions(173px, 147px);
-                // background-image: url("/src/assets/home/pizza.png");
                 background-image: none;
                 background-size: contain;
                 background-position: center;
@@ -82,7 +83,6 @@
             &::after {
                 content: "";
                 @include dimensions(110px, 159px);
-                // background-image: url("/src/assets/home/purepng.png");
                 background-image: none;
                 background-size: 100%;
                 background-position: center;
@@ -110,7 +110,6 @@
         &::after {
             content: "";
             @include dimensions(165px, 126px);
-            // background-image: url('/src/assets/home/pizza2.png');
             background-image: none;
             background-size: 100%;
             background-position: center;
@@ -193,14 +192,10 @@
                 margin: 0 0 10px;
             }
 
-            // &:nth-child(2) {
-            //     @include fontSize(45px, 45px);
-
             .headerMessageSyle2 {
                 @include fontSize(45px, 45px);
             }
 
-            // }
         }
 
         .headerMessageSyle2 {
@@ -270,7 +265,7 @@
     z-index: 978;
     background-color: transparent;
     height: 110px;
-    padding: 15px; // 15px 35px
+    padding: 15px;
     border-radius: 0px 0px 20px 20px;
     transition: box-shadow 0.3s ease-in-out;
 
@@ -301,6 +296,7 @@
                 background-color: $color-white;
                 opacity: 1;
             }
+
             &.header-signup {
                 font-family: "Poppins-Bold", serif;
                 color: $color-blue-eastern;
@@ -342,7 +338,6 @@
             background-image: url('/src/assets/logo-thunder.svg');
             background-position: center;
             background-size: contain;
-            // @include dimensions(107px, 39px);
             @include dimensions(210px, 77px);
         }
     }
@@ -363,7 +358,6 @@
             height: 43px;
             min-width: 270px;
             background-color: $color-gray-alto;
-            // background-image: url('./../../assets/position-icn.svg');
             background-repeat: no-repeat;
             background-position: 22px center;
             background-size: 15px auto;
@@ -378,15 +372,18 @@
                     font-size: 15px;
                 }
             }
+
             .position-icon {
                 font-size: 21px;
                 color: $color-white;
             }
         }
+
         .account,
         .search {
             margin: 3px 0;
         }
+
         .account {
             color: $primary_color;
             position: relative;
@@ -456,6 +453,7 @@
                 cursor: pointer;
             }
         }
+
         .order-tracking-area {
             position: relative;
 
@@ -471,6 +469,7 @@
                     height: 43px;
                 }
             }
+
             .order-tracking-wrapper {
                 background-color: $color-white;
                 position: absolute;
@@ -485,6 +484,7 @@
                 &.active {
                     display: block;
                 }
+
                 .order-tracking_header {
                     border-bottom: 1px solid $color-gray-alto-2;
                     padding: 40px 35px 27px;
@@ -495,6 +495,7 @@
                         @include fonts(20px, 20px, $dark_002);
                         font-family: 'Poppins-SemiBold', serif;
                     }
+
                     .close {
                         @include dimensions(25px, 25px);
                         background-image: url('./../../assets/modal-close-icn.svg');
@@ -503,10 +504,11 @@
                         background-position: center;
                     }
                 }
+
                 .order-tracking_body {
                     max-height: 690px;
                     overflow-y: auto;
-                    
+
                     .being-processed-area {
                         padding: 23px 40px;
                         border-bottom: 1px solid $color-gray-alto-2;
@@ -519,6 +521,7 @@
                                 @include fonts(16px, 16px, $color-apricot);
                                 font-family: 'Poppins-SemiBold', serif;
                             }
+
                             p {
                                 margin: 0;
                                 @include fonts(16px, 19px, $light_Gray);
@@ -526,6 +529,7 @@
                                 font-weight: weight(regular);
                             }
                         }
+
                         .being-processed_steps-area {
                             @include flex(flex, center, space-between);
                             gap: 55px;
@@ -551,14 +555,17 @@
                                     top: 20px;
                                     z-index: 1;
                                 }
+
                                 &:nth-child(1) {
                                     background-size: 13px auto;
                                     background-image: url('./../../assets/order-tracking/step-one.svg');
                                 }
+
                                 &:nth-child(2) {
                                     background-size: 23px auto;
                                     background-image: url('./../../assets/order-tracking/step-two.svg');
                                 }
+
                                 &:nth-child(3) {
                                     background-size: 21px auto;
                                     background-image: url('./../../assets/order-tracking/step-three.svg');
@@ -567,15 +574,18 @@
                                         display: none;
                                     }
                                 }
+
                                 &.active {
                                     background-color: $color-apricot;
 
                                     &:nth-child(1) {
                                         background-image: url('./../../assets/order-tracking/step-one-active.svg');
                                     }
+
                                     &:nth-child(2) {
                                         background-image: url('./../../assets/order-tracking/step-two-active.svg');
                                     }
+
                                     &:nth-child(3) {
                                         background-image: url('./../../assets/order-tracking/step-three-active.svg');
                                     }
@@ -583,6 +593,7 @@
                             }
                         }
                     }
+
                     .processing-status-area {
                         padding: 15px 40px;
                         border-bottom: 1px solid $color-gray-alto-2;
@@ -601,12 +612,14 @@
                             border-radius: 50%;
                             flex-shrink: 0;
                         }
+
                         .processing-status-desc {
                             h4 {
                                 margin: 0 0 7px;
                                 @include fonts(16px, 16px, $color-apricot);
                                 font-family: 'Poppins-SemiBold', serif;
                             }
+
                             p {
                                 margin: 0;
                                 @include fonts(13px, 19px, $light_Gray);
@@ -615,6 +628,7 @@
                             }
                         }
                     }
+
                     .supplier-info-area {
                         padding: 15px 40px;
                         border-bottom: 1px solid $color-gray-alto-2;
@@ -633,12 +647,14 @@
                                 border-radius: 10px;
                             }
                         }
+
                         .supplier-desc {
                             h4 {
                                 margin: 0 0 7px;
                                 @include fonts(20px, 20px, $dark_Gray);
                                 font-family: 'Poppins-Medium', serif;
                             }
+
                             p {
                                 margin: 0;
                                 @include fonts(16px, 16px, $color-gray);
@@ -646,6 +662,7 @@
                             }
                         }
                     }
+
                     .total-price-calculate {
                         padding: 15px 40px;
                         border-bottom: 1px solid $color-gray-alto-2;
@@ -656,9 +673,11 @@
                             &:not(:last-child) {
                                 border-bottom: 1px solid $dark_002;
                             }
+
                             .total-price-blc_wrapper {
                                 @include flex(flex, center, space-between);
                             }
+
                             .product-name {
                                 display: flex;
                                 align-items: center;
@@ -673,19 +692,23 @@
                                     background-color: $color-botticelli;
                                     border-radius: 22px;
                                 }
+
                                 .product-name_item {
                                     @include fonts(16px, 16px, $dark_Gray);
                                     font-family: 'Poppins-SemiBold', serif;
                                 }
                             }
+
                             .total-price_label {
                                 @include fonts(16px, 16px, $dark_Gray);
                                 font-family: 'Poppins-SemiBold', serif;
                             }
+
                             .price {
                                 @include fonts(16px, 16px, $color-blue-pelorous);
                                 font-family: 'Poppins-SemiBold', serif;
                             }
+
                             &:nth-child(2) {
                                 .total-price-blc_wrapper {
                                     &:not(:last-child) {
@@ -693,6 +716,7 @@
                                     }
                                 }
                             }
+
                             &:last-child {
                                 .total-price_label {
                                     @include fonts(20px, 20px, $dark_002);
@@ -701,6 +725,7 @@
                             }
                         }
                     }
+
                     .panier-blc {
                         margin: 0 0 30px;
                         padding: 15px 40px 0;
@@ -710,6 +735,7 @@
                             @include fonts(16px, 16px, $color-blue-pelorous);
                             font-family: 'Poppins-SemiBold', serif;
                         }
+
                         .paiement-status-list {
                             .paiement-status_icon {
                                 background-position: center;
@@ -718,6 +744,7 @@
                                 border-radius: 5px;
                                 @include dimensions(33px, 33px);
                             }
+
                             ul {
                                 list-style: none;
                                 padding: 0;
@@ -731,21 +758,25 @@
                                     &:not(:last-child) {
                                         margin: 0 0 15px;
                                     }
+
                                     &:nth-child(1) {
                                         .paiement-status_icon {
                                             background-image: url('./../../assets/panier/paiement-icn-1.svg');
                                         }
                                     }
+
                                     &:nth-child(2) {
                                         .paiement-status_icon {
                                             background-image: url('./../../assets/panier/paiement-icn-2.svg');
                                         }
                                     }
+
                                     &:nth-child(3) {
                                         .paiement-status_icon {
                                             background-image: url('./../../assets/panier/paiement-icn-3.svg');
                                         }
                                     }
+
                                     &:nth-child(4) {
                                         .paiement-status_icon {
                                             background-image: url('./../../assets/panier/paiement-icn-4.svg');
@@ -753,11 +784,13 @@
                                     }
                                 }
                             }
+
                             .paiement-status-item {
                                 @include fonts(14px, 14px, $dark_Gray);
                                 font-family: 'Poppins-Medium', serif;
                                 margin: 0;
                             }
+
                             .price {
                                 margin: 3px 0 0;
                                 @include fonts(14px, 14px, $color-gray);
@@ -765,6 +798,7 @@
                             }
                         }
                     }
+
                     .btns-group {
                         padding: 0 40px;
 
@@ -778,49 +812,61 @@
                             }
                         }
                     }
-                    &.accordion{                       
-                        .supplier-info-area{
+
+                    &.accordion {
+                        .supplier-info-area {
                             width: 100%;
                         }
                     }
                 }
-                .MuiAccordion-root{
-                    box-shadow: none;     
-                    &::before{
+
+                .MuiAccordion-root {
+                    box-shadow: none;
+
+                    &::before {
                         display: none;
-                    }               
-                    .MuiAccordionSummary-root{
+                    }
+
+                    .MuiAccordionSummary-root {
                         padding: 0;
-                        .MuiAccordionSummary-content{
+
+                        .MuiAccordionSummary-content {
                             margin: 0;
-                            &.Mui-expanded{
+
+                            &.Mui-expanded {
                                 margin: 0;
                             }
                         }
-                        .MuiAccordionSummary-expandIconWrapper{
+
+                        .MuiAccordionSummary-expandIconWrapper {
                             position: absolute;
-                            right: 20px;   
+                            right: 20px;
                             transform: rotate(-90deg);
-                            .MuiSvgIcon-root{
+
+                            .MuiSvgIcon-root {
                                 font-size: 23px;
                             }
-                            &.Mui-expanded{
+
+                            &.Mui-expanded {
                                 transform: rotate(0deg);
                             }
                         }
                     }
-                    &.Mui-expanded{
+
+                    &.Mui-expanded {
                         margin-top: 0;
                     }
                 }
-                .MuiAccordionDetails-root{
+
+                .MuiAccordionDetails-root {
                     padding: 0;
                     border-bottom: 1px solid $color-gray-alto-2;
                 }
             }
-            
+
         }
     }
+
     &.scroll {
         box-shadow: 0px 0px 10px 0px rgba(0, 0, 0, 0.75);
         background-color: $color-white;
@@ -901,6 +947,7 @@
             }
         }
     }
+
     .search-input-blc {
         .form-control {
             background-color: $color-gray-alto;
@@ -911,9 +958,10 @@
             padding: 9px 40px 9px 30px;
         }
     }
+
     .btn {
         &.btn-search {
-            
+
             @include dimensions(22px, 22px);
             background-image: url('./../../assets/search-icn.svg');
             background-repeat: no-repeat;
@@ -938,6 +986,7 @@
                 @include dimensions(160px, 60px);
             }
         }
+
         .header-buttons {
             .LoadingButton {
                 min-width: 113px;
@@ -945,6 +994,7 @@
                 font-size: 12px;
             }
         }
+
         .info {
             gap: 15px;
 
@@ -959,6 +1009,7 @@
             }
         }
     }
+
     .home-section-one {
         .headerAppBar2 {
             padding-top: 100px;
@@ -973,6 +1024,7 @@
             }
         }
     }
+
     .header {
         .imageBuilderContainer {
 
@@ -996,6 +1048,7 @@
             }
         }
     }
+
     .headerLocalisationMessageContainer {
         a {
             @include fontSize(14px, 14px);
@@ -1025,6 +1078,7 @@
     .headerContainer {
         .headerAppBar2 {
             .headerMessage {
+
                 .headerMessageSyle1,
                 .headerMessageSyle2 {
                     font-size: 31px;
@@ -1061,6 +1115,7 @@
             }
         }
     }
+
     .switches-area {
         height: 35px;
     }
@@ -1086,14 +1141,17 @@
             left: -179px;
         }
     }
+
     .headerContainer {
         margin-top: -32px;
 
         .imageBuilder {
             @include dimensions(255px, 208px);
         }
+
         .headerAppBar2 {
             .headerMessage {
+
                 .headerMessageSyle1,
                 .headerMessageSyle2 {
                     font-size: 24.54px;
@@ -1261,6 +1319,7 @@
         }
     }
 }
+
 @media (max-height: 700px) {
     .fixedHeaderContainer2 {
         .info {
