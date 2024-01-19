@@ -112,7 +112,7 @@ const ConfigPage = () => {
           </div>
 
         }
-        <SettingSection settingIndex={4} actionListener={handleselect} title={t('profile.mesConfig.legales')} className={`${selectedSetting === 4 ? "active" : ""}`} />
+        {/* <SettingSection settingIndex={4} actionListener={handleselect} title={t('profile.mesConfig.legales')} className={`${selectedSetting === 4 ? "active" : ""}`} />
         {
           selectedSetting === 4 &&
           <div className='legal-container'>
@@ -126,7 +126,7 @@ const ConfigPage = () => {
           <div className='legal-container'>
             <Politiques />
           </div>
-        }
+        } */}
         <SettingSection settingIndex={6} actionListener={handleselect} title={t('profile.desactive.Desactiveok')} className={`${selectedSetting === 6 ? "active" : ""}`} />
         {
           selectedSetting === 6 &&

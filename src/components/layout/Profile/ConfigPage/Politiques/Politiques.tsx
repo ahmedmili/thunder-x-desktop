@@ -5,6 +5,10 @@ import LeftArrow from '../../../../../assets/profile/leftArrow.svg';
 import RigthArrow from '../../../../../assets/profile/rigthArrow.svg';
 import legalsData from './Politiques.json';
 import './politiques.scss';
+import Header from '../../../../Header/Header';
+import Footer from '../../../../footer/footer';
+import { useTranslation } from 'react-i18next';
+import { useNavigate } from 'react-router';
 
 interface legalProps {
   bodyText: string[],
@@ -14,15 +18,16 @@ const LegalCart: React.FC<legalProps> = ({ bodyText }) => {
 
   return (<>
     <div className="legal-cart">
-      <div className="legal-cart-desc">
-        <p className='body' >{bodyText}</p>
-      </div>
+      <p className='body' >{bodyText}</p>
     </div>
   </>)
 }
 
 
 const Politiques = () => {
+  const { t } = useTranslation()
+  const navigate = useNavigate()
+
   const itemsPerPage = 6;
 
   const [totalPages, setTotalPages] = useState<number>(0);
@@ -54,46 +59,52 @@ const Politiques = () => {
     setTotalPages(totalPages)
   }, [legalsData])
 
-
+  const goBack = () => {
+    navigate('/profile/');
+  };
 
   return (
+    <>
+      <Header />
+      <section className="Politique-section">
+        <button className="btn-back" onClick={goBack}>{t('profile.mesConfig.politiques')}</button>
 
-    <section className="Politique-section">
-      <div className="logo-container">
-
-        <div className="logo-wrapper" style={{ backgroundImage: `url(${thunderLogo})` }}>
+        <div className="logo-container">
+          <div className="logo-wrapper" style={{ backgroundImage: `url(${thunderLogo})` }}>
+          </div>
         </div>
-      </div>
-      <main>
-        {
-          displayedContent.length > 0 && (
-            displayedContent.map((legal: any, index: number) => {
-              return <LegalCart key={index} bodyText={legal.body} />
-            })
-          )
+        <main>
+          {
+            displayedContent.length > 0 && (
+              displayedContent.map((legal: any, index: number) => {
+                return <LegalCart key={index} bodyText={legal.body} />
+              })
+            )
 
-        }
-      </main>
-      <div className='buttons'>
-        {/* prev button */}
-        {!(currentPage === 1) &&
-          <div className="nav-page-button">
-            <button onClick={prevPage}>
-              <img loading="lazy" src={LeftArrow} alt="prev button" />
-            </button>
-          </div>
-        }
-        {/* next */}
-        {!(currentPage === totalPages) &&
-          <div className="nav-page-button">
-            <button onClick={nextPage}>
-              <img loading="lazy" src={RigthArrow} alt="prev button" />
+          }
+        </main>
+        <div className='buttons'>
+          {/* prev button */}
+          {!(currentPage === 1) &&
+            <div className="nav-page-button">
+              <button onClick={prevPage}>
+                <img loading="lazy" src={LeftArrow} alt="prev button" />
+              </button>
+            </div>
+          }
+          {/* next */}
+          {!(currentPage === totalPages) &&
+            <div className="nav-page-button">
+              <button onClick={nextPage}>
+                <img loading="lazy" src={RigthArrow} alt="prev button" />
 
-            </button>
-          </div>
-        }
-      </div>
-    </section>
+              </button>
+            </div>
+          }
+        </div>
+      </section>
+      <Footer />
+    </>
   );
 };
 

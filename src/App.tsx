@@ -53,6 +53,8 @@ import FidelitePage from "./components/layout/Profile/FidelitePage/FidelitePage"
 import Menu from "./components/menus/menus";
 import Verify from "./views/Verify";
 import { paramsService } from "./utils/params";
+import Legale from "./components/layout/Profile/ConfigPage/Legale/Legale";
+import Politiques from "./components/layout/Profile/ConfigPage/Politiques/Politiques";
 //lazy loading pages
 const Profile = lazy(() => import("./components/layout/Profile/Profile"));
 const HomePage = lazy(() => import("./views/home/home.page"));
@@ -100,9 +102,9 @@ function App({ initialData }: AppProps) {
         let resultObject = paramsService.fetchParams(searchParams)
         const lat = resultObject.lat;
         const lng = resultObject.lng;
-        (lng && lat) ? dispatch({ type: "SET_SHOW", payload: false }) : dispatch({ type: "SET_SHOW", payload: true })  
+        (lng && lat) ? dispatch({ type: "SET_SHOW", payload: false }) : dispatch({ type: "SET_SHOW", payload: true })
         if (lng && lat) {
-          setLocationFromArray(lat,lng)
+          setLocationFromArray(lat, lng)
         }
       }
     } else {
@@ -110,7 +112,7 @@ function App({ initialData }: AppProps) {
     }
 
   }, [location]);
-  const setLocationFromArray = async(lat:any, lng:any) => {
+  const setLocationFromArray = async (lat: any, lng: any) => {
     let current_location = await LocationService.geoCode(lat, lng);
     dispatch({ type: "SET_LOCATION", payload: current_location })
   }
@@ -337,7 +339,11 @@ function App({ initialData }: AppProps) {
               <Route path="/profile/Favors/" element={<Favors />} />
               <Route path="/profile/Fidelite/:section?/:page?/*" element={<FidelitePage />} />
               <Route path="/profile/Feedback/:command_id/" element={<Feedback />} />
+              <Route path="/profile/Legale/" element={<Legale />} />
+              <Route path="/profile/Politiques/" element={<Politiques />} />
             </Route>
+            <Route path="/Legale/" element={<Legale />} />
+            <Route path="/Politiques/" element={<Politiques />} />
           </Route>
 
         </Routes>

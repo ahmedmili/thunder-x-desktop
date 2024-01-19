@@ -5,6 +5,9 @@ import './legale.scss';
 import legalsData from './legals.json';
 
 import { useTranslation } from 'react-i18next';
+import { useNavigate } from 'react-router';
+import Header from '../../../../Header/Header';
+import Footer from '../../../../footer/footer';
 
 interface legalProps {
   title: string,
@@ -17,11 +20,11 @@ const LegalCart: React.FC<legalProps> = ({ title, bodyText }) => {
   return (<>
     <div className="legal-cart">
       <h3 className='title'>{title}</h3>
-      <div className="legal-cart-desc">
+      <p className="">
         {
           bodyText.map((text: string, index: number) => <p key={index} className='body' >{text}</p>)
         }
-      </div>
+      </p>
     </div>
   </>)
 }
@@ -29,7 +32,7 @@ const LegalCart: React.FC<legalProps> = ({ title, bodyText }) => {
 
 const Legale = () => {
   const { t } = useTranslation()
-
+  const navigate = useNavigate()
   const itemsPerPage = 6;
 
   const [totalPages, setTotalPages] = useState<number>(0);
@@ -54,47 +57,51 @@ const Legale = () => {
   }
 
   useEffect(() => {
-
     let totalPages: number = 1;
     totalPages = Math.ceil(legalsData.length / itemsPerPage)
     setTotalPages(totalPages)
   }, [legalsData])
 
-
-
+  const goBack = () => {
+    navigate('/profile/');
+  };
   return (
-    <section className="Lgale-section">
-      <h2>{t('profile.mesConfig.legales.message')}</h2>
-      <div className="logo-container">
+    <>
+      <Header />
+      <section className="Lgale-section">
+        <button className="btn-back" onClick={goBack}>{t('profile.mesConfig.legales')}</button>
+        <div className="logo-container">
 
-        <div className="logo-wrapper" style={{ backgroundImage: `url(${thunderLogo})` }}>
+          <div className="logo-wrapper" style={{ backgroundImage: `url(${thunderLogo})` }}>
+          </div>
         </div>
-      </div>
-      <main>
-        {
-          (displayedContent && displayedContent.length > 0) && (
-            displayedContent.map((legal: any, index: number) => {
-              return <LegalCart key={index} title={legal.title} bodyText={legal.body} />
-            })
-          )
+        <main>
+          {
+            (displayedContent && displayedContent.length > 0) && (
+              displayedContent.map((legal: any, index: number) => {
+                return <LegalCart key={index} title={legal.title} bodyText={legal.body} />
+              })
+            )
 
-        }
-      </main>
-      <div className='buttons'>
-        {/* prev button */}
-        {!(currentPage === 1) &&
-          <div className="nav-page-button">
-            <button className="nav-page-button-item left" onClick={prevPage}></button>
-          </div>
-        }
-        {/* next */}
-        {!(currentPage === totalPages) &&
-          <div className="nav-page-button">
-            <button className="nav-page-button-item right" onClick={nextPage}></button>
-          </div>
-        }
-      </div>
-    </section >
+          }
+        </main>
+        <div className='buttons'>
+          {/* prev button */}
+          {!(currentPage === 1) &&
+            <div className="nav-page-button">
+              <button className="nav-page-button-item left" onClick={prevPage}></button>
+            </div>
+          }
+          {/* next */}
+          {!(currentPage === totalPages) &&
+            <div className="nav-page-button">
+              <button className="nav-page-button-item right" onClick={nextPage}></button>
+            </div>
+          }
+        </div>
+      </section >
+      <Footer />
+    </>
 
   );
 };
