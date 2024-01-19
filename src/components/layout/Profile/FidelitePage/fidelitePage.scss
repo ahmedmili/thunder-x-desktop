@@ -88,6 +88,19 @@
         border-radius: 25px;
         padding: 40px 75px;
         background-color: $color-white;
+
+        &.invit-container {
+            background-color: $color-golden-sand;
+            border-radius: 15px;
+            padding: 35px 30px;
+            display: block;
+
+            .invit-title {
+                margin: 0 0 20px;
+                font-family: 'Poppins-Medium', serif;
+                @include fonts(20px, 20px, $dark_002);
+            }
+        }
     }
 
 }

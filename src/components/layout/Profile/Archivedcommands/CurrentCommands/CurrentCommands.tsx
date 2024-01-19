@@ -14,7 +14,7 @@ import defaultImage from "../../../../../assets/profile/ArchivedCommands/default
 import delivA from "../../../../../assets/profile/ArchivedCommands/deliv-A.svg";
 import doneA from "../../../../../assets/profile/ArchivedCommands/done-A.svg";
 import preparatinA from "../../../../../assets/profile/ArchivedCommands/preparatin-A.svg";
-import traitementA from "../../../../../assets/profile/ArchivedCommands/traitement-A.svg";
+import traitementB from "../../../../../assets/profile/ArchivedCommands/traitement-B.svg";
 
 import { useTranslation } from 'react-i18next';
 import delivD from "../../../../../assets/profile/ArchivedCommands/deliv-D.svg";
@@ -119,24 +119,24 @@ const Command: React.FC<CommandProps> = ({ removeCommand, data }) => {
 
             {/* total */}
             <div className='total'>
-                <span>{t('cartPage.total')}</span>
+                <span className="total-txt">{t('cartPage.total')}</span>
                 <span className='total-value'>{Number(data.total_price).toFixed(2)} DT</span>
             </div>
             {/* sous Total */}
             <div className='sous-total'>
-                <span>{t('profile.commands.sousTotal')}</span>
-                <span className='left-price'>{total.toFixed(2)} DT</span>
+                <span className="text">{t('profile.commands.sousTotal')}</span>
+                <span className='price'>{total.toFixed(2)} DT</span>
             </div>
             {/* deliv price */}
             {
                 data.is_delivery === 1 &&
                 <div className='deliv-price'>
-                    <span>{t('supplier.delivPrice')}</span>
-                    <span className='left-price'>{data.coupon.delivery_fixed === 1 ? data.delivery_price : (data.delivery_price - data.total_price_coupon).toFixed(2)} DT</span>
+                    <span className="text">{t('supplier.delivPrice')}</span>
+                    <span className='price'>{data.coupon.delivery_fixed === 1 ? data.delivery_price : (data.delivery_price - data.total_price_coupon).toFixed(2)} DT</span>
                 </div>
             }
             {/* products discriptions */}
-            <ul>
+            <ul className="products-list">
                 {(data.products && data.products.length > 0) &&
                     data.products.map((product: any, index: number) => {
                         return (

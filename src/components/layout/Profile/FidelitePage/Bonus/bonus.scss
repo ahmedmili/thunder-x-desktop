@@ -1,31 +1,24 @@
+@import '../../../../../scss/extend';
+
 .bonus-container {
     .bonus-header {
-        display: flex;
-        align-items: center;
-        justify-content: space-between;
-
+        @include flex(flex, center, space-between);
         border-radius: 10px;
-        background: #BBE3E3;
-        height: 41px;
-        padding: 29px;
+        background-color: $color-blue-pelorous;
+        height: 43px;
+        padding: 10px 29px;
 
         p {
             margin: 0;
-            color: #484848;
-            font-family: Poppins;
-            font-size: 14px;
-            font-style: normal;
-            font-weight: 400;
-            line-height: normal;
+            @include fonts(14px, 14px, $color-white);
+            font-family: 'Poppins-Bold', serif;
         }
-
         .icon {
-            width: 51.5px;
-            height: 33px;
-            transform: rotate(90deg);
+            @include dimensions(40px, 33px);
+            transform: rotate(180deg);
+            color: $color-white;
         }
     }
-
     .bonus-main {
         display: flex;
         gap: 5px;
