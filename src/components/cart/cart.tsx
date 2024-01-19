@@ -12,9 +12,8 @@ import CloseIcon from '@mui/icons-material/Close';
 import { useTranslation } from 'react-i18next';
 import { useNavigate } from 'react-router-dom';
 import { adressService } from '../../services/api/adress.api';
-import './cart.scss';
 import { localStorageService } from '../../services/localStorageService';
-import { string } from 'prop-types';
+import './cart.scss';
 interface CartProps {
   items: FoodItem[];
   closeButton: any
@@ -191,7 +190,7 @@ export const Cart: React.FC<CartProps> = ({ items, closeButton, type }) => {
                   </div>
                 )
               }
-              <button className="close-btn" onClick={closeButton} style={type != "addToCart" ? { justifyContent: 'start' } : { justifyContent: 'end', marginBottom: '12px' }}>
+              <button className="close-btn" onClick={closeButton} style={type != "addToCart" ? {} : { marginBottom: '12px' }}>
                 <CloseIcon className='close-icon'></CloseIcon>
               </button>
 
@@ -271,8 +270,6 @@ export const Cart: React.FC<CartProps> = ({ items, closeButton, type }) => {
             {
               type != "addToCart" && (
                 <>
-
-
                   <section className="cart-info">
                     <div className="text-info">
                       <span className='title'> {t('cart.payment.yourCommand')}</span>

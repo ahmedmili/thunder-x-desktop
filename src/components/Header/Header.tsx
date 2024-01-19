@@ -101,7 +101,9 @@ const Header = () => {
     setShowCart(!showCart);
   };
   const handleNotifCart = async () => {
+    dispatch(removeNotifHeaderCart())
     dispatch(handleCartState())
+    navigate(-1)
   };
 
   const handleUserCart = () => {

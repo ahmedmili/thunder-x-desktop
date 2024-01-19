@@ -515,10 +515,7 @@ const MenuPopup: React.FC<Props> = ({ close, openMissMatch, restaurant }) => {
                                             {/* command buttons */}
 
                                         </>
-
                                     )
-
-
                                 }
 
                                 {(currentPage === totalPages) &&
