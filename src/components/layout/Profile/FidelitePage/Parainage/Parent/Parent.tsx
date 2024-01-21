@@ -88,13 +88,26 @@ function Parent({ parent }: CodeProps) {
             }
             {
                 show && (parent.firstname != undefined) && (
-                    <section className='partnair-display-body'>
+                    <div className='partnair-display-body'>
                         <div className="parrainage-list">
-                            <div className="parrainage-list-item"></div>
+                            <div className="parrainage-list-item">
+                                <div className="partner-blc">
+                                    <div className="partner-logo-blc">
+                                        {/* 
+                                            <div className='partner-logo' style={{ backgroundImage: `url(${Logo})` }}></div>
+                                        */}
+                                        <img src={Logo} alt="Logo" />
+                                    </div>
+                                    <p className="partner-name"> {`${parent.firstname} ${parent.lastname}`}</p>
+                                </div>
+                                <div className="partner-blc">
+                                    <div className="points-count">
+                                        10 Points
+                                    </div>
+                                </div>
+                            </div>
                         </div>
-                        <div className='partner-logo' style={{ backgroundImage: `url(${Logo})` }}></div>
-                        <p> {`${parent.firstname} ${parent.lastname}`}</p>
-                    </section>
+                    </div>
                 )
             }
         </main>
