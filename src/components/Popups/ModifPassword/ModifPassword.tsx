@@ -86,7 +86,7 @@ const ModifPassword: React.FC<Props> = ({ close }) => {
     }
 
     return (
-        <div className="popup-container" >
+        <div className="popup-container modal-editpassword" >
             <div className="popup-box">
                 <button onClick={close} className="close-button"></button>
                 <form onSubmit={handleSubmit}>

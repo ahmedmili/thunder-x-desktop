@@ -452,9 +452,11 @@ function FilterPage({ initialData }: AppProps) {
                     <div className="content__column__filter">
                       <Categories onCategorySelect={searchSupplier} />
                     </div>
-                    <div className="content__column__filter">
-                      <Cle />
-                    </div>
+                    {/* 
+                      <div className="content__column__filter">
+                        <Cle />
+                      </div>
+                    */}
                   </div>
                 </Col>
                 <Col className="col-9 content__column content__column--second">
