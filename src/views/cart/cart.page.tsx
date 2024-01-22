@@ -5,6 +5,7 @@ import {
   removeItemWithIndex,
   setCodePromo,
   setComment,
+  setDeliveryOption,
   setDeliveryPrice,
   setSupplier
 } from "../../Redux/slices/cart/cartSlice";
@@ -544,9 +545,15 @@ const CartPage: React.FC = () => {
   const handleOptionChange = async (value: number) => {
     if (value === 3) {
       setSelectedOption(value);
+      dispatch(setDeliveryOption('delivery'))
     } else {
       const take_away = await commandService.isdelivery(supplier_id)
-      take_away === 1 ? setSelectedOption(value) : handleServicePopup();
+      if (take_away === 1) {
+        setSelectedOption(value)
+        dispatch(setDeliveryOption('pickup'))
+      } else {
+        handleServicePopup();
+      }
     }
   };
 
@@ -802,8 +809,9 @@ const CartPage: React.FC = () => {
 
   // calc total function
   const calcTotal = () => {
+    const delivPrix = (selectedOption === 3) ? deliveryPrice : 0
     setTotal(
-      ((sousTotal + deliveryPrice) - ((appliedBonus / 1000) + (giftAmmount) + promoReduction + discount)))
+      ((sousTotal + delivPrix) - ((appliedBonus / 1000) + (giftAmmount) + promoReduction + discount)))
   }
   // get supplier request
   const getSupplierById = async () => {
@@ -825,10 +833,8 @@ const CartPage: React.FC = () => {
       const res = await adressService.getDistance(obj)
       res.data.code == 200 ? distance = res.data.data.distance : distance = 0
       let extraDeliveryCost = (distance - max_distance) > 0 ? Math.ceil(distance - max_distance) : 0
-
       const deliveryPrice = cartItems.length <= 0 ? 0 : Number(cartItems[0].supplier_data.delivery_price) + extraDeliveryCost
       setExtraDeliveryCost(extraDeliveryCost)
-      // setDelivPrice(deliveryPrice)
       dispatch(setDeliveryPrice(deliveryPrice))
 
     }
@@ -901,15 +907,22 @@ const CartPage: React.FC = () => {
       if (delivery === 1 && take_away == 1) {
         setIsDelevery("delivery")
         setSelectedOption(3)
+        dispatch(setDeliveryOption('delivery'))
+
       } else if (delivery === 1 && take_away == 0) {
         setSelectedOption(3)
         setIsDelevery("delivery")
+        dispatch(setDeliveryOption('delivery'))
+
       } else if (delivery === 0 && take_away == 1) {
         setSelectedOption(2)
         setIsDelevery("pickup")
+        dispatch(setDeliveryOption('pickup'))
+
       } else if (delivery === 0 && take_away == 0) {
         setIsDelevery("surplace")
         setSelectedOption(1)
+        dispatch(setDeliveryOption('surplace'))
       }
     }
 
@@ -984,42 +997,47 @@ const CartPage: React.FC = () => {
                           <textarea name="commentaire" id="commentaire" cols={30} rows={10} value={aComment} onChange={(e) => handleCommentChange(e.target.value)} placeholder="Ex:sandwich"></textarea>
                         </div>
 
-                        <div className="promos-area">
-                          <label>{t('cart.PromosCode')}</label>
+                        {/* promo start */}
+                        {
+                          selectedOption === 3 && (
+                            <div className="promos-area">
+                              <label>{t('cart.PromosCode')}</label>
 
-                          <div className="promos-wrapper">
-                            <div className="promos-list">
-                              <ul>
-                                {
-                                  promosList.length !== 0 && (
-                                    <>
-                                      {
-                                        promosList.map((promo: any, index: number) => {
-                                          return (
-                                            <li>
-                                              <button key={index} className={(!couponExiste) ? "promo-button" : "promo-button active"} onClick={() => {
-                                                selectCoupon(promo)
-                                              }}>
-                                                {promo.title}
-                                              </button>
-                                            </li>
-                                          )
+                              <div className="promos-wrapper">
+                                <div className="promos-list">
+                                  <ul>
+                                    {
+                                      promosList.length !== 0 && (
+                                        <>
+                                          {
+                                            promosList.map((promo: any, index: number) => {
+                                              return (
+                                                <li>
+                                                  <button key={index} className={(!couponExiste) ? "promo-button" : "promo-button active"} onClick={() => {
+                                                    selectCoupon(promo)
+                                                  }}>
+                                                    {promo.title}
+                                                  </button>
+                                                </li>
+                                              )
 
-                                        })
-                                      }
-                                    </>
-                                  )
-                                }
-                              </ul>
+                                            })
+                                          }
+                                        </>
+                                      )
+                                    }
+                                  </ul>
+                                </div>
+                                <div className="promo-container">
+                                  <textarea name="code_promo" id="code_promo" placeholder={`${t('cart.PromosCode')}`} value={promo} onChange={(e) => handlePromoChange(e.target.value)} ></textarea>
+                                  <button disabled={!couponExiste || selectedOption != 3} className={(couponExiste && (selectedOption === 3)) ? "button" : "button disabled"} onClick={checkPromoCode}  >{/* //checkPromoCode */}
+                                    {promoApplied ? t('Annuler') : t('cartPage.appliquer')}
+                                  </button>
+                                </div>
+                              </div>
                             </div>
-                            <div className="promo-container">
-                              <textarea name="code_promo" id="code_promo" placeholder={`${t('cart.PromosCode')}`} value={promo} onChange={(e) => handlePromoChange(e.target.value)} ></textarea>
-                              <button disabled={!couponExiste} className={(couponExiste) ? "button" : "button disabled"} onClick={checkPromoCode}>
-                                {promoApplied ? t('Annuler') : t('cartPage.appliquer')}
-                              </button>
-                            </div>
-                          </div>
-                        </div>
+                          )
+                        }
                         {/* promo end */}
                         {/* gift start */}
 
@@ -1029,7 +1047,7 @@ const CartPage: React.FC = () => {
                             <div className="promo-container">
                               <span>{t('repasGratuit')}</span>
                               <textarea name="code_promo" readOnly id="gift_ammount" placeholder="0" value={`${giftAmmount.toFixed(3)}`} ></textarea>
-                              <button style={{ backgroundColor: `${giftApplied ? "red" : "#3BB3C4"}` }} className={"button"} onClick={() => giftApplied ? clearGift() : applyGift()}>
+                              <button style={{ backgroundColor: `${giftApplied ? "red" : "#3BB3C4"}` }} className={"button"} onClick={() => giftApplied ? clearGift() : applyGift()} >
                                 {giftApplied ? t('Annuler') : t('cartPage.appliquer')}
                               </button>
                             </div>
@@ -1037,24 +1055,29 @@ const CartPage: React.FC = () => {
                             </div>
                           </>
                         }
+
                         {/* gift end */}
                         {/* bonus start */}
-                        <div className="bonus-area">
-                          <label>{t('cartPage.bonus')}</label>
-                          <div className="bonus-wrapper">
-                            <div className="promo-container">
-                              <textarea name="bonus" id="bonus" placeholder={`${t('cartPage.bonus')}`} value={bonus.toFixed(2) + ' pts'}></textarea>
-                              <button style={{ backgroundColor: `${appliedBonus > 0 ? "red" : '#3BB3C4'}` }} className={(bonus < 5000 || limitReachedBonus) ? "button disabled" : "button"} disabled={(bonus < 5000 || limitReachedBonus)} onClick={() => applyBonus()}>
-                                {appliedBonus > 0 ? t('Annuler') : t('cartPage.appliquer')}
-                              </button>
+                        {
+                          selectedOption === 3 && (
+                            <div className="bonus-area">
+                              <label>{t('cartPage.bonus')}</label>
+                              <div className="bonus-wrapper">
+                                <div className="promo-container">
+                                  <textarea name="bonus" id="bonus" placeholder={`${t('cartPage.bonus')}`} value={bonus.toFixed(2) + ' pts'}></textarea>
+                                  <button style={{ backgroundColor: `${appliedBonus > 0 ? "red" : '#3BB3C4'}` }} className={((bonus < 5000 || limitReachedBonus) && (selectedOption === 3)) ? "button" : "button disabled"} disabled={(bonus < 5000 || limitReachedBonus) || (selectedOption != 3)} onClick={() => applyBonus()}>
+                                    {appliedBonus > 0 ? t('Annuler') : t('cartPage.appliquer')}
+                                  </button>
+                                </div>
+                                <ul>
+                                  <li>
+                                    <p className="bonus-message">{t('cartPage.bonusMsg')}</p>
+                                  </li>
+                                </ul>
+                              </div>
                             </div>
-                            <ul>
-                              <li>
-                                <p className="bonus-message">{t('cartPage.bonusMsg')}</p>
-                              </li>
-                            </ul>
-                          </div>
-                        </div>
+                          )
+                        }
                         {/* bonus end */}
                         <div className="buttons">
                           <button className="cancel">
@@ -1369,7 +1392,7 @@ const CartPage: React.FC = () => {
                                 : <></>
                             }
                             {
-                              (deliveryPrice && deliveryPrice > 0) ?
+                              (deliveryPrice && selectedOption === 3 && deliveryPrice > 0) ?
                                 <div className="sous-total">
                                   <div className="title">{t('supplier.delivPrice')}</div>
                                   <div className="value">{Number(deliveryPrice).toFixed(2)} DT</div>
