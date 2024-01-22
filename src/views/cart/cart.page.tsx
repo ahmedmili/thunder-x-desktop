@@ -22,8 +22,6 @@ import { RootState, useAppDispatch, useAppSelector } from "../../Redux/store";
 
 import 'react-clock/dist/Clock.css';
 
-
-
 import { useTranslation } from "react-i18next";
 import { useNavigate } from "react-router-dom";
 import * as z from "zod";
@@ -1099,11 +1097,18 @@ const CartPage: React.FC = () => {
                                 <label htmlFor="espece">{t('cartPage.espece')}</label>
                                 <input className="form-check-input" type="radio" name="pay" id="espece" checked={payMode === 1} onClick={() => setPayMode(1)} />
                               </div>
-                              <div className={`method ${payMode === 2 ? "active" : ""}`}>
-                                <img loading="lazy" className="cart" src={CartSVG} alt="My SVG" />
-                                <label htmlFor="bnc-cart">{t('cartPage.bankPay')}</label>
-                                <input className="form-check-input" type="radio" name="pay" id="bnc-cart" checked={payMode === 2} onClick={() => setPayMode(2)} />
-                              </div>
+
+
+
+                              {
+                                selectedOption != 3 && (
+                                  <div className={`method ${payMode === 2 ? "active" : ""}`}>
+                                    <img loading="lazy" className="cart" src={CartSVG} alt="My SVG" />
+                                    <label htmlFor="bnc-cart">{t('cartPage.bankPay')}</label>
+                                    <input className="form-check-input" type="radio" name="pay" id="bnc-cart" checked={payMode === 2} onClick={() => setPayMode(2)} />
+                                  </div>
+                                )
+                              }
                             </div>
                           </div>
 
@@ -1111,7 +1116,7 @@ const CartPage: React.FC = () => {
                             <div className={`select ${selectedOption == 1 ? "selected" : ""}`}>
                               <div className="deliv-details_header">
                                 <div className="deliv-details_img-blc icon1">
-                                  <img loading="lazy" src={dinnerFurnitureIcn} alt="sur place icon" /* onClick={() => handleOptionChange(1)} */ />
+                                  <img loading="lazy" src={dinnerFurnitureIcn} alt="sur place icon" />
                                 </div>
                                 <div className="deliv-details_header-desc">
                                   <time>20 MIN</time>
@@ -1123,7 +1128,7 @@ const CartPage: React.FC = () => {
                               ${supplier.region}
                               ,${supplier.city}`}
                               </p>
-                              <button /* onClick={() => handleOptionChange(1)}*/ className="btn btn-deliv">livrer ici</button>
+                              <button className="btn btn-deliv">livrer ici</button>
                               <input type="radio" value="1" id='domicile' name='type' checked={selectedOption === 1} />
                             </div>
                             <div className={`select ${selectedOption == 2 ? "selected" : ""}`}>
