@@ -167,9 +167,9 @@ const CommandsList: React.FC<CommandsListProps> = ({ type = "old", goToPassedCom
                                                     </div>
                                                     <KeyboardArrowUpOutlinedIcon className='icon' />
                                                 </div>
-                                                {(selectedCommand === index && type === "old") && <OldCommands feedbacksList={feedbacksList} data={command} />}
-                                                {(selectedCommand === index && type === "current") && <CurrentCommands goToPassedCommands={goToPassedCommands} removeCommand={HandleRemove} data={command} />}
-
+                                                
+                                                {(selectedCommand === index && type === "old") && <div className="command-body"><OldCommands feedbacksList={feedbacksList} data={command} /></div>}
+                                                {(selectedCommand === index && type === "current") && <div className="command-body"><CurrentCommands goToPassedCommands={goToPassedCommands} removeCommand={HandleRemove} data={command} /></div>}
                                             </React.Fragment>
                                         )
                                     })}

@@ -30,6 +30,7 @@ import delivA from "./../../assets/profile/ArchivedCommands/deliv-A-1.svg";
 import doneA from "./../../assets/profile/ArchivedCommands/done-A-1.svg";
 import preparatinA from "./../../assets/profile/ArchivedCommands/preparatin-A-1.svg";
 import traitementA from "./../../assets/profile/ArchivedCommands/traitement-A-1.svg";
+import { RootState } from "../../Redux/slices";
 
 const Header = () => {
   const msg_notifs = useAppSelector((state) => state.messanger.unReadedMessages);
@@ -52,6 +53,8 @@ const Header = () => {
   const [expanded, setExpanded] = useState<string | false>('panel1');
   const showNotifCart = useAppSelector((state) => state.cart.openHeaderCart)
   const NotifCartItmes = useAppSelector((state) => state.cart.notifHeaderCart)
+  const deliveryOption = useAppSelector((state: RootState) => state.cart.deliveryOption);
+
   const searHandleToggle = () => {
     setSearchVisible(!searchVisible);
   };
@@ -98,17 +101,22 @@ const Header = () => {
 
   const handleCart = async () => {
     showProfile && setShowProfile(false)
+    showMapState && dispatch(handleCartState(false));
     setShowCart(!showCart);
   };
+
   const handleNotifCart = async () => {
+    showProfile && setShowProfile(false)
+    showCart && setShowCart(false);
     dispatch(removeNotifHeaderCart())
-    dispatch(handleCartState())
+    dispatch(handleCartState(false))
     navigate(-1)
   };
 
   const handleUserCart = () => {
     if (user) {
       showCart && setShowCart(false);
+      showMapState && dispatch(handleCartState(false));
       setShowProfile(!showProfile);
     } else {
       navigate('/login')
@@ -220,18 +228,18 @@ const Header = () => {
                   <div className='info'>
                     {/* */}
                     {logged_in && (
-                        <>
-                          <div className="position">
-                            <LocationOnIcon className='position-icon' />
-                            {t('no_location_detected')}
-                          </div>
-                          <button onClick={handleCart} className="cart-item">
-                            <span className='cart-icon'></span>
-                            {cartItems.length}
-                          </button>
-                        </>
-                      )}
-                    
+                      <>
+                        <div className="position">
+                          <LocationOnIcon className='position-icon' />
+                          {t('no_location_detected')}
+                        </div>
+                        <button onClick={handleCart} className="cart-item">
+                          <span className='cart-icon'></span>
+                          {cartItems.length}
+                        </button>
+                      </>
+                    )}
+
                     <button onClick={handleUserCart} className={`account ${!logged_in && 'loggedin-account'}`}  >
                       <span className='account-icon'></span>
                     </button>
@@ -454,6 +462,7 @@ const Header = () => {
                                     <div className="price">{Number(commands[0].delivery_price).toFixed(2)} DT</div>
                                   </div>) : ''}
                                 </div>
+
                                 <div className="total-price-blc">
                                   <div className="total-price-blc_wrapper">
                                     <div className="total-price_label">{t('cartPage.total')}</div>

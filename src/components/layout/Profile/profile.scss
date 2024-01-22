@@ -11,7 +11,7 @@
     }
     .profile-main {
         width: 100%;
-        min-height: calc(100vh - 75px);
+        min-height: 100vh;
         margin: 0 0 0 350px;
         padding: 0 86px 52px 78px;
     }
@@ -19,12 +19,20 @@
         display: flex;
         flex-direction: column;
         position: fixed;
-        bottom: 100px;
-        right: 19px;
+        bottom: 22px;
+        right: 26px;
         gap: 20px;
         z-index: 1;
 
-        .messanger-popup-btn,
+        .messanger-popup-btn {
+            @include dimensions(64px, 64px);
+            background-position: center;
+            background-repeat: no-repeat;
+            background-size: 22px auto;
+            background-color: $color-blue-pelorous;
+            border-radius: 50%;
+            border: 0;
+        }
         .phone-popup-btn {
             @include dimensions(64px, 64px);
             background-position: center;
@@ -52,8 +60,8 @@
         }
     }
     .discuter-messanger-popup {
-        bottom: 117px;
-        right: 55px;
+        bottom: 105px;
+        right: 50px;
         z-index: 10;
     }
 }
@@ -61,6 +69,14 @@
 /* # $Mobile ::
 ------------------------------------*/
 
+@media (max-width: 1440px) {
+    .profile-container {
+        .profile-main {
+            margin: 0 0 0 280px;
+            padding: 0 70px 42px 63px;
+        }
+    }
+}
 @media only screen and (max-width: 992px) {
     .profile-container {
         gap: 60px;

@@ -139,7 +139,7 @@ const Messanger: React.FC<MessangerProps> = ({ className }) => {
                 </div>
             </header >
             <main className='messsanger-body'>
-                <div className="wave-container" style={{ backgroundImage: `url(${Wave})` }} >
+                <div className="wave-container">
                     <p>{t('profile.discuter.messanger.fastResponse')}</p>
                 </div>
                 <div className="messages-box">

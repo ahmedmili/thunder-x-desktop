@@ -11,6 +11,7 @@ import empty from '../../assets/panier/empty.png';
 import CloseIcon from '@mui/icons-material/Close';
 import { useTranslation } from 'react-i18next';
 import { useNavigate } from 'react-router-dom';
+import { RootState } from '../../Redux/slices';
 import { adressService } from '../../services/api/adress.api';
 import { localStorageService } from '../../services/localStorageService';
 import './cart.scss';
@@ -48,6 +49,8 @@ export const Cart: React.FC<CartProps> = ({ items, closeButton, type }) => {
 
   const location = useAppSelector(state => state.location.position)
   const userPosition = useAppSelector((state) => state.location.position);
+  const deliveryOption = useAppSelector((state: RootState) => state.cart.deliveryOption);
+  const supplier = useAppSelector((state: RootState) => state.cart.supplier);
 
   const dispatch = useAppDispatch();
   const navigate = useNavigate()
@@ -152,8 +155,8 @@ export const Cart: React.FC<CartProps> = ({ items, closeButton, type }) => {
       };
       const res = await adressService.getDistance(obj)
       res.data.code == 200 ? distance = res.data.data.distance : distance = 0
-      extraDeliveryCost = (distance - max_distance) > 0 ? Math.ceil(distance - max_distance) : 0
-      const deliveryPrice = items.length > 0 ? Number(items[0].supplier_data.delivery_price) + extraDeliveryCost : 0
+      let extraDeliveryCost = (distance - max_distance) > 0 ? Math.ceil(distance - max_distance) : 0
+      const deliveryPrice = items.length > 0 ? Number(supplier.delivery_price) + extraDeliveryCost : 0
       setDelivPrice(deliveryPrice)
     }
   }
@@ -186,7 +189,14 @@ export const Cart: React.FC<CartProps> = ({ items, closeButton, type }) => {
                   <div className="text-info">
                     <span className='title'>{t('cart.payment.yourCommand')}</span>
                     <p className='supplier-name'>{items[0].supplier_data.supplier_name}</p>
-                    <p className='position'>{t("cart.payment.delivTo")} {": " + locationName}</p>
+                    {
+                      deliveryOption === 'delivery' ? (
+
+                        <p className='position'>{t("cart.payment.delivTo")} {": " + locationName}</p>
+                      ) : (
+                        <p className='position'>{t("emporter")} {`: ${supplier.street} ${supplier.region} ${supplier.city}`}</p>
+                      )
+                    }
                   </div>
                 )
               }
@@ -239,15 +249,30 @@ export const Cart: React.FC<CartProps> = ({ items, closeButton, type }) => {
                           <span className='value'>-{Number(discount_value).toFixed(2)}DT</span>
                         </div> : <></>
                     }
-                    <div className="info-text">
-                      <span className='title'>{t("supplier.delivPrice")}</span>
-                      <span className='value'>{Number(delivPrice).toFixed(2)}DT</span>
-                    </div>
+                    {
+                      (deliveryOption === 'delivery' && delivPrice >= 0) ? (
+                        <div className="info-text">
+                          <span className='title'>{t("supplier.delivPrice")}</span>
+                          <span className='value'>{Number(delivPrice).toFixed(2)}DT</span>
+                        </div>
+                      ) :
+                        (
+                          <></>
+                        )
+                    }
+
                   </section>
                   <section className="price-resume">
                     <div className="info-text">
                       <span className='title'>{t("cartPage.total")}</span>
-                      <span className='value'>{(sousTotal + Number(delivPrice)).toFixed(2)} DT</span>
+                      {
+                        deliveryOption === 'delivery' ? (
+
+                          <span className='value'>{(sousTotal + Number(delivPrice)).toFixed(2)} DT</span>
+                        ) : (
+                          <span className='value'>{sousTotal} DT</span>
+                        )
+                      }
                     </div>
                   </section>
                   <section className='cart-btns' >
@@ -296,6 +321,6 @@ export const Cart: React.FC<CartProps> = ({ items, closeButton, type }) => {
           </>
         )
       }
-    </div>
+    </div >
   );
 };

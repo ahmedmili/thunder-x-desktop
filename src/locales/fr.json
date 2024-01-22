@@ -318,6 +318,8 @@
   "adress.adressSelected": "L’adresse séléctionnée est : ",
   "adress.noAdress": "Aucune adresse à été enregistrer",
   "adress.savedAdress": "Lieux enregistré",
+  "adress.EmptysavedAdress": "Aucun emplacement enregistré",
+
   "adress.currentPos": "Position actuelle",
   "adress.add": "Ajouter un adress de livraison",
   "adress.takeAdressFromCart": "Indique votre adress sur la carte",
