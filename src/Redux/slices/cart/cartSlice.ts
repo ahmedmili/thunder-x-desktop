@@ -95,9 +95,10 @@ const cartSlice = createSlice({
     removeNotifHeaderCart: (state) => {
       state.notifHeaderCart = [];
     },
-    handleCartState: (state,) => {
-      state.openHeaderCart = !state.openHeaderCart;
+    handleCartState: (state, action) => {
+      state.openHeaderCart = action.payload;
     },
+
     ///////////
     setDeliveryOption: (
       state,

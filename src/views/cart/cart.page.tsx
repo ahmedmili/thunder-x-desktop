@@ -56,6 +56,7 @@ import Payment_echec from "../../assets/payment/payment-not-success.png";
 import Payment_valide from "../../assets/payment/payment-success.png";
 
 import "./cart.page.scss";
+import { useDispatch } from "react-redux";
 
 interface ResultMessageComponentProps {
   type: string
@@ -63,6 +64,7 @@ interface ResultMessageComponentProps {
 const ResultMessageComponent: React.FC<ResultMessageComponentProps> = ({ type }) => {
   const navigate = useNavigate()
   const { t } = useTranslation()
+  const dispatch = useDispatch()
   var popup_image
   var popup_title
   var title_color
@@ -102,8 +104,15 @@ const ResultMessageComponent: React.FC<ResultMessageComponentProps> = ({ type })
   const goHome = () => {
     navigate('/')
   }
+  const dropOrder = () => {
+    dispatch(clearCart());
+    dispatch(setDeliveryPrice(0));
+    dispatch(setComment(""));
+    dispatch(setCodePromo(""));
+  }
   const goCurrentCommands = () => {
     navigate('/profile/archivedCommands/')
+    dropOrder()
   }
 
   return (
@@ -160,7 +169,6 @@ const CartPage: React.FC = () => {
 
   const [sousTotal, setSousTotal] = useState<number>(0)
   const [total, setTotal] = useState<number>(0)
-  // const [delivPrice, setDelivPrice] = useState<number>(0)
   const [aComment, setAComment] = React.useState<string>(comment ? comment : "");
   const [showTimer, setShowTimer] = React.useState<boolean>(false);
 
@@ -349,17 +357,6 @@ const CartPage: React.FC = () => {
   const ArticleProvider: React.FC<Article> = ({ item, remove }) => {
     return (
       <>
-
-        <div className="supplier-desc-header">
-
-
-          <div className="show-all-link-blc">
-            <a className="show-all-link">
-              Tout afficher
-            </a>
-          </div>
-        </div>
-
         <div className="supplier-desc-body">
           <div className="supplier-name-blc">
             {
@@ -582,7 +579,8 @@ const CartPage: React.FC = () => {
           try {
             const { status, data } = await cartService.createOrder(order);
             if (status === 200) {
-              dropOrder()
+
+              // dropOrder()
               setSubmitResult("command_success")
             } else {
               setSubmitResult('command_not_success')

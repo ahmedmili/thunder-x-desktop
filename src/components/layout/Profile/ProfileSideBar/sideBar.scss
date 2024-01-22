@@ -42,16 +42,13 @@
             @include border(3px, $Light_Blue);
         }
         .info {
-            display: flex;
-            flex-direction: column;
-            gap: 25px;
+            display: block;
 
             .name {
-                @include dimensions(141px, 23px);
-                color: $color-white;
+                width: initial;
+                height: initial;
+                @include fonts(20px, 20px, $color-white);
                 font-family: 'Poppins-SemiBold', serif;
-                font-size: 20px;
-                line-height: normal;
                 text-align: center;
             }
             .icons {
@@ -177,6 +174,7 @@
                         }
                     }
                 }
+              
             }
         }
     }
@@ -185,6 +183,36 @@
 /* # $Mobile ::
 ------------------------------------*/
 
+@media (max-width: 1440px) {
+    .side-bar {
+        @include dimensions(280px, 100%);
+
+        .sideBar-header {
+            width: 280px;
+            padding: 100px 15px 28px;
+            border-radius: 0 0 32px;
+
+            .image {
+                @include dimensions(90px, 90px);
+                border-width: 2px;
+            }
+        }
+        .sideBar-nav {
+            margin-top: 55px;
+
+            ul {
+                li {
+                    a {
+                        padding-left: 60px;
+                        height: 40px;
+                        gap: 18px;
+                        @include fontSize(12px, 12px);
+                    }
+                }
+            }
+        }
+    }
+}
 @media only screen and (max-width: 992px) {
     .side-bar {
         width: 272px;

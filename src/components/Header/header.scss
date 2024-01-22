@@ -215,8 +215,13 @@
     display: flex;
     padding: 22px 0;
     flex-direction: column;
-    cursor: pointer;
+    cursor: initial;
 
+    p {
+        font-family: 'Poppins-Bold', serif;
+        @include fonts(17px, 17px, $color-white);
+        line-height: normal;
+    }
     a {
         font-family: 'Poppins-Bold', serif;
         @include fonts(17px, 17px, $color-white);
@@ -1007,6 +1012,9 @@
                     background-size: 16px, auto;
                 }
             }
+        }
+        &.scroll {
+            align-items: center;
         }
     }
 

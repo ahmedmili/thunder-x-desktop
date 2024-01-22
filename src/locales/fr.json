@@ -169,7 +169,7 @@
   "profile.desactive.avi3": "Je ne suis pas satisfait de mon expérience de livraison avec l’application",
   "profile.desactive.avi4": "J’ai trouvé ubne autre alternative à Thunder Express avec des frais de livraison inférieurs aux vôtres",
   "profile.desactive.Desactiveok": "Désactiver mon compte",
-  "profile.desactive.Desactive_Drop_account": "Désactiver / Supprimer mon compte",
+  "profile.desactive.Desactive_Drop_account": "Désactiver et Supprimer mon compte",
   "profile.desactive.warnMessage": "Etes vous sure de vouloir désactiver temporairement votre compte ?",
   "profile.delete.warnMessage": "Etes vous sure de vouloir supprimer définitivement votre compte ?",
   "orderTrackingPage.status": "Statut :",
@@ -318,6 +318,8 @@
   "adress.adressSelected": "L’adresse séléctionnée est : ",
   "adress.noAdress": "Aucune adresse à été enregistrer",
   "adress.savedAdress": "Lieux enregistré",
+  "adress.EmptysavedAdress": "Aucun emplacement enregistré",
+
   "adress.currentPos": "Position actuelle",
   "adress.add": "Ajouter un adress de livraison",
   "adress.takeAdressFromCart": "Indique votre adress sur la carte",

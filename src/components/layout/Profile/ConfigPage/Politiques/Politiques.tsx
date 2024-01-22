@@ -1,28 +1,38 @@
 
 import { useEffect, useState } from 'react';
+import { useTranslation } from 'react-i18next';
+import { useNavigate } from 'react-router';
 import thunderLogo from '../../../../../assets/icon.png';
 import LeftArrow from '../../../../../assets/profile/leftArrow.svg';
 import RigthArrow from '../../../../../assets/profile/rigthArrow.svg';
+import Header from '../../../../Header/Header';
+import Footer from '../../../../footer/footer';
 import legalsData from './Politiques.json';
 import './politiques.scss';
+import { localStorageService } from '../../../../../services/localStorageService';
 
 interface legalProps {
   bodyText: string[],
 }
+// Define a type for your data structure
+type LegalsData = {
+  [key: string]: { body: string[] }[];
+};
 
 const LegalCart: React.FC<legalProps> = ({ bodyText }) => {
 
   return (<>
     <div className="legal-cart">
-      <div className="legal-cart-desc">
-        <p className='body' >{bodyText}</p>
-      </div>
+      <p className='body' >{bodyText}</p>
     </div>
   </>)
 }
 
 
 const Politiques = () => {
+  const { t } = useTranslation()
+  const navigate = useNavigate()
+
   const itemsPerPage = 6;
 
   const [totalPages, setTotalPages] = useState<number>(0);
@@ -32,7 +42,10 @@ const Politiques = () => {
   const handleContent = () => {
     const startIndex = (currentPage - 1) * itemsPerPage;
     const endIndex = startIndex + itemsPerPage;
-    const displayedContent = legalsData.slice(startIndex, endIndex)
+    const language = localStorageService.getLanguage() || 'fr'
+    const legalsDataJson: LegalsData = legalsData;
+    const selectedLanguageObject = legalsDataJson[language];
+    const displayedContent = selectedLanguageObject.slice(startIndex, endIndex)
     setDisplayedContent(displayedContent)
   }
 
@@ -50,50 +63,59 @@ const Politiques = () => {
   useEffect(() => {
 
     let totalPages: number = 1;
-    totalPages = Math.ceil(legalsData.length / itemsPerPage)
+    const language = localStorageService.getLanguage() || 'fr'
+    const legalsDataJson: LegalsData = legalsData;
+    const selectedLanguageObject = legalsDataJson[language];
+    totalPages = Math.ceil(selectedLanguageObject.length / itemsPerPage)
     setTotalPages(totalPages)
   }, [legalsData])
 
-
+  const goBack = () => {
+    navigate('/profile/');
+  };
 
   return (
+    <>
+      <Header />
+      <section className="Politique-section">
+        <button className="btn-back" onClick={goBack}>{t('profile.mesConfig.politiques')}</button>
 
-    <section className="Politique-section">
-      <div className="logo-container">
-
-        <div className="logo-wrapper" style={{ backgroundImage: `url(${thunderLogo})` }}>
+        <div className="logo-container">
+          <div className="logo-wrapper" style={{ backgroundImage: `url(${thunderLogo})` }}>
+          </div>
         </div>
-      </div>
-      <main>
-        {
-          displayedContent.length > 0 && (
-            displayedContent.map((legal: any, index: number) => {
-              return <LegalCart key={index} bodyText={legal.body} />
-            })
-          )
+        <main>
+          {
+            displayedContent.length > 0 && (
+              displayedContent.map((legal: any, index: number) => {
+                return <LegalCart key={index} bodyText={legal.body} />
+              })
+            )
 
-        }
-      </main>
-      <div className='buttons'>
-        {/* prev button */}
-        {!(currentPage === 1) &&
-          <div className="nav-page-button">
-            <button onClick={prevPage}>
-              <img loading="lazy" src={LeftArrow} alt="prev button" />
-            </button>
-          </div>
-        }
-        {/* next */}
-        {!(currentPage === totalPages) &&
-          <div className="nav-page-button">
-            <button onClick={nextPage}>
-              <img loading="lazy" src={RigthArrow} alt="prev button" />
+          }
+        </main>
+        <div className='buttons'>
+          {/* prev button */}
+          {!(currentPage === 1) &&
+            <div className="nav-page-button">
+              <button onClick={prevPage}>
+                <img loading="lazy" src={LeftArrow} alt="prev button" />
+              </button>
+            </div>
+          }
+          {/* next */}
+          {!(currentPage === totalPages) &&
+            <div className="nav-page-button">
+              <button onClick={nextPage}>
+                <img loading="lazy" src={RigthArrow} alt="prev button" />
 
-            </button>
-          </div>
-        }
-      </div>
-    </section>
+              </button>
+            </div>
+          }
+        </div>
+      </section>
+      <Footer />
+    </>
   );
 };
 

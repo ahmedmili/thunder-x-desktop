@@ -119,7 +119,7 @@
 
     .map-container {
         display: block;
-        min-height: 447px;
+        min-height: 330px;
 
         .location-container {
             padding: 0;
@@ -163,6 +163,14 @@
 /* # $Mobile ::
 ------------------------------------*/
 
+@media (max-width: 1440px) {
+    .profile-page-wrapper {
+        .profile-title-page {
+            margin: 0 0 43px;
+            @include fontSize(16px, 16px);
+        }
+    }
+}
 @media only screen and (max-width: 1200px) {
     .config-page {
         padding: 40px 40px;
