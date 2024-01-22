@@ -1,4 +1,4 @@
-import React, { MouseEventHandler, useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import {
   changeItemQuantity,
   clearCart,
@@ -42,7 +42,6 @@ import MessangerBtnIcon from '../../assets/profile/Discuter/messanger-btn.svg';
 import Messanger from "../../components/Popups/Messanger/Messanger";
 import MinCostError from "../../components/Popups/MinCostError/MinCostError";
 import WarnPopup from "../../components/Popups/WarnPopup/WarnPopup";
-import PaymentPopup from "../../components/Popups/payment/PaymentPopup";
 import TimePickerComponent from "../../components/TimePicker/TimePicker";
 import { LocationService } from "../../services/api/Location.api";
 import { adressService } from "../../services/api/adress.api";
@@ -52,9 +51,9 @@ import { supplierServices } from "../../services/api/suppliers.api";
 import { userService } from "../../services/api/user.api";
 import { localStorageService } from "../../services/localStorageService";
 
-import Command_vailde from "../../assets/payment/command-success.png"
-import Payment_valide from "../../assets/payment/payment-success.png"
-import Payment_echec from "../../assets/payment/payment-not-success.png"
+import Command_vailde from "../../assets/payment/command-success.png";
+import Payment_echec from "../../assets/payment/payment-not-success.png";
+import Payment_valide from "../../assets/payment/payment-success.png";
 
 import "./cart.page.scss";
 
@@ -62,6 +61,7 @@ interface ResultMessageComponentProps {
   type: string
 }
 const ResultMessageComponent: React.FC<ResultMessageComponentProps> = ({ type }) => {
+  const navigate = useNavigate()
   const { t } = useTranslation()
   var popup_image
   var popup_title
@@ -73,7 +73,8 @@ const ResultMessageComponent: React.FC<ResultMessageComponentProps> = ({ type })
       popup_title = t('popup.payment.invalidePayment');
       title_color = '#FBC000'
       popup_image = Payment_echec;
-      popup_msg = t('popup.payment.invalidePayment.msg');
+      // popup_msg = t('popup.payment.invalidePayment.msg');
+      popup_msg = '';
       break;
     case "command_success":
       popup_title = t('popup.payment.valideCommand');
@@ -91,10 +92,18 @@ const ResultMessageComponent: React.FC<ResultMessageComponentProps> = ({ type })
       popup_title = t('popup.payment.validePayment');
       title_color = '#24A6A4'
       popup_image = Payment_valide;
-      popup_msg = t('popup.payment.validePayment.msg');
+      // popup_msg = t('popup.payment.validePayment.msg');
+      popup_msg = '';
+
       break;
     default:
       break;
+  }
+  const goHome = () => {
+    navigate('/')
+  }
+  const goCurrentCommands = () => {
+    navigate('/profile/archivedCommands/')
   }
 
   return (
@@ -105,6 +114,21 @@ const ResultMessageComponent: React.FC<ResultMessageComponentProps> = ({ type })
         <img loading="lazy" src={popup_image} alt="echec payment" />
         <p className="message"> {popup_msg}</p>
       </div>
+      {
+        (type === 'command_not_success') && (
+          <button className="result-message-btn" style={{ margin: `0 auto` }} onClick={goHome} >
+            {t('cart.payment.iCommand')}
+          </button>
+        )
+      }
+
+      {
+        (type === 'command_success') && (
+          <button className="result-message-btn" onClick={goCurrentCommands} >
+            {t('cart.payment.iCommand')}
+          </button>
+        )
+      }
     </div>
   )
 
@@ -140,9 +164,7 @@ const CartPage: React.FC = () => {
   const [aComment, setAComment] = React.useState<string>(comment ? comment : "");
   const [showTimer, setShowTimer] = React.useState<boolean>(false);
 
-  const [popupType, setPopupType] = React.useState<string>("");
   const [submitResult, setSubmitResult] = React.useState<string>("");
-  const [showPopup, setShowPopup] = React.useState<boolean>(false);
   const [showServicePopup, setShowServicePopup] = React.useState<boolean>(false);
   const [showAuthWarnPopup, setShowAuthWarnPopup] = React.useState<boolean>(false);
 
@@ -554,24 +576,20 @@ const CartPage: React.FC = () => {
         if (Number(minCost) > sousTotal) {
           setMinCostError(true)
         } else if (isClosed === 0 || forced_status === "CLOSE ") {
-          toast.warn("This restaurant is currently closed, please complete your order later.")
+          dropOrder()
+          setSubmitResult('command_not_success')
         } else {
-          // setPopupType('command_success')
-          // handlePopup()
-          setSubmitResult("command_success")
-
-          // try {
-          //   const { status, data } = await cartService.createOrder(order);
-          //   if (status === 200) {
-          //     dropOrder()
-          //     setPopupType('command_success')
-          //     handlePopup()
-          //   } else {
-          //     toast.warn("something went wrong")
-          //   }
-          // } catch (error) {
-          //   throw error
-          // }
+          try {
+            const { status, data } = await cartService.createOrder(order);
+            if (status === 200) {
+              dropOrder()
+              setSubmitResult("command_success")
+            } else {
+              setSubmitResult('command_not_success')
+            }
+          } catch (error) {
+            throw error
+          }
         }
       } else {
         setShowAuthWarnPopup(true)
@@ -590,9 +608,6 @@ const CartPage: React.FC = () => {
     setbonus(bonus)
   }
 
-  const handlePopup = () => {
-    setShowPopup(!showPopup)
-  }
 
   //  manage comments state
   const handleCommentChange = (comment: string) => {
@@ -1012,8 +1027,8 @@ const CartPage: React.FC = () => {
 
               <Row>
                 <Col>
-                  <main>
-                    <div className={`product-detail-container`}>
+                  <main className={`${submitResult != "" ? "main-message" : ""}`}>
+                    <div className={`product-detail-container ${submitResult === "" ? "main-message-container" : ""} `} >
                       {
                         submitResult === "" ? (
 
@@ -1309,12 +1324,8 @@ const CartPage: React.FC = () => {
                             </div>
 
                           </>
-                        ) : submitResult === "command_success" ? (
-                          <ResultMessageComponent type={submitResult} />
                         ) : (
-                          <>
-                            else
-                          </>
+                          <ResultMessageComponent type={submitResult} />
                         )
                       }
                     </div>
@@ -1322,137 +1333,142 @@ const CartPage: React.FC = () => {
                     {/* 
                       order datails
                     */}
-                    <div className="summair-container">
-                      <h3 className="summair-title">{t('cartPage.total')}</h3>
-                      <div className={`info`}>
+                    {
+                      submitResult === "" && (
+                        <div className="summair-container">
+                          <h3 className="summair-title">{t('cartPage.total')}</h3>
+                          <div className={`info`}>
 
-                        <div className="info-customer-area">
-                          <div className="info-customer-title-blc">
-                            <h4 className="info-customer-title">
-                              {selectedOption === 3 ? t('cartPage.delivto') : t('cartPage.emportePar')}
-                            </h4>
-                            <a className="edit-info-customer-link" onClick={goPrevStep} >{t('update')}</a>
-                          </div>
-                          <div className="customer-infos-area">
-                            <div className="customer-info_name">{user ? `${user.firstname} ${user.lastname} ` : t('cartPage.visitor')} </div>
-                            <div className="customer-info_mobile">{t('mobile')} : <span>{phoneNumber ? phoneNumber : ""}</span></div>
-                            <div className="customer-info_adresse">
-                              {userPosition?.coords.label}
+                            <div className="info-customer-area">
+                              <div className="info-customer-title-blc">
+                                <h4 className="info-customer-title">
+                                  {selectedOption === 3 ? t('cartPage.delivto') : t('cartPage.emportePar')}
+                                </h4>
+                                <a className="edit-info-customer-link" onClick={goPrevStep} >{t('update')}</a>
+                              </div>
+                              <div className="customer-infos-area">
+                                <div className="customer-info_name">{user ? `${user.firstname} ${user.lastname} ` : t('cartPage.visitor')} </div>
+                                <div className="customer-info_mobile">{t('mobile')} : <span>{phoneNumber ? phoneNumber : ""}</span></div>
+                                <div className="customer-info_adresse">
+                                  {userPosition?.coords.label}
+                                </div>
+                              </div>
                             </div>
-                          </div>
-                        </div>
 
-                        <div className="payment-method">
-                          <h4 className="payment-method-title">
-                            {t('cartPage.payMode')}
-                          </h4>
-                          <div className="payment-method-status">
-                            <span className={`payment-method-status_txt ${payMode == 1 ? 'cash' : 'card'}`}>
-                              {payMode == 1 ? t('cartPage.espece') : t('cartPage.bankPay')}
-                            </span>
-                          </div>
-                        </div>
-
-                        <div className="calculate-total-price">
-                          <div className="supplier-name-blc">
-                            <div className="supplier-img-blc">
-                              <img src={supplier.images[0].pivot.type === "principal" ? supplier.images[1].path : supplier.images[0].path} alt="Supplier Img" />
+                            <div className="payment-method">
+                              <h4 className="payment-method-title">
+                                {t('cartPage.payMode')}
+                              </h4>
+                              <div className="payment-method-status">
+                                <span className={`payment-method-status_txt ${payMode == 1 ? 'cash' : 'card'}`}>
+                                  {payMode == 1 ? t('cartPage.espece') : t('cartPage.bankPay')}
+                                </span>
+                              </div>
                             </div>
-                            <div className="supplier-title-blc">
-                              <h4 className="supplier-title">{cartItems[0].supplier_data.supplier_name}</h4>
-                              <div className="supplier-adresse">
-                                {supplier.street}, {supplier.city}
+
+                            <div className="calculate-total-price">
+                              <div className="supplier-name-blc">
+                                <div className="supplier-img-blc">
+                                  <img src={supplier.images[0].pivot.type === "principal" ? supplier.images[1].path : supplier.images[0].path} alt="Supplier Img" />
+                                </div>
+                                <div className="supplier-title-blc">
+                                  <h4 className="supplier-title">{cartItems[0].supplier_data.supplier_name}</h4>
+                                  <div className="supplier-adresse">
+                                    {supplier.street}, {supplier.city}
+                                  </div>
+                                </div>
+                              </div>
+                              {
+                                cartItems.map((item: FoodItem, index: number) => {
+                                  return <React.Fragment key={index}>
+                                    <div className="products-count-area">
+                                      <div className="product-id">
+                                        X{item.quantity}
+                                      </div>
+                                      <div className="product-name">
+                                        {item.product.name}
+                                      </div>
+                                      <div className="count-container">
+                                        <input readOnly={true} type="number" name="product-count" id="product-count" value={item.quantity} />
+                                        <div className="count-buttons">
+                                          <button className="btn count-more" onClick={() => handleIncreaseQuantity(item)}  ></button>
+                                          <button className="btn count-less" onClick={() => handleDecreaseQuantity(item)}   ></button>
+                                        </div>
+                                      </div>
+                                      <div className="product-price">
+                                        {item.total.toFixed(2)}DT
+                                      </div>
+                                    </div>
+
+                                  </React.Fragment>
+                                })
+                              }
+                              <div className="devider">
+                              </div>
+                              <div className="price-total-area">
+                                <div className="sous-total">
+                                  <div className="title">{t('profile.commands.sousTotal')}</div>
+                                  <div className="value">{sousTotal ? sousTotal.toFixed(2) : "0.00"} DT</div>
+                                </div>
+                                {
+                                  (payMode == 2 && tax > 0) ?
+                                    <div className="sous-total">
+                                      <div className="title">{t('orderTrackingPage.BankTaxes')}</div>
+                                      <div className="value">{`${tax} DT`}</div>
+                                    </div>
+                                    : <></>
+                                }
+                                {
+                                  (discountValue && discountValue > 0) ?
+                                    <div className="sous-total">
+                                      <div className="title">{t('cart.discount')}</div>
+                                      <div className="value">{discountValue ? (discountValue).toFixed(2) : "0.00"} DT</div>
+                                    </div>
+                                    : <></>
+                                }
+                                {
+                                  (promoReduction && promoReduction > 0) ?
+                                    <div className="sous-total">
+                                      <div className="title">{t('cartPage.Coupon')}</div>
+                                      <div className="value">{promoReduction ? (promoReduction).toFixed(2) : "0.00"} DT</div>
+                                    </div>
+                                    : <></>
+                                }
+                                {
+                                  (appliedBonus && appliedBonus > 0) ?
+                                    <div className="sous-total">
+                                      <div className="title">{t('cartPage.bonus')}</div>
+                                      <div className="value">{appliedBonus ? (appliedBonus / 1000).toFixed(2) : "0.00"} DT</div>
+                                    </div>
+                                    : <></>
+                                }
+                                {
+                                  (giftAmmount && giftAmmount > 0) ?
+                                    <div className="sous-total">
+                                      <div className="title">{t('repasGratuit')}</div>
+                                      <div className="value">{giftAmmount ? (giftAmmount).toFixed(2) : "0.00"} DT</div>
+                                    </div>
+                                    : <></>
+                                }
+                                {
+                                  (deliveryPrice && deliveryPrice > 0) ?
+                                    <div className="sous-total">
+                                      <div className="title">{t('supplier.delivPrice')}</div>
+                                      <div className="value">{Number(deliveryPrice).toFixed(2)} DT</div>
+                                    </div>
+                                    : <></>
+                                }
+                              </div>
+                              <div className="a-payer">
+                                <span className="title">{t('toPay')}</span>
+                                <span className="value">{total.toFixed(2)} DT</span>
                               </div>
                             </div>
                           </div>
-                          {
-                            cartItems.map((item: FoodItem, index: number) => {
-                              return <React.Fragment key={index}>
-                                <div className="products-count-area">
-                                  <div className="product-id">
-                                    X{item.quantity}
-                                  </div>
-                                  <div className="product-name">
-                                    {item.product.name}
-                                  </div>
-                                  <div className="count-container">
-                                    <input readOnly={true} type="number" name="product-count" id="product-count" value={item.quantity} />
-                                    <div className="count-buttons">
-                                      <button className="btn count-more" onClick={() => handleIncreaseQuantity(item)}  ></button>
-                                      <button className="btn count-less" onClick={() => handleDecreaseQuantity(item)}   ></button>
-                                    </div>
-                                  </div>
-                                  <div className="product-price">
-                                    {item.total.toFixed(2)}DT
-                                  </div>
-                                </div>
-
-                              </React.Fragment>
-                            })
-                          }
-                          <div className="devider">
-                          </div>
-                          <div className="price-total-area">
-                            <div className="sous-total">
-                              <div className="title">{t('profile.commands.sousTotal')}</div>
-                              <div className="value">{sousTotal ? sousTotal.toFixed(2) : "0.00"} DT</div>
-                            </div>
-                            {
-                              (payMode == 2 && tax > 0) ?
-                                <div className="sous-total">
-                                  <div className="title">{t('orderTrackingPage.BankTaxes')}</div>
-                                  <div className="value">{`${tax} DT`}</div>
-                                </div>
-                                : <></>
-                            }
-                            {
-                              (discountValue && discountValue > 0) ?
-                                <div className="sous-total">
-                                  <div className="title">{t('cart.discount')}</div>
-                                  <div className="value">{discountValue ? (discountValue).toFixed(2) : "0.00"} DT</div>
-                                </div>
-                                : <></>
-                            }
-                            {
-                              (promoReduction && promoReduction > 0) ?
-                                <div className="sous-total">
-                                  <div className="title">{t('cartPage.Coupon')}</div>
-                                  <div className="value">{promoReduction ? (promoReduction).toFixed(2) : "0.00"} DT</div>
-                                </div>
-                                : <></>
-                            }
-                            {
-                              (appliedBonus && appliedBonus > 0) ?
-                                <div className="sous-total">
-                                  <div className="title">{t('cartPage.bonus')}</div>
-                                  <div className="value">{appliedBonus ? (appliedBonus / 1000).toFixed(2) : "0.00"} DT</div>
-                                </div>
-                                : <></>
-                            }
-                            {
-                              (giftAmmount && giftAmmount > 0) ?
-                                <div className="sous-total">
-                                  <div className="title">{t('repasGratuit')}</div>
-                                  <div className="value">{giftAmmount ? (giftAmmount).toFixed(2) : "0.00"} DT</div>
-                                </div>
-                                : <></>
-                            }
-                            {
-                              (deliveryPrice && deliveryPrice > 0) ?
-                                <div className="sous-total">
-                                  <div className="title">{t('supplier.delivPrice')}</div>
-                                  <div className="value">{Number(deliveryPrice).toFixed(2)} DT</div>
-                                </div>
-                                : <></>
-                            }
-                          </div>
-                          <div className="a-payer">
-                            <span className="title">{t('toPay')}</span>
-                            <span className="value">{total.toFixed(2)} DT</span>
-                          </div>
                         </div>
-                      </div>
-                    </div>
+
+                      )
+                    }
 
                     {/* 
                        messsanger 
@@ -1478,12 +1494,6 @@ const CartPage: React.FC = () => {
                 minCostError && <MinCostError close={handleMinCostModal} />
               }
             </Container>
-            {
-              showPopup && (
-
-                <PaymentPopup close={handlePopup} type={popupType} />
-              )
-            }
             {
               showServicePopup && (
                 <WarnPopup message={t('searchPage.warnServiceMessage')} closeButtonText={t('continuer')} confirmButtonText={t('Modal.finishCommand.dropOldCommand')} close={handleServicePopup} accept={dropOrder} />
