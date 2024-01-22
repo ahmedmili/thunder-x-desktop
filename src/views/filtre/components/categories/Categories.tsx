@@ -38,10 +38,7 @@ const Categories: React.FC<FilterCategoriesProps> = ({
   const [datas, setData]: any = useState();
 
   useEffect(() => {
-    setContentHeight(contentRef?.current?.scrollHeight);
-    setTimeout(() => {
-      setContentHeight(contentRef?.current?.scrollHeight);
-    }, 300);
+    
   }, [collpased, datas]);
 
   useEffect(() => {
@@ -171,7 +168,7 @@ const Categories: React.FC<FilterCategoriesProps> = ({
           className={`categories-filter-container__list  ${collpased ? "hide" : "show"
             }`}
           ref={contentRef}
-          style={{ maxHeight: collpased ? "0px" : `${contentHeight}px` }}
+          style={{ maxHeight: collpased ? "0px" : `max-content` }}
         >
           {datas?.map((data: any, index: any) => {
             return (

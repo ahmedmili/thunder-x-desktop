@@ -21,7 +21,7 @@ import { RootState, useAppDispatch, useAppSelector } from "../../Redux/store";
 
 import 'react-clock/dist/Clock.css';
 
-
+import dayjs, { Dayjs } from 'dayjs';
 
 import { useTranslation } from "react-i18next";
 import { useNavigate } from "react-router-dom";
@@ -52,6 +52,8 @@ import { supplierServices } from "../../services/api/suppliers.api";
 import { userService } from "../../services/api/user.api";
 import { localStorageService } from "../../services/localStorageService";
 import "./cart.page.scss";
+import { Schedule } from '../../services/types';
+import { getHoursAndMinutes } from '../../utils/utils';
 
 
 const CartPage: React.FC = () => {
@@ -148,6 +150,7 @@ const CartPage: React.FC = () => {
   const unReadMessages = useAppSelector((state) => state.messanger.unReadedMessages)
   const [messangerPopup, setMessangerPopup] = useState<boolean>(false)
   const [unReadedQt, setUnReadedQt] = useState<number>(unReadMessages)
+  const [disabledDays, setDisabledDays] = useState<any>(null);
   var currentDate = moment();
 
   var today = currentDate.format('ddd');  // Get the current day name (e.g., 'Mon', 'Tue', etc.)
@@ -178,68 +181,156 @@ const CartPage: React.FC = () => {
   useEffect(() => {
     !supplier_id && navigate('/')
   }, [])
+  useEffect(() => {
+    getDisabledDays()
+  }, [schedules])
 
 
   useEffect(() => {
-    var message = `${t('mismatchModal.selectOption.option2.fastest')}
+    var message :any = `${t('mismatchModal.selectOption.option2.fastest')}
     ${t('mismatchModal.selectOption.option2.possible')}
     20-40 ${t('mismatchModal.selectOption.option2.minutes')} `
-
-    if (forced_status === "OPEN") {
-      if (schedules && schedules.length) {
-        var currentDayObject = schedules.find((day: any) => day.day === today);
-        if (currentDayObject) {
-          const closeTimeArray = currentDayObject.to.toString().split(':')
-          const closeTime = `${closeTimeArray[0]}:${closeTimeArray[1]}`
-          const openTimeArray = currentDayObject.from.toString().split(':')
-          const openTime = `${openTimeArray[0]}:${openTimeArray[1]}`
-          setOpenTime(openTime)
-          setCloseTime(closeTime)
-
-        }
-      } else {
-        const closeTimeArray = supplier.starttime.toString().split(':')
-        const closeTime = `${closeTimeArray[0]}:${closeTimeArray[1]}`
-        const openTimeArray = supplier.closetime.toString().split(':')
-        const openTime = `${openTimeArray[0]}:${openTimeArray[1]}`
-        setOpenTime(openTime)
-        setCloseTime(closeTime)
+    if (supplier.status == 0) {
+      if (forced_status === "CLOSE" ||(forced_status === "AUTO" && disabledDays?.length==7)) {
+        message = t('closedNow')
       }
-    } else if (forced_status === "CLOSE") {
-      message = t('closedNow')
-
-    } else if (forced_status === "AUTO") {
-      var currentDayObject = schedules.find((day: any) => day.day === today);
-      const valideDate = isForcedStatusEnabled(takeAwayDate)
-      if (!valideDate) {
-        if (schedules && schedules.length) {
-          const nextDay = currentDate.add(1, 'days');
-          const nextDayName = nextDay.format('dddd');
-          const nextDayNumber = nextDay.format('DDD');
-          const nextMonth = nextDay.format('MM');
-          var currentDayObject = schedules.find((day: any) => day.day === nextDay.format('ddd'));
-          const openTimeArray = currentDayObject.from.toString().split(':')
-          const closeTimeArray = currentDayObject.to.toString().split(':')
-          const dateString = `${nextDayNumber}/${nextMonth} `
-          const openTime = `${openTimeArray[0]}:${openTimeArray[1]}`
-          const closeTime = `${closeTimeArray[0]}:${closeTimeArray[1]}`
-          setOpenTime(openTime)
-          setCloseTime(closeTime)
-
-
-          message = `${t('cart.delivPlanedAt')} ${t(`weekDays.names.${nextDayName}`)} ${dateString} a ${openTime}
-          `
+      else if (forced_status === "AUTO") {
+        const currentDate = new Date();
+        const currentDateIndex = currentDate.getDay();
+        if (!disabledDays?.includes(currentDateIndex)) {
+         message =  formatInitialDate(dayjs(currentDate), currentDateIndex)
         }
-      } else {
-        var message = `${t('mismatchModal.selectOption.option2.fastest')}
-        ${t('mismatchModal.selectOption.option2.possible')}
-        20-40 ${t('mismatchModal.selectOption.option2.minutes')} `
-      }
-
+        else {
+          const dayIndex = findClosestOpenDay(currentDateIndex);
+          if (dayIndex != null) {
+            const dayDifference = dayIndex - currentDate.getDay();
+            const timeDifference = dayDifference < 0 ? (dayDifference + 7) * 24 * 60 * 60 * 1000 : dayDifference * 24 * 60 * 60 * 1000;
+            const newDate = new Date(currentDate.getTime() + timeDifference)
+            message =  formatInitialDate(dayjs(newDate), dayIndex)
+          }
+        }
+      }       
     }
     setSelectOrderChose(message)
-  }, [supplier])
+  }, [supplier]);
+  function formatInitialDate(date:any, index:any){
+      let selectedDay :any = null;
+      switch (index) {
+      case 1:
+          selectedDay = "Mon";
+          break;
+      case 2:
+          selectedDay = "Tue";
+          break;
+      case 3:
+          selectedDay = "Wed";
+          break;
+      case 4:
+          selectedDay = "Thu";
+          break;
+      case 5:
+          selectedDay = "Fri";
+          break;
+      case 6:
+          selectedDay = "Fri";
+          break;
+      case 0:
+          selectedDay = "Sun";
+          break;            
+      }
+      const dateShedule = schedules?.find((day: any) => day.day == selectedDay) 
+      const start: any = dateShedule?.from;
+      const to : any = dateShedule?.to;
+      
+      const { hours: openH, minutes: openM } = getHoursAndMinutes(start);
+      const { hours: closeH, minutes: closeM } = getHoursAndMinutes(to);
+      const selectedDate = date
+      const dayMinDateTime = selectedDate.set('hour', openH).set('minute', openM);
+      const dayMaxDateTime = selectedDate.set('hour', closeH).set('minute', closeM).set('second', 59);
+      const now = dayjs();
+      const isToday = selectedDate.isSame(now, 'day');
+      if (isToday) {
+          if(dayMaxDateTime.isAfter(now)) {
+              if (dayMinDateTime.isAfter(now) || dayMinDateTime.isSame(now)) {
+                return `${t('cart.delivPlanedAt')} ${t(`weekDays.names.${(dayMinDateTime).format("dddd")}`)} ${(dayMinDateTime).format("YYYY-MM-DD")} a ${(dayMinDateTime).format("HH:mm")}`
+              }
+              else {
+                return `${t('cart.delivPlanedAt')} ${t(`weekDays.names.${(now).format("dddd")}`)} ${(now).format("YYYY-MM-DD")} a ${(now).format("HH:mm")}`
+              }
+          }
+          else {
+              const tomorrow: any = now.add(1, 'day');
+              const currentDate = new Date(tomorrow);
+              const currentDateIndex = currentDate.getDay(); 
+              const dayIndex = findClosestOpenDay(currentDateIndex);
+              if (dayIndex != null) {
+                  const dayDifference = dayIndex - currentDateIndex;
+                  const timeDifference = dayDifference < 0 ? (dayDifference + 7) * 24 * 60 * 60 * 1000 : dayDifference * 24 * 60 * 60 * 1000;
+                  const newDate = new Date(currentDate.getTime() + timeDifference)
+                  formatInitialDate(dayjs(newDate),dayIndex)
+              }  
+          }
+      
+      }
+      else {
+        return `${t('cart.delivPlanedAt')} ${t(`weekDays.names.${(dayMinDateTime).format("dddd")}`)} ${(dayMinDateTime).format("YYYY-MM-DD")} a ${(dayMinDateTime).format("HH:mm")}`
+      }       
+  } 
+  function getDisabledDays() {
+    let disabledDays : any = []
+    schedules?.map((day: any) => {
+        if (day.status == 'CLOSE') {          
+            switch (day.day) {
+            case "Mon":
+                disabledDays.push(1)
+                break;
 
+            case "Tue":
+                disabledDays.push(2)
+                break;
+
+            case "Wed":
+                disabledDays.push(3)
+                break;
+
+            case "Thu":
+                disabledDays.push(4)
+                break;
+
+            case "Fri":
+                disabledDays.push(5)
+                break;
+
+            case "Sat":
+                disabledDays.push(6)
+                break;
+
+            case "Sun":
+                disabledDays.push(0)
+                break;              
+            }                
+        }
+    })
+    setDisabledDays(disabledDays);   
+  }
+  function findClosestOpenDay(dayIndex:any) {
+    let count = 0;
+    let day = dayIndex;
+    let SelectedDate = null;
+    while (count < 6 && SelectedDate == null) {
+        if (day < 6) {
+            day++;                              
+        }
+        else {
+            day = 0;
+        }
+        if (!disabledDays?.includes(day)) {
+            SelectedDate = day
+        } 
+        count++;
+    }
+    return SelectedDate;
+  }
   // article component 
   interface Article {
     item: FoodItem,
@@ -342,7 +433,7 @@ const CartPage: React.FC = () => {
     )
   }
   const handleShowTimer = () => {
-    if (forced_status === "CLOSE" || forced_status === "OPEN")
+    if (forced_status === "CLOSE" || forced_status === "OPEN" || disabledDays?.length==7)
       return 0;
     else setShowTimer(true)
   }
@@ -1147,7 +1238,6 @@ const CartPage: React.FC = () => {
                             <div className="order-recovery-select-blc">
                               <div className={`order-recovery-select-item ${showTimer ? "" : "active"}`} onClick={() => setShowTimer(false)}>
                                 <span>
-
                                   {selectOrderChose}
                                 </span>
                               </div>
@@ -1262,7 +1352,7 @@ const CartPage: React.FC = () => {
                             <h4 className="info-customer-title">
                               {selectedOption === 3 ? t('cartPage.delivto') : t('cartPage.emportePar')}
                             </h4>
-                            <a className="edit-info-customer-link" onClick={goPrevStep} >{t('update')}</a>
+                            <button className="edit-info-customer-link" onClick={goPrevStep} >{t('update')}</button>
                           </div>
                           <div className="customer-infos-area">
                             <div className="customer-info_name">{user ? `${user.firstname} ${user.lastname} ` : t('cartPage.visitor')} </div>
