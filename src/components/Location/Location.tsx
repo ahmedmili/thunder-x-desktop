@@ -211,7 +211,7 @@ const Map: React.FC<MapProps> = ({ className, forced = false }) => {
               </div>
             </div>
             <div className="current-position">
-              <label htmlFor="adress-input" className="current-position-title">{t('getLocationButton')}</label>
+              <label htmlFor="adress-input" className="current-position-title">{t('adress.currentPos')}</label>
               <div className="current-position_input-blc" onClick={getCurrentPosition}>
                 <input readOnly className="form-control" name="adress-input" id="adress-input" type="text" placeholder={`${userLocation ? userLocation.coords.label : t('adress.currentPos')} `} />
               </div>
@@ -260,7 +260,7 @@ const Map: React.FC<MapProps> = ({ className, forced = false }) => {
 
                   ) : (
                     <>
-                      <p className="error" style={{ paddingTop: '44px' }} >{t('adress.EmptysavedAdress')}</p>
+                      <p className="error" style={{ color: 'black' }} >{t('adress.EmptysavedAdress')}</p>
                     </>
                   )
                 }
@@ -314,7 +314,8 @@ const Map: React.FC<MapProps> = ({ className, forced = false }) => {
       data.success && refresh()
     }
     return (
-      <div onClick={changeAdress}  /*onDoubleClick={dropAdress}*/ onAuxClick={dropAdress} className="adressCompContainer">
+      //  onDoubleClick={dropAdress}
+      <div onClick={changeAdress}  onAuxClick={dropAdress} className="adressCompContainer">
         <header>
           <div className="type">
             <div className="label">
