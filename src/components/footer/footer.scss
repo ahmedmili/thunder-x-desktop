@@ -136,6 +136,10 @@
                 background-position: left 0;
                 background-size: 17px auto;
                 padding: 3px 0 3px 22px;
+
+                a {
+                    @include fonts(15px, 15px, $light_Gray);
+                }
             }
         }
         .socialMedia {
