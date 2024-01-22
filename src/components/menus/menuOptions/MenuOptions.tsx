@@ -527,7 +527,7 @@ function MenuOptions({ initialData }: AppProps) {
             unitePrice: Number(state.unitPrice)
         };
         usedispatch(addNotifHeaderCart({ items: [obj] }))
-        usedispatch(handleCartState())
+        usedispatch(handleCartState(true))
 
         if (items.length > 0 && items[0].supplier_data.supplier_id !== obj.supplier_data.supplier_id) {
             setNotSameError(true)
@@ -541,7 +541,7 @@ function MenuOptions({ initialData }: AppProps) {
             usedispatch(addItem(obj));
             getProduct()
             usedispatch(removeNotifHeaderCart())
-            usedispatch(handleCartState())
+            usedispatch(handleCartState(false))
             navigate(-1)
         }, 3000)
     }
