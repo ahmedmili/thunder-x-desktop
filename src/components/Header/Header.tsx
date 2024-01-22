@@ -98,17 +98,22 @@ const Header = () => {
 
   const handleCart = async () => {
     showProfile && setShowProfile(false)
+    showMapState && dispatch(handleCartState(false));
     setShowCart(!showCart);
   };
+
   const handleNotifCart = async () => {
+    showProfile && setShowProfile(false)
+    showCart && setShowCart(false);
     dispatch(removeNotifHeaderCart())
-    dispatch(handleCartState())
+    dispatch(handleCartState(false))
     navigate(-1)
   };
 
   const handleUserCart = () => {
     if (user) {
       showCart && setShowCart(false);
+      showMapState && dispatch(handleCartState(false));
       setShowProfile(!showProfile);
     } else {
       navigate('/login')
@@ -212,18 +217,18 @@ const Header = () => {
                   <div className='info'>
                     {/* */}
                     {logged_in && (
-                        <>
-                          <div className="position">
-                            <LocationOnIcon className='position-icon' />
-                            {t('no_location_detected')}
-                          </div>
-                          <button onClick={handleCart} className="cart-item">
-                            <span className='cart-icon'></span>
-                            {cartItems.length}
-                          </button>
-                        </>
-                      )}
-                    
+                      <>
+                        <div className="position">
+                          <LocationOnIcon className='position-icon' />
+                          {t('no_location_detected')}
+                        </div>
+                        <button onClick={handleCart} className="cart-item">
+                          <span className='cart-icon'></span>
+                          {cartItems.length}
+                        </button>
+                      </>
+                    )}
+
                     <button onClick={handleUserCart} className={`account ${!logged_in && 'loggedin-account'}`}  >
                       <span className='account-icon'></span>
                     </button>
