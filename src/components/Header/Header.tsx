@@ -100,17 +100,22 @@ const Header = () => {
 
   const handleCart = async () => {
     showProfile && setShowProfile(false)
+    showMapState && dispatch(handleCartState(false));
     setShowCart(!showCart);
   };
+
   const handleNotifCart = async () => {
+    showProfile && setShowProfile(false)
+    showCart && setShowCart(false);
     dispatch(removeNotifHeaderCart())
-    dispatch(handleCartState())
+    dispatch(handleCartState(false))
     navigate(-1)
   };
 
   const handleUserCart = () => {
     if (user) {
       showCart && setShowCart(false);
+      showMapState && dispatch(handleCartState(false));
       setShowProfile(!showProfile);
     } else {
       navigate('/login')

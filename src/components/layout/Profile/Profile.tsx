@@ -5,7 +5,7 @@ import './profile.scss';
 import { useAppSelector } from '../../../Redux/store';
 import { useEffect, useState } from 'react';
 import Messanger from '../../Popups/Messanger/Messanger';
-import MessangerBtnIcon from '../../../assets/profile/Discuter/messanger-btn.svg';
+import MessangerBtnIcon from '../../../assets/msg-icn.svg';
 import { fetchMessages, handleMessanger } from '../../../Redux/slices/messanger';
 import { useDispatch } from 'react-redux';
 

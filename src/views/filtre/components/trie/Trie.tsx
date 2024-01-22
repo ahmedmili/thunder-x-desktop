@@ -11,7 +11,7 @@ import "./trie.scss";
 function Trie() {
     const [active, setActive] = useState<any>()
     const [collpased, setCollapse] = useState(false)
-    const [contentHeight, setContentHeight] = useState(156);
+    const [contentHeight, setContentHeight] = useState<any>(156);
     const contentRef: any = useRef(null);
     const navigate = useNavigate();
     const dispatch = useDispatch();
@@ -38,10 +38,8 @@ function Trie() {
         }
     }, [refresh]);
 
-    useEffect(() => {
-        setTimeout(() => {
-            setContentHeight(contentRef?.current?.scrollHeight);
-        }, 300);
+    useEffect(() => {  
+      
     }, [collpased]);
 
     const lists = [
@@ -82,9 +80,9 @@ function Trie() {
     }
     return (
         <div className="trie-filter-container">
-            <h1 className="trie-filter-container__title"> Trier</h1>
+            <h1 className={ `trie-filter-container__title ${collpased ? "collapsed" : ""} ` } > Trier</h1>
             <ChevronRightIcon className={`trie-filter-container__collapse-icon  ${collpased ? 'close' : 'open'}`} onClick={toggleCollapse}></ChevronRightIcon>
-            <ul className={`trie-filter-container__list  ${collpased ? 'hide' : 'show'}`} ref={contentRef} style={{ maxHeight: collpased ? '0' : `${contentHeight}px` }}>
+            <ul className={`trie-filter-container__list  ${collpased ? 'hide' : 'show'}`} ref={contentRef} style={{ maxHeight: collpased ? '0' : `max-content` }}>
                 {
                     lists.map((data, index) => {
                         return (
