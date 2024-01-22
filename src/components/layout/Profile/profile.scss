@@ -69,6 +69,14 @@
 /* # $Mobile ::
 ------------------------------------*/
 
+@media (max-width: 1440px) {
+    .profile-container {
+        .profile-main {
+            margin: 0 0 0 280px;
+            padding: 0 70px 42px 63px;
+        }
+    }
+}
 @media only screen and (max-width: 992px) {
     .profile-container {
         gap: 60px;

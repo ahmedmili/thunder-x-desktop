@@ -52,11 +52,9 @@
 
         .aide-service {
             flex: 1;
-            background-color: white;
+            background-color: $color-white;
             height: 381px;
-            padding-top: 48px;
-            padding-left: 51px;
-            padding-bottom: 50px;
+            padding: 30px 40px;
             border-radius: 25px;
 
             .title {
@@ -197,6 +195,42 @@
 
 /* # $Mobile ::
 ------------------------------------*/
+
+@media (max-width: 1440px) {
+    .discuter-main-container {
+        .discuter-main {
+            .aide-service {                
+                .discuter-wrapper {
+                    padding: 24px;
+
+                    .discuter-desc {
+                        margin: 0 0 28px;
+
+                        .title {
+                            @include fontSize(16px, 16px);
+                            margin: 0 0 30px;
+                        }
+                        .sub-title {
+                            @include fontSize(13px, 13px);
+                        }
+                    }
+                }
+                .buttons {
+                    gap: 34px;
+
+                    button {
+                        height: 50px;
+                        @include fontSize(16px, 16px);
+
+                        &.support-client {
+                            height: 50px;
+                        }
+                    }
+                }
+            }
+        }
+    }
+}
 
 @media only screen and (max-height : 800px) {
 

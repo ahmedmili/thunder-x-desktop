@@ -119,12 +119,54 @@
 /* # $Mobile ::
 ------------------------------------*/
 
+@media (max-width: 1440px) {
+    .annonces-section {
+        h1 {
+            @include fontSize(16px, 16px);
+            margin: 0 0 27px;
+        }
+        main {
+            grid-gap: 30px;
+
+            .annonce-cart {
+                padding: 12px 15px;
+
+                .title {
+                    @include fontSize(13px, 13px);
+                }
+                .body {
+                    @include fontSize(12px, 19px);
+                    margin: 0 0 24px;
+                    height: 34px;
+                }
+                .time {
+                    @include fontSize(10px, 10px);
+                }
+            }
+        }
+    }
+    .annonces-links-group {
+        .annonces-link-item {
+            @include fontSize(12px, 12px);
+            margin: 0 0 16px;
+        }
+    }
+}
+@media (max-width: 1200px) {
+    .annonces-section {
+        main {
+            grid-gap: 15px;
+        }
+    }
+}
 @media only screen and (max-width: 992px) {
     .annonces-section {
         h1 {
             font-size: 14px;
         }
         main {
+            grid-template-columns: repeat(2, 1fr);
+
             .legal-cart {
                 padding: 19px 14px;
 
