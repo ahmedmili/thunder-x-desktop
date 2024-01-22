@@ -12,10 +12,7 @@
 
 .commands-List {
     width: 100%;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
+    display: block;
     animation: fadeIn 1s;
 
     .command-header {
@@ -24,21 +21,22 @@
         border-radius: 15px;
         background-color: $color-white;
         @include flex(flex, center, space-between);
-        padding: 15px 30px;
+        gap: 10px;
+        padding: 15px 20px;
         transition: background-color 0.5s;
         @include border(1px, $color-gray-alto);
         cursor: pointer;
 
         .command-header_txt {
-            @include fonts(17px, 17px, $dark_Gray);
+            @include fonts(15px, 15px, $dark_Gray);
             font-family: 'Poppins-Medium', serif;
         }
         .command-status {
-            min-width: 250px;
+            min-width: 220px;
             height: 33px;
             border-radius: 15px;
             @include flex;
-            @include fonts(17px, 17px, $color-white);
+            @include fonts(15px, 15px, $color-white);
             font-family: 'Poppins-Medium', serif;
 
             &.processed {
@@ -58,16 +56,19 @@
             rotate: 180deg;
             transition: rotate 0.5s ease;
         }
-    }
-    .active-header {
-        border: 0;
-        box-shadow: 0px 2px 4px 5px #00000005;
-        border-radius: 25px 25px 0 0;
 
-        .icon {
-            rotate: 0deg;
+        &.active-header {
+            border: 0;
+            box-shadow: 0px 2px 4px 5px #00000005;
+            border-radius: 25px 25px 0 0;
+            margin: 0;
+
+            .icon {
+                rotate: 0deg;
+            }
         }
     }
+    
 
     .prev-next-buttons {
         width: 100%;
@@ -100,6 +101,11 @@
                 transform: rotate(180deg);
             }
         }
+    }
+    .command-body {
+        background-color: $color-white;
+        margin: 0 0 35px;
+        padding: 37px 40px;
     }
 }
 

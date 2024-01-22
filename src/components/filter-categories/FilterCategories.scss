@@ -57,3 +57,22 @@
     @include fonts(18px, 21px, $dark_Gray);
   }
 }
+
+
+/* # $Mobile ::
+------------------------------------*/
+
+@media (max-width: 1440px) {
+  .category-box {
+    padding: 10px;
+    @include dimensions(112px, 110px);
+    gap: 12px;
+
+    img {
+      @include dimensions(55px, 55px);
+    }
+    .category-name {
+      @include fontSize(12px, 13px);
+    }
+  }
+}
