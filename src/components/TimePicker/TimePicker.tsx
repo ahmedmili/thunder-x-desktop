@@ -316,6 +316,7 @@ const TimePickerComponent: React.FC<TimepickerProps> = ({ className, setSelected
                         shouldDisableDate={shouldDisableDate}
                         onChange={updateValue}                    
                         onClose={handleClose}
+                        timeSteps={{ minutes: 1 }}
                         onYearChange={handleClose}
                         dayOfWeekFormatter={(_day: string, date: any) => setFormat(_day, date)}             
                         slots={{
