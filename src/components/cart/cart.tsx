@@ -250,7 +250,7 @@ export const Cart: React.FC<CartProps> = ({ items, closeButton, type }) => {
                         </div> : <></>
                     }
                     {
-                      deliveryOption === 'delivery' ? (
+                      (deliveryOption === 'delivery' && delivPrice >= 0) ? (
                         <div className="info-text">
                           <span className='title'>{t("supplier.delivPrice")}</span>
                           <span className='value'>{Number(delivPrice).toFixed(2)}DT</span>
