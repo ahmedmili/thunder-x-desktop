@@ -136,47 +136,55 @@ const Header = () => {
     const commands = data.data
     data.success && setCommands(commands)
   }
-  const getProgressDescription = (cycle: string): { message: string, status: number } => {
+  const getProgressDescription = (cycle: string): { message: string, status: number, color: string } => {
     switch (cycle) {
       case 'PENDING':
         return {
           message: t('profile.commands.acceptation'),
-          status: 1
+          status: 1,
+          color:'#E77F76'
         };
       case 'VERIFY':
         return {
           message: t('profile.commands.acceptation'),
-          status: 2
+          status: 2,
+          color:'#E77F76'
         };
       case 'AUTHORIZED':
         return {
           message: t('profile.commands.prépaartion'),
-          status: 3
+          status: 3,
+          color:'#F2C525'
         };
       case 'PRE_ASSIGN_ADMIN':
         return {
           message: t('profile.commands.prépaartion'),
-          status: 4
+          status: 4,
+          color:'#F2C525'
         };
       case 'PRE_ASSIGN':
         return {
           message: t('profile.commands.prépaartion'),
-          status: 4
+          status: 4,
+          color: '#F2C525'
         };
       case 'ASSIGNED':
         return {
           message: t('profile.commands.prépaartion'),
-          status: 5
+          status: 5,
+          color:'#F2C525'
         };
       case 'INPROGRESS':
         return {
           message: t('profile.commands.livraison'),
-          status: 6
+          status: 6,
+          color:'#3BB3C4'
         };
       default:
         return {
           message: '',
-          status: -1
+          status: -1,
+          color:'#E77F76'
         };
     }
   };
@@ -397,7 +405,7 @@ const Header = () => {
                                 }
                                 {/* <div className="status-icn"></div> */}
                                 <div className="processing-status-desc">
-                                  <h4>{getProgressDescription(commands[0].cycle).message}</h4>
+                                  <h4 style={{color: getProgressDescription(commands[0].cycle).color}}>{getProgressDescription(commands[0].cycle).message}</h4>
                                   {
                                     getProgressDescription(commands[0].cycle).status <= 2 && <p>{t('profile.commands.sousMessage')}</p>
                                   }
@@ -441,15 +449,15 @@ const Header = () => {
                                     <div className="total-price_label">{t('profile.commands.sousTotal')}</div>
                                     <div className="price">{calculeSubTotal(commands[0].products).toFixed(2)}</div>
                                   </div>
-                                  <div className="total-price-blc_wrapper">
+                                  {Number(commands[0].delivery_price) ? (<div className="total-price-blc_wrapper">
                                     <div className="total-price_label">{t('supplier.delivPrice')}</div>
-                                    <div className="price">{commands[0].coupon.delivery_fixed === 1 ? commands[0].delivery_price : (Number(commands[0].delivery_price) - Number(commands[0].total_price_coupon)).toFixed(2)} DT</div>
-                                  </div>
+                                    <div className="price">{Number(commands[0].delivery_price).toFixed(2)} DT</div>
+                                  </div>) : ''}
                                 </div>
                                 <div className="total-price-blc">
                                   <div className="total-price-blc_wrapper">
                                     <div className="total-price_label">{t('cartPage.total')}</div>
-                                    <div className="price">{(Number(commands[0].total_price) - Number(commands[0].total_price_coupon)).toFixed(2)} DT</div>
+                                    <div className="price">{(Number(commands[0].total_price)).toFixed(2)} DT</div>
                                   </div>
                                 </div>
                               </div>
@@ -471,7 +479,7 @@ const Header = () => {
                                           <div className="paiement-status_icon"></div>
                                           <div className="paiement-status-desc">
                                             <p className="paiement-status-item">{t("cartPage.bonus")}</p>
-                                            <div className="price">{(Number(commands[0].bonus) / 1000).toFixed(2)} Dt</div>
+                                            <div className="price">-{(Number(commands[0].bonus) / 1000).toFixed(2)} Dt</div>
                                           </div>
                                         </li>
                                       )
@@ -492,7 +500,7 @@ const Header = () => {
                                           <div className="paiement-status_icon"></div>
                                           <div className="paiement-status-desc">
                                             <p className="paiement-status-item">{t('cart.PromosCode')}</p>
-                                            <div className="price">{Number(commands[0].total_price_coupon).toFixed(2)} dt</div>
+                                            <div className="price">-{Number(commands[0].total_price_coupon).toFixed(2)} dt</div>
                                           </div>
                                         </li>
                                       )
@@ -542,7 +550,7 @@ const Header = () => {
                                               )
                                           }
                                           <div className="processing-status-desc">
-                                            <h4>{getProgressDescription(command.cycle).message}</h4>
+                                            <h4 style={{color: getProgressDescription(commands[0].cycle).color}}>{getProgressDescription(command.cycle).message}</h4>
                                             {
                                               getProgressDescription(command.cycle).status <= 2 && <p>{t('profile.commands.sousMessage')}</p>
                                             }
@@ -575,15 +583,15 @@ const Header = () => {
                                               <div className="total-price_label">{t('profile.commands.sousTotal')}</div>
                                               <div className="price">{calculeSubTotal(command.products).toFixed(2)}</div>
                                             </div>
-                                            <div className="total-price-blc_wrapper">
+                                            {command.delivery_price ? (<div className="total-price-blc_wrapper">
                                               <div className="total-price_label">{t('supplier.delivPrice')}</div>
-                                              <div className="price">{command.coupon.delivery_fixed === 1 ? command.delivery_price : (Number(command.delivery_price) - Number(command.total_price_coupon)).toFixed(2)} DT</div>
-                                            </div>
+                                              <div className="price">{Number(command.delivery_price).toFixed(2)} DT</div>
+                                            </div>) : ''}
                                           </div>
                                           <div className="total-price-blc">
                                             <div className="total-price-blc_wrapper">
                                               <div className="total-price_label">{t('cartPage.total')}</div>
-                                              <div className="price">{(Number(command.total_price) - Number(command.total_price_coupon)).toFixed(2)} DT</div>
+                                              <div className="price">{(Number(command.total_price)).toFixed(2)} DT</div>
                                             </div>
                                           </div>
                                         </div>
@@ -605,7 +613,7 @@ const Header = () => {
                                                     <div className="paiement-status_icon"></div>
                                                     <div className="paiement-status-desc">
                                                       <p className="paiement-status-item">{t("cartPage.bonus")}</p>
-                                                      <div className="price">{(Number(command.bonus) / 1000).toFixed(2)} Dt</div>
+                                                      <div className="price">-{(Number(command.bonus) / 1000).toFixed(2)} Dt</div>
                                                     </div>
                                                   </li>
                                                 )
@@ -626,7 +634,7 @@ const Header = () => {
                                                     <div className="paiement-status_icon"></div>
                                                     <div className="paiement-status-desc">
                                                       <p className="paiement-status-item">{t('cart.PromosCode')}</p>
-                                                      <div className="price">{Number(command?.total_price_coupon).toFixed(2)} dt</div>
+                                                      <div className="price">-{Number(command?.total_price_coupon).toFixed(2)} dt</div>
                                                     </div>
                                                   </li>
                                                 )
