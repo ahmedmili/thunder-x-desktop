@@ -1,5 +1,5 @@
 import Skeleton from "@mui/material/Skeleton";
-import React, { Suspense, useEffect, useRef, useState } from "react";
+import React, { Suspense, useEffect, useRef, lazy, useState } from "react";
 import { Col, Row } from "react-bootstrap";
 import { useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
@@ -14,46 +14,44 @@ import {
   recommendedHomeSelector,
   setRefresh,
 } from "../../Redux/slices/home";
+
 import { handleMessanger } from "../../Redux/slices/messanger";
 import { useAppSelector } from "../../Redux/store";
 import MessangerBtnIcon from "../../assets/profile/Discuter/messanger-btn.svg";
-import Map from "../../components/Location/Location";
-import Messanger from "../../components/Popups/Messanger/Messanger";
+import { FilterAds } from "../../components/filter-ads/FilterAds";
 import AdsSkeletons from "../../components/Skeletons/FilterPage/AdsSkeletons/AdsSkeletons";
 import ProductsSkeletons from "../../components/Skeletons/FilterPage/ProductsSkeletons/ProductsSkeletons";
 import SearchSkeletons from "../../components/Skeletons/FilterPage/SearchSkeleton/SearchSkeletons";
-import SideBar from "../../components/Skeletons/FilterPage/SideBar/SideBar";
-import { FilterAds } from "../../components/filter-ads/FilterAds";
-import FilterCategories from "../../components/filter-categories/FilterCategories";
-import OffersList from "../../components/offersList/OffersList";
-import PopularList from "../../components/popular-list/PopularList";
-import RecommandedList from "../../components/recommanded-list/RecommandedList";
-import SupplierWhiteCard from "../../components/supplier-white-card/SupplierWhiteCard";
-import { supplierServices } from "../../services/api/suppliers.api";
-import { localStorageService } from "../../services/localStorageService";
-import { AppProps } from "../../services/types";
-import { paramsService } from "../../utils/params";
-import { checkSsr } from "../../utils/utils";
 import BtnReset from "./components/btn-reset/BtnReset";
 import Categories from "./components/categories/Categories";
 import Cle from "./components/cle/Cle";
 import PriceSlide from "./components/priceSlider/PriceSlide";
 import SearchProduit from "./components/produitSearch/ProduitSearch";
 import Trie from "./components/trie/Trie";
+
+const Map = lazy(() => import("../../components/Location/Location"));
+const Messanger = lazy(() => import("../../components/Popups/Messanger/Messanger"));
+const SideBar = lazy(() => import("../../components/Skeletons/FilterPage/SideBar/SideBar"));
+const FilterCategories = lazy(() => import("../../components/filter-categories/FilterCategories"));
+const OffersList = lazy(() => import("../../components/offersList/OffersList"));
+const PopularList = lazy(() => import("../../components/popular-list/PopularList"));
+const RecommandedList = lazy(() => import("../../components/recommanded-list/RecommandedList"));
+const SupplierWhiteCard = lazy(() => import("../../components/supplier-white-card/SupplierWhiteCard"));
+
+
+import { supplierServices } from "../../services/api/suppliers.api";
+import { localStorageService } from "../../services/localStorageService";
+import { AppProps } from "../../services/types";
+import { paramsService } from "../../utils/params";
+import { checkSsr } from "../../utils/utils";
 import "./filterPage.scss";
 
 function FilterPage({ initialData }: AppProps) {
 
-  const restaurantsList = useAppSelector(
-    (state) => state.restaurant.filterRestaurants
-  );
-  const isDeliv = useAppSelector((state) => state.homeData.isDelivery);
   const homeData = useAppSelector(adsHomeSelector);
-  const [currentPage, setCurrentPage] = useState(1);
   const [ads, setAds] = useState<any[]>([]);
   const [ads2, setAds2] = useState<any[]>([]);
   const [ads3, setAds3] = useState<any[]>([]);
-  const [allRestaurantsList, setAllRestaurantsList] = useState<any[]>([]);
   const [originCategories, setOriginCategories] = useState<any[]>([]);
 
   const recommanded = useSelector(recommendedHomeSelector);
@@ -65,7 +63,6 @@ function FilterPage({ initialData }: AppProps) {
   const [hasFilter, setHasFilter] = useState<boolean>(false);
   const categories = useSelector(categoriesHomeSelector);
   const itemsPerPage = 8;
-  const totalPages = Math.ceil(allRestaurantsList.length / itemsPerPage);
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const suppliersListRef = useRef(null);
@@ -74,6 +71,7 @@ function FilterPage({ initialData }: AppProps) {
 
   const [searchSuppliersList, setSearchSuppliersList] = useState<Array<any>>(initialData ? initialData.data.suppliers : []);
   const [ssrLoading, setSsrLoading] = useState<boolean>(true)
+  const [pageReadry, setPageReadry] = useState<boolean>(false)
 
 
   const showMapState = useAppSelector((state) => state.location.showMap);
@@ -109,11 +107,14 @@ function FilterPage({ initialData }: AppProps) {
           const { pathname } = navLocation;
           const newURL = pathname !== '/' ? `${pathname}?${searchParams.toString()}` : `/search/?${searchParams.toString()}`;
           navigate(newURL);
+          setPageReadry(true)
           searchSupplier()
         } else {
           dispatch({ type: "SET_SHOW", payload: true })
         }
       } else {
+        setPageReadry(true)
+
         searchSupplier()
       }
 
@@ -131,9 +132,11 @@ function FilterPage({ initialData }: AppProps) {
         const newURL = pathname !== '/' ? `${pathname}?${searchParams.toString()}` : `/search/?${searchParams.toString()}`;
         navigate(newURL);
         searchSupplier()
+        setPageReadry(true)
       } else {
         navigateToHome()
       }
+
     }
   }
 
@@ -427,7 +430,7 @@ function FilterPage({ initialData }: AppProps) {
     } >
 
       <>
-        {!isLoading ? (
+        {(!isLoading && pageReadry) ? (
           <>
             <div className="category-bar">
               {originCategories ? (
@@ -449,9 +452,11 @@ function FilterPage({ initialData }: AppProps) {
                     <div className="content__column__filter">
                       <Categories onCategorySelect={searchSupplier} />
                     </div>
-                    <div className="content__column__filter">
-                      <Cle />
-                    </div>
+                    {/* 
+                      <div className="content__column__filter">
+                        <Cle />
+                      </div>
+                    */}
                   </div>
                 </Col>
                 <Col className="col-9 content__column content__column--second">

@@ -49,16 +49,6 @@ const SupplierWhiteCard: React.FC<SupplierWhiteCard> = ({ data, favors = false, 
     }
     return (
         <div className={`${supplierStyle.SupplierWhiteCard} ${className}`}>
-            {/* favors icons */}
-            {/* {(fav) ? (
-                <button className={supplierStyle.favorIcon} onClick={deletefavorite} >
-                    <FavoriteIcon className={supplierStyle.activeIcon} />
-                </button>
-            ) : (
-                <button className={supplierStyle.favorIcon} onClick={handleFavorsAdd} >
-                    <FavoriteBorderIcon />
-                </button>
-            )} */}
 
             <Link
                 className={supplierStyle.restaurantLink}
@@ -77,9 +67,7 @@ const SupplierWhiteCard: React.FC<SupplierWhiteCard> = ({ data, favors = false, 
                             && (
                                 <Box className={supplierStyle.discountBox}>
                                     <p>
-                                        {/* <DiscountRounded
-                                            className={supplierStyle.discountIcon}
-                                        />{' '} */}
+
                                         {`${data.discount_title}`}
                                     </p>
                                 </Box>
@@ -118,7 +106,7 @@ const SupplierWhiteCard: React.FC<SupplierWhiteCard> = ({ data, favors = false, 
                                             </>
                                         )
                                     }
-                                    
+
                                 </span>
 
                             </div>

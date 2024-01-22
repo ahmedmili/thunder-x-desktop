@@ -46,6 +46,8 @@ import SpinnerPopup from "./components/Popups/Spinner/SpinnerPopup";
 import Annonces from "./components/layout/Profile/All_Annonces/All_Annonces";
 import ArchivedCommands from "./components/layout/Profile/Archivedcommands/ArchivedCommands";
 import ConfigPage from "./components/layout/Profile/ConfigPage/ConfigPage";
+import Legale from "./components/layout/Profile/ConfigPage/Legale/Legale";
+import Politiques from "./components/layout/Profile/ConfigPage/Politiques/Politiques";
 import Discuter from "./components/layout/Profile/Discuter/Discuter";
 import Favors from "./components/layout/Profile/Favors/Favors";
 import Feedback from "./components/layout/Profile/Feedback/Feedback";
@@ -64,7 +66,6 @@ const UnauthorizePage = lazy(
   () => import("./views/unauthorize/unauthorize.page")
 );
 const CartPage = lazy(() => import("./views/cart/cart.page"));
-// const OrderTrackingPage = lazy(() => import("./views/track/trackorder.page"));
 const ConfirmNumberPage = lazy(() => import("./views/ConfirmNumberPage"));
 const WelcomePage = lazy(() => import("./views/WelcomePage"));
 const ForgotPasswordPage = lazy(() => import("./views/ForgotPasswordPage"));
@@ -303,12 +304,12 @@ function App({ initialData }: AppProps) {
   }, [])
 
   // Enforce Trailing Slash 
-  useEffect(() => {
-    const { pathname } = navLocation;
-    if (!pathname.endsWith('/') && pathname !== '/') {
-      navigate(`${pathname}/`, { replace: true });
-    }
-  }, [navLocation, Navigate]);
+  // useEffect(() => {
+  //   const { pathname } = navLocation;
+  //   if (!pathname.endsWith('/') && pathname !== '/') {
+  //     navigate(`${pathname}/`, { replace: true });
+  //   }
+  // }, [navLocation, Navigate]);
 
 
   return (
@@ -359,7 +360,11 @@ function App({ initialData }: AppProps) {
               <Route path="/profile/Favors/" element={<Favors />} />
               <Route path="/profile/Fidelite/:section?/:page?/*" element={<FidelitePage />} />
               <Route path="/profile/Feedback/:command_id/" element={<Feedback />} />
+              <Route path="/profile/Legale/" element={<Legale />} />
+              <Route path="/profile/Politiques/" element={<Politiques />} />
             </Route>
+            <Route path="/Legale/" element={<Legale />} />
+            <Route path="/Politiques/" element={<Politiques />} />
           </Route>
 
         </Routes>

@@ -43,9 +43,12 @@ const ShareSocialModal: React.FC<Props> = ({ code, close }) => {
         <>
             <div className="popup-overlay" onClick={handleOutsideClick}></div>
             <div className="share-social-popup-container">
-                <div onClick={close} className='close-btn'>X</div>
-                <h3 className="title">{t("profile.fidelite.inviteNow")}</h3>
-                <section className="social-buttons-section">
+                <div className="share-social_header">
+                    <h3 className="title">{t("profile.fidelite.inviteNow")}</h3>
+                    <button onClick={close} className='close-btn'></button>
+                </div>
+                
+                <div className="social-buttons-section">
                     <WhatsappShareButton className="button-box" title={title} url={`sharedContent`}>
                         <input type="button" value="" className="whatsApp" name="WhatsApp" style={{ backgroundImage: `url(${whatsup_img})` }} />
                         <label htmlFor="WhatsApp">WhatsApp</label>
@@ -70,12 +73,11 @@ const ShareSocialModal: React.FC<Props> = ({ code, close }) => {
                         <input type="button" value="" className="instagram" name="Instagram" style={{ backgroundImage: `url(${insta_img})` }} />
                         <label htmlFor="Instagram">Instagram</label>
                     </InstapaperShareButton>
-
-                </section>
-                <section className="code-section">
+                </div>
+                <div className="code-section">
                     <input type="text" maxLength={6} readOnly value={code} />
                     <button onClick={copyCode} className="copier-btn" >copier</button>
-                </section>
+                </div>
             </div>
         </>
 

@@ -7,8 +7,6 @@ import { useAppDispatch, useAppSelector } from '../../../../Redux/store';
 import { localStorageService } from '../../../../services/localStorageService';
 import './sideBar.scss';
 
-import lockIcon from "../../../../assets/profile/lockIcon.svg";
-import phoneIcon from "../../../../assets/profile/phoneIcon.svg";
 import profileImg from '../../../../assets/profile/profile_img.png';
 
 import Accueil from '../../../../assets/profile/blue/Accueil.svg';
@@ -19,16 +17,20 @@ import Discuter from '../../../../assets/profile/blue/Discuter.svg';
 import Espace from '../../../../assets/profile/blue/Espace.svg';
 import Favors from '../../../../assets/profile/blue/Favors.svg';
 import Offres from '../../../../assets/profile/blue/Offres.svg';
+import Legales from '../../../../assets/profile/blue/legales.svg';
+import Politiques from '../../../../assets/profile/blue/politiques.svg';
 
-import AccueilW from '../../../../assets/profile/white/Accueil.svg'
-import OffresW from '../../../../assets/profile/white/Offres.svg'
-import ConfigW from '../../../../assets/profile/white/Config.svg'
-import ArchiveW from '../../../../assets/profile/white/Archive.svg'
-import EspaceW from '../../../../assets/profile/white/Espace.svg'
-import DiscuterW from '../../../../assets/profile/white/Discuter.svg'
-import FavorsW from '../../../../assets/profile/white/Favors.svg'
+import AccueilW from '../../../../assets/profile/white/Accueil.svg';
+import ArchiveW from '../../../../assets/profile/white/Archive.svg';
+import ConfigW from '../../../../assets/profile/white/Config.svg';
+import DiscuterW from '../../../../assets/profile/white/Discuter.svg';
+import EspaceW from '../../../../assets/profile/white/Espace.svg';
+import FavorsW from '../../../../assets/profile/white/Favors.svg';
+import OffresW from '../../../../assets/profile/white/Offres.svg';
+import LegalesW from '../../../../assets/profile/white/legales.svg';
+import PolitiquesW from '../../../../assets/profile/white/politiques.svg';
+
 import { LocationService } from '../../../../services/api/Location.api';
-// import { toast } from 'react-toastify';
 
 import { scrollToTop } from '../../../../utils/utils';
 
@@ -50,7 +52,7 @@ const SideBar = () => {
   }, [user])
 
   // save path on refresh
-  const pathSchema = ["/", "/profile/annonces/", "/profile/", "/profile/archivedCommands/", "/profile/Fidelite/", "/profile/discuter/", "/profile/Favors/"]
+  const pathSchema = ["/", "/profile/annonces/", "/profile/", "/profile/archivedCommands/", "/profile/Fidelite/", "/profile/discuter/", "/profile/Favors/", "/profile/Legale/", "/profile/Politiques/"]
   useEffect(() => {
     const location = window.location.pathname
 
@@ -91,17 +93,11 @@ const SideBar = () => {
       <div className={`side-bar ${isDivVisible ? "visible-bar" : ""}`}>
         <header className='sideBar-header'>
           <div className="image" style={{ backgroundImage: `url(${profileImg})` }}></div>
-          
-            <div className='info'>
-              <div className="name">{fullName}</div>
-              {/* 
-                <div className="icons">
-                  <div className="icon" style={{ backgroundImage: `url(${phoneIcon})` }}></div>
-                  <div className="icon" style={{ backgroundImage: `url(${lockIcon})` }}></div>
-                </div>
-              */}
-            </div>
-          
+
+          <div className='info'>
+            <div className="name">{fullName}</div>
+          </div>
+
         </header>
 
         <nav className='sideBar-nav'>
@@ -151,6 +147,18 @@ const SideBar = () => {
               </Link>
             </li>
             <li>
+              <Link to={'/Legale/'} className={selectedNav == 8 ? "active" : ""} onClick={(e) => handleSelect(e, 8)}>
+                <span className='profile-list-icon' style={{ backgroundImage: `url(${selectedNav === 8 ? LegalesW : Legales})` }}></span>
+                {t('profile.mesConfig.legales')}
+              </Link>
+            </li>
+            <li className='politique-legals'>
+              <Link to={'/Politiques/'} className={selectedNav == 9 ? "active" : ""} onClick={(e) => handleSelect(e, 9)}>
+                <span className='profile-list-icon' style={{ backgroundImage: `url(${selectedNav === 9 ? PolitiquesW : Politiques})` }}></span>
+                {t('profile.mesConfig.politiques')}
+              </Link>
+            </li>
+            <li>
               <Link to={'/'} className={`disconnect`} onClick={(e) => {
                 dispatch(logout())
                 navigator.geolocation.getCurrentPosition(
@@ -177,12 +185,6 @@ const SideBar = () => {
           </ul>
         </nav>
       </div>
-
-      {/* 
-        <button onClick={() => setIsDivVisible(!isDivVisible)} className={`visibility-button ${isDivVisible ? "visible-bar" : ""}`}>
-          ...
-        </button>
-      */}
     </>
   );
 };

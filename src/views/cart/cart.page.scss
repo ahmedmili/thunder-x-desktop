@@ -427,11 +427,19 @@
 
     .deliv-details {
       width: 100%;
-      display: grid;
-      grid-template-columns: repeat(3, 1fr);
-      grid-gap: 40px;
+      display: block;
       margin: 0 0 40px;
 
+      .title {
+        font-family: "Poppins-SemiBold", serif;
+        @include fonts(20px, 20px, $color-blue-pelorous);
+        margin: 0 0 20px;
+      }
+      .deliv-select-group {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        grid-gap: 40px;
+      }
       .select {
         @include border(1px, $light_Gray);
         border-radius: 15px;
@@ -1196,6 +1204,7 @@
   }
 
   .supplier-desc-header {
+    width: 100%;
     @include flex(flex, center, space-between);
     margin: 0 0 15px;
 
@@ -1219,6 +1228,8 @@
         background-size: 8px auto;
         padding: 0 16px 0 0;
         cursor: pointer;
+        display: block;
+        min-width: 100px;
 
         &:hover {
           text-decoration: underline;
