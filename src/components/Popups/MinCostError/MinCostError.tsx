@@ -26,9 +26,6 @@ const MinCostError: React.FC<Props> = ({ close }) => {
 
     return (
         <>
-            <div className="popup-overlay" onClick={close}>
-
-            </div>
             <div className="min-cost-popup-container">
                 <div onClick={close} className="close-button">X</div>
 

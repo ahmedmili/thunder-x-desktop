@@ -25,10 +25,6 @@ const ShareSocialModal: React.FC<Props> = ({ code, close }) => {
 
     const { t } = useTranslation()
 
-    const handleOutsideClick = () => {
-        close();
-    };
-
     const copyCode = () => {
         copy(code)
     }
@@ -41,13 +37,13 @@ const ShareSocialModal: React.FC<Props> = ({ code, close }) => {
     return (
 
         <>
-            <div className="popup-overlay" onClick={handleOutsideClick}></div>
+            <div className="popup-overlay"></div>
             <div className="share-social-popup-container">
                 <div className="share-social_header">
                     <h3 className="title">{t("profile.fidelite.inviteNow")}</h3>
                     <button onClick={close} className='close-btn'></button>
                 </div>
-                
+
                 <div className="social-buttons-section">
                     <WhatsappShareButton className="button-box" title={title} url={`sharedContent`}>
                         <input type="button" value="" className="whatsApp" name="WhatsApp" style={{ backgroundImage: `url(${whatsup_img})` }} />
