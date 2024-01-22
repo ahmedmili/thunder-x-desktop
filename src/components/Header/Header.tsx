@@ -64,6 +64,7 @@ const Header = () => {
   const orderTrackingToggle = () => {
     setOrderTracking(true);
   }
+  
   const closeOrderTrackingToggle = () => {
     setOrderTracking(false);
   }
@@ -202,8 +203,18 @@ const Header = () => {
       eventEmitter.off('COMMAND_UPDATED', () => { getCurrentCommands() })
     }
   }, [])
+
+  const HideAll = () => {
+    showProfile && setShowProfile(false)
+    showCart && setShowCart(false);
+    showMapState && dispatch(handleCartState(false));
+    orderTracking && setOrderTracking(false);
+  }
   return (
     <>
+      <div className="header-overlay" onClick={HideAll}>
+
+      </div>
       {
         (routerLocation.pathname == "/" && !location) ? (
           <div className="overflow-hidden home-section-one">
