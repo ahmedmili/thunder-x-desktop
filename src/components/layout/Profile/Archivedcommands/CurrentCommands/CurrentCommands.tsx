@@ -14,6 +14,7 @@ import defaultImage from "../../../../../assets/profile/ArchivedCommands/default
 import delivA from "../../../../../assets/profile/ArchivedCommands/deliv-A.svg";
 import doneA from "../../../../../assets/profile/ArchivedCommands/done-A.svg";
 import preparatinA from "../../../../../assets/profile/ArchivedCommands/preparatin-A.svg";
+import traitementA from "../../../../../assets/profile/ArchivedCommands/traitement-A.svg";
 import traitementB from "../../../../../assets/profile/ArchivedCommands/traitement-B.svg";
 
 import { useTranslation } from 'react-i18next';
@@ -363,6 +364,11 @@ const CurrentCommands: React.FC<CommandsListProps> = ({ removeCommand, goToPasse
         }
     }
 
+    useEffect(() => {
+        console.log('supplier :', supplier)
+        console.log('image :   ', supplier.images[0].path)
+    }, [supplier])
+
     return (
         <>
             <div className="current-commands-container">
@@ -371,7 +377,7 @@ const CurrentCommands: React.FC<CommandsListProps> = ({ removeCommand, goToPasse
                 </header>
                 <main className={`current-command-main `}>
                     <div className='supplier-info'>
-                        <img src={supplier.images[0].length && supplier.images[0].path} loading="lazy" alt="supplier logo" />
+                        <img src={`${supplier.images[0].path}`}  alt="supplier logo" />
                         <div className='name-rate'>
                             <p className='supplier-name'>{supplier.name}</p>
                             {(supplier.star && supplier.star > 0) && <p className='supplier-rates'><StarIcon className='rate-icon' /> {supplier.star.toFixed(1)}</p>}
