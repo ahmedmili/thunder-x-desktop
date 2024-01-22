@@ -19,6 +19,7 @@ import { LocationService } from "../../services/api/Location.api";
 import { localStorageService } from "../../services/localStorageService";
 import AutocompleteInput from "./AutocompleteInput/AutocompleteInput";
 import MapCard from "./mapCard/MapCard";
+import Spinner from "../spinner/Spinner";
 
 declare global {
   interface Window {
@@ -39,7 +40,9 @@ interface AdressComponentProps {
   street: string;
   long: number;
   lat: number;
-  children?: React.ReactNode;
+  id: number,
+  children?: React.ReactNode,
+  refresh: () => void,
 }
 
 interface MapProps {
@@ -50,7 +53,6 @@ interface MapProps {
 
 const Map: React.FC<MapProps> = ({ className, forced = false }) => {
   const { t } = useTranslation();
-  const [clientAdressTable, setClientAdressTable] = useState([]);
   const dispatch = useAppDispatch();
   const [searchType, setSearchType] = useState("");
   const [showMapComponent, setShowMapComponent] = useState<boolean>(false);
@@ -76,15 +78,6 @@ const Map: React.FC<MapProps> = ({ className, forced = false }) => {
     setMapState(value)
   }
 
-  // read client adresses
-  useEffect(() => {
-    const userItem = localStorageService.getUser();
-    const fetchData = async () => {
-      let res = await adressService.getAdressByid(JSON.parse(userItem!).id);
-      setClientAdressTable(res.data.data);
-    };
-    userItem != null && fetchData();
-  }, []);
 
   const userItem = localStorageService.getUser();
   const handleShowMapComponent = () => {
@@ -126,15 +119,47 @@ const Map: React.FC<MapProps> = ({ className, forced = false }) => {
   )
 
   function Options() {
-    const [selectedOption, setSelectedOption] = useState<number>(1);
+    const [selectedOption, setSelectedOption] = useState<number>(-1);
+    const [filtredPositions, setFiltredPositions] = useState<any>([]);
+    const [clientAdressTable, setClientAdressTable] = useState([]);
+    const [loading, setloading] = useState<boolean>(true);
 
     const handleOptionChange = (event: any) => {
       setSelectedOption(parseInt(event.target.value));
     };
+    const handleOptionClick = (value: number) => {
+      setSelectedOption(value);
+    };
 
-    const filtredPositions = clientAdressTable.filter((pos: any) => {
-      return pos.type == selectedOption;
-    })
+    const fetchData = async () => {
+      let res = await adressService.getAdressByid(JSON.parse(userItem!).id);
+      setClientAdressTable(res.data.data);
+      setloading(false)
+
+    };
+    const refresh = () => {
+      setloading(true)
+      fetchData()
+    }
+    // read client adresses
+    useEffect(() => {
+      setloading(true)
+      const userItem = localStorageService.getUser();
+      userItem != null && fetchData();
+    }, []);
+
+    useEffect(() => {
+      // setloading(true)
+      if (selectedOption != -1) {
+        let filtredPositions = clientAdressTable.filter((pos: any) => {
+          return pos.type == selectedOption;
+        })
+        setFiltredPositions(filtredPositions)
+      } else {
+        let filtredPositions = clientAdressTable
+        setFiltredPositions(filtredPositions)
+      }
+    }, [selectedOption, clientAdressTable])
 
     const getCurrentPosition = () => {
 
@@ -160,16 +185,14 @@ const Map: React.FC<MapProps> = ({ className, forced = false }) => {
         }
       );
     };
+
+
     return (
       <Container className="modal-container modal-location">
         <h1 className="modal-title text-center">{t('adress.add')}</h1>
         <div className="modal-location_wrap">
           <div className='modal-location_wrap-blc'>
             <div className="form">
-
-              {/*
-                <label>{t('adress.delivAddress')}</label>
-              */}
               <div className="adresses_container">
                 <AutocompleteInput initLocation={true} />
               </div>
@@ -188,53 +211,64 @@ const Map: React.FC<MapProps> = ({ className, forced = false }) => {
               </div>
             </div>
             <div className="current-position">
+              <label htmlFor="adress-input" className="current-position-title">{t('getLocationButton')}</label>
               <div className="current-position_input-blc" onClick={getCurrentPosition}>
-                <input readOnly className="form-control" type="text" placeholder={`${userLocation ? userLocation.coords.label : t('adress.currentPos')} `} />
+                <input readOnly className="form-control" name="adress-input" id="adress-input" type="text" placeholder={`${userLocation ? userLocation.coords.label : t('adress.currentPos')} `} />
               </div>
             </div>
             {mapDisabled && (
               <div className='error'>{t('adress.browserLocationAcessRequest')}</div>
             )}
-            {clientAdressTable.length > 0 &&
-              <div className="saved-adresses-area">
-                <p className="saved-adresses-title">{t('adress.savedAdress')}</p>
-                <div className="location-filtre">
-                  <div className={`select ${selectedOption == 1 ? "selected" : ""}`}  >
-                    <input type="radio" value="1" id='domicile' name='type' checked={selectedOption === 1} onChange={handleOptionChange} />
-                    <label htmlFor="domicile">{t("domicile")}</label>
-                  </div>
-                  <div className={`select ${selectedOption == 2 ? "selected" : ""}`}  >
-                    <input type="radio" value="2" id='travail' name='type' checked={selectedOption === 2} onChange={handleOptionChange} />
-                    <label htmlFor="travail"> {t("tavail")}</label>
-                  </div>
-                  <div className={`select ${selectedOption == 3 ? "selected" : ""}`}  >
-                    <input type="radio" value="3" id='autre' name='type' checked={selectedOption === 3} onChange={handleOptionChange} />
-                    <label htmlFor="autre">{t("autre")}</label>
-                  </div>
-                </div>
-              </div>
-            }
-            {filtredPositions.length > 0 ? (
+            {clientAdressTable.length > 0 && (
               <>
-                <div className="adresses-container">
-                  {filtredPositions.map((element) => (
-                    <>
-                      <AdressComponent
-                        type={element["label"]}
-                        street={element["street"]}
-                        region={element["region"]}
-                        long={element["long"]}
-                        lat={element["lat"]}
-                      ></AdressComponent>
-                    </>
-                  ))}
+                <div className="saved-adresses-area">
+                  <p className="saved-adresses-title">{t('adress.savedAdress')}</p>
+                  <div className="location-filtre">
+                    <div className={`select ${selectedOption == 1 ? "selected" : ""}`} onClick={() => handleOptionClick(1)}  >
+                      <input type="radio" value="1" id='domicile' name='type' checked={selectedOption === 1} onChange={handleOptionChange} />
+                      <label htmlFor="domicile">{t("domicile")}</label>
+                    </div>
+                    <div className={`select ${selectedOption == 2 ? "selected" : ""}`} onClick={() => handleOptionClick(2)} >
+                      <input type="radio" value="2" id='travail' name='type' checked={selectedOption === 2} onChange={handleOptionChange} />
+                      <label htmlFor="travail"> {t("tavail")}</label>
+                    </div>
+                    <div className={`select ${selectedOption == 3 ? "selected" : ""}`} onClick={() => handleOptionClick(3)} >
+                      <input type="radio" value="3" id='autre' name='type' checked={selectedOption === 3} onChange={handleOptionChange} />
+                      <label htmlFor="autre">{t("autre")}</label>
+                    </div>
+                  </div>
                 </div>
-              </>
+                {loading ? (<Spinner name="" />) :
+                  filtredPositions.length > 0 ? (
+                    <>
+                      <div className="adresses-container">
+                        {filtredPositions.map((element: any) => (
+                          <>
+                            <AdressComponent
+                              type={element["label"]}
+                              street={element["street"]}
+                              region={element["region"]}
+                              long={element["long"]}
+                              lat={element["lat"]}
+                              id={element["id"]}
+                              refresh={refresh}
+                            ></AdressComponent>
+                          </>
+                        ))}
+                      </div>
+                    </>
 
-            ) : (
-              <></>
+                  ) : (
+                    <>
+                      <p className="error" style={{ paddingTop: '44px' }} >{t('adress.EmptysavedAdress')}</p>
+                    </>
+                  )
+                }
+              </>
             )
+
             }
+
           </div>
 
 
@@ -258,6 +292,8 @@ const Map: React.FC<MapProps> = ({ className, forced = false }) => {
     region,
     lat,
     long,
+    id,
+    refresh,
   }: AdressComponentProps) {
 
     const changeAdress = () => {
@@ -272,8 +308,13 @@ const Map: React.FC<MapProps> = ({ className, forced = false }) => {
         },
       });
     };
+
+    const dropAdress = async () => {
+      const { status, data } = await adressService.deleteAdresse(id)
+      data.success && refresh()
+    }
     return (
-      <div onClick={changeAdress} className="adressCompContainer">
+      <div onClick={changeAdress}  /*onDoubleClick={dropAdress}*/ onAuxClick={dropAdress} className="adressCompContainer">
         <header>
           <div className="type">
             <div className="label">

@@ -20,7 +20,24 @@ async function getDistance(formData: any) {
     }
 }
 
+async function deleteAdresse(id: number) {
+    try {
+        const response = await api.delete("deleteAddresse/" + id);
+        const { status, data } = response;
+        return { status, data };
+    } catch (error) {
+        throw error;
+    }
+}
+
+
+
+
+// deleteAdresse(id:any){
+//     return this.http.delete(`${this.url}/deleteAddresse/`+id,{ observe: 'response' });
+//   }
 export const adressService = {
     getAdressByid,
     getDistance,
+    deleteAdresse,
 };
