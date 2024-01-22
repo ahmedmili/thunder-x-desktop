@@ -1191,7 +1191,7 @@ const CartPage: React.FC = () => {
 
 
                               {
-                                selectedOption != 3 && (
+                                selectedOption === 3 && (
                                   <div className={`method ${payMode === 2 ? "active" : ""}`}>
                                     <img loading="lazy" className="cart" src={CartSVG} alt="My SVG" />
                                     <label htmlFor="bnc-cart">{t('cartPage.bankPay')}</label>
