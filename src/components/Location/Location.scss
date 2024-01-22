@@ -366,6 +366,12 @@
     position: relative;
     width: 100%;
 
+    .current-position-title {
+      font-family: 'Poppins-Medium', serif;
+      @include fonts(15px, 15px, $dark_Gray);
+      margin: 0 0 20px;
+    }
+
     .current-position_input-blc {
       background-image: url('./../../assets/current-position-icn.svg');
       background-repeat: no-repeat;
@@ -422,10 +428,8 @@
   }
 
   .select-map-area {
-    // border-top: 1px solid #958E8E;
-    padding: 35px 0 0 0;
-    margin-top: 32px;
-
+    padding: 0px 0 0 0;
+    margin-top: 21px;
     display: flex;
 
     &::before {
