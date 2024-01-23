@@ -52,6 +52,8 @@ const Header = () => {
   const [expanded, setExpanded] = useState<string | false>('panel1');
   const showNotifCart = useAppSelector((state) => state.cart.openHeaderCart)
   const NotifCartItmes = useAppSelector((state) => state.cart.notifHeaderCart)
+  const deliveryOption = useAppSelector((state: RootState) => state.cart.deliveryOption);
+
   const searHandleToggle = () => {
     setSearchVisible(!searchVisible);
   };
@@ -446,11 +448,17 @@ const Header = () => {
                                     <div className="total-price_label">{t('profile.commands.sousTotal')}</div>
                                     <div className="price">{calculeSubTotal(commands[0].products).toFixed(2)}</div>
                                   </div>
-                                  <div className="total-price-blc_wrapper">
-                                    <div className="total-price_label">{t('supplier.delivPrice')}</div>
-                                    <div className="price">{commands[0].coupon.delivery_fixed === 1 ? commands[0].delivery_price : (Number(commands[0].delivery_price) - Number(commands[0].total_price_coupon)).toFixed(2)} DT</div>
-                                  </div>
+                                  {
+                                    (commands[0].delivery_price > 0) && (
+
+                                      <div className="total-price-blc_wrapper">
+                                        <div className="total-price_label">{t('supplier.delivPrice')}</div>
+                                        <div className="price">{commands[0].coupon.delivery_fixed === 1 ? commands[0].delivery_price : (Number(commands[0].delivery_price) - Number(commands[0].total_price_coupon)).toFixed(2)} DT</div>
+                                      </div>
+                                    )
+                                  }
                                 </div>
+
                                 <div className="total-price-blc">
                                   <div className="total-price-blc_wrapper">
                                     <div className="total-price_label">{t('cartPage.total')}</div>

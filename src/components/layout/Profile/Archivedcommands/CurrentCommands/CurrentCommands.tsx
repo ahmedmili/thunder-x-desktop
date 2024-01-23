@@ -14,7 +14,7 @@ import defaultImage from "../../../../../assets/profile/ArchivedCommands/default
 import delivA from "../../../../../assets/profile/ArchivedCommands/deliv-A.svg";
 import doneA from "../../../../../assets/profile/ArchivedCommands/done-A.svg";
 import preparatinA from "../../../../../assets/profile/ArchivedCommands/preparatin-A.svg";
-import traitementA from "../../../../../assets/profile/ArchivedCommands/traitement-A.svg";
+import traitementA from "../../../../../assets/profile/ArchivedCommands/traitement-B.svg";
 import traitementB from "../../../../../assets/profile/ArchivedCommands/traitement-B.svg";
 
 import { useTranslation } from 'react-i18next';
@@ -372,30 +372,39 @@ const CurrentCommands: React.FC<CommandsListProps> = ({ removeCommand, goToPasse
     return (
         <>
             <div className="current-commands-container">
-                <header className={` current-command-header `}>
-                    <img src={supplier.images[1].path} loading="lazy" alt="supplier background" />
+                <header className={`current-command-header`}>
+                    <div className="current-command-img">
+                        <img src={supplier.images[1].path} loading="lazy" alt="supplier background" />
+                    </div>
+                    <div className="current-command_desc">
+                        <div className='supplier-info'>
+                            <div className="supplier-info_img">
+                                <img src={`${supplier.images[0].path}`}  alt="supplier logo" />
+                            </div>
+                            <div className='name-rate'>
+                                <p className='supplier-name'>{supplier.name}</p>
+                                {(supplier.star && supplier.star > 0) && <p className='supplier-rates'><StarIcon className='rate-icon' /> {supplier.star.toFixed(1)}</p>}
+                            </div>
+                            <button className="btn btn-get-location"></button>
+                        </div>
+                        <div className='command-info'>
+                            <p className="title">{messsage}</p>
+                            {
+                                status <= 2 && <p className="description">{t('profile.commands.sousMessage')}</p>
+                            }
+                            {
+                                status > 2 && status < 6 && !isReady && <p className="description">{t('profile.commands.sousMessage2')}</p>
+                            }
+                            {
+                                status == 6 && isDelevery && isReady ? <p className="description">{t('profile.commands.sousMessage3')}</p> : !isDelevery && isReady ? <p className="description">{t('orderTrackingPage.importedReady')}</p> : <></>
+                            }
+                        </div>
+                    </div>
+                    
                 </header>
                 <main className={`current-command-main `}>
-                    <div className='supplier-info'>
-                        <img src={`${supplier.images[0].path}`}  alt="supplier logo" />
-                        <div className='name-rate'>
-                            <p className='supplier-name'>{supplier.name}</p>
-                            {(supplier.star && supplier.star > 0) && <p className='supplier-rates'><StarIcon className='rate-icon' /> {supplier.star.toFixed(1)}</p>}
-                        </div>
-
-                    </div>
-
+                    
                     <div className='command-info'>
-                        <p className="title">{messsage}</p>
-                        {
-                            status <= 2 && <p className="description">{t('profile.commands.sousMessage')}</p>
-                        }
-                        {
-                            status > 2 && status < 6 && !isReady && <p className="description">{t('profile.commands.sousMessage2')}</p>
-                        }
-                        {
-                            status == 6 && isDelevery && isReady ? <p className="description">{t('profile.commands.sousMessage3')}</p> : !isDelevery && isReady ? <p className="description">{t('orderTrackingPage.importedReady')}</p> : <></>
-                        }
                         <div className='command-graph'>
                             <div className='time-line'></div>
                             <img loading="lazy" src={(status === 1 || status === 2) ? traitementA : traitementD} alt="traitement logo" className='traitement-logo' />
@@ -410,7 +419,6 @@ const CurrentCommands: React.FC<CommandsListProps> = ({ removeCommand, goToPasse
                                 )
                             }
                         </div>
-                        <hr />
                     </div>
                     <div className='command-list-product'>
                         {
@@ -511,8 +519,8 @@ const CurrentCommands: React.FC<CommandsListProps> = ({ removeCommand, goToPasse
                         ) : <></>
                     }
                     {status != 6 ? <CommandsFooter /> : <></>}
-                </main >
-            </div >
+                </main>
+            </div>
 
             {
                 problemPopup &&

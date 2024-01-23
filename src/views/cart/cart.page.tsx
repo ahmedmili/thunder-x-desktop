@@ -5,6 +5,7 @@ import {
   removeItemWithIndex,
   setCodePromo,
   setComment,
+  setDeliveryOption,
   setDeliveryPrice,
   setSupplier
 } from "../../Redux/slices/cart/cartSlice";
@@ -709,9 +710,15 @@ const CartPage: React.FC = () => {
   const handleOptionChange = async (value: number) => {
     if (value === 3) {
       setSelectedOption(value);
+      dispatch(setDeliveryOption('delivery'))
     } else {
       const take_away = await commandService.isdelivery(supplier_id)
-      take_away === 1 ? setSelectedOption(value) : handleServicePopup();
+      if (take_away === 1) {
+        setSelectedOption(value)
+        dispatch(setDeliveryOption('pickup'))
+      } else {
+        handleServicePopup();
+      }
     }
   };
 
@@ -967,8 +974,9 @@ const CartPage: React.FC = () => {
 
   // calc total function
   const calcTotal = () => {
+    const delivPrix = (selectedOption === 3) ? deliveryPrice : 0
     setTotal(
-      ((sousTotal + deliveryPrice) - ((appliedBonus / 1000) + (giftAmmount) + promoReduction + discount)))
+      ((sousTotal + delivPrix) - ((appliedBonus / 1000) + (giftAmmount) + promoReduction + discount)))
   }
   // get supplier request
   const getSupplierById = async () => {
@@ -990,10 +998,8 @@ const CartPage: React.FC = () => {
       const res = await adressService.getDistance(obj)
       res.data.code == 200 ? distance = res.data.data.distance : distance = 0
       let extraDeliveryCost = (distance - max_distance) > 0 ? Math.ceil(distance - max_distance) : 0
-
       const deliveryPrice = cartItems.length <= 0 ? 0 : Number(cartItems[0].supplier_data.delivery_price) + extraDeliveryCost
       setExtraDeliveryCost(extraDeliveryCost)
-      // setDelivPrice(deliveryPrice)
       dispatch(setDeliveryPrice(deliveryPrice))
 
     }
@@ -1062,15 +1068,22 @@ const CartPage: React.FC = () => {
       if (delivery === 1 && take_away == 1) {
         setIsDelevery("delivery")
         setSelectedOption(3)
+        dispatch(setDeliveryOption('delivery'))
+
       } else if (delivery === 1 && take_away == 0) {
         setSelectedOption(3)
         setIsDelevery("delivery")
+        dispatch(setDeliveryOption('delivery'))
+
       } else if (delivery === 0 && take_away == 1) {
         setSelectedOption(2)
         setIsDelevery("pickup")
+        dispatch(setDeliveryOption('pickup'))
+
       } else if (delivery === 0 && take_away == 0) {
         setIsDelevery("surplace")
         setSelectedOption(1)
+        dispatch(setDeliveryOption('surplace'))
       }
     }
 
