@@ -359,6 +359,7 @@ $svg_location_icon : url('../../../assets/location.svg');
             width: 100%;
             @include flex(flex, center, center);
             gap: 17px;
+            padding-top: 15px;
 
             .submit-cart {
                 @include fonts(16px, 16px, $color-white);

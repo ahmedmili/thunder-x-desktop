@@ -12,14 +12,13 @@ import ClearRoundedIcon from "@mui/icons-material/ClearRounded";
 import HomeLocation from '../../assets/home-location.svg';
 
 import {
-  homeLoadingSelector,
   regionHomeSelector
 } from "../../Redux/slices/home";
 import { LocationService } from "../../services/api/Location.api";
 import { localStorageService } from "../../services/localStorageService";
+import Spinner from "../spinner/Spinner";
 import AutocompleteInput from "./AutocompleteInput/AutocompleteInput";
 import MapCard from "./mapCard/MapCard";
-import Spinner from "../spinner/Spinner";
 
 declare global {
   interface Window {
@@ -47,22 +46,21 @@ interface AdressComponentProps {
 
 interface MapProps {
   className?: string;
-  forced?: boolean
+  forced?: boolean;
+  configPage?: boolean;
 
 }
 
-const Map: React.FC<MapProps> = ({ className, forced = false }) => {
+const Map: React.FC<MapProps> = ({ className, forced = false, configPage = false }) => {
   const { t } = useTranslation();
   const dispatch = useAppDispatch();
   const [searchType, setSearchType] = useState("");
-  const [showMapComponent, setShowMapComponent] = useState<boolean>(false);
   const region = useSelector(regionHomeSelector);
-  const location = localStorageService.getCurrentLocation()
-  const isLoading = useSelector(homeLoadingSelector);
-  const userLocation = useAppSelector((state) => state.location.position);
 
   const [mapDisabled, setMapState] = useState<boolean>(false);
-
+  useEffect(() => {
+    console.log('configPage : ', configPage)
+  }, [])
   useEffect(() => {
     const disableScroll = (e: any) => {
       e.preventDefault();
@@ -80,9 +78,7 @@ const Map: React.FC<MapProps> = ({ className, forced = false }) => {
 
 
   const userItem = localStorageService.getUser();
-  const handleShowMapComponent = () => {
-    setShowMapComponent((current) => !current)
-  }
+
   const cancel = () => {
     if (searchType === "") {
       const location = localStorageService.getCurrentLocation()
@@ -91,17 +87,48 @@ const Map: React.FC<MapProps> = ({ className, forced = false }) => {
           dispatch({ type: "SET_SHOW", payload: false })
         }
         else {
-          console.log("zone not available");
+          console.warn("zone not available");
         }
       }
       else {
-        forced ? console.log("you dont have location") : dispatch({ type: "SET_SHOW", payload: false })
+        forced ? console.warn("you dont have location") : dispatch({ type: "SET_SHOW", payload: false })
 
       }
     }
     else {
       setSearchType("")
     }
+  };
+
+  const [showMapComponent, setShowMapComponent] = useState<boolean>(false);
+  const userLocation = useAppSelector((state) => state.location.position);
+
+  const handleShowMapComponent = () => {
+    setShowMapComponent((current) => !current)
+  }
+
+  const getCurrentPosition = () => {
+    navigator.geolocation.getCurrentPosition(
+      (position: Position) => {
+        handleMapState(false);
+        let pos = position.coords
+        const { latitude, longitude } = pos;
+        LocationService.geoCode(latitude, longitude).then(data => {
+          dispatch({
+            type: "SET_LOCATION",
+            payload: {
+              ...data
+            },
+          });
+        });
+      },
+      (error: GeolocationPositionError) => {
+        handleMapState(true);
+        setTimeout(() => {
+          handleMapState(false);
+        }, 2000);
+      }
+    );
   };
 
   return (
@@ -113,223 +140,231 @@ const Map: React.FC<MapProps> = ({ className, forced = false }) => {
             className="cancel-icon"
           ></ClearRoundedIcon>
         </div>
-        <Options />
+
+        <Container className="modal-container modal-location">
+          <h1 className="modal-title text-center">{t('adress.add')}</h1>
+          <div className="modal-location_wrap">
+            <div className='modal-location_wrap-blc'>
+              {
+                (!configPage) && (
+                  <>
+                    <div className="form">
+                      <div className="adresses_container">
+                        <AutocompleteInput initLocation={true} />
+                      </div>
+                      <div className="address-notfound-area d-none">
+                        <div className="address-notfound-msg-err">
+                          {t('adress.adressIntrouvable')}
+                        </div>
+                        <div className="address-notfound-content">
+                          <p>{t('AvailabelAt')} :</p>
+                          <div className="btns-group">
+                            <button className="btn btn-adress">Sousse</button>
+                            <button className="btn btn-adress">Monastir</button>
+                            <button className="btn btn-adress">Mahdia</button>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+
+                    <div className="current-position">
+                      <label htmlFor="adress-input" className="current-position-title">{t('adress.currentPos')}</label>
+                      <div className="current-position_input-blc" onClick={getCurrentPosition}>
+                        <input readOnly className="form-control" name="adress-input" id="adress-input" type="text" placeholder={`${userLocation ? userLocation.coords.label : t('adress.currentPos')} `} />
+                      </div>
+                    </div>
+                  </>
+                )
+              }
+
+              {mapDisabled && (
+                <div className='error'>{t('adress.browserLocationAcessRequest')}</div>
+              )}
+              {
+                (!configPage) && (
+                  <>
+                    <SavedCoordsList id={JSON.parse(userItem!).id} />
+                  </>
+                )
+              }
+            </div>
+            <div className="select-map-area">
+              <button onClick={handleShowMapComponent} className="btn btn-select-map">{t('adress.cartSelect')}</button>
+            </div>
+            {
+              showMapComponent &&
+              <div className='modal-location_wrap-blc'>
+                <MapCard cancel={cancel} />
+              </div>
+            }
+            {
+              (configPage) && (
+                <>
+                                    <div className='devider'></div>
+
+                <SavedCoordsList id={JSON.parse(userItem!).id} />
+                </>
+              )
+            }
+          </div>
+
+        </Container>
+
       </div>
     </>
   )
 
-  function Options() {
-    const [selectedOption, setSelectedOption] = useState<number>(-1);
-    const [filtredPositions, setFiltredPositions] = useState<any>([]);
-    const [clientAdressTable, setClientAdressTable] = useState([]);
-    const [loading, setloading] = useState<boolean>(true);
+};
 
-    const handleOptionChange = (event: any) => {
-      setSelectedOption(parseInt(event.target.value));
-    };
-    const handleOptionClick = (value: number) => {
-      setSelectedOption(value);
-    };
 
-    const fetchData = async () => {
-      let res = await adressService.getAdressByid(JSON.parse(userItem!).id);
-      setClientAdressTable(res.data.data);
-      setloading(false)
+function AdressComponent({
+  type,
+  street,
+  region,
+  lat,
+  long,
+  id,
+  refresh,
+}: AdressComponentProps) {
+  const dispatch = useAppDispatch();
 
-    };
-    const refresh = () => {
-      setloading(true)
-      fetchData()
-    }
-    // read client adresses
-    useEffect(() => {
-      setloading(true)
-      const userItem = localStorageService.getUser();
-      userItem != null && fetchData();
-    }, []);
-
-    useEffect(() => {
-      // setloading(true)
-      if (selectedOption != -1) {
-        let filtredPositions = clientAdressTable.filter((pos: any) => {
-          return pos.type == selectedOption;
-        })
-        setFiltredPositions(filtredPositions)
-      } else {
-        let filtredPositions = clientAdressTable
-        setFiltredPositions(filtredPositions)
-      }
-    }, [selectedOption, clientAdressTable])
-
-    const getCurrentPosition = () => {
-
-      navigator.geolocation.getCurrentPosition(
-        (position: Position) => {
-          handleMapState(false);
-          let pos = position.coords
-          const { latitude, longitude } = pos;
-          LocationService.geoCode(latitude, longitude).then(data => {
-            dispatch({
-              type: "SET_LOCATION",
-              payload: {
-                ...data
-              },
-            });
-          });
+  const changeAdress = () => {
+    dispatch({
+      type: "SET_LOCATION",
+      payload: {
+        coords: {
+          latitude: lat,
+          longitude: long,
+          label: type,
         },
-        (error: GeolocationPositionError) => {
-          handleMapState(true);
-          setTimeout(() => {
-            handleMapState(false);
-          }, 2000);
-        }
-      );
-    };
+      },
+    });
+  };
 
+  const dropAdress = async () => {
+    const { status, data } = await adressService.deleteAdresse(id)
+    data.success && refresh()
+  }
+  return (
+    //  onDoubleClick={dropAdress}
+    <div onClick={changeAdress} onAuxClick={dropAdress} className="adressCompContainer">
+      <header>
+        <div className="type">
+          <div className="label">
+            <div className="position-icon" style={{ backgroundImage: `url(${HomeLocation})` }} ></div>
+            <span>{type}</span>
+          </div>
+        </div>
+        <p className="position-name">
+          {street}, <br /> {region}
+        </p>
+      </header>
 
-    return (
-      <Container className="modal-container modal-location">
-        <h1 className="modal-title text-center">{t('adress.add')}</h1>
-        <div className="modal-location_wrap">
-          <div className='modal-location_wrap-blc'>
-            <div className="form">
-              <div className="adresses_container">
-                <AutocompleteInput initLocation={true} />
+    </div>
+  );
+}
+interface SavedCoordsListProps {
+  id: number; // Change the type according to your use case
+}
+
+const SavedCoordsList: React.FC<SavedCoordsListProps> = ({ id }) => {
+  const { t } = useTranslation();
+
+  const [selectedOption, setSelectedOption] = useState<number>(-1);
+  const [filtredPositions, setFiltredPositions] = useState<any>([]);
+  const [loading, setloading] = useState<boolean>(true);
+
+  const handleOptionChange = (event: any) => {
+    setSelectedOption(parseInt(event.target.value));
+  };
+  const handleOptionClick = (value: number) => {
+    setSelectedOption(value);
+  };
+  const [clientAdressTable, setClientAdressTable] = useState([]);
+
+  const fetchData = async () => {
+    let res = await adressService.getAdressByid(id);
+    setClientAdressTable(res.data.data);
+    setloading(false)
+  };
+
+  const refresh = () => {
+    setloading(true)
+    fetchData()
+  }
+  // read client adresses
+  useEffect(() => {
+    setloading(true)
+    const userItem = localStorageService.getUser();
+    userItem != null && fetchData();
+  }, []);
+
+  useEffect(() => {
+    if (selectedOption != -1) {
+      let filtredPositions = clientAdressTable.filter((pos: any) => {
+        return pos.type == selectedOption;
+      })
+      setFiltredPositions(filtredPositions)
+    } else {
+      let filtredPositions = clientAdressTable
+      setFiltredPositions(filtredPositions)
+    }
+  }, [selectedOption, clientAdressTable])
+
+  return (
+    <>
+      {clientAdressTable.length > 0 && (
+        <>
+          <div className="saved-adresses-area">
+            <p className="saved-adresses-title">{t('adress.savedAdress')}</p>
+            <div className="location-filtre">
+              <div className={`select ${selectedOption == 1 ? "selected" : ""}`} onClick={() => handleOptionClick(1)}  >
+                <input type="radio" value="1" id='domicile' name='type' checked={selectedOption === 1} onChange={handleOptionChange} />
+                <label htmlFor="domicile">{t("domicile")}</label>
               </div>
-              <div className="address-notfound-area d-none">
-                <div className="address-notfound-msg-err">
-                  {t('adress.adressIntrouvable')}
-                </div>
-                <div className="address-notfound-content">
-                  <p>{t('AvailabelAt')} :</p>
-                  <div className="btns-group">
-                    <button className="btn btn-adress">Sousse</button>
-                    <button className="btn btn-adress">Monastir</button>
-                    <button className="btn btn-adress">Mahdia</button>
-                  </div>
-                </div>
+              <div className={`select ${selectedOption == 2 ? "selected" : ""}`} onClick={() => handleOptionClick(2)} >
+                <input type="radio" value="2" id='travail' name='type' checked={selectedOption === 2} onChange={handleOptionChange} />
+                <label htmlFor="travail"> {t("tavail")}</label>
+              </div>
+              <div className={`select ${selectedOption == 3 ? "selected" : ""}`} onClick={() => handleOptionClick(3)} >
+                <input type="radio" value="3" id='autre' name='type' checked={selectedOption === 3} onChange={handleOptionChange} />
+                <label htmlFor="autre">{t("autre")}</label>
               </div>
             </div>
-            <div className="current-position">
-              <label htmlFor="adress-input" className="current-position-title">{t('adress.currentPos')}</label>
-              <div className="current-position_input-blc" onClick={getCurrentPosition}>
-                <input readOnly className="form-control" name="adress-input" id="adress-input" type="text" placeholder={`${userLocation ? userLocation.coords.label : t('adress.currentPos')} `} />
-              </div>
-            </div>
-            {mapDisabled && (
-              <div className='error'>{t('adress.browserLocationAcessRequest')}</div>
-            )}
-            {clientAdressTable.length > 0 && (
+          </div>
+          {loading ? (<Spinner name="" />) :
+            filtredPositions.length > 0 ? (
               <>
-                <div className="saved-adresses-area">
-                  <p className="saved-adresses-title">{t('adress.savedAdress')}</p>
-                  <div className="location-filtre">
-                    <div className={`select ${selectedOption == 1 ? "selected" : ""}`} onClick={() => handleOptionClick(1)}  >
-                      <input type="radio" value="1" id='domicile' name='type' checked={selectedOption === 1} onChange={handleOptionChange} />
-                      <label htmlFor="domicile">{t("domicile")}</label>
-                    </div>
-                    <div className={`select ${selectedOption == 2 ? "selected" : ""}`} onClick={() => handleOptionClick(2)} >
-                      <input type="radio" value="2" id='travail' name='type' checked={selectedOption === 2} onChange={handleOptionChange} />
-                      <label htmlFor="travail"> {t("tavail")}</label>
-                    </div>
-                    <div className={`select ${selectedOption == 3 ? "selected" : ""}`} onClick={() => handleOptionClick(3)} >
-                      <input type="radio" value="3" id='autre' name='type' checked={selectedOption === 3} onChange={handleOptionChange} />
-                      <label htmlFor="autre">{t("autre")}</label>
-                    </div>
-                  </div>
+                <div className="adresses-container">
+                  {filtredPositions.map((element: any) => (
+                    <>
+                      <AdressComponent
+                        type={element["label"]}
+                        street={element["street"]}
+                        region={element["region"]}
+                        long={element["long"]}
+                        lat={element["lat"]}
+                        id={element["id"]}
+                        refresh={refresh}
+                      ></AdressComponent>
+                    </>
+                  ))}
                 </div>
-                {loading ? (<Spinner name="" />) :
-                  filtredPositions.length > 0 ? (
-                    <>
-                      <div className="adresses-container">
-                        {filtredPositions.map((element: any) => (
-                          <>
-                            <AdressComponent
-                              type={element["label"]}
-                              street={element["street"]}
-                              region={element["region"]}
-                              long={element["long"]}
-                              lat={element["lat"]}
-                              id={element["id"]}
-                              refresh={refresh}
-                            ></AdressComponent>
-                          </>
-                        ))}
-                      </div>
-                    </>
+              </>
 
-                  ) : (
-                    <>
-                      <p className="error" style={{ color: 'black' }} >{t('adress.EmptysavedAdress')}</p>
-                    </>
-                  )
-                }
+            ) : (
+              <>
+                <p className="error" style={{ color: 'black' }} >{t('adress.EmptysavedAdress')}</p>
               </>
             )
-
-            }
-
-          </div>
-
-
-          <div className="select-map-area">
-            <button onClick={handleShowMapComponent} className="btn btn-select-map">{t('adress.cartSelect')}</button>
-          </div>
-          {
-            showMapComponent &&
-            <div className='modal-location_wrap-blc'>
-              <MapCard cancel={cancel} />
-            </div>
           }
-        </div>
-      </Container>
-    )
-  }
+        </>
+      )
+      }
+    </>
+  )
+}
 
-  function AdressComponent({
-    type,
-    street,
-    region,
-    lat,
-    long,
-    id,
-    refresh,
-  }: AdressComponentProps) {
+export default React.memo(Map);
 
-    const changeAdress = () => {
-      dispatch({
-        type: "SET_LOCATION",
-        payload: {
-          coords: {
-            latitude: lat,
-            longitude: long,
-            label: type,
-          },
-        },
-      });
-    };
 
-    const dropAdress = async () => {
-      const { status, data } = await adressService.deleteAdresse(id)
-      data.success && refresh()
-    }
-    return (
-      //  onDoubleClick={dropAdress}
-      <div onClick={changeAdress}  onAuxClick={dropAdress} className="adressCompContainer">
-        <header>
-          <div className="type">
-            <div className="label">
-              <div className="position-icon" style={{ backgroundImage: `url(${HomeLocation})` }} ></div>
-              <span>{type}</span>
-            </div>
-          </div>
-          <p className="position-name">
-            {street}, <br /> {region}
-          </p>
-        </header>
-
-      </div>
-    );
-  }
-};
-export default Map;
