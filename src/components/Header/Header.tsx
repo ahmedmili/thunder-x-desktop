@@ -94,7 +94,9 @@ const Header = () => {
   }, [msg_notifs])
 
   useEffect(() => {
-    getCurrentCommands()
+    if (logged_in) {
+      getCurrentCommands();      
+    }
     if (typeof window != 'undefined') {
       window.addEventListener('scroll', handleScroll);
     }

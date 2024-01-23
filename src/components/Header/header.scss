@@ -285,7 +285,7 @@
     padding: 15px;
     border-radius: 0px 0px 20px 20px;
     transition: box-shadow 0.3s ease-in-out;
-
+    min-width: 1024px;
     >.container {
         @include flex(flex, center, space-between);
         padding: 0;
@@ -1141,215 +1141,215 @@
     }
 }
 
-@media only screen and (max-width: 992px) {
-    .fixedHeaderContainer2 {
-        left: 5%;
-        right: 5%;
+// @media only screen and (max-width: 992px) {
+//     .fixedHeaderContainer2 {
+//         left: 5%;
+//         right: 5%;
 
-        .info {
-            .position {
-                font-size: 15px;
-                gap: 7px;
-                width: 337px;
-            }
-        }
-    }
+//         .info {
+//             .position {
+//                 font-size: 15px;
+//                 gap: 7px;
+//                 width: 337px;
+//             }
+//         }
+//     }
 
-    .head1 {
-        .demiCercle {
-            top: 39px;
-            left: -179px;
-        }
-    }
+//     .head1 {
+//         .demiCercle {
+//             top: 39px;
+//             left: -179px;
+//         }
+//     }
 
-    .headerContainer {
-        margin-top: -32px;
+//     .headerContainer {
+//         margin-top: -32px;
 
-        .imageBuilder {
-            @include dimensions(255px, 208px);
-        }
+//         .imageBuilder {
+//             @include dimensions(255px, 208px);
+//         }
 
-        .headerAppBar2 {
-            .headerMessage {
+//         .headerAppBar2 {
+//             .headerMessage {
 
-                .headerMessageSyle1,
-                .headerMessageSyle2 {
-                    font-size: 24.54px;
-                }
-            }
+//                 .headerMessageSyle1,
+//                 .headerMessageSyle2 {
+//                     font-size: 24.54px;
+//                 }
+//             }
 
-            .headerLocalisationMessageContainer {
-                padding: 5px 8px;
+//             .headerLocalisationMessageContainer {
+//                 padding: 5px 8px;
 
-                a {
-                    font-size: 13.5px;
-                }
-            }
-        }
-    }
-}
+//                 a {
+//                     font-size: 13.5px;
+//                 }
+//             }
+//         }
+//     }
+// }
 
-@media only screen and (max-width: 768px) {
-    .fixedHeaderContainer2 {
-        .info {
-            gap: 0px;
+// @media only screen and (max-width: 768px) {
+//     .fixedHeaderContainer2 {
+//         .info {
+//             gap: 0px;
 
-            .cart-item {
-                @include dimensions(66px, 36px);
-            }
+//             .cart-item {
+//                 @include dimensions(66px, 36px);
+//             }
 
-            .position {
-                font-size: 12px;
-                gap: 7px;
-                width: 264px;
+//             .position {
+//                 font-size: 12px;
+//                 gap: 7px;
+//                 width: 264px;
 
-                .position-icon {
-                    font-size: 16px;
-                }
-            }
+//                 .position-icon {
+//                     font-size: 16px;
+//                 }
+//             }
 
-            .account {
-                .account-icon {
-                    height: 35px;
-                }
-            }
+//             .account {
+//                 .account-icon {
+//                     height: 35px;
+//                 }
+//             }
 
-            .cart-item {
-                font-size: 20px;
-                height: 34px;
-            }
-        }
-    }
+//             .cart-item {
+//                 font-size: 20px;
+//                 height: 34px;
+//             }
+//         }
+//     }
 
-    .head1 {
-        .demiCercle {
-            top: 39px;
-            left: -170px;
-        }
-    }
+//     .head1 {
+//         .demiCercle {
+//             top: 39px;
+//             left: -170px;
+//         }
+//     }
 
-    .headerContainer {
-        .imageBuilder {
-            @include dimensions(191px, 186px);
-        }
+//     .headerContainer {
+//         .imageBuilder {
+//             @include dimensions(191px, 186px);
+//         }
 
-        .headerAppBar2 {
-            margin-left: 13px;
+//         .headerAppBar2 {
+//             margin-left: 13px;
 
-            .headerMessage {
+//             .headerMessage {
 
-                .headerMessageSyle1,
-                .headerMessageSyle2 {
-                    font-size: 18px;
-                }
-            }
+//                 .headerMessageSyle1,
+//                 .headerMessageSyle2 {
+//                     font-size: 18px;
+//                 }
+//             }
 
-            .headerLocalisationMessageContainer {
-                a {
-                    font-size: 11px;
-                }
-            }
-        }
-    }
+//             .headerLocalisationMessageContainer {
+//                 a {
+//                     font-size: 11px;
+//                 }
+//             }
+//         }
+//     }
 
-    .cart-container {
-        width: 304px;
-    }
-}
+//     .cart-container {
+//         width: 304px;
+//     }
+// }
 
-@media only screen and (max-width: 576px) {
-    .fixedHeaderContainer2 {
-        .info {
-            .position {
-                font-size: 10px;
-                gap: 7px;
-                width: 239px;
-            }
-        }
-    }
+// @media only screen and (max-width: 576px) {
+//     .fixedHeaderContainer2 {
+//         .info {
+//             .position {
+//                 font-size: 10px;
+//                 gap: 7px;
+//                 width: 239px;
+//             }
+//         }
+//     }
 
-    .cart-container {
-        top: 80px;
-        right: 10vw;
-        width: 273px;
-    }
+//     .cart-container {
+//         top: 80px;
+//         right: 10vw;
+//         width: 273px;
+//     }
 
-    .fixedHeaderContainer {
-        .appBar {
-            .LoadingButton {
-                @include dimensions(60px, 25px);
-                font-size: 6.33px;
-                padding: 1px;
-            }
-        }
-    }
+//     .fixedHeaderContainer {
+//         .appBar {
+//             .LoadingButton {
+//                 @include dimensions(60px, 25px);
+//                 font-size: 6.33px;
+//                 padding: 1px;
+//             }
+//         }
+//     }
 
-    .headerContainer {
-        @include flex;
-        flex-direction: column;
-        flex-wrap: wrap-reverse;
+//     .headerContainer {
+//         @include flex;
+//         flex-direction: column;
+//         flex-wrap: wrap-reverse;
 
-        .imageBuilderContainer {
-            @include flex;
-            overflow: hidden;
+//         .imageBuilderContainer {
+//             @include flex;
+//             overflow: hidden;
 
-            .imageBuilder {
-                background-position: center center;
-                background-size: contain;
-                @include dimensions(177px, 125px);
-            }
-        }
+//             .imageBuilder {
+//                 background-position: center center;
+//                 background-size: contain;
+//                 @include dimensions(177px, 125px);
+//             }
+//         }
 
-        .headerAppBar2 {
-            @include flex;
-            flex-direction: column;
+//         .headerAppBar2 {
+//             @include flex;
+//             flex-direction: column;
 
-            .headerMessage {
+//             .headerMessage {
 
-                .headerMessageSyle1,
-                .headerMessageSyle2 {
-                    font-size: 11px;
-                }
-            }
+//                 .headerMessageSyle1,
+//                 .headerMessageSyle2 {
+//                     font-size: 11px;
+//                 }
+//             }
 
-            .headerLocalisationMessageContainer {
-                padding: 0;
-                margin: 0px;
+//             .headerLocalisationMessageContainer {
+//                 padding: 0;
+//                 margin: 0px;
 
-                a {
-                    font-size: 6.33px;
-                }
-            }
-        }
-    }
-}
+//                 a {
+//                     font-size: 6.33px;
+//                 }
+//             }
+//         }
+//     }
+// }
 
 /* -- max-height -- */
 
-@media (max-height: 890px) {
-    .fixedHeaderContainer2 {
-        .info {
-            .order-tracking-area {
-                .order-tracking-wrapper {
-                    .order-tracking_body {
-                        max-height: 490px;
-                    }
-                }
-            }
-        }
-    }
-}
+// @media (max-height: 890px) {
+//     .fixedHeaderContainer2 {
+//         .info {
+//             .order-tracking-area {
+//                 .order-tracking-wrapper {
+//                     .order-tracking_body {
+//                         max-height: 490px;
+//                     }
+//                 }
+//             }
+//         }
+//     }
+// }
 
-@media (max-height: 700px) {
-    .fixedHeaderContainer2 {
-        .info {
-            .order-tracking-area {
-                .order-tracking-wrapper {
-                    .order-tracking_body {
-                        max-height: 300px;
-                    }
-                }
-            }
-        }
-    }
-}
+// @media (max-height: 700px) {
+//     .fixedHeaderContainer2 {
+//         .info {
+//             .order-tracking-area {
+//                 .order-tracking-wrapper {
+//                     .order-tracking_body {
+//                         max-height: 300px;
+//                     }
+//                 }
+//             }
+//         }
+//     }
+// }
