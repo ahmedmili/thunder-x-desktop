@@ -62,11 +62,17 @@ const Header = () => {
   const { t } = useTranslation();
 
   const orderTrackingToggle = () => {
+    showProfile && setShowProfile(false)
+    showCart && setShowCart(false);
+    showMapState && dispatch(handleCartState(false));
     setOrderTracking(true);
   }
-  
+
   const closeOrderTrackingToggle = () => {
-    setOrderTracking(false);
+    showProfile && setShowProfile(false)
+    showCart && setShowCart(false);
+    showMapState && dispatch(handleCartState(false));
+    orderTracking && setOrderTracking(false);
   }
 
   const handleScroll = () => {
@@ -79,7 +85,6 @@ const Header = () => {
       }
     }
   };
-
 
   useEffect(() => {
     setNotifsQts(msg_notifs)
@@ -99,6 +104,8 @@ const Header = () => {
 
   const handleCart = async () => {
     showProfile && setShowProfile(false)
+    showCart && setShowCart(false);
+    orderTracking && setOrderTracking(false);
     showMapState && dispatch(handleCartState(false));
     setShowCart(!showCart);
   };
@@ -106,6 +113,7 @@ const Header = () => {
   const handleNotifCart = async () => {
     showProfile && setShowProfile(false)
     showCart && setShowCart(false);
+    orderTracking && setOrderTracking(false);
     dispatch(removeNotifHeaderCart())
     dispatch(handleCartState(false))
     navigate(-1)
@@ -115,6 +123,8 @@ const Header = () => {
     if (user) {
       showCart && setShowCart(false);
       showMapState && dispatch(handleCartState(false));
+      orderTracking && setOrderTracking(false);
+
       setShowProfile(!showProfile);
     } else {
       navigate('/login')
@@ -212,9 +222,10 @@ const Header = () => {
   }
   return (
     <>
-      <div className="header-overlay" onClick={HideAll}>
-
-      </div>
+      {(showCart || showProfile || showMapState || orderTracking ) && (
+        <div className="header-overlay" onClick={HideAll}>
+        </div>)
+      }
       {
         (routerLocation.pathname == "/" && !location) ? (
           <div className="overflow-hidden home-section-one">
