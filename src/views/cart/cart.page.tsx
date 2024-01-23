@@ -44,7 +44,6 @@ import MessangerBtnIcon from '../../assets/profile/Discuter/messanger-btn.svg';
 import Messanger from "../../components/Popups/Messanger/Messanger";
 import MinCostError from "../../components/Popups/MinCostError/MinCostError";
 import WarnPopup from "../../components/Popups/WarnPopup/WarnPopup";
-import PaymentPopup from "../../components/Popups/payment/PaymentPopup";
 import TimePickerComponent from "../../components/TimePicker/TimePicker";
 import { LocationService } from "../../services/api/Location.api";
 import { adressService } from "../../services/api/adress.api";
@@ -53,10 +52,100 @@ import { commandService } from "../../services/api/command.api";
 import { supplierServices } from "../../services/api/suppliers.api";
 import { userService } from "../../services/api/user.api";
 import { localStorageService } from "../../services/localStorageService";
+
+import Command_vailde from "../../assets/payment/command-success.png";
+import Payment_echec from "../../assets/payment/payment-not-success.png";
+import Payment_valide from "../../assets/payment/payment-success.png";
+
 import "./cart.page.scss";
+import { useDispatch } from "react-redux";
 import { Schedule } from '../../services/types';
 import { getHoursAndMinutes } from '../../utils/utils';
 
+interface ResultMessageComponentProps {
+  type: string
+}
+const ResultMessageComponent: React.FC<ResultMessageComponentProps> = ({ type }) => {
+  const navigate = useNavigate()
+  const { t } = useTranslation()
+  const dispatch = useDispatch()
+  var popup_image
+  var popup_title
+  var title_color
+  var popup_msg
+
+  switch (type) {
+    case "error":
+      popup_title = t('popup.payment.invalidePayment');
+      title_color = '#FBC000'
+      popup_image = Payment_echec;
+      // popup_msg = t('popup.payment.invalidePayment.msg');
+      popup_msg = '';
+      break;
+    case "command_success":
+      popup_title = t('popup.payment.valideCommand');
+      popup_image = Command_vailde;
+      popup_msg = t('popup.payment.validePayment.msg');
+      title_color = '#24A6A4'
+      break;
+    case "command_not_success":
+      popup_title = t('popup.payment.NotvalideCommand');
+      popup_image = Command_vailde;
+      popup_msg = '';
+      title_color = '#24A6A4'
+      break;
+    case "payment_success":
+      popup_title = t('popup.payment.validePayment');
+      title_color = '#24A6A4'
+      popup_image = Payment_valide;
+      // popup_msg = t('popup.payment.validePayment.msg');
+      popup_msg = '';
+
+      break;
+    default:
+      break;
+  }
+  const goHome = () => {
+    navigate('/')
+  }
+  const dropOrder = () => {
+    dispatch(clearCart());
+    dispatch(setDeliveryPrice(0));
+    dispatch(setComment(""));
+    dispatch(setCodePromo(""));
+  }
+  const goCurrentCommands = () => {
+    navigate('/profile/archivedCommands/')
+    dropOrder()
+  }
+
+  return (
+    <div className="result-message-container">
+      <h5 className="panier-title">{t('cartPage.yourCart')}</h5>
+      <div className="body">
+        <h4 className="title">{popup_title}</h4>
+        <img loading="lazy" src={popup_image} alt="echec payment" />
+        <p className="message"> {popup_msg}</p>
+      </div>
+      {
+        (type === 'command_not_success') && (
+          <button className="result-message-btn" style={{ margin: `0 auto` }} onClick={goHome} >
+            {t('cart.payment.iCommand')}
+          </button>
+        )
+      }
+
+      {
+        (type === 'command_success') && (
+          <button className="result-message-btn" onClick={goCurrentCommands} >
+            {t('cart.payment.iCommand')}
+          </button>
+        )
+      }
+    </div>
+  )
+
+}
 
 const CartPage: React.FC = () => {
   const { t } = useTranslation();
@@ -84,12 +173,10 @@ const CartPage: React.FC = () => {
 
   const [sousTotal, setSousTotal] = useState<number>(0)
   const [total, setTotal] = useState<number>(0)
-  // const [delivPrice, setDelivPrice] = useState<number>(0)
   const [aComment, setAComment] = React.useState<string>(comment ? comment : "");
   const [showTimer, setShowTimer] = React.useState<boolean>(false);
 
-  const [popupType, setPopupType] = React.useState<string>("");
-  const [showPopup, setShowPopup] = React.useState<boolean>(false);
+  const [submitResult, setSubmitResult] = React.useState<string>("");
   const [showServicePopup, setShowServicePopup] = React.useState<boolean>(false);
   const [showAuthWarnPopup, setShowAuthWarnPopup] = React.useState<boolean>(false);
 
@@ -176,6 +263,7 @@ const CartPage: React.FC = () => {
   const handleMessangerPopup = () => {
     setMessangerPopup(!messangerPopup)
   }
+
   useEffect(() => {
     fetchMessages()
   }, [])
@@ -187,20 +275,19 @@ const CartPage: React.FC = () => {
     getDisabledDays()
   }, [schedules])
 
-
   useEffect(() => {
-    var message :any = `${t('mismatchModal.selectOption.option2.fastest')}
+    var message: any = `${t('mismatchModal.selectOption.option2.fastest')}
     ${t('mismatchModal.selectOption.option2.possible')}
     20-40 ${t('mismatchModal.selectOption.option2.minutes')} `
     if (supplier.status == 0) {
-      if (forced_status === "CLOSE" ||(forced_status === "AUTO" && disabledDays?.length==7)) {
+      if (forced_status === "CLOSE" || (forced_status === "AUTO" && disabledDays?.length == 7)) {
         message = t('closedNow')
       }
       else if (forced_status === "AUTO") {
         const currentDate = new Date();
         const currentDateIndex = currentDate.getDay();
         if (!disabledDays?.includes(currentDateIndex)) {
-         message =  formatInitialDate(dayjs(currentDate), currentDateIndex)
+          message = formatInitialDate(dayjs(currentDate), currentDateIndex)
         }
         else {
           const dayIndex = findClosestOpenDay(currentDateIndex);
@@ -208,34 +295,34 @@ const CartPage: React.FC = () => {
             const dayDifference = dayIndex - currentDate.getDay();
             const timeDifference = dayDifference < 0 ? (dayDifference + 7) * 24 * 60 * 60 * 1000 : dayDifference * 24 * 60 * 60 * 1000;
             const newDate = new Date(currentDate.getTime() + timeDifference)
-            message =  formatInitialDate(dayjs(newDate), dayIndex)
+            message = formatInitialDate(dayjs(newDate), dayIndex)
           }
         }
-      }       
+      }
     }
     setSelectOrderChose(message)
   }, [supplier]);
-  function formatInitialDate(date:any, index:any){
-      let selectedDay :any = null;
-      switch (index) {
+  function formatInitialDate(date: any, index: any) {
+    let selectedDay: any = null;
+    switch (index) {
       case 1:
-          selectedDay = "Mon";
-          break;
+        selectedDay = "Mon";
+        break;
       case 2:
-          selectedDay = "Tue";
-          break;
+        selectedDay = "Tue";
+        break;
       case 3:
-          selectedDay = "Wed";
-          break;
+        selectedDay = "Wed";
+        break;
       case 4:
-          selectedDay = "Thu";
-          break;
+        selectedDay = "Thu";
+        break;
       case 5:
-          selectedDay = "Fri";
-          break;
+        selectedDay = "Fri";
+        break;
       case 6:
-          selectedDay = "Fri";
-          break;
+        selectedDay = "Fri";
+        break;
       case 0:
           selectedDay = "Sun";
           break;            
@@ -254,10 +341,10 @@ const CartPage: React.FC = () => {
       if (isToday) {
           if(dayMaxDateTime.isAfter(now)) {
               if (dayMinDateTime.isAfter(now) || dayMinDateTime.isSame(now)) {
-                return `${t('cart.delivPlanedAt')} ${t(`weekDays.names.${(dayMinDateTime).format("dddd")}`)} ${(dayMinDateTime).format("YYYY-MM-DD")} a ${(dayMinDateTime).format("HH:mm")}`
+                return `${t('cart.delivPlanedAt')} ${t(`weekDays.names.${(dayMinDateTime).format("dddd")}`)} ${(dayMinDateTime).format("DD/MM/YYYY")} a ${(dayMinDateTime).format("HH:mm")}`
               }
               else {
-                return `${t('cart.delivPlanedAt')} ${t(`weekDays.names.${(now).format("dddd")}`)} ${(now).format("YYYY-MM-DD")} a ${(now).format("HH:mm")}`
+                return `${t('cart.delivPlanedAt')} ${t(`weekDays.names.${(now).format("dddd")}`)} ${(now).format("DD/MM/YYYY")} a ${(now).format("HH:mm")}`
               }
           }
           else {
@@ -275,61 +362,61 @@ const CartPage: React.FC = () => {
       
       }
       else {
-        return `${t('cart.delivPlanedAt')} ${t(`weekDays.names.${(dayMinDateTime).format("dddd")}`)} ${(dayMinDateTime).format("YYYY-MM-DD")} a ${(dayMinDateTime).format("HH:mm")}`
+        return `${t('cart.delivPlanedAt')} ${t(`weekDays.names.${(dayMinDateTime).format("dddd")}`)} ${(dayMinDateTime).format("DD/MM/YYYY")} a ${(dayMinDateTime).format("HH:mm")}`
       }       
   } 
   function getDisabledDays() {
-    let disabledDays : any = []
+    let disabledDays: any = []
     schedules?.map((day: any) => {
-        if (day.status == 'CLOSE') {          
-            switch (day.day) {
-            case "Mon":
-                disabledDays.push(1)
-                break;
+      if (day.status == 'CLOSE') {
+        switch (day.day) {
+          case "Mon":
+            disabledDays.push(1)
+            break;
 
-            case "Tue":
-                disabledDays.push(2)
-                break;
+          case "Tue":
+            disabledDays.push(2)
+            break;
 
-            case "Wed":
-                disabledDays.push(3)
-                break;
+          case "Wed":
+            disabledDays.push(3)
+            break;
 
-            case "Thu":
-                disabledDays.push(4)
-                break;
+          case "Thu":
+            disabledDays.push(4)
+            break;
 
-            case "Fri":
-                disabledDays.push(5)
-                break;
+          case "Fri":
+            disabledDays.push(5)
+            break;
 
-            case "Sat":
-                disabledDays.push(6)
-                break;
+          case "Sat":
+            disabledDays.push(6)
+            break;
 
-            case "Sun":
-                disabledDays.push(0)
-                break;              
-            }                
+          case "Sun":
+            disabledDays.push(0)
+            break;
         }
+      }
     })
-    setDisabledDays(disabledDays);   
+    setDisabledDays(disabledDays);
   }
-  function findClosestOpenDay(dayIndex:any) {
+  function findClosestOpenDay(dayIndex: any) {
     let count = 0;
     let day = dayIndex;
     let SelectedDate = null;
     while (count < 6 && SelectedDate == null) {
-        if (day < 6) {
-            day++;                              
-        }
-        else {
-            day = 0;
-        }
-        if (!disabledDays?.includes(day)) {
-            SelectedDate = day
-        } 
-        count++;
+      if (day < 6) {
+        day++;
+      }
+      else {
+        day = 0;
+      }
+      if (!disabledDays?.includes(day)) {
+        SelectedDate = day
+      }
+      count++;
     }
     return SelectedDate;
   }
@@ -435,7 +522,7 @@ const CartPage: React.FC = () => {
     )
   }
   const handleShowTimer = () => {
-    if (forced_status === "CLOSE" || forced_status === "OPEN" || disabledDays?.length==7)
+    if (forced_status === "CLOSE" || forced_status === "OPEN" || disabledDays?.length == 7)
       return 0;
     else setShowTimer(true)
   }
@@ -579,16 +666,17 @@ const CartPage: React.FC = () => {
         if (Number(minCost) > sousTotal) {
           setMinCostError(true)
         } else if (isClosed === 0 || forced_status === "CLOSE ") {
-          toast.warn("This restaurant is currently closed, please complete your order later.")
+          dropOrder()
+          setSubmitResult('command_not_success')
         } else {
           try {
             const { status, data } = await cartService.createOrder(order);
             if (status === 200) {
+
               dropOrder()
-              setPopupType('command_success')
-              handlePopup()
+              setSubmitResult("command_success")
             } else {
-              toast.warn("something went wrong")
+              setSubmitResult('command_not_success')
             }
           } catch (error) {
             throw error
@@ -611,9 +699,6 @@ const CartPage: React.FC = () => {
     setbonus(bonus)
   }
 
-  const handlePopup = () => {
-    setShowPopup(!showPopup)
-  }
 
   //  manage comments state
   const handleCommentChange = (comment: string) => {
@@ -641,6 +726,7 @@ const CartPage: React.FC = () => {
   const handleServicePopup = () => {
     setShowServicePopup((current) => !current)
   }
+
   const handleAuthWarnPopup = () => {
     setShowAuthWarnPopup((current) => !current)
   }
@@ -651,7 +737,6 @@ const CartPage: React.FC = () => {
     dispatch(setDeliveryPrice(0));
     dispatch(setComment(""));
     dispatch(setCodePromo(""));
-    // dispatch(setSupplier([]));
   }
 
   //  get gifts
@@ -954,7 +1039,6 @@ const CartPage: React.FC = () => {
     navigate(path, { replace: true })
   }
 
-
   useEffect(() => {
     switch (selectedOption) {
       case 1:
@@ -983,13 +1067,10 @@ const CartPage: React.FC = () => {
     !showTimer && setTakeAwayDate(new Date(new Date().getTime() + 30 * 60000))
   }, [showTimer])
 
-
-
   useEffect(() => {
     getSousTotal()
     localStorageService.setCart(cartItems);
     if (cartItems.length == 0) {
-      // dispatch(setSupplier(null));
       dispatch(setDeliveryPrice(null));
     }
   }, [cartItems]);
@@ -1041,13 +1122,13 @@ const CartPage: React.FC = () => {
     check && calcTotal()
   }, [sousTotal, giftApplied, appliedBonus, promoReduction, deliveryPrice, discountValue]);
 
-  const goNextStep: MouseEventHandler<HTMLButtonElement> = ((event) => {
+  const goNextStep = () => {
     setCurrentStep(2);
-  });
+  };
 
-  const goPrevStep: MouseEventHandler<HTMLButtonElement> = ((event) => {
-    setCurrentStep(1);
-  });
+  const goPrevStep = () => {
+    setCurrentStep(1)
+  }
 
   const removeItemsWithIndex = (i: number) => {
     dispatch(removeItemWithIndex({ index: i }))
@@ -1060,7 +1141,7 @@ const CartPage: React.FC = () => {
   return (
     <>
       {
-        cartItems.length > 0 && supplier ? (
+        (((cartItems.length > 0) && supplier) || (submitResult != "")) ? (
           <div className="cart-page-container">
             <Container className="cart-page-cont">
 
@@ -1075,462 +1156,453 @@ const CartPage: React.FC = () => {
 
               <Row>
                 <Col>
-                  <main>
-                    <div className={`product-detail-container`}>
-                      {/* {currentStep == 2 && (<button className="btn-back" onClick={goPrevStep}>Retour</button>)} */}
-                      {currentStep == 1 && (<>
-                        <div className="cart-items">
-                          <div className="cart-items__title">
-                            {t('cartPage.yourCart')}
-                          </div>
-                          <div className="cart-items__list">
-                          <div className="supplier-desc-header">
-                            <h1 className="supplier-name">
-                              {supplier.name}
-                            </h1>
-                            <div className="show-all-link-blc">
-                              <a className="show-all-link">
-                                Tout afficher
-                              </a>
-                            </div>
-                          </div>
-                            
-                            {
-                              cartItems.map((item: any, index: number) => {
-                                return (
-                                  <div className="cart-items__list__product" key={index}>
-                                    <ArticleProvider item={item} remove={() => removeItemsWithIndex(index)} />
-                                  </div>
-                                )
-                              })
-                            }
-                          </div>
-                        </div>
-
-                        <div className="commentaire-section">
-                          <label>{t('cartPage.commentaire')}</label>
-                          <textarea name="commentaire" id="commentaire" cols={30} rows={10} value={aComment} onChange={(e) => handleCommentChange(e.target.value)} placeholder="Ex:sandwich"></textarea>
-                        </div>
-
-                        {/* promo start */}
-                        {
-                          selectedOption === 3 && (
-                            <div className="promos-area">
-                              <label>{t('cart.PromosCode')}</label>
-
-                              <div className="promos-wrapper">
-                                <div className="promos-list">
-                                  <ul>
-                                    {
-                                      promosList.length !== 0 && (
-                                        <>
-                                          {
-                                            promosList.map((promo: any, index: number) => {
-                                              return (
-                                                <li>
-                                                  <button key={index} className={(!couponExiste) ? "promo-button" : "promo-button active"} onClick={() => {
-                                                    selectCoupon(promo)
-                                                  }}>
-                                                    {promo.title}
-                                                  </button>
-                                                </li>
-                                              )
-
-                                            })
-                                          }
-                                        </>
-                                      )
-                                    }
-                                  </ul>
-                                </div>
-                                <div className="promo-container">
-                                  <textarea name="code_promo" id="code_promo" placeholder={`${t('cart.PromosCode')}`} value={promo} onChange={(e) => handlePromoChange(e.target.value)} ></textarea>
-                                  <button disabled={!couponExiste || selectedOption != 3} className={(couponExiste && (selectedOption === 3)) ? "button" : "button disabled"} onClick={checkPromoCode}  >{/* //checkPromoCode */}
-                                    {promoApplied ? t('Annuler') : t('cartPage.appliquer')}
-                                  </button>
-                                </div>
-                              </div>
-                            </div>
-                          )
-                        }
-                        {/* promo end */}
-                        {/* gift start */}
-
-                        {
-                          has_gift &&
-                          <>
-                            <div className="promo-container">
-                              <span>{t('repasGratuit')}</span>
-                              <textarea name="code_promo" readOnly id="gift_ammount" placeholder="0" value={`${giftAmmount.toFixed(3)}`} ></textarea>
-                              <button style={{ backgroundColor: `${giftApplied ? "red" : "#3BB3C4"}` }} className={"button"} onClick={() => giftApplied ? clearGift() : applyGift()} >
-                                {giftApplied ? t('Annuler') : t('cartPage.appliquer')}
-                              </button>
-                            </div>
-                            <div className="devider">
-                            </div>
-                          </>
-                        }
-
-                        {/* gift end */}
-                        {/* bonus start */}
-                        {
-                          selectedOption === 3 && (
-                            <div className="bonus-area">
-                              <label>{t('cartPage.bonus')}</label>
-                              <div className="bonus-wrapper">
-                                <div className="promo-container">
-                                  <textarea name="bonus" id="bonus" placeholder={`${t('cartPage.bonus')}`} value={bonus.toFixed(2) + ' pts'}></textarea>
-                                  <button style={{ backgroundColor: `${appliedBonus > 0 ? "red" : '#3BB3C4'}` }} className={((bonus < 5000 || limitReachedBonus) && (selectedOption === 3)) ? "button" : "button disabled"} disabled={(bonus < 5000 || limitReachedBonus) || (selectedOption != 3)} onClick={() => applyBonus()}>
-                                    {appliedBonus > 0 ? t('Annuler') : t('cartPage.appliquer')}
-                                  </button>
-                                </div>
-                                <ul>
-                                  <li>
-                                    <p className="bonus-message">{t('cartPage.bonusMsg')}</p>
-                                  </li>
-                                </ul>
-                              </div>
-                            </div>
-                          )
-                        }
-                        {/* bonus end */}
-                        <div className="buttons">
-                          <button className="cancel">
-                            {t('Annuler')}
-                          </button>
-                          <button className="commander" onClick={goNextStep} >
-                            {t('continuer')}
-                          </button>
-                        </div>
-                      </>)
-                      }
+                  <main className={`${submitResult != "" ? "main-message" : ""}`}>
+                    <div className={`product-detail-container ${submitResult === "" ? "main-message-container" : ""} `} >
                       {
-                        currentStep == 2 && (<div className="card-paiment">
-                          <div className="paiment-container">
-                            <h2 className="title">{t('cartPage.payMode')}</h2>
-                            <div className="method-group">
-                              <div className={`method ${payMode === 1 ? "active" : ""}`}>
-                                <img loading="lazy" className="icon" src={PayCashSVG} alt="My SVG" />
-                                <label htmlFor="espece">{t('cartPage.espece')}</label>
-                                <input className="form-check-input" type="radio" name="pay" id="espece" checked={payMode === 1} onClick={() => setPayMode(1)} />
+                        submitResult === "" ? (
+
+                          <>
+
+                            {currentStep == 1 && (<>
+                              <div className="cart-items">
+                                <div className="cart-items__title">
+                                  {t('cartPage.yourCart')}
+                                </div>
+                                <div className="cart-items__list">
+                                  <h1 className="supplier-name">
+                                    {supplier.name}
+                                  </h1>
+                                  {
+                                    cartItems.map((item: any, index: number) => {
+                                      return (
+                                        <div className="cart-items__list__product" key={index}>
+                                          <ArticleProvider item={item} remove={() => removeItemsWithIndex(index)} />
+                                        </div>
+                                      )
+                                    })
+                                  }
+                                </div>
                               </div>
 
+                              <div className="commentaire-section">
+                                <label>{t('cartPage.commentaire')}</label>
+                                <textarea name="commentaire" id="commentaire" cols={30} rows={10} value={aComment} onChange={(e) => handleCommentChange(e.target.value)} placeholder="Ex:sandwich"></textarea>
+                              </div>
 
+                              <div className="promos-area">
+                                <label>{t('cart.PromosCode')}</label>
+
+                                <div className="promos-wrapper">
+                                  <div className="promos-list">
+                                    <ul>
+                                      {
+                                        promosList.length !== 0 && (
+                                          <>
+                                            {
+                                              promosList.map((promo: any, index: number) => {
+                                                return (
+                                                  <li>
+                                                    <button key={index} className={(!couponExiste) ? "promo-button" : "promo-button active"} onClick={() => {
+                                                      selectCoupon(promo)
+                                                    }}>
+                                                      {promo.title}
+                                                    </button>
+                                                  </li>
+                                                )
+
+                                              })
+                                            }
+                                          </>
+                                        )
+                                      }
+                                    </ul>
+                                  </div>
+                                  <div className="promo-container">
+                                    <textarea name="code_promo" id="code_promo" placeholder={`${t('cart.PromosCode')}`} value={promo} onChange={(e) => handlePromoChange(e.target.value)} ></textarea>
+                                    <button disabled={!couponExiste} className={(couponExiste) ? "button" : "button disabled"} onClick={checkPromoCode}>
+                                      {promoApplied ? t('Annuler') : t('cartPage.appliquer')}
+                                    </button>
+                                  </div>
+                                </div>
+                              </div>
+                              {/* promo end */}
+                              {/* gift start */}
 
                               {
-                                selectedOption === 3 && (
-                                  <div className={`method ${payMode === 2 ? "active" : ""}`}>
-                                    <img loading="lazy" className="cart" src={CartSVG} alt="My SVG" />
-                                    <label htmlFor="bnc-cart">{t('cartPage.bankPay')}</label>
-                                    <input className="form-check-input" type="radio" name="pay" id="bnc-cart" checked={payMode === 2} onClick={() => setPayMode(2)} />
+                                has_gift &&
+                                <>
+                                  <div className="promo-container">
+                                    <span>{t('repasGratuit')}</span>
+                                    <textarea name="code_promo" readOnly id="gift_ammount" placeholder="0" value={`${giftAmmount.toFixed(3)}`} ></textarea>
+                                    <button style={{ backgroundColor: `${giftApplied ? "red" : "#3BB3C4"}` }} className={"button"} onClick={() => giftApplied ? clearGift() : applyGift()}>
+                                      {giftApplied ? t('Annuler') : t('cartPage.appliquer')}
+                                    </button>
                                   </div>
-                                )
+                                  <div className="devider">
+                                  </div>
+                                </>
                               }
-                            </div>
-                          </div>
-
-                          <div className="deliv-details">
-                            <h2 className="title">Détail de livraison</h2>
-                            <div className="deliv-select-group">
-                              <div className={`select ${selectedOption == 1 ? "selected" : ""}`}>
-                                <div className="deliv-details_header">
-                                  <div className="deliv-details_img-blc icon1">
-                                    <img loading="lazy" src={dinnerFurnitureIcn} alt="sur place icon" /* onClick={() => handleOptionChange(1)} */ />
+                              {/* gift end */}
+                              {/* bonus start */}
+                              <div className="bonus-area">
+                                <label>{t('cartPage.bonus')}</label>
+                                <div className="bonus-wrapper">
+                                  <div className="promo-container">
+                                    <textarea name="bonus" id="bonus" placeholder={`${t('cartPage.bonus')}`} value={bonus.toFixed(2) + ' pts'}></textarea>
+                                    <button style={{ backgroundColor: `${appliedBonus > 0 ? "red" : '#3BB3C4'}` }} className={(bonus < 5000 || limitReachedBonus) ? "button disabled" : "button"} disabled={(bonus < 5000 || limitReachedBonus)} onClick={() => applyBonus()}>
+                                      {appliedBonus > 0 ? t('Annuler') : t('cartPage.appliquer')}
+                                    </button>
                                   </div>
-                                  <div className="deliv-details_header-desc">
-                                    <time>20 MIN</time>
-                                    <div className="deliv-type">{t('cartPage.surPalce')}</div>
+                                  <ul>
+                                    <li>
+                                      <p className="bonus-message">{t('cartPage.bonusMsg')}</p>
+                                    </li>
+                                  </ul>
+                                </div>
+                              </div>
+                              {/* bonus end */}
+                              <div className="buttons">
+                                <button className="cancel">
+                                  {t('Annuler')}
+                                </button>
+                                <button className="commander" onClick={goNextStep} >
+                                  {t('continuer')}
+                                </button>
+                              </div>
+                            </>)
+                            }
+                            {
+                              currentStep == 2 && (<div className="card-paiment">
+                                <div className="paiment-container">
+                                  <h2 className="title">{t('cartPage.payMode')}</h2>
+                                  <div className="method-group">
+                                    <div className={`method ${payMode === 1 ? "active" : ""}`}>
+                                      <img loading="lazy" className="icon" src={PayCashSVG} alt="My SVG" />
+                                      <label htmlFor="espece">{t('cartPage.espece')}</label>
+                                      <input className="form-check-input" type="radio" name="pay" id="espece" checked={payMode === 1} onClick={() => setPayMode(1)} />
+                                    </div>
+                                    <div className={`method ${payMode === 2 ? "active" : ""}`}>
+                                      <img loading="lazy" className="cart" src={CartSVG} alt="My SVG" />
+                                      <label htmlFor="bnc-cart">{t('cartPage.bankPay')}</label>
+                                      <input className="form-check-input" type="radio" name="pay" id="bnc-cart" checked={payMode === 2} onClick={() => setPayMode(2)} />
+                                    </div>
                                   </div>
                                 </div>
-                                <p className="deliv-details_description">
-                                  {`${supplier.street},
-                                ${supplier.region}
-                                ,${supplier.city}`}
-                                </p>
-                                <button /* onClick={() => handleOptionChange(1)}*/ className="btn btn-deliv">livrer ici</button>
-                                <input type="radio" value="1" id='domicile' name='type' checked={selectedOption === 1} />
-                              </div>
-                              <div className={`select ${selectedOption == 2 ? "selected" : ""}`}>
-                                <div className="deliv-details_header">
-                                  <div className="deliv-details_img-blc icon2">
-                                    <img loading="lazy" src={bagPaperShoppingIcn} alt="a emporter icon" onClick={() => handleOptionChange(2)} />
-                                  </div>
-                                  <div className="deliv-details_header-desc">
-                                    <time>20 MIN</time>
-                                    <div className="deliv-type">{t('cartPage.emporter')}</div>
-                                  </div>
-                                </div>
-                                <p className="deliv-details_description">
-                                  {`${supplier.street},
-                                  ${supplier.region},
-                                  ${supplier.city}`}
-                                </p>
-                                <button onClick={() => handleOptionChange(2)} className="btn btn-deliv">livrer ici</button>
-                                <input type="radio" value="2" id='travail' name='type' checked={selectedOption === 2} />
-                              </div>
-                              <div className={`select ${selectedOption == 3 ? "selected" : ""}`}>
-                                <div className="deliv-details_header">
-                                  <div className="deliv-details_img-blc icon3">
-                                    <img loading="lazy" src={scooterTransportIcn} alt="Livraison icon" onClick={() => handleOptionChange(3)} />
-                                  </div>
-                                  <div className="deliv-details_header-desc">
-                                    <time>20 MIN</time>
-                                    <div className="deliv-type">{t('cartPage.delivery')}</div>
-                                  </div>
-                                </div>
-                                <p className="deliv-details_description">
-                                  {userPosition?.coords.label}
-                                </p>
-                                <button className="btn btn-deliv" onClick={() => handleOptionChange(3)}>livrer ici</button>
-                                <input type="radio" value="3" id='autre' name='type' checked={selectedOption === 3} />
 
-                              </div>
-                            </div>
-                          </div>
-                          <div className="order-recovery-area">
-                            <h3 className="order-recovery-title">
-                              {t('mismatchModal.selectOption')}
-                            </h3>
+                                <div className="deliv-details">
+                                  <h2 className="title">{t('adress.delivDetails')}</h2>
+                                  <div className="deliv-select-group">
 
-                            <div className="order-recovery-select-blc">
-                              <div className={`order-recovery-select-item ${showTimer ? "" : "active"}`} onClick={() => setShowTimer(false)}>
-                                <span>
-                                  {selectOrderChose}
-                                </span>
-                              </div>
+                                    <div className={`select ${selectedOption == 1 ? "selected" : ""}`}>
+                                      <div className="deliv-details_header">
+                                        <div className="deliv-details_img-blc icon1">
+                                          <img loading="lazy" src={dinnerFurnitureIcn} alt="sur place icon" /* onClick={() => handleOptionChange(1)} */ />
+                                        </div>
+                                        <div className="deliv-details_header-desc">
+                                          <time>20 MIN</time>
+                                          <div className="deliv-type">{t('cartPage.surPalce')}</div>
+                                        </div>
+                                      </div>
+                                      <p className="deliv-details_description">
+                                        {`${supplier.street},
+                              ${supplier.region}
+                              ,${supplier.city}`}
+                                      </p>
+                                      <button /* onClick={() => handleOptionChange(1)}*/ className="btn btn-deliv">livrer ici</button>
+                                      <input type="radio" value="1" id='domicile' name='type' checked={selectedOption === 1} />
+                                    </div>
+                                    <div className={`select ${selectedOption == 2 ? "selected" : ""}`}>
+                                      <div className="deliv-details_header">
+                                        <div className="deliv-details_img-blc icon2">
+                                          <img loading="lazy" src={bagPaperShoppingIcn} alt="a emporter icon" onClick={() => handleOptionChange(2)} />
+                                        </div>
+                                        <div className="deliv-details_header-desc">
+                                          <time>20 MIN</time>
+                                          <div className="deliv-type">{t('cartPage.emporter')}</div>
+                                        </div>
+                                      </div>
+                                      <p className="deliv-details_description">
+                                        {`${supplier.street},
+                                ${supplier.region},
+                                ${supplier.city}`}
+                                      </p>
+                                      <button onClick={() => handleOptionChange(2)} className="btn btn-deliv">livrer ici</button>
+                                      <input type="radio" value="2" id='travail' name='type' checked={selectedOption === 2} />
+                                    </div>
+                                    <div className={`select ${selectedOption == 3 ? "selected" : ""}`}>
+                                      <div className="deliv-details_header">
+                                        <div className="deliv-details_img-blc icon3">
+                                          <img loading="lazy" src={scooterTransportIcn} alt="Livraison icon" onClick={() => handleOptionChange(3)} />
+                                        </div>
+                                        <div className="deliv-details_header-desc">
+                                          <time>20 MIN</time>
+                                          <div className="deliv-type">{t('cartPage.delivery')}</div>
+                                        </div>
+                                      </div>
+                                      <p className="deliv-details_description">
+                                        {userPosition?.coords.label}
+                                      </p>
+                                      <button className="btn btn-deliv" onClick={() => handleOptionChange(3)}>livrer ici</button>
+                                      <input type="radio" value="3" id='autre' name='type' checked={selectedOption === 3} />
 
-                              <div className={`order-recovery-select-item ${!showTimer ? "" : "active"}`} onClick={handleShowTimer}>
-                                <span>
-                                  {
-                                    `
+                                    </div >
+                                  </div>
+
+                                </div >
+                                <div className="order-recovery-area">
+                                  <h3 className="order-recovery-title">
+                                    {t('mismatchModal.selectOption')}
+                                  </h3>
+
+                                  <div className="order-recovery-select-blc">
+                                    <div className={`order-recovery-select-item ${showTimer ? "" : "active"}`} onClick={() => setShowTimer(false)}>
+                                      <span>
+
+                                        {selectOrderChose}
+                                      </span>
+                                    </div>
+
+                                    <div className={`order-recovery-select-item ${!showTimer ? "" : "active"}`} onClick={handleShowTimer}>
+                                      <span>
+                                        {
+                                          `
                                     ${t('mismatchModal.selectOption.option1.Modifier')}
                                     ${t('mismatchModal.selectOption.option1.Planning')}
                                     `
-                                  }
-                                </span>
-                              </div>
-                            </div>
-                          </div>
-                          {
-                            (showTimer) &&
-                            <>
-                              <TimePickerComponent schedules={(schedules && forced_status === "AUTO") ? schedules : null} setSelectedDate={handleSelectedDate} openTime={openTime} closeTime={closeTime} />
-                            </>
-                          }
-                          <div className="deliv-to">
-                            <h3 className="title">{selectedOption === 3 ? t('cartPage.delivto') : t('cartPage.emportePar')}</h3>
-                            <div className="deliv-infos-group">
-                              <div className="info-container">
-                                <label htmlFor="client-name">{t('cartPage.client')} : </label>
-                                <input type="text" name="client-name" value={name} placeholder={`${t('cart.clientName')}`} onChange={(e) => setName(e.target.value)} />
-                              </div>
-                              <div className="info-container">
-                                <label htmlFor="client-name">{t('cartPage.phoneNumber2')}</label>
-                                <input type="text" name="" value={phoneNumber} placeholder={`${t('cartPage.phoneNumber')}`} onChange={(e) => setPhoneNumber(e.target.value)} />
-                              </div>
-                            </div>
-                            {
-
-                              selectedOption === 3 && <div className="info-container">
-                                <label htmlFor="client-name">{t('adress.delivAddress')}</label>
-                                <div className="adress">
-                                  <p className="adress-text">
-                                    {userPosition?.coords.label}
-                                  </p>
-                                  <button onClick={() => dispatch({ type: "SET_SHOW", payload: true })} className="btn btn-edit"></button>
+                                        }
+                                      </span>
+                                    </div>
+                                  </div>
                                 </div>
-                              </div>}
-                            <div className="message-validation">
-                              {t('mismatchModal.validationMessageTitle')}
-                            </div>
-                          </div>
+                                {
+                                  (showTimer) &&
+                                  <>
+                                    <TimePickerComponent schedules={(schedules && forced_status === "AUTO") ? schedules : null} setSelectedDate={handleSelectedDate} openTime={openTime} closeTime={closeTime} />
+                                  </>
+                                }
+                                <div className="deliv-to">
+                                  <h3 className="title">{selectedOption === 3 ? t('cartPage.delivto') : t('cartPage.emportePar')}</h3>
+                                  <div className="deliv-infos-group">
+                                    <div className="info-container">
+                                      <label htmlFor="client-name">{t('cartPage.client')} : </label>
+                                      <input type="text" name="client-name" value={name} placeholder={`${t('cart.clientName')}`} onChange={(e) => setName(e.target.value)} />
+                                    </div>
+                                    <div className="info-container">
+                                      <label htmlFor="client-name">{t('cartPage.phoneNumber2')}</label>
+                                      <input type="text" name="" value={phoneNumber} placeholder={`${t('cartPage.phoneNumber')}`} onChange={(e) => setPhoneNumber(e.target.value)} />
+                                    </div>
+                                  </div>
+                                  {
 
-                          <div className="buttons">
-                            <button className="continue" onClick={navigateToHome}>
-                              {t('cartPage.continueAchats')}
-                            </button>
-                            <button disabled={disabled} style={{
-                              opacity: disabled ? 0.5 : 1
-                            }} className="commander"
-                              onClick={() =>
-                                submitOrder(
-                                  cartItems,
-                                  deliveryOption,
-                                  name,
-                                  phoneNumber,
-                                  aComment,
-                                  total,
-                                  appliedBonus,
-                                  dispatch,
-                                  userPosition,
-                                  supplier_id,
-                                  deliveryPrice
-                                )
-                              }
-                            >
-                              {t('cartPage.commander')}
-                            </button>
-                          </div>
-                        </div>
-                        )}
+                                    selectedOption === 3 && <div className="info-container">
+                                      <label htmlFor="client-name">{t('adress.delivAddress')}</label>
+                                      <div className="adress">
+                                        <p className="adress-text">
+                                          {userPosition?.coords.label}
+                                        </p>
+                                        <button onClick={() => dispatch({ type: "SET_SHOW", payload: true })} className="btn btn-edit"></button>
+                                      </div>
+                                    </div>}
+                                  <div className="message-validation">
+                                    {t('mismatchModal.validationMessageTitle')}
+                                  </div>
+                                </div>
 
-                      <div className="message-validation-area d-none">
-                        <h2 className="message-validation-title">
-                          {t('mismatchModal.commandValidate')}
-                        </h2>
-                        <div className="message-validation_img-blc commande-valide"></div>
-                        {/*
+                                <div className="buttons">
+                                  <button className="continue" onClick={navigateToHome}>
+                                    {t('cartPage.continueAchats')}
+                                  </button>
+                                  <button disabled={disabled} style={{
+                                    opacity: disabled ? 0.5 : 1
+                                  }} className="commander"
+                                    onClick={() =>
+                                      submitOrder(
+                                        cartItems,
+                                        deliveryOption,
+                                        name,
+                                        phoneNumber,
+                                        aComment,
+                                        total,
+                                        appliedBonus,
+                                        dispatch,
+                                        userPosition,
+                                        supplier_id,
+                                        deliveryPrice
+                                      )
+                                    }
+                                  >
+                                    {t('cartPage.commander')}
+                                  </button>
+                                </div>
+                              </div >)}
+
+                            <div className="message-validation-area d-none">
+                              <h2 className="message-validation-title">
+                                {t('mismatchModal.commandValidate')}
+                              </h2>
+                              <div className="message-validation_img-blc commande-valide"></div>
+                              {/*
                           .commande-valide
                           .commande-nnvalide
                           .paiement-valide
                           .paiement-nnvalide
                         */}
-                        <div className="message-validation_desc">
-                          <p>
-                            {t('mismatchModal.alerte')}
-                          </p>
-                        </div>
-                        <div className="btns-group">
-                          <button className="btn btn-valid">{t('cart.payment.iCommand')}</button>
-                        </div>
-                      </div>
+                              <div className="message-validation_desc">
+                                <p>
+                                  {t('mismatchModal.alerte')}
+                                </p>
+                              </div>
+                              <div className="btns-group">
+                                <button className="btn btn-valid">{t('cart.payment.iCommand')}</button>
+                              </div>
+                            </div>
 
-                    </div>
+                          </>
+                        ) : (
+                          <ResultMessageComponent type={submitResult} />
+                        )
+                      }
+                    </div >
 
                     {/* 
                       order datails
                     */}
-                    <div className="summair-container">
-                      <h3 className="summair-title">{t('cart.payment.yourCommand')}</h3>
-                      <div className={`info`}>
+                    {
+                      submitResult === "" && (
+                        <div className="summair-container">
+                          <h3 className="summair-title">{t('cartPage.total')}</h3>
+                          <div className={`info`}>
 
-                        <div className="info-customer-area">
-                          <div className="info-customer-title-blc">
-                            <h4 className="info-customer-title">
-                              {selectedOption === 3 ? t('cartPage.delivto') : t('cartPage.emportePar')}
-                            </h4>
-                            <button className="edit-info-customer-link" onClick={goPrevStep} >{t('update')}</button>
-                          </div>
-                          <div className="customer-infos-area">
-                            <div className="customer-info_name">{user ? `${user.firstname} ${user.lastname} ` : t('cartPage.visitor')} </div>
-                            <div className="customer-info_mobile">{t('mobile')} : <span>{phoneNumber ? phoneNumber : ""}</span></div>
-                            <div className="customer-info_adresse">
-                              {userPosition?.coords.label}
+                            <div className="info-customer-area">
+                              <div className="info-customer-title-blc">
+                                <h4 className="info-customer-title">
+                                  {selectedOption === 3 ? t('cartPage.delivto') : t('cartPage.emportePar')}
+                                </h4>
+                                <a className="edit-info-customer-link" onClick={goPrevStep} >{t('update')}</a>
+                              </div>
+                              <div className="customer-infos-area">
+                                <div className="customer-info_name">{user ? `${user.firstname} ${user.lastname} ` : t('cartPage.visitor')} </div>
+                                <div className="customer-info_mobile">{t('mobile')} : <span>{phoneNumber ? phoneNumber : ""}</span></div>
+                                <div className="customer-info_adresse">
+                                  {userPosition?.coords.label}
+                                </div>
+                              </div>
                             </div>
-                          </div>
-                        </div>
 
-                        <div className="payment-method">
-                          <h4 className="payment-method-title">
-                            {t('cartPage.payMode')}
-                          </h4>
-                          <div className="payment-method-status">
-                            <span className={`payment-method-status_txt ${payMode == 1 ? 'cash' : 'card'}`}>
-                              {payMode == 1 ? t('cartPage.espece') : t('cartPage.bankPay')}
-                            </span>
-                          </div>
-                        </div>
-
-                        <div className="calculate-total-price">
-                          <div className="supplier-name-blc">
-                            <div className="supplier-img-blc">
-                              <img src={supplier.images[0].pivot.type === "principal" ? supplier.images[1].path : supplier.images[0].path} alt="Supplier Img" />
+                            <div className="payment-method">
+                              <h4 className="payment-method-title">
+                                {t('cartPage.payMode')}
+                              </h4>
+                              <div className="payment-method-status">
+                                <span className={`payment-method-status_txt ${payMode == 1 ? 'cash' : 'card'}`}>
+                                  {payMode == 1 ? t('cartPage.espece') : t('cartPage.bankPay')}
+                                </span>
+                              </div>
                             </div>
-                            <div className="supplier-title-blc">
-                              <h4 className="supplier-title">{cartItems[0].supplier_data.supplier_name}</h4>
-                              <div className="supplier-adresse">
-                                {supplier.street}, {supplier.city}
+
+                            <div className="calculate-total-price">
+                              <div className="supplier-name-blc">
+                                <div className="supplier-img-blc">
+                                  <img src={supplier.images[0].pivot.type === "principal" ? supplier.images[1].path : supplier.images[0].path} alt="Supplier Img" />
+                                </div>
+                                <div className="supplier-title-blc">
+                                  <h4 className="supplier-title">{cartItems[0].supplier_data.supplier_name}</h4>
+                                  <div className="supplier-adresse">
+                                    {supplier.street}, {supplier.city}
+                                  </div>
+                                </div>
+                              </div>
+                              {
+                                cartItems.map((item: FoodItem, index: number) => {
+                                  return <React.Fragment key={index}>
+                                    <div className="products-count-area">
+                                      <div className="product-id">
+                                        X{item.quantity}
+                                      </div>
+                                      <div className="product-name">
+                                        {item.product.name}
+                                      </div>
+                                      <div className="count-container">
+                                        <input readOnly={true} type="number" name="product-count" id="product-count" value={item.quantity} />
+                                        <div className="count-buttons">
+                                          <button className="btn count-more" onClick={() => handleIncreaseQuantity(item)}  ></button>
+                                          <button className="btn count-less" onClick={() => handleDecreaseQuantity(item)}   ></button>
+                                        </div>
+                                      </div>
+                                      <div className="product-price">
+                                        {item.total.toFixed(2)}DT
+                                      </div>
+                                    </div>
+
+                                  </React.Fragment>
+                                })
+                              }
+                              <div className="devider">
+                              </div>
+                              <div className="price-total-area">
+                                <div className="sous-total">
+                                  <div className="title">{t('profile.commands.sousTotal')}</div>
+                                  <div className="value">{sousTotal ? sousTotal.toFixed(2) : "0.00"} DT</div>
+                                </div>
+                                {
+                                  (payMode == 2 && tax > 0) ?
+                                    <div className="sous-total">
+                                      <div className="title">{t('orderTrackingPage.BankTaxes')}</div>
+                                      <div className="value">{`${tax} DT`}</div>
+                                    </div>
+                                    : <></>
+                                }
+                                {
+                                  (discountValue && discountValue > 0) ?
+                                    <div className="sous-total">
+                                      <div className="title">{t('cart.discount')}</div>
+                                      <div className="value">{discountValue ? (discountValue).toFixed(2) : "0.00"} DT</div>
+                                    </div>
+                                    : <></>
+                                }
+                                {
+                                  (promoReduction && promoReduction > 0) ?
+                                    <div className="sous-total">
+                                      <div className="title">{t('cartPage.Coupon')}</div>
+                                      <div className="value">{promoReduction ? (promoReduction).toFixed(2) : "0.00"} DT</div>
+                                    </div>
+                                    : <></>
+                                }
+                                {
+                                  (appliedBonus && appliedBonus > 0) ?
+                                    <div className="sous-total">
+                                      <div className="title">{t('cartPage.bonus')}</div>
+                                      <div className="value">{appliedBonus ? (appliedBonus / 1000).toFixed(2) : "0.00"} DT</div>
+                                    </div>
+                                    : <></>
+                                }
+                                {
+                                  (giftAmmount && giftAmmount > 0) ?
+                                    <div className="sous-total">
+                                      <div className="title">{t('repasGratuit')}</div>
+                                      <div className="value">{giftAmmount ? (giftAmmount).toFixed(2) : "0.00"} DT</div>
+                                    </div>
+                                    : <></>
+                                }
+                                {
+                                  (deliveryPrice && deliveryPrice > 0) ?
+                                    <div className="sous-total">
+                                      <div className="title">{t('supplier.delivPrice')}</div>
+                                      <div className="value">{Number(deliveryPrice).toFixed(2)} DT</div>
+                                    </div>
+                                    : <></>
+                                }
+                              </div>
+                              <div className="a-payer">
+                                <span className="title">{t('toPay')}</span>
+                                <span className="value">{total.toFixed(2)} DT</span>
                               </div>
                             </div>
                           </div>
-                          {
-                            cartItems.map((item: FoodItem, index: number) => {
-                              return <React.Fragment key={index}>
-                                <div className="products-count-area">
-                                  <div className="product-id">
-                                    X{item.quantity}
-                                  </div>
-                                  <div className="product-name">
-                                    {item.product.name}
-                                  </div>
-                                  <div className="count-container">
-                                    <input readOnly={true} type="number" name="product-count" id="product-count" value={item.quantity} />
-                                    <div className="count-buttons">
-                                      <button className="btn count-more" onClick={() => handleIncreaseQuantity(item)}  ></button>
-                                      <button className="btn count-less" onClick={() => handleDecreaseQuantity(item)}   ></button>
-                                    </div>
-                                  </div>
-                                  <div className="product-price">
-                                    {item.total.toFixed(2)}DT
-                                  </div>
-                                </div>
-
-                              </React.Fragment>
-                            })
-                          }
-                          <div className="devider">
-                          </div>
-                          <div className="price-total-area">
-                            <div className="sous-total">
-                              <div className="title">{t('profile.commands.sousTotal')}</div>
-                              <div className="value">{sousTotal ? sousTotal.toFixed(2) : "0.00"} DT</div>
-                            </div>
-                            {
-                              (payMode == 2 && tax > 0) ?
-                                <div className="sous-total">
-                                  <div className="title">{t('orderTrackingPage.BankTaxes')}</div>
-                                  <div className="value">{`${tax} DT`}</div>
-                                </div>
-                                : <></>
-                            }
-                            {
-                              (discountValue && discountValue > 0) ?
-                                <div className="sous-total">
-                                  <div className="title">{t('cart.discount')}</div>
-                                  <div className="value">{discountValue ? (discountValue).toFixed(2) : "0.00"} DT</div>
-                                </div>
-                                : <></>
-                            }
-                            {
-                              (promoReduction && promoReduction > 0) ?
-                                <div className="sous-total">
-                                  <div className="title">{t('cartPage.Coupon')}</div>
-                                  <div className="value">{promoReduction ? (promoReduction).toFixed(2) : "0.00"} DT</div>
-                                </div>
-                                : <></>
-                            }
-                            {
-                              (appliedBonus && appliedBonus > 0) ?
-                                <div className="sous-total">
-                                  <div className="title">{t('cartPage.bonus')}</div>
-                                  <div className="value">{appliedBonus ? (appliedBonus / 1000).toFixed(2) : "0.00"} DT</div>
-                                </div>
-                                : <></>
-                            }
-                            {
-                              (giftAmmount && giftAmmount > 0) ?
-                                <div className="sous-total">
-                                  <div className="title">{t('repasGratuit')}</div>
-                                  <div className="value">{giftAmmount ? (giftAmmount).toFixed(2) : "0.00"} DT</div>
-                                </div>
-                                : <></>
-                            }
-                            {
-                              (deliveryPrice && selectedOption === 3 && deliveryPrice > 0) ?
-                                <div className="sous-total">
-                                  <div className="title">{t('supplier.delivPrice')}</div>
-                                  <div className="value">{Number(deliveryPrice).toFixed(2)} DT</div>
-                                </div>
-                                : <></>
-                            }
-                          </div>
-                          <div className="a-payer">
-                            <span className="title">Total</span>
-                            <span className="value">{total.toFixed(2)} DT</span>
-                          </div>
                         </div>
-                      </div>
-                    </div>
+
+                      )
+                    }
 
                     {/* 
                        messsanger 
@@ -1556,12 +1628,6 @@ const CartPage: React.FC = () => {
                 minCostError && <MinCostError close={handleMinCostModal} />
               }
             </Container>
-            {
-              showPopup && (
-
-                <PaymentPopup close={handlePopup} type={popupType} />
-              )
-            }
             {
               showServicePopup && (
                 <WarnPopup message={t('searchPage.warnServiceMessage')} closeButtonText={t('continuer')} confirmButtonText={t('Modal.finishCommand.dropOldCommand')} close={handleServicePopup} accept={dropOrder} />
@@ -1590,12 +1656,6 @@ const CartPage: React.FC = () => {
                   </button>
                 </div>
               </Col>
-              {
-                showPopup && (
-
-                  <PaymentPopup close={handlePopup} type={popupType} />
-                )
-              }
             </Row>
 
 

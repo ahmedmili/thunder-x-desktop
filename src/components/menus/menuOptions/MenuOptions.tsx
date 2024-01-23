@@ -29,6 +29,7 @@ import MessangerBtnIcon from '../../../assets/profile/Discuter/messanger-btn.svg
 import { AppProps } from '../../../services/types';
 import Messanger from '../../Popups/Messanger/Messanger';
 import SameSupplierWarn from '../../Popups/SameSupplierWarn/SameSupplierWarn';
+import { stubTrue } from 'lodash';
 // Define the initial state
 const initialState = {
     optionslist: [],
@@ -707,7 +708,7 @@ function MenuOptions({ initialData }: AppProps) {
                                             </p>
                                         </li>
                                         <li>
-                                            <p className={`supplier-infos_list-item time-work`}>  {isOpen ? `${t('supplier.opentime')} ${closeTime}` : `${t('closed')}`}</p>
+                                            <p className={`supplier-infos_list-item time-work ${isOpen ? 'open' : 'close'}`}>  {isOpen ? `${t('supplier.opentime')} ${closeTime}` : `${t('closed')}`}</p>
                                         </li>
                                         <li>
                                             <p className="supplier-infos_list-item shipping-cost">{t('supplier.delivPrice')}: {productSupplier?.delivery_price} Dt</p>
@@ -767,7 +768,7 @@ function MenuOptions({ initialData }: AppProps) {
                                                                 {state[Object.keys(options)[0]].map((option: any, index: number) => (
                                                                     <div key={index} className="options-list">
                                                                         <div className="checkBox">
-                                                                            <input type='checkbox' name={option.id} id={option.id} value={option.id || ''} onChange={(e) => selectOption(Object.keys(options)[0], index, e)} checked={option?.checked}>
+                                                                            <input type='checkbox' name={option.id} id={option.id} disabled={productSupplier.forced_status == 'CLOSE'} value={option.id || ''} onChange={(e) => selectOption(Object.keys(options)[0], index, e)} checked={option?.checked}>
                                                                             </input>
                                                                             <label htmlFor={option.id} className="custom-checkbox"></label>
                                                                             <label htmlFor={option.id}>{option.name} </label>
@@ -783,24 +784,25 @@ function MenuOptions({ initialData }: AppProps) {
 
 
                                     </div >
-
-
-                                    <div className="buttons btns-group">
-                                        <div className="count-container">
-                                            <input type="number" name="product-count" id="product-count" value={productCount} onChange={(e) => { (parseInt(e.target.value) >= 1) && setProductCount(parseInt(e.target.value)) }} />
-                                            <div className="count-buttons">
-                                                <button className="btn counter-more" onClick={() => handleCount("add")} ></button>
-                                                <button className="btn counter-minus" onClick={() => handleCount("remove")} ></button>
+                                    {
+                                    productSupplier.forced_status != 'CLOSE' ? 
+                                        (<div className="buttons btns-group">
+                                            <div className="count-container">
+                                                <input type="number" name="product-count" id="product-count" value={productCount} onChange={(e) => { (parseInt(e.target.value) >= 1) && setProductCount(parseInt(e.target.value)) }} />
+                                                <div className="count-buttons">
+                                                    <button className="btn counter-more" onClick={() => handleCount("add")} ></button>
+                                                    <button className="btn counter-minus" onClick={() => handleCount("remove")} ></button>
+                                                </div>
                                             </div>
-                                        </div>
 
-                                        <button className="add-to-cart-button" onClick={() => {
-                                            addToCart()
-                                        }}>
-                                            {t('add_to_cart')}
-                                        </button>
+                                            <button className="add-to-cart-button" onClick={() => {
+                                                addToCart()
+                                            }}>
+                                                {t('add_to_cart')}
+                                            </button>
 
-                                    </div>
+                                    </div>)
+                                    : ''}
                                 </div>
                             </div>
                             <div className="menu-container">
