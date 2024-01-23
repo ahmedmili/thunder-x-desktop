@@ -320,7 +320,6 @@
   "adress.savedAdress": "Lieux enregistré",
   "adress.EmptysavedAdress": "Aucun emplacement enregistré",
   "adress.delivDetails": "Détail de livraison",
-
   "adress.currentPos": "Position actuelle",
   "adress.add": "Ajouter un adress de livraison",
   "adress.takeAdressFromCart": "Indique votre adress sur la carte",
@@ -381,29 +380,29 @@
   "mobile.menu.download_button": "Télécharger l'application",
   "mobile.menu.web_button": "Continuer sur le web",
   "mobile.": "Mobile",
-  "calendar":{
+  "calendar": {
     "days": {
-      "Su" :"Dim",
+      "Su": "Dim",
       "Mo": "Lun",
-      "Tu":"Mar",
+      "Tu": "Mar",
       "We": "Mer",
-      "Th":"Jeu",
-      "Fr":"Ven",
-      "Sa" :"Sam"
+      "Th": "Jeu",
+      "Fr": "Ven",
+      "Sa": "Sam"
     },
-    "months":{
-      "January" :"Janvier",
-      "February" :"Février",
-      "March" :"Mars",
-      "April":"Avril",
-      "May":"Mai",
+    "months": {
+      "January": "Janvier",
+      "February": "Février",
+      "March": "Mars",
+      "April": "Avril",
+      "May": "Mai",
       "June": "Juin",
-      "July" :"Juillet",
-      "August":"Août",
-      "September":"Septembre",
+      "July": "Juillet",
+      "August": "Août",
+      "September": "Septembre",
       "October": "Octobre",
-      "November":"Novembre",
-      "December":"Décembre"   
+      "November": "Novembre",
+      "December": "Décembre"
     },
     "btnLabel": "Ok"
   },
@@ -415,5 +414,5 @@
   "weekDays.names.Friday": "Vendredi",
   "weekDays.names.Saturday": "Samedi",
   "weekDays.names.Sunday": "Dimanche ",
-  "header.commands":"Suivi de mes commandes"
+  "header.commands": "Suivi de mes commandes"
 }

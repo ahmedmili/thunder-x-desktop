@@ -672,7 +672,7 @@ const CartPage: React.FC = () => {
             const { status, data } = await cartService.createOrder(order);
             if (status === 200) {
 
-              // dropOrder()
+              dropOrder()
               setSubmitResult("command_success")
             } else {
               setSubmitResult('command_not_success')
@@ -1114,7 +1114,7 @@ const CartPage: React.FC = () => {
   return (
     <>
       {
-        cartItems.length > 0 && supplier ? (
+        (((cartItems.length > 0) && supplier) || (submitResult != "")) ? (
           <div className="cart-page-container">
             <Container className="cart-page-cont">
 
@@ -1263,7 +1263,7 @@ const CartPage: React.FC = () => {
                                 </div>
 
                                 <div className="deliv-details">
-                                  <h2 className="title">Détail de livraison</h2>
+                                  <h2 className="title">{t('adress.delivDetails')}</h2>
                                   <div className="deliv-select-group">
 
                                     <div className={`select ${selectedOption == 1 ? "selected" : ""}`}>
