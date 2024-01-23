@@ -296,6 +296,8 @@
   "adress.adressSelected": "العنوان المختار هو: ",
   "adress.savedAdress": "الأماكن المسجلة",
   "adress.EmptysavedAdress": "لا توجد مواقع مسجلة",
+  "adress.delivDetails": "تفاصيل التوصيل",
+
   "adress.noAdress": "لم يتم تسجيل أي عنوان",
   "adress.add": "إضافة عنوان للتوصيل",
   "adress.takeAdressFromCart": "حدد عنوانك على الخريطة",

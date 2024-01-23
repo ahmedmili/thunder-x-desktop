@@ -1263,59 +1263,64 @@ const CartPage: React.FC = () => {
                                 </div>
 
                                 <div className="deliv-details">
-                                  <div className={`select ${selectedOption == 1 ? "selected" : ""}`}>
-                                    <div className="deliv-details_header">
-                                      <div className="deliv-details_img-blc icon1">
-                                        <img loading="lazy" src={dinnerFurnitureIcn} alt="sur place icon" /* onClick={() => handleOptionChange(1)} */ />
+                                  <h2 className="title">Détail de livraison</h2>
+                                  <div className="deliv-select-group">
+
+                                    <div className={`select ${selectedOption == 1 ? "selected" : ""}`}>
+                                      <div className="deliv-details_header">
+                                        <div className="deliv-details_img-blc icon1">
+                                          <img loading="lazy" src={dinnerFurnitureIcn} alt="sur place icon" /* onClick={() => handleOptionChange(1)} */ />
+                                        </div>
+                                        <div className="deliv-details_header-desc">
+                                          <time>20 MIN</time>
+                                          <div className="deliv-type">{t('cartPage.surPalce')}</div>
+                                        </div>
                                       </div>
-                                      <div className="deliv-details_header-desc">
-                                        <time>20 MIN</time>
-                                        <div className="deliv-type">{t('cartPage.surPalce')}</div>
-                                      </div>
-                                    </div>
-                                    <p className="deliv-details_description">
-                                      {`${supplier.street},
+                                      <p className="deliv-details_description">
+                                        {`${supplier.street},
                               ${supplier.region}
                               ,${supplier.city}`}
-                                    </p>
-                                    <button /* onClick={() => handleOptionChange(1)}*/ className="btn btn-deliv">livrer ici</button>
-                                    <input type="radio" value="1" id='domicile' name='type' checked={selectedOption === 1} />
-                                  </div>
-                                  <div className={`select ${selectedOption == 2 ? "selected" : ""}`}>
-                                    <div className="deliv-details_header">
-                                      <div className="deliv-details_img-blc icon2">
-                                        <img loading="lazy" src={bagPaperShoppingIcn} alt="a emporter icon" onClick={() => handleOptionChange(2)} />
-                                      </div>
-                                      <div className="deliv-details_header-desc">
-                                        <time>20 MIN</time>
-                                        <div className="deliv-type">{t('cartPage.emporter')}</div>
-                                      </div>
+                                      </p>
+                                      <button /* onClick={() => handleOptionChange(1)}*/ className="btn btn-deliv">livrer ici</button>
+                                      <input type="radio" value="1" id='domicile' name='type' checked={selectedOption === 1} />
                                     </div>
-                                    <p className="deliv-details_description">
-                                      {`${supplier.street},
+                                    <div className={`select ${selectedOption == 2 ? "selected" : ""}`}>
+                                      <div className="deliv-details_header">
+                                        <div className="deliv-details_img-blc icon2">
+                                          <img loading="lazy" src={bagPaperShoppingIcn} alt="a emporter icon" onClick={() => handleOptionChange(2)} />
+                                        </div>
+                                        <div className="deliv-details_header-desc">
+                                          <time>20 MIN</time>
+                                          <div className="deliv-type">{t('cartPage.emporter')}</div>
+                                        </div>
+                                      </div>
+                                      <p className="deliv-details_description">
+                                        {`${supplier.street},
                                 ${supplier.region},
                                 ${supplier.city}`}
-                                    </p>
-                                    <button onClick={() => handleOptionChange(2)} className="btn btn-deliv">livrer ici</button>
-                                    <input type="radio" value="2" id='travail' name='type' checked={selectedOption === 2} />
-                                  </div>
-                                  <div className={`select ${selectedOption == 3 ? "selected" : ""}`}>
-                                    <div className="deliv-details_header">
-                                      <div className="deliv-details_img-blc icon3">
-                                        <img loading="lazy" src={scooterTransportIcn} alt="Livraison icon" onClick={() => handleOptionChange(3)} />
-                                      </div>
-                                      <div className="deliv-details_header-desc">
-                                        <time>20 MIN</time>
-                                        <div className="deliv-type">{t('cartPage.delivery')}</div>
-                                      </div>
+                                      </p>
+                                      <button onClick={() => handleOptionChange(2)} className="btn btn-deliv">livrer ici</button>
+                                      <input type="radio" value="2" id='travail' name='type' checked={selectedOption === 2} />
                                     </div>
-                                    <p className="deliv-details_description">
-                                      {userPosition?.coords.label}
-                                    </p>
-                                    <button className="btn btn-deliv" onClick={() => handleOptionChange(3)}>livrer ici</button>
-                                    <input type="radio" value="3" id='autre' name='type' checked={selectedOption === 3} />
+                                    <div className={`select ${selectedOption == 3 ? "selected" : ""}`}>
+                                      <div className="deliv-details_header">
+                                        <div className="deliv-details_img-blc icon3">
+                                          <img loading="lazy" src={scooterTransportIcn} alt="Livraison icon" onClick={() => handleOptionChange(3)} />
+                                        </div>
+                                        <div className="deliv-details_header-desc">
+                                          <time>20 MIN</time>
+                                          <div className="deliv-type">{t('cartPage.delivery')}</div>
+                                        </div>
+                                      </div>
+                                      <p className="deliv-details_description">
+                                        {userPosition?.coords.label}
+                                      </p>
+                                      <button className="btn btn-deliv" onClick={() => handleOptionChange(3)}>livrer ici</button>
+                                      <input type="radio" value="3" id='autre' name='type' checked={selectedOption === 3} />
 
-                                  </div >
+                                    </div >
+                                  </div>
+
                                 </div >
                                 <div className="order-recovery-area">
                                   <h3 className="order-recovery-title">

@@ -304,6 +304,8 @@
   "adress.noAdress": "No address has been recorded",
   "adress.savedAdress": "Locations recorded",
   "adress.EmptysavedAdress": "No Locations recorded",
+  "adress.delivDetails": "Delivery details",
+
   "adress.add": "Add a delivery address",
   "adress.currentPos": "Current location",
   "adress.takeAdressFromCart": "Indicate your address on the map",

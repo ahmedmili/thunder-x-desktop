@@ -319,6 +319,7 @@
   "adress.noAdress": "Aucune adresse à été enregistrer",
   "adress.savedAdress": "Lieux enregistré",
   "adress.EmptysavedAdress": "Aucun emplacement enregistré",
+  "adress.delivDetails": "Détail de livraison",
 
   "adress.currentPos": "Position actuelle",
   "adress.add": "Ajouter un adress de livraison",
