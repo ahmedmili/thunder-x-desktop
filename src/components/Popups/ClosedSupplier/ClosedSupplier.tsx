@@ -17,24 +17,15 @@ interface Props {
 const ClosedSupplier: React.FC<Props> = ({ message, confirmButtonText, closeButtonText, close, accept }) => {
 
     const navigate = useNavigate()
-    const handleOutsideClick = () => {
-        close();
-    };
-
     const navigateToHome = () => {
         const currentLocation = localStorageService.getCurrentLocation()
         currentLocation ? navigate('/search') : navigate('/')
-      }
-
+    }
     const defaultAccept = () => {
-        // navigate('/')
         navigateToHome()
     }
     return (
         <>
-            <div className="popup-overlay" onClick={handleOutsideClick}>
-
-            </div>
             <div className="confirm-popup-container">
 
                 <p className="confirm-message">

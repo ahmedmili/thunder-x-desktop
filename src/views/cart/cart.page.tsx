@@ -323,47 +323,47 @@ const CartPage: React.FC = () => {
         selectedDay = "Fri";
         break;
       case 0:
-        selectedDay = "Sun";
-        break;
-    }
-    const dateShedule = schedules?.find((day: any) => day.day == selectedDay)
-    const start: any = dateShedule?.from;
-    const to: any = dateShedule?.to;
-
-    const { hours: openH, minutes: openM } = getHoursAndMinutes(start);
-    const { hours: closeH, minutes: closeM } = getHoursAndMinutes(to);
-    const selectedDate = date
-    const dayMinDateTime = selectedDate.set('hour', openH).set('minute', openM);
-    const dayMaxDateTime = selectedDate.set('hour', closeH).set('minute', closeM).set('second', 59);
-    const now = dayjs();
-    const isToday = selectedDate.isSame(now, 'day');
-    if (isToday) {
-      if (dayMaxDateTime.isAfter(now)) {
-        if (dayMinDateTime.isAfter(now) || dayMinDateTime.isSame(now)) {
-          return `${t('cart.delivPlanedAt')} ${t(`weekDays.names.${(dayMinDateTime).format("dddd")}`)} ${(dayMinDateTime).format("YYYY-MM-DD")} a ${(dayMinDateTime).format("HH:mm")}`
-        }
-        else {
-          return `${t('cart.delivPlanedAt')} ${t(`weekDays.names.${(now).format("dddd")}`)} ${(now).format("YYYY-MM-DD")} a ${(now).format("HH:mm")}`
-        }
+          selectedDay = "Sun";
+          break;            
+      }
+      const dateShedule = schedules?.find((day: any) => day.day == selectedDay) 
+      const start: any = dateShedule?.from;
+      const to : any = dateShedule?.to;
+      
+      const { hours: openH, minutes: openM } = getHoursAndMinutes(start);
+      const { hours: closeH, minutes: closeM } = getHoursAndMinutes(to);
+      const selectedDate = date
+      const dayMinDateTime = selectedDate.set('hour', openH).set('minute', openM);
+      const dayMaxDateTime = selectedDate.set('hour', closeH).set('minute', closeM).set('second', 59);
+      const now = dayjs();
+      const isToday = selectedDate.isSame(now, 'day');
+      if (isToday) {
+          if(dayMaxDateTime.isAfter(now)) {
+              if (dayMinDateTime.isAfter(now) || dayMinDateTime.isSame(now)) {
+                return `${t('cart.delivPlanedAt')} ${t(`weekDays.names.${(dayMinDateTime).format("dddd")}`)} ${(dayMinDateTime).format("DD/MM/YYYY")} a ${(dayMinDateTime).format("HH:mm")}`
+              }
+              else {
+                return `${t('cart.delivPlanedAt')} ${t(`weekDays.names.${(now).format("dddd")}`)} ${(now).format("DD/MM/YYYY")} a ${(now).format("HH:mm")}`
+              }
+          }
+          else {
+              const tomorrow: any = now.add(1, 'day');
+              const currentDate = new Date(tomorrow);
+              const currentDateIndex = currentDate.getDay(); 
+              const dayIndex = findClosestOpenDay(currentDateIndex);
+              if (dayIndex != null) {
+                  const dayDifference = dayIndex - currentDateIndex;
+                  const timeDifference = dayDifference < 0 ? (dayDifference + 7) * 24 * 60 * 60 * 1000 : dayDifference * 24 * 60 * 60 * 1000;
+                  const newDate = new Date(currentDate.getTime() + timeDifference)
+                  formatInitialDate(dayjs(newDate),dayIndex)
+              }  
+          }
+      
       }
       else {
-        const tomorrow: any = now.add(1, 'day');
-        const currentDate = new Date(tomorrow);
-        const currentDateIndex = currentDate.getDay();
-        const dayIndex = findClosestOpenDay(currentDateIndex);
-        if (dayIndex != null) {
-          const dayDifference = dayIndex - currentDateIndex;
-          const timeDifference = dayDifference < 0 ? (dayDifference + 7) * 24 * 60 * 60 * 1000 : dayDifference * 24 * 60 * 60 * 1000;
-          const newDate = new Date(currentDate.getTime() + timeDifference)
-          formatInitialDate(dayjs(newDate), dayIndex)
-        }
-      }
-
-    }
-    else {
-      return `${t('cart.delivPlanedAt')} ${t(`weekDays.names.${(dayMinDateTime).format("dddd")}`)} ${(dayMinDateTime).format("YYYY-MM-DD")} a ${(dayMinDateTime).format("HH:mm")}`
-    }
-  }
+        return `${t('cart.delivPlanedAt')} ${t(`weekDays.names.${(dayMinDateTime).format("dddd")}`)} ${(dayMinDateTime).format("DD/MM/YYYY")} a ${(dayMinDateTime).format("HH:mm")}`
+      }       
+  } 
   function getDisabledDays() {
     let disabledDays: any = []
     schedules?.map((day: any) => {

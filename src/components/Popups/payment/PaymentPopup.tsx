@@ -50,7 +50,7 @@ const PaymentPopup: React.FC<Props> = ({ close, type }) => {
                     // type !== "error" && navigate("/", { replace: true })
                 }
                 }>
-                <CloseIcon className='close-icon'></CloseIcon>
+                    <CloseIcon className='close-icon'></CloseIcon>
                 </button>
                 <p className="title" style={{ color: title_color }}>{popup_title}</p>
                 <img loading="lazy" src={popup_image} alt="echec payment" />

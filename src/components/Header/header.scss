@@ -12,6 +12,18 @@
     z-index: 990;
 }
 
+.header-overlay {
+    @include flex;
+    flex-direction: column;
+    position: fixed;
+    top: 0;
+    left: 0;
+    @include dimensions(100vw, 100vh);
+    // background-color: rgba(0, 0, 0, 0.5);
+    background-color: transparent;
+    z-index: 50;
+}
+
 .headerContainer {
     padding-top: 75px;
 

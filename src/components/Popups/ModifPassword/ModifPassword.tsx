@@ -13,7 +13,6 @@ interface Props {
 }
 
 const ModifPassword: React.FC<Props> = ({ close }) => {
-    const navigate = useNavigate()
 
     const [password, setPassword] = useState<string>("")
     const [Newpassword, setNewPassword] = useState<string>("")
