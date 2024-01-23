@@ -304,6 +304,7 @@
   "adress.noAdress": "No address has been recorded",
   "adress.savedAdress": "Locations recorded",
   "adress.EmptysavedAdress": "No Locations recorded",
+  "adress.delivDetails": "Delivery details",
   "adress.add": "Add a delivery address",
   "adress.currentPos": "Current location",
   "adress.takeAdressFromCart": "Indicate your address on the map",
@@ -319,6 +320,7 @@
   "popup.payment.invalidePayment": "Invalid payment!",
   "popup.payment.validePayment": "Payment validated !",
   "popup.payment.valideCommand": "Order validated!",
+  "popup.payment.NotvalideCommand": "Order not validated !",
   "popup.payment.invalidePayment.msg": "Failed to pay, please try again",
   "popup.payment.validePayment.msg": "You will be alerted when the deliverer arrives near you.",
   "popup.supplier.tryAgain": "this supplier is closed right now , please try again in another time !",
@@ -376,29 +378,29 @@
   "mobile.menu.download_button": "Download the application",
   "mobile.menu.web_button": "Continue on the web",
   "mobile.": "Mobile",
-  "calendar":{
+  "calendar": {
     "days": {
-      "Su" :"Su",
+      "Su": "Su",
       "Mo": "Mo",
-      "Tu":"Mar",
+      "Tu": "Mar",
       "We": "We",
-      "Th":"Th",
-      "Fr":"Fr",
-      "Sa" :"Sa"
+      "Th": "Th",
+      "Fr": "Fr",
+      "Sa": "Sa"
     },
-    "months":{
-      "January" :"January",
-      "February" :"February",
-      "March" :"March",
-      "April":"April",
-      "May":"May",
+    "months": {
+      "January": "January",
+      "February": "February",
+      "March": "March",
+      "April": "April",
+      "May": "May",
       "June": "June",
-      "July" :"July",
-      "August":"August",
-      "September":"September",
+      "July": "July",
+      "August": "August",
+      "September": "September",
       "October": "October",
-      "November":"November",
-      "December":"December"   
+      "November": "November",
+      "December": "December"
     },
     "btnLabel": "Ok"
   },
