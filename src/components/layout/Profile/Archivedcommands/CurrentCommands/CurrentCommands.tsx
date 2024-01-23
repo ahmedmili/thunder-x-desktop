@@ -133,7 +133,7 @@ const Command: React.FC<CommandProps> = ({ removeCommand, data }) => {
                 data.is_delivery === 1 &&
                 <div className='deliv-price'>
                     <span className="text">{t('supplier.delivPrice')}</span>
-                    <span className='price'>{data.coupon.delivery_fixed === 1 ? data.delivery_price : (data.delivery_price - data.total_price_coupon).toFixed(2)} DT</span>
+                    <span className='price'>{Number(data.delivery_price).toFixed(2)} DT</span>
                 </div>
             }
             {/* products discriptions */}
@@ -215,7 +215,7 @@ const Command: React.FC<CommandProps> = ({ removeCommand, data }) => {
 
 }
 
-const CurrentCommands: React.FC<CommandsListProps> = ({ removeCommand, goToPassedCommands, data }) => {
+const CurrentCommands: React.FC<CommandsListProps> = ({ removeCommand, goToPassedCommands, data}) => {
 
     const { t } = useTranslation()
     const [commandData, setCommandData] = useState<any>(data)
@@ -236,25 +236,7 @@ const CurrentCommands: React.FC<CommandsListProps> = ({ removeCommand, goToPasse
     const long = supplier.localisation.long;
     const position = supplier.street + " " + supplier.region + " " + supplier.city
 
-    const id = data.id
-
-    const updateCurrentCommands = async () => {
-        const { status, data } = await commandService.myCommands()
-        const commandsList = data.data
-        const commands = data.success ? commandsList.filter((cmd: any) => {
-            return cmd.id == id
-        }) : [];
-        commands.length && setCommandData(commands[0])
-    }
-
-    useEffect(() => {
-        eventEmitter.on('COMMAND_UPDATED', updateCurrentCommands)
-        eventEmitter.on('COMMAND_ASSIGNED', updateCurrentCommands)
-        return () => {
-            eventEmitter.off('COMMAND_UPDATED', updateCurrentCommands)
-            eventEmitter.off('COMMAND_ASSIGNED', updateCurrentCommands)
-        }
-    }, [])
+    const id = data.id    
 
     const handleProblemPopup = () => {
         setProblemPopup(current => !current)
@@ -277,48 +259,56 @@ const CurrentCommands: React.FC<CommandsListProps> = ({ removeCommand, goToPasse
         }
     }, [take_away_date])
 
-    const getProgressDescription = (cycle: string): { message: string, status: number } => {
+    const getProgressDescription = (cycle: string): { message: string, status: number, color: string } => {
         switch (cycle) {
-            case 'PENDING':
-                return {
-                    message: t('profile.commands.traitement'),
-                    status: 1
-                };
-            case 'VERIFY':
-                return {
-                    message: t('profile.commands.traitement'),
-                    status: 2
-                };
-            case 'AUTHORIZED':
-                return {
-                    message: t('profile.commands.prépaartion'),
-                    status: 3
-                };
-            case 'PRE_ASSIGN_ADMIN':
-                return {
-                    message: t('profile.commands.prépaartion'),
-                    status: 4
-                };
-            case 'PRE_ASSIGN':
-                return {
-                    message: t('profile.commands.prépaartion'),
-                    status: 4
-                };
-            case 'ASSIGNED':
-                return {
-                    message: t('profile.commands.prépaartion'),
-                    status: 5
-                };
-            case 'INPROGRESS':
-                return {
-                    message: t('profile.commands.livraison'),
-                    status: 6
-                };
-            default:
-                return {
-                    message: '',
-                    status: -1
-                };
+        case 'PENDING':
+            return {
+            message: t('profile.commands.acceptation'),
+            status: 1,
+            color:'#E77F76'
+            };
+        case 'VERIFY':
+            return {
+            message: t('profile.commands.acceptation'),
+            status: 2,
+            color:'#E77F76'
+            };
+        case 'AUTHORIZED':
+            return {
+            message: t('profile.commands.prépaartion'),
+            status: 3,
+            color:'#F2C525'
+            };
+        case 'PRE_ASSIGN_ADMIN':
+            return {
+            message: t('profile.commands.prépaartion'),
+            status: 4,
+            color:'#F2C525'
+            };
+        case 'PRE_ASSIGN':
+            return {
+            message: t('profile.commands.prépaartion'),
+            status: 4,
+            color: '#F2C525'
+            };
+        case 'ASSIGNED':
+            return {
+            message: t('profile.commands.prépaartion'),
+            status: 5,
+            color:'#F2C525'
+            };
+        case 'INPROGRESS':
+            return {
+            message: t('profile.commands.livraison'),
+            status: 6,
+            color:'#3BB3C4'
+            };
+        default:
+            return {
+            message: '',
+            status: -1,
+            color:'#E77F76'
+            };
         }
     };
 
@@ -388,7 +378,7 @@ const CurrentCommands: React.FC<CommandsListProps> = ({ removeCommand, goToPasse
                             <button className="btn btn-get-location"></button>
                         </div>
                         <div className='command-info'>
-                            <p className="title">{messsage}</p>
+                            <p className="title" style={{color: getProgressDescription(cycle).color}}>{messsage}</p>
                             {
                                 status <= 2 && <p className="description">{t('profile.commands.sousMessage')}</p>
                             }
