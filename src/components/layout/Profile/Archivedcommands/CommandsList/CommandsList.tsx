@@ -68,6 +68,64 @@ const CommandsList: React.FC<CommandsListProps> = ({ type = "old", goToPassedCom
         type === "old" && data.success && setCommands(commands)
 
     }
+    const getProgressDescription = (cycle: string,is_delivery :any): { message: string, status: number, color: string } => {
+        switch (cycle) {
+        case 'PENDING':
+            return {
+            message: t('profile.commands.acceptation'),
+            status: 1,
+            color:'#E77F76'
+            };
+        case 'VERIFY':
+            return {
+            message: t('profile.commands.acceptation'),
+            status: 2,
+            color:'#E77F76'
+            };
+        case 'AUTHORIZED':
+            return {
+            message: t('profile.commands.prépaartion'),
+            status: 3,
+            color:'#F2C525'
+            };
+        case 'PRE_ASSIGN_ADMIN':
+            return {
+            message: t('profile.commands.prépaartion'),
+            status: 4,
+            color:'#F2C525'
+            };
+        case 'PRE_ASSIGN':
+            return {
+            message: t('profile.commands.prépaartion'),
+            status: 4,
+            color: '#F2C525'
+            };
+        case 'ASSIGNED':
+            return {
+            message: t('profile.commands.prépaartion'),
+            status: 5,
+            color:'#F2C525'
+            };
+        case 'INPROGRESS':
+            return {
+            message: t('profile.commands.livraison'),
+            status: 6,
+            color:'#3BB3C4'
+                };
+        case 'SUCCESS':
+            return {
+            message: is_delivery ? 'Livraison' : 'A emporter',
+            status: 6,
+            color: is_delivery ? '#E77F77' : '#3BB3C4'
+        };
+        default:
+            return {
+            message: '',
+            status: -1,
+            color:'#E77F76'
+            };
+        }
+    };
     const getCurrentCommands = async () => {
         setLoading((current) => current = true)
         setCurrentPage(1)
@@ -121,6 +179,20 @@ const CommandsList: React.FC<CommandsListProps> = ({ type = "old", goToPassedCom
         setCurrentPage(currentPage - 1);
         setSelectedCommand(-1)
     }
+    
+    const handleRefresh = async () => {
+        const { status, data } = await commandService.myCommands()
+        const commands = data.data
+        data.success && setCommands(commands)
+    };
+    useEffect(() => {
+        eventEmitter.on('COMMAND_UPDATED', handleRefresh)
+        eventEmitter.on('COMMAND_ASSIGNED', handleRefresh)
+        return () => {
+            eventEmitter.off('COMMAND_UPDATED', handleRefresh)
+            eventEmitter.off('COMMAND_ASSIGNED', handleRefresh)
+        }
+    }, [])
 
     useEffect(() => {
         handleContent()
@@ -154,7 +226,7 @@ const CommandsList: React.FC<CommandsListProps> = ({ type = "old", goToPassedCom
                                                         Commande N°{command.id}
                                                     </div>
                                                     <div className="command-header_txt">
-                                                        {command.client.name}
+                                                        {command.supplier.name}
                                                     </div>
                                                     <div className="command-header_txt">
                                                         {command.to_adresse}
@@ -162,14 +234,14 @@ const CommandsList: React.FC<CommandsListProps> = ({ type = "old", goToPassedCom
                                                     <div className="command-header_txt">
                                                         {command.created_at}
                                                     </div>
-                                                    <div className="command-status processed">{/* .processed / .preparation / .delivery */}
-                                                        En cours de traitement
+                                                    <div className="command-status processed" style={{backgroundColor: getProgressDescription(command.cycle, command.is_delivery).color}}>{/* .processed / .preparation / .delivery */}
+                                                        { getProgressDescription(command.cycle, command.is_delivery).message}
                                                     </div>
                                                     <KeyboardArrowUpOutlinedIcon className='icon' />
                                                 </div>
                                                 
                                                 {(selectedCommand === index && type === "old") && <div className="command-body"><OldCommands feedbacksList={feedbacksList} data={command} /></div>}
-                                                {(selectedCommand === index && type === "current") && <div className="command-body"><CurrentCommands goToPassedCommands={goToPassedCommands} removeCommand={HandleRemove} data={command} /></div>}
+                                                {(selectedCommand === index && type === "current") && <div className="command-body"><CurrentCommands goToPassedCommands={goToPassedCommands} removeCommand={HandleRemove} data={command}/></div>}
                                             </React.Fragment>
                                         )
                                     })}
