@@ -1574,7 +1574,7 @@ const CartPage: React.FC = () => {
                                   (promoReduction && promoReduction > 0) ?
                                     <div className="sous-total">
                                       <div className="title">{t('cartPage.Coupon')}</div>
-                                      <div className="value">{promoReduction ? (promoReduction).toFixed(2) : "0.00"} DT</div>
+                                      <div className="value">-{promoReduction ? (promoReduction).toFixed(2) : "0.00"} DT</div>
                                     </div>
                                     : <></>
                                 }
@@ -1582,7 +1582,7 @@ const CartPage: React.FC = () => {
                                   (appliedBonus && appliedBonus > 0) ?
                                     <div className="sous-total">
                                       <div className="title">{t('cartPage.bonus')}</div>
-                                      <div className="value">{appliedBonus ? (appliedBonus / 1000).toFixed(2) : "0.00"} DT</div>
+                                      <div className="value">-{appliedBonus ? (appliedBonus / 1000).toFixed(2) : "0.00"} DT</div>
                                     </div>
                                     : <></>
                                 }
