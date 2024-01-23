@@ -36,9 +36,6 @@ const SameSupplierWarn: React.FC<Props> = ({ close }) => {
     return (
 
         <>
-            <div className="popup-overlay" onClick={close}>
-
-            </div>
             <div className="not-same-popup-container">
                 <div onClick={close} className="close-button">X</div>
 

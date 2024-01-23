@@ -398,20 +398,12 @@ const MenuPopup: React.FC<Props> = ({ close, openMissMatch, restaurant }) => {
         setCurrentPage(currentPage - 1);
     }
 
-    // close popup when user click outside the box
-    const handleOutsideClick = () => {
-        close();
-    };
-
     return (
         <Suspense fallback={
             <CircularProgress style={{ alignSelf: "center" }} />
 
         }>
             <>
-                <div className="popup-overlay" onClick={handleOutsideClick}>
-
-                </div>
                 <div className="menu-popup-container">
                     <div className="popup-box">
                         <div className="modal-content-image"

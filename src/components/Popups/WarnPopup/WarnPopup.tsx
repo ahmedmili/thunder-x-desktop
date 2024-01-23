@@ -13,15 +13,11 @@ interface Props {
 }
 
 const WarnPopup: React.FC<Props> = ({ message, confirmButtonText, closeButtonText, close, accept }) => {
-    
-    const handleOutsideClick = () => {
-        close();
-    };
 
     return (
 
         <>
-            <div className="popup-overlay" onClick={handleOutsideClick}>
+            <div className="popup-overlay" >
 
             </div>
             <div className="confirm-popup-container">
