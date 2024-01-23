@@ -109,10 +109,11 @@ function App({ initialData }: AppProps) {
         }
       }
     } else {
-      dispatch({ type: "SET_SHOW", payload: false })
+      // dispatch({ type: "SET_SHOW", payload: false })
     }
 
   }, [location]);
+
   const setLocationFromArray = async (lat: any, lng: any) => {
     let current_location = await LocationService.geoCode(lat, lng);
     dispatch({ type: "SET_LOCATION", payload: current_location })
@@ -303,15 +304,6 @@ function App({ initialData }: AppProps) {
     }
   }, [])
 
-  // Enforce Trailing Slash 
-  // useEffect(() => {
-  //   const { pathname } = navLocation;
-  //   if (!pathname.endsWith('/') && pathname !== '/') {
-  //     navigate(`${pathname}/`, { replace: true });
-  //   }
-  // }, [navLocation, Navigate]);
-
-
   return (
     <>
       <CssBaseline />
@@ -378,7 +370,6 @@ const ProtectedRoute = ({ children }: { children: React.ReactNode }) => {
   const passable = !(!token || !user);
 
   if (!passable) {
-    // return <Navigate to="/unauthorized" replace />;
     return <Navigate to="/login" replace />;
   }
   return children ? <>{children}</> : <Outlet />;

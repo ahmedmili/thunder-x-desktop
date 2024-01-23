@@ -161,25 +161,25 @@ const Header = () => {
         return {
           message: t('profile.commands.acceptation'),
           status: 1,
-          color:'#E77F76'
+          color: '#E77F76'
         };
       case 'VERIFY':
         return {
           message: t('profile.commands.acceptation'),
           status: 2,
-          color:'#E77F76'
+          color: '#E77F76'
         };
       case 'AUTHORIZED':
         return {
           message: t('profile.commands.prépaartion'),
           status: 3,
-          color:'#F2C525'
+          color: '#F2C525'
         };
       case 'PRE_ASSIGN_ADMIN':
         return {
           message: t('profile.commands.prépaartion'),
           status: 4,
-          color:'#F2C525'
+          color: '#F2C525'
         };
       case 'PRE_ASSIGN':
         return {
@@ -191,19 +191,19 @@ const Header = () => {
         return {
           message: t('profile.commands.prépaartion'),
           status: 5,
-          color:'#F2C525'
+          color: '#F2C525'
         };
       case 'INPROGRESS':
         return {
           message: t('profile.commands.livraison'),
           status: 6,
-          color:'#3BB3C4'
+          color: '#3BB3C4'
         };
       default:
         return {
           message: '',
           status: -1,
-          color:'#E77F76'
+          color: '#E77F76'
         };
     }
   };
@@ -233,7 +233,7 @@ const Header = () => {
   }
   return (
     <>
-      {(showCart || showProfile || showMapState || orderTracking ) && (
+      {(showCart || showProfile || showMapState || orderTracking) && (
         <div className="header-overlay" onClick={HideAll}>
         </div>)
       }
@@ -321,13 +321,6 @@ const Header = () => {
                     }
                     <Box className="headerLocalisationMessageContainer" onClick={() => dispatch({ type: "SET_SHOW", payload: true })} >
                       <p >
-                        {/*
-                          <span className="localisationIcon" >
-                          </span>
-                        */}
-                        {/* {location
-                          ? location.coords.label
-                          : t('entrezAdress')} */}
                         {t('entrezAdress')}
                       </p>
                     </Box>
@@ -344,8 +337,6 @@ const Header = () => {
                   <div className="imageBuilder"></div>
                 </Col>
               </Row>
-
-              {/*  Thunder logo section  */}
 
             </Container>
 
@@ -374,7 +365,6 @@ const Header = () => {
                 </div>
 
                 <button onClick={handleUserCart} className={`account ${!logged_in && 'loggedin-account'}`}  >
-                  {/* <PermIdentityOutlinedIcon className='account-icon' /> */}
                   <span className='account-icon'></span>
                 </button>
 
@@ -388,7 +378,6 @@ const Header = () => {
                 </div>
 
                 <button onClick={handleCart} className="cart-item">
-                  {/* <ShoppingCartOutlinedIcon className='cart-icon' /> */}
                   <span className='cart-icon'></span>
                   {cartItems.length}
                 </button>
@@ -404,25 +393,6 @@ const Header = () => {
                               <button className="close" onClick={closeOrderTrackingToggle}></button>
                             </div>
                             <div className="order-tracking_body">
-                              {/* <div className="being-processed-area">
-                              <div className="being-processed_desc">
-                                  <h4>{getProgressDescription(commands[0].cycle).message}</h4>
-                                  {
-                                    getProgressDescription(commands[0].cycle).status <= 2 && <p>{t('profile.commands.sousMessage')}</p>
-                                  }
-                                  {
-                                    getProgressDescription(commands[0].cycle).status > 2 && getProgressDescription(commands[0].cycle).status < 6 && !commands[0].isReady && <p>{t('profile.commands.sousMessage2')}</p>
-                                  }
-                                  {
-                                    getProgressDescription(commands[0].cycle).status == 6 && commands[0].is_delivery && commands[0].isReady ? <p>{t('profile.commands.sousMessage3')}</p> : !commands[0].is_delivery && commands[0].isReady ? <p className="description">{t('orderTrackingPage.importedReady')}</p> : <></>
-                                  }
-                              </div>
-                              <div className="being-processed_steps-area">
-                                <div className="step-item active"></div>
-                                <div className="step-item"></div>
-                                <div className="step-item"></div>
-                              </div>
-                            </div> */}
                               <div className="processing-status-area" onClick={goCommandsPage}>
                                 {(getProgressDescription(commands[0].cycle).status === 1 || getProgressDescription(commands[0].cycle).status === 2) ? <img loading="lazy" src={traitementA} alt="traitement logo" className='traitement-logo' />
                                   : (getProgressDescription(commands[0].cycle).status <= 5 && getProgressDescription(commands[0].cycle).status > 2) ? <img loading="lazy" src={preparatinA} alt="preparation logo" className='preparation-logo' />
@@ -433,9 +403,8 @@ const Header = () => {
                                       <img loading="lazy" src={(getProgressDescription(commands[0].cycle).status === 6) ? doneA : ''} alt="deliv logo" className='deliv-logo' />
                                     )
                                 }
-                                {/* <div className="status-icn"></div> */}
                                 <div className="processing-status-desc">
-                                  <h4 style={{color: getProgressDescription(commands[0].cycle).color}}>{getProgressDescription(commands[0].cycle).message}</h4>
+                                  <h4 style={{ color: getProgressDescription(commands[0].cycle).color }}>{getProgressDescription(commands[0].cycle).message}</h4>
                                   {
                                     getProgressDescription(commands[0].cycle).status <= 2 && <p>{t('profile.commands.sousMessage')}</p>
                                   }
@@ -581,7 +550,7 @@ const Header = () => {
                                               )
                                           }
                                           <div className="processing-status-desc">
-                                            <h4 style={{color: getProgressDescription(commands[0].cycle).color}}>{getProgressDescription(command.cycle).message}</h4>
+                                            <h4 style={{ color: getProgressDescription(commands[0].cycle).color }}>{getProgressDescription(command.cycle).message}</h4>
                                             {
                                               getProgressDescription(command.cycle).status <= 2 && <p>{t('profile.commands.sousMessage')}</p>
                                             }
