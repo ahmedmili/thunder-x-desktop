@@ -370,12 +370,15 @@ const Menu: React.FC<AppProps> = ({ initialData }) => {
                                     <span className='discount-label'>{product.discount_value} {product.discount_type === "PERCENTAGE" ? "%" : ""} </span> : <></>
                                 }
                               </div>
-                              <button className="product-button"
-                                onClick={() => {
-                                  handleChooseOptions(product);
-                                }}>
-                                <AddIcon className="product-button-icon" />
-                              </button>
+                              {
+                                displayedRestaurant.forced_status != 'CLOSE' ?
+                                (<button className="product-button"
+                                  onClick={() => {
+                                    handleChooseOptions(product);
+                                  }}>
+                                  <AddIcon className="product-button-icon" />
+                                </button>) : ''
+                              }                              
                             </div>
                             <div className="product-image-blc">
                               <img loading="lazy" src={

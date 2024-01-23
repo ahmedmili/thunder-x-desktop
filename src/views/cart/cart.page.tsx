@@ -253,10 +253,10 @@ const CartPage: React.FC = () => {
       if (isToday) {
           if(dayMaxDateTime.isAfter(now)) {
               if (dayMinDateTime.isAfter(now) || dayMinDateTime.isSame(now)) {
-                return `${t('cart.delivPlanedAt')} ${t(`weekDays.names.${(dayMinDateTime).format("dddd")}`)} ${(dayMinDateTime).format("YYYY-MM-DD")} a ${(dayMinDateTime).format("HH:mm")}`
+                return `${t('cart.delivPlanedAt')} ${t(`weekDays.names.${(dayMinDateTime).format("dddd")}`)} ${(dayMinDateTime).format("DD/MM/YYYY")} a ${(dayMinDateTime).format("HH:mm")}`
               }
               else {
-                return `${t('cart.delivPlanedAt')} ${t(`weekDays.names.${(now).format("dddd")}`)} ${(now).format("YYYY-MM-DD")} a ${(now).format("HH:mm")}`
+                return `${t('cart.delivPlanedAt')} ${t(`weekDays.names.${(now).format("dddd")}`)} ${(now).format("DD/MM/YYYY")} a ${(now).format("HH:mm")}`
               }
           }
           else {
@@ -274,7 +274,7 @@ const CartPage: React.FC = () => {
       
       }
       else {
-        return `${t('cart.delivPlanedAt')} ${t(`weekDays.names.${(dayMinDateTime).format("dddd")}`)} ${(dayMinDateTime).format("YYYY-MM-DD")} a ${(dayMinDateTime).format("HH:mm")}`
+        return `${t('cart.delivPlanedAt')} ${t(`weekDays.names.${(dayMinDateTime).format("dddd")}`)} ${(dayMinDateTime).format("DD/MM/YYYY")} a ${(dayMinDateTime).format("HH:mm")}`
       }       
   } 
   function getDisabledDays() {
