@@ -98,7 +98,7 @@ const ConfigPage = () => {
         {
           selectedSetting === 2 &&
           <div className='map-container'>
-            <Map className='profile-config-map' />
+            <Map  configPage className='profile-config-map' />
           </div>
         }
         <SettingSection settingIndex={3} actionListener={handleselect} title={t('profile.mesConfig.modifLong')} className={`${selectedSetting === 3 ? "active" : ""}`} />

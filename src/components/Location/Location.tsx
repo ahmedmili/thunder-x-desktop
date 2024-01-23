@@ -46,18 +46,21 @@ interface AdressComponentProps {
 
 interface MapProps {
   className?: string;
-  forced?: boolean
+  forced?: boolean;
+  configPage?: boolean;
 
 }
 
-const Map: React.FC<MapProps> = ({ className, forced = false }) => {
+const Map: React.FC<MapProps> = ({ className, forced = false, configPage = false }) => {
   const { t } = useTranslation();
   const dispatch = useAppDispatch();
   const [searchType, setSearchType] = useState("");
   const region = useSelector(regionHomeSelector);
 
   const [mapDisabled, setMapState] = useState<boolean>(false);
-
+  useEffect(() => {
+    console.log('configPage : ', configPage)
+  }, [])
   useEffect(() => {
     const disableScroll = (e: any) => {
       e.preventDefault();
@@ -142,34 +145,48 @@ const Map: React.FC<MapProps> = ({ className, forced = false }) => {
           <h1 className="modal-title text-center">{t('adress.add')}</h1>
           <div className="modal-location_wrap">
             <div className='modal-location_wrap-blc'>
-              <div className="form">
-                <div className="adresses_container">
-                  <AutocompleteInput initLocation={true} />
-                </div>
-                <div className="address-notfound-area d-none">
-                  <div className="address-notfound-msg-err">
-                    {t('adress.adressIntrouvable')}
-                  </div>
-                  <div className="address-notfound-content">
-                    <p>{t('AvailabelAt')} :</p>
-                    <div className="btns-group">
-                      <button className="btn btn-adress">Sousse</button>
-                      <button className="btn btn-adress">Monastir</button>
-                      <button className="btn btn-adress">Mahdia</button>
+              {
+                (!configPage) && (
+                  <>
+                    <div className="form">
+                      <div className="adresses_container">
+                        <AutocompleteInput initLocation={true} />
+                      </div>
+                      <div className="address-notfound-area d-none">
+                        <div className="address-notfound-msg-err">
+                          {t('adress.adressIntrouvable')}
+                        </div>
+                        <div className="address-notfound-content">
+                          <p>{t('AvailabelAt')} :</p>
+                          <div className="btns-group">
+                            <button className="btn btn-adress">Sousse</button>
+                            <button className="btn btn-adress">Monastir</button>
+                            <button className="btn btn-adress">Mahdia</button>
+                          </div>
+                        </div>
+                      </div>
                     </div>
-                  </div>
-                </div>
-              </div>
-              <div className="current-position">
-                <label htmlFor="adress-input" className="current-position-title">{t('adress.currentPos')}</label>
-                <div className="current-position_input-blc" onClick={getCurrentPosition}>
-                  <input readOnly className="form-control" name="adress-input" id="adress-input" type="text" placeholder={`${userLocation ? userLocation.coords.label : t('adress.currentPos')} `} />
-                </div>
-              </div>
+
+                    <div className="current-position">
+                      <label htmlFor="adress-input" className="current-position-title">{t('adress.currentPos')}</label>
+                      <div className="current-position_input-blc" onClick={getCurrentPosition}>
+                        <input readOnly className="form-control" name="adress-input" id="adress-input" type="text" placeholder={`${userLocation ? userLocation.coords.label : t('adress.currentPos')} `} />
+                      </div>
+                    </div>
+                  </>
+                )
+              }
+
               {mapDisabled && (
                 <div className='error'>{t('adress.browserLocationAcessRequest')}</div>
               )}
-              <SavedCoordsList id={JSON.parse(userItem!).id} />
+              {
+                (!configPage) && (
+                  <>
+                    <SavedCoordsList id={JSON.parse(userItem!).id} />
+                  </>
+                )
+              }
             </div>
             <div className="select-map-area">
               <button onClick={handleShowMapComponent} className="btn btn-select-map">{t('adress.cartSelect')}</button>
@@ -179,6 +196,15 @@ const Map: React.FC<MapProps> = ({ className, forced = false }) => {
               <div className='modal-location_wrap-blc'>
                 <MapCard cancel={cancel} />
               </div>
+            }
+            {
+              (configPage) && (
+                <>
+                                    <div className='devider'></div>
+
+                <SavedCoordsList id={JSON.parse(userItem!).id} />
+                </>
+              )
             }
           </div>
 
