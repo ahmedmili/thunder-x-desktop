@@ -1,5 +1,6 @@
 import { api } from '../axiosApi';
 
+
 async function createOrder(order: any) {
     try {
         const response = await api.post(
@@ -26,7 +27,6 @@ async function getAllPromoCodes() {
         throw error;
     }
 }
-
 async function getGift(formData: any) {
     try {
         const response = await api.post(

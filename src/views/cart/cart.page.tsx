@@ -1,4 +1,5 @@
 import React, { MouseEventHandler, useEffect, useState } from "react";
+import pointInPolygon from "point-in-polygon";
 import {
   changeItemQuantity,
   clearCart,
@@ -733,8 +734,34 @@ const CartPage: React.FC = () => {
 
   //  get promos list 
   const getPromo = async () => {
-    const { status, data } = await cartService.getAllPromoCodes()
-    setPromosList(data.data)
+    const { status, data } = await cartService.getAllPromoCodes();     
+    const couponList = isInsideRegions(data.data, Number(userPosition?.coords.latitude),Number(userPosition?.coords.longitude));
+    setPromosList(couponList)
+  }
+  function isInsideRegions(coupons: any[], lat: number, lng: number): any[] {
+      return coupons.filter((coupon) => {
+          if (coupon.regionsPromo.length === 0) {
+              return true;
+          }
+          return coupon.regionsPromo.some((region :any) => {
+              const polygonCoordinates = parseCoordinates(region.point);
+              return pointInPolygon([lat, lng], polygonCoordinates);
+          });
+      });
+  }
+  function parseCoordinates(coordinates :any): Array < any > {
+      try {
+          const result = [];
+          for(const coord of coordinates) {
+              if (coord.lat && coord.lng) {
+                  result.push([parseFloat(coord.lat), parseFloat(coord.lng)]);
+              }
+          }
+      return result;
+      } catch(error) {
+          console.error("Error parsing coordinates:", error);
+          return [];
+      }
   }
 
   //  check promo validation
