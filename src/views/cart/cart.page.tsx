@@ -928,9 +928,6 @@ const CartPage: React.FC = () => {
       const initDeliveryPrice = (cartItems.length <= 0) ? 0 : Number(cartItems[0].supplier_data.delivery_price) + (extraDeliveryCost)
       const extraDelivFixed = selectedCoupon.extra_delivery_fixed
       if (extraDelivFixed) setExtraDeliveryCost(0);
-
-      console.log("selectedCoupon", selectedCoupon)
-
       if (selectedCoupon.apply_on === 'DELIVERY') {
         if (selectedCoupon.delivery_fixed != 1) {
           if (selectedCoupon.type === 'percentage') {
@@ -1244,7 +1241,7 @@ const CartPage: React.FC = () => {
                                   </div>
                                   <div className="promo-container">
                                     <textarea name="code_promo" id="code_promo" placeholder={`${t('cart.PromosCode')}`} value={promo} onChange={(e) => handlePromoChange(e.target.value)} ></textarea>
-                                    <button disabled={!couponExiste} className={(couponExiste) ? "button" : "button disabled"} onClick={checkPromoCode}>
+                                    <button style={{ backgroundColor: `${(!couponExiste ||  promoApplied) ? "red" : '#3BB3C4'}` }} disabled={!couponExiste} className={(couponExiste) ? "button" : "button disabled"} onClick={checkPromoCode}>
                                       {promoApplied ? t('Annuler') : t('cartPage.appliquer')}
                                     </button>
                                   </div>
@@ -1274,7 +1271,7 @@ const CartPage: React.FC = () => {
                                 <div className="bonus-wrapper">
                                   <div className="promo-container">
                                     <textarea name="bonus" id="bonus" placeholder={`${t('cartPage.bonus')}`} value={bonus.toFixed(2) + ' pts'}></textarea>
-                                    <button style={{ backgroundColor: `${appliedBonus > 0 ? "red" : '#3BB3C4'}` }} className={(bonus < 5000 || limitReachedBonus) ? "button disabled" : "button"} disabled={(bonus < 5000 || limitReachedBonus)} onClick={() => appliedBonus > 0 ? clearBonus() : applyBonus()}>
+                                    <button style={{ backgroundColor: `${appliedBonus > 0 ? "red" : '#3BB3C4'}` }} className={(bonus < 5000 || limitReachedBonus) ? "button disabled" : "button"} disabled={(appliedBonus <= 0 && (bonus < 5000 || limitReachedBonus))} onClick={() => appliedBonus > 0 ? clearBonus() : applyBonus()}>
                                       {appliedBonus > 0 ? t('Annuler') : t('cartPage.appliquer')}
                                     </button>
                                   </div>
