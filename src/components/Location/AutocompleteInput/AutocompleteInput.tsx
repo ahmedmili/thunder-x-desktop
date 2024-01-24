@@ -37,6 +37,12 @@ const AutocompleteInput: React.FC<AutocompleteInputProps> = ({ initLocation, ret
     const navigate = useNavigate()
     const { t } = useTranslation()
 
+
+    const inRegion = async (formData: any) => {
+        const { status, data } = await LocationService.inRegion(formData)
+        return data.data ? true : false
+    }
+
     const getPosition = () => {
 
         navigator.geolocation.getCurrentPosition(
@@ -44,12 +50,24 @@ const AutocompleteInput: React.FC<AutocompleteInputProps> = ({ initLocation, ret
                 let pos = position.coords
                 const { latitude, longitude } = pos;
                 LocationService.geoCode(latitude, longitude).then(data => {
-                    dispatch({
-                        type: "SET_LOCATION",
-                        payload: {
-                            ...data
-                        },
-                    });
+                    let formData = {
+                        lat: latitude,
+                        long: longitude,
+                    }
+                    inRegion(formData).then((validateRegion) => {
+                        if (validateRegion) {
+                            dispatch({
+                                type: "SET_LOCATION",
+                                payload: {
+                                    ...data
+                                },
+                            });
+                            dispatch({ type: "SHOW_REGION_ERROR", payload: false })
+
+                        } else {
+                            dispatch({ type: "SHOW_REGION_ERROR", payload: true })
+                        }
+                    })
                 });
             },
             (error: GeolocationPositionError) => {
@@ -60,16 +78,24 @@ const AutocompleteInput: React.FC<AutocompleteInputProps> = ({ initLocation, ret
 
     function handleOnClick(suggestion: any) {
         if (initLocation) {
-            dispatch({
-                type: "SET_LOCATION",
-                payload: {
-                    coords: {
-                        latitude: suggestion.position[0].lat,
-                        longitude: suggestion.position[0].long,
-                        label: suggestion.title,
-                    },
-                },
-            });
+            let formData = {
+                lat: suggestion.position[0].lat,
+                long: suggestion.position[0].long,
+            }
+            inRegion(formData).then((validateRegion) => {
+                if (validateRegion) {
+                    dispatch({
+                        type: "SET_LOCATION",
+                        payload: {
+                            coords: {
+                                latitude: formData.lat,
+                                longitude: formData.long,
+                                label: suggestion.title,
+                            },
+                        },
+                    });
+                }
+            })
         } else {
             (returnSuggestions != undefined) && returnSuggestions(suggestion)
         }
@@ -155,7 +181,7 @@ const AutocompleteInput: React.FC<AutocompleteInputProps> = ({ initLocation, ret
                     </ul>
                 )
             }
-            {
+            {/* {
                 !loading && !suggestions.length && location && !region && !isLoading && (
                     <div className="error">
                         {location?.coords.label}, n'est malheureusement pas incluse dans notre
@@ -179,7 +205,7 @@ const AutocompleteInput: React.FC<AutocompleteInputProps> = ({ initLocation, ret
                         </div>
                     </>
                 )
-            }
+            } */}
         </div>
     );
 };

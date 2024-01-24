@@ -354,11 +354,6 @@ const CurrentCommands: React.FC<CommandsListProps> = ({ removeCommand, goToPasse
         }
     }
 
-    useEffect(() => {
-        console.log('supplier :', supplier)
-        console.log('image :   ', supplier.images[0].path)
-    }, [supplier])
-
     return (
         <>
             <div className="current-commands-container">

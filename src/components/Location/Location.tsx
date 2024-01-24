@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { RefObject, useEffect, useRef, useState } from "react";
 import { Container } from "react-bootstrap";
 import { useTranslation } from "react-i18next";
 import { useSelector } from "react-redux";
@@ -7,6 +7,7 @@ import { useAppDispatch, useAppSelector } from '../../Redux/store';
 import { adressService } from "../../services/api/adress.api";
 import "./Location.scss";
 
+import { Badge, Stack } from "react-bootstrap";
 
 import ClearRoundedIcon from "@mui/icons-material/ClearRounded";
 import HomeLocation from '../../assets/home-location.svg';
@@ -52,15 +53,19 @@ interface MapProps {
 }
 
 const Map: React.FC<MapProps> = ({ className, forced = false, configPage = false }) => {
+
+  const top = useRef<HTMLElement | null>(null);
+
+
   const { t } = useTranslation();
   const dispatch = useAppDispatch();
   const [searchType, setSearchType] = useState("");
   const region = useSelector(regionHomeSelector);
+  const current_location: any = useAppSelector((state) => state.location.position);
+  const regions_error: any = useAppSelector((state) => state.location.showRegionError);
 
   const [mapDisabled, setMapState] = useState<boolean>(false);
-  useEffect(() => {
-    console.log('configPage : ', configPage)
-  }, [])
+
   useEffect(() => {
     const disableScroll = (e: any) => {
       e.preventDefault();
@@ -75,7 +80,6 @@ const Map: React.FC<MapProps> = ({ className, forced = false, configPage = false
   const handleMapState = (value: any) => {
     setMapState(value)
   }
-
 
   const userItem = localStorageService.getUser();
 
@@ -107,6 +111,10 @@ const Map: React.FC<MapProps> = ({ className, forced = false, configPage = false
     setShowMapComponent((current) => !current)
   }
 
+  const inRegion = async (formData: any) => {
+    const { status, data } = await LocationService.inRegion(formData)
+    return data.data ? true : false
+  }
   const getCurrentPosition = () => {
     navigator.geolocation.getCurrentPosition(
       (position: Position) => {
@@ -114,12 +122,24 @@ const Map: React.FC<MapProps> = ({ className, forced = false, configPage = false
         let pos = position.coords
         const { latitude, longitude } = pos;
         LocationService.geoCode(latitude, longitude).then(data => {
-          dispatch({
-            type: "SET_LOCATION",
-            payload: {
-              ...data
-            },
-          });
+          let formData = {
+            lat: latitude,
+            long: longitude,
+          }
+          inRegion(formData).then((validateRegion) => {
+            if (validateRegion) {
+              dispatch({
+                type: "SET_LOCATION",
+                payload: {
+                  ...data
+                },
+              });
+              dispatch({ type: "SHOW_REGION_ERROR", payload: false })
+
+            } else {
+              dispatch({ type: "SHOW_REGION_ERROR", payload: true })
+            }
+          })
         });
       },
       (error: GeolocationPositionError) => {
@@ -131,9 +151,16 @@ const Map: React.FC<MapProps> = ({ className, forced = false, configPage = false
     );
   };
 
+  const scrollToTop = () => {
+    if (top.current) {
+      console.log('top', top)
+      top.current.scrollTop = top.current.scrollHeight;
+    }
+  };
+
   return (
     <>
-      <div className={`location-container ${className ? className : ""}`}>
+      <div ref={top as RefObject<HTMLHeadingElement>} className={`location-container ${className ? className : ""}`}>
         <div className="cancel-icon-container">
           <ClearRoundedIcon
             onClick={cancel}
@@ -147,33 +174,48 @@ const Map: React.FC<MapProps> = ({ className, forced = false, configPage = false
             <div className='modal-location_wrap-blc'>
               {
                 (!configPage) && (
-                  <>
-                    <div className="form">
-                      <div className="adresses_container">
-                        <AutocompleteInput initLocation={true} />
-                      </div>
-                      <div className="address-notfound-area d-none">
-                        <div className="address-notfound-msg-err">
-                          {t('adress.adressIntrouvable')}
-                        </div>
-                        <div className="address-notfound-content">
-                          <p>{t('AvailabelAt')} :</p>
-                          <div className="btns-group">
-                            <button className="btn btn-adress">Sousse</button>
-                            <button className="btn btn-adress">Monastir</button>
-                            <button className="btn btn-adress">Mahdia</button>
-                          </div>
-                        </div>
-                      </div>
-                    </div>
 
-                    <div className="current-position">
-                      <label htmlFor="adress-input" className="current-position-title">{t('adress.currentPos')}</label>
-                      <div className="current-position_input-blc" onClick={getCurrentPosition}>
-                        <input readOnly className="form-control" name="adress-input" id="adress-input" type="text" placeholder={`${userLocation ? userLocation.coords.label : t('adress.currentPos')} `} />
-                      </div>
+                  <div className="form">
+                    <div className="adresses_container">
+                      <AutocompleteInput initLocation={true} />
                     </div>
+                  </div>
+
+                )
+              }
+
+              {
+                regions_error &&
+                (
+                  <>
+                    <div className="error">
+                      {current_location?.coords.label}, n'est malheureusement pas incluse dans notre
+                      zone de livraison. Veuillez sélectionner une autre adresse
+                    </div>
+                    <>
+                      <div className="store-img"></div>
+                      <div className="stores-container">
+                        <h2>Disponible à :</h2>
+                        <Stack direction="horizontal" className='dispo-stask' gap={2}>
+                          <Badge pill className="store-badge">Sousse</Badge>
+                          <Badge pill className="store-badge">Monastir</Badge>
+                          <Badge pill className="store-badge">Mahdia</Badge>
+                        </Stack>
+                      </div>
+                    </>
                   </>
+                )
+              }
+              {
+                (!configPage) && (
+
+                  <div className="current-position">
+                    <label htmlFor="adress-input" className="current-position-title">{t('adress.currentPos')}</label>
+                    <div className="current-position_input-blc" onClick={getCurrentPosition}>
+                      <input readOnly className="form-control" name="adress-input" id="adress-input" type="text" placeholder={`${userLocation ? userLocation.coords.label : t('adress.currentPos')} `} />
+                    </div>
+                  </div>
+
                 )
               }
 
@@ -181,7 +223,7 @@ const Map: React.FC<MapProps> = ({ className, forced = false, configPage = false
                 <div className='error'>{t('adress.browserLocationAcessRequest')}</div>
               )}
               {
-                (!configPage) && (
+                (!configPage && userItem) && (
                   <>
                     <SavedCoordsList id={JSON.parse(userItem!).id} />
                   </>
@@ -194,23 +236,23 @@ const Map: React.FC<MapProps> = ({ className, forced = false, configPage = false
             {
               showMapComponent &&
               <div className='modal-location_wrap-blc'>
-                <MapCard cancel={cancel} />
+                <MapCard cancel={cancel} scrollTop={scrollToTop} />
               </div>
             }
             {
               (configPage) && (
                 <>
-                                    <div className='devider'></div>
+                  <div className='devider'></div>
 
-                <SavedCoordsList id={JSON.parse(userItem!).id} />
+                  <SavedCoordsList id={JSON.parse(userItem!).id} />
                 </>
               )
             }
           </div>
 
-        </Container>
+        </Container >
 
-      </div>
+      </div >
     </>
   )
 
@@ -228,17 +270,35 @@ function AdressComponent({
 }: AdressComponentProps) {
   const dispatch = useAppDispatch();
 
+
+  const inRegion = async (formData: any) => {
+    const { status, data } = await LocationService.inRegion(formData)
+    return data.data ? true : false
+  }
+
   const changeAdress = () => {
-    dispatch({
-      type: "SET_LOCATION",
-      payload: {
-        coords: {
-          latitude: lat,
-          longitude: long,
-          label: type,
-        },
-      },
-    });
+    let formData = {
+      lat: lat,
+      long: long,
+    }
+    inRegion(formData).then((validateRegion) => {
+      if (validateRegion) {
+        dispatch({
+          type: "SET_LOCATION",
+          payload: {
+            coords: {
+              latitude: lat,
+              longitude: long,
+              label: type,
+            },
+          },
+        });
+        dispatch({ type: "SHOW_REGION_ERROR", payload: false })
+
+      } else {
+        dispatch({ type: "SHOW_REGION_ERROR", payload: true })
+      }
+    })
   };
 
   const dropAdress = async () => {

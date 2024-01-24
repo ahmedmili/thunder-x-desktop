@@ -50,6 +50,12 @@ export const UserCart: React.FC<CartProps> = ({ firstName = "", lastName = "", c
     logged_in && setDiscuterNotifActive(msg_notifs > 0 ? true : false)
   }, [msg_notifs])
 
+
+  const inRegion = async (formData: any) => {
+    const { status, data } = await LocationService.inRegion(formData)
+    return data.data ? true : false
+  }
+
   return (
     <div className={`profile-cart-main`}>
       {
@@ -175,12 +181,24 @@ export const UserCart: React.FC<CartProps> = ({ firstName = "", lastName = "", c
                       (position: any) => {
                         const { latitude, longitude } = position.coords;
                         LocationService.geoCode(latitude, longitude).then(data => {
-                          dispatch({
-                            type: "SET_LOCATION",
-                            payload: {
-                              ...data
-                            },
-                          });
+                          let formData = {
+                            lat: latitude,
+                            long: longitude,
+                          }
+                          inRegion(formData).then((validateRegion) => {
+                            if (validateRegion) {
+                              dispatch({
+                                type: "SET_LOCATION",
+                                payload: {
+                                  ...data
+                                },
+                              });
+                              dispatch({ type: "SHOW_REGION_ERROR", payload: false })
+
+                            } else {
+                              dispatch({ type: "SHOW_REGION_ERROR", payload: true })
+                            }
+                          })
                         });
                       },
                       (error: GeolocationPositionError) => {

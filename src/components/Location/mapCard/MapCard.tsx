@@ -1,6 +1,6 @@
 
 
-import React, { MouseEventHandler, useEffect, useRef, useState } from 'react';
+import React, { MouseEventHandler, RefObject, useEffect, useRef, useState } from 'react';
 import { useAppDispatch, useAppSelector } from '../../../Redux/store';
 import { LocationService } from '../../../services/api/Location.api';
 import './mapCard.scss';
@@ -8,6 +8,7 @@ import './mapCard.scss';
 import { useTranslation } from 'react-i18next';
 import { localStorageService } from '../../../services/localStorageService';
 import { LocationFormValues } from "../../../utils/formUtils";
+import { scrollToTop } from '../../../utils/utils';
 
 
 import { ErrorMessage, Field, Form, Formik, FormikHelpers } from 'formik';
@@ -25,8 +26,12 @@ type Position = {
         longitude: number;
     };
 };
+interface MapCardProps {
+    cancel: MouseEventHandler<HTMLButtonElement> | undefined;
+    scrollTop?: () => void;
+}
+function MapCard(props: MapCardProps) {
 
-function MapCard(props: { cancel: MouseEventHandler<HTMLButtonElement> | undefined; }) {
     const [primary, setPrimary] = useState<boolean>(false);
     const [selectedOption, setSelectedOption] = useState<number>(1);
     const [selectedPosition, setSelectedPosition] = useState<any>(null);
@@ -56,6 +61,7 @@ function MapCard(props: { cancel: MouseEventHandler<HTMLButtonElement> | undefin
             .typeError("Ce champ doit être un nombre"),
         intitule: Yup.string(),
     });
+
 
     const handleSubmit = async (values: LocationFormValues, { setSubmitting }: FormikHelpers<LocationFormValues>) => {
         setSubmitting(false);
@@ -101,20 +107,36 @@ function MapCard(props: { cancel: MouseEventHandler<HTMLButtonElement> | undefin
         });
     };
 
-    const submitNewCoords = () => {
-        setShowForm(true)
-        if (selectedPosition) {
-            dispatch({
-                type: "SET_LOCATION",
-                payload: {
-                    ...selectedPosition
-                },
-            });
-        }
+
+    const inRegion = async (formData: any) => {
+        const { status, data } = await LocationService.inRegion(formData)
+        return data.data ? true : false
     }
 
-    const handleMapState = (value: any) => {
-        setMapState(value)
+    const submitNewCoords = () => {
+        if (selectedPosition) {
+            let formData = {
+                lat: selectedPosition.coords.latitude,
+                long: selectedPosition.coords.longitude,
+            }
+            inRegion(formData).then((validateRegion) => {
+                if (validateRegion) {
+                    dispatch({
+                        type: "SET_LOCATION",
+                        payload: {
+                            ...selectedPosition
+                        },
+                    });
+                    dispatch({ type: "SHOW_REGION_ERROR", payload: false })
+                    setShowForm(true)
+
+                } else {
+                    // scrollToBottom()
+                    props.scrollTop && props.scrollTop()
+                    dispatch({ type: "SHOW_REGION_ERROR", payload: true })
+                }
+            })
+        }
     }
 
     useEffect(() => {
@@ -253,7 +275,7 @@ function MapCard(props: { cancel: MouseEventHandler<HTMLButtonElement> | undefin
                         </>
                     )}
                     <div className='map-continue-btn'>
-                        {logged_in && !showForm && region && !isLoading && (
+                        {logged_in && !showForm && !isLoading && (
                             <button type="button" className="submit-cart" onClick={submitNewCoords} >
                                 {t("continuer")}
                             </button>
