@@ -145,6 +145,7 @@ const Annonces = () => {
   }
 
   const redAnnonce = async () => {
+    console.log("zzefzef",allAnnoncesData);
     if (allAnnoncesData.length) {
       let list: any = [];
       // extract announces id's
