@@ -674,9 +674,10 @@ const CartPage: React.FC = () => {
           try {
             const { status, data } = await cartService.createOrder(order);
             if (status === 200) {
-
-              dropOrder()
-              setSubmitResult("command_success")
+              console.log('order : ', order)
+              console.log('response : ', data.data)
+              // dropOrder()
+              // setSubmitResult("command_success")
             } else {
               setSubmitResult('command_not_success')
             }
@@ -862,6 +863,7 @@ const CartPage: React.FC = () => {
   //  check promo validation
   const checkPromoCode = async () => {
     if (promoApplied) {
+      getDistance()
       const initDeliveryPrice = cartItems.length <= 0 ? 0 : Number(cartItems[0].supplier_data.delivery_price) + extraDeliveryCost;
 
       // setDelivPrice(initDeliveryPrice)
@@ -925,6 +927,10 @@ const CartPage: React.FC = () => {
     if (Object.keys(selectedCoupon).length > 0) {
       const initDeliveryPrice = (cartItems.length <= 0) ? 0 : Number(cartItems[0].supplier_data.delivery_price) + (extraDeliveryCost)
       const extraDelivFixed = selectedCoupon.extra_delivery_fixed
+      if (extraDelivFixed) setExtraDeliveryCost(0);
+
+      console.log("selectedCoupon", selectedCoupon)
+
       if (selectedCoupon.apply_on === 'DELIVERY') {
         if (selectedCoupon.delivery_fixed != 1) {
           if (selectedCoupon.type === 'percentage') {
@@ -933,10 +939,16 @@ const CartPage: React.FC = () => {
             dispatch(setDeliveryPrice(initDeliveryPrice))
             return 0
           } else if (selectedCoupon.type !== 'percentage') {
-            promoReduction = (deliveryPrice - selectedCoupon.value);
-            setPromoReduction(promoReduction)
-            dispatch(setDeliveryPrice(initDeliveryPrice))
-            return 0
+            if (extraDelivFixed === 0) {
+              setPromoReduction(selectedCoupon.value)
+              dispatch(setDeliveryPrice(initDeliveryPrice - selectedCoupon.value))
+              return 0
+            } else {
+              promoReduction = selectedCoupon.value;
+              setPromoReduction(selectedCoupon.value)
+              dispatch(setDeliveryPrice((Number(cartItems[0].supplier_data.delivery_price) - selectedCoupon.value) + (extraDeliveryCost - selectedCoupon.value) - promoReduction))
+              return 0
+            }
           }
           dispatch(setDeliveryPrice(initDeliveryPrice))
           promoReduction = selectedCoupon.value;
@@ -944,6 +956,7 @@ const CartPage: React.FC = () => {
           return 0
         } else {
           setPromoReduction(0)
+
           extraDelivFixed === 1 ? dispatch(setDeliveryPrice(selectedCoupon.value)) : dispatch(setDeliveryPrice(selectedCoupon.value + extraDeliveryCost))
           return 0
         }
@@ -974,6 +987,7 @@ const CartPage: React.FC = () => {
       setPromoReduction(promoReduction)
       return 0;
     }
+
     promoReduction = 0;
     setPromoReduction(promoReduction)
     return 0;
@@ -1013,7 +1027,7 @@ const CartPage: React.FC = () => {
   const calcTotal = () => {
     const delivPrix = (selectedOption === 3) ? deliveryPrice : 0
     setTotal(
-      ((sousTotal + delivPrix) - ((appliedBonus / 1000) + (giftAmmount) + promoReduction + discount)))
+      ((sousTotal + delivPrix) - ((appliedBonus / 1000) + (giftAmmount) + discount)))
   }
   // get supplier request
   const getSupplierById = async () => {
