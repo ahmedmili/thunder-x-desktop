@@ -326,47 +326,47 @@ const CartPage: React.FC = () => {
         selectedDay = "Fri";
         break;
       case 0:
-          selectedDay = "Sun";
-          break;            
-      }
-      const dateShedule = schedules?.find((day: any) => day.day == selectedDay) 
-      const start: any = dateShedule?.from;
-      const to : any = dateShedule?.to;
-      
-      const { hours: openH, minutes: openM } = getHoursAndMinutes(start);
-      const { hours: closeH, minutes: closeM } = getHoursAndMinutes(to);
-      const selectedDate = date
-      const dayMinDateTime = selectedDate.set('hour', openH).set('minute', openM);
-      const dayMaxDateTime = selectedDate.set('hour', closeH).set('minute', closeM).set('second', 59);
-      const now = dayjs();
-      const isToday = selectedDate.isSame(now, 'day');
-      if (isToday) {
-          if(dayMaxDateTime.isAfter(now)) {
-              if (dayMinDateTime.isAfter(now) || dayMinDateTime.isSame(now)) {
-                return `${t('cart.delivPlanedAt')} ${t(`weekDays.names.${(dayMinDateTime).format("dddd")}`)} ${(dayMinDateTime).format("DD/MM/YYYY")} a ${(dayMinDateTime).format("HH:mm")}`
-              }
-              else {
-                return `${t('cart.delivPlanedAt')} ${t(`weekDays.names.${(now).format("dddd")}`)} ${(now).format("DD/MM/YYYY")} a ${(now).format("HH:mm")}`
-              }
-          }
-          else {
-              const tomorrow: any = now.add(1, 'day');
-              const currentDate = new Date(tomorrow);
-              const currentDateIndex = currentDate.getDay(); 
-              const dayIndex = findClosestOpenDay(currentDateIndex);
-              if (dayIndex != null) {
-                  const dayDifference = dayIndex - currentDateIndex;
-                  const timeDifference = dayDifference < 0 ? (dayDifference + 7) * 24 * 60 * 60 * 1000 : dayDifference * 24 * 60 * 60 * 1000;
-                  const newDate = new Date(currentDate.getTime() + timeDifference)
-                  formatInitialDate(dayjs(newDate),dayIndex)
-              }  
-          }
-      
+        selectedDay = "Sun";
+        break;
+    }
+    const dateShedule = schedules?.find((day: any) => day.day == selectedDay)
+    const start: any = dateShedule?.from;
+    const to: any = dateShedule?.to;
+
+    const { hours: openH, minutes: openM } = getHoursAndMinutes(start);
+    const { hours: closeH, minutes: closeM } = getHoursAndMinutes(to);
+    const selectedDate = date
+    const dayMinDateTime = selectedDate.set('hour', openH).set('minute', openM);
+    const dayMaxDateTime = selectedDate.set('hour', closeH).set('minute', closeM).set('second', 59);
+    const now = dayjs();
+    const isToday = selectedDate.isSame(now, 'day');
+    if (isToday) {
+      if (dayMaxDateTime.isAfter(now)) {
+        if (dayMinDateTime.isAfter(now) || dayMinDateTime.isSame(now)) {
+          return `${t('cart.delivPlanedAt')} ${t(`weekDays.names.${(dayMinDateTime).format("dddd")}`)} ${(dayMinDateTime).format("DD/MM/YYYY")} a ${(dayMinDateTime).format("HH:mm")}`
+        }
+        else {
+          return `${t('cart.delivPlanedAt')} ${t(`weekDays.names.${(now).format("dddd")}`)} ${(now).format("DD/MM/YYYY")} a ${(now).format("HH:mm")}`
+        }
       }
       else {
-        return `${t('cart.delivPlanedAt')} ${t(`weekDays.names.${(dayMinDateTime).format("dddd")}`)} ${(dayMinDateTime).format("DD/MM/YYYY")} a ${(dayMinDateTime).format("HH:mm")}`
-      }       
-  } 
+        const tomorrow: any = now.add(1, 'day');
+        const currentDate = new Date(tomorrow);
+        const currentDateIndex = currentDate.getDay();
+        const dayIndex = findClosestOpenDay(currentDateIndex);
+        if (dayIndex != null) {
+          const dayDifference = dayIndex - currentDateIndex;
+          const timeDifference = dayDifference < 0 ? (dayDifference + 7) * 24 * 60 * 60 * 1000 : dayDifference * 24 * 60 * 60 * 1000;
+          const newDate = new Date(currentDate.getTime() + timeDifference)
+          formatInitialDate(dayjs(newDate), dayIndex)
+        }
+      }
+
+    }
+    else {
+      return `${t('cart.delivPlanedAt')} ${t(`weekDays.names.${(dayMinDateTime).format("dddd")}`)} ${(dayMinDateTime).format("DD/MM/YYYY")} a ${(dayMinDateTime).format("HH:mm")}`
+    }
+  }
   function getDisabledDays() {
     let disabledDays: any = []
     schedules?.map((day: any) => {
@@ -789,7 +789,7 @@ const CartPage: React.FC = () => {
   }
 
   // calc bonus
-  const applyBonus = () => {    
+  const applyBonus = () => {
     let sum = 0;
     if (giftApplied) {
       sum = sousTotal - giftAmmount;
@@ -829,34 +829,34 @@ const CartPage: React.FC = () => {
 
   //  get promos list 
   const getPromo = async () => {
-    const { status, data } = await cartService.getAllPromoCodes();     
-    const couponList = isInsideRegions(data.data, Number(userPosition?.coords.latitude),Number(userPosition?.coords.longitude));
+    const { status, data } = await cartService.getAllPromoCodes();
+    const couponList = isInsideRegions(data.data, Number(userPosition?.coords.latitude), Number(userPosition?.coords.longitude));
     setPromosList(couponList)
   }
   function isInsideRegions(coupons: any[], lat: number, lng: number): any[] {
-      return coupons.filter((coupon) => {
-          if (coupon.regionsPromo.length === 0) {
-              return true;
-          }
-          return coupon.regionsPromo.some((region :any) => {
-              const polygonCoordinates = parseCoordinates(region.point);
-              return pointInPolygon([lat, lng], polygonCoordinates);
-          });
-      });
-  }
-  function parseCoordinates(coordinates :any): Array < any > {
-      try {
-          const result = [];
-          for(const coord of coordinates) {
-              if (coord.lat && coord.lng) {
-                  result.push([parseFloat(coord.lat), parseFloat(coord.lng)]);
-              }
-          }
-      return result;
-      } catch(error) {
-          console.error("Error parsing coordinates:", error);
-          return [];
+    return coupons.filter((coupon) => {
+      if (coupon.regionsPromo.length === 0) {
+        return true;
       }
+      return coupon.regionsPromo.some((region: any) => {
+        const polygonCoordinates = parseCoordinates(region.point);
+        return pointInPolygon([lat, lng], polygonCoordinates);
+      });
+    });
+  }
+  function parseCoordinates(coordinates: any): Array<any> {
+    try {
+      const result = [];
+      for (const coord of coordinates) {
+        if (coord.lat && coord.lng) {
+          result.push([parseFloat(coord.lat), parseFloat(coord.lng)]);
+        }
+      }
+      return result;
+    } catch (error) {
+      console.error("Error parsing coordinates:", error);
+      return [];
+    }
   }
 
   //  check promo validation
@@ -1228,7 +1228,15 @@ const CartPage: React.FC = () => {
                                     </ul>
                                   </div>
                                   <div className="promo-container">
-                                    <textarea name="code_promo" id="code_promo" placeholder={`${t('cart.PromosCode')}`} value={promo} onChange={(e) => handlePromoChange(e.target.value)} ></textarea>
+
+                                    <div className="code-promo-wrapper" >
+                                      <input type="text" style={{ 
+                                        backgroundColor: promo.length > 0 ? "#E77F76" : "transparent" ,
+                                        width: `${(promo.length * 1.3)+3}ch`,
+                                        boxSizing: 'border-box',
+                                        }} maxLength={10} className="code-promo-input" name="code_promo" id="code_promo" value={promo.toUpperCase()} placeholder={`${t('cart.PromosCode')}`} onChange={(e) => handlePromoChange(e.target.value)} ></input>
+                                    </div>
+
                                     <button disabled={!couponExiste} className={(couponExiste) ? "button" : "button disabled"} onClick={checkPromoCode}>
                                       {promoApplied ? t('Annuler') : t('cartPage.appliquer')}
                                     </button>
@@ -1259,7 +1267,7 @@ const CartPage: React.FC = () => {
                                 <div className="bonus-wrapper">
                                   <div className="promo-container">
                                     <textarea name="bonus" id="bonus" placeholder={`${t('cartPage.bonus')}`} value={bonus.toFixed(2) + ' pts'}></textarea>
-                                    <button style={{ backgroundColor: `${appliedBonus > 0 ? "red" : '#3BB3C4'}` }} className={(bonus < 5000 || limitReachedBonus) ? "button disabled" : "button"} disabled={(bonus < 5000 || limitReachedBonus)} onClick={() => appliedBonus>0 ? clearBonus() : applyBonus()}>
+                                    <button style={{ backgroundColor: `${appliedBonus > 0 ? "red" : '#3BB3C4'}` }} className={(bonus < 5000 || limitReachedBonus) ? "button disabled" : "button"} disabled={(bonus < 5000 || limitReachedBonus)} onClick={() => appliedBonus > 0 ? clearBonus() : applyBonus()}>
                                       {appliedBonus > 0 ? t('Annuler') : t('cartPage.appliquer')}
                                     </button>
                                   </div>

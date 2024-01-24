@@ -187,25 +187,7 @@
         padding: 30px 0;
         width: 100%;
 
-        textarea {
-          border-radius: 15px;
-          @include border(1px, $color-gray);
-          background-color: $color-white;
-          @include fonts(13px, 13px, $dark_Gray);
-          font-family: 'Poppins-Regular', serif;
-          font-weight: weight(regular);
-          @include dimensions(100%, 43px);
-          padding: 6px 12px;
-          margin: 0;
 
-          &::placeholder {
-            font-style: italic;
-          }
-
-          &:focus {
-            outline: none;
-          }
-        }
 
         label {
           font-family: 'Poppins-SemiBold', serif;
@@ -227,31 +209,64 @@
           }
         }
 
-        .disabled {
-          opacity: 0.5;
+        // input[type='text'] {
+        //   padding: 20px;
+        //   @include dimensions(222px, 43px);
+        //   outline: none;
+        //   border-radius: 55px;
+        //   @include border(1px, $orange_color);
+        //   background: $color-white;
+        //   font-size: 14px;
 
-          &:hover {
-            cursor: default;
-          }
-        }
+        //   &::placeholder {
+        //     color: $orange_color;
+        //     font-family: 'Poppins-Medium', serif;
+        //     font-size: 17px;
+        //     line-height: normal;
+        //     text-align: center;
+        //   }
+        // }
 
-        input[type='text'] {
-          padding: 20px;
-          @include dimensions(222px, 43px);
-          outline: none;
-          border-radius: 55px;
-          @include border(1px, $orange_color);
-          background: $color-white;
-          font-size: 14px;
+        .code-promo-wrapper {
+          border-radius: 15px;
+          @include border(1px, $color-gray);
+          background-color: $color-white;
+          @include fonts(13px, 13px, $dark_Gray);
+          font-family: 'Poppins-Regular', serif;
+          font-weight: weight(regular);
+          @include dimensions(100%, 43px);
+          padding: 6px 12px;
+          margin: 0;
+          // text-align: center;
+          display: flex;
+          justify-content: start;
+          align-items: center;
 
           &::placeholder {
-            color: $orange_color;
-            font-family: 'Poppins-Medium', serif;
-            font-size: 17px;
-            line-height: normal;
-            text-align: center;
+            font-style: italic;
           }
+
+          &:focus {
+            outline: none;
+          }
+
+          .code-promo-input {
+            background-color: #E77F76;
+            border: none;
+            border-radius:25px;
+            min-width: 50px;
+            justify-content: center;
+            align-items: center;
+            padding: 0 15px;
+            color: white;
+            overflow: visible;
+            &:focus {
+              outline: none;
+            }
+          }
+
         }
+
       }
 
       .promos-area {
@@ -491,11 +506,13 @@
         @include fonts(20px, 20px, $color-blue-pelorous);
         margin: 0 0 20px;
       }
+
       .deliv-select-group {
         display: grid;
         grid-template-columns: repeat(3, 1fr);
         grid-gap: 40px;
       }
+
       .select {
         @include border(1px, $light_Gray);
         border-radius: 15px;
@@ -1136,6 +1153,7 @@
       }
     }
   }
+
   .main-message {
     grid-template-columns: 1fr;
 
@@ -2387,6 +2405,6 @@
         }
       }
     }
-    
+
   }
 }
