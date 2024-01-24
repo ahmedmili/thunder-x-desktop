@@ -1243,7 +1243,7 @@ const CartPage: React.FC = () => {
                                   </div>
                                   <div className="promo-container">
                                     <textarea name="code_promo" id="code_promo" placeholder={`${t('cart.PromosCode')}`} value={promo} onChange={(e) => handlePromoChange(e.target.value)} ></textarea>
-                                    <button style={{ backgroundColor: `${(!couponExiste || promoApplied) ? "red" : '#3BB3C4'}` }} disabled={!couponExiste} className={(couponExiste) ? "button" : "button disabled"} onClick={checkPromoCode}>
+                                    <button style={{ backgroundColor: `${(!couponExiste || promoApplied) ? "#E77F77" : '#3BB3C4'}` }} disabled={!couponExiste} className={(couponExiste) ? "button" : "button disabled"} onClick={checkPromoCode}>
                                       {promoApplied ? t('Annuler') : t('cartPage.appliquer')}
                                     </button>
                                   </div>
@@ -1258,7 +1258,7 @@ const CartPage: React.FC = () => {
                                   <div className="promo-container">
                                     <span>{t('repasGratuit')}</span>
                                     <textarea name="code_promo" readOnly id="gift_ammount" placeholder="0" value={`${giftAmmount.toFixed(3)}`} ></textarea>
-                                    <button style={{ backgroundColor: `${giftApplied ? "red" : "#3BB3C4"}` }} className={"button"} onClick={() => giftApplied ? clearGift() : applyGift()}>
+                                    <button style={{ backgroundColor: `${giftApplied ? "#E77F77" : "#3BB3C4"}` }} className={"button"} onClick={() => giftApplied ? clearGift() : applyGift()}>
                                       {giftApplied ? t('Annuler') : t('cartPage.appliquer')}
                                     </button>
                                   </div>
@@ -1273,7 +1273,7 @@ const CartPage: React.FC = () => {
                                 <div className="bonus-wrapper">
                                   <div className="promo-container">
                                     <textarea name="bonus" id="bonus" placeholder={`${t('cartPage.bonus')}`} value={bonus.toFixed(2) + ' pts'}></textarea>
-                                    <button style={{ backgroundColor: `${appliedBonus > 0 ? "red" : '#3BB3C4'}` }} className={(bonus < 5000 || limitReachedBonus) ? "button disabled" : "button"} disabled={(appliedBonus <= 0 && (bonus < 5000 || limitReachedBonus))} onClick={() => appliedBonus > 0 ? clearBonus() : applyBonus()}>
+                                    <button style={{ backgroundColor: `${appliedBonus > 0 ? "#E77F77" : '#3BB3C4'}` }} className={(bonus < 5000 || limitReachedBonus) ? "button disabled" : "button"} disabled={(appliedBonus <= 0 && (bonus < 5000 || limitReachedBonus))} onClick={() => appliedBonus > 0 ? clearBonus() : applyBonus()}>
                                       {appliedBonus > 0 ? t('Annuler') : t('cartPage.appliquer')}
                                     </button>
                                   </div>
