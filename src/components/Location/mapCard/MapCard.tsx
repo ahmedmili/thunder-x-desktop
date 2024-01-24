@@ -148,7 +148,7 @@ function MapCard(props: MapCardProps) {
             var latLng = new google.maps.LatLng({ lat: 35.8288, lng: 10.6401 });
 
             if (selectedPosition || userPosition) {
-                const { latitude, longitude } = selectedPosition ? selectedPosition.coords : userPosition?.coords; ///selectedPosition ? selectedPosition.coords.label : userPosition?.coords.label
+                const { latitude, longitude } = userPosition ? userPosition?.coords : selectedPosition.coords;
                 latLng = new google.maps.LatLng(latitude, longitude);
             }
 

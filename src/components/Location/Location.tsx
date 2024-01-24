@@ -153,7 +153,6 @@ const Map: React.FC<MapProps> = ({ className, forced = false, configPage = false
 
   const scrollToTop = () => {
     if (top.current) {
-      console.log('top', top)
       top.current.scrollTop = top.current.scrollHeight;
     }
   };
