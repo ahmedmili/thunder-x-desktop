@@ -1210,9 +1210,10 @@ const CartPage: React.FC = () => {
                                           <>
                                             {
                                               promosList.map((promo: any, index: number) => {
+                                                console.log('promo',promo)
                                                 return (
                                                   <li>
-                                                    <button key={index} className={(!couponExiste) ? "promo-button" : "promo-button active"} onClick={() => {
+                                                    <button key={index} className={(promo != selectedCoupon) ? "promo-button" : "promo-button active"} onClick={() => {
                                                       selectCoupon(promo)
                                                     }}>
                                                       {promo.title}
