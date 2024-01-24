@@ -1,5 +1,5 @@
-import React, { MouseEventHandler, useEffect, useState } from "react";
 import pointInPolygon from "point-in-polygon";
+import React, { useEffect, useState } from "react";
 import {
   changeItemQuantity,
   clearCart,
@@ -23,7 +23,7 @@ import { RootState, useAppDispatch, useAppSelector } from "../../Redux/store";
 
 import 'react-clock/dist/Clock.css';
 
-import dayjs, { Dayjs } from 'dayjs';
+import dayjs from 'dayjs';
 
 import { useTranslation } from "react-i18next";
 import { useNavigate } from "react-router-dom";
@@ -57,10 +57,9 @@ import Command_vailde from "../../assets/payment/command-success.png";
 import Payment_echec from "../../assets/payment/payment-not-success.png";
 import Payment_valide from "../../assets/payment/payment-success.png";
 
-import "./cart.page.scss";
 import { useDispatch } from "react-redux";
-import { Schedule } from '../../services/types';
 import { getHoursAndMinutes } from '../../utils/utils';
+import "./cart.page.scss";
 
 interface ResultMessageComponentProps {
   type: string
@@ -674,10 +673,8 @@ const CartPage: React.FC = () => {
           try {
             const { status, data } = await cartService.createOrder(order);
             if (status === 200) {
-              console.log('order : ', order)
-              console.log('response : ', data.data)
-              // dropOrder()
-              // setSubmitResult("command_success")
+              dropOrder()
+              setSubmitResult("command_success")
             } else {
               setSubmitResult('command_not_success')
             }
@@ -784,6 +781,7 @@ const CartPage: React.FC = () => {
 
   // clear gift state
   const clearGift = () => {
+    getDistance()
     setGiftAmmount(0)
     setGiftApplied(false)
     setLimitReachedBonus(false)
@@ -825,6 +823,7 @@ const CartPage: React.FC = () => {
     setbonus(initialBonus);
     setBonusApplied(false)
     setLimitReachedBonus(false);
+    getDistance()
   }
 
 
@@ -943,7 +942,10 @@ const CartPage: React.FC = () => {
             } else {
               promoReduction = selectedCoupon.value;
               setPromoReduction(selectedCoupon.value)
-              dispatch(setDeliveryPrice((Number(cartItems[0].supplier_data.delivery_price) - selectedCoupon.value) + (extraDeliveryCost - selectedCoupon.value) - promoReduction))
+              let default_deliv_price = cartItems[0].supplier_data.delivery_price
+              let extra_deliv_price = 0
+              const delivPrice = (default_deliv_price - selectedCoupon.value) + (extra_deliv_price)
+              dispatch(setDeliveryPrice(delivPrice))
               return 0
             }
           }
@@ -1241,7 +1243,7 @@ const CartPage: React.FC = () => {
                                   </div>
                                   <div className="promo-container">
                                     <textarea name="code_promo" id="code_promo" placeholder={`${t('cart.PromosCode')}`} value={promo} onChange={(e) => handlePromoChange(e.target.value)} ></textarea>
-                                    <button style={{ backgroundColor: `${(!couponExiste ||  promoApplied) ? "red" : '#3BB3C4'}` }} disabled={!couponExiste} className={(couponExiste) ? "button" : "button disabled"} onClick={checkPromoCode}>
+                                    <button style={{ backgroundColor: `${(!couponExiste || promoApplied) ? "red" : '#3BB3C4'}` }} disabled={!couponExiste} className={(couponExiste) ? "button" : "button disabled"} onClick={checkPromoCode}>
                                       {promoApplied ? t('Annuler') : t('cartPage.appliquer')}
                                     </button>
                                   </div>
