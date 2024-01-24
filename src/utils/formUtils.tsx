@@ -61,6 +61,9 @@ interface GenerateFormProps {
   resendSMS?: () => void;
   ontoggleShowPassword?: () => void;
   ontoggleShowConfirmPassword?: () => void;
+  emailExist?: boolean;
+  phoneExist?: boolean;
+  clearErrors?: (event:any) => void;
 }
 
 export const generateForm = (props: GenerateFormProps) => {
@@ -85,7 +88,11 @@ export const generateForm = (props: GenerateFormProps) => {
     e.preventDefault
     resendSMS ? resendSMS() : navigate('/forgotpassword/')
   }
-
+  const handleInputChange = (event: any) => {
+    if (props.clearErrors) {
+      props.clearErrors(event.target.name);      
+    }
+  };
   return (
     <Formik
       initialValues={initialValues}
@@ -181,7 +188,7 @@ export const generateForm = (props: GenerateFormProps) => {
                     </a>
                   </div>
                 </div>
-                <div className={styles.codeErrorMessage} >{field.errorsServer}</div>
+                <div className={styles.codeErrorMessage} >{field.errorsServer}</div>                
               </>
             ) : field.type === "checkbox" ? (
               <div key={field.name} style={{ gridColumn: "span 2" }}>
@@ -213,15 +220,32 @@ export const generateForm = (props: GenerateFormProps) => {
                   showPassword={showPassword}
                   showConfirmPassword={showConfirmPassword}
                   ontoggleShowPassword={ontoggleShowPassword}
+                  onInput={handleInputChange}
                   ontoggleShowConfirmPassword={ontoggleShowConfirmPassword}
                 />
-                <ErrorMessage name={field.name} component={CustomError} />
+                  <ErrorMessage name={field.name} component={CustomError} />
                 {field.errorsServer && (
                   <CustomErrorServer
                     icon={<Dash />}
                     message={field.errorsServer}
                   />
                 )}
+                    {
+                      field.name == "email" && props.emailExist && (                        
+                        <CustomErrorServer
+                          icon={<Dash />}
+                          message={t('auth.email.existe')}
+                        />
+                      )
+                    }
+                    {
+                      field.name == "phone" && props.phoneExist && (                        
+                        <CustomErrorServer
+                          icon={<Dash />}
+                          message={t('auth.phone.existe')}
+                        />
+                      )
+                    }
               </div>
             );
           })}

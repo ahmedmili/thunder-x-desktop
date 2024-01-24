@@ -91,6 +91,9 @@
         .buttons {
             @include flex(flex, center, space-between);
             gap: 55px;
+            &--end {
+                @include flex(flex, center, end);
+            }
 
             button {
                 min-width: 316px;
