@@ -45,12 +45,14 @@ export const Cart: React.FC<CartProps> = ({ items, closeButton, type }) => {
 
   var distance: number = 0;
   var extraDeliveryCost = 0;
-  var max_distance: number = 5;
+  // var max_distance: number = 5;
+
 
   const location = useAppSelector(state => state.location.position)
   const userPosition = useAppSelector((state) => state.location.position);
   const deliveryOption = useAppSelector((state: RootState) => state.cart.deliveryOption);
   const supplier = useAppSelector((state: RootState) => state.cart.supplier);
+  var max_distance: number = supplier ? supplier.max_distance :  5;
 
   const dispatch = useAppDispatch();
   const navigate = useNavigate()
