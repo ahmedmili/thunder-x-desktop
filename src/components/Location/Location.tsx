@@ -153,13 +153,19 @@ const Map: React.FC<MapProps> = ({ className, forced = false, configPage = false
 
   const scrollToTop = () => {
     if (top.current) {
-      top.current.scrollTop = top.current.scrollHeight;
+      top.current.scrollTo({
+        top: 0,
+        behavior: 'smooth'
+      });
+      setTimeout(() => {
+        setShowMapComponent(false)
+      }, 200)
     }
   };
 
   return (
     <>
-      <div ref={top as RefObject<HTMLHeadingElement>} className={`location-container ${className ? className : ""}`}>
+      <div className={`location-container ${className ? className : ""}`}>
         <div className="cancel-icon-container">
           <ClearRoundedIcon
             onClick={cancel}
@@ -167,7 +173,7 @@ const Map: React.FC<MapProps> = ({ className, forced = false, configPage = false
           ></ClearRoundedIcon>
         </div>
 
-        <Container className="modal-container modal-location">
+        <Container ref={top as RefObject<HTMLHeadingElement>} className="modal-container modal-location">
           <h1 className="modal-title text-center">{t('adress.add')}</h1>
           <div className="modal-location_wrap">
             <div className='modal-location_wrap-blc'>

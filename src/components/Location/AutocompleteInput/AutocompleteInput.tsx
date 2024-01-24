@@ -181,31 +181,7 @@ const AutocompleteInput: React.FC<AutocompleteInputProps> = ({ initLocation, ret
                     </ul>
                 )
             }
-            {/* {
-                !loading && !suggestions.length && location && !region && !isLoading && (
-                    <div className="error">
-                        {location?.coords.label}, n'est malheureusement pas incluse dans notre
-                        zone de livraison. Veuillez sélectionner une autre adresse
-                    </div>
-                )
-            }
 
-            {
-                location && !region && !isLoading &&
-                (
-                    <>
-                        <div className="store-img"></div>
-                        <div className="stores-container">
-                            <h2>Disponible à :</h2>
-                            <Stack direction="horizontal" className='dispo-stask' gap={2}>
-                                <Badge pill className="store-badge">Sousse</Badge>
-                                <Badge pill className="store-badge">Monastir</Badge>
-                                <Badge pill className="store-badge">Mahdia</Badge>
-                            </Stack>
-                        </div>
-                    </>
-                )
-            } */}
         </div>
     );
 };
