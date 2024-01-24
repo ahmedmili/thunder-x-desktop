@@ -127,7 +127,7 @@ const UpdateAccount: React.FC<updateProps> = ({ showPassword, showPhone }) => {
             <div className="input-container">
               <label htmlFor="password">{t("password")}</label>
               <div className="input">
-                <input readOnly className="update-input" type="password" name="password" placeholder="Entrer ici" />
+                <input readOnly className="update-input" type="password" name="password" placeholder="***********" />
                 <button onClick={showPassword} className='verif' >{t('Verifier')}</button>
               </div>
             </div>
@@ -142,8 +142,8 @@ const UpdateAccount: React.FC<updateProps> = ({ showPassword, showPhone }) => {
             </div>
           </div>
           {!valid && <p className={`error-message ${!valid ? "visible" : ""}`} >{eroorMessage}</p>}
-          <div className="buttons">
-            <button className="annule" type='reset'>{t("Annuler")}</button>
+          <div className="buttons buttons--end">
+            {/* <button className="annule" type='reset'>{t("Annuler")}</button> */}
             <button className="submit" type="submit">{t("Enregistrer")}</button>
           </div>
         </form>
