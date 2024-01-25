@@ -54,6 +54,8 @@ const Header = () => {
   const showNotifCart = useAppSelector((state) => state.cart.openHeaderCart)
   const NotifCartItmes = useAppSelector((state) => state.cart.notifHeaderCart)
   const deliveryOption = useAppSelector((state: RootState) => state.cart.deliveryOption);
+  const [tax, setTax] = useState<number>(0)
+  const [total, setTotal] = useState<number>(0)
 
   const searHandleToggle = () => {
     setSearchVisible(!searchVisible);
@@ -95,7 +97,7 @@ const Header = () => {
 
   useEffect(() => {
     if (logged_in) {
-      getCurrentCommands();      
+      getCurrentCommands();
     }
     if (typeof window != 'undefined') {
       window.addEventListener('scroll', handleScroll);
@@ -233,6 +235,38 @@ const Header = () => {
     showMapState && dispatch(handleCartState(false));
     orderTracking && setOrderTracking(false);
   }
+
+  const calculSomme = (products: any) => {
+    const totalCost = products.reduce((accumulator: any, currentItem: any) => {
+      let itemCost: any;
+      if (currentItem.computed_value.discount_value > 0) {
+        const discountPrice = (currentItem.price * currentItem.computed_value.discount_value) / 100;
+        itemCost = (currentItem.price - discountPrice) * currentItem.quantity;
+      } else {
+        itemCost = currentItem.price * currentItem.quantity;
+      }
+      return accumulator + itemCost;
+    }, 0);
+    return totalCost;
+  }
+
+  const calculTax = (command: any) => {
+    const totalPrice = parseFloat(command?.total_price);
+    const totalProducts = calculSomme(command?.products);
+    const deliveryPrice = parseFloat(command.delivery_price);
+    const bonus = command.bonus > 0 ? (command.bonus / 1000) : 0;
+    const gift = command.gift_ammount > 0 ? command.gift_ammount : 0;
+    const tax = (totalPrice + bonus + gift) - (totalProducts + deliveryPrice);
+    return tax;
+  }
+
+  useEffect(() => {
+    if (commands && commands.length) {
+      const tax = calculTax(commands[0])
+      setTax(tax)
+    }
+  }, [total, commands])
+
   return (
     <>
       {(showCart || showProfile || showMapState || orderTracking) && (
@@ -450,10 +484,23 @@ const Header = () => {
                                     <div className="total-price_label">{t('profile.commands.sousTotal')}</div>
                                     <div className="price">{calculeSubTotal(commands[0].products).toFixed(2)}</div>
                                   </div>
-                                  {Number(commands[0].delivery_price) ? (<div className="total-price-blc_wrapper">
-                                    <div className="total-price_label">{t('supplier.delivPrice')}</div>
-                                    <div className="price">{Number(commands[0].delivery_price).toFixed(2)} DT</div>
-                                  </div>) : ''}
+
+                                  {
+                                    (tax > 0) ?
+                                      (<div className="total-price-blc_wrapper">
+                                        <div className="total-price_label">{t('orderTrackingPage.BankTaxes')}</div>
+                                        <div className="price">{tax} DT</div>
+                                      </div>)
+                                      : ''
+                                  }
+
+                                  {
+                                    (Number(commands[0].delivery_price) && (Number(commands[0].delivery_price) > 0)) ? (<div className="total-price-blc_wrapper">
+                                      <div className="total-price_label">{t('supplier.delivPrice')}</div>
+                                      <div className="price">{Number(commands[0].delivery_price).toFixed(2)} DT</div>
+                                    </div>)
+                                      : ''
+                                  }
                                 </div>
 
                                 <div className="total-price-blc">
@@ -510,11 +557,6 @@ const Header = () => {
                                   </ul>
                                 </div>
                               </div>
-                              {/* {commands[0].cycle == 'PENDING' && (
-                                <div className="btns-group">
-                                  <button className="btn btn-cancel-order" onClick={() => dropCommand(commands[0].id)}>{t('profile.commands.annuler') }</button>
-                              </div>
-                              )}  */}
                             </div>
                           </div>
                           : commands.length > 1 ? (
@@ -525,6 +567,7 @@ const Header = () => {
                               </div>
                               {
                                 commands.map(function (command: any) {
+                                  const tax = calculTax(command)
                                   return (
                                     <Accordion expanded={expanded === 'panel' + command.id} onChange={handleChange('panel' + command.id)}>
                                       <AccordionSummary expandIcon={<ExpandMoreIcon />} className="order-tracking_body accordion">
@@ -567,6 +610,7 @@ const Header = () => {
                                         </div>
                                         <div className="total-price-calculate">
                                           {command.products.map(function (prod: any) {
+                                            // setTotalPrice(command.)
                                             return (
                                               <div key={prod.id} className="total-price-blc">
                                                 <div className="total-price-blc_wrapper">
@@ -585,10 +629,21 @@ const Header = () => {
                                               <div className="total-price_label">{t('profile.commands.sousTotal')}</div>
                                               <div className="price">{calculeSubTotal(command.products).toFixed(2)}</div>
                                             </div>
-                                            {command.delivery_price ? (<div className="total-price-blc_wrapper">
-                                              <div className="total-price_label">{t('supplier.delivPrice')}</div>
-                                              <div className="price">{Number(command.delivery_price).toFixed(2)} DT</div>
-                                            </div>) : ''}
+                                            {
+                                              (tax > 0) ?
+                                                (<div className="total-price-blc_wrapper">
+                                                  <div className="total-price_label">{t('orderTrackingPage.BankTaxes')}</div>
+                                                  <div className="price">{tax} DT</div>
+                                                </div>)
+                                                : ''
+                                            }
+                                            {
+                                              (Number(command.delivery_price) && (Number(command.delivery_price) > 0)) ? (<div className="total-price-blc_wrapper">
+                                                <div className="total-price_label">{t('supplier.delivPrice')}</div>
+                                                <div className="price">{Number(command.delivery_price).toFixed(2)} DT</div>
+                                              </div>)
+                                                : ''
+                                            }
                                           </div>
                                           <div className="total-price-blc">
                                             <div className="total-price-blc_wrapper">

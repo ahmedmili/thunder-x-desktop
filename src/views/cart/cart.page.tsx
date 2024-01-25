@@ -249,7 +249,7 @@ const CartPage: React.FC = () => {
     const { status, data } = await commandService.getOnlinePayTax()
     const tax = data.data.tax_card
     const onlinePayTax = (total * tax) / 100;
-    setTax(onlinePayTax)
+    setTax(Math.ceil(onlinePayTax))
 
   }
 
@@ -807,6 +807,7 @@ const CartPage: React.FC = () => {
 
   // calc bonus
   const applyBonus = () => {
+    console.log("teeest")
     let sum = 0;
     if (giftApplied) {
       sum = sousTotal - giftAmmount;
@@ -972,8 +973,9 @@ const CartPage: React.FC = () => {
           setPromoReduction(promoReduction)
           return 0
         } else {
-          setPromoReduction(0)
-
+          setPromoReduction((initDeliveryPrice > selectedCoupon.value) ? Math.abs(initDeliveryPrice - selectedCoupon.value) : initDeliveryPrice)
+          console.log('selectedCoupon', selectedCoupon)
+          console.log("extraDelivFixed", extraDelivFixed)
           extraDelivFixed === 1 ? dispatch(setDeliveryPrice(selectedCoupon.value)) : dispatch(setDeliveryPrice(selectedCoupon.value + extraDeliveryCost))
           return 0
         }
@@ -1043,9 +1045,16 @@ const CartPage: React.FC = () => {
   // calc total function
   const calcTotal = () => {
     const delivPrix = (selectedOption === 3) ? deliveryPrice : 0
+    const bankTax = (selectedOption === 3 && payMode === 2) ? tax : 0
     setTotal(
-      ((sousTotal + delivPrix) - ((appliedBonus / 1000) + (giftAmmount) + discount)))
+      ((sousTotal + delivPrix) - ((appliedBonus / 1000) + (giftAmmount) + discount)) + bankTax)
   }
+
+  useEffect(() => {
+    (selectedOption != 3) && setPayMode(1)
+    calcTotal()
+  }, [selectedOption, payMode])
+
   // get supplier request
   const getSupplierById = async () => {
     const { status, data } = await supplierServices.getSupplierById(supplier_id)
@@ -1242,7 +1251,6 @@ const CartPage: React.FC = () => {
                                           <>
                                             {
                                               promosList.map((promo: any, index: number) => {
-                                                console.log('promo', promo)
                                                 return (
                                                   <li>
                                                     <button key={index} className={(promo != selectedCoupon) ? "promo-button" : "promo-button active"} onClick={() => {
@@ -1266,7 +1274,7 @@ const CartPage: React.FC = () => {
                                         backgroundColor: promo.length > 0 ? "#E77F76" : "transparent",
                                         width: `${(promo.length * 1.3) + 3}ch`,
                                         boxSizing: 'border-box',
-                                      }} maxLength={10} className="code-promo-input" name="code_promo" id="code_promo" value={promo.toUpperCase()}  onChange={(e) => handlePromoChange(e.target.value)} ></input>
+                                      }} maxLength={10} className="code-promo-input" name="code_promo" id="code_promo" value={promo.toUpperCase()} onChange={(e) => handlePromoChange(e.target.value)} ></input>
                                     </div>
 
                                     <button style={{ backgroundColor: `${(!couponExiste || promoApplied) ? "#E77F77" : "#3BB3C4"}` }} disabled={!couponExiste} className={(couponExiste) ? "button" : "button disabled"} onClick={checkPromoCode}>
@@ -1299,7 +1307,7 @@ const CartPage: React.FC = () => {
                                 <div className="bonus-wrapper">
                                   <div className="promo-container">
                                     <textarea name="bonus" id="bonus" placeholder={`${t('cartPage.bonus')}`} value={bonus.toFixed(2) + ' pts'}></textarea>
-                                    <button style={{ backgroundColor: `${appliedBonus > 0 ? "red" : '#3BB3C4'}` }} className={(bonus < 5000 || limitReachedBonus) ? "button disabled" : "button"} disabled={(bonus < 5000 || limitReachedBonus)} onClick={() => appliedBonus > 0 ? clearBonus() : applyBonus()}>
+                                    <button style={{ backgroundColor: `${appliedBonus > 0 ? "red" : '#3BB3C4'}` }} className={(bonus < 5000 || limitReachedBonus) ? "button disabled" : "button"} disabled={((bonus < 5000 || limitReachedBonus) && !appliedBonus)} onClick={() => appliedBonus > 0 ? clearBonus() : applyBonus()}>
                                       {appliedBonus > 0 ? t('Annuler') : t('cartPage.appliquer')}
                                     </button>
                                   </div>
@@ -1331,11 +1339,16 @@ const CartPage: React.FC = () => {
                                       <label htmlFor="espece">{t('cartPage.espece')}</label>
                                       <input className="form-check-input" type="radio" name="pay" id="espece" checked={payMode === 1} onClick={() => setPayMode(1)} />
                                     </div>
-                                    <div className={`method ${payMode === 2 ? "active" : ""}`}>
-                                      <img loading="lazy" className="cart" src={CartSVG} alt="My SVG" />
-                                      <label htmlFor="bnc-cart">{t('cartPage.bankPay')}</label>
-                                      <input className="form-check-input" type="radio" name="pay" id="bnc-cart" checked={payMode === 2} onClick={() => setPayMode(2)} />
-                                    </div>
+                                    {
+                                      (selectedOption === 3) && (
+
+                                        <div className={`method ${payMode === 2 ? "active" : ""}`}>
+                                          <img loading="lazy" className="cart" src={CartSVG} alt="My SVG" />
+                                          <label htmlFor="bnc-cart">{t('cartPage.bankPay')}</label>
+                                          <input className="form-check-input" type="radio" name="pay" id="bnc-cart" checked={payMode === 2} onClick={() => setPayMode(2)} />
+                                        </div>
+                                      )
+                                    }
                                   </div>
                                 </div>
 
@@ -1612,7 +1625,7 @@ const CartPage: React.FC = () => {
                                     : <></>
                                 }
                                 {
-                                  (promoReduction && promoReduction > 0) ?
+                                  ((promoReduction) && (promoReduction > 0) && (selectedOption === 3)) ?
                                     <div className="sous-total">
                                       <div className="title">{t('cartPage.Coupon')}</div>
                                       <div className="value">-{promoReduction ? (promoReduction).toFixed(2) : "0.00"} DT</div>
@@ -1636,7 +1649,7 @@ const CartPage: React.FC = () => {
                                     : <></>
                                 }
                                 {
-                                  (deliveryPrice && (deliveryPrice > 0) && (selectedOption === 3) ) ?
+                                  (deliveryPrice && (deliveryPrice > 0) && (selectedOption === 3)) ?
                                     <div className="sous-total">
                                       <div className="title">{t('supplier.delivPrice')}</div>
                                       <div className="value">{Number(deliveryPrice).toFixed(2)} DT</div>
