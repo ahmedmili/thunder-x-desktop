@@ -1269,7 +1269,7 @@ const CartPage: React.FC = () => {
                                       }} maxLength={10} className="code-promo-input" name="code_promo" id="code_promo" value={promo.toUpperCase()}  onChange={(e) => handlePromoChange(e.target.value)} ></input>
                                     </div>
 
-                                    <button disabled={!couponExiste} className={(couponExiste) ? "button" : "button disabled"} onClick={checkPromoCode}>
+                                    <button style={{ backgroundColor: `${(!couponExiste || promoApplied) ? "#E77F77" : "#3BB3C4"}` }} disabled={!couponExiste} className={(couponExiste) ? "button" : "button disabled"} onClick={checkPromoCode}>
                                       {promoApplied ? t('Annuler') : t('cartPage.appliquer')}
                                     </button>
                                   </div>
