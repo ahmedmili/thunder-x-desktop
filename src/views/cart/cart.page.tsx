@@ -691,9 +691,8 @@ const CartPage: React.FC = () => {
           try {
             const { status, data } = await cartService.createOrder(order);
             if (status === 200) {
-              console.log("data", data.data)
-              // dropOrder()
-              // setSubmitResult("command_success")
+              dropOrder()
+              setSubmitResult("command_success")
             } else {
               setSubmitResult('command_not_success')
             }
@@ -1052,7 +1051,7 @@ const CartPage: React.FC = () => {
   useEffect(() => {
     (selectedOption != 3) && setPayMode(1)
     calcTotal()
-  }, [selectedOption,payMode])
+  }, [selectedOption, payMode])
 
   // get supplier request
   const getSupplierById = async () => {
