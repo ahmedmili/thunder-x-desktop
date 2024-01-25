@@ -128,7 +128,8 @@ function MapCard(props: MapCardProps) {
                         },
                     });
                     dispatch({ type: "SHOW_REGION_ERROR", payload: false })
-                    setShowForm(true)
+
+                    logged_in ? setShowForm(true) : dispatch({ type: "SET_SHOW", payload: false })
 
                 } else {
                     // scrollToBottom()
@@ -275,7 +276,7 @@ function MapCard(props: MapCardProps) {
                         </>
                     )}
                     <div className='map-continue-btn'>
-                        {logged_in && !showForm && !isLoading && (
+                        {!showForm && !isLoading && (
                             <button type="button" className="submit-cart" onClick={submitNewCoords} >
                                 {t("continuer")}
                             </button>
