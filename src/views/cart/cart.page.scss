@@ -209,24 +209,6 @@
           }
         }
 
-        // input[type='text'] {
-        //   padding: 20px;
-        //   @include dimensions(222px, 43px);
-        //   outline: none;
-        //   border-radius: 55px;
-        //   @include border(1px, $orange_color);
-        //   background: $color-white;
-        //   font-size: 14px;
-
-        //   &::placeholder {
-        //     color: $orange_color;
-        //     font-family: 'Poppins-Medium', serif;
-        //     font-size: 17px;
-        //     line-height: normal;
-        //     text-align: center;
-        //   }
-        // }
-
         .code-promo-wrapper {
           border-radius: 15px;
           @include border(1px, $color-gray);
