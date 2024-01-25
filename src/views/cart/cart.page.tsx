@@ -1636,7 +1636,7 @@ const CartPage: React.FC = () => {
                                     : <></>
                                 }
                                 {
-                                  (deliveryPrice && deliveryPrice > 0) ?
+                                  (deliveryPrice && (deliveryPrice > 0) && (selectedOption === 3) ) ?
                                     <div className="sous-total">
                                       <div className="title">{t('supplier.delivPrice')}</div>
                                       <div className="value">{Number(deliveryPrice).toFixed(2)} DT</div>
