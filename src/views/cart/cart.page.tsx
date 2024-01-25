@@ -249,7 +249,7 @@ const CartPage: React.FC = () => {
     const { status, data } = await commandService.getOnlinePayTax()
     const tax = data.data.tax_card
     const onlinePayTax = (total * tax) / 100;
-    setTax(onlinePayTax)
+    setTax(Math.ceil(onlinePayTax))
 
   }
 
@@ -691,8 +691,9 @@ const CartPage: React.FC = () => {
           try {
             const { status, data } = await cartService.createOrder(order);
             if (status === 200) {
-              dropOrder()
-              setSubmitResult("command_success")
+              console.log("data", data.data)
+              // dropOrder()
+              // setSubmitResult("command_success")
             } else {
               setSubmitResult('command_not_success')
             }
@@ -1043,9 +1044,16 @@ const CartPage: React.FC = () => {
   // calc total function
   const calcTotal = () => {
     const delivPrix = (selectedOption === 3) ? deliveryPrice : 0
+    const bankTax = (selectedOption === 3 && payMode === 2) ? tax : 0
     setTotal(
-      ((sousTotal + delivPrix) - ((appliedBonus / 1000) + (giftAmmount) + discount)))
+      ((sousTotal + delivPrix) - ((appliedBonus / 1000) + (giftAmmount) + discount)) + bankTax)
   }
+
+  useEffect(() => {
+    (selectedOption != 3) && setPayMode(1)
+    calcTotal()
+  }, [selectedOption,payMode])
+
   // get supplier request
   const getSupplierById = async () => {
     const { status, data } = await supplierServices.getSupplierById(supplier_id)
@@ -1242,7 +1250,6 @@ const CartPage: React.FC = () => {
                                           <>
                                             {
                                               promosList.map((promo: any, index: number) => {
-                                                console.log('promo', promo)
                                                 return (
                                                   <li>
                                                     <button key={index} className={(promo != selectedCoupon) ? "promo-button" : "promo-button active"} onClick={() => {
