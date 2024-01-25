@@ -26,6 +26,8 @@ const Register = () => {
   const { t } = useTranslation()
 
   const [showPassword, setShowPassword] = useState(false);
+  const [emailExist, setEmailExist] = useState(false);
+  const [phoneExist, setPhoneExist] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
   const ontoggleShowPassword = () => {
     setShowPassword((prevShowPassword) => !prevShowPassword);
@@ -46,6 +48,7 @@ const Register = () => {
       fetchHomeData(1, location?.coords.longitude, location?.coords.latitude)
     );
   }, []);
+  
 
   const navigateToHome = () => {
     const currentLocation = localStorageService.getCurrentLocation()
@@ -152,7 +155,6 @@ const Register = () => {
     confirm_password: "",
     phone: "",
   };
-
   const saveUser = (user: IUser, token: string) => {
     dispatch(setUserCredentials({ user, token }));
     // navigate('/');
@@ -173,11 +175,27 @@ const Register = () => {
         resetForm();
         accountStatus === 4 ? navigate(`/confirm/${clientData.id}/`) : accountStatus === 1 && saveUser(clientData, userData.token);
       }
+      else {
+        if (data.email) {
+          setEmailExist(true)
+        }
+        if (data.phone) {
+          setPhoneExist(true)
+        }
+      }
       setSubmitting(false);
     } catch (error) {
       setSubmitting(false);
     }
   };
+  function clearErrors(name:any) {
+    if (name == 'email') {
+      setEmailExist(false)
+    }
+    if (name == 'phone') {
+      setPhoneExist(false)
+    }
+  }
 
   return (
     <CardPage icon="" text="" title={t('signup')} image={<PicturesList />}>
@@ -192,6 +210,9 @@ const Register = () => {
         ontoggleShowPassword,
         ontoggleShowConfirmPassword,
         onSubmit,
+        emailExist,
+        phoneExist,
+        clearErrors
       })}
       <div style={{ display: "flex", flexDirection: "column", gap: "1rem" }}>
         <Or>Or</Or>

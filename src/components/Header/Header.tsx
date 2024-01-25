@@ -30,6 +30,7 @@ import delivA from "./../../assets/profile/ArchivedCommands/deliv-A-1.svg";
 import doneA from "./../../assets/profile/ArchivedCommands/done-A-1.svg";
 import preparatinA from "./../../assets/profile/ArchivedCommands/preparatin-A-1.svg";
 import traitementA from "./../../assets/profile/ArchivedCommands/traitement-A-1.svg";
+import { RootState } from "../../Redux/slices";
 
 const Header = () => {
   const msg_notifs = useAppSelector((state) => state.messanger.unReadedMessages);
@@ -52,6 +53,8 @@ const Header = () => {
   const [expanded, setExpanded] = useState<string | false>('panel1');
   const showNotifCart = useAppSelector((state) => state.cart.openHeaderCart)
   const NotifCartItmes = useAppSelector((state) => state.cart.notifHeaderCart)
+  const deliveryOption = useAppSelector((state: RootState) => state.cart.deliveryOption);
+
   const searHandleToggle = () => {
     setSearchVisible(!searchVisible);
   };
@@ -62,10 +65,17 @@ const Header = () => {
   const { t } = useTranslation();
 
   const orderTrackingToggle = () => {
+    showProfile && setShowProfile(false)
+    showCart && setShowCart(false);
+    showMapState && dispatch(handleCartState(false));
     setOrderTracking(true);
   }
+
   const closeOrderTrackingToggle = () => {
-    setOrderTracking(false);
+    showProfile && setShowProfile(false)
+    showCart && setShowCart(false);
+    showMapState && dispatch(handleCartState(false));
+    orderTracking && setOrderTracking(false);
   }
 
   const handleScroll = () => {
@@ -79,13 +89,14 @@ const Header = () => {
     }
   };
 
-
   useEffect(() => {
     setNotifsQts(msg_notifs)
   }, [msg_notifs])
 
   useEffect(() => {
-    getCurrentCommands()
+    if (logged_in) {
+      getCurrentCommands();      
+    }
     if (typeof window != 'undefined') {
       window.addEventListener('scroll', handleScroll);
     }
@@ -98,17 +109,27 @@ const Header = () => {
 
   const handleCart = async () => {
     showProfile && setShowProfile(false)
+    showCart && setShowCart(false);
+    orderTracking && setOrderTracking(false);
+    showMapState && dispatch(handleCartState(false));
     setShowCart(!showCart);
   };
+
   const handleNotifCart = async () => {
+    showProfile && setShowProfile(false)
+    showCart && setShowCart(false);
+    orderTracking && setOrderTracking(false);
     dispatch(removeNotifHeaderCart())
-    dispatch(handleCartState())
+    dispatch(handleCartState(false))
     navigate(-1)
   };
 
   const handleUserCart = () => {
     if (user) {
       showCart && setShowCart(false);
+      showMapState && dispatch(handleCartState(false));
+      orderTracking && setOrderTracking(false);
+
       setShowProfile(!showProfile);
     } else {
       navigate('/login')
@@ -136,47 +157,55 @@ const Header = () => {
     const commands = data.data
     data.success && setCommands(commands)
   }
-  const getProgressDescription = (cycle: string): { message: string, status: number } => {
+  const getProgressDescription = (cycle: string): { message: string, status: number, color: string } => {
     switch (cycle) {
       case 'PENDING':
         return {
           message: t('profile.commands.acceptation'),
-          status: 1
+          status: 1,
+          color: '#E77F76'
         };
       case 'VERIFY':
         return {
           message: t('profile.commands.acceptation'),
-          status: 2
+          status: 2,
+          color: '#E77F76'
         };
       case 'AUTHORIZED':
         return {
           message: t('profile.commands.prépaartion'),
-          status: 3
+          status: 3,
+          color: '#F2C525'
         };
       case 'PRE_ASSIGN_ADMIN':
         return {
           message: t('profile.commands.prépaartion'),
-          status: 4
+          status: 4,
+          color: '#F2C525'
         };
       case 'PRE_ASSIGN':
         return {
           message: t('profile.commands.prépaartion'),
-          status: 4
+          status: 4,
+          color: '#F2C525'
         };
       case 'ASSIGNED':
         return {
           message: t('profile.commands.prépaartion'),
-          status: 5
+          status: 5,
+          color: '#F2C525'
         };
       case 'INPROGRESS':
         return {
           message: t('profile.commands.livraison'),
-          status: 6
+          status: 6,
+          color: '#3BB3C4'
         };
       default:
         return {
           message: '',
-          status: -1
+          status: -1,
+          color: '#E77F76'
         };
     }
   };
@@ -197,8 +226,19 @@ const Header = () => {
       eventEmitter.off('COMMAND_UPDATED', () => { getCurrentCommands() })
     }
   }, [])
+
+  const HideAll = () => {
+    showProfile && setShowProfile(false)
+    showCart && setShowCart(false);
+    showMapState && dispatch(handleCartState(false));
+    orderTracking && setOrderTracking(false);
+  }
   return (
     <>
+      {(showCart || showProfile || showMapState || orderTracking) && (
+        <div className="header-overlay" onClick={HideAll}>
+        </div>)
+      }
       {
         (routerLocation.pathname == "/" && !location) ? (
           <div className="overflow-hidden home-section-one">
@@ -212,18 +252,18 @@ const Header = () => {
                   <div className='info'>
                     {/* */}
                     {logged_in && (
-                        <>
-                          <div className="position">
-                            <LocationOnIcon className='position-icon' />
-                            {t('no_location_detected')}
-                          </div>
-                          <button onClick={handleCart} className="cart-item">
-                            <span className='cart-icon'></span>
-                            {cartItems.length}
-                          </button>
-                        </>
-                      )}
-                    
+                      <>
+                        <div className="position">
+                          <LocationOnIcon className='position-icon' />
+                          {t('no_location_detected')}
+                        </div>
+                        <button onClick={handleCart} className="cart-item">
+                          <span className='cart-icon'></span>
+                          {cartItems.length}
+                        </button>
+                      </>
+                    )}
+
                     <button onClick={handleUserCart} className={`account ${!logged_in && 'loggedin-account'}`}  >
                       <span className='account-icon'></span>
                     </button>
@@ -283,13 +323,6 @@ const Header = () => {
                     }
                     <Box className="headerLocalisationMessageContainer" onClick={() => dispatch({ type: "SET_SHOW", payload: true })} >
                       <p >
-                        {/*
-                          <span className="localisationIcon" >
-                          </span>
-                        */}
-                        {/* {location
-                          ? location.coords.label
-                          : t('entrezAdress')} */}
                         {t('entrezAdress')}
                       </p>
                     </Box>
@@ -306,8 +339,6 @@ const Header = () => {
                   <div className="imageBuilder"></div>
                 </Col>
               </Row>
-
-              {/*  Thunder logo section  */}
 
             </Container>
 
@@ -336,7 +367,6 @@ const Header = () => {
                 </div>
 
                 <button onClick={handleUserCart} className={`account ${!logged_in && 'loggedin-account'}`}  >
-                  {/* <PermIdentityOutlinedIcon className='account-icon' /> */}
                   <span className='account-icon'></span>
                 </button>
 
@@ -350,7 +380,6 @@ const Header = () => {
                 </div>
 
                 <button onClick={handleCart} className="cart-item">
-                  {/* <ShoppingCartOutlinedIcon className='cart-icon' /> */}
                   <span className='cart-icon'></span>
                   {cartItems.length}
                 </button>
@@ -366,25 +395,6 @@ const Header = () => {
                               <button className="close" onClick={closeOrderTrackingToggle}></button>
                             </div>
                             <div className="order-tracking_body">
-                              {/* <div className="being-processed-area">
-                              <div className="being-processed_desc">
-                                  <h4>{getProgressDescription(commands[0].cycle).message}</h4>
-                                  {
-                                    getProgressDescription(commands[0].cycle).status <= 2 && <p>{t('profile.commands.sousMessage')}</p>
-                                  }
-                                  {
-                                    getProgressDescription(commands[0].cycle).status > 2 && getProgressDescription(commands[0].cycle).status < 6 && !commands[0].isReady && <p>{t('profile.commands.sousMessage2')}</p>
-                                  }
-                                  {
-                                    getProgressDescription(commands[0].cycle).status == 6 && commands[0].is_delivery && commands[0].isReady ? <p>{t('profile.commands.sousMessage3')}</p> : !commands[0].is_delivery && commands[0].isReady ? <p className="description">{t('orderTrackingPage.importedReady')}</p> : <></>
-                                  }
-                              </div>
-                              <div className="being-processed_steps-area">
-                                <div className="step-item active"></div>
-                                <div className="step-item"></div>
-                                <div className="step-item"></div>
-                              </div>
-                            </div> */}
                               <div className="processing-status-area" onClick={goCommandsPage}>
                                 {(getProgressDescription(commands[0].cycle).status === 1 || getProgressDescription(commands[0].cycle).status === 2) ? <img loading="lazy" src={traitementA} alt="traitement logo" className='traitement-logo' />
                                   : (getProgressDescription(commands[0].cycle).status <= 5 && getProgressDescription(commands[0].cycle).status > 2) ? <img loading="lazy" src={preparatinA} alt="preparation logo" className='preparation-logo' />
@@ -395,9 +405,8 @@ const Header = () => {
                                       <img loading="lazy" src={(getProgressDescription(commands[0].cycle).status === 6) ? doneA : ''} alt="deliv logo" className='deliv-logo' />
                                     )
                                 }
-                                {/* <div className="status-icn"></div> */}
                                 <div className="processing-status-desc">
-                                  <h4>{getProgressDescription(commands[0].cycle).message}</h4>
+                                  <h4 style={{ color: getProgressDescription(commands[0].cycle).color }}>{getProgressDescription(commands[0].cycle).message}</h4>
                                   {
                                     getProgressDescription(commands[0].cycle).status <= 2 && <p>{t('profile.commands.sousMessage')}</p>
                                   }
@@ -441,15 +450,16 @@ const Header = () => {
                                     <div className="total-price_label">{t('profile.commands.sousTotal')}</div>
                                     <div className="price">{calculeSubTotal(commands[0].products).toFixed(2)}</div>
                                   </div>
-                                  <div className="total-price-blc_wrapper">
+                                  {Number(commands[0].delivery_price) ? (<div className="total-price-blc_wrapper">
                                     <div className="total-price_label">{t('supplier.delivPrice')}</div>
-                                    <div className="price">{commands[0].coupon.delivery_fixed === 1 ? commands[0].delivery_price : (Number(commands[0].delivery_price) - Number(commands[0].total_price_coupon)).toFixed(2)} DT</div>
-                                  </div>
+                                    <div className="price">{Number(commands[0].delivery_price).toFixed(2)} DT</div>
+                                  </div>) : ''}
                                 </div>
+
                                 <div className="total-price-blc">
                                   <div className="total-price-blc_wrapper">
                                     <div className="total-price_label">{t('cartPage.total')}</div>
-                                    <div className="price">{(Number(commands[0].total_price) - Number(commands[0].total_price_coupon)).toFixed(2)} DT</div>
+                                    <div className="price">{(Number(commands[0].total_price)).toFixed(2)} DT</div>
                                   </div>
                                 </div>
                               </div>
@@ -471,7 +481,7 @@ const Header = () => {
                                           <div className="paiement-status_icon"></div>
                                           <div className="paiement-status-desc">
                                             <p className="paiement-status-item">{t("cartPage.bonus")}</p>
-                                            <div className="price">{(Number(commands[0].bonus) / 1000).toFixed(2)} Dt</div>
+                                            <div className="price">-{(Number(commands[0].bonus) / 1000).toFixed(2)} Dt</div>
                                           </div>
                                         </li>
                                       )
@@ -492,7 +502,7 @@ const Header = () => {
                                           <div className="paiement-status_icon"></div>
                                           <div className="paiement-status-desc">
                                             <p className="paiement-status-item">{t('cart.PromosCode')}</p>
-                                            <div className="price">{Number(commands[0].total_price_coupon).toFixed(2)} dt</div>
+                                            <div className="price">-{Number(commands[0].total_price_coupon).toFixed(2)} dt</div>
                                           </div>
                                         </li>
                                       )
@@ -542,7 +552,7 @@ const Header = () => {
                                               )
                                           }
                                           <div className="processing-status-desc">
-                                            <h4>{getProgressDescription(command.cycle).message}</h4>
+                                            <h4 style={{ color: getProgressDescription(commands[0].cycle).color }}>{getProgressDescription(command.cycle).message}</h4>
                                             {
                                               getProgressDescription(command.cycle).status <= 2 && <p>{t('profile.commands.sousMessage')}</p>
                                             }
@@ -575,15 +585,15 @@ const Header = () => {
                                               <div className="total-price_label">{t('profile.commands.sousTotal')}</div>
                                               <div className="price">{calculeSubTotal(command.products).toFixed(2)}</div>
                                             </div>
-                                            <div className="total-price-blc_wrapper">
+                                            {command.delivery_price ? (<div className="total-price-blc_wrapper">
                                               <div className="total-price_label">{t('supplier.delivPrice')}</div>
-                                              <div className="price">{command.coupon.delivery_fixed === 1 ? command.delivery_price : (Number(command.delivery_price) - Number(command.total_price_coupon)).toFixed(2)} DT</div>
-                                            </div>
+                                              <div className="price">{Number(command.delivery_price).toFixed(2)} DT</div>
+                                            </div>) : ''}
                                           </div>
                                           <div className="total-price-blc">
                                             <div className="total-price-blc_wrapper">
                                               <div className="total-price_label">{t('cartPage.total')}</div>
-                                              <div className="price">{(Number(command.total_price) - Number(command.total_price_coupon)).toFixed(2)} DT</div>
+                                              <div className="price">{(Number(command.total_price)).toFixed(2)} DT</div>
                                             </div>
                                           </div>
                                         </div>
@@ -605,7 +615,7 @@ const Header = () => {
                                                     <div className="paiement-status_icon"></div>
                                                     <div className="paiement-status-desc">
                                                       <p className="paiement-status-item">{t("cartPage.bonus")}</p>
-                                                      <div className="price">{(Number(command.bonus) / 1000).toFixed(2)} Dt</div>
+                                                      <div className="price">-{(Number(command.bonus) / 1000).toFixed(2)} Dt</div>
                                                     </div>
                                                   </li>
                                                 )
@@ -626,7 +636,7 @@ const Header = () => {
                                                     <div className="paiement-status_icon"></div>
                                                     <div className="paiement-status-desc">
                                                       <p className="paiement-status-item">{t('cart.PromosCode')}</p>
-                                                      <div className="price">{Number(command?.total_price_coupon).toFixed(2)} dt</div>
+                                                      <div className="price">-{Number(command?.total_price_coupon).toFixed(2)} dt</div>
                                                     </div>
                                                   </li>
                                                 )

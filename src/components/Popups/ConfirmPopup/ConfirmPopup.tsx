@@ -14,17 +14,10 @@ const ConfirmPopup: React.FC<Props> = ({ title, close, accept }) => {
 
     const { t } = useTranslation();
 
-    // close popup when user click outside the box
-    const handleOutsideClick = () => {
-        close();
-    };
 
     return (
 
         <>
-            <div className="popup-overlay" onClick={handleOutsideClick}>
-
-            </div>
             <div className="confirm-popup-container">
                 <button className="close-button"></button>
                 <p className="confirm-message">

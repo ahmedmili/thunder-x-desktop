@@ -3,13 +3,19 @@
 .trie-filter-container {
     padding: 0;
     position: relative;
-
+    margin-bottom: 32px;
+    border-bottom: 1px solid $color-gray-alto;
+    padding-bottom: 38px;
     &__title {
         color: $dark_Gray;
         font-family: 'Poppins-SemiBold', serif;
         font-size: 17px;
         line-height: normal;
         margin-bottom: 24px;
+        transition: all 0.3s ease-in-out;
+        &.collapsed {
+            margin-bottom: 0;
+        }
     }
     &__list {
         transition: all 0.3s ease-in-out;
@@ -54,11 +60,6 @@
                     line-height: normal;
                     margin-bottom: 0;
                 }
-            }
-            &:last-child{
-                padding-bottom: 38px;
-                border-bottom: 1px solid $color-gray-alto;
-                margin-bottom: 32px;
             }
         }
         &.hide{

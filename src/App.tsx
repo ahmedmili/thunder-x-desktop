@@ -19,6 +19,7 @@ import {
 import jwt_decode from "jwt-decode";
 import {
   setCartItems,
+  setDeliveryOption,
   setDeliveryPrice,
   setSupplier,
 } from "./Redux/slices/cart/cartSlice";
@@ -54,6 +55,7 @@ import FidelitePage from "./components/layout/Profile/FidelitePage/FidelitePage"
 import Menu from "./components/menus/menus";
 import { paramsService } from "./utils/params";
 import Verify from "./views/Verify";
+import { RootState } from "./Redux/slices";
 //lazy loading pages
 const Profile = lazy(() => import("./components/layout/Profile/Profile"));
 const HomePage = lazy(() => import("./views/home/home.page"));
@@ -84,6 +86,7 @@ function App({ initialData }: AppProps) {
   const location = useAppSelector((state) => state.location.position);
   const deliv = useAppSelector((state) => state.homeData.isDelivery);
   const region: any = useSelector(regionHomeSelector);
+  const supplier = useAppSelector((state: RootState) => state.cart.supplier);
 
   const [updateTrigger, setUpdateTrigger] = useState(false);
 
@@ -106,10 +109,11 @@ function App({ initialData }: AppProps) {
         }
       }
     } else {
-      dispatch({ type: "SET_SHOW", payload: false })
+      // dispatch({ type: "SET_SHOW", payload: false })
     }
 
   }, [location]);
+
   const setLocationFromArray = async (lat: any, lng: any) => {
     let current_location = await LocationService.geoCode(lat, lng);
     dispatch({ type: "SET_LOCATION", payload: current_location })
@@ -196,7 +200,7 @@ function App({ initialData }: AppProps) {
     }
   }, []);
 
-  // prepare default location 
+  // init default location 
   useEffect(() => {
     const location = localStorageService.getCurrentLocation();
     if (!location || location.length < 3) {
@@ -228,6 +232,26 @@ function App({ initialData }: AppProps) {
     deliv == "0" ? dispatch(setIsDelivery(true)) : dispatch(setIsDelivery(false));
 
   }, []);
+
+  //  init delivery option
+  useEffect(() => {
+    if (supplier) {
+      let take_away = supplier.take_away
+      let delivery = supplier.delivery
+      if (delivery === 1 && take_away == 1) {
+        dispatch(setDeliveryOption('delivery'))
+
+      } else if (delivery === 1 && take_away == 0) {
+        dispatch(setDeliveryOption('delivery'))
+
+      } else if (delivery === 0 && take_away == 1) {
+        dispatch(setDeliveryOption('pickup'))
+
+      } else if (delivery === 0 && take_away == 0) {
+        dispatch(setDeliveryOption('surplace'))
+      }
+    }
+  }, [supplier])
 
   // check auth
   useEffect(() => {
@@ -279,15 +303,6 @@ function App({ initialData }: AppProps) {
       eventEmitter.off('NEW_ADMIN_MESSAGE', newMessage);
     }
   }, [])
-
-  // Enforce Trailing Slash 
-  // useEffect(() => {
-  //   const { pathname } = navLocation;
-  //   if (!pathname.endsWith('/') && pathname !== '/') {
-  //     navigate(`${pathname}/`, { replace: true });
-  //   }
-  // }, [navLocation, Navigate]);
-
 
   return (
     <>
@@ -355,7 +370,6 @@ const ProtectedRoute = ({ children }: { children: React.ReactNode }) => {
   const passable = !(!token || !user);
 
   if (!passable) {
-    // return <Navigate to="/unauthorized" replace />;
     return <Navigate to="/login" replace />;
   }
   return children ? <>{children}</> : <Outlet />;

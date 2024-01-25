@@ -527,7 +527,7 @@ function FilterPage({ initialData }: AppProps) {
               (isMessagesOpen) &&
               <Messanger className='discuterMessangerPopup' close={handleMessangerPopup} />
             }
-            {
+            {/* {
               showMapState && (
                 <div
                   className="mapOverPlay">
@@ -537,7 +537,7 @@ function FilterPage({ initialData }: AppProps) {
                   </div>
                 </div>
               )
-            }
+            } */}
           </>
         ) : (
           <SkeletonEffect />

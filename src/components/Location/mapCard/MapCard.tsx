@@ -1,6 +1,6 @@
 
 
-import { MouseEventHandler, useEffect, useRef, useState } from 'react';
+import React, { MouseEventHandler, useEffect, useRef, useState } from 'react';
 import { useAppDispatch, useAppSelector } from '../../../Redux/store';
 import { LocationService } from '../../../services/api/Location.api';
 import './mapCard.scss';
@@ -29,8 +29,9 @@ type Position = {
 function MapCard(props: { cancel: MouseEventHandler<HTMLButtonElement> | undefined; }) {
     const [primary, setPrimary] = useState<boolean>(false);
     const [selectedOption, setSelectedOption] = useState<number>(1);
+    const [selectedPosition, setSelectedPosition] = useState<any>(null);
 
-    const [locationChanged, setLocationChanger] = useState<boolean>(false)
+    const [locationChanged, setLocationChanged] = useState<boolean>(false)
     const [showForm, setShowForm] = useState<boolean>(false);
 
     const [marker, setMarker] = useState<google.maps.Marker | null>(null);
@@ -55,8 +56,6 @@ function MapCard(props: { cancel: MouseEventHandler<HTMLButtonElement> | undefin
             .typeError("Ce champ doit être un nombre"),
         intitule: Yup.string(),
     });
-
-
 
     const handleSubmit = async (values: LocationFormValues, { setSubmitting }: FormikHelpers<LocationFormValues>) => {
         setSubmitting(false);
@@ -95,18 +94,25 @@ function MapCard(props: { cancel: MouseEventHandler<HTMLButtonElement> | undefin
 
     const handleMapClick = (event: google.maps.MapMouseEvent) => {
         // Change state position
-        !locationChanged && setLocationChanger(true)
-
+        !locationChanged && setLocationChanged(true)
         const latLng = event.latLng;
         LocationService.geoCode(latLng?.lat(), latLng?.lng()).then(data => {
+            setSelectedPosition(data)
+        });
+    };
+
+    const submitNewCoords = () => {
+        setShowForm(true)
+        if (selectedPosition) {
             dispatch({
                 type: "SET_LOCATION",
                 payload: {
-                    ...data
+                    ...selectedPosition
                 },
             });
-        });
-    };
+        }
+    }
+
     const handleMapState = (value: any) => {
         setMapState(value)
     }
@@ -119,10 +125,11 @@ function MapCard(props: { cancel: MouseEventHandler<HTMLButtonElement> | undefin
         if (!mapRef.current) {
             var latLng = new google.maps.LatLng({ lat: 35.8288, lng: 10.6401 });
 
-            if (userPosition) {
-                const { latitude, longitude } = userPosition.coords;
+            if (selectedPosition || userPosition) {
+                const { latitude, longitude } = selectedPosition ? selectedPosition.coords : userPosition?.coords; ///selectedPosition ? selectedPosition.coords.label : userPosition?.coords.label
                 latLng = new google.maps.LatLng(latitude, longitude);
             }
+
             mapRef.current = new google.maps.Map(mapContainer, {
                 zoom: 12,
                 center: latLng, // Initial center in Sousse, Tunisia
@@ -137,38 +144,13 @@ function MapCard(props: { cancel: MouseEventHandler<HTMLButtonElement> | undefin
 
             google.maps.event.addListener(mapRef.current, "click", handleMapClick);
         }
-        if (userPosition && marker) {
-            const { latitude, longitude } = userPosition.coords;
+        if ((userPosition || selectedPosition) && marker) {
+            const { latitude, longitude } = selectedPosition ? selectedPosition.coords : userPosition?.coords;
             const latLng = new google.maps.LatLng(latitude, longitude);
             mapRef.current?.setCenter(latLng);
             marker.setPosition(latLng);
         }
-    }, [userPosition]);
-
-
-    const getPosition = () => {
-        navigator.geolocation.getCurrentPosition(
-            (position: Position) => {
-                handleMapState(false);
-                let pos = position.coords
-                const { latitude, longitude } = pos;
-                LocationService.geoCode(latitude, longitude).then(data => {
-                    dispatch({
-                        type: "SET_LOCATION",
-                        payload: {
-                            ...data
-                        },
-                    });
-                });
-            },
-            (error: GeolocationPositionError) => {
-                handleMapState(true);
-                setTimeout(() => {
-                    handleMapState(false);
-                }, 2000);
-            }
-        );
-    };
+    }, [selectedPosition]);
 
     const handleOptionChange = (event: any) => {
         setSelectedOption(parseInt(event.target.value));
@@ -189,14 +171,8 @@ function MapCard(props: { cancel: MouseEventHandler<HTMLButtonElement> | undefin
                                 <div className="location-indicator">
                                     {!locationChanged && <h1>{t("adress.adressDetected")}</h1>}
                                     {locationChanged && <h1>{t("adress.adressSelected")}</h1>}
-                                    <h1>{userPosition?.coords.label}</h1>
+                                    <h1>{selectedPosition ? selectedPosition.coords.label : userPosition?.coords.label}</h1>
                                 </div>
-                                {/* <div className='buttons'>
-                                    <button type="button" onClick={getPosition}>
-                                        <div className="icon"></div>
-                                        <p>{t('adress.currentPos')}</p>
-                                    </button>
-                                </div> */}
                             </div>
                             {mapDisabled && (
                                 <div className='error'>Veuillez autoriser l'accès à votre position</div>
@@ -207,7 +183,7 @@ function MapCard(props: { cancel: MouseEventHandler<HTMLButtonElement> | undefin
                     {logged_in && showForm && (
                         <>
                             <div className="location-form-title">
-                                <h1>{userPosition?.coords.label}</h1>
+                                <h1>{selectedPosition ? selectedPosition.coords.label : userPosition?.coords.label}</h1>
                                 <button className="edit-button" onClick={() => setShowForm(false)}>
                                     <div className="edit-icon"></div>
                                 </button>
@@ -278,11 +254,11 @@ function MapCard(props: { cancel: MouseEventHandler<HTMLButtonElement> | undefin
                     )}
                     <div className='map-continue-btn'>
                         {logged_in && !showForm && region && !isLoading && (
-                            <button type="button" className="submit-cart" onClick={() => setShowForm(true)} >
+                            <button type="button" className="submit-cart" onClick={submitNewCoords} >
                                 {t("continuer")}
                             </button>
                         )}
-                        {!logged_in && showForm === false && userPosition?.coords.label && region && !isLoading && (
+                        {!logged_in && showForm === false && selectedPosition && userPosition?.coords.label && region && !isLoading && (
                             <button type="button" className="submit-cart close" onClick={props.cancel}>
                                 {t("fermer")}
                             </button>
@@ -294,7 +270,7 @@ function MapCard(props: { cancel: MouseEventHandler<HTMLButtonElement> | undefin
     );
 }
 
-export default MapCard
+export default React.memo(MapCard)
 
 
 
