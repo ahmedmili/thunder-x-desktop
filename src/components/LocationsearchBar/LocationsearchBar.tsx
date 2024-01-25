@@ -26,6 +26,7 @@ const LocationSearchBar: React.FC<Props> = ({ placeholder }) => {
   }
 
   const handleSearch = () => {
+    console.log('teeestteeestteeest')
     if (suggestions) {
       let formData = {
         lat: suggestions.position[0].lat,
@@ -58,14 +59,11 @@ const LocationSearchBar: React.FC<Props> = ({ placeholder }) => {
   return (
     <>
       <div className={searchStyle.searchContainer}>
-        <form>
+        <AutocompleteInput initLocation={false} returnSuggestions={setSuggestions} />
 
-          <AutocompleteInput initLocation={false} returnSuggestions={setSuggestions} />
-
-          <button className={searchStyle.btnHandleSearch} onClick={handleSearch}>
+        <button className={searchStyle.btnHandleSearch} onClick={handleSearch}>
             {t('searchButton')}
           </button>
-        </form>
       </div>
     </>
   );
