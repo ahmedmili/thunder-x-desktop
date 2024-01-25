@@ -3,12 +3,11 @@
 .trie-filter-container {
     padding: 0;
     position: relative;
+
     &__title {
         color: $dark_Gray;
-        font-family: Poppins;
+        font-family: 'Poppins-SemiBold', serif;
         font-size: 17px;
-        font-style: normal;
-        font-weight: 600;
         line-height: normal;
         margin-bottom: 24px;
     }
@@ -24,21 +23,21 @@
                 gap: 10px;
                 padding-left: 18px;
                 margin-bottom: 12px;
+
                 .radio-btn {
                     appearance: none;
                     -webkit-appearance: none;
                     -moz-appearance: none;
-                    width: 19px;
-                    height: 19px;
+                    @include dimensions(19px, 19px);
                     border: none;
                     border-radius: 5px;
                     background-color: rgba($color-blue-pelorous, 0.58);
+
                     &:checked {
                         position: relative;
                         &:after {
                             content: "";
-                            width: 19px;
-                            height: 19px;
+                            @include dimensions(19px, 19px);
                             background-color: $color-blue-eastern;
                             position: absolute;
                             left: 0;
@@ -50,10 +49,8 @@
 
                 .form-label {
                     color: $dark_Gray;
-                    font-family: Poppins;
+                    font-family: 'Poppins-Medium', serif;
                     font-size: 18px;
-                    font-style: normal;
-                    font-weight: 500;
                     line-height: normal;
                     margin-bottom: 0;
                 }
@@ -77,8 +74,27 @@
         color: $dark_Gray;
         transition: all 0.3s ease-in-out;
         cursor: pointer;
+
         &.open {
             transform: rotate(-90deg);
         }
+    }
+}
+
+/* # $Mobile ::
+------------------------------------*/
+
+@media (max-width: 1440px) {
+    .trie-filter-container__title,
+    .price-filter-container__title,
+    .categories-filter-container__title {
+        @include fontSize(14px, 14px);
+        margin-bottom: 20px;
+    }
+    .price-filter-container__container__price {
+        @include fontSize(14px, 14px);
+    }
+    .price-filter-container__container__rang-value {
+        @include fontSize(12px, 12px);
     }
 }

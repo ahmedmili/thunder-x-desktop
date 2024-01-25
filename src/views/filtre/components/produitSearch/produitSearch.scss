@@ -9,7 +9,7 @@
             line-height: 33px;
             padding:16px 88px;
             color: $dark_002;            
-            font-family: Poppins;
+            font-family: 'Poppins-Regular', serif;
             font-size: 18px;
             font-style: normal;
             font-weight: 400;
@@ -18,6 +18,7 @@
             background: $light-blue;
             border: none;
             box-shadow: none;
+
             &:focus{
                 border: none;
                 outline: none;
@@ -47,7 +48,28 @@
             background-position: center;
             background-size: 25px;
         }
+    }  
+}
+
+/* # $Mobile ::
+------------------------------------*/
+
+@media (max-width: 1440px) {
+    .search-filter-container__input {
+        .search-input {
+            padding: 13px 70px;
+            font-size: 15px;
+        }
+        .text-search-icon {
+            left: 20px;
+            top: 13px;
+            font-size: 25px;
+        }
+        .search-icon {
+            @include dimensions(34px, 34px);
+            background-size: 20px;
+            top: 7px;
+        }
     }
-   
 }
 

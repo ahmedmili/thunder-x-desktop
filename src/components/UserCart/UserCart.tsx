@@ -58,7 +58,9 @@ export const UserCart: React.FC<CartProps> = ({ firstName = "", lastName = "", c
 
           <header>
             <div className='profile-info'>
-              <img src={profile_img} alt="profile photo" />
+              <div className="profile-info_img-blc">
+                <img src={profile_img} alt="profile photo" />
+              </div>
               <p className='welcome-msg'>
                 {t('welcome')} !
               </p>
@@ -72,7 +74,6 @@ export const UserCart: React.FC<CartProps> = ({ firstName = "", lastName = "", c
               }
             </div>
             <button onClick={closeButton} className="close-btn">
-              X
             </button>
           </header>
         )

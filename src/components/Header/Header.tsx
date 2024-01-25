@@ -679,7 +679,7 @@ const Header = () => {
             }
 
             {
-              showProfile && user && (<div className={`cart-container`}>
+              showProfile && user && (<div className={`cart-container test`}>
                 <UserCart firstName={user.firstname} lastName={user.lastname} closeButton={handleUserCart} />
               </div>
               )

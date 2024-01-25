@@ -77,7 +77,7 @@ function SearchProduit() {
             <div className="search-filter-container__input">
                 <input autoComplete="off" type="search" className="search-input" name="search" id="search" placeholder={`${t('searchPage.question')}`} value={active} onChange={clickHandle} />
                 <SearchIcon className="text-search-icon" />
-                <span className="search-icon"></span>
+                <button className="search-icon"></button>
             </div>
         </form>
     )

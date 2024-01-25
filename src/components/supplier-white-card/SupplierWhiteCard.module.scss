@@ -171,6 +171,33 @@
 /* # $Mobile ::
 ------------------------------------*/
 
+@media (max-width: 1440px) {
+    .SupplierWhiteCard {
+        .restaurantLink {
+            .card {
+                .contentContainer {
+                    padding: 18px 10px;
+
+                    .leftSide {
+                        .name {
+                            h3 {
+                                @include fontSize(13px, 13px);
+                            } 
+                        }
+                        .option {
+                            @include fontSize(12px, 12px);
+                        }
+                    }
+                }
+                .imageContainer {
+                    .restaurantImage {
+                        height: 120px;
+                    }
+                }
+            }
+        }
+    }
+}
 @media only screen and (min-width : 1400px) {
     .SupplierWhiteCard {
         @include dimensions(calc(100% - 20px), fit-content);
