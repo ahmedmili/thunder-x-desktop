@@ -1,0 +1,210 @@
+@import '../../scss/extend';
+
+.applicationAdsMainContainer {
+    @include dimensions(100%, 320px);
+    position: relative;
+    background-color: $color-blue-tranquil;
+    background-repeat: no-repeat;
+    background-position: center;
+    background-size: cover;
+    background-image: url('./../../assets/app-ads-bg.png');
+    margin: 0 0 100px;
+
+    .applicationAdsWrapper {
+        border-radius: 0;
+        margin: 0 auto;
+        background-color: transparent;
+
+    }
+
+    .phonesImgsBlc {
+        display: flex;
+        align-items: center;
+        gap: 20px;
+        margin: -77px 0 0;
+
+        .phonesImg {
+            @include dimensions(210px, 440px);
+            background-repeat: no-repeat;
+            background-position: center;
+            background-size: cover;
+
+            &:nth-child(1) {
+                margin: -80px 0 0;
+                background-image: url('./../../assets/phone-icn-1.png');
+            }
+
+            &:nth-child(2) {
+                background-image: url('./../../assets/phone-icn-2.png');
+            }
+        }
+    }
+
+    .applicationAdsImg {
+        width: 62%;
+    }
+
+    .applicationAdsDesignContainer {
+        position: relative;
+        display: flex;
+        gap: 100px;
+
+        .applicationAdsInfo {
+            height: 100%;
+            background-repeat: no-repeat;
+            background-size: 98% 297px;
+            @include flex(flex, center, space-between);
+
+            .infoContainer {
+                .infoTitle {
+                    font-family: 'Poppins-Bold', serif;
+                    @include fonts(30px, 34px, $color-blue-pelorous);
+                    margin: 0 0 20px;
+                }
+
+                .infoDesc {
+                    font-family: 'Poppins-Medium', serif;
+                    @include fonts(20px, 24px, $dark_Gray);
+                    margin: 0 0 20px;
+                }
+
+                .storeLinkGroup {
+                    @include flex(flex, center, flex-start);
+                    gap: 15px;
+
+                    .storeLinkItem {
+                        @include dimensions(200px, 50px);
+                        background-repeat: no-repeat;
+                        background-position: center;
+                        background-size: 200px auto;
+                        border-radius: 3px;
+
+                        &:nth-child(1) {
+                            background-image: url('./../../assets/store-play-icn.png');
+                        }
+
+                        &:nth-child(2) {
+                            background-image: url('./../../assets/store-apple-icn.png');
+                        }
+                    }
+                }
+
+                .info1P1 {
+                    @include dimensions(210px, 55px);
+                    color: $color-white;
+                    font-family: 'Poppins-Bold', serif;
+                    font-size: 22px;
+                    line-height: normal;
+                }
+
+                .info1P2 {
+                    @include dimensions(187px, 68px);
+                    color: $color-white;
+                    font-family: 'Poppins-Medium', serif;
+                    font-size: 15px;
+                    line-height: normal;
+                    margin: 0;
+                }
+
+                .info1Button {
+                    @include dimensions(179px, 50px);
+                    margin-bottom: 16px;
+                    border-radius: 25px;
+                    background: $orange_color;
+                    @include flex;
+                    font-family: 'Poppins-Bold', serif;
+                    @include fonts(24px, 18px, $color-white);
+                }
+
+                .info2P1 {
+                    @include dimensions(96px, 78px);
+                    color: $orange_color;
+                    font-family: 'Poppins-Light', serif;
+                    font-size: 48px;
+                    line-height: normal;
+                }
+
+                .info3 {
+                    p {
+                        margin: 0;
+                    }
+
+                    .info3P1 {
+                        @include dimensions(396px, 38px);
+                        color: $orange_color;
+                        font-family: 'Poppins-Bold', serif;
+                        font-size: 28px;
+                        line-height: normal;
+                    }
+
+                    .info3P2 {
+                        color: $color-white;
+                        font-family: 'Poppins-Bold', serif;
+                        font-size: 18px;
+                        line-height: normal;
+                    }
+
+                    .socialBoxs {
+                        margin: 7px 3px;
+                        height: 36px;
+                        display: inline-block;
+                        @include border(1px, $color-white);
+                        border-radius: 5px;
+                    }
+
+                }
+            }
+        }
+    }
+}
+
+
+/* # $Mobile ::
+------------------------------------*/
+
+@media (max-width: 1440px) {
+    .applicationAdsMainContainer {
+        height: 260px;
+        margin: 0 0 80px;
+
+        .applicationAdsDesignContainer {
+            gap: 80px;
+
+            .phonesImgsBlc {
+                margin: -60px 0 0;
+
+                .phonesImg {
+                    @include dimensions(170px, 350px);
+                    background-size: 100% 100%;
+
+                    &:nth-child(1) {
+                        margin: -60px 0 0;
+                    }
+                }
+            }
+
+            .applicationAdsInfo {
+                .infoContainer {
+                    .infoTitle {
+                        @include fontSize(24px, 28px);
+                        margin: 0 0 15px;
+                    }
+
+                    .infoDesc {
+                        @include fontSize(16px, 20px);
+                        margin: 0 0 15px;
+                    }
+
+                    .storeLinkGroup {
+                        gap: 12px;
+
+                        .storeLinkItem {
+                            @include dimensions(160px, 40px);
+                            background-size: 160px auto;
+                        }
+                    }
+                }
+            }
+        }
+    }
+}

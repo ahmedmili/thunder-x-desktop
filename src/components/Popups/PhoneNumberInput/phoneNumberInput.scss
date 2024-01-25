@@ -1,0 +1,97 @@
+@import '../../../scss/extend';
+
+@keyframes popup-animation {
+    0% {
+        scale: 0;
+        opacity: 0;
+    }
+
+    100% {
+        scale: 1;
+        opacity: 1;
+    }
+}
+
+.phone-input-popup-container {
+    @include dimensions(100%, 100vh);
+    background: rgba(72, 72, 72, 0.60);
+    position: fixed;
+    top: 0;
+    right: 0;
+    z-index: 999;
+    @include flex;
+
+    .phone-popup-box {
+        @include dimensions(560px, 490px);
+        background-color: $color-white;
+        border-radius: 25px;
+        display: block;
+        animation: popup-animation 1s ease-in-out;
+        position: relative;
+        padding: 80px;
+
+        .phone-input-popup-close {
+            position: absolute;
+            top: 60px;
+            right: 27px;
+            @include dimensions(15px, 15px);
+            background-image: url('./../../../assets/close-button-black.svg');
+            background-position: center;
+            background-repeat: no-repeat;
+            background-size: 15px auto;
+        }
+        .input-text-zone {
+            display: block;
+            margin: 0 0 68px;
+
+            label {
+                @include fonts(17px, 17px, $dark_Gray);
+                font-family: 'Poppins-Medium', serif;
+                margin: 0 0 15px;
+            }
+            .input-box {
+                input[type="number"]::-webkit-inner-spin-button,
+                input[type="number"]::-webkit-outer-spin-button,
+                input[type="number"] {
+                    -webkit-appearance: none;
+                    appearance: none;
+                    margin: 0;
+                }
+                .phone-input {
+                    border-radius: 10px;
+                    @include border(2px, $color-blue-pelorous);
+                    @include dimensions(100%, 49px);
+                    @include fonts(17px, 17px, $light_Gray);
+                    font-family: 'Poppins-Medium', serif;
+                    font-weight: weight(medium);
+
+                    &:focus {
+                        outline: none;
+                    }
+                }
+            }
+        }
+        .input-numbers-keys-zone {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 5px;
+            row-gap: 7px;
+
+            button {
+                border-radius: 5px;
+                border: none;
+                @include dimensions(100%, 40px);
+                @include flex;
+                @include fonts(17px, 17px, $color-blue-eastern);
+                padding: 5px;
+
+                &.number-key {
+                    background-color: #2EB1C354;
+                }
+                &.number-delete {
+                    background-color: transparent;
+                }
+            }
+        }
+    }
+}

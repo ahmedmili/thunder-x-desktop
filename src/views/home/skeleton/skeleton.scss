@@ -1,0 +1,137 @@
+@import "../../../colors";
+
+.home-skeleton-contaner {
+  .text-2-container {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    margin-bottom: 10px;
+    gap: 5px;
+
+    .custom-div {
+      width: 65vw;
+      height: 25px;
+      border-radius: 25px;
+      background-color: #AFDFD9;
+    }
+  }
+
+  .text-container {
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+    margin-bottom: 10px;
+
+
+    .custom-div:nth-child(1) {
+      width: 65vw;
+      height: 25px;
+      border-radius: 25px;
+      background-color: #AFDFD9;
+      margin-bottom: 26px;
+    }
+
+    .custom-div:nth-child(2) {
+      width: 55vw;
+      height: 14px;
+      border-radius: 25px;
+      background-color: rgba(149, 142, 142, 0.67);
+    }
+
+    .custom-div:nth-child(3) {
+      width: 41vw;
+      height: 14px;
+      border-radius: 25px;
+      background-color: rgba(149, 142, 142, 0.67);
+    }
+  }
+
+  .supplierList {
+    margin-bottom: 10px;
+    gap: 5px;
+    position: relative;
+
+    .background {
+      position: absolute;
+      top: 25%;
+      left: -10px;
+      background-color: $Creamy_Vanilla;
+      border-radius: 60px;
+      width: 100%;
+      height: 270px;
+      z-index: -1;
+    }
+
+    .BG_blue {
+      background-color: #8ACDCC75;
+    }
+  }
+}
+
+
+@media only screen and (max-width: 992px) {
+
+  .home-skeleton-contaner {
+    .supplierList {
+      .background {
+        height: 200px;
+      }
+    }
+  }
+}
+
+@media only screen and (max-width: 768px) {
+
+  .home-skeleton-contaner {
+    .supplierList {
+      .background {
+        height: 170px;
+      }
+    }
+  }
+}
+
+@media only screen and (max-width: 460px) {
+
+  .home-skeleton-contaner {
+
+    .supplierList {
+      .background {
+        height: 170px;
+      }
+
+      .supplierCard-Skeleton-container {
+        .row {
+          .col {
+            &:first-child {
+              display: none;
+            }
+
+          }
+
+        }
+      }
+
+    }
+
+
+  }
+}
+
+
+@keyframes skeletonPulse {
+
+  0%,
+  100% {
+    opacity: 1;
+  }
+
+  50% {
+    opacity: 0.7;
+  }
+}
+
+.home-skeleton-contaner .skeleton {
+  animation: skeletonPulse 1.5s infinite;
+}

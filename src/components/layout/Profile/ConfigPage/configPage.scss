@@ -1,0 +1,228 @@
+@import '../../../../scss/extend';
+
+@keyframes LongAnimation {
+    0% {
+        min-height: 0%;
+    }
+
+    100% {
+        min-height: 147px;
+    }
+}
+
+@keyframes ThemeAnimation {
+    0% {
+        height: 0%;
+    }
+
+    100% {
+        height: 90px;
+    }
+}
+
+@keyframes MapAnimation {
+    0% {
+        height: 0%;
+    }
+
+    100% {
+        height: 100%;
+    }
+}
+
+@keyframes fadeIn {
+    0% {
+        opacity: 0;
+    }
+
+    100% {
+        opacity: 1;
+    }
+}
+
+.profile-page-wrapper {
+    padding: 125px 0 0;
+
+    .profile-title-page {
+        margin: 0 0 43px;
+        @include fonts(20px, 20px, $dark_Gray);
+        font-family: 'Poppins-SemiBold', serif;
+    }
+}
+
+.config-page {
+    border-radius: 15px;
+    background: $color-white;
+    box-shadow: 0px 4px 20px 0px #9F999940;
+    padding: 20px 80px;
+    margin: 0;
+    animation: fadeIn 1s ease-in-out;
+    transition: height 1s ease-in-out;
+
+    &::-webkit-scrollbar {
+        width: 0;
+    }
+
+    .setting {
+        .header {
+            @include flex(flex, center, space-between);
+            padding: 20px 0 !important;
+
+            &:hover {
+                cursor: pointer;
+            }
+
+            .title {
+                @include fonts(20px, 20px, $dark_Gray);
+                font-family: 'Poppins-SemiBold', serif;
+                transition: color 0.5s ease-in-out;
+            }
+
+            .icon {
+                @include dimensions(35px, 35px);
+                color: $dark_Gray;
+                rotate: 180deg;
+                transition: rotate 0.5s ease-in-out;
+            }
+        }
+
+        .active {
+            .icon {
+                rotate: 0deg;
+            }
+        }
+
+        &:not(:last-child) {
+            .header {
+                border-bottom: $color-gray-alto solid 1px;
+
+                &.active {
+                    border: 0;
+                }
+            }
+        }
+    }
+
+    .longue-container {
+        width: 80%;
+        min-height: 147px;
+        overflow: hidden;
+        margin-bottom: -5px;
+        animation: LongAnimation 0.5s ease-in;
+    }
+
+    .theme-container {
+        @include dimensions(80%, 90px);
+        overflow: hidden;
+        animation: ThemeAnimation 0.5s ease-in;
+    }
+
+    .map-container {
+        display: block;
+        min-height: 330px;
+
+        .location-container {
+            padding: 0;
+
+            .saved-adresses-area {
+                .saved-adresses-title {
+                    @include fontSize(20px, 20px);
+                }
+            }
+
+            .location-filtre {
+                margin: 0 0 20px;
+                gap: 45px;
+
+                .select {
+                    width: 100%;
+                    height: 43px;
+                    gap: initial;
+                    padding: 5px;
+                    @include border(2px, $color-blue-pelorous);
+
+                    label {
+                        @include fontSize(18px, 18px);
+                    }
+
+                    &.selected {
+                        background-color: $color-yellow-saffron;
+                        border-color: $color-yellow-saffron;
+                    }
+                }
+            }
+        }
+
+        .container-map {
+            min-height: 447px;
+            padding: 4px 43px 0 20px;
+        }
+    }
+}
+
+/* # $Mobile ::
+------------------------------------*/
+
+@media (max-width: 1440px) {
+    .profile-page-wrapper {
+        .profile-title-page {
+            margin: 0 0 43px;
+            @include fontSize(16px, 16px);
+        }
+    }
+}
+@media only screen and (max-width: 1200px) {
+    .config-page {
+        padding: 40px 40px;
+
+        .setting {
+            .header {
+                .title {
+                    font-size: 15px;
+                }
+
+                .icon {
+                    @include dimensions(40px, 33px);
+                }
+            }
+        }
+    }
+}
+
+@media only screen and (max-width: 992px) {
+    .config-page {
+        padding: 40px 40px;
+        margin-right: 40px;
+
+        .setting {
+            .header {
+                .title {
+                    font-size: 13px;
+                }
+
+                .icon {
+                    @include dimensions(23px, 28px);
+                }
+            }
+        }
+    }
+}
+
+@media only screen and (max-width: 768px) {
+    .config-page {
+        margin-right: 26px;
+    }
+}
+
+@media only screen and (max-width: 600px) {
+    .config-page {
+        margin: 150px auto 0 auto;
+        width: 90%;
+    }
+}
+
+@media only screen and (max-width: 576px) {
+    .config-page {
+        gap: 20px;
+    }
+}

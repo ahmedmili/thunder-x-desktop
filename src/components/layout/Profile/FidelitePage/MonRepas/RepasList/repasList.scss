@@ -1,0 +1,106 @@
+@import '../../../../../../colors';
+
+
+@keyframes fadeIn {
+    0% {
+        opacity: 0;
+    }
+
+    100% {
+        opacity: 1;
+    }
+}
+
+.repas-List {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    animation: fadeIn 1s;
+    padding-bottom: 50px;
+    
+    .repas-header {
+        width: 100%;
+        height: 41px;
+        margin-top: 20px;
+        border-radius: 15px;
+        background-color: white;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 0 28px;
+        transition: background-color 100ms;
+
+        span {
+            color: #958E8E;
+            font-family: Poppins;
+            font-size: 18px;
+            font-style: normal;
+            font-weight: 500;
+            line-height: normal;
+        }
+
+        .icon {
+            color: #958E8E;
+            font-size: 20px;
+            width: 25px;
+            height: 25px;
+            rotate: 90deg;
+            transition: transform 1s ;
+            &.active {
+              transform: rotate(90deg);
+                
+            }
+        }
+
+        .active {
+
+            .icon {
+                rotate: 180deg;
+            }
+        }
+        img{
+            border-radius: 50%;
+            width: 81px;
+            object-fit: cover;
+        }
+    }
+
+    .active-header {
+        background-color: #5DBDBC;
+
+        span,
+        .icon {
+            color: white;
+        }
+    }
+
+    .command-info-container {
+        width: 100%;
+        margin: 50px 0;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        padding: 0 10px;
+
+        .devider {
+            width: 1px;
+            height: 84px;
+            background-color: #D9D9D9;
+        }
+    }
+
+}
+
+@media only screen and (max-width:900px) {
+    .repas-List{
+        .repas-header{
+            justify-content: space-between;
+            span{
+                text-align: center;
+                font-size: 15px;
+            }
+        }
+    }
+}

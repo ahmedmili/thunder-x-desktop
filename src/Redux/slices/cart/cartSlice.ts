@@ -1,22 +1,30 @@
-import { createSlice, PayloadAction, createAsyncThunk } from '@reduxjs/toolkit';
+import { PayloadAction, createAsyncThunk, createSlice } from '@reduxjs/toolkit';
+import { localStorageService } from '../../../services/localStorageService';
 import { FoodItem } from '../../../services/types';
 
 interface CartState {
   items: FoodItem[];
   deliveryOption: 'delivery' | 'pickup' | 'surplace';
   comment: string;
+  codePromo: string;
   supplierMismatch: FoodItem | null;
   supplier: any | null;
   deliveryPrice: number;
+  openHeaderCart: boolean;
+  notifHeaderCart: any;
+
 }
 
 const initialState: CartState = {
   items: [],
   deliveryOption: 'delivery',
   comment: '',
+  codePromo: '',
   supplierMismatch: null,
   supplier: null,
   deliveryPrice: 0,
+  openHeaderCart: false,
+  notifHeaderCart: []
 };
 
 export const addItem = createAsyncThunk<FoodItem, FoodItem>(
@@ -35,6 +43,8 @@ const cartSlice = createSlice({
   initialState,
   reducers: {
     setSupplier: (state, action) => {
+      localStorageService.setSupplier(action.payload)
+
       state.supplier = action.payload;
     },
     setDeliveryPrice: (state, action) => {
@@ -44,8 +54,10 @@ const cartSlice = createSlice({
       state.items = [];
       state.deliveryOption = 'delivery';
       state.comment = '';
-      localStorage.removeItem('comment');
-      localStorage.removeItem('cart_items');
+      state.codePromo = '';
+      localStorageService.unsetComment();
+      localStorageService.unsetCodePromo();
+      localStorageService.unsetCart();
     },
     setCartItems: (state, action: PayloadAction<FoodItem[]>) => {
       state.items = action.payload;
@@ -55,20 +67,39 @@ const cartSlice = createSlice({
       action: PayloadAction<{ itemId: number; quantity: number }>
     ) => {
       const { itemId, quantity } = action.payload;
-      const item = state.items.find((item) => item.id === itemId);
+      const item = state.items.find((item) => item.product.id === itemId);
 
       if (item) {
         item.quantity = quantity;
+        item.total = quantity * item.unitePrice
       }
+      localStorageService.setCart(state.items)
     },
-    removeItem: (state, action: PayloadAction<FoodItem>) => {
-      const index = state.items.findIndex(
-        (item) => item.id === action.payload.id
+    removeItemWithIndex: (state, action: PayloadAction<{ index: number }>) => {
+      const indexToRemove = action.payload.index
+      state.items.splice(indexToRemove, 1);
+      localStorageService.setCart(state.items)
+    },
+    removeItem: (state, action: PayloadAction<{ id: number }>) => {
+      const idToRemove = action.payload.id
+      const updatedItems = state.items.filter(
+        (item) => item.product.id !== idToRemove
       );
-      if (index !== -1) {
-        state.items.splice(index, 1);
-      }
+      state.items = updatedItems;
+      localStorageService.setCart(updatedItems)
     },
+    addNotifHeaderCart: (state, action: PayloadAction<{ items: any[] }>) => {
+      const notifHeaderCart = action.payload.items
+      state.notifHeaderCart = notifHeaderCart;
+    },
+    removeNotifHeaderCart: (state) => {
+      state.notifHeaderCart = [];
+    },
+    handleCartState: (state, action) => {
+      state.openHeaderCart = action.payload;
+    },
+
+    ///////////
     setDeliveryOption: (
       state,
       action: PayloadAction<'delivery' | 'pickup' | 'surplace'>
@@ -77,6 +108,9 @@ const cartSlice = createSlice({
     },
     setComment: (state, action: PayloadAction<string>) => {
       state.comment = action.payload;
+    },
+    setCodePromo: (state, action: PayloadAction<string>) => {
+      state.codePromo = action.payload;
     },
     setSupplierMismatch: (state, action: PayloadAction<FoodItem>) => {
       state.supplierMismatch = action.payload;
@@ -95,17 +129,15 @@ const cartSlice = createSlice({
 
       if (
         state.items.length > 0 &&
-        state.items[0].supplier_id !== newItem.supplier_id
+        state.items[0].supplier_data.supplier_id !== newItem.supplier_data.supplier_id
       ) {
         state.supplierMismatch = newItem;
       } else {
         const existingItemIndex = state.items.findIndex((item) => {
           return (
-            item.name === newItem.name &&
-            JSON.stringify(item.obligatoryOptions) ===
-              JSON.stringify(newItem.obligatoryOptions) &&
-            JSON.stringify(item.optionalOptions) ===
-              JSON.stringify(newItem.optionalOptions)
+            item.product.name === newItem.product.name &&
+            JSON.stringify(item.options) ===
+            JSON.stringify(newItem.options)
           );
         });
 
@@ -121,15 +153,20 @@ const cartSlice = createSlice({
 
 export const {
   setCartItems,
+  removeItemWithIndex,
   removeItem,
   setDeliveryOption,
   setComment,
+  setCodePromo,
   changeItemQuantity,
   clearCart,
   setSupplierMismatch,
   clearSupplierMismatch,
   setSupplier,
   setDeliveryPrice,
+  handleCartState,
+  removeNotifHeaderCart,
+  addNotifHeaderCart,
 } = cartSlice.actions;
 
 export default cartSlice.reducer;

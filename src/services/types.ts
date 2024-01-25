@@ -1,3 +1,15 @@
+export interface AppProps {
+  initialData?: any;
+}
+
+export interface User {
+  firstname: string;
+  lastname: string;
+  email: string;
+  password: string;
+  confirm_password: string;
+  phone: string;
+}
 export interface IUser {
   token: any;
   name: string;
@@ -7,14 +19,18 @@ export interface IUser {
   __v: number;
 }
 export interface FoodItem {
-  id: number;
-  name: string;
-  price: number;
-  image: any;
-  supplier_id: any;
+  supplier_data: {
+    supplier_id: number,
+    supplier_name: string,
+    delivery_price: number,
+  },
+  product: Product;
+  options: Option[];
   quantity: number;
-  obligatoryOptions: Option[];
-  optionalOptions: Option[];
+  total: number;
+  unitePrice: number;
+  default_price: number;
+
 }
 
 export interface Option {
@@ -33,12 +49,18 @@ export type MenuData = {
   position: number;
   image: string;
   price: number;
+  is_discount?: boolean;
+  discount_value?: number;
   products: Array<{
     id: number;
     name: string;
     description: string;
     price: number;
     image: any;
+    is_popular?: number;
+    discount_type?: string;
+    discount_value?: number;
+    discount_price?: number;
   }>;
 };
 export interface IGenericResponse {
@@ -53,6 +75,107 @@ export type Position = {
     label: string | null;
   };
 };
+export type Coupon = {
+  action: string;
+  apply_on: string;
+  client_id: number | null;
+  client_quantity: number | null;
+  clients: [];
+  code_coupon: string;
+  created_at: string | Date;
+  currency: null;
+  days: number;
+  deleted_at: null;
+  delivery_fixed: number;
+  description: string;
+  end_date: string;
+  extra_delivery_fixed: number;
+  frais_port: number;
+  id: number;
+  montant_min: number | null;
+  nbr_commands: number;
+  quantity: number;
+  regionsPromo: [];
+  start_date: string | Date;
+  status: number;
+  taxe: number | null;
+  title: string;
+  trigger: string;
+  type: string;
+  updated_at: string | Date;
+  value: number;
+};
+export interface Ads {
+  adsarea: { id: number, title: string },
+  cover: String,
+  id: number,
+  region_id: number,
+  end_date: String | Date,
+  start_date: String | Date,
+  image: String,
+  status: String,
+  type: String,
+  menu: MenuData | null;
+  product: FoodItem | null;
+}
+export type Announce = {
+  created_at: string | Date;
+  description: string;
+  end_date: string | Date;
+  id: number;
+  menu: MenuData | null;
+  notif_tentative: 0;
+  product: null;
+  read: string
+  start_date: string | Date;
+  status: string;
+  supplier: null;
+  time: string;
+  title: string;
+  updated_at: string | Date;
+};
+
+export interface Product {
+  id: number;
+  available: number;
+  description: string;
+  discount_price: number;
+  discount_source: string;
+  discount_type: string;
+  discount_value: number;
+  computed_value?: {
+    available: number;
+    description: string;
+    discount_price: number;
+    discount_source: string;
+    discount_type: string;
+    discount_value: number;
+    id: number;
+  }
+  image: [{
+    id: number;
+    created_at: string | null;
+    deleted_at: string | null;
+    updated_at: string | null;
+    name: string;
+    path: string;
+    user_id: number
+  }];
+  is_popular: number;
+  name: string;
+  options: Option[]
+  options_max: [{
+    id: number;
+    max: number;
+    type_option: string;
+  }];
+  position: number;
+  price: number;
+  default_price?: number;
+  quantity?: number;
+  old_value?: number;
+  cost?: number;
+}
 
 export interface Restaurant {
   cashout: string;
@@ -104,4 +227,32 @@ export interface Restaurant {
   priceRange: number;
   rating: number;
   plates: string[];
+  favor?: boolean;
+  bonus?: number;
+  is_popular?: number;
+  discount_type?: string;
+  discount_value?: number;
+  discount_price?: number;
+}
+
+export interface Message {
+  id?: number;
+  clinet_id?: number;
+  send?: number;
+  created_at?: string;
+  updated_at?: string;
+  date?: string;
+  deleted_at?: string;
+  read_at?: string;
+  displayDate?: boolean;
+  message: string;
+}
+
+export interface Schedule {
+  created_at: string;
+  day: string;
+  from: string;
+  status: string;
+  to: string;
+  id: number;
 }

@@ -1,0 +1,31 @@
+.btn {
+  outline: 0;
+  background: var(--primaryColor);
+  color: var(--white);
+  font-family: var(--fontPrimary);
+  border-radius: 50px;
+  border: 1px solid transparent;
+  font-size: 1.44rem;
+  font-style: normal;
+  font-weight: 600;
+  line-height: normal;
+  padding: 0.8rem;
+  cursor: pointer;
+  display: block;
+  width: 100%;
+  margin: 1rem 0;
+  transition: all ease 0.4s;
+  &:focus,
+  &:hover {
+    transition: all ease 0.2s;
+    background: var(--white);
+    border-color: var(--primaryColor);
+    color: var(--primaryColor);
+  }
+}
+@media (min-width: 992px) {
+  .btn {
+    font-size: 1.8rem;
+    padding: 1rem;
+  }
+}

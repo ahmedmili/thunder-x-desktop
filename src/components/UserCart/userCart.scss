@@ -1,0 +1,143 @@
+@import '../../scss/extend';
+@import '../../animations';
+
+.profile-cart-main {
+  width: 100%;
+  height: 100%;
+  border-radius: 15px;
+  padding: 20px 20px;
+  background-color: $color-white;
+  animation: cart-animation 0.3s ease-in-out;
+
+  p {
+    margin: 0;
+    padding: 0;
+  }
+
+  header {
+    @include flex(flex, start, center);
+    margin: 0 0 40px;
+
+    .profile-info {
+      max-width: 150px;
+      margin: 0 auto;
+      display: block;
+
+      .profile-info_img-blc {
+        margin: 0 auto 14px;
+        @include dimensions(95px, 95px);
+        @include flex;
+        overflow: hidden;
+
+        img {
+          @include dimensions(100%, 100%);
+          object-fit: cover;
+        }
+      }
+      .welcome-msg {
+        text-align: center;
+        font-family: 'Poppins-SemiBold', serif;
+        @include fonts(16px, 16px, $dark_002);
+        margin: 0 0 5px;
+      }
+      .full-name {
+        text-align: center;
+        font-weight: weight(regular);
+        font-family: 'Poppins-Regular', serif;
+        @include fonts(17px, 17px, $orange_color);
+        margin: 0 0 5px;
+      }
+    }
+
+    .close-btn {
+      @include dimensions(25px, 25px);
+      background-image: url('./../../assets/modale-close-black-icn.svg');
+      background-repeat: no-repeat;
+      background-size: 15px auto;
+      background-position: center;
+      position: static;
+
+      &:hover {
+        cursor: pointer;
+        opacity: .9;
+      }
+    }
+  }
+
+  main {
+    margin: 0;
+    padding-bottom: 15px;
+
+    .link-list {
+      display: flex;
+      gap: 10px;
+      position: relative;
+
+      .profile-list-icon {
+        background-position: center;
+        background-repeat: no-repeat;
+        background-size: 100%;
+        width: 18px;
+        height: 18px;
+      }
+      .notif-indicator {
+        position: absolute;
+        border-radius: 50%;
+        top: 5px;
+        left: 25px;
+        height: 12px;
+        width: 12px;
+        background-color: red;
+      }
+      a {
+        @include fonts(14px, 14px, $dark_Gray);
+        font-family: 'Poppins-Medium', serif;
+      }
+    }
+
+    .info-list {
+      ul {
+        padding-left: 64px;
+        list-style: none;
+        display: flex;
+        flex-direction: column;
+        justify-content: start;
+        gap: 20px;
+        border-bottom: solid 1px $color-gray-mercury;
+        padding-bottom: 28px;
+        margin-bottom: 14px;
+      }
+    }
+
+    .disconnect {
+      padding-left: 64px;
+    }
+
+  }
+
+
+}
+
+@media only screen and (max-width: 768px) {
+  .profile-cart-main {
+    main {
+      .info-list {
+        ul {
+          padding-left: 28px;
+        }
+      }
+    }
+  }
+}
+
+@media only screen and (max-width: 600px) {
+  .profile-cart-main {
+    padding: 20px 20px;
+  }
+}
+
+@media only screen and (max-height : 600px) {
+  .profile-cart-main {
+    height: 80%;
+  }
+}

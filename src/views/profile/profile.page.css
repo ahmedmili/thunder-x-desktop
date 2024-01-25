@@ -1,0 +1,8 @@
+.div-container{
+        background-color: #ece9e9;
+        margin-top: 2rem;
+        height: 15rem;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+}

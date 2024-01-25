@@ -1,0 +1,66 @@
+@import '../../../_colors.scss';
+@import '../../../animations';
+
+
+
+.popup-container {
+    height: 100vh;
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: rgba(0, 0, 0, 0.527);
+    position: fixed;
+    top: 0;
+    right: 0;
+    z-index: 999;
+
+    .popup-box {
+        width: 800px;
+        height: 537px;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        gap: 25px;
+        border-radius: 222px;
+        background-color: $Off-White;
+        animation: $PopupAnimation 0.5s ease-out;
+    }
+
+    p {
+        color: $light_Gray;
+        text-align: center;
+        font-family: Poppins;
+        font-size: 16px;
+        font-style: normal;
+        font-weight: 500;
+        line-height: normal;
+        width: 395px;
+        height: 61px;
+        &.title{
+            font-family: Poppins;
+            font-size: 30px;
+            font-style: normal;
+            font-weight: 700;
+            line-height: normal;
+        }
+    }
+    img{
+      width: 30%;
+    }
+    .close-btn {
+      color: $orange_color;
+      width: 19px;
+      height: 19px;
+      font-size: 19px;
+      margin-left: auto;
+      margin-right: 20%;
+      &:hover {
+        cursor: pointer;
+      }
+      .close-icon{
+        font-size: 29px;
+      }
+    }
+}

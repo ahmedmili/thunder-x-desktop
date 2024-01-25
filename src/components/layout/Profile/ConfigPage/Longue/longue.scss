@@ -1,0 +1,69 @@
+@import '../../../../../scss/extend';
+
+.long-section {
+    width: 80%;
+    @include flex(flex, start, center);
+    flex-direction: column;
+    gap: 25px;
+    padding: 28px 5px;
+
+    .option-container {
+        display: flex;
+        gap: 17px;
+        align-items: center;
+
+        label {
+            font-family: 'Poppins-SemiBold', serif;
+            @include fonts(17px, 17px, $dark_Gray);
+        }
+        .form-check-input {
+            &[type="radio"] {
+                margin-top: 0;
+                font-size: 15px;
+                @include dimensions(18px, 18px);
+                background-color: $color-white;
+                position: relative;
+                --bs-form-check-bg-image: none;
+
+                &::after {
+                    content: '';
+                    @include border(2px, $dark_Gray);
+                    @include dimensions(20px, 20px);
+                    position: absolute;
+                    top: -2px;
+                    left: -2px;
+                    border-radius: 50%;
+                }
+                &:checked~.form-check-label {
+                    color: $Ocean_Teal;
+                }
+                &:checked {
+                    background-color: $primary_color;
+                    @include border(3px, $color-white);
+        
+                    &::after {
+                        border-color: $color-blue-half;
+                        top: -4px;
+                        left: -4px;
+                    }
+                }
+            }
+        }
+    }
+}
+
+/* # $Mobile ::
+------------------------------------*/
+
+@media only screen and (max-width: 576px) {
+    .long-section {
+        .option-container {
+            label {
+                color: $light_Gray;
+                font-family: 'Poppins-SemiBold', serif;
+                font-size: 14px;
+                line-height: normal;
+            }
+        }
+    }
+}

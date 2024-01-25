@@ -1,0 +1,40 @@
+stages:
+  - deploy-staging
+  - deploy-preprod
+
+deploy-staging:
+  stage: deploy-staging
+  only:
+    - develop
+  tags:
+    - stagging
+  script:
+    - echo "copying repo files to project directory"
+    - cd $CI_PROJECT_DIR
+    - pwd
+    - cp -r ./* /var/www/html/thunder-website2
+    - cp -r -f /var/www/html/thunderweb.env /var/www/html/thunder-website2/.env
+    - cd /var/www/html/thunder-website2
+    - yarn
+    - export CI=false
+    - npm run build
+    - cp -r -f $CI_PROJECT_DIR/.htaccess /var/www/html/thunder-website2/dist/client/.htaccess
+
+deploy-staging:
+  stage: deploy-preprod
+  only:
+    - master
+  tags:
+    - preprod
+  script:
+    - echo "copying repo files to project directory"
+    - cd $CI_PROJECT_DIR
+    - pwd
+    - cp -r ./* /var/www/html/thunderweb-preprod
+    - cp -r -f /var/www/html/thunderweb.env /var/www/html/thunderweb-preprod/.env
+    - cd /var/www/html/thunderweb-preprod
+    - yarn
+    - export CI=false
+    - npm run build
+    - cp -r -f $CI_PROJECT_DIR/.htaccess /var/www/html/thunderweb-preprod/dist/client/.htaccess
+

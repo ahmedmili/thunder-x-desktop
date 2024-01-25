@@ -1,0 +1,52 @@
+@import "../../../../scss/extend";
+.cle-filter-container {
+    &__title {
+        color: $dark_Gray;
+        font-family: Poppins;
+        font-size: 17px;
+        font-style: normal;
+        font-weight: 600;
+        line-height: normal;
+        margin-bottom: 24px;
+    }
+    &__list{
+        list-style: none;
+        padding: 0;
+        margin:0;
+        display: flex;
+        flex-wrap: wrap;
+        gap: 12px;
+        &__item{
+            .form-check{     
+                padding: 0;     
+                width: fit-content;     
+                .radio-button{
+                    transition: all 0.3s ease-in-out;
+                    color: $dark_Gray;
+                    font-family: Poppins;
+                    font-size: 16px;
+                    font-style: normal;
+                    font-weight: 400;
+                    line-height: normal;
+                    padding: 2px 12px;
+                    background-color: $shade_Gray;
+                    border-radius: 20px;
+                    text-align: center;
+                    cursor: pointer;
+                    min-width: 100px;
+                }
+                .btn-check{
+                    appearance: none;
+                    -webkit-appearance: none;
+                    -moz-appearance: none;                   
+                    position: initial;
+                    &:checked~.radio-button {
+                        color: $color-white;
+                        background-color: $shade-reddish-orange;
+                    }
+                }
+            }            
+        }
+    }    
+}
+

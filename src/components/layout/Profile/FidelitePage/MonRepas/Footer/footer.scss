@@ -1,0 +1,74 @@
+@import '../../../../../../scss/extend';
+
+@keyframes fadeIn {
+    0% {
+        opacity: 0;
+    }
+
+    100% {
+        opacity: 1;
+    }
+}
+
+.repas-footer-container {
+    animation: fadeIn 1s;
+    background-color: $color-yellow-sidecar;
+    border-radius: 10px;
+    display: block;
+    padding: 26px;
+
+    .footer-title-container {
+        border-radius: 0;
+        min-height: initial;
+        padding: 0;
+        background-color: transparent;
+        margin: 0 0 10px;
+
+        p {
+            margin: 0;
+            @include fonts(14px, 14px, $dark_Gray);
+            font-family: 'Poppins-Medium', serif;
+        }
+    }
+    .footer-descirtion {
+        padding: 0;
+        min-height: initial;
+        max-height: initial;
+        overflow: initial;
+        background-color: transparent;
+
+        p {
+            margin: 0;
+            @include fonts(14px, 20px, $dark_Gray);
+            font-family: 'Poppins', serif;
+            font-weight: weight(regular);
+        }
+    }
+}
+
+/* # $Mobile ::
+------------------------------------*/
+
+@media only screen and (max-width:1200px) {
+    .tompons-container {
+        .tompons-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+        }
+    }
+}
+
+@media only screen and (max-width:800px) {
+    .tompons-container {
+        overflow-y: scroll;
+        height: 348px;
+
+        &::-webkit-scrollbar {
+            width: 0;
+        }
+        .tompons-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+        }
+    }
+}

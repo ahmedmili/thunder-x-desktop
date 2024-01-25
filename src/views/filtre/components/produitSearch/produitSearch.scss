@@ -1,0 +1,75 @@
+@import "../../../../scss/extend";
+
+.search-filter-container {
+    width: 100%;
+    &__input{
+        position: relative;
+        .search-input{
+            width: 100%;
+            line-height: 33px;
+            padding:16px 88px;
+            color: $dark_002;            
+            font-family: 'Poppins-Regular', serif;
+            font-size: 18px;
+            font-style: normal;
+            font-weight: 400;
+            line-height: normal;
+            border-radius: 10px;
+            background: $light-blue;
+            border: none;
+            box-shadow: none;
+
+            &:focus{
+                border: none;
+                outline: none;
+            }
+            &::placeholder{
+                color: $dark_002;
+            }
+        }
+        .text-search-icon{
+            color: $dark_002;
+            position: absolute;
+            left: 32px;
+            top: 18px;
+            font-size: 26px;
+        }       
+        .search-icon{
+            display: inline-block;
+            width: 42px;
+            height: 42px;
+            background-color: $color-blue-pelorous;
+            border-radius: 50px;
+            position: absolute;
+            top: 9px;
+            right: 15px;
+            background-image: url("/src/assets/icons/arrow-2.svg");
+            background-repeat: no-repeat;
+            background-position: center;
+            background-size: 25px;
+        }
+    }  
+}
+
+/* # $Mobile ::
+------------------------------------*/
+
+@media (max-width: 1440px) {
+    .search-filter-container__input {
+        .search-input {
+            padding: 13px 70px;
+            font-size: 15px;
+        }
+        .text-search-icon {
+            left: 20px;
+            top: 13px;
+            font-size: 25px;
+        }
+        .search-icon {
+            @include dimensions(34px, 34px);
+            background-size: 20px;
+            top: 7px;
+        }
+    }
+}
+

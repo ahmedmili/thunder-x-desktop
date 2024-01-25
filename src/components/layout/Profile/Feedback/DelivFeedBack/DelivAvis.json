@@ -1,0 +1,27 @@
+{
+    "fr": [
+        "Le livreur n’était pas sympathique",
+        "Le livreur a fait beaucoup de retard",
+        "Le livreur s’est trompé d’adresse"
+    ],
+    "fr-FR": [
+        "Le livreur n’était pas sympathique",
+        "Le livreur a fait beaucoup de retard",
+        "Le livreur s’est trompé d’adresse"
+    ],
+    "en": [
+        "The delivery person was not friendly",
+        "The delivery person was very late",
+        "Le livreur s’est trompé d’adresse"
+    ],
+    "en-US": [
+        "The delivery person was not friendly",
+        "The delivery person was very late",
+        "The delivery person delivered to the wrong address"
+    ],
+    "ar": [
+        "السائق لم يكن وديًا",
+        "السائق تأخر كثيرًا",
+        "السائق أخطأ العنوان"
+    ]
+}

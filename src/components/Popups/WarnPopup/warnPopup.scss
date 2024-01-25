@@ -1,0 +1,103 @@
+@import '../../../_colors.scss';
+@import '../../../animations';
+
+@mixin min-height-media-query($max-height) {
+    @media screen and (max-height: #{$max-height}) {
+        @content;
+    }
+}
+
+@keyframes popup-animation {
+    0% {
+        scale: 0.5;
+        opacity: 0.5;
+    }
+
+    100% {
+        scale: 1;
+        opacity: 1;
+    }
+}
+
+.popup-overlay {
+    height: 100vh;
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: rgba(0, 0, 0, 0.527);
+    position: fixed;
+    top: 0;
+    right: 0;
+}
+
+.confirm-popup-container {
+    display: flex;
+    flex-direction: column;
+    gap: 22px;
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 817px;
+    height: 284px;
+    border-radius: 25px;
+    background: #FFF;
+    padding: 65px 65px 56px 65px;
+    animation: popup-animation 1s ease-in-out;
+
+    .confirm-message {
+        color: $dark_Gray;
+        font-family: Poppins;
+        font-size: 20px;
+        font-style: normal;
+        font-weight: 500;
+        line-height: normal;
+    }
+
+    .buttons {
+        display: flex;
+        gap: 50px;
+        width: 100%;
+
+        button {
+            flex: 1;
+            color: #FFF;
+            font-family: Poppins;
+            font-size: 18px;
+            font-style: normal;
+            font-weight: 600;
+            line-height: normal;
+            border-radius: 50px;
+            border: none;
+            height: 58px;
+        }
+
+        .confirm-accept {
+            background: $orange_color;
+        }
+
+        .confirm-refuse {
+            background: #BCBAB1;
+        }
+    }
+
+}
+
+@media only screen and (max-width:992px) {
+    .confirm-popup-container {
+        width: 70vw;
+        height: 284px;
+    }
+}
+
+@media only screen and (max-width:786px) {
+    .confirm-popup-container {
+        padding: 67px 41px 56px 41px;
+
+        .confirm-message {
+            font-size: 17px;
+            margin: 0;
+        }
+    }
+}

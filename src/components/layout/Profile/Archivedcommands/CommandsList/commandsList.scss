@@ -1,0 +1,149 @@
+@import '../../../../../scss/extend';
+
+@keyframes fadeIn {
+    0% {
+        opacity: 0;
+    }
+
+    100% {
+        opacity: 1;
+    }
+}
+
+.commands-List {
+    width: 100%;
+    display: block;
+    animation: fadeIn 1s;
+
+    .command-header {
+        height: 67px;
+        margin: 0 0 20px;
+        border-radius: 15px;
+        background-color: $color-white;
+        @include flex(flex, center, space-between);
+        gap: 10px;
+        padding: 15px 20px;
+        transition: background-color 0.5s;
+        @include border(1px, $color-gray-alto);
+        cursor: pointer;
+
+        .command-header_txt {
+            @include fonts(15px, 15px, $dark_Gray);
+            font-family: 'Poppins-Medium', serif;
+        }
+        .command-status {
+            min-width: 220px;
+            height: 33px;
+            border-radius: 15px;
+            @include flex;
+            @include fonts(15px, 15px, $color-white);
+            font-family: 'Poppins-Medium', serif;
+
+            &.processed {
+                background-color: $color-apricot;
+            }
+            &.preparation {
+                background-color: $color-yellow-saffron-2;
+            }
+            &.delivery {
+                background-color: $color-blue-pelorous;
+            }
+        }
+        .icon {
+            color: $dark_Gray;
+            font-size: 30px;
+            @include dimensions(30px, 30px);
+            rotate: 180deg;
+            transition: rotate 0.5s ease;
+        }
+
+        &.active-header {
+            border: 0;
+            box-shadow: 0px 2px 4px 5px #00000005;
+            border-radius: 25px 25px 0 0;
+            margin: 0;
+
+            .icon {
+                rotate: 0deg;
+            }
+        }
+    }
+    
+
+    .prev-next-buttons {
+        width: 100%;
+        display: flex;
+        justify-content: end;
+        margin-top: 27px;
+
+        .next-page-button,
+        .prev-page-button {
+            @include flex(flex, center, start);
+            padding-right: 15px;
+
+            button {
+                width: 28px;
+                height: 28px;
+                background-position: center;
+                background-repeat: no-repeat;
+                background-color: transparent;
+                border: none;
+                background-size: cover;
+            }
+        }
+
+        .next-page-button {
+            display: flex;
+            justify-content: end;
+            align-items: center;
+
+            button {
+                transform: rotate(180deg);
+            }
+        }
+    }
+    .command-body {
+        background-color: $color-white;
+        margin: 0 0 35px;
+        padding: 37px 40px;
+    }
+}
+
+.empty-cart-main {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    margin-top: 41px;
+
+    p {
+        width: 299px;
+        height: 46px;
+
+        color: $dark_Gray;
+        text-align: center;
+        font-family: Poppins;
+        font-size: 15px;
+        font-style: normal;
+        font-weight: 600;
+        line-height: normal;
+    }
+
+    .emptyButton {
+        border-radius: 55px;
+        background-color: $orange_color;
+        min-width: 271px;
+        height: 55px;
+        text-align: center;
+        color: #FFF;
+        font-family: Poppins;
+        font-size: 20px;
+        font-style: normal;
+        font-weight: 600;
+        line-height: normal;
+
+        &:hover {
+            cursor: pointer;
+        }
+    }
+}

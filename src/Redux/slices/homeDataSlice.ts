@@ -1,12 +1,13 @@
-import { createSlice } from '@reduxjs/toolkit';
+import { createSlice } from "@reduxjs/toolkit";
 
 const homeDataSlice = createSlice({
-  name: 'homeData',
+  name: "homeData",
   initialState: {
     data: null,
     loading: true,
     error: null,
     isDelivery: true, // new state property
+    refresh: false
   },
   reducers: {
     setData: (state, action) => {
@@ -22,14 +23,20 @@ const homeDataSlice = createSlice({
       // new action
       state.isDelivery = action.payload;
     },
+    setRefresh: (state, action) => {
+      state.refresh = action.payload;
+    },
   },
 });
 
-export const { setData, setLoading, setError, setIsDelivery } =
+export const { setData, setLoading, setError, setIsDelivery, setRefresh } =
   homeDataSlice.actions;
+
 export const selectHomeData = (state: { homeData: { data: any } }) =>
   state.homeData.data;
+
 export const selectIsDelivery = (state: {
   homeData: { isDelivery: boolean };
 }) => state.homeData.isDelivery;
+
 export default homeDataSlice.reducer;

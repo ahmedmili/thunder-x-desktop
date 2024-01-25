@@ -1,0 +1,149 @@
+@import '../../scss/extend';
+
+.time-picker-container {
+    @include dimensions(100%, 100%);
+    @include flex(flex, center, center);
+    flex-direction: column;
+
+    .time-picker-input {
+        @include dimensions(25vw, 100%);
+        min-width: auto;
+        // border-color: black;
+        // border-width: 5px;
+        // border-style: double;
+
+    }    
+}
+.calendar-header{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 20px;
+    padding-bottom: 25px;
+    padding-top: 25px;    
+    .btn-next{
+        width: 28px;
+        height: 28px;
+        background-image: url('/src/assets/btn-next.svg');
+        background-size: 28px;
+        background-repeat: no-repeat;
+        background-position: center;
+    }
+    .btn-prev {
+        width: 28px;
+        height: 28px;
+        background-size: 28px;
+        background-repeat: no-repeat;
+        background-position: center;
+        background-image: url('/src/assets/btn-prev.svg');
+    }
+    .btn-month{
+        color: #484848;        
+        font-family: Poppins;
+        font-size: 16px;
+        font-style: normal;
+        font-weight: 600;
+        line-height: normal;
+    }
+}
+.MuiDayCalendar-header {
+    border-bottom: 1px solid black;
+    margin-bottom: 19px;
+    .MuiDayCalendar-weekDayLabel {
+        color: #484848;
+        font-family: Poppins;
+        font-size: 13px;
+        font-style: normal;
+        font-weight: 500;
+        line-height: normal;
+        text-transform: uppercase;
+    }
+}
+.MuiMultiSectionDigitalClock-root{
+    max-height: 342px !important;
+}
+.MuiDialogActions-root{
+    .MuiButton-sizeMedium{
+        color: #484848;
+        font-family: Poppins;
+        font-size: 13px;
+        font-style: normal;
+        font-weight: 500;
+        line-height: normal;
+        text-transform: capitalize;
+        &:hover {
+            background-color: #D6EAEC !important;
+            color: #3BB3C4;
+        }
+    }
+}
+.MuiDateCalendar-root{
+    width: 400px !important;
+    min-height: 342px;
+    padding-inline: 20px;
+}
+.MuiDayCalendar-weekContainer, .MuiDayCalendar-header{
+    justify-content: space-between !important;
+    .MuiPickersDay-root {
+        color: #484848;
+        font-family: Poppins;
+        font-size: 13px;
+        font-style: normal;
+        font-weight: 500;
+        line-height: normal;
+        text-transform: uppercase;
+        &.Mui-selected{
+            background-color: #D6EAEC !important;
+            color: #3BB3C4;
+        }
+    }
+}
+.MuiList-root .MuiMultiSectionDigitalClockSection-item{
+    color: #484848;
+    font-family: Poppins;
+    font-size: 13px;
+    font-style: normal;
+    font-weight: 500;
+    line-height: normal;
+    text-transform: uppercase;
+    &.Mui-selected {
+        background-color: #D6EAEC !important;
+        color: #3BB3C4 !important;
+    }
+}
+.MuiYearCalendar-root{
+    width: 100% !important;
+    max-width: 100% !important;
+    .MuiPickersYear-yearButton{
+        color: #484848;
+        font-family: Poppins;
+        font-size: 13px;
+        font-style: normal;
+        font-weight: 500;
+        line-height: normal;
+        text-transform: uppercase;
+        border-radius: 0;
+        &.Mui-selected {
+            background-color: #D6EAEC !important;
+            color: #3BB3C4 !important;
+            border-radius: 0;
+        }
+    }
+}
+.MuiFormControl-root .MuiInputBase-input{
+    color: #484848;
+    font-family: Poppins;
+    font-size: 13px;
+    font-style: normal;
+    font-weight: 500;
+    line-height: normal;
+    text-transform: uppercase;
+    border-radius: 0;
+    
+}
+.MuiFormControl-root .MuiInputBase-root{
+    outline: none !important;
+   .MuiOutlinedInput-notchedOutline{
+    border-color: #958E8E !important;
+   }
+}

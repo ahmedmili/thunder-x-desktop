@@ -1,0 +1,13 @@
+
+.offre-bloc{
+    display: flex;
+    gap: 23px;
+    padding-top: 30px;
+    overflow-x: hidden;
+    margin-bottom: 38px;
+    .double-blox{
+        display: flex;
+        flex-direction: column;
+        gap: 21px;
+    }
+}

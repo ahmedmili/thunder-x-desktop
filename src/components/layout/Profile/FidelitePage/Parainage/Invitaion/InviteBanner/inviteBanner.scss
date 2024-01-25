@@ -1,0 +1,50 @@
+@import './../../../../../../../scss/extend';
+
+.invit-container {
+    height: 202px;
+    border-radius: 25px;
+    background: #F7D17E;
+    padding: 40px 40px auto auto !important;
+    display: flex;
+    flex-direction: column;
+    justify-content: start;
+    gap: 19px;
+    position: relative;
+
+    .invit-title {
+        color: #000;
+        font-family: Poppins;
+        font-size: 20px;
+        font-style: normal;
+        font-weight: 500;
+    }
+
+    .invit-button {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        gap: 7px;
+        padding: 8px 16px;
+        color: #000;
+        font-family: Poppins;
+        font-size: 17px;
+        font-style: normal;
+        font-weight: 500;
+        background-color: white !important;
+        height: 43px;
+        border-radius: 25px;
+        max-width: 334px;
+
+
+    }
+
+    .gift-icon {
+        width: 103.385px;
+        height: 112px;
+        position: absolute;
+        bottom: 0;
+        right: 0;
+
+    }
+
+}

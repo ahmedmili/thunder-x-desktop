@@ -1,0 +1,367 @@
+@import '../../../../scss/extend';
+
+@keyframes fadeIn {
+    0% {
+        opacity: 0;
+    }
+
+    100% {
+        opacity: 1;
+    }
+}
+
+.discuter-main-container {
+    width: 100%;
+    animation: fadeIn 1s;
+
+    .discuter-header {
+        padding: 0;
+        margin: 0 0 30px;
+        width: 100%;
+
+        img {
+            width: 100%;
+        }
+        .title-message {
+            color: #484848;
+            font-family: Poppins;
+            font-size: 24px;
+            font-style: normal;
+            font-weight: 700;
+            line-height: normal;
+            margin-bottom: 35px;
+        }
+
+        .cover-img {
+            width: 100%;
+            height: 300px;
+            background-position: center;
+            background-repeat: no-repeat;
+            object-fit: cover;
+            margin-bottom: 86px;
+        }
+    }
+
+    .discuter-main {
+        width: 100%;
+        display: block;
+        gap: initial;
+        padding: 0;
+        background-color: $color-white;
+        border-radius: 25px;
+
+        .aide-service {
+            flex: 1;
+            background-color: $color-white;
+            height: 381px;
+            padding: 30px 40px;
+            border-radius: 25px;
+
+            .title {
+                @include fonts(20px, 20px, $dark_Gray);
+                font-family: 'Poppins-Bold', serif;
+                margin: 0 0 38px;
+            }
+
+            .sub-title {
+                color: #484848;
+                font-family: Poppins;
+                font-size: 20px;
+                font-style: normal;
+                font-weight: 500;
+                line-height: normal;
+                margin: 0 0 42px 0;
+
+            }
+            .discuter-wrapper {
+                background-color: $color-gray-concrete;
+                border-radius: 10px;
+                padding: 30px;
+
+                .discuter-desc {
+                    margin: 0 0 35px;
+
+                    .title {
+                        @include fonts(20px, 20px, $dark_Gray);
+                        font-family: 'Poppins-SemiBold', serif;
+                        margin: 0 0 15px;
+                    }
+                    .sub-title {
+                        @include fonts(16px, 16px, $dark_Gray);
+                        font-family: 'Poppins-Medium', serif;
+                        margin: 0;
+                    }
+                }
+            }
+
+            .buttons {
+                display: flex;
+                flex-direction: initial;
+                width: 100%;
+                gap: 42px;
+                align-items: start;
+
+                button {
+                    border: none;
+                    border-radius: 25px;
+                    @include dimensions(100%, 55px);
+                    @include fonts(20px, 20px, $color-white);
+                    font-family: 'Poppins-Medium', serif;
+
+                    &.btn1 {
+                        background-color: $color-yellow-saffron-2;
+                    }    
+                }
+
+                
+                .support-client {
+                    padding: 13px 0;
+                    height: 55px;
+                    background-color: $color-blue-pelorous;
+                    display: flex;
+                    flex-direction: column;
+
+                    p {
+                        display: flex;
+                        gap: 17px;
+                        justify-content: center;
+
+                        .support-phone-icon {
+                            font-size: 20px;
+                            height: 20px;
+                            width: 20px;
+                        }
+                    }
+                }
+            }
+
+            .service-24 {
+                width: 80%;
+                height: 145px;
+                background-position: center;
+                background-repeat: no-repeat;
+                background-size: 100%;
+                object-fit: cover;
+            }
+        }
+    }
+
+    .bulles {
+        display: flex;
+        flex-direction: column;
+        position: fixed;
+        bottom: 22px;
+        right: 26px;
+        gap: 20px;
+        z-index: 1;
+
+        .messanger-popup-btn,
+        .phone-popup-btn {
+            width: 64px;
+            height: 64px;
+            background-position: center;
+            background-repeat: no-repeat;
+            background-size: cover;
+            background-color: transparent;
+            border: navajowhite;
+        }
+
+        .messanger-popup-btn {
+            position: relative;
+
+            .messanger-bull-notif-icon {
+                position: absolute;
+                right: 0;
+                top: 3px;
+                color: white;
+                background-color: #FBC000;
+                border-radius: 50%;
+                padding: 5px;
+                font-size: 11px;
+                margin: 0;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+            }
+        }
+
+    }
+
+    .discuter-messanger-popup {
+        bottom: 105px;
+        right: 50px;
+    }
+}
+
+/* # $Mobile ::
+------------------------------------*/
+
+@media (max-width: 1440px) {
+    .discuter-main-container {
+        .discuter-main {
+            .aide-service {                
+                .discuter-wrapper {
+                    padding: 24px;
+
+                    .discuter-desc {
+                        margin: 0 0 28px;
+
+                        .title {
+                            @include fontSize(16px, 16px);
+                            margin: 0 0 30px;
+                        }
+                        .sub-title {
+                            @include fontSize(13px, 13px);
+                        }
+                    }
+                }
+                .buttons {
+                    gap: 34px;
+
+                    button {
+                        height: 50px;
+                        @include fontSize(16px, 16px);
+
+                        &.support-client {
+                            height: 50px;
+                        }
+                    }
+                }
+            }
+        }
+    }
+}
+
+@media only screen and (max-height : 800px) {
+
+    .discuter-main-container .discuter-messanger-popup {
+        bottom: 48px;
+        right: 55px;
+    }
+}
+
+@media only screen and (max-width : 1200px) {
+
+    .discuter-main-container {
+        .discuter-main {
+
+            .aide-service {
+                .title {
+                    font-size: 19px;
+                }
+
+                .sub-title {
+                    font-size: 15px;
+                    margin: 0 0 17px 0;
+                }
+
+                .buttons {
+                    button {
+                        font-size: 13px;
+
+                        p {
+                            margin: 0;
+                        }
+                    }
+                }
+            }
+        }
+    }
+}
+
+@media only screen and (max-width : 900px) {
+
+    .discuter-main-container {
+        .discuter-main {
+            .aide-service {
+
+                padding-top: 26px;
+                padding-left: 15px;
+                padding-bottom: 0px;
+                height: 329px;
+
+                .title {
+                    font-size: 19px;
+                }
+
+                .sub-title {
+                    font-size: 15px;
+                    margin: 0 0 17px 0;
+                }
+            }
+
+            .aide-service {
+                .buttons {
+
+                    button {
+                        margin: 0 auto;
+                        font-size: 14px;
+                    }
+                }
+            }
+        }
+    }
+}
+
+@media only screen and (max-width : 768px) {
+
+    .discuter-main-container {
+        .discuter-header {
+            padding-right: 32px;
+        }
+
+        .discuter-main {
+            padding-right: 32px;
+            gap: 10px;
+
+            .aide-service {
+
+                padding-top: 26px;
+                padding-left: 15px;
+                padding-bottom: 0px;
+                height: 250px;
+
+                .title {
+                    font-size: 19px;
+                }
+
+                .sub-title {
+                    font-size: 11px;
+                    margin: 0 0 10px 0;
+                }
+
+                .service-24 {
+                    height: 74px;
+                }
+            }
+
+            .aide-service {
+                .buttons {
+
+                    gap: 6px;
+                    padding: 3px;
+
+                    button {
+                        font-size: 11px;
+                        height: 39px;
+                    }
+                }
+            }
+        }
+    }
+}
+
+@media only screen and (max-width : 600px) {
+
+    .discuter-main-container {
+        .discuter-header {
+            padding-right: 32px;
+            padding-left: 32px;
+        }
+
+        .discuter-main {
+            padding-right: 32px;
+            padding-left: 32px;
+        }
+    }
+}

@@ -1,0 +1,115 @@
+@import "../../../../scss/extend";
+
+.categories-filter-container {
+    position: relative;
+    padding-bottom: 38px;
+    border-bottom: 1px solid $color-gray-alto;
+    margin-bottom: 32px;
+    &__title {
+        color: $dark_Gray;
+        font-family: 'Poppins-SemiBold', serif;
+        font-size: 17px;
+        line-height: normal;
+        margin-bottom: 24px;
+        transition: all 0.3s ease-in-out;
+        &.collapsed{
+            margin-bottom: 0;
+        }
+    }
+    &__list {
+        transition: all 0.3s ease-in-out;
+        position: relative;
+        list-style: none;
+        padding: 0;
+        margin: 0;
+        min-height: fit-content;
+        &__item {
+            position: relative;
+            .form-check {
+                display: flex;
+                align-items: center;
+                gap: 10px;
+                padding-left: 18px;
+                margin-bottom: 12px;
+
+                .radio-btn {
+                    appearance: none;
+                    -webkit-appearance: none;
+                    -moz-appearance: none;
+                    @include dimensions(20px, 20px);
+                    @include border(2px, $color-morning-glory);
+                    border-radius: 50%;
+                    background-color: $color-white;
+
+                    &:checked {
+                        position: relative;
+                        border-color: $color-apricot;
+
+                        &:after {
+                            content: "";
+                            @include dimensions(10px, 10px);
+                            background-color: $color-apricot;
+                            position: absolute;
+                            border-radius: 50%;
+                            position: absolute;
+                            left: 3px;
+                            top: 3px;
+                        }
+                    }
+                }
+                .form-label {
+                    color: $dark_Gray;
+                    font-family: 'Poppins-Medium', serif;
+                    font-size: 18px;
+                    line-height: normal;
+                    margin-bottom: 0;                   
+                }
+                .toggle-icon {
+                    position: absolute;
+                    right: 0;
+                    top: 3px;
+                    font-size: 21px;
+                    color: $dark_Gray;
+                    transition: all 0.3s ease-in-out;
+                    cursor: pointer;
+                    &.open {
+                        transform: rotate(-90deg);
+                    }
+                }
+            }            
+            &--sub {
+                .form-check {
+                    .form-label {    
+                        font-weight: weight(regular);
+                    }
+                }
+            }
+        }
+        &--sub{
+            margin-left: 20px;
+            transition: all 0.3s ease-in-out;
+            overflow: visible;
+            &.hide{
+                opacity: 0;
+                overflow: hidden;
+                height: 0;
+            }           
+        }
+        &.hide {
+            opacity: 0;
+            overflow: hidden;
+        }
+    } 
+    &__collapse-icon {
+        position: absolute;
+        right: 0;
+        top: 3px;
+        font-size: 21px;
+        color: $dark_Gray;
+        transition: all 0.3s ease-in-out;
+        cursor: pointer;
+        &.open {
+            transform: rotate(-90deg);
+        }
+    }
+}

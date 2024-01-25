@@ -1,0 +1,1355 @@
+@import '../../scss/extend';
+@import '../../animations';
+
+.mapOverPlay {
+    @include flex;
+    flex-direction: column;
+    position: fixed;
+    top: 0;
+    left: 0;
+    @include dimensions(100vw, 100vh);
+    background-color: rgba(0, 0, 0, 0.5);
+    z-index: 990;
+}
+
+.header-overlay {
+    @include flex;
+    flex-direction: column;
+    position: fixed;
+    top: 0;
+    left: 0;
+    @include dimensions(100vw, 100vh);
+    // background-color: rgba(0, 0, 0, 0.5);
+    background-color: transparent;
+    z-index: 50;
+}
+
+.headerContainer {
+    padding-top: 75px;
+
+    @media (max-width: 1399.98px) {
+        margin-bottom: -80px;
+    }
+}
+
+.header {
+    padding-top: 0 !important;
+    margin-top: 0 !important;
+
+    .head1 {
+        position: absolute;
+        overflow: hidden;
+        top: 31%;
+        left: 0;
+        width: 91px;
+
+        .demiCercle {
+            z-index: 20;
+            @include dimensions(352px, 352px);
+            transform: translateX(-261.35px);
+            border-radius: 500px;
+            background: linear-gradient(180deg, $orange_color 0%, $orange_color 100%);
+        }
+
+        @media (max-width: 1399.98px) {
+            transform: scale(0.8);
+            left: 0;
+        }
+
+        @media (max-width: 1468px) {
+            transform: scale(0.8);
+            left: -28px;
+        }
+    }
+
+    .imageBuilderContainer {
+        position: relative;
+        z-index: 1;
+        padding: 0;
+        height: 600px;
+
+        .imageBuilder {
+            background-image: url('/src/assets/home/home-section-one-img.png');
+            background-size: contain;
+            background-repeat: no-repeat;
+            background-position: bottom right;
+            @include dimensions(570px, 610px);
+            border-radius: 0 0 292px 206px;
+            position: absolute;
+            right: -55px;
+            bottom: -2px;
+
+            &::before {
+                content: "";
+                @include dimensions(173px, 147px);
+                background-image: none;
+                background-size: contain;
+                background-position: center;
+                background-repeat: no-repeat;
+                display: block;
+                position: absolute;
+                top: 22%;
+                left: -154px;
+            }
+
+            &::after {
+                content: "";
+                @include dimensions(110px, 159px);
+                background-image: none;
+                background-size: 100%;
+                background-position: center;
+                background-repeat: no-repeat;
+                display: block;
+                position: absolute;
+                bottom: 13%;
+                left: -148px;
+            }
+        }
+
+        &::before {
+            content: "";
+            @include dimensions(566px, 500px);
+            background: linear-gradient(180deg, $color-yellow-ronchi -11.3%, $color-yellow-ronchi 111.3%);
+            background: transparent;
+            display: block;
+            z-index: -1;
+            position: absolute;
+            border-radius: 248.5px;
+            bottom: 0;
+            right: -28px;
+        }
+
+        &::after {
+            content: "";
+            @include dimensions(165px, 126px);
+            background-image: none;
+            background-size: 100%;
+            background-position: center;
+            background-repeat: no-repeat;
+            display: block;
+            position: absolute;
+            right: -78px;
+            top: 24%;
+        }
+    }
+}
+
+
+.fixedHeaderContainer {
+
+    background-color: $white_001;
+    height: 137px;
+    position: fixed;
+    top: 0;
+    left: 10%;
+    right: 10%;
+    bottom: 0;
+    padding: 9px 11px 9px 13px;
+    border-radius: 0 0 10px 10px;
+
+    z-index: 990;
+
+    .logoContainer {
+        cursor: pointer;
+        height: 100%;
+
+        .logoMain {
+            background-repeat: no-repeat;
+            display: inline-block;
+            background-image: url("/src/assets/icon.png");
+            @include dimensions(77px, 119px);
+        }
+    }
+
+    .appBar {
+        @include flex(flex, center, end);
+        height: 100%;
+        gap: 2px;
+        position: relative;
+
+        .LoadingButton {
+            padding: 0.4rem;
+            background-color: $primary_color;
+            border-radius: 20px;
+            border-width: 0;
+            color: $white_001;
+            font-weight: weight(medium);
+            @include dimensions(127px, 43px);
+            text-align: center;
+            font-size: 15px;
+
+            &:hover {
+                background-color: $primary_color_001;
+                transform: translateY(-2px);
+            }
+        }
+    }
+}
+
+.headerAppBar2 {
+    padding-top: 135px;
+
+    .headerMessage {
+        display: flex;
+        flex-direction: column;
+        margin: 0 0 35px;
+
+        .headerMessageSyle1 {
+            display: inline;
+            font-family: 'Poppins-Bold', serif;
+            @include fonts(50px, 50px, $color-white);
+            line-height: normal;
+
+            &:not(:last-child) {
+                margin: 0 0 10px;
+            }
+
+            .headerMessageSyle2 {
+                @include fontSize(45px, 45px);
+            }
+
+        }
+
+        .headerMessageSyle2 {
+            display: inline;
+            font-family: 'Poppins-Bold', serif;
+            @include fonts(54px, 54px, $color-yellow-saffron);
+        }
+    }
+}
+
+.switches-area {
+    height: 43px;
+}
+
+.headerLocalisationMessageContainer {
+    margin: 5px 0;
+    display: flex;
+    padding: 22px 0;
+    flex-direction: column;
+    cursor: initial;
+
+    p {
+        font-family: 'Poppins-Bold', serif;
+        @include fonts(17px, 17px, $color-white);
+        line-height: normal;
+    }
+    a {
+        font-family: 'Poppins-Bold', serif;
+        @include fonts(17px, 17px, $color-white);
+        line-height: normal;
+        transition: color 1s;
+        @include flex(flex, center, start);
+        gap: 19px;
+
+        .pin-icon {
+            font-size: 24px;
+        }
+
+        &:hover {
+            text-decoration: underline;
+            color: $color-white;
+        }
+
+        .localisationIcon {
+            background-image: url('/src/assets/icons/map-white.svg');
+            @include dimensions(15px, 21px);
+            background-size: contain;
+            background-position: center;
+            background-repeat: no-repeat;
+        }
+    }
+}
+
+.minimizedFixedHeaderContainer {
+    height: 62px;
+    padding: 0;
+
+    .minimizedlogoMain {
+        height: 100% !important;
+        background-size: 32%;
+        background-position: center;
+        background-repeat: no-repeat;
+    }
+}
+
+.fixedHeaderContainer2 {
+    position: fixed;
+    top: 0;
+    left: 10%;
+    right: 10%;
+    bottom: 0;
+    z-index: 978;
+    background-color: transparent;
+    height: 110px;
+    padding: 15px;
+    border-radius: 0px 0px 20px 20px;
+    transition: box-shadow 0.3s ease-in-out;
+    min-width: 1024px;
+    >.container {
+        @include flex(flex, center, space-between);
+        padding: 0;
+    }
+
+    .header-buttons {
+        @include flex(flex, center, end);
+        gap: 20px;
+
+        .LoadingButton {
+            background-color: $color-blue-pelorous;
+            border-radius: 30px;
+            min-width: 141px;
+            height: 40px;
+            @include flex;
+            @include fonts(15px, 15px, $color-white);
+            @include border(1px, $color-blue-pelorous);
+            font-family: 'Poppins-SemiBold', serif;
+            cursor: pointer;
+            box-shadow: 4px 4px 19px 0px $color-blue-casal;
+            transition: all .3s;
+
+            &:hover {
+                color: $color-blue-pelorous;
+                background-color: $color-white;
+                opacity: 1;
+            }
+
+            &.header-signup {
+                font-family: "Poppins-Bold", serif;
+                color: $color-blue-eastern;
+                background-color: $color-white;
+                min-width: initial;
+                height: initial;
+                transition: .5s;
+                position: relative;
+                border: 0;
+
+                &::after {
+                    position: absolute;
+                    content: "";
+                    top: 19px;
+                    left: 0;
+                    @include dimensions(100%, 2px);
+                    background: $color-blue-eastern;
+                    transform: scaleX(0);
+                    transform-origin: right;
+                    transition: transform .5s;
+                }
+
+                &:hover {
+                    &::after {
+                        transform: scaleX(1);
+                        transform-origin: left;
+                    }
+                }
+            }
+        }
+    }
+
+    .logoContainer {
+        cursor: pointer;
+
+        .logoMain {
+            background-repeat: no-repeat;
+            display: inline-block;
+            background-image: url('/src/assets/logo-thunder.svg');
+            background-position: center;
+            background-size: contain;
+            @include dimensions(210px, 77px);
+        }
+    }
+
+    .info {
+        height: 80%;
+        @include flex(flex, center, end);
+        gap: 20px;
+
+        .position {
+            font-family: 'Poppins-Medium', serif;
+            @include fonts(15px, 15px, $color-white);
+            @include flex(flex, center, flex-start);
+            gap: 7px;
+            margin-right: 10px;
+            border-radius: 55px;
+            padding: 12px 26px 12px 50px;
+            height: 43px;
+            min-width: 270px;
+            background-color: $color-gray-alto;
+            background-repeat: no-repeat;
+            background-position: 22px center;
+            background-size: 15px auto;
+
+            .headerLocalisationMessageContainer {
+                padding: 0;
+                margin: 0px;
+
+                .top-bar-location {
+                    color: $dark_Gray;
+                    font-family: 'Poppins-Medium', serif;
+                    font-size: 15px;
+                }
+            }
+
+            .position-icon {
+                font-size: 21px;
+                color: $color-white;
+            }
+        }
+
+        .account,
+        .search {
+            margin: 3px 0;
+        }
+
+        .account {
+            color: $primary_color;
+            position: relative;
+
+            .notif-number-container {
+                position: absolute;
+                top: 0;
+                right: 0;
+                padding: 0 5px;
+                background-color: red;
+                @include fonts(8px, 8px, $color-white);
+                font-weight: weight(regular);
+                border-radius: 50%;
+                text-align: center;
+            }
+
+            &:hover {
+                cursor: pointer;
+            }
+
+            .account-icon {
+                @include dimensions(40px, 44px);
+                background-image: url('/src/assets/icons/account-white.svg');
+                display: block;
+                background-repeat: no-repeat;
+                background-position: center;
+                background-size: 18px;
+            }
+        }
+
+        .loggedin-account {
+            display: none;
+        }
+
+        .search {
+            color: $primary_color;
+
+            &:hover {
+                cursor: pointer;
+            }
+
+            .search-icon {
+                @include dimensions(30px, 30px);
+            }
+        }
+
+        .cart-item {
+            @include flex;
+            gap: 7px;
+            @include dimensions(82px, 43px);
+            background-color: $orange_color;
+            border-radius: 55px;
+            color: $color-white;
+            @include fonts(17px, 17px, $color-white);
+            font-weight: weight(regular);
+
+            .cart-icon {
+                @include dimensions(20px, 20px);
+                display: block;
+                background-image: url('/src/assets/icons/cart.svg');
+                background-size: 20px;
+                background-repeat: no-repeat;
+                background-position: center;
+            }
+
+            &:hover {
+                cursor: pointer;
+            }
+        }
+
+        .order-tracking-area {
+            position: relative;
+
+            .btn {
+                &.btn-order-tracking {
+                    background-image: url('./../../assets/suivi-commande-icn.svg');
+                    background-repeat: no-repeat;
+                    background-size: 20px auto;
+                    background-position: center;
+                    background-color: $color-blue-pelorous;
+                    border-radius: 55px;
+                    min-width: 82px;
+                    height: 43px;
+                }
+            }
+
+            .order-tracking-wrapper {
+                background-color: $color-white;
+                position: absolute;
+                top: 62px;
+                right: 0;
+                width: 465px;
+                box-shadow: 0px 4px 20px 0px #9F999940;
+                border-radius: 15px;
+                padding: 0 0 40px;
+                display: none;
+
+                &.active {
+                    display: block;
+                }
+
+                .order-tracking_header {
+                    border-bottom: 1px solid $color-gray-alto-2;
+                    padding: 40px 35px 27px;
+                    @include flex(flex, center, space-between);
+
+                    .order-tracking_header-title {
+                        margin: 0;
+                        @include fonts(20px, 20px, $dark_002);
+                        font-family: 'Poppins-SemiBold', serif;
+                    }
+
+                    .close {
+                        @include dimensions(25px, 25px);
+                        background-image: url('./../../assets/modal-close-icn.svg');
+                        background-repeat: no-repeat;
+                        background-size: 15px auto;
+                        background-position: center;
+                    }
+                }
+
+                .order-tracking_body {
+                    max-height: 690px;
+                    overflow-y: auto;
+
+                    .being-processed-area {
+                        padding: 23px 40px;
+                        border-bottom: 1px solid $color-gray-alto-2;
+
+                        .being-processed_desc {
+                            margin: 0 0 20px;
+
+                            h4 {
+                                margin: 0 0 15px;
+                                @include fonts(16px, 16px, $color-apricot);
+                                font-family: 'Poppins-SemiBold', serif;
+                            }
+
+                            p {
+                                margin: 0;
+                                @include fonts(16px, 19px, $light_Gray);
+                                font-family: 'Poppins', serif;
+                                font-weight: weight(regular);
+                            }
+                        }
+
+                        .being-processed_steps-area {
+                            @include flex(flex, center, space-between);
+                            gap: 55px;
+                            max-width: 227px;
+                            margin: 0 auto;
+
+                            .step-item {
+                                position: relative;
+                                background-repeat: no-repeat;
+                                background-position: center;
+                                background-color: $color-gray-storm;
+                                @include dimensions(40px, 40px);
+                                border-radius: 50%;
+                                z-index: 2;
+
+                                &::after {
+                                    content: '';
+                                    display: block;
+                                    @include dimensions(60px, 1px);
+                                    background-color: $light_Gray;
+                                    position: absolute;
+                                    right: -60px;
+                                    top: 20px;
+                                    z-index: 1;
+                                }
+
+                                &:nth-child(1) {
+                                    background-size: 13px auto;
+                                    background-image: url('./../../assets/order-tracking/step-one.svg');
+                                }
+
+                                &:nth-child(2) {
+                                    background-size: 23px auto;
+                                    background-image: url('./../../assets/order-tracking/step-two.svg');
+                                }
+
+                                &:nth-child(3) {
+                                    background-size: 21px auto;
+                                    background-image: url('./../../assets/order-tracking/step-three.svg');
+
+                                    &::after {
+                                        display: none;
+                                    }
+                                }
+
+                                &.active {
+                                    background-color: $color-apricot;
+
+                                    &:nth-child(1) {
+                                        background-image: url('./../../assets/order-tracking/step-one-active.svg');
+                                    }
+
+                                    &:nth-child(2) {
+                                        background-image: url('./../../assets/order-tracking/step-two-active.svg');
+                                    }
+
+                                    &:nth-child(3) {
+                                        background-image: url('./../../assets/order-tracking/step-three-active.svg');
+                                    }
+                                }
+                            }
+                        }
+                    }
+
+                    .processing-status-area {
+                        padding: 15px 40px;
+                        border-bottom: 1px solid $color-gray-alto-2;
+                        display: flex;
+                        align-items: center;
+                        gap: 20px;
+                        cursor: pointer;
+
+                        .status-icn {
+                            background-image: url('./../../assets/order-tracking/step-one-active.svg');
+                            background-repeat: no-repeat;
+                            background-position: center;
+                            background-size: 15px auto;
+                            background-color: $color-apricot;
+                            @include dimensions(56px, 56px);
+                            border-radius: 50%;
+                            flex-shrink: 0;
+                        }
+
+                        .processing-status-desc {
+                            h4 {
+                                margin: 0 0 7px;
+                                @include fonts(16px, 16px, $color-apricot);
+                                font-family: 'Poppins-SemiBold', serif;
+                            }
+
+                            p {
+                                margin: 0;
+                                @include fonts(13px, 19px, $light_Gray);
+                                font-family: 'Poppins', serif;
+                                font-weight: weight(regular);
+                            }
+                        }
+                    }
+
+                    .supplier-info-area {
+                        padding: 15px 40px;
+                        border-bottom: 1px solid $color-gray-alto-2;
+                        display: flex;
+                        align-items: center;
+                        gap: 10px;
+
+                        .supplier-info_img-blc {
+                            @include dimensions(63px, 53px);
+                            @include flex;
+                            overflow: hidden;
+                            border-radius: 10px;
+
+                            img {
+                                @include dimensions(100%, 100%);
+                                border-radius: 10px;
+                            }
+                        }
+
+                        .supplier-desc {
+                            h4 {
+                                margin: 0 0 7px;
+                                @include fonts(20px, 20px, $dark_Gray);
+                                font-family: 'Poppins-Medium', serif;
+                            }
+
+                            p {
+                                margin: 0;
+                                @include fonts(16px, 16px, $color-gray);
+                                font-family: 'Poppins-Medium', serif;
+                            }
+                        }
+                    }
+
+                    .total-price-calculate {
+                        padding: 15px 40px;
+                        border-bottom: 1px solid $color-gray-alto-2;
+
+                        .total-price-blc {
+                            padding: 15px 0;
+
+                            &:not(:last-child) {
+                                border-bottom: 1px solid $dark_002;
+                            }
+
+                            .total-price-blc_wrapper {
+                                @include flex(flex, center, space-between);
+                            }
+
+                            .product-name {
+                                display: flex;
+                                align-items: center;
+                                gap: 24px;
+
+                                .product-name_counter {
+                                    @include border(1px, $color-blue-pelorous);
+                                    @include dimensions(48px, 26px);
+                                    @include flex;
+                                    @include fonts(14px, 14px, $dark_Gray);
+                                    font-family: 'Poppins-Medium', serif;
+                                    background-color: $color-botticelli;
+                                    border-radius: 22px;
+                                }
+
+                                .product-name_item {
+                                    @include fonts(16px, 16px, $dark_Gray);
+                                    font-family: 'Poppins-SemiBold', serif;
+                                }
+                            }
+
+                            .total-price_label {
+                                @include fonts(16px, 16px, $dark_Gray);
+                                font-family: 'Poppins-SemiBold', serif;
+                            }
+
+                            .price {
+                                @include fonts(16px, 16px, $color-blue-pelorous);
+                                font-family: 'Poppins-SemiBold', serif;
+                            }
+
+                            &:nth-child(2) {
+                                .total-price-blc_wrapper {
+                                    &:not(:last-child) {
+                                        margin: 0 0 10px;
+                                    }
+                                }
+                            }
+
+                            &:last-child {
+                                .total-price_label {
+                                    @include fonts(20px, 20px, $dark_002);
+
+                                }
+                            }
+                        }
+                    }
+
+                    .panier-blc {
+                        margin: 0 0 30px;
+                        padding: 15px 40px 0;
+
+                        .panier-title {
+                            margin: 0 0 15px;
+                            @include fonts(16px, 16px, $color-blue-pelorous);
+                            font-family: 'Poppins-SemiBold', serif;
+                        }
+
+                        .paiement-status-list {
+                            .paiement-status_icon {
+                                background-position: center;
+                                background-repeat: no-repeat;
+                                background-color: $color-gray-gallery-3;
+                                border-radius: 5px;
+                                @include dimensions(33px, 33px);
+                            }
+
+                            ul {
+                                list-style: none;
+                                padding: 0;
+                                margin: 0;
+
+                                li {
+                                    display: flex;
+                                    align-items: center;
+                                    gap: 18px;
+
+                                    &:not(:last-child) {
+                                        margin: 0 0 15px;
+                                    }
+
+                                    &:nth-child(1) {
+                                        .paiement-status_icon {
+                                            background-image: url('./../../assets/panier/paiement-icn-1.svg');
+                                        }
+                                    }
+
+                                    &:nth-child(2) {
+                                        .paiement-status_icon {
+                                            background-image: url('./../../assets/panier/paiement-icn-2.svg');
+                                        }
+                                    }
+
+                                    &:nth-child(3) {
+                                        .paiement-status_icon {
+                                            background-image: url('./../../assets/panier/paiement-icn-3.svg');
+                                        }
+                                    }
+
+                                    &:nth-child(4) {
+                                        .paiement-status_icon {
+                                            background-image: url('./../../assets/panier/paiement-icn-4.svg');
+                                        }
+                                    }
+                                }
+                            }
+
+                            .paiement-status-item {
+                                @include fonts(14px, 14px, $dark_Gray);
+                                font-family: 'Poppins-Medium', serif;
+                                margin: 0;
+                            }
+
+                            .price {
+                                margin: 3px 0 0;
+                                @include fonts(14px, 14px, $color-gray);
+                                font-family: 'Poppins-Medium', serif;
+                            }
+                        }
+                    }
+
+                    .btns-group {
+                        padding: 0 40px;
+
+                        .btn {
+                            &.btn-cancel-order {
+                                font-family: 'Poppins-Medium', serif;
+                                @include fonts(16px, 16px, $color-red-flamingo);
+                                @include border(1px, $color-red-flamingo);
+                                @include dimensions(100%, 43px);
+                                border-radius: 55px;
+                            }
+                        }
+                    }
+
+                    &.accordion {
+                        .supplier-info-area {
+                            width: 100%;
+                        }
+                    }
+                }
+
+                .MuiAccordion-root {
+                    box-shadow: none;
+
+                    &::before {
+                        display: none;
+                    }
+
+                    .MuiAccordionSummary-root {
+                        padding: 0;
+
+                        .MuiAccordionSummary-content {
+                            margin: 0;
+
+                            &.Mui-expanded {
+                                margin: 0;
+                            }
+                        }
+
+                        .MuiAccordionSummary-expandIconWrapper {
+                            position: absolute;
+                            right: 20px;
+                            transform: rotate(-90deg);
+
+                            .MuiSvgIcon-root {
+                                font-size: 23px;
+                            }
+
+                            &.Mui-expanded {
+                                transform: rotate(0deg);
+                            }
+                        }
+                    }
+
+                    &.Mui-expanded {
+                        margin-top: 0;
+                    }
+                }
+
+                .MuiAccordionDetails-root {
+                    padding: 0;
+                    border-bottom: 1px solid $color-gray-alto-2;
+                }
+            }
+
+        }
+    }
+
+    &.scroll {
+        box-shadow: 0px 0px 10px 0px rgba(0, 0, 0, 0.75);
+        background-color: $color-white;
+        height: 75px;
+        display: flex;
+        justify-content: space-between;
+
+        .logoContainer {
+            .logoMain {
+                background-image: url('/src/assets/logo-horizontale.svg');
+                @include dimensions(107px, 39px);
+            }
+        }
+
+        .info {
+            .position {
+                color: $dark_Gray;
+
+                .position-icon {
+                    color: $primary_color;
+                }
+            }
+
+            .account {
+                .account-icon {
+                    background-image: url('/src/assets/icons/account.svg');
+                }
+            }
+        }
+
+        .header-buttons {
+            .LoadingButton {
+                box-shadow: none;
+            }
+        }
+    }
+}
+
+
+.cart-container {
+    position: fixed;
+    top: 80px;
+    right: 12vw;
+    width: 408px;
+    background-color: $color-white;
+    z-index: 999;
+    border-radius: 15px;
+    box-shadow: 0px 4px 4px 0px rgba(0, 0, 0, 0.25);
+    animation: cart-animation 0.3s linear;
+    padding: 15px 0;
+}
+
+/* -- home-section-one  -- */
+
+.home-section-one {
+    background: linear-gradient(180deg, $color-blue-chill 0%, rgba(11, 164, 185, 0.75) 100%);
+    min-height: calc(100vh - 150px);
+
+    .container {
+        background-color: transparent;
+    }
+}
+
+/* -- search-blc -- */
+
+.search-blc {
+    position: relative;
+    @include dimensions(20px, 20px);
+
+    &.active {
+        @include dimensions(295px, 43px);
+
+        .btn {
+            &.btn-search {
+                position: absolute;
+                top: 10px;
+                right: 18px;
+            }
+        }
+    }
+
+    .search-input-blc {
+        .form-control {
+            background-color: $color-gray-alto;
+            font-family: 'Poppins-Medium', serif;
+            @include fonts(17px, 17px, $dark_Gray);
+            @include dimensions(295px, 43px);
+            border-radius: 55px;
+            padding: 9px 40px 9px 30px;
+        }
+    }
+
+    .btn {
+        &.btn-search {
+
+            @include dimensions(22px, 22px);
+            background-image: url('./../../assets/search-icn.svg');
+            background-repeat: no-repeat;
+            background-position: center;
+            background-size: 22px auto;
+        }
+    }
+}
+
+/* # $Mobile ::
+------------------------------------*/
+/* -- max-width -- */
+@media (max-width: 1440px) {
+    .fixedHeaderContainer2 {
+        padding: 12px 28px;
+        left: 0;
+        right: 0;
+        height: 85px;
+
+        .logoContainer {
+            .logoMain {
+                @include dimensions(160px, 60px);
+            }
+        }
+
+        .header-buttons {
+            .LoadingButton {
+                min-width: 113px;
+                height: 32px;
+                font-size: 12px;
+            }
+        }
+
+        .info {
+            gap: 15px;
+
+            .cart-item {
+                @include dimensions(65px, 35px);
+                @include fontSize(14px, 14px);
+
+                .cart-icon {
+                    @include dimensions(16px, 16px);
+                    background-size: 16px, auto;
+                }
+            }
+        }
+        &.scroll {
+            align-items: center;
+        }
+    }
+
+    .home-section-one {
+        .headerAppBar2 {
+            padding-top: 100px;
+            margin: 0;
+
+            .headerMessage {
+                margin: 0 0 25px;
+
+                .headerMessageSyle1 {
+                    @include fontSize(40px, 40px);
+                }
+            }
+        }
+    }
+
+    .header {
+        .imageBuilderContainer {
+
+            &::before,
+            &::after {
+                display: none;
+            }
+
+            .imageBuilder {
+                background-position: center;
+                @include dimensions(450px, 480px);
+                border-radius: 0;
+                position: absolute;
+                right: 20px;
+                bottom: initial;
+
+                &::before,
+                &::after {
+                    display: none;
+                }
+            }
+        }
+    }
+
+    .headerLocalisationMessageContainer {
+        a {
+            @include fontSize(14px, 14px);
+        }
+    }
+}
+
+@media (max-width:1200px) {
+    .head1 {
+        .demiCercle {
+            top: 22px;
+            left: -493px;
+        }
+    }
+
+    .fixedHeaderContainer {
+        height: 82px;
+
+        .logoContainer {
+            .logoMain {
+                background-size: 50%;
+                @include dimensions(77px, 94px);
+            }
+        }
+    }
+
+    .headerContainer {
+        .headerAppBar2 {
+            .headerMessage {
+
+                .headerMessageSyle1,
+                .headerMessageSyle2 {
+                    font-size: 31px;
+                }
+            }
+
+            .headerLocalisationMessageContainer {
+                a {
+                    font-size: 15px;
+                    gap: 9px;
+
+                    .pin-icon {
+                        font-size: 18px;
+                    }
+                }
+            }
+        }
+
+        .imageBuilder {
+            @include dimensions(354px, 281px);
+        }
+    }
+
+    .fixedHeaderContainer2 {
+        .header-buttons {
+            .LoadingButton {
+                display: none;
+            }
+        }
+
+        .info {
+            .loggedin-account {
+                display: inline-block;
+            }
+        }
+    }
+
+    .switches-area {
+        height: 35px;
+    }
+}
+
+// @media only screen and (max-width: 992px) {
+//     .fixedHeaderContainer2 {
+//         left: 5%;
+//         right: 5%;
+
+//         .info {
+//             .position {
+//                 font-size: 15px;
+//                 gap: 7px;
+//                 width: 337px;
+//             }
+//         }
+//     }
+
+//     .head1 {
+//         .demiCercle {
+//             top: 39px;
+//             left: -179px;
+//         }
+//     }
+
+//     .headerContainer {
+//         margin-top: -32px;
+
+//         .imageBuilder {
+//             @include dimensions(255px, 208px);
+//         }
+
+//         .headerAppBar2 {
+//             .headerMessage {
+
+//                 .headerMessageSyle1,
+//                 .headerMessageSyle2 {
+//                     font-size: 24.54px;
+//                 }
+//             }
+
+//             .headerLocalisationMessageContainer {
+//                 padding: 5px 8px;
+
+//                 a {
+//                     font-size: 13.5px;
+//                 }
+//             }
+//         }
+//     }
+// }
+
+// @media only screen and (max-width: 768px) {
+//     .fixedHeaderContainer2 {
+//         .info {
+//             gap: 0px;
+
+//             .cart-item {
+//                 @include dimensions(66px, 36px);
+//             }
+
+//             .position {
+//                 font-size: 12px;
+//                 gap: 7px;
+//                 width: 264px;
+
+//                 .position-icon {
+//                     font-size: 16px;
+//                 }
+//             }
+
+//             .account {
+//                 .account-icon {
+//                     height: 35px;
+//                 }
+//             }
+
+//             .cart-item {
+//                 font-size: 20px;
+//                 height: 34px;
+//             }
+//         }
+//     }
+
+//     .head1 {
+//         .demiCercle {
+//             top: 39px;
+//             left: -170px;
+//         }
+//     }
+
+//     .headerContainer {
+//         .imageBuilder {
+//             @include dimensions(191px, 186px);
+//         }
+
+//         .headerAppBar2 {
+//             margin-left: 13px;
+
+//             .headerMessage {
+
+//                 .headerMessageSyle1,
+//                 .headerMessageSyle2 {
+//                     font-size: 18px;
+//                 }
+//             }
+
+//             .headerLocalisationMessageContainer {
+//                 a {
+//                     font-size: 11px;
+//                 }
+//             }
+//         }
+//     }
+
+//     .cart-container {
+//         width: 304px;
+//     }
+// }
+
+// @media only screen and (max-width: 576px) {
+//     .fixedHeaderContainer2 {
+//         .info {
+//             .position {
+//                 font-size: 10px;
+//                 gap: 7px;
+//                 width: 239px;
+//             }
+//         }
+//     }
+
+//     .cart-container {
+//         top: 80px;
+//         right: 10vw;
+//         width: 273px;
+//     }
+
+//     .fixedHeaderContainer {
+//         .appBar {
+//             .LoadingButton {
+//                 @include dimensions(60px, 25px);
+//                 font-size: 6.33px;
+//                 padding: 1px;
+//             }
+//         }
+//     }
+
+//     .headerContainer {
+//         @include flex;
+//         flex-direction: column;
+//         flex-wrap: wrap-reverse;
+
+//         .imageBuilderContainer {
+//             @include flex;
+//             overflow: hidden;
+
+//             .imageBuilder {
+//                 background-position: center center;
+//                 background-size: contain;
+//                 @include dimensions(177px, 125px);
+//             }
+//         }
+
+//         .headerAppBar2 {
+//             @include flex;
+//             flex-direction: column;
+
+//             .headerMessage {
+
+//                 .headerMessageSyle1,
+//                 .headerMessageSyle2 {
+//                     font-size: 11px;
+//                 }
+//             }
+
+//             .headerLocalisationMessageContainer {
+//                 padding: 0;
+//                 margin: 0px;
+
+//                 a {
+//                     font-size: 6.33px;
+//                 }
+//             }
+//         }
+//     }
+// }
+
+/* -- max-height -- */
+
+// @media (max-height: 890px) {
+//     .fixedHeaderContainer2 {
+//         .info {
+//             .order-tracking-area {
+//                 .order-tracking-wrapper {
+//                     .order-tracking_body {
+//                         max-height: 490px;
+//                     }
+//                 }
+//             }
+//         }
+//     }
+// }
+
+// @media (max-height: 700px) {
+//     .fixedHeaderContainer2 {
+//         .info {
+//             .order-tracking-area {
+//                 .order-tracking-wrapper {
+//                     .order-tracking_body {
+//                         max-height: 300px;
+//                     }
+//                 }
+//             }
+//         }
+//     }
+// }

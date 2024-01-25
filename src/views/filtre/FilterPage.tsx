@@ -1,0 +1,552 @@
+import Skeleton from "@mui/material/Skeleton";
+import React, { Suspense, useEffect, useRef, lazy, useState } from "react";
+import { Col, Row } from "react-bootstrap";
+import { useTranslation } from "react-i18next";
+import { useDispatch, useSelector } from "react-redux";
+import { useLocation, useNavigate } from "react-router-dom";
+
+import {
+  adsHomeSelector,
+  categoriesHomeSelector,
+  homeLoadingSelector,
+  homeRefresh,
+  popularHomeSelector,
+  recommendedHomeSelector,
+  setRefresh,
+} from "../../Redux/slices/home";
+
+import { handleMessanger } from "../../Redux/slices/messanger";
+import { useAppSelector } from "../../Redux/store";
+import MessangerBtnIcon from "../../assets/profile/Discuter/messanger-btn.svg";
+import { FilterAds } from "../../components/filter-ads/FilterAds";
+import AdsSkeletons from "../../components/Skeletons/FilterPage/AdsSkeletons/AdsSkeletons";
+import ProductsSkeletons from "../../components/Skeletons/FilterPage/ProductsSkeletons/ProductsSkeletons";
+import SearchSkeletons from "../../components/Skeletons/FilterPage/SearchSkeleton/SearchSkeletons";
+import BtnReset from "./components/btn-reset/BtnReset";
+import Categories from "./components/categories/Categories";
+import Cle from "./components/cle/Cle";
+import PriceSlide from "./components/priceSlider/PriceSlide";
+import SearchProduit from "./components/produitSearch/ProduitSearch";
+import Trie from "./components/trie/Trie";
+
+const Map = lazy(() => import("../../components/Location/Location"));
+const Messanger = lazy(() => import("../../components/Popups/Messanger/Messanger"));
+const SideBar = lazy(() => import("../../components/Skeletons/FilterPage/SideBar/SideBar"));
+const FilterCategories = lazy(() => import("../../components/filter-categories/FilterCategories"));
+const OffersList = lazy(() => import("../../components/offersList/OffersList"));
+const PopularList = lazy(() => import("../../components/popular-list/PopularList"));
+const RecommandedList = lazy(() => import("../../components/recommanded-list/RecommandedList"));
+const SupplierWhiteCard = lazy(() => import("../../components/supplier-white-card/SupplierWhiteCard"));
+
+
+import { supplierServices } from "../../services/api/suppliers.api";
+import { localStorageService } from "../../services/localStorageService";
+import { AppProps } from "../../services/types";
+import { paramsService } from "../../utils/params";
+import { checkSsr } from "../../utils/utils";
+import "./filterPage.scss";
+
+function FilterPage({ initialData }: AppProps) {
+
+  const homeData = useAppSelector(adsHomeSelector);
+  const [ads, setAds] = useState<any[]>([]);
+  const [ads2, setAds2] = useState<any[]>([]);
+  const [ads3, setAds3] = useState<any[]>([]);
+  const [originCategories, setOriginCategories] = useState<any[]>([]);
+
+  const recommanded = useSelector(recommendedHomeSelector);
+  const popular = useSelector(popularHomeSelector);
+  const isLoading = initialData ? false : useSelector(homeLoadingSelector);
+  const refresh = useSelector(homeRefresh);
+  const [isload, setIsLoading] = useState<boolean>(false);
+  const [isloadFilter, setIsLoadFilter] = useState<boolean>(false);
+  const [hasFilter, setHasFilter] = useState<boolean>(false);
+  const categories = useSelector(categoriesHomeSelector);
+  const itemsPerPage = 8;
+  const navigate = useNavigate();
+  const dispatch = useDispatch();
+  const suppliersListRef = useRef(null);
+  const [newSuppliers, setNewuppliers] = useState<any>(false);
+  const [bestRatedSuppliers, setBestRatedSuppliers] = useState<any>(false);
+
+  const [searchSuppliersList, setSearchSuppliersList] = useState<Array<any>>(initialData ? initialData.data.suppliers : []);
+  const [ssrLoading, setSsrLoading] = useState<boolean>(true)
+  const [pageReadry, setPageReadry] = useState<boolean>(false)
+
+
+  const showMapState = useAppSelector((state) => state.location.showMap);
+  const isConnected = localStorageService.getUserToken()
+
+  const unReadMessages = useAppSelector((state) => state.messanger.unReadedMessages)
+  const isMessagesOpen = useAppSelector((state) => state.messanger.isOpen)
+  const [unReadedQt, setUnReadedQt] = useState<number>(unReadMessages)
+
+  const { t } = useTranslation()
+
+  const navLocation = useLocation()
+
+  const handleLocations = () => {
+    let currentLocation = localStorageService.getCurrentLocation()
+    const searchParams = new URLSearchParams(location.search);
+    if (searchParams.has('search')) {
+      // fetch lat and long from params
+      let resultObject = paramsService.fetchParams(searchParams)
+      let lat = resultObject.lat ? resultObject.lat : null
+      let lng = resultObject.lng ? resultObject.lng : null
+      if (!(lng && lat)) {
+        if (currentLocation) {
+          let coords = JSON.parse(currentLocation
+          ).coords;
+          resultObject = {
+            ...resultObject,
+            lat: coords.latitude.toString(),
+            lng: coords.longitude.toString(),
+          }
+          const newCryptedParams = paramsService.handleUriParams(resultObject)
+          searchParams.set('search', newCryptedParams)
+          const { pathname } = navLocation;
+          const newURL = pathname !== '/' ? `${pathname}?${searchParams.toString()}` : `/search/?${searchParams.toString()}`;
+          navigate(newURL);
+          setPageReadry(true)
+          searchSupplier()
+        } else {
+          dispatch({ type: "SET_SHOW", payload: true })
+        }
+      } else {
+        setPageReadry(true)
+
+        searchSupplier()
+      }
+
+    } else {
+      if (currentLocation) {
+        let coords = JSON.parse(currentLocation
+        ).coords;
+        let resultObject = {
+          lat: coords.latitude.toString(),
+          lng: coords.longitude.toString(),
+        }
+        const newCryptedParams = paramsService.handleUriParams(resultObject)
+        searchParams.append('search', newCryptedParams)
+        const { pathname } = navLocation;
+        const newURL = pathname !== '/' ? `${pathname}?${searchParams.toString()}` : `/search/?${searchParams.toString()}`;
+        navigate(newURL);
+        searchSupplier()
+        setPageReadry(true)
+      } else {
+        navigateToHome()
+      }
+
+    }
+  }
+
+  const handleSsr = () => {
+    let isSsr = checkSsr()
+    isSsr ? setSsrLoading(true) : setSsrLoading(false)
+    setSsrLoading(isSsr)
+    setTimeout(() => {
+      let isSsr = checkSsr()
+      if (isSsr) {
+        setSsrLoading(true)
+
+      } else {
+        handleLocations()
+      }
+    }, 1000 * 3)
+  }
+
+  useEffect(() => {
+    handleSsr()
+  }, [])
+
+  const navigateToHome = () => {
+    const currenLocation = localStorageService.getCurrentLocation()
+    let path = '';
+    currenLocation ? path = '/search' : path = '/'
+    navigate(path, { replace: true })
+  }
+
+  useEffect(() => {
+    if (recommanded.length) {
+      const news = sort(recommanded, 'created_at', 10);
+      let bestRated = recommanded.filter((s: any) => s.star);
+      bestRated = sort(bestRated, 'star', 10);
+      setNewuppliers(news)
+      setBestRatedSuppliers(bestRated)
+    }
+  }, [recommanded]);
+
+  const handleMessangerPopup = () => {
+    dispatch(handleMessanger())
+  }
+  useEffect(() => {
+    setUnReadedQt(unReadMessages)
+  }, [unReadMessages])
+
+  useEffect(() => {
+    if (refresh) {
+      dispatch(setRefresh(false));
+      searchSupplier();
+    }
+  }, [refresh]);
+
+  const searchSupplier = () => {
+    const searchParams = new URLSearchParams(location.search);
+    if (isEmptySearchParams(searchParams)) {
+      setSearchSuppliersList([]);
+      setHasFilter(false);
+      setIsLoadFilter(false);
+    } else {
+      const expectedKeys = ['lat', 'lng'];
+      let resultObject = paramsService.fetchParams(searchParams)
+      const hasUnexpectedKeys = Object.keys(resultObject).some(key => !expectedKeys.includes(key));
+      setHasFilter(hasUnexpectedKeys);
+      const current_location = localStorageService.getCurrentLocation()
+      var currentLocation: any;
+
+      if (current_location) {
+        currentLocation = JSON.parse(current_location
+        ).coords;
+      } else {
+        if (searchParams.has('search')) {
+          let params = paramsService.fetchParams(searchParams)
+          let lat = params.lat ? params.lat : null;
+          let lng = params.lng ? params.lng : null;
+          if (lat && lng) {
+            currentLocation = {
+              latitude: lat,
+              longitude: lng
+            }
+          }
+        } else {
+          currentLocation = {
+            latitude: 0,
+            longitude: 0
+          }
+          // dispatch({ type: "SET_SHOW", payload: true })
+        }
+      }
+      const payload = {
+        order_by: "popular",
+        max_price: 100,
+        min_price: 0,
+        lat: currentLocation!.latitude,
+        long: currentLocation!.longitude,
+        category_id: "",
+        delivery_price: 0,
+        filter: "",
+      };
+      let params = paramsService.fetchParams(searchParams)
+
+      params.category && (payload.category_id = params.category);
+      params.order_by ? (payload.order_by = params.order_by) : '';
+      params.min_price && (payload.min_price = Number(params.min_price));
+      params.max_price && (payload.max_price = Number(params.max_price));
+      params.filter && (payload.filter = params.filter);
+      setIsLoadFilter(true);
+      supplierServices
+        .getSuppliersByFilters(payload)
+        .then((res: any) => {
+          if (payload.filter && payload.filter != "") {
+            const filtredList = res.data.data.suppliers.filter((item: any) => item.name.toUpperCase().includes(payload.filter.toUpperCase()));
+            setSearchSuppliersList(filtredList);
+          }
+          else {
+
+            setSearchSuppliersList(res.data.data.suppliers);
+
+          }
+          setIsLoadFilter(false);
+        })
+        .catch((error) => {
+          setIsLoadFilter(false);
+        });
+
+    }
+  };
+
+  const isEmptySearchParams = (searchParams: any) => {
+    const expectedKeys = ['lat', 'lng'];
+    let resultObject = paramsService.fetchParams(searchParams)
+    const hasUnexpectedKeys = Object.keys(resultObject).some(key => !expectedKeys.includes(key));
+    return !hasUnexpectedKeys
+  };
+  useEffect(() => {
+    setAds(homeData.HOME_1);
+    setAds2(homeData.HOME_2);
+    setAds3(homeData.HOME_3);
+  }, [homeData]);
+
+  function isAtLeastSevenDaysAgo(dateString: any) {
+    var dateObject: any = new Date(dateString);
+    var today: any = new Date();
+    var timeDifference: any = today - dateObject;
+    var daysDifference = timeDifference / (1000 * 60 * 60 * 24);
+    return daysDifference >= 7;
+  }
+  const renderItems = () => {
+    return (
+      <>
+
+        <div className="main-content">
+          {ads && (
+            <div className="main-content__col-ads">
+              <FilterAds data={ads} slides={3} />
+            </div>
+          )}
+          <div className="main-content__col-offers">
+            <h3 className="main-content__col-offers__title">
+              {t('searchPage.todayOffre')}
+            </h3>
+            <OffersList listType="discount" restaurants={recommanded} />
+          </div>
+          <div className="main-content__col-offers">
+            <h3 className="main-content__col-offers__title">
+              {t('recommendedForYou')}
+            </h3>
+            <RecommandedList
+              listType="recommanded"
+              restaurants={recommanded}
+            ></RecommandedList>
+          </div>
+          {ads2 && (
+            <div className="main-content__col-ads">
+              <FilterAds data={ads2} slides={1} />
+            </div>
+          )}
+          {bestRatedSuppliers.length ? <div className="main-content__col-offers">
+            <h3 className="main-content__col-offers__title">
+              {t('searchPage.mieux')}
+            </h3>
+            <OffersList listType="recommanded" restaurants={bestRatedSuppliers} />
+          </div> : <></>}
+          {newSuppliers.length ? <div className="main-content__col-offers">
+            <h3 className="main-content__col-offers__title">
+              {t('searchPage.created_at')}
+            </h3>
+            <OffersList listType="recommanded" restaurants={newSuppliers} />
+          </div> : <></>}
+          <div className="main-content__col-offers">
+            <h3 className="main-content__col-offers__title">
+              {t('searchPage.popularMarks')}
+            </h3>
+            <PopularList listType="popular" restaurants={popular} />
+          </div>
+          {ads3 && (
+            <div className="main-content__col-ads">
+              <FilterAds data={ads3} slides={2} center={true} arrows={true} />
+            </div>
+          )}
+        </div>
+
+      </>
+    );
+  };
+
+
+  // skeletopn compnent
+  const SkeletonEffect: React.FC = () => {
+    return (
+      <>
+        <div className="cat-carousel" >
+
+          <Skeleton variant="rectangular" height={189} style={{
+            borderRadius: "15px",
+            minWidth: '173px'
+          }} />
+          <Skeleton variant="rectangular" height={189} style={{
+            borderRadius: "15px",
+            minWidth: '173px'
+          }} />
+          <Skeleton variant="rectangular" height={189} style={{
+            borderRadius: "15px",
+            minWidth: '173px'
+          }} />
+          <Skeleton variant="rectangular" height={189} style={{
+            borderRadius: "15px",
+            minWidth: '173px'
+          }} />
+          <Skeleton variant="rectangular" height={189} style={{
+            borderRadius: "15px",
+            minWidth: '173px'
+          }} />
+          <Skeleton variant="rectangular" height={189} style={{
+            borderRadius: "15px",
+            minWidth: '173px'
+          }} />
+          <Skeleton variant="rectangular" height={189} style={{
+            borderRadius: "15px",
+            minWidth: '173px'
+          }} />
+          <Skeleton variant="rectangular" height={189} style={{
+            borderRadius: "15px",
+            minWidth: '173px'
+          }} />
+          <Skeleton variant="rectangular" height={189} style={{
+            borderRadius: "15px",
+            minWidth: '173px'
+          }} />
+          <Skeleton variant="rectangular" height={189} style={{
+            borderRadius: "15px",
+            minWidth: '173px'
+          }} />
+          <Skeleton variant="rectangular" height={189} style={{
+            borderRadius: "15px",
+            minWidth: '173px'
+          }} />
+
+
+
+        </div>
+
+        <div className="filter-page-skeleton">
+
+          <SideBar />
+
+          < div className="right-side" >
+            <SearchSkeletons />
+            <AdsSkeletons />
+
+            <div className="main-content">
+              <ProductsSkeletons />
+            </div>
+
+          </div >
+        </div>
+      </>
+
+    )
+  }
+
+
+  function sort(array: any, property: any, n: any) {
+    const sortedArray = array.slice().sort((a: any, b: any) => a[property] - b[property]);
+    return sortedArray.slice(0, n);
+  }
+
+  return (
+    <Suspense fallback={
+      <SkeletonEffect />
+    } >
+
+      <>
+        {(!isLoading && pageReadry) ? (
+          <>
+            <div className="category-bar">
+              {originCategories ? (
+                <FilterCategories onCategorySelect={searchSupplier} />
+              ) : (
+                <></>
+              )}
+            </div>
+            <div className="content container-fluid">
+              <Row className="content__row">
+                <Col className="col-3 content__column content__column--first">
+                  <div className="content__column content__scroll-content">
+                    <div className="content__column__filter">
+                      <Trie />
+                    </div>
+                    <div className="content__column__filter">
+                      <PriceSlide />
+                    </div>
+                    <div className="content__column__filter">
+                      <Categories onCategorySelect={searchSupplier} />
+                    </div>
+                    {/* 
+                      <div className="content__column__filter">
+                        <Cle />
+                      </div>
+                    */}
+                  </div>
+                </Col>
+                <Col className="col-9 content__column content__column--second">
+                  <div className="content__column__search-bar">
+                    <SearchProduit />
+                    {hasFilter && !isloadFilter ? <BtnReset></BtnReset> : ""}
+                  </div>
+                  {(searchSuppliersList?.length && !isloadFilter && hasFilter) || (initialData) ? (
+                    <div className="row search-list">
+                      {searchSuppliersList.map(function (supp: any) {
+                        return (
+                          <div key={supp.id} className="col-3 search-list__column px-0">
+                            <SupplierWhiteCard data={supp} className="mb-32" />
+                          </div>
+                        );
+                      })}
+                    </div>
+                  ) : (
+                    <></>
+                  )}
+                  {isloadFilter ? (
+                    <>
+                      <AdsSkeletons />
+                      <div className="main-content">
+                        <ProductsSkeletons />
+                      </div>
+                      <ProductsSkeletons />
+                    </>
+                  ) : (recommanded.length &&
+                    !isloadFilter &&
+                    !hasFilter) && (
+                    <div>
+                      <div>{renderItems()}</div>
+                    </div>
+                  )}
+                  {hasFilter && !isloadFilter && !searchSuppliersList?.length ? (
+                    <>
+                      <div className="result-not-found">
+                        <div className="result-not-found__title">Oups !</div>
+                        <div className="result-not-found__text">
+                          {t('searchPage.noResult')}
+                        </div >
+                        <div className="result-not-found__icon"></div>
+                      </div >
+                    </>
+                  ) : (
+                    <></>
+                  )
+                  }
+                </Col >
+              </Row >
+            </div >
+            {
+              (isConnected) && (
+
+                <div className={'bulles'}>
+                  <button className={'messangerPopupBtn'} onClick={handleMessangerPopup} style={{ backgroundImage: `url(${MessangerBtnIcon})` }}>
+                    {unReadedQt > 0 && (
+                      <div className={'messangerBullNotifIcon'}>
+                        {unReadedQt}
+                      </div>
+                    )}
+                  </button>
+                </div>
+              )
+            }
+            {
+              (isMessagesOpen) &&
+              <Messanger className='discuterMessangerPopup' close={handleMessangerPopup} />
+            }
+            {/* {
+              showMapState && (
+                <div
+                  className="mapOverPlay">
+                  <div
+                    onClick={(e) => e.stopPropagation()}>
+                    <Map forced={true} />
+                  </div>
+                </div>
+              )
+            } */}
+          </>
+        ) : (
+          <SkeletonEffect />
+
+        )}
+      </>
+    </Suspense >
+
+  );
+}
+
+export default FilterPage;

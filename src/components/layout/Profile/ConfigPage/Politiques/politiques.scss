@@ -1,0 +1,120 @@
+@import '../../../../../scss/extend';
+
+.Politique-section {
+    width: 100%;
+    flex-direction: column;
+    @include flex(flex, start, center);
+    padding: 150px 150px 50px;
+    gap: 20px;
+
+    .btn-back {
+        color: $Ocean_Teal;
+        @include fonts(16px, 16px, $dark_002);
+        padding-left: 50px;
+        background-repeat: no-repeat;
+        background-position: left center;
+        background-size: 39px;
+        margin-bottom: 16px;
+        background-image: url("data:image/svg+xml,%3Csvg width='39' height='16' viewBox='0 0 39 16' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M7.14384 9.96773C7.72471 10.5331 8.225 11.0197 8.72529 11.5075C9.0812 11.8552 9.43822 12.2008 9.79189 12.5518C10.6548 13.4103 10.6973 14.6088 9.89374 15.4082C9.07784 16.2208 7.8344 16.1978 6.94574 15.3317C4.99496 13.4322 3.05425 11.5239 1.10906 9.61889C0.902007 9.41548 0.690479 9.21645 0.486781 9.00977C-0.16124 8.35472 -0.164601 7.63406 0.492377 6.98557C1.91041 5.58909 3.33517 4.20025 4.75657 2.80705C5.48741 2.09185 6.21378 1.37228 6.95022 0.661464C7.83887 -0.196988 9.08791 -0.222141 9.89934 0.592568C10.6996 1.39634 10.6548 2.59489 9.78742 3.44897C8.94129 4.28227 8.09069 5.1112 7.15391 6.02761C7.40238 6.02761 7.55571 6.02761 7.71016 6.02761C17.4148 6.02761 27.1206 6.0276 36.8253 6.0276C37.9053 6.0276 38.6809 6.57111 38.9317 7.49408C39.2585 8.69482 38.3743 9.89227 37.1107 9.96336C36.9574 9.97211 36.804 9.96773 36.6496 9.96773C27.0143 9.96773 17.379 9.96773 7.74374 9.96773C7.58257 9.96773 7.42141 9.96773 7.14384 9.96773Z' fill='%2324A6A4'/%3E%3C/svg%3E");
+    }
+
+    .logo-container {
+        width: 100%;
+        display: flex;
+        justify-content: center;
+        margin: 0 0 37px;
+
+        .logo-wrapper {
+            @include dimensions(141px, 141px);
+            object-fit: cover;
+            background-position: center;
+            background-repeat: no-repeat;
+        }
+    }
+
+    main {
+        display: flex;
+        flex-direction: column;
+        gap: 36px;
+        margin: 0 0 38px;
+
+        .legal-cart-desc {
+            max-height: 115px;
+            overflow-y: auto;
+            padding: 0 5px 0 0;
+        }
+
+        .title {
+            @include fonts(20px, 20px, $Ocean_Teal);
+            font-family: 'Poppins-Medium', serif;
+            margin: 0 0 14px;
+        }
+
+        .body {
+            @include fonts(15px, 22px, $light_Gray);
+            font-family: 'Poppins', serif;
+            font-weight: weight(regular);
+        }
+
+    }
+
+    .buttons {
+        width: 100%;
+        display: flex;
+        justify-content: end;
+
+        .nav-page-button {
+            @include flex(flex, center, end);
+            padding-right: 15px;
+
+            button {
+                &:hover {
+                    cursor: pointer;
+                }
+
+                .next-page-icon {
+                    color: $Ocean_Teal;
+                    @include dimensions(53px, 52px);
+                    font-size: 22px;
+                }
+            }
+        }
+    }
+}
+
+/* # $Mobile ::
+------------------------------------*/
+
+@media only screen and (max-width: 992px) {
+    .Politique-section {
+        main {
+
+            .title {
+                font-size: 18px;
+            }
+
+            .body {
+                font-size: 13px;
+            }
+
+        }
+    }
+}
+
+@media only screen and (max-width: 576px) {
+    .Politique-section {
+        main {
+            grid-template-columns: repeat(1, 1fr);
+
+
+            .title {
+                font-size: 18px;
+            }
+
+            .body {
+                font-size: 13px;
+            }
+
+        }
+    }
+}

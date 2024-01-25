@@ -1,0 +1,371 @@
+@import '../../scss/extend';
+
+
+@keyframes slide {
+    0% {
+        transform: translateX(0);
+    }
+
+    25% {
+        transform: translateY(-100%);
+    }
+
+    50% {
+        transform: translateY(-200%);
+    }
+
+    75% {
+        transform: translateY(-300%);
+    }
+
+    100% {
+        transform: translateY(-400%);
+    }
+}
+
+.footerContainer {
+    @include dimensions(100%, 363px);
+    background-color: $color-gray-gallery;
+
+    .bodyRow {
+        position: relative;
+        padding-bottom: 37px;
+        padding-top: 100px;
+        display: flex;
+
+        .demi-cerlce-container {
+            position: absolute;
+            overflow: hidden;
+            top: -27px;
+            right: 0;
+            width: 103px;
+
+            .demi-cercle {
+                z-index: 20;
+                @include dimensions(417px, 390px);
+                border-radius: 500px;
+                background: linear-gradient(180deg, $orange_color 0%, $orange_color 100%);
+            }
+        }
+        .footerLogoCol {
+            display: flex;
+            justify-content: center;
+            flex: 1;
+
+            .webifyIcon {
+                @include dimensions(77px, 119px);
+            }
+        }
+        .footerContacteEmailCol,
+        .footerContacteTelCol {
+            font-size: 14px;
+            display: flex;
+            justify-content: center;
+            flex: 1;
+        }
+        .footerPubsCol {
+            flex: 1;
+
+            .bottom-to-top-scroll-carousel-container {
+                height: 156px;
+                overflow-y: hidden;
+                padding: 5px;
+
+                .last-pubs-area {
+                    max-width: 260px;
+
+                    .last-pubs-item {
+                        @include dimensions(100%, 47px);
+                        margin-bottom: 10px;
+                        display: flex;
+                        gap: 10px;
+
+                        &:not(:last-child) {
+                            margin: 0 0 10px;
+                        }
+                        .last-pub-img {
+                            @include dimensions(76px, 50px);
+                            @include flex;
+                            flex-shrink: 0;
+                            overflow: hidden;
+
+                            img {
+                                object-fit: fill;
+                                @include dimensions(100%, 100%);
+                            }
+                        }
+                        .last-pub-desc {
+                            h5 {
+                                font-family: 'Poppins-SemiBold', serif;
+                                @include fonts(10px, 10px, $light_Gray);
+                                margin: 0 0 10px;
+                            } 
+                            p {
+                                font-family: 'Poppins', serif;
+                                font-weight: weight(regular);
+                                @include fonts(10px, 10px, $light_Gray);
+                                margin: 0;
+                            }
+                        }
+                    }
+                }
+            }
+            .pubsImage {
+                @include dimensions(76px, 50px);
+            }
+        }
+        .footerTitle {
+            font-family: 'Poppins-Bold', serif;
+            @include fonts(18px, 18px, $dark_Gray);
+            margin: 0 0 20px;
+            text-transform: capitalize;
+        }
+        .FooterText {
+            font-family: 'Poppins-SemiBold', serif;
+            @include fonts(15px, 15px, $light_Gray);
+            display: flex;
+            align-items: center;
+
+            span {
+                font-size: 18px;
+                color: $orange_color;
+            }
+            &.phone {
+                background-image: url('./../../assets/phone-icn.svg');
+                background-repeat: no-repeat;
+                background-position: left 0;
+                background-size: 17px auto;
+                padding: 3px 0 3px 22px;
+
+                a {
+                    @include fonts(15px, 15px, $light_Gray);
+                }
+            }
+        }
+        .socialMedia {
+            color: $color-white;
+            width: 100%;
+            @include flex(flex, center, space-around);
+            margin-top: 35px;
+
+            .icons {
+                @include flex;
+                padding: 9px;
+                background-color: $orange_color ;
+                border-radius: 50%;
+                transition: background-color 250ms ease-in-out;
+
+                .icon {
+                    @include dimensions(23px, 23px);
+                }
+                &:hover {
+                    background-color: $orange_color_001 ;
+                    cursor: pointer;
+                }
+            }
+        }
+    }
+    .footerRightReserverCol {
+        @include flex;
+        background-color: $color-blue-eastern;
+        color: $color-white;
+        height: 54px;
+
+        p {
+            margin: 0;
+            font-family: 'Poppins-Medium', serif;
+            @include fonts(13px, 13px, $color-white);
+        }
+    }
+}
+
+/* # $Mobile ::
+------------------------------------*/
+
+@media (max-width: 1440px) {
+    .footerContainer {
+        height: initial;
+        
+        .bodyRow {
+            padding: 80px 0 28px;
+
+            .footerTitle {
+                @include fontSize(15px, 15px);
+                margin: 0 0 15px;
+            }
+            .FooterText {
+                @include fontSize(13px, 13px);
+            }
+            .footerLogoCol {
+                .webifyIcon {
+                    @include dimensions(62px, 96px);
+                }
+            }
+        }
+    }
+}
+
+@media only screen and (max-width:1200px) {
+    .footerContainer {
+        .bodyRow {
+            .demi-cerlce-container {
+                top: -35px;
+                right: 4px;
+                width: 3vw;
+
+                .demi-cercle {
+                    height: 542.415px;
+                }
+            }
+            .footerTitle {
+                font-size: 1.5rem;
+                line-height: 33px
+            }
+        }
+    }
+}
+
+@media only screen and (max-width:991px) {
+    .footerContainer {
+        .bodyRow {
+            .demi-cerlce-container {
+                right: 0;
+            }
+            .footerTitle {
+                font-size: 1.5rem;
+                line-height: 33px
+            }
+        }
+    }
+}
+
+@media only screen and (max-width:768px) {
+    .footerContainer {
+        .bodyRow {
+            .demi-cerlce-container {
+                top: -61px;
+
+                .demi-cercle {
+                    @include dimensions(599px, 599px);
+                }
+            }
+            .footerTitle {
+                font-size: 1.5rem;
+                margin: 0;
+            }
+            .FooterText {
+                font-size: 1rem;
+                margin: 0;
+            }
+        }
+    }
+}
+
+@media only screen and (max-width:576px) {
+    .footerContainer {
+        height: 222px;
+
+        .bodyRow {
+            padding: 20px 0;
+
+            .demi-cerlce-container {
+                .demi-cercle {
+                    top: -119px;
+                }
+            }
+            .footerLogoCol {
+                .webifyIcon {
+                    @include dimensions(37px, 65px);
+                }
+            }
+            .footerTitle {
+                font-size: 0.5rem;
+                line-height: 15px;
+            }
+            .FooterText {
+                font-size: 0.5rem;
+                line-height: 21px;
+
+                .icon {
+                    font-size: 0.7rem;
+                }
+            }
+            .webifyIcon {
+                @include dimensions(10%, 10%);
+            }
+            .socialMedia {
+                .icons {
+                    padding: 3px;
+                    @include flex;
+                    text-align: center;
+
+                    .icon {
+                        @include dimensions(10px, 10px);
+                    }
+                }
+            }
+            .footerContacteEmailCol,
+            .footerContacteTelCol {
+                font-size: 14px;
+            }
+        }
+
+        .footerRightReserverCol {
+            height: 15px;
+
+            p {
+                font-size: 7px;
+            }
+        }
+    }
+}
+
+@media only screen and (max-width:500px) {
+    .footerContainer {
+        .bodyRow {
+            .footerLogoCol {
+                .webifyIcon {
+                    @include dimensions(37px, 65px);
+                }
+            }
+            .footerTitle {
+                font-size: 0.5rem;
+                line-height: 15px;
+            }
+            .FooterText {
+                font-size: 0.5rem;
+                line-height: 21px;
+
+                .icon {
+                    font-size: 0.7rem;
+                }
+            }
+            .webifyIcon {
+                @include dimensions(10%, 10%);
+            }
+            .socialMedia {
+                .icons {
+                    padding: 3px;
+                    @include flex;
+                    text-align: center;
+
+                    .icon {
+                        @include dimensions(10px, 10px);
+                    }
+                }
+            }
+            .footerContacteEmailCol,
+            .footerContacteTelCol {
+                font-size: 14px;
+            }
+        }
+
+        .footerRightReserverCol {
+            height: 15px;
+
+            p {
+                font-size: 7px;
+            }
+        }
+    }
+}

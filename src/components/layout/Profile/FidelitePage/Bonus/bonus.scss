@@ -1,0 +1,51 @@
+@import '../../../../../scss/extend';
+
+.bonus-container {
+    .bonus-header {
+        @include flex(flex, center, space-between);
+        border-radius: 10px;
+        background-color: $color-blue-pelorous;
+        height: 43px;
+        padding: 10px 29px;
+
+        p {
+            margin: 0;
+            @include fonts(14px, 14px, $color-white);
+            font-family: 'Poppins-Bold', serif;
+        }
+        .icon {
+            @include dimensions(40px, 33px);
+            transform: rotate(180deg);
+            color: $color-white;
+        }
+    }
+    .bonus-main {
+        display: flex;
+        gap: 5px;
+        // justify-content: center;
+        align-items: center;
+        padding: 27px 0 46px 29px;
+
+        p {
+            margin: 0;
+            color: #484848;
+            font-family: Poppins;
+            font-size: 16px;
+            font-style: normal;
+            font-weight: 400;
+            line-height: normal;
+        }
+
+        span {
+            color: #FFF;
+            font-family: Poppins;
+            font-size: 14px;
+            font-style: normal;
+            font-weight: 500;
+            line-height: normal;
+            padding: 10px 39px;
+            border-radius: 21px;
+            background: #FBC000;
+        }
+    }
+}

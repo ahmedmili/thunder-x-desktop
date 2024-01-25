@@ -1,19 +1,19 @@
-import React, { useEffect } from 'react';
-import { logout } from '../Redux/slices/user/userSlice';
-import { toast, ToastContainer } from 'react-toastify';
-import 'react-toastify/dist/ReactToastify.css';
-import { useAppDispatch } from '../Redux/store';
+import React, { useEffect } from "react";
+import { logout } from "../Redux/slices/userSlice";
+// import { toast, ToastContainer } from "react-toastify";
+// import "react-toastify/dist/ReactToastify.css";
+import { useAppDispatch } from "../Redux/store";
+import { LocationService } from "./api/Location.api";
 
 const ApiEndpoint = import.meta.env.VITE_SERVER_ENDPOINT;
-
 const withValidUserCheck = (WrappedComponent: React.FC) => {
   const ValidUserChecker: React.FC = () => {
     const dispatch = useAppDispatch();
 
     useEffect(() => {
       const checkUserValidity = async () => {
-        const token = localStorage.getItem('bearerToken');
-        const userId = localStorage.getItem('userId');
+        const token = localStorage.getItem("bearerToken");
+        const userId = localStorage.getItem("userId");
 
         if (token && userId) {
           const apiUrl = `${ApiEndpoint}/getClient/${userId}`;
@@ -29,19 +29,67 @@ const withValidUserCheck = (WrappedComponent: React.FC) => {
               // Perform any additional checks if needed
             } else {
               const errorData = await response.json();
-              toast.error(errorData.message || 'An error occurred');
+              // toast.error(errorData.message || "An error occurred");
               dispatch(logout());
+              navigator.geolocation.getCurrentPosition(
+                (position: any) => {
+                  const { latitude, longitude } = position.coords;
+                  LocationService.geoCode(latitude, longitude).then(data => {
+                    dispatch({
+                      type: "SET_LOCATION",
+                      payload: {
+                        ...data
+                      },
+                    });
+                  });
+                },
+                (error: GeolocationPositionError) => {
+                  // toast.error(error.message)
+                }
+              );
             }
           } catch (error) {
             console.error(
-              'Error occurred while checking user validity:',
+              "Error occurred while checking user validity:",
               error
             );
-            toast.error('An error occurred while checking user validity');
+            // toast.error("An error occurred while checking user validity");
             dispatch(logout());
+            navigator.geolocation.getCurrentPosition(
+              (position: any) => {
+                const { latitude, longitude } = position.coords;
+                LocationService.geoCode(latitude, longitude).then(data => {
+                  dispatch({
+                    type: "SET_LOCATION",
+                    payload: {
+                      ...data
+                    },
+                  });
+                });
+              },
+              (error: GeolocationPositionError) => {
+                // toast.error(error.message)
+              }
+            );
           }
         } else {
           dispatch(logout());
+          navigator.geolocation.getCurrentPosition(
+            (position: any) => {
+              const { latitude, longitude } = position.coords;
+              LocationService.geoCode(latitude, longitude).then(data => {
+                dispatch({
+                  type: "SET_LOCATION",
+                  payload: {
+                    ...data
+                  },
+                });
+              });
+            },
+            (error: GeolocationPositionError) => {
+              // toast.error(error.message)
+            }
+          );
         }
       };
 
@@ -50,11 +98,10 @@ const withValidUserCheck = (WrappedComponent: React.FC) => {
 
       return () => clearInterval(interval);
     }, [dispatch]);
-
     return (
       <div>
         <WrappedComponent />
-        <ToastContainer />
+        {/* <ToastContainer /> */}
       </div>
     );
   };

@@ -1,0 +1,78 @@
+@import '../../scss/extend';
+
+
+.category-box {
+  @include dimensions(139px, 152px);
+  background-color: $Off-White;
+  cursor: pointer;
+  text-align: center;
+  padding: 15px;
+  border-radius: 15px;
+  margin: 5px 15px;
+  transition: background-color 0.5s;
+  transition: box-shadow 0.5s;
+  @include flex;
+  flex-direction: column;
+  gap: 20px;
+  transition: box-shadow 0.3s ease-in-out;
+
+  &.selected {
+    @include border(2px, $color-blue-pelorous);
+    background-color: $color-white;
+    box-shadow: 1px 2px 4px 2px rgba($dark_002, 0.17);
+  }
+
+  &.check {
+    position: relative;
+
+    &::after {
+      content: "";
+      @include dimensions(30px, 30px);
+      background-image: url('/src/assets/check.png');
+      border-radius: 5px;
+      position: absolute;
+      right: 14px;
+      top: 14px;
+      background-size: contain;
+      background-position: center;
+      background-repeat: no-repeat;
+      z-index: 9;
+    }
+  }
+
+  &:hover {
+    cursor: pointer;
+    @include border(2px, $color-blue-pelorous);
+    background-color: $color-white;
+    box-shadow: 1px 2px 4px 2px rgba($dark_002, 0.17);
+  }
+
+  img {
+    @include dimensions(68px, 68px);
+    object-fit: cover;
+  }
+
+  .category-name {
+    font-family: 'Poppins-Medium', serif;
+    @include fonts(18px, 21px, $dark_Gray);
+  }
+}
+
+
+/* # $Mobile ::
+------------------------------------*/
+
+@media (max-width: 1440px) {
+  .category-box {
+    padding: 10px;
+    @include dimensions(112px, 110px);
+    gap: 12px;
+
+    img {
+      @include dimensions(55px, 55px);
+    }
+    .category-name {
+      @include fontSize(12px, 13px);
+    }
+  }
+}

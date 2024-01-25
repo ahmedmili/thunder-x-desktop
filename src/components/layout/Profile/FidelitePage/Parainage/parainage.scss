@@ -1,0 +1,73 @@
+@import '../../../../../scss/extend';
+
+.parainage-container {
+    display: block;
+
+    .parainage-grid {
+        display: grid;
+        grid-template-columns: repeat(2, 1fr);
+        grid-gap: 42px;
+        margin: 0 0 40px;
+    }
+    main {
+        &.parainage-code-container {
+            padding: 0 !important;
+            border-radius: 10px;
+        }
+        .parainage-header {
+            @include flex(flex, center, space-between);
+            background-color: $color-blue-pelorous;
+            border-radius: 10px;
+            height: 40px;
+            padding: 10px 10px 10px 30px;
+
+            p {
+                margin: 0;
+                @include fonts(14px, 14px, $color-white);
+                font-family: 'Poppins-Bold', serif;
+            }
+            .icon {
+                @include dimensions(35px, 35px);
+                transform: rotate(180deg);
+                color: $color-white;
+                background-color: $color-blue-pelorous;
+                border-radius: 50%;
+                transition: transform 0.5s;
+
+                &:hover {
+                    cursor: pointer;
+                    opacity: .9;
+                }
+            }
+        }
+    }
+
+    .parainage-main {
+        display: flex;
+        gap: 5px;
+        align-items: center;
+        padding: 27px 0 46px 29px;
+
+        p {
+            margin: 0;
+            color: #484848;
+            font-family: Poppins;
+            font-size: 16px;
+            font-style: normal;
+            font-weight: 400;
+            line-height: normal;
+        }
+
+        span {
+            color: #FFF;
+            font-family: Poppins;
+            font-size: 14px;
+            font-style: normal;
+            font-weight: 500;
+            line-height: normal;
+            padding: 10px 39px;
+            border-radius: 21px;
+            background: #FBC000;
+        }
+    }
+}

@@ -1,0 +1,228 @@
+@import '../../../../../scss/extend';
+
+.desactive-account-section {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    gap: 25px;
+
+    .desactive-header-cover {
+        @include dimensions(100%, 298px);
+        background-position: center;
+        background-repeat: no-repeat;
+        background-size: cover;
+        border-radius: 25px;
+        margin: 0 0 20px;
+    }
+    .desactive-body {
+        background-color: $color-white;
+
+        .desactive-title {
+            font-family: 'Poppins-SemiBold', serif;
+            @include fonts(20px, 20px, $dark_Gray);
+            margin: 0 0 25px;
+        }
+        .desactive-warn {
+            font-family: 'Poppins', serif;
+            @include fonts(15px, 22px, $dark_Gray);
+            font-weight: weight(regular);
+            margin: 0 0 35px;
+        }
+        .desactive-avis-container {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            justify-content: center;
+            align-items: center;
+            gap: 27px;
+            row-gap: 17px;
+            margin: 0 0 35px;
+
+            .avi-content {
+                display: flex;
+                align-items: start;
+                gap: 8px;
+                position: relative;
+                padding-left: 30px;
+
+                input[type='checkbox'] {
+                    display: none;
+                }
+                label::before {
+                    content: "";
+                    display: inline-block;
+                    @include dimensions(20px, 20px);
+                    background-color: $color-blue-powder;
+                    @include border(1px, $color-blue-scooter);
+                    border-radius: 4px;
+                    position: absolute;
+                    left: 0;
+                    top: -3px;
+                }
+                input[type="checkbox"]:checked+label::before {
+                    content: "\2713";
+                    color: $color-blue-scooter;
+                    font-size: 16px;
+                    @include flex;
+                }
+                label {
+                    font-family: 'Poppins', serif;
+                    font-weight: weight(regular);
+                    @include fonts(15px, 22px, $dark_Gray);
+                    margin: -3px 0 0;
+
+                    &:hover {
+                        cursor: pointer;
+                    }
+                }
+            }
+        }
+        .desactive-rate-container {
+            margin: 0 0 30px;
+            @include flex;
+            gap: 40px;
+
+            .desactive-rate-btn {
+                border-radius: 10px;
+                background: linear-gradient(0deg, rgba(46, 177, 195, 0.3), rgba(46, 177, 195, 0.3));;
+                font-family: 'Poppins', serif;
+                font-weight: weight(regular);
+                @include fonts(13px, 13px, $color-blue-eastern);
+                @include border(1px, $color-blue-scooter);
+                @include dimensions(43px, 39px);
+                margin: 0;
+
+                &.active {
+                    background-color: $color-turquoise;
+                    color: $color-white;
+                }
+            }
+        }
+        .desactive-buttons {
+            @include flex(flex, center, space-between);
+            gap: 55px;
+
+            button {
+                min-width: 316px;
+                height: 43px;
+                background-color: $color-white;
+                @include border(2px, $color-yellow-buttercup);
+                border-radius: 50px;
+                font-family: 'Poppins-Medium', serif;
+                @include fontSize(17px, 17px);
+                transition: all .3s;
+
+                &.cancle-btn {
+                    color: $color-yellow-buttercup;
+
+                    &:hover {
+                        background-color: $color-yellow-buttercup;
+                        color: $color-white;
+                    }
+                }
+                &.submit-btn {
+                    background-color: $color-yellow-buttercup;
+                    color: $color-white;
+
+                    &:hover {
+                        background-color: $color-white;
+                        color: $color-yellow-buttercup;
+                    }
+                }
+            }
+        }
+    }
+}
+
+
+/* -- shoose-option-radio -- */
+.shoose-option-radio {
+    width: 80%;
+    @include flex(flex, start, center);
+    flex-direction: column;
+    gap: 25px;
+    padding: 28px 5px;
+
+    .option-radio {
+        display: flex;
+        gap: 17px;
+        align-items: center;
+
+        label {
+            font-family: 'Poppins-SemiBold', serif;
+            @include fonts(17px, 17px, $dark_Gray);
+        }
+        .form-check-input {
+            &[type="radio"] {
+                margin-top: 0;
+                font-size: 15px;
+                @include dimensions(18px, 18px);
+                background-color: $color-white;
+                position: relative;
+                --bs-form-check-bg-image: none;
+
+                &::after {
+                    content: '';
+                    @include border(2px, $dark_Gray);
+                    @include dimensions(20px, 20px);
+                    position: absolute;
+                    top: -2px;
+                    left: -2px;
+                    border-radius: 50%;
+                }
+                &:checked~.form-check-label {
+                    color: $Ocean_Teal;
+                }
+                &:checked {
+                    background-color: $primary_color;
+                    @include border(3px, $color-white);
+        
+                    &::after {
+                        border-color: $color-blue-half;
+                        top: -4px;
+                        left: -4px;
+                    }
+                }
+            }
+        }
+    }
+}
+
+
+
+/* # $Mobile ::
+------------------------------------*/
+
+@media screen and (max-width :992px) {
+    .desactive-account-section {
+        .desactive-header-cover {
+            height: 152px;
+        }
+        .desactive-body {
+            .desactive-rate-container {
+                gap: 10px;
+            }
+            .desactive-buttons {
+                gap: 10px;
+
+                button {
+                    font-size: 10px;
+                }
+            }
+        }
+    }
+}
+@media screen and (max-width :786px) {
+    .desactive-account-section {
+        .desactive-header-cover {
+            height: 119px;
+        }
+        .desactive-body {
+            .desactive-avis-container {
+                flex-direction: column;
+                @include flex(flex, start, center);
+                gap: 0px;
+                row-gap: 11px;
+            }
+        }
+    }
+}

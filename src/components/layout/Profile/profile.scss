@@ -1,0 +1,90 @@
+@import '../../../scss/extend';
+
+.profile-container {
+    background-color: $Off-White;
+    width: 100%;
+    transition: all 1s ease-in-out;
+    display: flex;
+
+    &::-webkit-scrollbar {
+        width: 0;
+    }
+    .profile-main {
+        width: 100%;
+        min-height: 100vh;
+        margin: 0 0 0 350px;
+        padding: 0 86px 52px 78px;
+    }
+    .bulles {
+        display: flex;
+        flex-direction: column;
+        position: fixed;
+        bottom: 22px;
+        right: 26px;
+        gap: 20px;
+        z-index: 1;
+
+        .messanger-popup-btn {
+            @include dimensions(64px, 64px);
+            background-position: center;
+            background-repeat: no-repeat;
+            background-size: 22px auto;
+            background-color: $color-blue-pelorous;
+            border-radius: 50%;
+            border: 0;
+        }
+        .phone-popup-btn {
+            @include dimensions(64px, 64px);
+            background-position: center;
+            background-repeat: no-repeat;
+            background-size: cover;
+            background-color: transparent;
+            border: navajowhite;
+        }
+
+        .messanger-popup-btn {
+            position: relative;
+
+            .messanger-bull-notif-icon {
+                position: absolute;
+                right: 0;
+                top: 3px;
+                color: $color-white;
+                background-color: $orange_color;
+                border-radius: 50%;
+                padding: 5px;
+                font-size: 11px;
+                margin: 0;
+                @include flex;
+            }
+        }
+    }
+    .discuter-messanger-popup {
+        bottom: 105px;
+        right: 50px;
+        z-index: 10;
+    }
+}
+
+/* # $Mobile ::
+------------------------------------*/
+
+@media (max-width: 1440px) {
+    .profile-container {
+        .profile-main {
+            margin: 0 0 0 280px;
+            padding: 0 70px 42px 63px;
+        }
+    }
+}
+@media only screen and (max-width: 992px) {
+    .profile-container {
+        gap: 60px;
+    }
+}
+
+@media only screen and (max-width: 768px) {
+    .profile-container {
+        gap: 30px;
+    }
+}

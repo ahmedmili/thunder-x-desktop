@@ -1,0 +1,58 @@
+@import "../../../../scss/extend";
+.price-filter-container{
+    padding-bottom: 43px;
+    border-bottom: 1px solid $color-gray-alto;
+    margin-bottom: 32px;
+    &__title{
+        color: $dark_Gray;
+        font-family: Poppins;
+        font-size: 17px;
+        font-style: normal;
+        font-weight: 600;
+        line-height: normal;
+        margin-bottom: 24px;
+    }
+    &__container{
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        margin-bottom: 9px;
+        &__price {
+            color: $dark_Gray;
+            font-family: Poppins;
+            font-size: 17px;
+            font-style: normal;
+            font-weight: 600;
+            line-height: normal;
+        }
+        &__rang-value{
+            color: $dark_Gray;            
+            font-family: Poppins;
+            font-size: 15px;
+            font-style: normal;
+            font-weight: 400;
+            line-height: normal;
+        }         
+    }
+}
+.MuiSlider-thumb {
+    color: $Ocean_Teal !important;    
+    &.Mui-active{
+        box-shadow: none !important;
+    }
+    &.Mui-focusVisible {
+        box-shadow: none !important;
+    }
+    &:hover{
+        box-shadow: none !important;
+    }
+}
+.MuiSlider-root{
+    color: $Ocean_Teal !important;
+    height: 4px !important;
+    border-radius: 15px !important;
+}
+.MuiSlider-rail{
+    background-color: $orange_color !important;
+    opacity: 1 !important;
+}
