@@ -196,6 +196,11 @@
             .FooterText {
                 @include fontSize(13px, 13px);
             }
+            .footerLogoCol {
+                .webifyIcon {
+                    @include dimensions(62px, 96px);
+                }
+            }
         }
     }
 }
