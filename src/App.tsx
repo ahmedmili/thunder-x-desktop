@@ -83,16 +83,28 @@ function App({ initialData }: AppProps) {
   const navigate = useNavigate()
 
   var favorsList: number[] = [];
-  const location = useAppSelector((state) => state.location.position);
+  // const location = useAppSelector((state) => state.location.position);
+  const location = useAppSelector((state: RootState) => state.location?.position);
+
   const deliv = useAppSelector((state) => state.homeData.isDelivery);
   const region: any = useSelector(regionHomeSelector);
   const supplier = useAppSelector((state: RootState) => state.cart.supplier);
 
   const [updateTrigger, setUpdateTrigger] = useState(false);
 
+
+  const inRegion = async (formData: any) => {
+    const { status, data } = await LocationService.inRegion(formData)
+    return data.data ? true : false
+  }
+
+  // useEffect(() => {
+  //   (location && !region) ? dispatch({ type: "SHOW_REGION_ERROR", payload: true }) : dispatch({ type: "SHOW_REGION_ERROR", payload: false })
+  // }, [location, region])
+
   const updateHomeData = useCallback(() => {
     setUpdateTrigger((prev) => !prev);
-  }, []);
+  }, [location, region]);
 
   useEffect(() => {
     const current_location = localStorageService.getCurrentLocation();
@@ -208,12 +220,24 @@ function App({ initialData }: AppProps) {
         (position: Position) => {
           const { latitude, longitude } = position.coords;
           LocationService.geoCode(latitude, longitude).then(data => {
-            dispatch({
-              type: "SET_LOCATION",
-              payload: {
-                ...data
-              },
-            });
+            let formData = {
+              lat: latitude,
+              long: longitude,
+            }
+            inRegion(formData).then((validateRegion) => {
+              if (validateRegion) {
+                dispatch({
+                  type: "SET_LOCATION",
+                  payload: {
+                    ...data
+                  },
+                });
+                dispatch({ type: "SHOW_REGION_ERROR", payload: false })
+
+              } else {
+                dispatch({ type: "SHOW_REGION_ERROR", payload: true })
+              }
+            })
           });
         },
         (error: GeolocationPositionError) => {
@@ -270,12 +294,25 @@ function App({ initialData }: AppProps) {
           (position: Position) => {
             const { latitude, longitude } = position.coords;
             LocationService.geoCode(latitude, longitude).then(data => {
-              dispatch({
-                type: "SET_LOCATION",
-                payload: {
-                  ...data
-                },
-              });
+              let formData = {
+                lat: latitude,
+                long: longitude,
+              }
+              inRegion(formData).then((validateRegion) => {
+                if (validateRegion) {
+                  dispatch({
+                    type: "SET_LOCATION",
+                    payload: {
+                      ...data
+                    },
+                  });
+                  dispatch({ type: "SHOW_REGION_ERROR", payload: false })
+
+                } else {
+                  dispatch({ type: "SHOW_REGION_ERROR", payload: true })
+                }
+
+              })
             });
           },
           (error: GeolocationPositionError) => {

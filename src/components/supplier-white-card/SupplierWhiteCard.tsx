@@ -106,9 +106,7 @@ const SupplierWhiteCard: React.FC<SupplierWhiteCard> = ({ data, favors = false, 
                                             </>
                                         )
                                     }
-
                                 </span>
-
                             </div>
                             {/* option take_away & delivery */}
                             <p className={supplierStyle.option} >

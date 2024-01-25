@@ -66,6 +66,10 @@ const DesactiveAccount: React.FC<DesactiveAccountProps> = ({ }) => {
     return result.join(',')
   }
 
+  const inRegion = async (formData: any) => {
+    const { status, data } = await LocationService.inRegion(formData)
+    return data.data ? true : false
+  }
   const desactiveAccount = async () => {
     const checked = avisList.filter((e) => e.checked === true)
     const resultReasons: string = concateTableReason(checked)
@@ -80,18 +84,30 @@ const DesactiveAccount: React.FC<DesactiveAccountProps> = ({ }) => {
       if (data.success) {
         let lang = localStorage.getItem('lang');
         localStorage.clear();
-        localStorage.setItem('lang', lang!);
         dispatch(logout())
+        localStorage.setItem('lang', lang!);
         navigator.geolocation.getCurrentPosition(
           (position: any) => {
             const { latitude, longitude } = position.coords;
             LocationService.geoCode(latitude, longitude).then(data => {
-              dispatch({
-                type: "SET_LOCATION",
-                payload: {
-                  ...data
-                },
-              });
+              let formData = {
+                lat: latitude,
+                long: longitude,
+              }
+              inRegion(formData).then((validateRegion) => {
+                if (validateRegion) {
+                  dispatch({
+                    type: "SET_LOCATION",
+                    payload: {
+                      ...data
+                    },
+                  });
+                  dispatch({ type: "SHOW_REGION_ERROR", payload: false })
+
+                } else {
+                  dispatch({ type: "SHOW_REGION_ERROR", payload: true })
+                }
+              })
             });
           },
           (error: GeolocationPositionError) => {

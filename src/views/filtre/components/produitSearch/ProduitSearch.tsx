@@ -1,15 +1,15 @@
 
 
-import { useEffect, useState } from "react"
-import "./produitSearch.scss"
 import SearchIcon from '@mui/icons-material/Search';
-import { useNavigate } from "react-router-dom";
-import { useAppDispatch } from "../../../../Redux/store";
-import { homeRefresh, setRefresh } from "../../../../Redux/slices/home";
 import { debounce } from 'lodash';
-import { useSelector } from "react-redux";
+import { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
+import { useSelector } from "react-redux";
+import { useNavigate } from "react-router-dom";
+import { homeRefresh, setRefresh } from "../../../../Redux/slices/home";
+import { useAppDispatch } from "../../../../Redux/store";
 import { paramsService } from "../../../../utils/params";
+import "./produitSearch.scss";
 
 function SearchProduit() {
     const dispatch = useAppDispatch();
@@ -19,7 +19,7 @@ function SearchProduit() {
     const { t } = useTranslation()
     useEffect(() => {
         const searchParams = new URLSearchParams(location.search);
-        let params = paramsService.fetchParams(searchParams); 
+        let params = paramsService.fetchParams(searchParams);
         if (params.filter && params.filter != "") {
             const filter: any = params.filter;
             setActive(filter);
@@ -31,7 +31,7 @@ function SearchProduit() {
     useEffect(() => {
         if (refresh) {
             const searchParams = new URLSearchParams(location.search);
-            let params = paramsService.fetchParams(searchParams); 
+            let params = paramsService.fetchParams(searchParams);
             if (!params.filter || params.filter == "") {
                 setActive("");
             }
@@ -41,7 +41,7 @@ function SearchProduit() {
     function clickHandle(event: any) {
         setActive(event.target.value);
         handleInputChange(event)
-    }    
+    }
     const handleInputChange = debounce((event) => {
         if (event.target.value != "") {
             const searchParams = new URLSearchParams(location.search);
@@ -57,7 +57,6 @@ function SearchProduit() {
             });
         }
         else {
-            console.log("heeeee");
             const searchParams = new URLSearchParams(location.search);
             let params = searchParams.has("search") ? paramsService.fetchParams(searchParams) : {}
             if (params.filter) {
@@ -71,13 +70,13 @@ function SearchProduit() {
         }
         dispatch(setRefresh(true));
     }, 700);
-    
+
     return (
         <form className="search-filter-container" autoComplete="off">
             <div className="search-filter-container__input">
                 <input autoComplete="off" type="search" className="search-input" name="search" id="search" placeholder={`${t('searchPage.question')}`} value={active} onChange={clickHandle} />
                 <SearchIcon className="text-search-icon" />
-                <span className="search-icon"></span>
+                <button className="search-icon"></button>
             </div>
         </form>
     )

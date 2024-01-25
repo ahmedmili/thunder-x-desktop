@@ -547,6 +547,12 @@ const CartPage: React.FC = () => {
     }
   }
 
+
+  const inRegion = async (formData: any) => {
+    const { status, data } = await LocationService.inRegion(formData)
+    return data.data ? true : false
+  }
+
   useEffect(() => {
     const availableTime = isForcedStatusEnabled(takeAwayDate)
     if ((!availableTime || forced_status === 'CLOSE' || isClosed === 0) && forced_status != 'AUTO') {
@@ -646,12 +652,24 @@ const CartPage: React.FC = () => {
               (position: any) => {
                 const { latitude, longitude } = position.coords;
                 LocationService.geoCode(latitude, longitude).then(data => {
-                  dispatch({
-                    type: "SET_LOCATION",
-                    payload: {
-                      ...data
-                    },
-                  });
+                  let formData = {
+                    lat: latitude,
+                    long: longitude,
+                  }
+                  inRegion(formData).then((validateRegion) => {
+                    if (validateRegion) {
+                      dispatch({
+                        type: "SET_LOCATION",
+                        payload: {
+                          ...data
+                        },
+                      });
+                      dispatch({ type: "SHOW_REGION_ERROR", payload: false })
+
+                    } else {
+                      dispatch({ type: "SHOW_REGION_ERROR", payload: true })
+                    }
+                  })
                 });
               },
               (error: GeolocationPositionError) => {
@@ -1224,9 +1242,10 @@ const CartPage: React.FC = () => {
                                           <>
                                             {
                                               promosList.map((promo: any, index: number) => {
+                                                console.log('promo', promo)
                                                 return (
                                                   <li>
-                                                    <button key={index} className={(!couponExiste) ? "promo-button" : "promo-button active"} onClick={() => {
+                                                    <button key={index} className={(promo != selectedCoupon) ? "promo-button" : "promo-button active"} onClick={() => {
                                                       selectCoupon(promo)
                                                     }}>
                                                       {promo.title}
@@ -1242,8 +1261,15 @@ const CartPage: React.FC = () => {
                                     </ul>
                                   </div>
                                   <div className="promo-container">
-                                    <textarea name="code_promo" id="code_promo" placeholder={`${t('cart.PromosCode')}`} value={promo} onChange={(e) => handlePromoChange(e.target.value)} ></textarea>
-                                    <button style={{ backgroundColor: `${(!couponExiste || promoApplied) ? "#E77F77" : '#3BB3C4'}` }} disabled={!couponExiste} className={(couponExiste) ? "button" : "button disabled"} onClick={checkPromoCode}>
+                                    <div className="code-promo-wrapper" >
+                                      <input type="text" style={{
+                                        backgroundColor: promo.length > 0 ? "#E77F76" : "transparent",
+                                        width: `${(promo.length * 1.3) + 3}ch`,
+                                        boxSizing: 'border-box',
+                                      }} maxLength={10} className="code-promo-input" name="code_promo" id="code_promo" value={promo.toUpperCase()}  onChange={(e) => handlePromoChange(e.target.value)} ></input>
+                                    </div>
+
+                                    <button disabled={!couponExiste} className={(couponExiste) ? "button" : "button disabled"} onClick={checkPromoCode}>
                                       {promoApplied ? t('Annuler') : t('cartPage.appliquer')}
                                     </button>
                                   </div>
@@ -1273,7 +1299,7 @@ const CartPage: React.FC = () => {
                                 <div className="bonus-wrapper">
                                   <div className="promo-container">
                                     <textarea name="bonus" id="bonus" placeholder={`${t('cartPage.bonus')}`} value={bonus.toFixed(2) + ' pts'}></textarea>
-                                    <button style={{ backgroundColor: `${appliedBonus > 0 ? "#E77F77" : '#3BB3C4'}` }} className={(bonus < 5000 || limitReachedBonus) ? "button disabled" : "button"} disabled={(appliedBonus <= 0 && (bonus < 5000 || limitReachedBonus))} onClick={() => appliedBonus > 0 ? clearBonus() : applyBonus()}>
+                                    <button style={{ backgroundColor: `${appliedBonus > 0 ? "red" : '#3BB3C4'}` }} className={(bonus < 5000 || limitReachedBonus) ? "button disabled" : "button"} disabled={(bonus < 5000 || limitReachedBonus)} onClick={() => appliedBonus > 0 ? clearBonus() : applyBonus()}>
                                       {appliedBonus > 0 ? t('Annuler') : t('cartPage.appliquer')}
                                     </button>
                                   </div>
@@ -1282,17 +1308,17 @@ const CartPage: React.FC = () => {
                                       <p className="bonus-message">{t('cartPage.bonusMsg')}</p>
                                     </li>
                                   </ul>
-                                </div>
-                              </div>
+                                </div >
+                              </div >
                               {/* bonus end */}
-                              <div className="buttons">
+                              <div className="buttons" >
                                 <button className="cancel">
                                   {t('Annuler')}
                                 </button>
                                 <button className="commander" onClick={goNextStep} >
                                   {t('continuer')}
                                 </button>
-                              </div>
+                              </div >
                             </>)
                             }
                             {
@@ -1458,7 +1484,8 @@ const CartPage: React.FC = () => {
                                     {t('cartPage.commander')}
                                   </button>
                                 </div>
-                              </div >)}
+                              </div >)
+                            }
 
                             <div className="message-validation-area d-none">
                               <h2 className="message-validation-title">
@@ -1651,7 +1678,7 @@ const CartPage: React.FC = () => {
               {
                 minCostError && <MinCostError close={handleMinCostModal} />
               }
-            </Container>
+            </Container >
             {
               showServicePopup && (
                 <WarnPopup message={t('searchPage.warnServiceMessage')} closeButtonText={t('continuer')} confirmButtonText={t('Modal.finishCommand.dropOldCommand')} close={handleServicePopup} accept={dropOrder} />

@@ -1,4 +1,4 @@
-@import '../../colors';
+@import '../../scss/extend';
 @import '../../animations';
 
 .profile-cart-main {
@@ -6,7 +6,7 @@
   height: 100%;
   border-radius: 15px;
   padding: 20px 20px;
-  background-color: white;
+  background-color: $color-white;
   animation: cart-animation 0.3s ease-in-out;
 
   p {
@@ -15,70 +15,71 @@
   }
 
   header {
-
-    display: flex;
-    justify-content: center;
-    align-items: start;
+    @include flex(flex, start, center);
+    margin: 0 0 40px;
 
     .profile-info {
-      flex: 1;
-      display: flex;
-      flex-direction: column;
-      justify-content: center;
-      align-items: center;
+      max-width: 150px;
+      margin: 0 auto;
+      display: block;
 
+      .profile-info_img-blc {
+        margin: 0 auto 14px;
+        @include dimensions(95px, 95px);
+        @include flex;
+        overflow: hidden;
 
-      .welcome-msg {
-        color: #484848;
-        font-family: Poppins;
-        font-size: 16px;
-        font-style: normal;
-        font-weight: 600;
-        line-height: normal;
+        img {
+          @include dimensions(100%, 100%);
+          object-fit: cover;
+        }
       }
-
+      .welcome-msg {
+        text-align: center;
+        font-family: 'Poppins-SemiBold', serif;
+        @include fonts(16px, 16px, $dark_002);
+        margin: 0 0 5px;
+      }
       .full-name {
-        color: #FBC000;
-        font-family: Poppins;
-        font-size: 17px;
-        font-style: normal;
-        font-weight: 400;
-        line-height: normal;
+        text-align: center;
+        font-weight: weight(regular);
+        font-family: 'Poppins-Regular', serif;
+        @include fonts(17px, 17px, $orange_color);
+        margin: 0 0 5px;
       }
     }
 
     .close-btn {
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      text-align: center;
-      width: 19px;
-      height: 19px;
-      font-size: 18px;
-      color: #FBC000;
+      @include dimensions(25px, 25px);
+      background-image: url('./../../assets/modale-close-black-icn.svg');
+      background-repeat: no-repeat;
+      background-size: 15px auto;
+      background-position: center;
+      position: static;
 
       &:hover {
         cursor: pointer;
+        opacity: .9;
       }
     }
   }
 
   main {
-    margin-top: 26px;
+    margin: 0;
     padding-bottom: 15px;
 
     .link-list {
       display: flex;
-      gap: 25px;
+      gap: 10px;
+      position: relative;
 
       .profile-list-icon {
+        background-position: center;
+        background-repeat: no-repeat;
         background-size: 100%;
         width: 18px;
         height: 18px;
       }
-
-      position: relative;
-
       .notif-indicator {
         position: absolute;
         border-radius: 50%;
@@ -87,16 +88,10 @@
         height: 12px;
         width: 12px;
         background-color: red;
-
       }
-
       a {
-        color: #484848;
-        font-family: Poppins;
-        font-size: 14px;
-        font-style: normal;
-        font-weight: 500;
-        line-height: normal;
+        @include fonts(14px, 14px, $dark_Gray);
+        font-family: 'Poppins-Medium', serif;
       }
     }
 
@@ -107,8 +102,8 @@
         display: flex;
         flex-direction: column;
         justify-content: start;
-        gap: 10px;
-        border-bottom: solid 1px #E8E8E8;
+        gap: 20px;
+        border-bottom: solid 1px $color-gray-mercury;
         padding-bottom: 28px;
         margin-bottom: 14px;
       }

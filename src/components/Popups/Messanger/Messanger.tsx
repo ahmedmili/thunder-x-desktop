@@ -125,18 +125,6 @@ const Messanger: React.FC<MessangerProps> = ({ className }) => {
                     <div className='messanger-logo' style={{ backgroundImage: ` url(${Profile})` }}></div>
                     <p>Thunder Express</p>
                 </div>
-                <div className="btns-group">
-                    <div className="btn-more-blc">
-                        <button className="btn btn-more" onClick={handleNotifsToggle}></button>
-
-                        {notifsVisible && (
-                            <div className="active-notifs">
-                                <button className="btn btn-notifs">Activer les notifications</button>
-                            </div>
-                        )}
-                    </div>
-                    <button className="btn btn-arrow-toggle"></button>
-                </div>
             </header >
             <main className='messsanger-body'>
                 <div className="wave-container">
