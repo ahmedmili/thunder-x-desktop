@@ -807,6 +807,7 @@ const CartPage: React.FC = () => {
 
   // calc bonus
   const applyBonus = () => {
+    console.log("teeest")
     let sum = 0;
     if (giftApplied) {
       sum = sousTotal - giftAmmount;
@@ -972,8 +973,9 @@ const CartPage: React.FC = () => {
           setPromoReduction(promoReduction)
           return 0
         } else {
-          setPromoReduction(0)
-
+          setPromoReduction((initDeliveryPrice > selectedCoupon.value) ? Math.abs(initDeliveryPrice - selectedCoupon.value) : initDeliveryPrice)
+          console.log('selectedCoupon', selectedCoupon)
+          console.log("extraDelivFixed", extraDelivFixed)
           extraDelivFixed === 1 ? dispatch(setDeliveryPrice(selectedCoupon.value)) : dispatch(setDeliveryPrice(selectedCoupon.value + extraDeliveryCost))
           return 0
         }
@@ -1305,7 +1307,7 @@ const CartPage: React.FC = () => {
                                 <div className="bonus-wrapper">
                                   <div className="promo-container">
                                     <textarea name="bonus" id="bonus" placeholder={`${t('cartPage.bonus')}`} value={bonus.toFixed(2) + ' pts'}></textarea>
-                                    <button style={{ backgroundColor: `${appliedBonus > 0 ? "red" : '#3BB3C4'}` }} className={(bonus < 5000 || limitReachedBonus) ? "button disabled" : "button"} disabled={(bonus < 5000 || limitReachedBonus)} onClick={() => appliedBonus > 0 ? clearBonus() : applyBonus()}>
+                                    <button style={{ backgroundColor: `${appliedBonus > 0 ? "red" : '#3BB3C4'}` }} className={(bonus < 5000 || limitReachedBonus) ? "button disabled" : "button"} disabled={((bonus < 5000 || limitReachedBonus) && !appliedBonus)} onClick={() => appliedBonus > 0 ? clearBonus() : applyBonus()}>
                                       {appliedBonus > 0 ? t('Annuler') : t('cartPage.appliquer')}
                                     </button>
                                   </div>
@@ -1623,7 +1625,7 @@ const CartPage: React.FC = () => {
                                     : <></>
                                 }
                                 {
-                                  (promoReduction && promoReduction > 0) ?
+                                  ((promoReduction) && (promoReduction > 0) && (selectedOption === 3)) ?
                                     <div className="sous-total">
                                       <div className="title">{t('cartPage.Coupon')}</div>
                                       <div className="value">-{promoReduction ? (promoReduction).toFixed(2) : "0.00"} DT</div>
