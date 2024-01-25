@@ -548,6 +548,12 @@ const CartPage: React.FC = () => {
     }
   }
 
+
+  const inRegion = async (formData: any) => {
+    const { status, data } = await LocationService.inRegion(formData)
+    return data.data ? true : false
+  }
+
   useEffect(() => {
     const availableTime = isForcedStatusEnabled(takeAwayDate)
     if ((!availableTime || forced_status === 'CLOSE' || isClosed === 0) && forced_status != 'AUTO') {
@@ -647,12 +653,24 @@ const CartPage: React.FC = () => {
               (position: any) => {
                 const { latitude, longitude } = position.coords;
                 LocationService.geoCode(latitude, longitude).then(data => {
-                  dispatch({
-                    type: "SET_LOCATION",
-                    payload: {
-                      ...data
-                    },
-                  });
+                  let formData = {
+                    lat: latitude,
+                    long: longitude,
+                  }
+                  inRegion(formData).then((validateRegion) => {
+                    if (validateRegion) {
+                      dispatch({
+                        type: "SET_LOCATION",
+                        payload: {
+                          ...data
+                        },
+                      });
+                      dispatch({ type: "SHOW_REGION_ERROR", payload: false })
+
+                    } else {
+                      dispatch({ type: "SHOW_REGION_ERROR", payload: true })
+                    }
+                  })
                 });
               },
               (error: GeolocationPositionError) => {

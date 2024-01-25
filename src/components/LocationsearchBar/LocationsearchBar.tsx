@@ -6,6 +6,7 @@ import { useNavigate } from "react-router-dom";
 import { useAppSelector } from "../../Redux/store";
 import AutocompleteInput from "../Location/AutocompleteInput/AutocompleteInput";
 import searchStyle from "./locationSearchBar.module.scss";
+import { LocationService } from "../../services/api/Location.api";
 
 interface Props {
   placeholder: string;
@@ -18,18 +19,36 @@ const LocationSearchBar: React.FC<Props> = ({ placeholder }) => {
 
   const { t } = useTranslation()
 
+
+  const inRegion = async (formData: any) => {
+    const { status, data } = await LocationService.inRegion(formData)
+    return data.data ? true : false
+  }
+
   const handleSearch = () => {
     if (suggestions) {
-      dispatch({
-        type: "SET_LOCATION",
-        payload: {
-          coords: {
-            latitude: suggestions.position[0].lat,
-            longitude: suggestions.position[0].long,
-            label: suggestions.title,
-          },
-        },
-      });
+      let formData = {
+        lat: suggestions.position[0].lat,
+        long: suggestions.position[0].long,
+      }
+      inRegion(formData).then((validateRegion) => {
+        if (validateRegion) {
+          dispatch({
+            type: "SET_LOCATION",
+            payload: {
+              coords: {
+                latitude: suggestions.position[0].lat,
+                longitude: suggestions.position[0].long,
+                label: suggestions.title,
+              },
+            },
+          });
+          dispatch({ type: "SHOW_REGION_ERROR", payload: false })
+
+        } else {
+          dispatch({ type: "SHOW_REGION_ERROR", payload: true })
+        }
+      })
       // navigate('/search')
     } else {
       dispatch({ type: "SET_SHOW", payload: true })
