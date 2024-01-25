@@ -31,7 +31,7 @@ deploy-staging:
     - cd $CI_PROJECT_DIR
     - pwd
     - cp -r ./* /var/www/html/thunderweb-preprod
-    - cp -r -f /var/www/html/thunderweb.env /var/www/html/thunderweb-preprod/.env
+    - cp -r -f /var/www/html/thunderweb.prod.env /var/www/html/thunderweb-preprod/.env
     - cd /var/www/html/thunderweb-preprod
     - yarn
     - export CI=false
