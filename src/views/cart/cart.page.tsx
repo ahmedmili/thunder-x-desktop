@@ -1266,7 +1266,7 @@ const CartPage: React.FC = () => {
                                         backgroundColor: promo.length > 0 ? "#E77F76" : "transparent",
                                         width: `${(promo.length * 1.3) + 3}ch`,
                                         boxSizing: 'border-box',
-                                      }} maxLength={10} className="code-promo-input" name="code_promo" id="code_promo" value={promo.toUpperCase()}  onChange={(e) => handlePromoChange(e.target.value)} ></input>
+                                      }} maxLength={10} className="code-promo-input" name="code_promo" id="code_promo" value={promo.toUpperCase()} onChange={(e) => handlePromoChange(e.target.value)} ></input>
                                     </div>
 
                                     <button style={{ backgroundColor: `${(!couponExiste || promoApplied) ? "#E77F77" : "#3BB3C4"}` }} disabled={!couponExiste} className={(couponExiste) ? "button" : "button disabled"} onClick={checkPromoCode}>
@@ -1331,11 +1331,16 @@ const CartPage: React.FC = () => {
                                       <label htmlFor="espece">{t('cartPage.espece')}</label>
                                       <input className="form-check-input" type="radio" name="pay" id="espece" checked={payMode === 1} onClick={() => setPayMode(1)} />
                                     </div>
-                                    <div className={`method ${payMode === 2 ? "active" : ""}`}>
-                                      <img loading="lazy" className="cart" src={CartSVG} alt="My SVG" />
-                                      <label htmlFor="bnc-cart">{t('cartPage.bankPay')}</label>
-                                      <input className="form-check-input" type="radio" name="pay" id="bnc-cart" checked={payMode === 2} onClick={() => setPayMode(2)} />
-                                    </div>
+                                    {
+                                      (selectedOption === 3) && (
+
+                                        <div className={`method ${payMode === 2 ? "active" : ""}`}>
+                                          <img loading="lazy" className="cart" src={CartSVG} alt="My SVG" />
+                                          <label htmlFor="bnc-cart">{t('cartPage.bankPay')}</label>
+                                          <input className="form-check-input" type="radio" name="pay" id="bnc-cart" checked={payMode === 2} onClick={() => setPayMode(2)} />
+                                        </div>
+                                      )
+                                    }
                                   </div>
                                 </div>
 
@@ -1636,7 +1641,7 @@ const CartPage: React.FC = () => {
                                     : <></>
                                 }
                                 {
-                                  (deliveryPrice && (deliveryPrice > 0) && (selectedOption === 3) ) ?
+                                  (deliveryPrice && (deliveryPrice > 0) && (selectedOption === 3)) ?
                                     <div className="sous-total">
                                       <div className="title">{t('supplier.delivPrice')}</div>
                                       <div className="value">{Number(deliveryPrice).toFixed(2)} DT</div>
