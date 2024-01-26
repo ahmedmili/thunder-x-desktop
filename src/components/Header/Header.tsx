@@ -134,7 +134,7 @@ const Header = () => {
 
       setShowProfile(!showProfile);
     } else {
-      navigate('/login')
+      navigate('/login',{ state: { return: true }})
     }
   };
   const calculeSubTotal = (products: any) => {
@@ -305,13 +305,13 @@ const Header = () => {
                     {!logged_in && (
                       <div className="header-buttons">
                         <a
-                          onClick={() => navigate('/register')}
+                          onClick={() => navigate('/register/',{ state: { return: true }})}
                           className='LoadingButton'
                         >
                           {t('signup')}
                         </a>
                         <button
-                          onClick={() => navigate('/login')}
+                          onClick={() => navigate('/login/',{ state: { return: true }})}
                           className='btn LoadingButton'
                         >
                           {t('login')}
@@ -713,13 +713,13 @@ const Header = () => {
                 {!logged_in && (
                   <div className="header-buttons">
                     <a
-                      onClick={() => navigate('/register')}
+                      onClick={() => navigate('/register/',{ state: { return: true }})}
                       className='LoadingButton header-signup'
                     >
                       {t('signup')}
                     </a>
                     <button
-                      onClick={() => navigate('/login')}
+                      onClick={() => navigate('/login/',{ state: { return: true }})}
                       className='LoadingButton '
                     >
                       {t('login')}

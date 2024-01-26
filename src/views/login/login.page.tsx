@@ -14,7 +14,7 @@ import Or from "../../components/or/Or";
 import PicturesList from "../../components/picture-list/PicturesList";
 import { FormValues, generateForm } from "../../utils/formUtils";
 
-import { useNavigate } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 
 import { useTranslation } from "react-i18next";
 import { setUserCredentials } from "../../Redux/slices/userSlice";
@@ -26,7 +26,8 @@ import { localStorageService } from "../../services/localStorageService";
 const LoginPage = () => {
   const [showPassword, setShowPassword] = useState(false);
   const [errorsServer, setErrorServer] = useState<string>("")
-
+  const location = useLocation();
+  const { state } = location;
   const dispatch = useAppDispatch();
   const navigate = useNavigate();
 
@@ -38,7 +39,23 @@ const LoginPage = () => {
 
   const navigateToHome = () => {
     const currentLocation = localStorageService.getCurrentLocation()
-    currentLocation ? navigate('/search') : navigate('/')
+
+    if (currentLocation) {
+
+      if (state) {
+        const isReturn = state.return
+        const nextRef = state.nextRef
+        if (isReturn) {
+          navigate(-1)
+        } else if (nextRef) {
+          navigate(nextRef)
+        } 
+      }else {
+        navigate('/search')
+      }
+    } else {
+      navigate('/')
+    }
   }
 
   const fields = [
@@ -99,7 +116,7 @@ const LoginPage = () => {
         switch (userState) {
           case 1:
             saveUser(user, token)
-            user.rollback && toast.success(t('auth.restoredAccount')) 
+            user.rollback && toast.success(t('auth.restoredAccount'))
             setErrorServer('')
             break;
           case 4:
