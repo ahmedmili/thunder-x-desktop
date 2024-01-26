@@ -693,7 +693,7 @@ function MenuOptions({ initialData }: AppProps) {
                                                         fontSize: "24px"
                                                     }}
                                                     onChange={(event, newValue) => {
-                                                        console.log("newValue : ", newValue)
+                                                        // console.log("newValue : ", newValue)
                                                     }}
                                                 />
                                             </span>

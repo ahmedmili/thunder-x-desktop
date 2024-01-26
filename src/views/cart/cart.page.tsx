@@ -1699,7 +1699,7 @@ const CartPage: React.FC = () => {
             }
             {
               showAuthWarnPopup && (
-                <WarnPopup message={t('searchPage.warnAuthMessage')} closeButtonText={t('Annuler')} confirmButtonText={t('login2')} close={handleAuthWarnPopup} accept={() => navigate('/login/')} />
+                <WarnPopup message={t('searchPage.warnAuthMessage')} closeButtonText={t('Annuler')} confirmButtonText={t('login2')} close={handleAuthWarnPopup} accept={() => navigate('/login/',{ state: { return: true }})} />
               )
             }
           </div >

@@ -26,7 +26,6 @@ const LocationSearchBar: React.FC<Props> = ({ placeholder }) => {
   }
 
   const handleSearch = () => {
-    console.log('teeestteeestteeest')
     if (suggestions) {
       let formData = {
         lat: suggestions.position[0].lat,
