@@ -68,6 +68,8 @@
   "forgetPassword.initPw.newPassword": "Nouveau mot de passe",
   "forgetPassword.initPw.invalideCode": "Code non vérifié.",
   "forgetPassword.rememberMe": "Se souvenir de moi.",
+  "forgetPassword.incorrectPassword": "Ancien mot de passe incorrect.",
+  "forgetPassword.updateSuccess": "Mot de passe mis à jour avec succès.",
   "Modal.finishCommand": "Finaliser de la commande",
   "Modal.finishCommand.message": "Veuillez finaliser votre commande pour pouvoir commander à nouveau, sinon supprimer la commande non-finalisée .",
   "Modal.finishCommand.finishOldCommande": "Finaliser la commande précédente",
