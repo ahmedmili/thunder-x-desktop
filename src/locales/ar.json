@@ -70,6 +70,8 @@
   "forgetPassword.initPw.newPassword": "كلمة المرور الجديدة",
   "forgetPassword.initPw.invalideCode": "الرمز غير متحقق.",
   "forgetPassword.rememberMe": "تذكرني.",
+  "forgetPassword.incorrectPassword": "كلمة المرور القديمة غير صحيحة.",
+  "forgetPassword.updateSuccess": "تم تحديث كلمة المرور بنجاح.",
   "Modal.finishCommand": "إكمال الطلب",
   "Modal.finishCommand.message": ".يرجى إكمال طلبك لتتمكن من إجراء طلب جديد، وإلا قم بحذف الطلب غير المكتمل",
   "Modal.finishCommand.finishOldCommande": "إكمال الطلب السابق",

@@ -8,6 +8,9 @@ import { useNavigate } from "react-router";
 import { userService } from "../../../services/api/user.api";
 // import { toast } from "react-toastify";
 import * as yup from 'yup';
+import { useTranslation } from "react-i18next";
+import { toast } from "react-toastify";
+import { localStorageService } from "../../../services/localStorageService";
 interface Props {
     close: any
 }
@@ -21,8 +24,10 @@ const ModifPassword: React.FC<Props> = ({ close }) => {
     const [showNewPassword, setShowNewPassword] = useState<boolean>(false)
     const [showConfirmPassword, setShowConfirmPassword] = useState<boolean>(false)
     const [valid, setValid] = useState<boolean>(false);
-    const [eroorMessage, setErrorMessage] = useState<string>('');
+    const [errorMessage, setErrorMessage] = useState<string>('');
+    const [succesMessage, setSuccesMessage] = useState<string>('');
 
+    const { t } = useTranslation()
     const schema = yup.object().shape({
         oldpassword: yup
             .string()
@@ -39,8 +44,11 @@ const ModifPassword: React.FC<Props> = ({ close }) => {
 
     const handleSubmit = async (e: any) => {
         e.preventDefault()
+        const userLocalData = localStorageService.getUser()
+        const userEmail = JSON.parse(userLocalData!).email
         const userData = {
             oldpassword: password,
+            email: userEmail,
             newpassword: Newpassword,
             confirm_password: confirmPassword
         }
@@ -52,6 +60,7 @@ const ModifPassword: React.FC<Props> = ({ close }) => {
                     schema.validate(userData)
                         .catch((err) => {
                             setErrorMessage(err.errors[0]);
+                            setSuccesMessage("")
                         });
                 } else {
                     setErrorMessage('');
@@ -62,15 +71,12 @@ const ModifPassword: React.FC<Props> = ({ close }) => {
             if (valid) {
 
                 const { status, data } = await userService.updatePassword(userData)
-
-                if (data && data.success === undefined) {
-                    const errors = Object.keys(data).map(key => data[key]);
-                    errors.map((element: string) => {
-                        // toast.warn(element[0])
-                    })
-                } else if (data.success === false) {
-                    // toast.warn(data.message)
-
+                if (!data.success) {
+                    setValid(false)
+                    setErrorMessage(`${t('forgetPassword.incorrectPassword')}`)
+                } else {
+                    setValid(true)
+                    setSuccesMessage(`${t('forgetPassword.updateSuccess')}`)
                 }
             }
         } catch (error) {
@@ -120,7 +126,8 @@ const ModifPassword: React.FC<Props> = ({ close }) => {
                             <input className="password-input form-control" type={showNewPassword ? "text" : "password"} name="confirm-password" placeholder="Entrer ici" onChange={(e) => setConfirmPassword(e.target.value)} />
                         </div>
                     </div>
-                    {!valid && <p className={`error-message ${!valid ? "visible" : ""}`} >{eroorMessage}</p>}
+                    {!valid && <p className={`error-message ${!valid ? "visible" : ""}`} >{errorMessage}</p>}
+                    {!valid && <p className={`success-message ${!valid ? "visible" : ""}`} >{succesMessage}</p>}
                     <div className="buttons">
                         <button type="reset" className="annule">Annuler</button>
                         <button type="button" className="submit" onClick={handleSubmit}>Enregistrer</button>
