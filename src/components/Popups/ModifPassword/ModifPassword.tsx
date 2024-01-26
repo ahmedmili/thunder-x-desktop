@@ -78,17 +78,28 @@ const ModifPassword: React.FC<Props> = ({ close }) => {
         }
 
     }
+
     const handleDisplayPW = (index: number) => {
         index === 1 && setShowPassword(!showPassword)
         index === 2 && setShowNewPassword(!showNewPassword)
         index === 3 && setShowConfirmPassword(!showConfirmPassword)
     }
-
+    const reset = () => {
+        setPassword("")
+        setNewPassword("")
+        setConfirmPassword("")
+        setShowPassword(false)
+        setShowNewPassword(false)
+        setShowConfirmPassword(false)
+        setErrorMessage("")
+    }
     return (
         <div className="popup-container modal-editpassword" >
             <div className="popup-box">
                 <button onClick={close} className="close-button"></button>
-                <form onSubmit={handleSubmit}>
+                <div className="form">
+
+
                     <div className="input-container">
                         <label htmlFor="old-password">Ancien mot de passe</label>
                         <div className="input">
@@ -108,15 +119,14 @@ const ModifPassword: React.FC<Props> = ({ close }) => {
                         <div className="input">
                             <input className="password-input form-control" type={showNewPassword ? "text" : "password"} name="confirm-password" placeholder="Entrer ici" onChange={(e) => setConfirmPassword(e.target.value)} />
                         </div>
-
                     </div>
                     {!valid && <p className={`error-message ${!valid ? "visible" : ""}`} >{eroorMessage}</p>}
                     <div className="buttons">
                         <button type="reset" className="annule">Annuler</button>
-                        <button type="submit" className="submit">Enregistrer</button>
+                        <button type="button" className="submit" onClick={handleSubmit}>Enregistrer</button>
 
                     </div>
-                </form>
+                </div>
             </div>
         </div>
     )
