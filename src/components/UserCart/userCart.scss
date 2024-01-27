@@ -2,8 +2,7 @@
 @import '../../animations';
 
 .profile-cart-main {
-  width: 100%;
-  height: 100%;
+  @include dimensions;
   border-radius: 15px;
   padding: 20px 20px;
   background-color: $color-white;
@@ -70,23 +69,22 @@
 
     .link-list {
       display: flex;
-      gap: 10px;
+      align-items: center;
+      gap: 15px;
       position: relative;
 
       .profile-list-icon {
         background-position: center;
         background-repeat: no-repeat;
         background-size: 100%;
-        width: 18px;
-        height: 18px;
+        @include dimensions(18px, 18px);
       }
       .notif-indicator {
         position: absolute;
         border-radius: 50%;
         top: 5px;
         left: 25px;
-        height: 12px;
-        width: 12px;
+        @include dimensions(12px, 12px);
         background-color: red;
       }
       a {
@@ -97,25 +95,59 @@
 
     .info-list {
       ul {
-        padding-left: 64px;
+        padding: 0 0 38px 64px;
         list-style: none;
         display: flex;
         flex-direction: column;
         justify-content: start;
         gap: 20px;
         border-bottom: solid 1px $color-gray-mercury;
-        padding-bottom: 28px;
         margin-bottom: 14px;
       }
     }
-
     .disconnect {
       padding-left: 64px;
     }
-
   }
+}
 
+/* # $Mobile ::
+------------------------------------*/
 
+@media (max-width: 1440px) {
+  .profile-cart-main {
+    header {
+      margin: 0 0 30px;
+
+      .profile-info {
+        max-width: 120px;
+
+        .profile-info_img-blc {
+          margin: 0 auto 12px;
+          @include dimensions(75px, 75px);
+        }
+        .welcome-msg {
+          @include fontSize(13px, 13px);
+        }
+        .full-name {
+          @include fontSize(14px, 14px);
+        }
+      }
+    }
+    main {
+      .info-list {
+        ul {
+          padding: 0 0 20px 30px;
+          gap: 16px;
+          margin-bottom: 12px;
+        }
+      }
+      .disconnect {
+        padding-left: 30px;
+      }
+    }
+    
+  }
 }
 
 @media only screen and (max-width: 768px) {

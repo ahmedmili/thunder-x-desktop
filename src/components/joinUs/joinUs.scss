@@ -5,7 +5,7 @@
     .joinus-title {
         text-align: center;
         font-family: "Poppins", serif;
-        font-weight: 300;
+        font-weight: weight(light);
         @include fonts(32px, 40px, $dark_002);
         text-transform: uppercase;
         max-width: 550px;

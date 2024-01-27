@@ -1074,6 +1074,11 @@
             @include fontSize(14px, 14px);
         }
     }
+    .cart-container {
+        width: 328px;
+        top: 77px;
+        right: 8vw;
+    }
 }
 
 @media (max-width:1200px) {

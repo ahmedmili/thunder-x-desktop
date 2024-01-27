@@ -119,27 +119,21 @@
     p {
         width: 299px;
         height: 46px;
-
         color: $dark_Gray;
         text-align: center;
-        font-family: Poppins;
+        font-family: 'Poppins-SemiBold', serif;
         font-size: 15px;
-        font-style: normal;
-        font-weight: 600;
         line-height: normal;
     }
-
     .emptyButton {
         border-radius: 55px;
         background-color: $orange_color;
         min-width: 271px;
         height: 55px;
         text-align: center;
-        color: #FFF;
-        font-family: Poppins;
+        color: $color-white;
+        font-family: 'Poppins-SemiBold', serif;
         font-size: 20px;
-        font-style: normal;
-        font-weight: 600;
         line-height: normal;
 
         &:hover {
