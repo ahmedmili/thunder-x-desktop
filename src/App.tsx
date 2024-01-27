@@ -405,9 +405,9 @@ const ProtectedRoute = ({ children }: { children: React.ReactNode }) => {
   const user = localStorageService.getUser();
   const token = localStorageService.getUserToken();
   const passable = !(!token || !user);
-
+  const location = useLocation();
   if (!passable) {
-    return <Navigate to="/login" replace />;
+    return <Navigate to="/login" replace state={{ return: false , nextRef:`${location.pathname}`  }} />;
   }
   return children ? <>{children}</> : <Outlet />;
 
