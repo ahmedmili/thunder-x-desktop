@@ -111,6 +111,17 @@ async function getSuppliersByFilters(payload: any) {
   }
 }
 
+async function getSuppliersByFiltersWithPagination(payload: any) {
+  try {
+    const response = await api.post(`desktop/search_supplier_filters`, payload);
+    const { status, data } = response;
+    return { status, data };
+  } catch (error) {
+    console.error('Error', error);
+    throw error;
+  }
+}
+
 export const supplierServices = {
   all_annonces,
   searchSupplierByArticle,
@@ -121,5 +132,6 @@ export const supplierServices = {
   getSuppliersIndex,
   getSuppliersAndAds,
   redAnnonce,
-  getSuppliersByFilters
+  getSuppliersByFilters,
+  getSuppliersByFiltersWithPagination,
 };

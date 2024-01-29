@@ -1,5 +1,6 @@
+import Pagination from '@mui/material/Pagination';
 import Skeleton from "@mui/material/Skeleton";
-import React, { Suspense, useEffect, useRef, lazy, useState } from "react";
+import React, { Suspense, lazy, useEffect, useState } from "react";
 import { Col, Row } from "react-bootstrap";
 import { useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
@@ -7,29 +8,26 @@ import { useLocation, useNavigate } from "react-router-dom";
 
 import {
   adsHomeSelector,
-  categoriesHomeSelector,
   homeLoadingSelector,
   homeRefresh,
   popularHomeSelector,
   recommendedHomeSelector,
-  setRefresh,
+  setRefresh
 } from "../../Redux/slices/home";
 
 import { handleMessanger } from "../../Redux/slices/messanger";
 import { useAppSelector } from "../../Redux/store";
 import MessangerBtnIcon from "../../assets/profile/Discuter/messanger-btn.svg";
-import { FilterAds } from "../../components/filter-ads/FilterAds";
 import AdsSkeletons from "../../components/Skeletons/FilterPage/AdsSkeletons/AdsSkeletons";
 import ProductsSkeletons from "../../components/Skeletons/FilterPage/ProductsSkeletons/ProductsSkeletons";
 import SearchSkeletons from "../../components/Skeletons/FilterPage/SearchSkeleton/SearchSkeletons";
+import { FilterAds } from "../../components/filter-ads/FilterAds";
 import BtnReset from "./components/btn-reset/BtnReset";
 import Categories from "./components/categories/Categories";
-import Cle from "./components/cle/Cle";
 import PriceSlide from "./components/priceSlider/PriceSlide";
 import SearchProduit from "./components/produitSearch/ProduitSearch";
 import Trie from "./components/trie/Trie";
 
-const Map = lazy(() => import("../../components/Location/Location"));
 const Messanger = lazy(() => import("../../components/Popups/Messanger/Messanger"));
 const SideBar = lazy(() => import("../../components/Skeletons/FilterPage/SideBar/SideBar"));
 const FilterCategories = lazy(() => import("../../components/filter-categories/FilterCategories"));
@@ -43,7 +41,8 @@ import { supplierServices } from "../../services/api/suppliers.api";
 import { localStorageService } from "../../services/localStorageService";
 import { AppProps } from "../../services/types";
 import { paramsService } from "../../utils/params";
-import { checkSsr } from "../../utils/utils";
+import { checkSsr, scrollToTop } from "../../utils/utils";
+
 import "./filterPage.scss";
 
 function FilterPage({ initialData }: AppProps) {
@@ -52,20 +51,20 @@ function FilterPage({ initialData }: AppProps) {
   const [ads, setAds] = useState<any[]>([]);
   const [ads2, setAds2] = useState<any[]>([]);
   const [ads3, setAds3] = useState<any[]>([]);
-  const [originCategories, setOriginCategories] = useState<any[]>([]);
 
   const recommanded = useSelector(recommendedHomeSelector);
   const popular = useSelector(popularHomeSelector);
   const isLoading = initialData ? false : useSelector(homeLoadingSelector);
   const refresh = useSelector(homeRefresh);
-  const [isload, setIsLoading] = useState<boolean>(false);
   const [isloadFilter, setIsLoadFilter] = useState<boolean>(false);
   const [hasFilter, setHasFilter] = useState<boolean>(false);
-  const categories = useSelector(categoriesHomeSelector);
-  const itemsPerPage = 8;
+  const [totalPages, setTotalPages] = useState<number>(1);
+  const [currentPage, setCurrentPage] = useState<number>(1);
+  const [lastPage, setLastPage] = useState<number>(1);
+  const [perPage, setPerPage] = useState<number>(9);
+
   const navigate = useNavigate();
   const dispatch = useDispatch();
-  const suppliersListRef = useRef(null);
   const [newSuppliers, setNewuppliers] = useState<any>(false);
   const [bestRatedSuppliers, setBestRatedSuppliers] = useState<any>(false);
 
@@ -73,8 +72,6 @@ function FilterPage({ initialData }: AppProps) {
   const [ssrLoading, setSsrLoading] = useState<boolean>(true)
   const [pageReadry, setPageReadry] = useState<boolean>(false)
 
-
-  const showMapState = useAppSelector((state) => state.location.showMap);
   const isConnected = localStorageService.getUserToken()
 
   const unReadMessages = useAppSelector((state) => state.messanger.unReadedMessages)
@@ -108,14 +105,14 @@ function FilterPage({ initialData }: AppProps) {
           const newURL = pathname !== '/' ? `${pathname}?${searchParams.toString()}` : `/search/?${searchParams.toString()}`;
           navigate(newURL);
           setPageReadry(true)
-          searchSupplier()
+          searchSupplier(1)
         } else {
           dispatch({ type: "SET_SHOW", payload: true })
         }
       } else {
         setPageReadry(true)
 
-        searchSupplier()
+        searchSupplier(1)
       }
 
     } else {
@@ -131,7 +128,7 @@ function FilterPage({ initialData }: AppProps) {
         const { pathname } = navLocation;
         const newURL = pathname !== '/' ? `${pathname}?${searchParams.toString()}` : `/search/?${searchParams.toString()}`;
         navigate(newURL);
-        searchSupplier()
+        searchSupplier(1)
         setPageReadry(true)
       } else {
         navigateToHome()
@@ -186,11 +183,11 @@ function FilterPage({ initialData }: AppProps) {
   useEffect(() => {
     if (refresh) {
       dispatch(setRefresh(false));
-      searchSupplier();
+      searchSupplier(1);
     }
   }, [refresh]);
 
-  const searchSupplier = () => {
+  const searchSupplier = (pageNumber?: number) => {
     const searchParams = new URLSearchParams(location.search);
     if (isEmptySearchParams(searchParams)) {
       setSearchSuppliersList([]);
@@ -235,26 +232,41 @@ function FilterPage({ initialData }: AppProps) {
         category_id: "",
         delivery_price: 0,
         filter: "",
+        paginate: 1,
+        page: pageNumber ? pageNumber : currentPage,
+        per_page: 9,
       };
+
       let params = paramsService.fetchParams(searchParams)
 
       params.category && (payload.category_id = params.category);
       params.order_by ? (payload.order_by = params.order_by) : '';
       params.min_price && (payload.min_price = Number(params.min_price));
       params.max_price && (payload.max_price = Number(params.max_price));
-      params.filter && (payload.filter = params.filter);
+      params.page && (payload.page = pageNumber ? pageNumber : Number(params.page));
+
+      params.filter && (payload.filter = params.filter.split('+').join(' '));
+      (payload.filter != "") ? (payload.paginate = 0) : (payload.paginate = 1);
       setIsLoadFilter(true);
       supplierServices
-        .getSuppliersByFilters(payload)
+        .getSuppliersByFiltersWithPagination(payload)
         .then((res: any) => {
-          if (payload.filter && payload.filter != "") {
-            const filtredList = res.data.data.suppliers.filter((item: any) => item.name.toUpperCase().includes(payload.filter.toUpperCase()));
+          const totalPages = res.data.data.suppliers.total
+          const currentPage = res.data.data.suppliers.current_page
+          const lastPage = res.data.data.suppliers.last_page
+          const perPage = res.data.data.suppliers.per_page
+          setTotalPages(totalPages)
+          setPerPage(perPage)
+          setLastPage(lastPage)
+          setCurrentPage(pageNumber?pageNumber:currentPage)
+          if (payload.filter != "") {
+            const data = res.data.data.suppliers
+            const filtredList = data.filter((item: any) => item.name.toUpperCase().includes(payload.filter.toUpperCase()));
             setSearchSuppliersList(filtredList);
           }
           else {
-
-            setSearchSuppliersList(res.data.data.suppliers);
-
+            const data = res.data.data.suppliers.data
+            setSearchSuppliersList(data);
           }
           setIsLoadFilter(false);
         })
@@ -276,6 +288,7 @@ function FilterPage({ initialData }: AppProps) {
     setAds2(homeData.HOME_2);
     setAds3(homeData.HOME_3);
   }, [homeData]);
+
 
   function isAtLeastSevenDaysAgo(dateString: any) {
     var dateObject: any = new Date(dateString);
@@ -424,6 +437,35 @@ function FilterPage({ initialData }: AppProps) {
     return sortedArray.slice(0, n);
   }
 
+  //  init default current page
+  useEffect(() => {
+    const searchParams = new URLSearchParams(location.search);
+    let resultObject = paramsService.fetchParams(searchParams)
+    setCurrentPage(Number(resultObject.page))
+  }, []);
+
+
+  const handlePaginationSearch = (event: React.ChangeEvent<unknown>, value: number) => {
+    const searchParams = new URLSearchParams(location.search);
+    let resultObject = paramsService.fetchParams(searchParams)
+    resultObject = {
+      ...resultObject,
+      page: value.toString(),
+    }
+    const newCryptedParams = paramsService.handleUriParams(resultObject)
+    if (searchParams.has('search')) {
+      searchParams.set('search', newCryptedParams)
+    } else {
+      searchParams.append('search', newCryptedParams)
+    }
+    const { pathname } = navLocation;
+    const newURL = pathname !== '/' ? `${pathname}?${searchParams.toString()}` : `/search/?${searchParams.toString()}`;
+    navigate(newURL);
+    // setCurrentPage(value)
+    searchSupplier()
+    scrollToTop()
+  }
+
   return (
     <Suspense fallback={
       <SkeletonEffect />
@@ -433,11 +475,9 @@ function FilterPage({ initialData }: AppProps) {
         {(!isLoading && pageReadry) ? (
           <>
             <div className="category-bar">
-              {originCategories ? (
-                <FilterCategories onCategorySelect={searchSupplier} />
-              ) : (
-                <></>
-              )}
+              <FilterCategories onCategorySelect={() => {
+                searchSupplier()
+              }} />
             </div>
             <div className="content container-fluid">
               <Row className="content__row">
@@ -450,13 +490,10 @@ function FilterPage({ initialData }: AppProps) {
                       <PriceSlide />
                     </div>
                     <div className="content__column__filter">
-                      <Categories onCategorySelect={searchSupplier} />
+                      <Categories onCategorySelect={() => {
+                        searchSupplier()
+                      }} />
                     </div>
-                    {/* 
-                      <div className="content__column__filter">
-                        <Cle />
-                      </div>
-                    */}
                   </div>
                 </Col>
                 <Col className="col-9 content__column content__column--second">
@@ -465,14 +502,32 @@ function FilterPage({ initialData }: AppProps) {
                     {hasFilter && !isloadFilter ? <BtnReset></BtnReset> : ""}
                   </div>
                   {(searchSuppliersList?.length && !isloadFilter && hasFilter) || (initialData) ? (
-                    <div className="row search-list">
-                      {searchSuppliersList.map(function (supp: any) {
-                        return (
-                          <div key={supp.id} className="col-3 search-list__column px-0">
-                            <SupplierWhiteCard data={supp} className="mb-32" />
+                    <div className='search-list-container'>
+                      <div className="row search-list">
+                        {searchSuppliersList.map(function (supp: any) {
+                          return (
+                            <div key={supp.id} className="col-3 search-list__column px-0">
+                              <SupplierWhiteCard data={supp} className="mb-32" />
+                            </div>
+                          );
+                        })}
+                      </div>
+                      {
+                        (lastPage > 1) && (
+                          <div className='pagination-container'>
+                            <Pagination
+                              count={lastPage}
+                              shape="rounded"
+                              // size="small"
+                              size="large"
+                              showFirstButton
+                              showLastButton
+                              defaultPage={currentPage}
+                              onChange={handlePaginationSearch}
+                            />
                           </div>
-                        );
-                      })}
+                        )
+                      }
                     </div>
                   ) : (
                     <></>
@@ -527,17 +582,6 @@ function FilterPage({ initialData }: AppProps) {
               (isMessagesOpen) &&
               <Messanger className='discuterMessangerPopup' close={handleMessangerPopup} />
             }
-            {/* {
-              showMapState && (
-                <div
-                  className="mapOverPlay">
-                  <div
-                    onClick={(e) => e.stopPropagation()}>
-                    <Map forced={true} />
-                  </div>
-                </div>
-              )
-            } */}
           </>
         ) : (
           <SkeletonEffect />
