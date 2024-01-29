@@ -105,14 +105,14 @@ function FilterPage({ initialData }: AppProps) {
           const newURL = pathname !== '/' ? `${pathname}?${searchParams.toString()}` : `/search/?${searchParams.toString()}`;
           navigate(newURL);
           setPageReadry(true)
-          searchSupplier()
+          searchSupplier(1)
         } else {
           dispatch({ type: "SET_SHOW", payload: true })
         }
       } else {
         setPageReadry(true)
 
-        searchSupplier()
+        searchSupplier(1)
       }
 
     } else {
@@ -128,7 +128,7 @@ function FilterPage({ initialData }: AppProps) {
         const { pathname } = navLocation;
         const newURL = pathname !== '/' ? `${pathname}?${searchParams.toString()}` : `/search/?${searchParams.toString()}`;
         navigate(newURL);
-        searchSupplier()
+        searchSupplier(1)
         setPageReadry(true)
       } else {
         navigateToHome()
@@ -183,11 +183,11 @@ function FilterPage({ initialData }: AppProps) {
   useEffect(() => {
     if (refresh) {
       dispatch(setRefresh(false));
-      searchSupplier();
+      searchSupplier(1);
     }
   }, [refresh]);
 
-  const searchSupplier = () => {
+  const searchSupplier = (pageNumber?: number) => {
     const searchParams = new URLSearchParams(location.search);
     if (isEmptySearchParams(searchParams)) {
       setSearchSuppliersList([]);
@@ -233,16 +233,17 @@ function FilterPage({ initialData }: AppProps) {
         delivery_price: 0,
         filter: "",
         paginate: 1,
-        page: currentPage ? currentPage : 1,
+        page: pageNumber ? pageNumber : currentPage,
         per_page: 9,
       };
+
       let params = paramsService.fetchParams(searchParams)
 
       params.category && (payload.category_id = params.category);
       params.order_by ? (payload.order_by = params.order_by) : '';
       params.min_price && (payload.min_price = Number(params.min_price));
       params.max_price && (payload.max_price = Number(params.max_price));
-      params.page && (payload.page = Number(params.page));
+      params.page && (payload.page = pageNumber ? pageNumber : Number(params.page));
 
       params.filter && (payload.filter = params.filter.split('+').join(' '));
       (payload.filter != "") ? (payload.paginate = 0) : (payload.paginate = 1);
@@ -257,6 +258,7 @@ function FilterPage({ initialData }: AppProps) {
           setTotalPages(totalPages)
           setPerPage(perPage)
           setLastPage(lastPage)
+          setCurrentPage(pageNumber?pageNumber:currentPage)
           if (payload.filter != "") {
             const data = res.data.data.suppliers
             const filtredList = data.filter((item: any) => item.name.toUpperCase().includes(payload.filter.toUpperCase()));
@@ -274,97 +276,6 @@ function FilterPage({ initialData }: AppProps) {
 
     }
   };
-
-  const textSearch = () => {
-    const searchParams = new URLSearchParams(location.search);
-    if (isEmptySearchParams(searchParams)) {
-      setSearchSuppliersList([]);
-      setHasFilter(false);
-      setIsLoadFilter(false);
-    } else {
-      const expectedKeys = ['lat', 'lng'];
-      let resultObject = paramsService.fetchParams(searchParams)
-      const hasUnexpectedKeys = Object.keys(resultObject).some(key => !expectedKeys.includes(key));
-      setHasFilter(hasUnexpectedKeys);
-      const current_location = localStorageService.getCurrentLocation()
-      var currentLocation: any;
-
-      if (current_location) {
-        currentLocation = JSON.parse(current_location
-        ).coords;
-      } else {
-        if (searchParams.has('search')) {
-          let params = paramsService.fetchParams(searchParams)
-          let lat = params.lat ? params.lat : null;
-          let lng = params.lng ? params.lng : null;
-          if (lat && lng) {
-            currentLocation = {
-              latitude: lat,
-              longitude: lng
-            }
-          }
-        } else {
-          currentLocation = {
-            latitude: 0,
-            longitude: 0
-          }
-          // dispatch({ type: "SET_SHOW", payload: true })
-        }
-      }
-      const payload = {
-        order_by: "popular",
-        max_price: 100,
-        min_price: 0,
-        lat: currentLocation!.latitude,
-        long: currentLocation!.longitude,
-        category_id: "",
-        delivery_price: 0,
-        filter: "",
-        paginate: 0,
-        // page: currentPage,
-        // per_page: 9,
-      };
-      let params = paramsService.fetchParams(searchParams)
-
-      params.category && (payload.category_id = params.category);
-      params.order_by ? (payload.order_by = params.order_by) : '';
-      params.min_price && (payload.min_price = Number(params.min_price));
-      params.max_price && (payload.max_price = Number(params.max_price));
-      // params.page && (payload.page = Number(params.page));
-
-      params.filter && (payload.filter = params.filter);
-      setIsLoadFilter(true);
-      supplierServices
-        .getSuppliersByFiltersWithPagination(payload)
-        .then((res: any) => {
-          const totalPages = res.data.data.suppliers.total
-          const currentPage = res.data.data.suppliers.current_page
-          const lastPage = res.data.data.suppliers.last_page
-          const perPage = res.data.data.suppliers.per_page
-          const data = res.data.data.suppliers.data
-          setTotalPages(totalPages)
-          setPerPage(perPage)
-          setLastPage(lastPage)
-          if (payload.filter && payload.filter != "") {
-            // const filtredList = res.data.data.suppliers.filter((item: any) => item.name.toUpperCase().includes(payload.filter.toUpperCase()));
-            const filtredList = data.filter((item: any) => item.name.toUpperCase().includes(payload.filter.toUpperCase()));
-            setSearchSuppliersList(filtredList);
-          }
-          else {
-
-            setSearchSuppliersList(data);
-
-          }
-          setIsLoadFilter(false);
-        })
-        .catch((error) => {
-          setIsLoadFilter(false);
-        });
-
-    }
-  };
-
-
 
   const isEmptySearchParams = (searchParams: any) => {
     const expectedKeys = ['lat', 'lng'];
@@ -550,7 +461,7 @@ function FilterPage({ initialData }: AppProps) {
     const { pathname } = navLocation;
     const newURL = pathname !== '/' ? `${pathname}?${searchParams.toString()}` : `/search/?${searchParams.toString()}`;
     navigate(newURL);
-    setCurrentPage(value)
+    // setCurrentPage(value)
     searchSupplier()
     scrollToTop()
   }
@@ -564,7 +475,9 @@ function FilterPage({ initialData }: AppProps) {
         {(!isLoading && pageReadry) ? (
           <>
             <div className="category-bar">
-              <FilterCategories onCategorySelect={searchSupplier} />
+              <FilterCategories onCategorySelect={() => {
+                searchSupplier()
+              }} />
             </div>
             <div className="content container-fluid">
               <Row className="content__row">
@@ -577,7 +490,9 @@ function FilterPage({ initialData }: AppProps) {
                       <PriceSlide />
                     </div>
                     <div className="content__column__filter">
-                      <Categories onCategorySelect={searchSupplier} />
+                      <Categories onCategorySelect={() => {
+                        searchSupplier()
+                      }} />
                     </div>
                   </div>
                 </Col>
