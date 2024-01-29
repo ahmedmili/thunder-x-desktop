@@ -1,5 +1,6 @@
+import Pagination from '@mui/material/Pagination';
 import Skeleton from "@mui/material/Skeleton";
-import React, { Suspense, useEffect, useRef, lazy, useState } from "react";
+import React, { Suspense, lazy, useEffect, useRef, useState } from "react";
 import { Col, Row } from "react-bootstrap";
 import { useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
@@ -18,13 +19,12 @@ import {
 import { handleMessanger } from "../../Redux/slices/messanger";
 import { useAppSelector } from "../../Redux/store";
 import MessangerBtnIcon from "../../assets/profile/Discuter/messanger-btn.svg";
-import { FilterAds } from "../../components/filter-ads/FilterAds";
 import AdsSkeletons from "../../components/Skeletons/FilterPage/AdsSkeletons/AdsSkeletons";
 import ProductsSkeletons from "../../components/Skeletons/FilterPage/ProductsSkeletons/ProductsSkeletons";
 import SearchSkeletons from "../../components/Skeletons/FilterPage/SearchSkeleton/SearchSkeletons";
+import { FilterAds } from "../../components/filter-ads/FilterAds";
 import BtnReset from "./components/btn-reset/BtnReset";
 import Categories from "./components/categories/Categories";
-import Cle from "./components/cle/Cle";
 import PriceSlide from "./components/priceSlider/PriceSlide";
 import SearchProduit from "./components/produitSearch/ProduitSearch";
 import Trie from "./components/trie/Trie";
@@ -43,7 +43,8 @@ import { supplierServices } from "../../services/api/suppliers.api";
 import { localStorageService } from "../../services/localStorageService";
 import { AppProps } from "../../services/types";
 import { paramsService } from "../../utils/params";
-import { checkSsr } from "../../utils/utils";
+import { checkSsr, scrollToTop } from "../../utils/utils";
+
 import "./filterPage.scss";
 
 function FilterPage({ initialData }: AppProps) {
@@ -61,6 +62,14 @@ function FilterPage({ initialData }: AppProps) {
   const [isload, setIsLoading] = useState<boolean>(false);
   const [isloadFilter, setIsLoadFilter] = useState<boolean>(false);
   const [hasFilter, setHasFilter] = useState<boolean>(false);
+  const [totalPages, setTotalPages] = useState<number>(1);
+  const [currentPage, setCurrentPage] = useState<number>(1);
+  const [lastPage, setLastPage] = useState<number>(1);
+  const [perPage, setPerPage] = useState<number>(9);
+
+
+
+
   const categories = useSelector(categoriesHomeSelector);
   const itemsPerPage = 8;
   const navigate = useNavigate();
@@ -235,6 +244,9 @@ function FilterPage({ initialData }: AppProps) {
         category_id: "",
         delivery_price: 0,
         filter: "",
+        paginate: 1,
+        page: currentPage,
+        per_page: 9,
       };
       let params = paramsService.fetchParams(searchParams)
 
@@ -242,18 +254,30 @@ function FilterPage({ initialData }: AppProps) {
       params.order_by ? (payload.order_by = params.order_by) : '';
       params.min_price && (payload.min_price = Number(params.min_price));
       params.max_price && (payload.max_price = Number(params.max_price));
+      params.page && (payload.page = Number(params.page));
+
       params.filter && (payload.filter = params.filter);
       setIsLoadFilter(true);
       supplierServices
-        .getSuppliersByFilters(payload)
+        .getSuppliersByFiltersWithPagination(payload)
         .then((res: any) => {
+          const totalPages = res.data.data.suppliers.total
+          const currentPage = res.data.data.suppliers.current_page
+          const lastPage = res.data.data.suppliers.last_page
+          const perPage = res.data.data.suppliers.per_page
+          const data = res.data.data.suppliers.data
+          setTotalPages(totalPages)
+          setPerPage(perPage)
+          setLastPage(lastPage)
+          // setCurrentPage(currentPage)
           if (payload.filter && payload.filter != "") {
-            const filtredList = res.data.data.suppliers.filter((item: any) => item.name.toUpperCase().includes(payload.filter.toUpperCase()));
+            // const filtredList = res.data.data.suppliers.filter((item: any) => item.name.toUpperCase().includes(payload.filter.toUpperCase()));
+            const filtredList = data.filter((item: any) => item.name.toUpperCase().includes(payload.filter.toUpperCase()));
             setSearchSuppliersList(filtredList);
           }
           else {
 
-            setSearchSuppliersList(res.data.data.suppliers);
+            setSearchSuppliersList(data);
 
           }
           setIsLoadFilter(false);
@@ -276,6 +300,7 @@ function FilterPage({ initialData }: AppProps) {
     setAds2(homeData.HOME_2);
     setAds3(homeData.HOME_3);
   }, [homeData]);
+
 
   function isAtLeastSevenDaysAgo(dateString: any) {
     var dateObject: any = new Date(dateString);
@@ -424,6 +449,35 @@ function FilterPage({ initialData }: AppProps) {
     return sortedArray.slice(0, n);
   }
 
+  //  init default current page
+  useEffect(() => {
+    const searchParams = new URLSearchParams(location.search);
+    let resultObject = paramsService.fetchParams(searchParams)
+    setCurrentPage(Number(resultObject.page))
+  }, []);
+
+
+  const handlePaginationSearch = (event: React.ChangeEvent<unknown>, value: number) => {
+    const searchParams = new URLSearchParams(location.search);
+    let resultObject = paramsService.fetchParams(searchParams)
+    resultObject = {
+      ...resultObject,
+      page: value.toString(),
+    }
+    const newCryptedParams = paramsService.handleUriParams(resultObject)
+    if (searchParams.has('search')) {
+      searchParams.set('search', newCryptedParams)
+    } else {
+      searchParams.append('search', newCryptedParams)
+    }
+    const { pathname } = navLocation;
+    const newURL = pathname !== '/' ? `${pathname}?${searchParams.toString()}` : `/search/?${searchParams.toString()}`;
+    navigate(newURL);
+    setCurrentPage(value)
+    searchSupplier()
+    scrollToTop()
+  }
+
   return (
     <Suspense fallback={
       <SkeletonEffect />
@@ -452,11 +506,6 @@ function FilterPage({ initialData }: AppProps) {
                     <div className="content__column__filter">
                       <Categories onCategorySelect={searchSupplier} />
                     </div>
-                    {/* 
-                      <div className="content__column__filter">
-                        <Cle />
-                      </div>
-                    */}
                   </div>
                 </Col>
                 <Col className="col-9 content__column content__column--second">
@@ -465,14 +514,28 @@ function FilterPage({ initialData }: AppProps) {
                     {hasFilter && !isloadFilter ? <BtnReset></BtnReset> : ""}
                   </div>
                   {(searchSuppliersList?.length && !isloadFilter && hasFilter) || (initialData) ? (
-                    <div className="row search-list">
-                      {searchSuppliersList.map(function (supp: any) {
-                        return (
-                          <div key={supp.id} className="col-3 search-list__column px-0">
-                            <SupplierWhiteCard data={supp} className="mb-32" />
-                          </div>
-                        );
-                      })}
+                    <div className='search-list-container'>
+                      <div className="row search-list">
+                        {searchSuppliersList.map(function (supp: any) {
+                          return (
+                            <div key={supp.id} className="col-3 search-list__column px-0">
+                              <SupplierWhiteCard data={supp} className="mb-32" />
+                            </div>
+                          );
+                        })}
+                      </div>
+                      <div className='pagination-container'>
+                        <Pagination
+                          count={lastPage}
+                          shape="rounded"
+                          // size="small"
+                          size="large"
+                          showFirstButton
+                          showLastButton
+                          defaultPage={currentPage}
+                          onChange={handlePaginationSearch}
+                        />
+                      </div>
                     </div>
                   ) : (
                     <></>
@@ -527,17 +590,6 @@ function FilterPage({ initialData }: AppProps) {
               (isMessagesOpen) &&
               <Messanger className='discuterMessangerPopup' close={handleMessangerPopup} />
             }
-            {/* {
-              showMapState && (
-                <div
-                  className="mapOverPlay">
-                  <div
-                    onClick={(e) => e.stopPropagation()}>
-                    <Map forced={true} />
-                  </div>
-                </div>
-              )
-            } */}
           </>
         ) : (
           <SkeletonEffect />

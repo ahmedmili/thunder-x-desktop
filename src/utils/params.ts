@@ -10,6 +10,7 @@ const handleUriParams = (data: any): string => {
     data.filter && searchParams.set('filter', data.filter);
     data.lat && searchParams.set('lat', data.lat);
     data.lng && searchParams.set('lng', data.lng);
+    data.page && searchParams.set('page', data.page);
     searchParams.has('search') && searchParams.delete('search');
     const cryptedParams = cryptoData.hashData(searchParams.toString());
     return cryptedParams;
