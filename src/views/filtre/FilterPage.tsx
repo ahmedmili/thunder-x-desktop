@@ -597,18 +597,22 @@ function FilterPage({ initialData }: AppProps) {
                           );
                         })}
                       </div>
-                      <div className='pagination-container'>
-                        <Pagination
-                          count={lastPage}
-                          shape="rounded"
-                          // size="small"
-                          size="large"
-                          showFirstButton
-                          showLastButton
-                          defaultPage={currentPage}
-                          onChange={handlePaginationSearch}
-                        />
-                      </div>
+                      {
+                        (lastPage > 1) && (
+                          <div className='pagination-container'>
+                            <Pagination
+                              count={lastPage}
+                              shape="rounded"
+                              // size="small"
+                              size="large"
+                              showFirstButton
+                              showLastButton
+                              defaultPage={currentPage}
+                              onChange={handlePaginationSearch}
+                            />
+                          </div>
+                        )
+                      }
                     </div>
                   ) : (
                     <></>
