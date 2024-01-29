@@ -1,6 +1,6 @@
 import Pagination from '@mui/material/Pagination';
 import Skeleton from "@mui/material/Skeleton";
-import React, { Suspense, lazy, useEffect, useRef, useState } from "react";
+import React, { Suspense, lazy, useEffect, useState } from "react";
 import { Col, Row } from "react-bootstrap";
 import { useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
@@ -8,12 +8,11 @@ import { useLocation, useNavigate } from "react-router-dom";
 
 import {
   adsHomeSelector,
-  categoriesHomeSelector,
   homeLoadingSelector,
   homeRefresh,
   popularHomeSelector,
   recommendedHomeSelector,
-  setRefresh,
+  setRefresh
 } from "../../Redux/slices/home";
 
 import { handleMessanger } from "../../Redux/slices/messanger";
@@ -29,7 +28,6 @@ import PriceSlide from "./components/priceSlider/PriceSlide";
 import SearchProduit from "./components/produitSearch/ProduitSearch";
 import Trie from "./components/trie/Trie";
 
-const Map = lazy(() => import("../../components/Location/Location"));
 const Messanger = lazy(() => import("../../components/Popups/Messanger/Messanger"));
 const SideBar = lazy(() => import("../../components/Skeletons/FilterPage/SideBar/SideBar"));
 const FilterCategories = lazy(() => import("../../components/filter-categories/FilterCategories"));
@@ -53,13 +51,11 @@ function FilterPage({ initialData }: AppProps) {
   const [ads, setAds] = useState<any[]>([]);
   const [ads2, setAds2] = useState<any[]>([]);
   const [ads3, setAds3] = useState<any[]>([]);
-  const [originCategories, setOriginCategories] = useState<any[]>([]);
 
   const recommanded = useSelector(recommendedHomeSelector);
   const popular = useSelector(popularHomeSelector);
   const isLoading = initialData ? false : useSelector(homeLoadingSelector);
   const refresh = useSelector(homeRefresh);
-  const [isload, setIsLoading] = useState<boolean>(false);
   const [isloadFilter, setIsLoadFilter] = useState<boolean>(false);
   const [hasFilter, setHasFilter] = useState<boolean>(false);
   const [totalPages, setTotalPages] = useState<number>(1);
@@ -67,14 +63,8 @@ function FilterPage({ initialData }: AppProps) {
   const [lastPage, setLastPage] = useState<number>(1);
   const [perPage, setPerPage] = useState<number>(9);
 
-
-
-
-  const categories = useSelector(categoriesHomeSelector);
-  const itemsPerPage = 8;
   const navigate = useNavigate();
   const dispatch = useDispatch();
-  const suppliersListRef = useRef(null);
   const [newSuppliers, setNewuppliers] = useState<any>(false);
   const [bestRatedSuppliers, setBestRatedSuppliers] = useState<any>(false);
 
@@ -82,8 +72,6 @@ function FilterPage({ initialData }: AppProps) {
   const [ssrLoading, setSsrLoading] = useState<boolean>(true)
   const [pageReadry, setPageReadry] = useState<boolean>(false)
 
-
-  const showMapState = useAppSelector((state) => state.location.showMap);
   const isConnected = localStorageService.getUserToken()
 
   const unReadMessages = useAppSelector((state) => state.messanger.unReadedMessages)
@@ -245,7 +233,7 @@ function FilterPage({ initialData }: AppProps) {
         delivery_price: 0,
         filter: "",
         paginate: 1,
-        page: currentPage,
+        page: currentPage ? currentPage : 1,
         per_page: 9,
       };
       let params = paramsService.fetchParams(searchParams)
@@ -255,6 +243,94 @@ function FilterPage({ initialData }: AppProps) {
       params.min_price && (payload.min_price = Number(params.min_price));
       params.max_price && (payload.max_price = Number(params.max_price));
       params.page && (payload.page = Number(params.page));
+
+      params.filter && (payload.filter = params.filter.split('+').join(' '));
+      (payload.filter != "") ? (payload.paginate = 0) : (payload.paginate = 1);
+      setIsLoadFilter(true);
+      supplierServices
+        .getSuppliersByFiltersWithPagination(payload)
+        .then((res: any) => {
+          const totalPages = res.data.data.suppliers.total
+          const currentPage = res.data.data.suppliers.current_page
+          const lastPage = res.data.data.suppliers.last_page
+          const perPage = res.data.data.suppliers.per_page
+          setTotalPages(totalPages)
+          setPerPage(perPage)
+          setLastPage(lastPage)
+          if (payload.filter != "") {
+            const data = res.data.data.suppliers
+            const filtredList = data.filter((item: any) => item.name.toUpperCase().includes(payload.filter.toUpperCase()));
+            setSearchSuppliersList(filtredList);
+          }
+          else {
+            const data = res.data.data.suppliers.data
+            setSearchSuppliersList(data);
+          }
+          setIsLoadFilter(false);
+        })
+        .catch((error) => {
+          setIsLoadFilter(false);
+        });
+
+    }
+  };
+
+  const textSearch = () => {
+    const searchParams = new URLSearchParams(location.search);
+    if (isEmptySearchParams(searchParams)) {
+      setSearchSuppliersList([]);
+      setHasFilter(false);
+      setIsLoadFilter(false);
+    } else {
+      const expectedKeys = ['lat', 'lng'];
+      let resultObject = paramsService.fetchParams(searchParams)
+      const hasUnexpectedKeys = Object.keys(resultObject).some(key => !expectedKeys.includes(key));
+      setHasFilter(hasUnexpectedKeys);
+      const current_location = localStorageService.getCurrentLocation()
+      var currentLocation: any;
+
+      if (current_location) {
+        currentLocation = JSON.parse(current_location
+        ).coords;
+      } else {
+        if (searchParams.has('search')) {
+          let params = paramsService.fetchParams(searchParams)
+          let lat = params.lat ? params.lat : null;
+          let lng = params.lng ? params.lng : null;
+          if (lat && lng) {
+            currentLocation = {
+              latitude: lat,
+              longitude: lng
+            }
+          }
+        } else {
+          currentLocation = {
+            latitude: 0,
+            longitude: 0
+          }
+          // dispatch({ type: "SET_SHOW", payload: true })
+        }
+      }
+      const payload = {
+        order_by: "popular",
+        max_price: 100,
+        min_price: 0,
+        lat: currentLocation!.latitude,
+        long: currentLocation!.longitude,
+        category_id: "",
+        delivery_price: 0,
+        filter: "",
+        paginate: 0,
+        // page: currentPage,
+        // per_page: 9,
+      };
+      let params = paramsService.fetchParams(searchParams)
+
+      params.category && (payload.category_id = params.category);
+      params.order_by ? (payload.order_by = params.order_by) : '';
+      params.min_price && (payload.min_price = Number(params.min_price));
+      params.max_price && (payload.max_price = Number(params.max_price));
+      // params.page && (payload.page = Number(params.page));
 
       params.filter && (payload.filter = params.filter);
       setIsLoadFilter(true);
@@ -269,7 +345,6 @@ function FilterPage({ initialData }: AppProps) {
           setTotalPages(totalPages)
           setPerPage(perPage)
           setLastPage(lastPage)
-          // setCurrentPage(currentPage)
           if (payload.filter && payload.filter != "") {
             // const filtredList = res.data.data.suppliers.filter((item: any) => item.name.toUpperCase().includes(payload.filter.toUpperCase()));
             const filtredList = data.filter((item: any) => item.name.toUpperCase().includes(payload.filter.toUpperCase()));
@@ -288,6 +363,8 @@ function FilterPage({ initialData }: AppProps) {
 
     }
   };
+
+
 
   const isEmptySearchParams = (searchParams: any) => {
     const expectedKeys = ['lat', 'lng'];
@@ -487,11 +564,7 @@ function FilterPage({ initialData }: AppProps) {
         {(!isLoading && pageReadry) ? (
           <>
             <div className="category-bar">
-              {originCategories ? (
-                <FilterCategories onCategorySelect={searchSupplier} />
-              ) : (
-                <></>
-              )}
+              <FilterCategories onCategorySelect={searchSupplier} />
             </div>
             <div className="content container-fluid">
               <Row className="content__row">
