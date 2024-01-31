@@ -36,21 +36,6 @@ export const locationReducer = (
         ...state,
         position: action.payload,
       };
-    // const body = {
-    //   delivery: 0,
-    //   long: action.payload.coords.longitude,
-    //   lat: action.payload.coords.latitude,
-    // };
-    // getHomeDate(body).then((data: any) => {
-    //   if (data) {
-    //     console.log('action.payload', action.payload)
-
-    //   } else {
-    //   }
-    //   return {
-    //     ...state,
-    //   };
-    // })
     case "SHOW_REGION_ERROR":
       return {
         ...state,

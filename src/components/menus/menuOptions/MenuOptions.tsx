@@ -529,18 +529,18 @@ function MenuOptions({ initialData }: AppProps) {
         };
         usedispatch(addNotifHeaderCart({ items: [obj] }))
         usedispatch(handleCartState(true))
+        usedispatch(setSupplier(productSupplier));
+        usedispatch(setDeliveryPrice(productSupplier!.delivery_price));
+        localStorageService.setSupplier(productSupplier);
+
+        usedispatch(addItem(obj));
+        getProduct()
 
         if (items.length > 0 && items[0].supplier_data.supplier_id !== obj.supplier_data.supplier_id) {
             setNotSameError(true)
             return;
         }
-
         setTimeout(() => {
-            usedispatch(setDeliveryPrice(productSupplier!.delivery_price));
-            usedispatch(setSupplier(productSupplier));
-            localStorageService.setSupplier(productSupplier);
-            usedispatch(addItem(obj));
-            getProduct()
             usedispatch(removeNotifHeaderCart())
             usedispatch(handleCartState(false))
             navigate(-1)
@@ -693,7 +693,7 @@ function MenuOptions({ initialData }: AppProps) {
                                                         fontSize: "24px"
                                                     }}
                                                     onChange={(event, newValue) => {
-                                                        console.log("newValue : ", newValue)
+                                                        // console.log("newValue : ", newValue)
                                                     }}
                                                 />
                                             </span>
@@ -785,24 +785,24 @@ function MenuOptions({ initialData }: AppProps) {
 
                                     </div >
                                     {
-                                    productSupplier.forced_status != 'CLOSE' ? 
-                                        (<div className="buttons btns-group">
-                                            <div className="count-container">
-                                                <input type="number" name="product-count" id="product-count" value={productCount} onChange={(e) => { (parseInt(e.target.value) >= 1) && setProductCount(parseInt(e.target.value)) }} />
-                                                <div className="count-buttons">
-                                                    <button className="btn counter-more" onClick={() => handleCount("add")} ></button>
-                                                    <button className="btn counter-minus" onClick={() => handleCount("remove")} ></button>
+                                        productSupplier.forced_status != 'CLOSE' ?
+                                            (<div className="buttons btns-group">
+                                                <div className="count-container">
+                                                    <input type="number" name="product-count" id="product-count" value={productCount} onChange={(e) => { (parseInt(e.target.value) >= 1) && setProductCount(parseInt(e.target.value)) }} />
+                                                    <div className="count-buttons">
+                                                        <button className="btn counter-more" onClick={() => handleCount("add")} ></button>
+                                                        <button className="btn counter-minus" onClick={() => handleCount("remove")} ></button>
+                                                    </div>
                                                 </div>
-                                            </div>
 
-                                            <button className="add-to-cart-button" onClick={() => {
-                                                addToCart()
-                                            }}>
-                                                {t('add_to_cart')}
-                                            </button>
+                                                <button className="add-to-cart-button" onClick={() => {
+                                                    addToCart()
+                                                }}>
+                                                    {t('add_to_cart')}
+                                                </button>
 
-                                    </div>)
-                                    : ''}
+                                            </div>)
+                                            : ''}
                                 </div>
                             </div>
                             <div className="menu-container">

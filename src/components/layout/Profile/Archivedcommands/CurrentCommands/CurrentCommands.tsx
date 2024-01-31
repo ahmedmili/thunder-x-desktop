@@ -170,7 +170,7 @@ const Command: React.FC<CommandProps> = ({ removeCommand, data }) => {
                 (tax > 0) && (
                     <div className='tax'>
                         <span >{t('orderTrackingPage.BankTaxes')}</span>
-                        <span className='left-price'>-{tax.toFixed(2)} dt</span>
+                        <span className='left-price'>{tax.toFixed(2)} dt</span>
                     </div>
                 )
             }
