@@ -37,7 +37,7 @@
     "clipboard-copy": "^4.0.1",
     "compression": "^1.7.4",
     "crypto-js": "^4.2.0",
-    "date-fns": "^2.30.0",
+    "date-fns": "^3.3.1",
     "dayjs": "^1.11.10",
     "dotenv": "^16.3.1",
     "eventemitter3": "^5.0.1",
@@ -103,9 +103,5 @@
     "vite": "^4.5.0",
     "vite-plugin-million": "^0.0.2",
     "vite-plugin-react": "^4.0.1"
-  },
-  "exports": {
-      "./*": "./*.js",
-      "./locale/*": "./locale/*/*.js"
   }
 }
