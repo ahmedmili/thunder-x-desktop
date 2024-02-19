@@ -103,5 +103,9 @@
     "vite": "^4.5.0",
     "vite-plugin-million": "^0.0.2",
     "vite-plugin-react": "^4.0.1"
+  },
+  "exports": {
+      "./*": "./*.js",
+      "./locale/*": "./locale/*/*.js"
   }
 }
