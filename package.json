@@ -36,7 +36,7 @@
     "clipboard-copy": "^4.0.1",
     "compression": "^1.7.4",
     "crypto-js": "^4.2.0",
-    "date-fns": "^3.3.1",
+    "date-fns": "2.25.0",
     "dayjs": "^1.11.10",
     "dotenv": "^16.3.1",
     "eventemitter3": "^5.0.1",
