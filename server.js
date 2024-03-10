@@ -25,6 +25,7 @@ const ssrManifest = isProduction
 
 // Create http server
 const app = express()
+app.use(express.static('./dist/server/assets'))
 app.use(express.static('./dist/server/assets', {
   setHeaders: (res, path) => {
     if (path.endsWith('.js')) {
