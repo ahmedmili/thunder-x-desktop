@@ -25,7 +25,13 @@ const ssrManifest = isProduction
 
 // Create http server
 const app = express()
-app.use(express.static('./dist/server/assets'))
+app.use(express.static('./dist/server/assets', {
+  setHeaders: (res, path) => {
+    if (path.endsWith('.js')) {
+      res.setHeader('Content-Type', 'application/javascript');
+    }
+  }
+}));
 // Add Vite or respective production middlewares
 let vite
 if (!isProduction) {
